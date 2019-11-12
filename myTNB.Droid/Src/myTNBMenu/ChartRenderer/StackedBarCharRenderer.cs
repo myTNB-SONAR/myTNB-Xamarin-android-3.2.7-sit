@@ -26,6 +26,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public Context currentContext { get; set; }
 
+        public Android.App.Activity currentActivity { get; set; }
+
         public float[] bufferItems { get; set; }
 
         private float mRadius = 100f;
@@ -54,6 +56,22 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         }
 
         public override void DrawExtras(Canvas canvas)
+        {
+            try
+            {
+                currentActivity.RunOnUiThread(() =>
+                {
+                    OnDrawExtras(canvas);
+                });
+            }
+            catch (Exception e)
+            {
+                OnDrawExtras(canvas);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnDrawExtras(Canvas canvas)
         {
             // Lin Siong Note: to get current hightlighted data entry
             try
@@ -119,10 +137,25 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         protected override void DrawDataSet(Canvas canvas, IBarDataSet dataSet, int index)
+        {
+            try
+            {
+                currentActivity.RunOnUiThread(() =>
+                {
+                    OnDrawDataSet(canvas, dataSet, index);
+                });
+            }
+            catch (Exception e)
+            {
+                OnDrawDataSet(canvas, dataSet, index);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnDrawDataSet(Canvas canvas, IBarDataSet dataSet, int index)
         {
             try
             {

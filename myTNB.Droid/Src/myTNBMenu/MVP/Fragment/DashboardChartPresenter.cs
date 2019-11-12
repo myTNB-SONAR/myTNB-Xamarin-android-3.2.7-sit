@@ -1,4 +1,5 @@
-﻿using Android.Graphics;
+﻿using Android.Content;
+using Android.Graphics;
 using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
@@ -13,6 +14,7 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -33,13 +35,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private DashboardChartContract.IView mView;
         CancellationTokenSource cts;
         BillingApiImpl billingApi;
+        ISharedPreferences mPref;
+        private bool isSMRReady = false;
+        private bool isDashboardReady = false;
 
         private bool isBillAvailable = true;
 
-        public DashboardChartPresenter(DashboardChartContract.IView mView)
+        public DashboardChartPresenter(DashboardChartContract.IView mView, ISharedPreferences pref)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            this.mPref = pref;
             billingApi = new BillingApiImpl();
         }
 
@@ -102,6 +108,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             try
             {
+                isSMRReady = false;
+
                 cts = new CancellationTokenSource();
 
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -258,6 +266,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     this.mView.ShowSSMRDashboardView(SMRAccountActivityInfoResponse);
+                    isSMRReady = true;
+                    OnCheckToCallDashboardTutorial();
                 }
                 else
                 {
@@ -289,6 +299,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             isBillAvailable = false;
 
+            isDashboardReady = false;
+
             if (this.mView.IsLoadUsageNeeded())
             {
                 if (!this.mView.GetIsSMAccount())
@@ -298,6 +310,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else
                 {
                     await LoadSMUsageHistory();
+                }
+            }
+            else
+            {
+                if (!this.mView.GetIsSMAccount())
+                {
+                    isDashboardReady = true;
+                    OnCheckToCallDashboardTutorial();
                 }
             }
 
@@ -456,6 +476,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         this.mView.OnSetBackendTariffDisabled(true);
                     }
                     OnByRM();
+                    isDashboardReady = true;
+                    OnCheckToCallDashboardTutorial();
                 }
                 else
                 {
@@ -980,6 +1002,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OnCheckToCallDashboardTutorial()
+        {
+            if (isDashboardReady && isSMRReady)
+            {
+                if (!UserSessions.HasSMRDashboardTutorialShown(this.mPref))
+                {
+                    this.mView.OnShowDashboardFragmentTutorialDialog();
+                }
+            }
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Your reading status at a glance.",
+                ContentMessage = "Get an overview of your reading<br/>status here. We’ll also tell you when<br/>it’s time to submit your readings.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }

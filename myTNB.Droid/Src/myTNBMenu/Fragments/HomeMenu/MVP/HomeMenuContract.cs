@@ -9,6 +9,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -76,6 +77,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(string mSavedTimeStamp);
 
             void CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
+
+            void OnShowHomeMenuFragmentTutorialDialog();
+
+            void HomeMenuCustomScrolling(int xPosition);
+
+            void OnSearchOutFocus(bool isSearchLayoutInRange);
+
+            bool CheckIsScrollable();
+
+            void ResetNewFAQScroll();
+
+            int OnGetEndOfScrollView();
+
+            int CheckNewFaqList();
+
+            int CheckMyServiceList();
 
         }
 
@@ -145,11 +162,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
 
             Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
+
+            List<NewAppModel> OnGeneraNewAppTutorialList();
         }
 
         public interface IHomeMenuService
         {
-            Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request);
+            Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request, System.Threading.CancellationToken token);
             Task<GetServicesResponse> GetServices(GetServiceRequests request);
             Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request);
             Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed(GetIsSmrApplyAllowedRequest request);

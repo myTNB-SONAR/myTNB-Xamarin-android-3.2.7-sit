@@ -99,6 +99,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
+                        android:lineSpacingExtra="3dp"
                         android:textSize="14dp"/>
                     <Button
                         android:id="@+id/btnSubmitMeter"
@@ -127,6 +128,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:text="Self meter reading service has not been started for this electricity account yet. Tap below to start!"
+                        android:lineSpacingExtra="3dp"
                         android:textSize="14dp"/>
                     <Button
                         android:id="@+id/btnEnableSubmitMeter"

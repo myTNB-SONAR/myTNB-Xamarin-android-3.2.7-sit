@@ -351,7 +351,7 @@
                                 <LinearLayout
 					                android:id="@+id/mdmsDayViewDownLayout"
 					                android:layout_width="match_parent"
-					                android:layout_height="234.5dp"
+					                android:layout_height="254.5dp"
 					                android:orientation="vertical"
                                     android:gravity="center"
                                     android:visibility="gone">
@@ -800,6 +800,67 @@
                                         android:clickable="true"
                                         android:visibility="gone"
                                         android:textSize="13dp"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:id="@+id/ssmr_shimmer_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:visibility="gone"
+                                    android:layout_marginBottom="8dp">
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmerSSMRImg"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginLeft="1dp"
+                                        android:layout_marginBottom="3dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginRight="10dp"
+                                        android:visibility="visible">
+                                        <ImageView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerVertical="true"
+                                            android:scaleType="fitCenter"
+                                            android:src="@drawable/round_circle"/>
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <LinearLayout 
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_toRightOf="@+id/shimmerSSMRImg">
+                                        <com.facebook.shimmer.ShimmerFrameLayout
+                                            android:id="@+id/shimmerSSMRTitle"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentStart="true"
+                                            android:layout_alignParentTop="true">
+                                            <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/shimmer_color"
+                                            android:background="@color/shimmer_color"
+                                            android:text="                            "
+                                            android:textSize="13dp" />
+                                        </com.facebook.shimmer.ShimmerFrameLayout>
+                                        <com.facebook.shimmer.ShimmerFrameLayout
+                                            android:id="@+id/shimmerSSMRMessage"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:layout_alignParentStart="true"
+                                            android:layout_alignParentTop="true">
+                                            <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/shimmer_color"
+                                            android:background="@color/shimmer_color"
+                                            android:text="                            "
+                                            android:textSize="13dp" />
+                                        </com.facebook.shimmer.ShimmerFrameLayout>
                                     </LinearLayout>
                                 </RelativeLayout>
                                 <Button

@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Views;
@@ -24,6 +25,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
@@ -68,7 +70,7 @@ namespace myTNB_Android.Src.Billing.MVP
         TextView accountPayAmountCurrency;
 
         [BindView(Resource.Id.accountPayAmountValue)]
-        TextView accountPayAmountValue; 
+        TextView accountPayAmountValue;
 
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
@@ -88,6 +90,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.btnPayBill)]
         Button btnPayBill;
 
+        [BindView(Resource.Id.bottomLayout)]
+        LinearLayout bottomLayout;
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 
@@ -101,6 +106,8 @@ namespace myTNB_Android.Src.Billing.MVP
         private LoadingOverlay loadingOverlay;
 		private bool fromSelectAccountPage;
         private const string PAGE_ID = "BillDetails";
+        ISharedPreferences mPref;
+        private bool isTutorialShown = false;
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -137,7 +144,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     payment_activity.PutExtra(Constants.FROM_BILL_DETAILS_PAGE, true);
                     StartActivity(payment_activity);
                 }
-                
+
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
@@ -171,6 +178,7 @@ namespace myTNB_Android.Src.Billing.MVP
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
+            mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
@@ -298,6 +306,11 @@ namespace myTNB_Android.Src.Billing.MVP
         protected override void OnResume()
         {
             base.OnResume();
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+            {
+                OnShowItemizedBillingTutorialDialog();
+            }
         }
 
         protected override void OnPause()
@@ -393,6 +406,52 @@ namespace myTNB_Android.Src.Billing.MVP
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void OnShowItemizedBillingTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 100);
+        }
+
+        public int GetViewBillButtonHeight()
+        {
+            int height = btnViewBill.Height;
+            return height;
+        }
+
+        public int GetViewBillButtonWidth()
+        {
+            int width = btnViewBill.Width;
+            return width;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                bottomLayout.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(bottomLayout, offsetViewBounds);
+
+                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(8f);
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
     }
 }

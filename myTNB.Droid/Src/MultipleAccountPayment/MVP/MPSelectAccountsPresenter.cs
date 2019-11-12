@@ -122,7 +122,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                         {
                             if (!isFromBillDetails) //Checks if coming from Bill Details, dont show if true.
                             {
-                                this.mView.ShowHasMinimumAmoutToPayTooltip(accountChargeModelList[foundIndex]);
+                                MPAccount mpAccount = newAccountList.Find(account =>
+                                {
+                                    return account.accountNumber.Equals(preSelectedAccount);
+                                });
+                                this.mView.ShowHasMinimumAmoutToPayTooltip(mpAccount,accountChargeModelList[foundIndex]);
                             }
                         }
                     }

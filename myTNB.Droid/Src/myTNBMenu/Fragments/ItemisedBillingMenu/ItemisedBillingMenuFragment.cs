@@ -6,10 +6,12 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -24,6 +26,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -124,14 +127,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         IMenuItem billFilterMenuItem;
 
-
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
         const string PAGE_ID = "Bills";
+        private bool isFiltered = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mPresenter = new ItemisedBillingMenuPresenter(this);
+            mPresenter = new ItemisedBillingMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
             Bundle extras = Arguments;
 
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
@@ -161,12 +164,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (isShow)
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle("My History");
-                this.billFilterMenuItem.SetVisible(true);
+                billFilterMenuItem.SetVisible(true);
+                UpdateFilterIcon();
             }
             else
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle("Bills");
-                this.billFilterMenuItem.SetVisible(false);
+                billFilterMenuItem.SetVisible(false);
             }
         }
 
@@ -181,7 +185,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
             {
-                bool IsWidgetVisible = isViewVisible(v,mBillHistoryTitle);
+                bool IsWidgetVisible = isViewVisible(v, mBillHistoryTitle);
                 mOnScrollMethod(IsWidgetVisible);
             }
 
@@ -373,6 +377,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 filterItem.selected = (filterItem.type == selectedFilter.type) ? true : false;
             });
+            isFiltered = (selectedFilter.type == "ALL") ? false : true;
             RenderBillingHistoryList(selectedFilter.type);
         }
 
@@ -381,6 +386,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingList.RemoveAllViews();
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
             List<AccountBillPayHistoryModel> filteredBillingList = new List<AccountBillPayHistoryModel>();
+            UpdateFilterIcon();
             if (string.IsNullOrEmpty(historyType) || historyType == "ALL")
             {
                 filteredBillingList.AddRange(selectedBillingHistoryModelList);
@@ -741,6 +747,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnResume()
         {
             base.OnResume();
+            try
+            {
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                if (this.mPresenter != null && this.mPresenter.IsTutorialShowNeeded())
+                {
+                    this.mPresenter.OnCheckToCallItemizedTutorial();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnPause()
@@ -760,6 +778,82 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void OnShowItemizedFragmentTutorialDialog()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                StopScrolling();
+            });
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
+        }
+
+        public void ItemizedBillingCustomScrolling(int yPosition)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    itemisedBillingScrollView.ScrollTo(0, yPosition);
+                    itemisedBillingScrollView.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)itemisedBillingScrollView.GetChildAt(0);
+
+            return itemisedBillingScrollView.Height < child.Height + itemisedBillingScrollView.PaddingTop + itemisedBillingScrollView.PaddingBottom;
+        }
+
+        public int GetButtonWidth()
+        {
+            return btnPayBill.Width;
+        }
+
+        public int GetButtonHeight()
+        {
+            return btnPayBill.Height;
+        }
+
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)itemisedBillingScrollView.GetChildAt(0);
+
+            return child.Height + itemisedBillingScrollView.PaddingTop + itemisedBillingScrollView.PaddingBottom;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                itemisedBillingScrollView.SmoothScrollBy(0, 0);
+                itemisedBillingScrollView.ScrollTo(0, 0);
+                itemisedBillingScrollView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        private void UpdateFilterIcon()
+        {
+            if (isFiltered)
+            {
+                billFilterMenuItem.SetIcon(Resource.Drawable.filter_filled);
+                billFilterIcon.SetImageResource(Resource.Drawable.filter_blue);
+            }
+            else
+            {
+                billFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
+                billFilterIcon.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
+            }
         }
     }
 }

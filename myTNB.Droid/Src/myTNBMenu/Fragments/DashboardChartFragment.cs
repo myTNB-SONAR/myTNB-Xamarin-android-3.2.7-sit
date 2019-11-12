@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
@@ -28,6 +29,7 @@ using MikePhil.Charting.Data;
 using MikePhil.Charting.Formatter;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
+using MikePhil.Charting.Jobs;
 using MikePhil.Charting.Listener;
 using MikePhil.Charting.Util;
 using myTNB.SitecoreCMS.Model;
@@ -445,6 +447,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.new_account_image)]
         ImageView newAccountImage;
 
+        [BindView(Resource.Id.ssmr_account_message)]
+        RelativeLayout ssmr_account_message;
+
+        [BindView(Resource.Id.ssmr_shimmer_layout)]
+        RelativeLayout ssmr_shimmer_layout;
+
+        [BindView(Resource.Id.shimmerSSMRImg)]
+        ShimmerFrameLayout shimmerSSMRImg;
+
+        [BindView(Resource.Id.shimmerSSMRTitle)]
+        ShimmerFrameLayout shimmerSSMRTitle;
+
+        [BindView(Resource.Id.shimmerSSMRMessage)]
+        ShimmerFrameLayout shimmerSSMRMessage;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -537,6 +554,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool isChangeVirtualHeightNeed = false;
 
         private bool isShowAnimationDisable = false;
+
+        private static bool isTutorialShow = false;
 
         ScaleGestureDetector mScaleDetector;
 
@@ -687,7 +706,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             SetHasOptionsMenu(true);
-            this.mPresenter = new DashboardChartPresenter(this);
+            this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
         }
 
         internal static DashboardChartFragment NewInstance(UsageHistoryResponse usageHistoryResponse, AccountData accountData, string error, string errorMessage)
@@ -740,6 +759,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
 
                 smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
+
+                isTutorialShow = false;
 
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.InMutable = true;
@@ -828,6 +849,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     txtAddress.Text = selectedAccount.AddStreet;
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
+                        HideSSMRDashboardView();
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         isREAccount = true;
                         reContainer.Visibility = ViewStates.Visible;
@@ -849,6 +871,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else if (isSMAccount)
                     {
                         // Smart Meter
+                        HideSSMRDashboardView();
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
                         isREAccount = false;
@@ -869,13 +892,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isSMR = this.mPresenter.IsOwnedSMR(selectedAccount.AccountNum);
                         if (isSMR)
                         {
+                            StartSSMRDashboardViewShimmer();
                             isChangeVirtualHeightNeed = true;
                             SetVirtualHeightParams(6f);
                             isChangeBackgroundNeeded = true;
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
                         }
                         else
                         {
+                            HideSSMRDashboardView();
                             isChangeVirtualHeightNeed = true;
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
@@ -945,6 +970,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    HideSSMRDashboardView();
                     rootView.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
                     isChangeVirtualHeightNeed = true;
@@ -1045,8 +1071,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     DisableViewBillButton();
 
                     energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    HideSSMRDashboardView();
 
                     if (isUsageLoadedNeeded)
                     {
@@ -1398,6 +1422,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             ssmr_history_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_history_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
             ssmr_history_activity.PutExtra("fromUsage", true);
+            SMRPopUpUtils.SetFromUsageFlag(true);
             StartActivityForResult(ssmr_history_activity, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }
 
@@ -1406,6 +1431,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Intent ssmr_submit_meter_activity = new Intent(this.Activity, typeof(SubmitMeterReadingActivity));
             ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+            SMRPopUpUtils.SetFromUsageFlag(true);
             StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
         }
 
@@ -1646,6 +1672,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         selectedSMHistoryData = selectedSMHistoryData,
                         currentContext = Activity,
+                        currentActivity = Activity,
                         isStacked = true,
                         isZoomIn = isZoomIn,
                         currentChartType = ChartType,
@@ -1663,6 +1690,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         selectedSMHistoryData = selectedSMHistoryData,
                         currentContext = Activity,
+                        currentActivity = Activity,
                         isStacked = false,
                         isZoomIn = isZoomIn,
                         currentChartType = ChartType,
@@ -1684,7 +1712,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedHistoryData = selectedHistoryData,
-                        currentContext = Activity
+                        currentContext = Activity,
+                        currentActivity = Activity
                     };
                     mChart.Renderer = renderer;
                 }
@@ -1693,7 +1722,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedHistoryData = selectedHistoryData,
-                        currentContext = Activity
+                        currentContext = Activity,
+                        currentActivity = Activity
                     };
                     mChart.Renderer = renderer;
                 }
@@ -1987,12 +2017,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 40;
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(230f);
             }
             else if (ChartType == ChartType.Day && isZoomIn)
             {
                 graphBottomPadding = 6;
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(196f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(216f);
             }
             else if (isSMR)
             {
@@ -2000,9 +2030,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             else
             {
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(220f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
             }
-
 
             mChart.SetExtraOffsets(graphLeftRightPadding, graphTopPadding, graphLeftRightPadding, graphBottomPadding);
 
@@ -2021,8 +2050,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             };
 
             mChart.NestedScrollingEnabled = true;
-
-            mChart.Invalidate();
 
             isChangeVirtualHeightNeed = true;
             SetVirtualHeightParams(6f);
@@ -4615,6 +4642,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
                                 }
                             }
+                            else if (isSMAccount)
+                            {
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                                else if (newTariffList.Count >= 2 && newTariffList.Count < 4)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                }
+                                else
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                                }
+                            }
 
                             Context context = tariffBlockLegendRecyclerView.Context;
                             LayoutAnimationController controller =
@@ -4632,6 +4674,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             if (isSMR)
                             {
                                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                            }
+                            else if (isSMAccount)
+                            {
+                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                             }
                         }
                     }
@@ -4684,6 +4730,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
+                            if (isSMAccount)
+                            {
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                                else if (newTariffList.Count >= 2 && newTariffList.Count < 4)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                }
+                                else
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                                }
+                            }
+
                             Context context = tariffBlockLegendRecyclerView.Context;
                             LayoutAnimationController controller =
                                     AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
@@ -4696,6 +4758,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
+
+                            if (isSMAccount)
+                            {
+                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                            }
                         }
                     }
                     else
@@ -4819,7 +4886,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         StopAddressShimmer();
                         StopRangeShimmer();
                         StopGraphShimmer();
-                        ShowSMStatisticCard();
+                        HideSMStatisticCard();
                         energyTipsView.Visibility = ViewStates.Gone;
 
                         string defaultMessage = GetLabelByLanguage("emptyDataMsg");
@@ -5332,6 +5399,44 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             var actionBar = act.SupportActionBar;
             actionBar.Show();
+
+            try
+            {
+                if (SMRPopUpUtils.GetFromUsageFlag())
+                {
+                    SMRPopUpUtils.SetFromUsageFlag(false);
+                    if (SMRPopUpUtils.GetFromUsageSubmitSuccessfulFlag())
+                    {
+                        SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
+                        this.userActionsListener.OnTapRefresh();
+                    }
+                }
+                else
+                {
+                    if (SMRPopUpUtils.GetFromUsageSubmitSuccessfulFlag())
+                    {
+                        SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnCheckToCallDashboardTutorial();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -5855,7 +5960,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             Utility.LoggingNonFatalError(e);
                         }
+                        isSMR = false;
                         isChangeBackgroundNeeded = false;
+                        isChangeVirtualHeightNeed = true;
+                        SetVirtualHeightParams(6f);
                     }
                 }
                 else
@@ -5877,6 +5985,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
+                    StopSSMRDashboardViewShimmer();
                     smrResponse = response;
                     MyTNBAccountManagement.GetInstance().SetAccountActivityInfo(new SMRAccountActivityInfo(selectedAccount.AccountNum, smrResponse));
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
@@ -5965,7 +6074,69 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideSSMRDashboardView()
         {
+            StopSSMRDashboardViewShimmer();
             ssmrHistoryContainer.Visibility = ViewStates.Gone;
+            if (isSMR)
+            {
+                isSMR = false;
+                isChangeBackgroundNeeded = false;
+                rootView.SetBackgroundResource(0);
+                scrollViewContent.SetBackgroundResource(0);
+                isChangeVirtualHeightNeed = true;
+                SetVirtualHeightParams(6f);
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                    ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void StartSSMRDashboardViewShimmer()
+        {
+            ssmrHistoryContainer.Visibility = ViewStates.Visible;
+            ssmr_account_message.Visibility = ViewStates.Gone;
+            btnReadingHistory.Enabled = false;
+            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+            // Start SSMR Shimmer
+            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+            if (shimmerBuilder != null)
+            {
+                shimmerSSMRImg.SetShimmer(shimmerBuilder?.Build());
+                shimmerSSMRTitle.SetShimmer(shimmerBuilder?.Build());
+                shimmerSSMRMessage.SetShimmer(shimmerBuilder?.Build());
+            }
+            shimmerSSMRImg.StartShimmer();
+            shimmerSSMRTitle.StartShimmer();
+            shimmerSSMRMessage.StartShimmer();
+
+            ssmr_shimmer_layout.Visibility = ViewStates.Visible;
+        }
+
+        private void StopSSMRDashboardViewShimmer()
+        {
+            ssmr_shimmer_layout.Visibility = ViewStates.Gone;
+            // Stop SSMR Shimmer
+            if (shimmerSSMRImg.IsShimmerStarted)
+            {
+                shimmerSSMRImg.StopShimmer();
+            }
+            if (shimmerSSMRTitle.IsShimmerStarted)
+            {
+                shimmerSSMRTitle.StopShimmer();
+            }
+            if (shimmerSSMRMessage.IsShimmerStarted)
+            {
+                shimmerSSMRMessage.StopShimmer();
+            }
+
+            ssmr_account_message.Visibility = ViewStates.Visible;
         }
 
         public string GetDeviceId()
@@ -5985,14 +6156,144 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (t == 0)
                     {
                         requireScroll = false;
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                        shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
+                        if (!isTutorialShow)
+                        {
+                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                            shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
+                        // Lin Siong TODO: uncomment this once confirm effect
+                        /*if (!isToggleTariff)
+                        {
+                            if (isSMAccount || isSMR)
+                            {
+                                if (isSMAccount)
+                                {
+                                    if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                    {
+                                        rootView.SetBackgroundResource(0);
+                                        scrollViewContent.SetBackgroundResource(0);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        smStatisticContainer.Visibility = ViewStates.Invisible;
+                                    }
+                                }
+                                else if (isSMR)
+                                {
+                                    if (ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                    {
+                                        rootView.SetBackgroundResource(0);
+                                        scrollViewContent.SetBackgroundResource(0);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        ssmrHistoryContainer.Visibility = ViewStates.Invisible;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (isSMAccount || isSMR)
+                            {
+                                if (isSMAccount)
+                                {
+                                    if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                    {
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        smStatisticContainer.Visibility = ViewStates.Visible;
+                                    }
+                                }
+                                else if (isSMR)
+                                {
+                                    if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
+                                    {
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
+                                    }
+                                }
+                            }
+                        }*/
+                        }
                     }
                     else if (scrollPosition > 0 || scrollPosition < 0)
                     {
                         requireScroll = true;
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         shadowLayout.SetBackgroundResource(0);
+
+                        // Lin Siong TODO: uncomment this once confirm effect
+                        /*if (!isToggleTariff)
+                        {
+                            if (isSMAccount || isSMR)
+                            {
+                                if (isSMAccount)
+                                {
+                                    if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                    {
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        smStatisticContainer.Visibility = ViewStates.Visible;
+                                    }
+                                }
+                                else if (isSMR)
+                                {
+                                    if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
+                                    {
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
+                                    }
+                                }
+                            }
+                        }*/
                     }
                 }
             }
@@ -6021,7 +6322,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (newState == BottomSheetBehavior.StateHidden || newState == BottomSheetBehavior.StateCollapsed)
                         {
-                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                            if (!isTutorialShow)
+                            {
+                                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                            }
                         }
                     }
                     else if (requireScroll)
@@ -6178,6 +6482,90 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isChangeVirtualHeightNeed = false;
                     shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                     bottomSheet.RequestLayout();
+
+                    // Lin Siong TODO: uncomment this once confirm effect
+                    /*if (!isToggleTariff)
+                    {
+                        if (isSMAccount || isSMR)
+                        {
+                            if (isSMAccount)
+                            {
+                                if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                {
+                                    rootView.SetBackgroundResource(0);
+                                    scrollViewContent.SetBackgroundResource(0);
+                                    try
+                                    {
+                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                    }
+                                    catch (System.Exception e)
+                                    {
+                                        Utility.LoggingNonFatalError(e);
+                                    }
+                                    smStatisticContainer.Visibility = ViewStates.Invisible;
+                                }
+                            }
+                            else if (isSMR)
+                            {
+                                if (ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                {
+                                    rootView.SetBackgroundResource(0);
+                                    scrollViewContent.SetBackgroundResource(0);
+                                    try
+                                    {
+                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                    }
+                                    catch (System.Exception e)
+                                    {
+                                        Utility.LoggingNonFatalError(e);
+                                    }
+                                    ssmrHistoryContainer.Visibility = ViewStates.Invisible;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (isSMAccount || isSMR)
+                        {
+                            if (isSMAccount)
+                            {
+                                if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                {
+                                    try
+                                    {
+                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                        ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                    }
+                                    catch (System.Exception e)
+                                    {
+                                        Utility.LoggingNonFatalError(e);
+                                    }
+                                    rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                    smStatisticContainer.Visibility = ViewStates.Visible;
+                                }
+                            }
+                            else if (isSMR)
+                            {
+                                if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
+                                {
+                                    try
+                                    {
+                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                        ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                    }
+                                    catch (System.Exception e)
+                                    {
+                                        Utility.LoggingNonFatalError(e);
+                                    }
+                                    rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                    ssmrHistoryContainer.Visibility = ViewStates.Visible;
+                                }
+                            }
+                        }
+                    }*/
                 }
                 else if (!isScrollIndicatorShowNeed && isChangeVirtualHeightNeed)
                 {
@@ -6229,6 +6617,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         void IOnChartValueSelectedListenerSupport.OnNothingSelected()
         {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    DoNothingSelected();
+                });
+            }
+            catch (System.Exception err)
+            {
+                DoNothingSelected();
+                Utility.LoggingNonFatalError(err);
+            }
+        }
+
+        private void DoNothingSelected()
+        {
             CurrentParentIndex = -1;
             try
             {
@@ -6254,6 +6658,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         // Lin Siong Note: Will have vibration effect when selected
         // Lin Siong Note: if isToggleTariff = true then it will force the entry to be hightlighted to most upper one
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    DoValueSelected(e, h);
+                });
+            }
+            catch (System.Exception err)
+            {
+                DoValueSelected(e, h);
+                Utility.LoggingNonFatalError(err);
+            }
+        }
+
+        private void DoValueSelected(Entry e, Highlight h)
         {
             try
             {
@@ -6334,28 +6754,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 trackingLowestVisibleX = currentLowestVisibleX;
                                 lowestVisibleX = currentLowestVisibleX;
 
+                                IRunnable specificJob = MoveViewJob.GetInstance(mChart.ViewPortHandler, lowestVisibleX, 0f,
+                                    mChart.GetTransformer(YAxis.AxisDependency.Left), mChart);
+                                specificJob.Run();
+                                mChart.Invalidate();
+
                                 float[] pts = { lowestVisibleX, 0f };
                                 mChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
                                 mChart.ViewPortHandler.Translate(pts, mChart.Matrix);
-
-                                mChart.MoveViewToX(currentLowestVisibleX);
-
-                                for (int i = 0; i < mChart.Jobs.Count; i++)
-                                {
-                                    Runnable job = mChart.Jobs[i] as Runnable;
-                                    job.Run();
-                                }
-                                mChart.Jobs.Clear();
+                                mChart.Invalidate();
 
                                 Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
                                 {
-                                    vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+                                    vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
                                 }
                                 else
                                 {
-                                    vibrator.Vibrate(200);
+                                    vibrator.Vibrate(150);
 
                                 }
                             }
@@ -6363,6 +6780,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                             Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
                             mChart.HighlightValue(centerBar, false);
+                            SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
 
                             if (missingReadingList[currentDayViewIndex])
                             {
@@ -6558,6 +6976,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
                     param.Height = (int)DPUtils.ConvertDPToPx(170);
+                }
+                else if (isREAccount)
+                {
+                    RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
+                    param.Height = (int)DPUtils.ConvertDPToPx(200);
+                }
+                else
+                {
+                    RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
+                    param.Height = (int)DPUtils.ConvertDPToPx(210);
                 }
             }
             catch (System.Exception e)
@@ -6839,6 +7267,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        public void HideSMStatisticCard()
+        {
+            if (isSMAccount)
+            {
+                StopSMStatisticShimmer();
+                smStatisticContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                smStatisticContainer.Visibility = ViewStates.Gone;
+            }
+        }
+
         public void ShowSMStatisticCard()
         {
             try
@@ -7028,20 +7469,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                if (isSMAccount)
+                {
+                    rootView.SetBackgroundResource(0);
+                    scrollViewContent.SetBackgroundResource(0);
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
                 LinearLayout.LayoutParams newAccountImageParams = newAccountImage.LayoutParameters as LinearLayout.LayoutParams;
 
                 newAccountImageParams.Width = GetDeviceHorizontalScaleInPixel(0.30f);
                 newAccountImageParams.Height = GetDeviceHorizontalScaleInPixel(0.30f);
-                if (isREAccount || isSMR || isSMAccount)
+                if (isREAccount || isSMR)
                 {
-                    if (isSMAccount)
-                    {
-                        newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(76f);
-                    }
-                    else
-                    {
-                        newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    }
+                    newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(32f);
                 }
                 else
                 {
@@ -7051,15 +7500,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 LinearLayout.LayoutParams newAccountContentParams = newAccountContent.LayoutParameters as LinearLayout.LayoutParams;
                 newAccountContentParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-                if (isREAccount || isSMR || isSMAccount)
+                if (isREAccount || isSMR)
                 {
                     if (isSMR)
                     {
                         newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(35f);
-                    }
-                    else if (isSMAccount)
-                    {
-                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(76f);
                     }
                     else
                     {
@@ -7207,6 +7652,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public override void StopDeceleration()
             {
                 base.StopDeceleration();
+                try
+                {
+                    currentFragment.Activity.RunOnUiThread(() =>
+                    {
+                        OnStopDeceleration();
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    OnStopDeceleration();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            private void OnStopDeceleration()
+            {
                 if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
                     if (!isShowLog && isDayViewFirstMove)
@@ -7274,21 +7735,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             currentDayViewIndex = maxCurrentDayViewIndex;
                         }
 
-                        currentChart.MoveViewToX(resultLowestVisibleX);
                         lowestVisibleX = resultLowestVisibleX;
                         currentLowestVisibleX = lowestVisibleX;
                         trackingLowestVisibleX = currentLowestVisibleX;
 
+                        IRunnable specificJob = MoveViewJob.GetInstance(currentChart.ViewPortHandler, lowestVisibleX, 0f,
+                            currentChart.GetTransformer(YAxis.AxisDependency.Left), currentChart);
+                        specificJob.Run();
+                        currentChart.Invalidate();
+
                         float[] pts = { lowestVisibleX, 0f };
                         currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
                         currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
-
-                        for (int i = 0; i < currentChart.Jobs.Count; i++)
-                        {
-                            Runnable job = currentChart.Jobs[i] as Runnable;
-                            job.Run();
-                        }
-                        currentChart.Jobs.Clear();
+                        currentChart.Invalidate();
 
                         BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                         Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
@@ -7303,6 +7762,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public override void EndAction(MotionEvent p0)
             {
                 base.EndAction(p0);
+                try
+                {
+                    currentFragment.Activity.RunOnUiThread(() =>
+                    {
+                        OnEndAction(p0);
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    OnEndAction(p0);
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            private void OnEndAction(MotionEvent p0)
+            {
                 if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
                     if (p0.Action == MotionEventActions.Up)
@@ -7372,21 +7847,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 currentDayViewIndex = maxCurrentDayViewIndex;
                             }
 
-                            currentChart.MoveViewToX(resultLowestVisibleX);
                             lowestVisibleX = resultLowestVisibleX;
                             currentLowestVisibleX = lowestVisibleX;
                             trackingLowestVisibleX = currentLowestVisibleX;
 
+                            IRunnable specificJob = MoveViewJob.GetInstance(currentChart.ViewPortHandler, lowestVisibleX, 0f,
+                                currentChart.GetTransformer(YAxis.AxisDependency.Left), currentChart);
+                            specificJob.Run();
+                            currentChart.Invalidate();
+
                             float[] pts = { lowestVisibleX, 0f };
                             currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
                             currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
-
-                            for (int i = 0; i < currentChart.Jobs.Count; i++)
-                            {
-                                Runnable job = currentChart.Jobs[i] as Runnable;
-                                job.Run();
-                            }
-                            currentChart.Jobs.Clear();
+                            currentChart.Invalidate();
 
                             BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                             Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
@@ -7400,46 +7873,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             public override void ComputeScroll()
             {
-                base.ComputeScroll();
+                // base.ComputeScroll();
+                try
+                {
+                    currentFragment.Activity.RunOnUiThread(() =>
+                    {
+                        OnComputeScroll();
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    OnComputeScroll();
+                    Utility.LoggingNonFatalError(e);
+                }
 
+            }
+
+            private void OnComputeScroll()
+            {
                 if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
                     if (!isDayViewFirstMove)
                     {
                         if (currentChartDataType == ChartDataType.RM)
                         {
-                            currentChart.MoveViewToX(currentDayViewRMList.Count - 1 - 0.5f);
                             lowestVisibleX = currentDayViewRMList.Count - 1 - 0.5f;
                             currentDayViewIndex = currentDayViewRMList.Count - 1 + 4;
                         }
                         else
                         {
-                            currentChart.MoveViewToX(currentDayViewkWhList.Count - 1 - 0.5f);
                             lowestVisibleX = currentDayViewkWhList.Count - 1 - 0.5f;
                             currentDayViewIndex = currentDayViewkWhList.Count - 1 + 4;
                         }
                         currentLowestVisibleX = lowestVisibleX;
                         trackingLowestVisibleX = currentLowestVisibleX;
                         maxLowestVisibleX = lowestVisibleX;
+
+                        IRunnable specificJob = MoveViewJob.GetInstance(currentChart.ViewPortHandler, lowestVisibleX, 0f,
+                            currentChart.GetTransformer(YAxis.AxisDependency.Left), currentChart);
+                        specificJob.Run();
+                        currentChart.Invalidate();
+
                         float[] pts = { lowestVisibleX, 0f };
                         currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
                         currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+                        currentChart.Invalidate();
+
                         maxCurrentDayViewIndex = currentDayViewIndex;
 
-                        for (int i = 0; i < currentChart.Jobs.Count; i++)
-                        {
-                            Runnable job = currentChart.Jobs[i] as Runnable;
-                            job.Run();
-                        }
-                        currentChart.Jobs.Clear();
 
                         BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                         Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
-                        currentChart.HighlightValue(centerBar, false);
+                        currentChart.HighlightValue(centerBar, true);
                         isDayViewFirstMove = true;
                         isShowLog = true;
 
                         currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
                     }
                     else
                     {
@@ -7453,7 +7945,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             int checkPoint = (int)(trackingLowestVisibleX * 100);
                             checkPoint = checkPoint % 100;
 
-                            int tempDayViewIndex = (int) trackingLowestVisibleX + 5;
+                            int tempDayViewIndex = (int)trackingLowestVisibleX + 5;
 
                             if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
                             {
@@ -7484,100 +7976,122 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
 
-                        if ((System.Math.Abs(lowestVisibleX - currentChart.LowestVisibleX) > 0.0000001))
+                        if ((System.Math.Abs(lowestVisibleX - currentChart.LowestVisibleX) > 4))
                         {
-                            isShowLog = false;
+                            IRunnable specificJob = MoveViewJob.GetInstance(currentChart.ViewPortHandler, lowestVisibleX, 0f,
+                                currentChart.GetTransformer(YAxis.AxisDependency.Left), currentChart);
+                            specificJob.Run();
+                            currentChart.Invalidate();
 
-                            lowestVisibleX = currentChart.LowestVisibleX;
+                            float[] pts = { lowestVisibleX, 0f };
+                            currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                            currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+                            currentChart.Invalidate();
+
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            currentChart.HighlightValue(centerBar, false);
+
+                            currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
                         }
                         else
                         {
-                            if (!isShowLog && isDayViewFirstMove)
+                            if ((System.Math.Abs(lowestVisibleX - currentChart.LowestVisibleX) > 0.0000001))
                             {
-                                isShowLog = true;
+                                isShowLog = false;
 
-                                int roundedLowestVisibleX = (int)lowestVisibleX;
-                                float resultLowestVisibleX = roundedLowestVisibleX;
+                                lowestVisibleX = currentChart.LowestVisibleX;
+                            }
+                            else
+                            {
+                                if (!isShowLog && isDayViewFirstMove)
+                                {
+                                    isShowLog = true;
 
-                                int checkPoint = (int)(lowestVisibleX * 100);
-                                checkPoint = checkPoint % 100;
+                                    int roundedLowestVisibleX = (int)lowestVisibleX;
+                                    float resultLowestVisibleX = roundedLowestVisibleX;
 
-                                if (roundedLowestVisibleX == 0 && checkPoint <= -50)
-                                {
-                                    resultLowestVisibleX = -0.5f;
-                                }
-                                else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
-                                {
-                                    resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
-                                }
-                                else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
-                                {
-                                    resultLowestVisibleX = -0.5f;
-                                }
-                                else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
-                                {
-                                    resultLowestVisibleX = 0.5f;
-                                }
-                                else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
-                                {
-                                    resultLowestVisibleX = 1.5f;
-                                }
-                                else if (checkPoint >= 0 && checkPoint < 25)
-                                {
-                                    resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
-                                }
-                                else if (checkPoint >= 25 && checkPoint <= 50)
-                                {
-                                    resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
-                                }
-                                else
-                                {
-                                    resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
-                                }
+                                    int checkPoint = (int)(lowestVisibleX * 100);
+                                    checkPoint = checkPoint % 100;
 
-                                currentDayViewIndex = (int) (resultLowestVisibleX + 4.5f);
+                                    if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                                    {
+                                        resultLowestVisibleX = -0.5f;
+                                    }
+                                    else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                                    {
+                                        resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                                    }
+                                    else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                                    {
+                                        resultLowestVisibleX = -0.5f;
+                                    }
+                                    else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                                    {
+                                        resultLowestVisibleX = 0.5f;
+                                    }
+                                    else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                                    {
+                                        resultLowestVisibleX = 1.5f;
+                                    }
+                                    else if (checkPoint >= 0 && checkPoint < 25)
+                                    {
+                                        resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                                    }
+                                    else if (checkPoint >= 25 && checkPoint <= 50)
+                                    {
+                                        resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                                    }
+                                    else
+                                    {
+                                        resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                                    }
 
-                                if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
-                                {
-                                    currentDayViewIndex = minCurrentDayViewIndex;
+                                    currentDayViewIndex = (int)(resultLowestVisibleX + 4.5f);
+
+                                    if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                                    {
+                                        currentDayViewIndex = minCurrentDayViewIndex;
+                                    }
+                                    else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                                    {
+                                        currentDayViewIndex = maxCurrentDayViewIndex;
+                                    }
+
+                                    if (resultLowestVisibleX <= minLowestVisibleX)
+                                    {
+                                        resultLowestVisibleX = minLowestVisibleX;
+                                        currentDayViewIndex = minCurrentDayViewIndex;
+                                    }
+                                    else if (resultLowestVisibleX >= maxLowestVisibleX)
+                                    {
+                                        resultLowestVisibleX = maxLowestVisibleX;
+                                        currentDayViewIndex = maxCurrentDayViewIndex;
+                                    }
+
+                                    lowestVisibleX = resultLowestVisibleX;
+                                    currentLowestVisibleX = lowestVisibleX;
+                                    trackingLowestVisibleX = currentLowestVisibleX;
+
+                                    IRunnable specificJob = MoveViewJob.GetInstance(currentChart.ViewPortHandler, lowestVisibleX, 0f,
+                                        currentChart.GetTransformer(YAxis.AxisDependency.Left), currentChart);
+                                    specificJob.Run();
+                                    currentChart.Invalidate();
+
+                                    float[] pts = { lowestVisibleX, 0f };
+                                    currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                                    currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+                                    currentChart.Invalidate();
+
+                                    BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                                    Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                                    currentChart.HighlightValue(centerBar, false);
+
+                                    currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
                                 }
-                                else if (currentDayViewIndex > maxCurrentDayViewIndex)
-                                {
-                                    currentDayViewIndex = maxCurrentDayViewIndex;
-                                }
-
-                                if (resultLowestVisibleX <= minLowestVisibleX)
-                                {
-                                    resultLowestVisibleX = minLowestVisibleX;
-                                    currentDayViewIndex = minCurrentDayViewIndex;
-                                }
-                                else if (resultLowestVisibleX >= maxLowestVisibleX)
-                                {
-                                    resultLowestVisibleX = maxLowestVisibleX;
-                                    currentDayViewIndex = maxCurrentDayViewIndex;
-                                }
-
-                                currentChart.MoveViewToX(resultLowestVisibleX);
-                                lowestVisibleX = resultLowestVisibleX;
-                                currentLowestVisibleX = lowestVisibleX;
-                                trackingLowestVisibleX = currentLowestVisibleX;
-
-                                float[] pts = { lowestVisibleX, 0f };
-                                currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
-                                currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
-
-                                for (int i = 0; i < currentChart.Jobs.Count; i++)
-                                {
-                                    Runnable job = currentChart.Jobs[i] as Runnable;
-                                    job.Run();
-                                }
-                                currentChart.Jobs.Clear();
-
-                                BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
-                                Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
-                                currentChart.HighlightValue(centerBar, false);
-
-                                currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
                             }
                         }
                     }
@@ -7628,6 +8142,145 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public bool GetIsREAccount()
         {
             return isREAccount;
+        }
+
+        public void OnShowDashboardFragmentTutorialDialog()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                StopScrolling();
+            });
+
+            if (ChartDataType != ChartDataType.RM)
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+                rmKwhLabel.Text = "RM  ";
+                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                isShowAnimationDisable = true;
+                ShowByRM();
+            }
+
+            if (tarifToggle.Enabled && isToggleTariff)
+            {
+                try
+                {
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye);
+                    txtTarifToggle.Text = "Show Tariff";
+                    isToggleTariff = false;
+                    if (isChangeBackgroundNeeded)
+                    {
+                        if (isSMAccount)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                        }
+                        else if (isSMR)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                        }
+                    }
+
+                    mChart.Clear();
+                    SetUp();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
+        }
+
+        public void DashboardCustomScrolling(int yPosition)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    scrollView.ScrollTo(0, yPosition);
+                    scrollView.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)scrollView.GetChildAt(0);
+
+            return scrollView.Height < child.Height + scrollView.PaddingTop + scrollView.PaddingBottom;
+        }
+
+        public int GetSMRCardHeight()
+        {
+            return ssmrHistoryContainer.Height;
+        }
+
+        public int GetSMRCardLocation()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                ssmrHistoryContainer.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(ssmrHistoryContainer, offsetViewBounds);
+
+                i = offsetViewBounds.Top;
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)scrollView.GetChildAt(0);
+
+            return child.Height + scrollView.PaddingTop + scrollView.PaddingBottom;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                scrollView.SmoothScrollBy(0, 0);
+                scrollView.ScrollTo(0, 0);
+                scrollView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideBottomSheet()
+        {
+            isTutorialShow = true;
+            bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+        }
+
+        public void ShowBottomSheet()
+        {
+            isTutorialShow = false;
+            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
         }
     }
 }

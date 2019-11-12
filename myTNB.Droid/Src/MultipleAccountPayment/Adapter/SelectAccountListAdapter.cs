@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
                 vh.AccountLabel.Text = item.accountLabel;
-               
+
                 if (item.amount <= 0f)
                 {
                     vh.Amount.Text = "";
@@ -144,19 +144,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         vh.SelectAccountView.Checked = false;
                         CheckChanged(this, -2);
                     }
-                    else if (newAmount < double.Parse(payableFormatter.Format(item.minimumAmountDue)))
-                    {
-                        vh.AmountLabel.Error = string.Format(Utility.GetLocalizedLabel("Error", "minimumMandatoryPayment"), "RM " + item.minimumAmountDue.ToString("#,##0.00"));
-                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
-                        vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tomato)));
-                        vh.Amount.RequestFocus();
-                        item.isValidAmount = false;
-                        item.isSelected = false;
-                        item.tooltipPopUp = false;
-                        vh.SelectAccountView.Checked = false;
-                        CheckChanged(this, -2);
-                    }
-
                     else
                     {
                         vh.AmountLabel.Error = "";

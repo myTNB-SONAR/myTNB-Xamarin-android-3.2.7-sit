@@ -264,6 +264,14 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 disconnectionTtile.Text = GetLabelByLanguage("applyingFor");
                 terminationReasonTitle.Visibility = ViewStates.Gone;
                 reasonDetailContainer.Visibility = ViewStates.Gone;
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions));
+                }
                 ShowContactDetails();
             }
             else
@@ -275,6 +283,14 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 contactDetailTtile.Visibility = ViewStates.Gone;
                 contactDetailContainer.Visibility = ViewStates.Gone;
                 this.mPresenter.InitiateTerminationReasonsList();
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terminate_terms_conditions), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terminate_terms_conditions));
+                }
                 EnableSubmitButton();
             }
         }

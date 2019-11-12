@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 
         private DecimalFormat decimalFormat;
         private DecimalFormat kwhFormat;
+        private DecimalFormat zoonInkWhFormat;
         private TextView titleMarker;
         private TextView titlekWhMarker;
         private ImageView imgMissingCopy;
@@ -49,6 +50,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             imgMissingCopy.Visibility = ViewStates.Gone;
             decimalFormat = new DecimalFormat("#,###,##0.00");
             kwhFormat = new DecimalFormat("#,###,##0");
+            zoonInkWhFormat = new DecimalFormat("#,###,##0.00");
             currentContext = context;
         }
 
@@ -125,7 +127,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     {
                         titlekWhMarker.Visibility = ViewStates.Gone;
                         float valKwh = (float)smDayViewUsageList[index];
-                        titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + smDayUsageUnit;
+                        titleMarker.Text = zoonInkWhFormat.Format(Math.Abs(valKwh)) + " " + smDayUsageUnit;
                     }
 
                 }

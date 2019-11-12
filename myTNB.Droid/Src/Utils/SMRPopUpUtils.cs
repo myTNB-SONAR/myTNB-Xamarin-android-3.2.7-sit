@@ -17,6 +17,8 @@ namespace myTNB_Android.Src.Utils
     public class SMRPopUpUtils
     {
         private static SMRActivityInfoResponse smrResponse;
+        private static bool fromUsage = false;
+        private static bool fromUsageSubmitSuccessful = false;
 
         public static SSMRMeterReadingDialogFragment OnShowSMRMeterReadingTooltipOnActivity(bool isSinglePhase, Android.App.Activity mActivity, Android.Support.V4.App.FragmentManager mManager, List<SSMRMeterReadingModel> list)
         {
@@ -43,6 +45,52 @@ namespace myTNB_Android.Src.Utils
             }
 
             return isOCRDown;
+        }
+
+        public static void SetFromUsageFlag(bool flag)
+        {
+            fromUsage = flag;
+        }
+
+        public static bool GetFromUsageFlag()
+        {
+            return fromUsage;
+        }
+
+        public static void SetFromUsageSubmitSuccessfulFlag(bool flag)
+        {
+            fromUsageSubmitSuccessful = flag;
+        }
+
+        public static bool GetFromUsageSubmitSuccessfulFlag()
+        {
+            return fromUsageSubmitSuccessful;
+        }
+
+        public static string GetTitle()
+        {
+            string title = "Sorry, we are unable to perform this action right now.";
+
+            if (smrResponse != null && smrResponse.Response != null && !string.IsNullOrEmpty(smrResponse.Response.DisplayTitle))
+            {
+                title = smrResponse.Response.DisplayTitle;
+            }
+
+            return title;
+
+        }
+
+        public static string GetMessage()
+        {
+            string message = "Please try again later. If this problem persists, contact the <b><a href=\"tel:1300885454\">TNB Careline</a></b> and we will help you.";
+
+            if (smrResponse != null && smrResponse.Response != null && !string.IsNullOrEmpty(smrResponse.Response.DisplayMessage))
+            {
+                message = smrResponse.Response.DisplayMessage;
+            }
+
+            return message;
+
         }
     }
 }

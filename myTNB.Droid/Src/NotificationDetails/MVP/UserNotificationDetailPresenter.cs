@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);

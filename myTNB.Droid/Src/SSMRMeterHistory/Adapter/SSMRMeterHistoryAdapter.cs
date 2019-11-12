@@ -41,20 +41,20 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
 			if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
 			{
 				vh.ssmrDate.TextFormatted = Html.FromHtml(model.ReadingDate, FromHtmlOptions.ModeLegacy);
-                vh.ssmrKWhValue.TextFormatted = Html.FromHtml(model.Consumption, FromHtmlOptions.ModeLegacy);
+                vh.ssmrKWhValue.TextFormatted = Html.FromHtml(model.ReadingValue, FromHtmlOptions.ModeLegacy);
                 vh.ssmrDescription.TextFormatted = Html.FromHtml(model.ReadingType, FromHtmlOptions.ModeLegacy);
                 vh.ssmrForDate.TextFormatted = Html.FromHtml(model.ReadingForMonth, FromHtmlOptions.ModeLegacy);
             }
 			else
 			{
                 vh.ssmrDate.TextFormatted = Html.FromHtml(model.ReadingDate);
-                vh.ssmrKWhValue.TextFormatted = Html.FromHtml(model.Consumption);
+                vh.ssmrKWhValue.TextFormatted = Html.FromHtml(model.ReadingValue);
                 vh.ssmrDescription.TextFormatted = Html.FromHtml(model.ReadingType);
                 vh.ssmrForDate.TextFormatted = Html.FromHtml(model.ReadingForMonth);
 			}
 
 			TextViewUtils.SetMuseoSans500Typeface(vh.ssmrDate, vh.ssmrKWhValue);
-            TextViewUtils.SetMuseoSans500Typeface(vh.ssmrDescription, vh.ssmrForDate);
+            TextViewUtils.SetMuseoSans300Typeface(vh.ssmrDescription, vh.ssmrForDate);
 
             if (model.ReadingType.ToUpper() == "Estimated Reading".ToUpper())
             {

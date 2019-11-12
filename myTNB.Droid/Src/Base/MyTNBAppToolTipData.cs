@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.Base
 {
     public class MyTNBAppToolTipData
     {
-        
+
         static SMRActivityInfo sMRActivityInfo;
         private List<SMREligibiltyPopUpDetails> mSMREligibilityPopupDetailList = new List<SMREligibiltyPopUpDetails>();
         private List<BillMandatoryChargesTooltipModel> mBillMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
@@ -221,26 +221,34 @@ namespace myTNB_Android.Src.Base
 
         public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData(string tooltipType)
         {
-            BillMandatoryChargesTooltipModel tooltipModel = null;
-            if (mBillMandatoryChargesTooltipModelList.Count > 0)
+            BillMandatoryChargesTooltipModel tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
             {
-                tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
-                {
-                    return model.Type == tooltipType;
-                });
+                return model.Type == "MandatoryCharges";
+            });
+
+            if (tooltipModel == null)
+            {
+                tooltipModel = new BillMandatoryChargesTooltipModel();
+                tooltipModel.CTA = "Got It!";
+                tooltipModel.Title = "We strongly advise clearing your one-time charges first.";
+                tooltipModel.Description = "Your <b>one-time charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost should be cleared first to ensure the start/continuation of your electricity.";
             }
-            else
+            return tooltipModel;
+        }
+
+        public BillMandatoryChargesTooltipModel GetMandatoryPaymentTooltipData()
+        {
+            BillMandatoryChargesTooltipModel tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
             {
-                Utility.GetTooltipSelectorModel("Bills", "MandatoryChargesPopUpDetails").ForEach(model =>
-                {
-                    if (model.Type == tooltipType)
-                    {
-                        tooltipModel = new BillMandatoryChargesTooltipModel();
-                        tooltipModel.Title = model.Title;
-                        tooltipModel.Description = model.Description;
-                        tooltipModel.CTA = model.CTA;
-                    }
-                });
+                return model.Type == "MandatoryPayment";
+            });
+
+            if (tooltipModel == null)
+            {
+                tooltipModel = new BillMandatoryChargesTooltipModel();
+                tooltipModel.CTA = "View Details,Got It!";
+                tooltipModel.Title = "We strongly advise clearing your one-time charges first.";
+                tooltipModel.Description = "Clearing the <b>{0}</b> from your one-time charges for <b>{1}</b> will ensure the start/continuation of your electricity.<br><br>You may view a breakdown in your bill details.";
             }
             return tooltipModel;
         }

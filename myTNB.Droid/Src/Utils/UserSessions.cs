@@ -170,6 +170,78 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasHomeTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasHomeTutorialShown", false);
+        }
+
+        public static void DoHomeTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasHomeTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingTutorialShown", false);
+        }
+
+        public static void DoItemizedBillingTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingDetailTutorialShown", false);
+        }
+
+        public static void DoItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingDetailTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);
+        }
+
+        public static void DoSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRMeterHistoryTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRSubmitMeterTutorialShown", false);
+        }
+
+        public static void DoSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRSubmitMeterTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMRDashboardTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRDashboardTutorialShown", false);
+        }
+
+        public static void DoSMRDashboardTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRDashboardTutorialShown", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();

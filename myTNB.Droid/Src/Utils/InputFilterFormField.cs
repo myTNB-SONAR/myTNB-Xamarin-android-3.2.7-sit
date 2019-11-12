@@ -62,10 +62,7 @@ namespace myTNB_Android.Src.Utils
             }
             else
             {
-                if (_leftDrawable != null)
-                {
-                    _editText.SetCompoundDrawables(_leftDrawable, null, _rightDrawable, null);
-                }
+                _editText.SetCompoundDrawables(null , null, _rightDrawable, null);
                 if (!string.IsNullOrEmpty(_hint))
                 {
                     _txtLayout.Hint = "";
@@ -93,6 +90,7 @@ namespace myTNB_Android.Src.Utils
                 //{
                 //    _editText.SetCompoundDrawables(_leftDrawable, null, _rightDrawable, null);
                 //}
+                _editText.SetCompoundDrawables(null, null, _rightDrawable, null);
                 if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(_editText.Text.ToString()))
                 {
                     _txtLayout.Hint = _hint.ToUpper();
@@ -101,6 +99,10 @@ namespace myTNB_Android.Src.Utils
             }
             else
             {
+                if (_leftDrawable != null && string.IsNullOrEmpty(_editText.Text.ToString()))
+                {
+                    _editText.SetCompoundDrawables(_leftDrawable, null, _rightDrawable, null);
+                }
                 if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(_editText.Text.ToString()))
                 {
                     _txtLayout.Hint = "";

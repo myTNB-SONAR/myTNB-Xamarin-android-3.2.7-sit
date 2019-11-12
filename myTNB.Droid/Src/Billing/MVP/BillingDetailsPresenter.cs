@@ -8,6 +8,8 @@ using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System.Linq;
+using System.Collections.Generic;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -94,6 +96,23 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "View your e-bill",
+                ContentMessage = "Tap here to acess the PDF version<br/>of your bill.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }
