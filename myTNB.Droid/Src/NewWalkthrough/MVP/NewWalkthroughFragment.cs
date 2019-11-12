@@ -165,14 +165,13 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgParam.Height = imgHeight;
                     break;
                 case "walkthrough_img_update_1":
-                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_update_1);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.UpdateWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(97f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
-
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                    imgWidth = GetDeviceHorizontalScaleInPixel(0.841f);
-                    heightRatio = 189f / 269f;
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
                     imgHeight = (int)(imgWidth * (heightRatio));
                     imgParam.Width = imgWidth;
                     imgParam.Height = imgHeight;

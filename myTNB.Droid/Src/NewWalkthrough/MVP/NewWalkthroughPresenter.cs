@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             newWalkthroughList = new List<NewWalkthroughModel>();
 
-            if (!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
+            if (false)//!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
             {
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
@@ -59,8 +59,15 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = this.mView.GetAppString(Resource.String.walkthrough_update_title_1),
-                    Description = this.mView.GetAppString(Resource.String.walkthrough_update_msg_1),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title6"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description6"),
+                    Image = "walkthrough_img_install_0"
+                });
+
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
                     Image = "walkthrough_img_update_1"
                 });
             }
