@@ -557,6 +557,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private static bool isTutorialShow = false;
 
+        private static bool isClickedShowTariff = false;
+
+        private static bool isHideBottomSheetShowTariff = false;
+
         ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
@@ -760,6 +764,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
 
                 isTutorialShow = false;
+                isClickedShowTariff = false;
+                isHideBottomSheetShowTariff = false;
 
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.InMutable = true;
@@ -4496,6 +4502,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                         }
                     }
+                    DashboardCustomScrolling(0);
+
+                    isClickedShowTariff = false;
+                    isHideBottomSheetShowTariff = false;
+
+                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 }
                 else
                 {
@@ -4513,10 +4525,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
                         }
                     }
+
+                    isClickedShowTariff = true;
                 }
 
                 mChart.Clear();
                 SetUp();
+
+                if (isToggleTariff && isClickedShowTariff)
+                {
+                    if (CheckIsScrollable())
+                    {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                        isHideBottomSheetShowTariff = true;
+                    }
+                }
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Tariff Toggle Button Clicked");
             }
             catch (System.Exception ne)
@@ -5984,8 +6007,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     MyTNBAppToolTipData.SetSMRActivityInfo(response.Response);
                     Activity.RunOnUiThread(() =>
                     {
-                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
-
                         if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                         {
                             isSubmitMeter = true;
@@ -6150,101 +6171,154 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         requireScroll = false;
                         if (!isTutorialShow)
                         {
-                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                            shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
-                        // Lin Siong TODO: uncomment this once confirm effect
-                        /*if (!isToggleTariff)
-                        {
-                            if (isSMAccount || isSMR)
+                            if (!isClickedShowTariff)
                             {
-                                if (isSMAccount)
+                                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                                shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
+                            }
+                            // Lin Siong TODO: uncomment this once confirm effect
+                            if (!isToggleTariff)
+                            {
+                                if (isSMAccount || isSMR)
                                 {
-                                    if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                    if (isSMAccount)
                                     {
-                                        rootView.SetBackgroundResource(0);
-                                        scrollViewContent.SetBackgroundResource(0);
-                                        try
+                                        if (smStatisticContainer.Visibility == ViewStates.Visible)
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                            rootView.SetBackgroundResource(0);
+                                            scrollViewContent.SetBackgroundResource(0);
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            smStatisticContainer.Visibility = ViewStates.Invisible;
                                         }
-                                        catch (System.Exception e)
+                                    }
+                                    else if (isSMR)
+                                    {
+                                        if (ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                         {
-                                            Utility.LoggingNonFatalError(e);
+                                            rootView.SetBackgroundResource(0);
+                                            scrollViewContent.SetBackgroundResource(0);
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            ssmrHistoryContainer.Visibility = ViewStates.Invisible;
                                         }
-                                        smStatisticContainer.Visibility = ViewStates.Invisible;
                                     }
                                 }
-                                else if (isSMR)
+                            }
+                            else
+                            {
+                                if (isSMAccount || isSMR)
                                 {
-                                    if (ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                    if (isSMAccount)
                                     {
-                                        rootView.SetBackgroundResource(0);
-                                        scrollViewContent.SetBackgroundResource(0);
-                                        try
+                                        if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
-                                        catch (System.Exception e)
+                                    }
+                                    else if (isSMR)
+                                    {
+                                        if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
                                         {
-                                            Utility.LoggingNonFatalError(e);
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
-                                        ssmrHistoryContainer.Visibility = ViewStates.Invisible;
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            if (isSMAccount || isSMR)
+                            if (!isToggleTariff)
                             {
-                                if (isSMAccount)
+                                if (isSMAccount || isSMR)
                                 {
-                                    if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                    if (isSMAccount)
                                     {
-                                        try
+                                        if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                            smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
-                                }
-                                else if (isSMR)
-                                {
-                                    if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
+                                    else if (isSMR)
                                     {
-                                        try
+                                        if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                            ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
                             }
-                        }*/
                         }
                     }
                     else if (scrollPosition > 0 || scrollPosition < 0)
                     {
                         requireScroll = true;
+                        if (isClickedShowTariff)
+                        {
+                            isClickedShowTariff = false;
+                            isHideBottomSheetShowTariff = false;
+                        }
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         shadowLayout.SetBackgroundResource(0);
 
                         // Lin Siong TODO: uncomment this once confirm effect
-                        /*if (!isToggleTariff)
+                        if (!isToggleTariff)
                         {
                             if (isSMAccount || isSMR)
                             {
@@ -6285,7 +6359,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                 }
                             }
-                        }*/
+                        }
                     }
                 }
             }
@@ -6314,7 +6388,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (newState == BottomSheetBehavior.StateHidden || newState == BottomSheetBehavior.StateCollapsed)
                         {
-                            if (!isTutorialShow)
+                            if (!isTutorialShow && !isClickedShowTariff)
                             {
                                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                             }
@@ -6475,89 +6549,145 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                     bottomSheet.RequestLayout();
 
-                    // Lin Siong TODO: uncomment this once confirm effect
-                    /*if (!isToggleTariff)
+                    if (isClickedShowTariff && !isHideBottomSheetShowTariff && CheckIsScrollable())
                     {
-                        if (isSMAccount || isSMR)
+                        isHideBottomSheetShowTariff = true;
+                        shadowLayout.SetBackgroundResource(0);
+                        bottomSheet.RequestLayout();
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                    }
+
+                    // Lin Siong TODO: uncomment this once confirm effect
+                    if (!isTutorialShow)
+                    {
+                        if (!isToggleTariff)
                         {
-                            if (isSMAccount)
+                            if (isSMAccount || isSMR)
                             {
-                                if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                if (isSMAccount)
                                 {
-                                    rootView.SetBackgroundResource(0);
-                                    scrollViewContent.SetBackgroundResource(0);
-                                    try
+                                    if (smStatisticContainer.Visibility == ViewStates.Visible)
                                     {
-                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        rootView.SetBackgroundResource(0);
+                                        scrollViewContent.SetBackgroundResource(0);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        smStatisticContainer.Visibility = ViewStates.Invisible;
                                     }
-                                    catch (System.Exception e)
+                                }
+                                else if (isSMR)
+                                {
+                                    if (ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                     {
-                                        Utility.LoggingNonFatalError(e);
+                                        rootView.SetBackgroundResource(0);
+                                        scrollViewContent.SetBackgroundResource(0);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        ssmrHistoryContainer.Visibility = ViewStates.Invisible;
                                     }
-                                    smStatisticContainer.Visibility = ViewStates.Invisible;
                                 }
                             }
-                            else if (isSMR)
+                        }
+                        else
+                        {
+                            if (isSMAccount || isSMR)
                             {
-                                if (ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                if (isSMAccount)
                                 {
-                                    rootView.SetBackgroundResource(0);
-                                    scrollViewContent.SetBackgroundResource(0);
-                                    try
+                                    if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                     {
-                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
-                                    catch (System.Exception e)
+                                }
+                                else if (isSMR)
+                                {
+                                    if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
                                     {
-                                        Utility.LoggingNonFatalError(e);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
-                                    ssmrHistoryContainer.Visibility = ViewStates.Invisible;
                                 }
                             }
                         }
                     }
                     else
                     {
-                        if (isSMAccount || isSMR)
+                        if (!isToggleTariff)
                         {
-                            if (isSMAccount)
+                            if (isSMAccount || isSMR)
                             {
-                                if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                if (isSMAccount)
                                 {
-                                    try
+                                    if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                     {
-                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                                        ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
-                                    catch (System.Exception e)
-                                    {
-                                        Utility.LoggingNonFatalError(e);
-                                    }
-                                    rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                    smStatisticContainer.Visibility = ViewStates.Visible;
                                 }
-                            }
-                            else if (isSMR)
-                            {
-                                if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
+                                else if (isSMR)
                                 {
-                                    try
+                                    if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
                                     {
-                                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                                        ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        try
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
-                                    catch (System.Exception e)
-                                    {
-                                        Utility.LoggingNonFatalError(e);
-                                    }
-                                    rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                    ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                 }
                             }
                         }
-                    }*/
+                    }
                 }
                 else if (!isScrollIndicatorShowNeed && isChangeVirtualHeightNeed)
                 {
@@ -7278,7 +7408,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isSMAccount)
                 {
-                    smStatisticContainer.Visibility = ViewStates.Visible;
                     StopSMStatisticShimmer();
                     if (ChartDataType == ChartDataType.RM)
                     {
@@ -7917,8 +8046,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
 
-                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
-                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int) DPUtils.ConvertDPToPx(20f), 0, 0));
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(20f), 0, 0));
                     }
                     else
                     {
@@ -7981,8 +8110,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
 
-                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
-                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(20f), 0, 0));
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(20f), 0, 0));
                         }
                         else
                         {

@@ -88,6 +88,7 @@
                         android:id="@+id/txtEmail"
                         android:inputType="text"
                         android:singleLine="true"
+                        android:textSize="16dp"
                         android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:maxLines="1" />
@@ -118,6 +119,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/placeholder_password_new"
                         android:id="@+id/txtPassword"
+                        android:textSize="16dp"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:paddingTop="5dp"

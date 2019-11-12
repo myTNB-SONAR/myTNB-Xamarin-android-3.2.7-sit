@@ -165,8 +165,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                         else
                         {
-                            ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                             ((DashboardChartFragment)this.mFragment).HideBottomSheet();
+                            ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                         }
                     }
                 }

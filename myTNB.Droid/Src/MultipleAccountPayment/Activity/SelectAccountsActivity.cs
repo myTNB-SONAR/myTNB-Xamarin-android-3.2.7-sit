@@ -281,7 +281,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         AccountChargeModel model = mPresenter.GetAccountChargeModel(account);
                         if (account.tooltipPopUp)
                         {
-                            ShowHasMinimumAmoutToPayTooltip(model);
+                            ShowHasMinimumAmoutToPayTooltip(account,model);
                         }
                     }
                     Log.Debug("Selected Accounts", " List " + list);
@@ -783,7 +783,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void ShowHasMinimumAmoutToPayTooltip(AccountChargeModel accountChargeModel)
+        public void ShowHasMinimumAmoutToPayTooltip(MPAccount account, AccountChargeModel accountChargeModel)
         {
             if (!isMinimumAmountTooltipShown)
             {
@@ -791,9 +791,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
                     List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
+                    string accountId = string.IsNullOrEmpty(account.accountLabel) ? account.accountNumber : account.accountLabel;
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(mandatoryTooltipModel.Title)
-                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00")))
+                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00"),accountId))
                         .SetCTALabel(ctaList[0])
                         .SetCTAaction(() => { ShowBillingDetails(accountChargeModel); })
                         .SetSecondaryCTALabel(ctaList[1])
