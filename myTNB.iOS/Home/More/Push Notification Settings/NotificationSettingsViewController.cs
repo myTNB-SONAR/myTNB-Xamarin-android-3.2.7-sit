@@ -94,10 +94,9 @@ namespace myTNB
                             {
                                 if (_notificationPreferenceUpdate == null
                                    || _notificationPreferenceUpdate.d == null
-                                   || _notificationPreferenceUpdate.d.isError.ToLower() == "true"
-                                   || _notificationPreferenceUpdate.d.status.ToLower() != "success")
+                                   || !_notificationPreferenceUpdate.d.IsSuccess)
                                 {
-                                    DisplayServiceError(_notificationPreferenceUpdate?.d?.message ?? string.Empty);
+                                    DisplayServiceError(_notificationPreferenceUpdate?.d?.ErrorMessage ?? string.Empty);
                                 }
                                 else
                                 {

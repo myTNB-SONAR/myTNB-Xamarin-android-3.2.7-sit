@@ -127,7 +127,7 @@
     "invalidNickname": "Aksara tidak sah. Gunakan huruf atau nombor sahaja.",
     "duplicateNickname": "Nama ringkas sudah digunakan. Sila buat yang baru.",
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
-    "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
+    "serviceErrorDefaultMessage": "Maaf, berlaku kesilapan teknikal. Sila cuba lagi.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "PIN tidak sah",

@@ -1,10 +1,23 @@
 Sprint 3 SIT Build
 
-1. This contains the sitecore call for content.
-2. Can be tested by changing device language and setting language in setting BUT the language settings is not saved.
-3. Please take note of UI issues and raise to dev instead of creating a defect since the story is not yet finished based on timeline
-4. For service messages, please consult BE team.
-5. Change language UI is there in walkthrough, prelogin, and settings but the funtionality is not yet done.
-6. Please try to upgrade from Sprint 2C Build and take note of the result and try fresh install as well.
-7. Don't connect to Accenture WiFi as it restricts reading of language file.
-8. Some translations are still pending
+[Story] 2752: [Multi language Support (BM) - M1] As a myTNB App user, I can receive in app and push notification in my preferred language.
+[Story] 2753: [Multi language Support (BM) - M2] As a myTNB App user, I can manage my account and navigate through different screens in my preferred language.
+[Story] 2754: [Multi language Support (BM) - M3] As a myTNB App user, I can navigate the app home screen, dashboards, itemised billing and more all in my preferred language.
+[Story] 2756: [Multi language Support (BM) - M4] As a myTNB App user, I can verify phone number and view the SSMR related information in my preferred language.
+[Story] 2757: [Multi language Support (BM) - M5] As a myTNB App user, I can apply for SSMR in my preferred language if I am eligible for it.
+[Story] 2857: [Multi language Support (BM) - M6] As a myTNB App user, I want to view all the updated features in my preferred language.
+[Story] 861 : [Multi language Support (BM)] As a myTNB App user, I can choose my preferred language for ease of navigation
+
+Following services are not BE ready.
+1. ValidateManualAccountLinking
+2. CreateNewUserWithToken
+3. RemoveTNBAccountForUserFav
+4. SendUpdatePhoneTokenSMS
+5. SubmitRateUs
+
+Note to tester.
+Please test the following.
+1. Sprint 2C update to Sprint 3
+2. 1.1.9 update to Sprint 3
+3. 1.2.0 update to Sprint 3
+4. Fresh install
