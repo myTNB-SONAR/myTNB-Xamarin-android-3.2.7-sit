@@ -66,7 +66,7 @@ namespace myTNB_Android.Src.Maintenance.MVP
                 {
                     DeviceId = this.mView.GetDeviceId(),
                     AppVersion = DeviceIdUtils.GetAppVersionName(),
-                    OsType = Constants.DEVICE_PLATFORM,
+                    OsType = int.Parse(Constants.DEVICE_PLATFORM),
                     OsVersion = DeviceIdUtils.GetAndroidVersion(),
                     DeviceDesc = Constants.DEFAULT_LANG
 

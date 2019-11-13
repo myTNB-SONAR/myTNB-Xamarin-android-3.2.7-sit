@@ -26,8 +26,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public SMUsageHistoryData selectedSMHistoryData { get; set; }
 
-        public Context currentContext { get; set; }
-
         public Android.App.Activity currentActivity { get; set; }
 
         public ChartType currentChartType { get; set; }
@@ -69,10 +67,11 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         public bool isStacked { get; set; }
 
 
-        private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
-        private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
+        // private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
+        // private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
         public Bitmap mdmsBitmap { get; set; }
         public Bitmap missingBitmap { get; set; }
+        public Bitmap dpcBitmap { get; set; }
 
         // Lin Siong Note: this is for use of tariff block on smart meter inner dashboard
         // Lin Siong Note: Smart Meter Chart Renderer support isStacked Flag, to determine whether wanna have spacing between bar or not
@@ -487,6 +486,21 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                     DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
                                 }
 
+                                if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                {
+                                    if (isMDMSDown)
+                                    {
+                                        if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                        {
+                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                    }
+                                }
+
                                 currentRow++;
                             }
                             else
@@ -518,6 +532,21 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                     if (currentChartType == ChartType.Day && missingReadingList[currentRow])
                                     {
                                         DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                    }
+
+                                    if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                    {
+                                        if (isMDMSDown)
+                                        {
+                                            if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                            {
+                                                DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                        }
                                     }
 
                                     currentRow++;
@@ -598,6 +627,22 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 {
                                     DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
                                 }
+
+                                if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                {
+                                    if (isMDMSDown)
+                                    {
+                                        if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                        {
+                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                    }
+                                }
+
                                 currentRow++;
                             }
                             else
@@ -631,6 +676,22 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         {
                                             DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
                                         }
+
+                                        if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                        {
+                                            if (isMDMSDown)
+                                            {
+                                                if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                                {
+                                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                            }
+                                        }
+
                                         currentRow++;
                                     }
                                 }
@@ -664,6 +725,22 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         {
                                             DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
                                         }
+
+                                        if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                        {
+                                            if (isMDMSDown)
+                                            {
+                                                if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                                {
+                                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                            }
+                                        }
+
                                         currentRow++;
                                     }
                                 }
@@ -713,13 +790,23 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set Render Text to 10dp
                 // Lin Siong Note: Set text to align center
                 MRenderPaint.Color = new Color(255, 255, 255, 255);
+
+                if (isSelected)
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 255);
+                }
+                else
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 50);
+                }
+
                 MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
                 MRenderPaint.TextAlign = Paint.Align.Center;
 
                 // Lin Siong Note: Set the typeface to MuseoSans500
                 try
                 {
-                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                     MRenderPaint.SetTypeface(plain);
                 }
                 catch (System.Exception e)
@@ -727,30 +814,67 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     Utility.LoggingNonFatalError(e);
                 }
 
-                float x = left + ((right - left) / 2)  - DPUtils.ConvertDPToPx(10.5f);
-                float y = top - DPUtils.ConvertDPToPx(20f);
+                float x = left + ((right - left) / 2)  - DPUtils.ConvertDPToPx(6.5f);
+                float y = top - DPUtils.ConvertDPToPx(12f);
 
 
                 if (currentChartType == ChartType.Month)
                 {
                     c.DrawBitmap(mdmsBitmap, x, y, MRenderPaint);
 
-                    if (isSelected)
-                    {
-                        MRenderPaint.Color = new Color(255, 255, 255, 255);
-                    }
-                    else
-                    {
-                        MRenderPaint.Color = new Color(255, 255, 255, 50);
-                    }
-
-                    float textX = left + ((right - left) / 2);
+                    /*float textX = left + ((right - left) / 2);
                     float textY = top - DPUtils.ConvertDPToPx(27f);
                     string firstTxt = "Unavailable";
                     c.DrawText(firstTxt, textX, textY, MRenderPaint);
                     string secondTxt = "Currently";
                     textY = top - DPUtils.ConvertDPToPx(41f);
-                    c.DrawText(secondTxt, textX, textY, MRenderPaint);
+                    c.DrawText(secondTxt, textX, textY, MRenderPaint);*/
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DrawDPCOnCanvas(Canvas c, float top, float left, float right, bool isSelected)
+        {
+            try
+            {
+                // Lin Siong Note: Set Render Text to 10dp
+                // Lin Siong Note: Set text to align center
+                MRenderPaint.Color = new Color(255, 255, 255, 255);
+
+                if (isSelected)
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 255);
+                }
+                else
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 50);
+                }
+
+                MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
+                MRenderPaint.TextAlign = Paint.Align.Center;
+
+                // Lin Siong Note: Set the typeface to MuseoSans500
+                try
+                {
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    MRenderPaint.SetTypeface(plain);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                float x = left + ((right - left) / 2) - DPUtils.ConvertDPToPx(6.5f);
+                float y = top - DPUtils.ConvertDPToPx(12f);
+
+
+                if (currentChartType == ChartType.Month)
+                {
+                    c.DrawBitmap(dpcBitmap, x, y, MRenderPaint);
                 }
             }
             catch (System.Exception e)
@@ -794,7 +918,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         }
 
         // Lin Siong Note: To draw the text on last bar and always show it
-        private void DrawTextOnCanvas(Canvas c, float top, float left, float right, string currencyUnitTxt, double amount, string usageUnitTxt, double usage)
+        /*private void DrawTextOnCanvas(Canvas c, float top, float left, float right, string currencyUnitTxt, double amount, string usageUnitTxt, double usage)
         {
             try
             {
@@ -808,7 +932,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set the typeface to MuseoSans500
                 try
                 {
-                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                     MRenderPaint.SetTypeface(plain);
                 }
                 catch (System.Exception e)
@@ -843,7 +967,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }
+        }*/
 
         private Path GenerateRoundRectangle(float left, float top, float right, float bottom, float rx, float ry, bool tl, bool tr, bool br, bool bl)
         {

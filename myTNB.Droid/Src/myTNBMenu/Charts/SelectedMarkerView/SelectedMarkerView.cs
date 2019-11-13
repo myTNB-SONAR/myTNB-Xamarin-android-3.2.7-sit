@@ -61,34 +61,60 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                 int index = (int)e.GetX();
                 if (ChartType == ChartType.Month)
                 {
-                    if (ChartDataType == ChartDataType.RM)
+                    bool isDisableWord = false;
+
+                    if (UsageHistoryData.ByMonth.Months[index].DPCIndicator && ChartDataType == ChartDataType.kWh && !AccountType.Equals("2"))
                     {
-                        if (AccountType.Equals("2"))
+                        isDisableWord = true;
+                    }
+                    else
+                    {
+                        isDisableWord = false;
+                    }
+
+                    if (isDisableWord)
+                    {
+                        titleMarker.Visibility = ViewStates.Gone;
+                        titlekWhMarker.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        titleMarker.Visibility = ViewStates.Visible;
+                        if (ChartDataType == ChartDataType.RM)
                         {
-                            titlekWhMarker.Visibility = ViewStates.Visible;
-                            float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
-                            float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
-                            titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(Math.Abs(val));
-                            titlekWhMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
+                            if (AccountType.Equals("2"))
+                            {
+                                titlekWhMarker.Visibility = ViewStates.Visible;
+                                float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
+                                float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
+                                titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(Math.Abs(val));
+                                titlekWhMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
+                            }
+                            else
+                            {
+                                titlekWhMarker.Visibility = ViewStates.Gone;
+                                float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
+                                titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(val);
+                            }
+
                         }
-                        else
+                        else if (ChartDataType == ChartDataType.kWh)
                         {
                             titlekWhMarker.Visibility = ViewStates.Gone;
-                            float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
-                            titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(val);
+                            float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
+                            titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
                         }
-
                     }
-                    else if (ChartDataType == ChartDataType.kWh)
-                    {
-                        titlekWhMarker.Visibility = ViewStates.Gone;
-                        float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
-                        titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
-                    }
+                }
+                else
+                {
+                    titleMarker.Visibility = ViewStates.Gone;
+                    titlekWhMarker.Visibility = ViewStates.Gone;
                 }
             }
             else
             {
+                titleMarker.Visibility = ViewStates.Visible;
                 titlekWhMarker.Visibility = ViewStates.Gone;
                 titleMarker.Text = "RM " + decimalFormat.Format(e.GetY());
             }

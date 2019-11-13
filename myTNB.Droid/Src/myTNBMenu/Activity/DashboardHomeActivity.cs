@@ -23,7 +23,6 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments;
-using myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
@@ -157,6 +156,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 urlSchemaCalled = true;
                 urlSchemaData = data;
+            }
+
+            // Lin Siong Note to Sprint 3: Remove this on Sprint 3
+            if (bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
+            {
+                bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
             }
 
             bottomNavigationView.SetShiftMode(false, false);

@@ -723,11 +723,6 @@
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsMonthFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SMSelectedMarkerView.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingListFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingMenuNoTNBAccount.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingPaymentNoInternetConnection.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillsMenuFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\PaymentListFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\PromotionsMenu\PromotionsMenuFragment.cs" />
@@ -755,8 +750,6 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationChannelResponse.cs" />
     <Compile Include="Src\myTNBMenu\Models\UserNotificationType.cs" />
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\MoreFragmentContract.cs" />
@@ -769,17 +762,11 @@
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
     <Compile Include="Src\NotificationDetails\Activity\Base\BaseNotificationDetailActivity.cs" />
-    <Compile Include="Src\NotificationDetails\Activity\NotificationDetailActivity.cs" />
-    <Compile Include="Src\NotificationDetails\Activity\NotificationDetailsNewBillActivity.cs" />
     <Compile Include="Src\NotificationDetails\Api\INotificationDetailsApi.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />
     <Compile Include="Src\NotificationDetails\MVP\NotificationDetailContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailNewBillContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailNewBillPresenter.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPayableViewableContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPayableViewablePresenter.cs" />
     <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPresenter.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequest.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequestV2.cs" />
@@ -1045,12 +1032,6 @@
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountNewDesignPresenter.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountPresenter.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptPresenter.cs" />
-    <Compile Include="Src\WalkThrough\Activity\WalkThroughActivity.cs" />
-    <Compile Include="Src\WalkThrough\Adapter\WalkThroughAdapter.cs" />
-    <Compile Include="Src\WalkThrough\Fragment\WalkThroughFragment.cs" />
-    <Compile Include="Src\WalkThrough\Models\WalkThroughDeck.cs" />
-    <Compile Include="Src\WalkThrough\MVP\WalkThroughContract.cs" />
-    <Compile Include="Src\WalkThrough\MVP\WalkThroughPresenter.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingScannerFragment.cs" />
     <Compile Include="Src\MakePayment\Activity\MakePaymentActivity.cs" />
     <Compile Include="Src\MakePayment\Adapter\AddCardAdapter.cs" />
@@ -1266,23 +1247,13 @@
     <AndroidResource Include="Resources\drawable-xhdpi\bg_smr.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\bg_smr.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bg_smr.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\smr_submitted.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\smr_submitted.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\smr_submitted.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\smr_submitted.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_submitted.png" />
     <AndroidResource Include="Resources\layout\SSMRMeterReadingCardLayout.axml" />
     <AndroidResource Include="Resources\menu\SSMRMeterReadingMenu.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_more_white.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\smr_closed.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_header_more_white.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\smr_closed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_header_more_white.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\smr_closed.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_more_white.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\smr_closed.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_more_white.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_closed.png" />
     <Compile Include="Src\SSMRMeterHistory\Adapter\SSMRMeterHistoryAdapter.cs" />
     <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryModel.cs" />
     <Compile Include="Src\myTNBMenu\Models\SMRActivityInfoResponse.cs" />
@@ -1354,36 +1325,6 @@
     <Compile Include="Src\AppLaunch\Models\AccountSMRStatus.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountSMRStatusResponse.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetSMRAccountStatusApi.cs" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\smr_open.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_open.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\smr_open.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\smr_open.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\smr_open.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\SSMRMenuItemLayout.axml">
       <SubType>
       </SubType>
@@ -2215,36 +2156,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\dasbord_chart_refresh_bg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\maintenance_new.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\maintenance_new.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_new.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_new.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_new.png">
       <SubType>
       </SubType>
       <Generator>
@@ -3867,6 +3778,26 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\dpc_down.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\dpc_down.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\dpc_down.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\dpc_down.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\dpc_down.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -3903,8 +3834,6 @@
     <AndroidResource Include="Resources\layout\RegistrationFormView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WalkThroughContentView.axml" />
-    <AndroidResource Include="Resources\layout\WalkThroughView.axml" />
     <AndroidResource Include="Resources\values\LinkAccountStyle.axml" />
     <AndroidResource Include="Resources\values\LaunchStyle.axml" />
     <AndroidResource Include="Resources\values\ForgetPasswordStyle.axml">
@@ -3937,9 +3866,6 @@
     <AndroidResource Include="Resources\layout\ViewBillView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillsView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\GetAccessFormView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -3950,18 +3876,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PaymentRowView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillingListFragmentView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\PaymentListFragmentView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\PaymentListFragmentFooterView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillingListFragmentFooterView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\dashed_border_background.xml" />
@@ -4024,12 +3938,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\NotificationFilterRow.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\NotificationDetailsView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\NewBillNotificationView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\NotificationNewBillViewDetailsView.axml">
@@ -4135,9 +4043,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PaymentSuccessExperienceRatingView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillsPaymentTabNoInternetConnectionView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SmartMeterLearnMoreView.axml" />
@@ -4285,19 +4190,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\billing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\payment.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\placeholder_account_no.png" />
@@ -4333,19 +4226,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\placeholder_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\billing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\payment.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\placeholder_account_no.png" />
@@ -4381,19 +4262,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\placeholder_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\billing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\payment.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\placeholder_account_no.png" />
@@ -4429,19 +4298,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\placeholder_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\billing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\payment.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\placeholder_account_no.png" />
@@ -4476,20 +4333,8 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\placeholder_password_white.png" />
   </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\billing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\payment.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\placeholder_account_no.png" />
@@ -4727,36 +4572,6 @@
     <AndroidResource Include="Resources\values\ResetPasswordStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\inactive_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\active_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\active_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\inactive_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\active_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\inactive_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\active_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\inactive_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\active_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\inactive_indicator.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values\ResetPasswordSuccessStyle.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -4859,21 +4674,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_spinner_dropdown.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_empty_dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_empty_dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_empty_dashboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_empty_dashboard.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\selector_pressable.xml" />
@@ -5748,31 +5548,16 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_display_unsuccessful.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_empty_account.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_display_unsuccessful.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_empty_account.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_display_unsuccessful.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_account.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_unsuccessful.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_empty_account.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_unsuccessful.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_empty_account.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\WeblinkStyle.xml" />
@@ -6005,19 +5790,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_splash_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_button_locate.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_button_feedback.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_dropdown1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_button_feedback.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_button_locate.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_splash_logo.png" />
@@ -6026,34 +5799,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_dropdown1.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_button_feedback.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_button_locate.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_splash_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_dropdown1.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_button_feedback.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_button_locate.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_splash_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_dropdown1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_button_feedback.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_button_locate.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_splash_logo.png" />
@@ -6065,22 +5820,10 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_empty_bill_payment.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_empty_current_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_empty_error.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_empty_notification.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_empty_bill_payment.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_empty_current_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_empty_error.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_empty_notification.png" />
@@ -6089,34 +5832,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_bill_payment.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_current_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_error.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_notification.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_empty_bill_payment.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_empty_current_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_empty_error.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_empty_notification.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_empty_bill_payment.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_empty_current_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_empty_error.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_empty_notification.png" />
@@ -6385,81 +6110,6 @@
     <AndroidResource Include="Resources\drawable\checkbox_selector.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_display_RE_Dashboard.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6634,16 +6284,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_avgelectric_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_dashboard_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_energy_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_energy_usage_co2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
@@ -6664,15 +6305,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6688,16 +6320,7 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_avgelectric_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_dashboard_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_energy_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_energy_usage_co2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png" />
@@ -6718,15 +6341,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6742,16 +6356,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_avgelectric_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_dashboard_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_energy_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_energy_usage_co2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
@@ -6772,15 +6377,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6796,16 +6392,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_avgelectric_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_dashboard_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_energy_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_energy_usage_co2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
@@ -6826,15 +6413,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6850,16 +6428,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_avgelectric_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_dashboard_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_energy_usage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_energy_usage_co2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png" />
@@ -6878,15 +6447,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_rm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\logo_white.png" />
