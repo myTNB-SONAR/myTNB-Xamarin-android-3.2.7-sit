@@ -270,7 +270,6 @@
     <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%402x.png" />
     <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%403x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\Contents.json" />
@@ -282,7 +281,6 @@
     <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%402x.png" />
     <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%403x.png" />
     <ImageAsset Include="Assets.xcassets\Email.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Email.imageset\Email.png" />
     <ImageAsset Include="Assets.xcassets\Email.imageset\Email%402x.png" />
     <ImageAsset Include="Assets.xcassets\Email.imageset\Email%403x.png" />
     <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Contents.json" />
@@ -317,7 +315,6 @@
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%402x.png" />
     <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard.png" />
     <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard%403x.png" />
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment.png" />
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%402x.png" />
@@ -345,7 +342,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Download.imageset\save.png" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\save%402x.png" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\save%403x.png" />
     <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\Contents.json" />
@@ -369,10 +365,8 @@
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%403x.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\Contents.json" />
@@ -466,7 +460,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Contents.json" />
@@ -488,7 +481,6 @@
     <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%403x.png" />
     <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp.png" />
     <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%403x.png" />
     <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Contents.json" />
@@ -499,7 +491,6 @@
     <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%402x.png" />
     <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\Contents.json" />
@@ -517,13 +508,9 @@
     <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%402x.png" />
     <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%403x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.pdf" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%403x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.pdf" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\Contents.json" />
@@ -549,39 +536,27 @@
     <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.pdf" />
     <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.pdf" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.pdf" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\icTileFeedbackSubmitted.pdf" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%403x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json" />
@@ -619,7 +594,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\Contents.json" />
@@ -657,7 +631,6 @@
     <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%402x.png" />
     <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%403x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Contents.json" />
@@ -665,19 +638,15 @@
     <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%403x.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%402x.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%403x.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%402x.png" />
     <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%403x.png" />
     <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown.png" />
     <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png" />
     <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\Contents.json" />
@@ -730,7 +699,6 @@
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%403x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy.png" />
     <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%402x.png" />
     <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%403x.png" />
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\Contents.json" />
@@ -766,11 +734,9 @@
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%403x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\Contents.json" />
@@ -885,7 +851,6 @@
     <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Saving-Tips-Bg.png" />
     <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Saving-Tips-Bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Saving-Tips-Bg%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Contents.json" />
@@ -1219,6 +1184,8 @@
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%403x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\icDisplayBulletTick%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\icDisplayBulletTick%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
