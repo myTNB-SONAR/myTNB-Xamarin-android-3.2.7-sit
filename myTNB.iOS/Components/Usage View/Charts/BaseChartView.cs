@@ -24,6 +24,9 @@ namespace myTNB
         public Action<int> LoadTariffLegendWithIndex;
         public Action ShowMissedReadToolTip;
         public virtual List<string> AvailableTariffBlockIDList { get; } = new List<string>();
+        public RMkWhEnum ConsumptionState { set; protected get; } = RMkWhEnum.RM;
+        public bool IsTariffView;
+        public int SelectedIndex = -1;
 
         public virtual CustomUIView GetUI()
         {

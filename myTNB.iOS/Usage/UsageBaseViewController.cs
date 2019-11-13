@@ -25,7 +25,7 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent, _refreshScrollView;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewStatus
-            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewSmartMeter, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
+            , _viewChart, _viewRE, _viewLegend, _viewDPCNote, _viewToggle, _viewSSMR, _viewSmartMeter, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
             , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh, _lastView;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _footerRefreshBGImage, _footerBGImage, _scrollIndicatorView;
@@ -36,7 +36,7 @@ namespace myTNB
         internal SmartMeterViewEnum _smViewEnum;
         internal nfloat _lastContentOffset, _footerYPos, _scrollViewYPos;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
-        internal bool _legendIsVisible, _footerIsDocked, _isEmptyData;
+        internal bool _legendIsVisible, _footerIsDocked, _isEmptyData, _isDPCIndicator, _lastSelectedIsDPC;
 
         internal CGRect _origViewFrame;
 
@@ -50,6 +50,7 @@ namespace myTNB
 
         private UIView _tutorialContainer;
         private nfloat _smrCardYPos, _smrCardHeight;
+        private MonthItemModel _lastSelectedMonthItem = new MonthItemModel();
 
         public override void ViewDidLoad()
         {
@@ -317,6 +318,10 @@ namespace myTNB
             {
                 Hidden = true
             };
+            _viewDPCNote = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewLegend = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
             {
                 Hidden = true
@@ -339,7 +344,7 @@ namespace myTNB
                 Hidden = true
             };
 
-            _scrollViewContent.AddSubviews(new UIView[] { _lblAddress, _viewStatus, _viewChart, _viewSmartMeter, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
+            _scrollViewContent.AddSubviews(new UIView[] { _lblAddress, _viewStatus, _viewChart, _viewDPCNote, _viewSmartMeter, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
         }
 
         private void SetContentView()
@@ -364,8 +369,16 @@ namespace myTNB
                 }
                 else
                 {
-                    _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible && _tariffList?.Count > 0 ? 16F : 0F)), _viewLegend.Frame.Size);
-                    _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 24F)), _viewToggle.Frame.Size);
+                    if (_isDPCIndicator)
+                    {
+                        _viewDPCNote.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 12F)), _viewDPCNote.Frame.Size);
+                        _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewDPCNote.Frame, 24F)), _viewToggle.Frame.Size);
+                    }
+                    else
+                    {
+                        _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible && _tariffList?.Count > 0 ? 16F : 0F)), _viewLegend.Frame.Size);
+                        _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 24F)), _viewToggle.Frame.Size);
+                    }
                     _lastView = _viewToggle;
                     if (accountIsSSMR)
                     {
@@ -555,7 +568,8 @@ namespace myTNB
                     LoadTariffLegendWithIndex = LoadTariffLegendWithIndex,
                     LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds,
                     ShowMissedReadToolTip = ShowMissedReadTooltip,
-                    GetI18NValue = GetI18NValue
+                    GetI18NValue = GetI18NValue,
+                    OnMDMSIconTap = OnMDMSIconTap
                 };
             }
 
@@ -568,6 +582,101 @@ namespace myTNB
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
         }
 
+        private void OnMDMSIconTap()
+        {
+            string title = AccountUsageSmartCache.ErrorTitle;
+            string message = AccountUsageSmartCache.ErrorMessage;
+            string ctaTitle = AccountUsageSmartCache.ErrorCTA;
+            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, null } });
+        }
+
+        #region DPC Methods
+        private void SetDPCNoteOnBarTap(MonthItemModel item)
+        {
+            if (item.DPCIndicator && _rMkWhEnum == RMkWhEnum.kWh || (_rMkWhEnum == RMkWhEnum.RM && _tariffIsVisible && item.DPCIndicator))
+            {
+                var msg = _tariffIsVisible ? item.DPCIndicatorTariffMessage : item.DPCIndicatorUsageMessage;
+                SetDPCNote(msg);
+            }
+            else
+            {
+                RemoveDPCNote();
+            }
+            SetContentView();
+        }
+
+        private void SetCPCNoteForShowHideTariff()
+        {
+            var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+            SetDPCNote(msg);
+            SetContentView();
+        }
+
+        private void SetDPCNoteForRMKwHToggle()
+        {
+            if (_rMkWhEnum == RMkWhEnum.kWh)
+            {
+                if (_lastSelectedIsDPC)
+                {
+                    var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                    SetDPCNote(msg);
+                }
+            }
+            else
+            {
+                if (_lastSelectedIsDPC)
+                {
+                    RemoveDPCNote();
+                }
+            }
+            SetContentView();
+        }
+
+        private void SetDPCNote(string dpcMessage)
+        {
+            _isDPCIndicator = true;
+            UITextView textView = _viewDPCNote.ViewWithTag(1001) as UITextView;
+            if (textView != null) { textView.RemoveFromSuperview(); }
+
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(dpcMessage
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(10F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = UIColor.White,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Left,
+                    LineSpacing = 3.0f
+                }
+            }, new NSRange(0, htmlBody.Length));
+
+            UITextView dpcNote = new UITextView(new CGRect(GetScaledWidth(24f), 0, _viewDPCNote.Frame.Width - (GetScaledWidth(24f) * 2), GetScaledHeight(60F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false,
+                TextContainerInset = UIEdgeInsets.Zero,
+                Tag = 1001
+            };
+            CGSize cGSize = dpcNote.SizeThatFits(new CGSize(dpcNote.Frame.Width, GetScaledHeight(500F)));
+            ViewHelper.AdjustFrameSetHeight(dpcNote, cGSize.Height);
+            _viewDPCNote.AddSubview(dpcNote);
+            ViewHelper.AdjustFrameSetHeight(_viewDPCNote, dpcNote.Frame.Height);
+            _viewDPCNote.Hidden = false;
+        }
+
+        private void RemoveDPCNote()
+        {
+            _isDPCIndicator = false;
+            ViewHelper.AdjustFrameSetHeight(_viewDPCNote, 0);
+            _viewDPCNote.BackgroundColor = UIColor.Clear;
+            _viewDPCNote.Hidden = true;
+        }
+        #endregion
         #region TUTORIAL OVERLAY Methods
         public void CheckTutorialOverlay()
         {
@@ -651,10 +760,9 @@ namespace myTNB
         {
             Debug.WriteLine("ScrollToTop()");
             CGPoint topOffset = new CGPoint(0, 0);
-            _scrollViewContent.SetContentOffset(topOffset, true);
+            _scrollViewContent.SetContentOffset(topOffset, false);
         }
         #endregion
-
         #region EMPTY DATA Methods
         internal void SetEmptyDataComponent(string message)
         {
@@ -1024,35 +1132,46 @@ namespace myTNB
                     MonthItemModel item = usageData[index];
                     if (item != null)
                     {
-                        if (item.tariffBlocks != null &&
-                            item.tariffBlocks.Count > 0)
+                        _lastSelectedIsDPC = item.DPCIndicator;
+                        _lastSelectedMonthItem = item;
+                        if (!item.DPCIndicator)
                         {
-                            List<LegendItemModel> tariffLegend = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
-                            if (tariffLegend != null && tariffLegend.Count > 0)
+                            if (item.tariffBlocks != null &&
+                            item.tariffBlocks.Count > 0)
                             {
-                                _tariffList = new List<LegendItemModel>();
-                                foreach (var legend in tariffLegend)
+                                List<LegendItemModel> tariffLegend = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                                if (tariffLegend != null && tariffLegend.Count > 0)
                                 {
-                                    var res = false;
-                                    foreach (var tBlock in item.tariffBlocks)
+                                    _tariffList = new List<LegendItemModel>();
+                                    foreach (var legend in tariffLegend)
                                     {
-                                        if (tBlock.BlockId != null)
+                                        var res = false;
+                                        foreach (var tBlock in item.tariffBlocks)
                                         {
-                                            if (tBlock.BlockId.Equals(legend.BlockId) && tBlock.Usage > 0)
+                                            if (tBlock.BlockId != null)
                                             {
-                                                res = true;
-                                                break;
+                                                if (tBlock.BlockId.Equals(legend.BlockId) && tBlock.Usage > 0)
+                                                {
+                                                    res = true;
+                                                    break;
+                                                }
                                             }
                                         }
+                                        if (res)
+                                        {
+                                            _tariffList.Add(legend);
+                                        }
                                     }
-                                    if (res)
-                                    {
-                                        _tariffList.Add(legend);
-                                    }
+                                    _legendIsVisible = _tariffIsVisible;
+                                    SetTariffLegendComponent(_tariffList);
                                 }
-                                SetTariffLegendComponent(_tariffList);
                             }
                         }
+                        else
+                        {
+                            ShowHideTariffLegends(false);
+                        }
+                        SetDPCNoteOnBarTap(item);
                     }
                 }
             }
@@ -1154,17 +1273,44 @@ namespace myTNB
 
         private void ValidateTariffLegend()
         {
-            List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
-            if (tariffList != null && tariffList.Count > 0)
+            if (_lastSelectedIsDPC)
             {
-                if (_rmKwhDropDownView != null)
+                if (_tariffIsVisible)
                 {
-                    _rmKwhDropDownView.Hidden = true;
+                    _tariffIsVisible = !_tariffIsVisible;
+                    if (_rMkWhEnum == RMkWhEnum.RM)
+                    {
+                        RemoveDPCNote();
+                        SetContentView();
+                    }
+                    else
+                    {
+                        SetCPCNoteForShowHideTariff();
+                    }
                 }
-                _tariffIsVisible = !_tariffIsVisible;
+                else
+                {
+                    _tariffIsVisible = !_tariffIsVisible;
+                    SetCPCNoteForShowHideTariff();
+                }
                 _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                ShowHideTariffLegends(_tariffIsVisible);
                 _chartView.ToggleTariffView(_tariffIsVisible);
+            }
+            else
+            {
+                RemoveDPCNote();
+                List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                if (tariffList != null && tariffList.Count > 0)
+                {
+                    if (_rmKwhDropDownView != null)
+                    {
+                        _rmKwhDropDownView.Hidden = true;
+                    }
+                    _tariffIsVisible = !_tariffIsVisible;
+                    _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                    ShowHideTariffLegends(_tariffIsVisible);
+                    _chartView.ToggleTariffView(_tariffIsVisible);
+                }
             }
         }
 
@@ -1294,6 +1440,7 @@ namespace myTNB
                     _chartView.ToggleRMKWHValues(_rMkWhEnum);
                 }
             }
+            SetDPCNoteForRMKwHToggle();
         }
         #endregion
         #region ENERGY TIPS Methods
