@@ -14,7 +14,6 @@
             android:layout_height="28dp"
             android:layout_width="28dp"
             android:layout_gravity="center"
-            android:layout_centerInParent="true"
             android:src="@drawable/ic_menu_promo"/>
             <LinearLayout
                 android:id="@+id/newLabel"
@@ -22,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/new_label"
                 android:layout_toRightOf="@+id/bottomViewImg"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="-15dp"
                 android:visibility="visible"
                 android:gravity="center">
             <TextView

@@ -370,12 +370,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
 						if (PromotionsEntityV2.HasUnread())
 						{
-							this.mView.ShowUnreadPromotions();
+							this.mView.ShowUnreadPromotions(true);
 
 						}
 						else
 						{
-							this.mView.HideUnreadPromotions();
+							this.mView.HideUnreadPromotions(true);
 
 						}
 					}
@@ -546,13 +546,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private void OnUpdatePromoUnRead()
         {
+            if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            {
+                UserSessions.DoWhatNewShown(mSharedPref);
+            }
+
             if (PromotionsEntityV2.HasUnread())
             {
-                if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
-                {
-                    UserSessions.DoWhatNewShown(mSharedPref);
-                }
+                this.mView.ShowUnreadPromotions(false);
 
+            }
+            else
+            {
+                this.mView.HideUnreadPromotions(false);
+
+            }
+
+            isPromoClicked = false;
+        }
+
+        private void OnResumeUpdatePromotionUnRead()
+        {
+            if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            {
+                UserSessions.DoWhatNewShown(mSharedPref);
+            }
+
+            if (PromotionsEntityV2.HasUnread())
+            {
                 this.mView.ShowUnreadPromotions();
 
             }
@@ -567,7 +588,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnValidateData()
 		{
-            OnUpdatePromoUnRead();
+            OnResumeUpdatePromotionUnRead();
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
             if(accountList.Count == 0)

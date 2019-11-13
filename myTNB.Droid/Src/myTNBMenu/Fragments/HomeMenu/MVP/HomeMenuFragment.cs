@@ -330,15 +330,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetNotificationIndicator()
         {
-            /*if (UserNotificationEntity.HasNotifications())
-            {
-                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
-            }
-            else
-            {
-                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
-            }*/
-
             OnSetNotificationNewLabel(UserNotificationEntity.HasNotifications(), UserNotificationEntity.Count());
         }
 
@@ -2086,7 +2077,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     newLabel.Visibility = ViewStates.Visible;
                     txtNewLabel.Text = count.ToString();
-                    // Lin Siong TODO: Replace this icon
                     notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
                     if (count > 0 && count <= 9)
                     {
@@ -2094,6 +2084,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-16f);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         newLabelParam.Width = (int)DPUtils.ConvertDPToPx(14f);
+                        newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
                     }
                     else
                     {
@@ -2105,6 +2096,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-22f);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         newLabelParam.Width = (int)DPUtils.ConvertDPToPx(18f);
+                        newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
                     }
                 }
                 else
