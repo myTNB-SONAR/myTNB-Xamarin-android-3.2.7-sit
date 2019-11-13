@@ -24,8 +24,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         private BarChart barChart;
         public UsageHistoryData selectedHistoryData { get; set; }
 
-        public Context currentContext { get; set; }
-
         public Android.App.Activity currentActivity { get; set; }
 
         public float[] bufferItems { get; set; }
@@ -37,6 +35,12 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         private float currentSelectedDrawX = -1f;
 
         private int currentArrayIndex = -1;
+
+        public Bitmap dpcBitmap { get; set; }
+
+        public ChartType currentChartType { get; set; }
+
+        public ChartDataType currentChartDataType { get; set; }
 
         // Lin Siong Note: this is for use of tariff block on normal / RE inner dashboard
 
@@ -247,8 +251,16 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         currentSelectedDrawX = -1;
                     }
 
+                    int currentRow = 0;
+
                     for (int j = 0; j < buffer.Size(); j += 4)
                     {
+                        float left = bufferItems[j];
+                        float top = bufferItems[j + 1];
+                        float right = bufferItems[j + 2];
+                        float bottom = bufferItems[j + 3];
+                        bool isCurrentSelected = false;
+
 
                         if (!MViewPortHandler.IsInBoundsLeft(bufferItems[j + 2]))
                             continue;
@@ -276,6 +288,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
                                 {
                                     MRenderPaint.Alpha = 255;
+                                    isCurrentSelected = true;
                                 }
                                 else
                                 {
@@ -292,6 +305,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 {
                                     canvas.DrawPath(GenerateRoundRectangle(bufferItems[j], bufferItems[j + 1], bufferItems[j + 2], bufferItems[j + 3], mRadius, mRadius, false, false, false, false), MRenderPaint);
                                 }
+
+                                if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                {
+                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                }
+
+                                currentRow++;
                             }
                             else
                             {
@@ -311,6 +331,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 {
                                     count = 0;
                                     canvas.DrawPath(GenerateRoundRectangle(bufferItems[j], bufferItems[j + 1], bufferItems[j + 2], bufferItems[j + 3], mRadius, mRadius, true, true, true, true), MRenderPaint);
+
+                                    if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                    {
+                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                    }
+
+                                    currentRow++;
                                 }
                             }
                         }
@@ -330,6 +357,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
                                 {
                                     MRenderPaint.Alpha = 255;
+                                    isCurrentSelected = true;
                                 }
                                 else
                                 {
@@ -361,6 +389,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         canvas.DrawPath(GenerateRoundRectangle(bufferItems[j], bufferItems[j + 1], bufferItems[j + 2], bufferItems[j + 3], mRadius, mRadius, false, false, false, false), MRenderPaint);
                                     }
                                 }
+
+                                if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                {
+                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                }
+
+                                currentRow++;
                             }
                             else
                             {
@@ -375,6 +410,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                     {
                                         count = 0;
                                         canvas.DrawPath(GenerateRoundRectangle(bufferItems[j], bufferItems[j + 1], bufferItems[j + 2], bufferItems[j + 3], mRadius, mRadius, true, true, true, true), MRenderPaint);
+
+                                        if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                        {
+                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                        }
+
+                                        currentRow++;
                                     }
                                 }
                                 else
@@ -388,6 +430,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                     {
                                         count = 0;
                                         canvas.DrawPath(GenerateRoundRectangle(bufferItems[j], bufferItems[j + 1], bufferItems[j + 2], bufferItems[j + 3], mRadius, mRadius, true, true, false, false), MRenderPaint);
+
+                                        if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                        {
+                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                        }
+
+                                        currentRow++;
                                     }
                                 }
                             }
@@ -397,6 +446,52 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 }
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DrawDPCOnCanvas(Canvas c, float top, float left, float right, bool isSelected)
+        {
+            try
+            {
+                // Lin Siong Note: Set Render Text to 10dp
+                // Lin Siong Note: Set text to align center
+                MRenderPaint.Color = new Color(255, 255, 255, 255);
+
+                if (isSelected)
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 255);
+                }
+                else
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 50);
+                }
+
+                MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
+                MRenderPaint.TextAlign = Paint.Align.Center;
+
+                // Lin Siong Note: Set the typeface to MuseoSans500
+                try
+                {
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    MRenderPaint.SetTypeface(plain);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                float x = left + ((right - left) / 2) - DPUtils.ConvertDPToPx(6.5f);
+                float y = top - DPUtils.ConvertDPToPx(12f);
+
+
+                if (currentChartType == ChartType.Month)
+                {
+                    c.DrawBitmap(dpcBitmap, x, y, MRenderPaint);
+                }
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

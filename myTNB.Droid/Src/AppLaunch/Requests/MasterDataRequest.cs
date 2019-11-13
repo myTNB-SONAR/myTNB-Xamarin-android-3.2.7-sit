@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.AppLaunch.Models
             public string AppVersion { get; set; }
 
             [JsonProperty("OsType")]
-            public string OsType { get; set; }
+            public int OsType { get; set; }
 
             [JsonProperty("OsVersion")]
             public string OsVersion { get; set; }

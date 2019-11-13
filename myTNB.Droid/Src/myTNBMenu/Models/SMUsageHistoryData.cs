@@ -168,6 +168,18 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 [AliasAs("IsEstimatedReading")]
                 public string IsEstimatedReading { get; set; }
 
+                [JsonProperty(PropertyName = "DPCIndicator")]
+                [AliasAs("DPCIndicator")]
+                public bool DPCIndicator { get; set; }
+
+                [JsonProperty(PropertyName = "DPCIndicatorUsageMessage")]
+                [AliasAs("DPCIndicatorUsageMessage")]
+                public string DPCIndicatorUsageMessage { get; set; }
+
+                [JsonProperty(PropertyName = "DPCIndicatorTariffMessage")]
+                [AliasAs("DPCIndicatorTariffMessage")]
+                public string DPCIndicatorTariffMessage { get; set; }
+
                 [JsonProperty(PropertyName = "tariffBlocks")]
                 [AliasAs("tariffBlocks")]
                 public List<TariffBlock> TariffBlocksList { get; set; }

@@ -173,6 +173,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 //};
 
+                ClearFields();
+
                 txtFullName.TextChanged += TextChange;
                 txtICNumber.TextChanged += TextChange;
                 txtMobileNumber.TextChanged += TextChange;
@@ -270,6 +272,13 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             txtConfirmEmail.Text = "";
             txtPassword.Text = "";
             txtConfirmPassword.Text = "";
+            txtFullName.ClearFocus();
+            txtICNumber.ClearFocus();
+            txtMobileNumber.ClearFocus();
+            txtEmail.ClearFocus();
+            txtConfirmEmail.ClearFocus();
+            txtPassword.ClearFocus();
+            txtConfirmPassword.ClearFocus();
         }
 
         public void ClearAllErrorFields()

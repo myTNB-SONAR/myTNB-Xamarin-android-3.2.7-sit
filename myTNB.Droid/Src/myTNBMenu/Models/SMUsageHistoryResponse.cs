@@ -58,6 +58,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [AliasAs("DisplayTitle")]
             public string DisplayTitle { get; set; }
 
+            [JsonProperty(PropertyName = "CTA")]
+            [AliasAs("CTA")]
+            public string CTA { get; set; }
+
             [JsonProperty(PropertyName = "data")]
             [AliasAs("data")]
             public SMUsageHistoryData SMUsageHistoryData { get; set; }

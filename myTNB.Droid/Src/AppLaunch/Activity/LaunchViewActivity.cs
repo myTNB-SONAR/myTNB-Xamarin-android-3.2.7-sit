@@ -26,7 +26,6 @@ using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.WalkThrough;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -548,7 +547,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     MyTNBApplication.siteCoreUpdated = true;
                 }
-                RunOnUiThread(() => StartActivity(typeof(WalkThroughActivity)));
+                // RunOnUiThread(() => StartActivity(typeof(WalkThroughActivity)));
             }
             catch (Exception e)
             {
