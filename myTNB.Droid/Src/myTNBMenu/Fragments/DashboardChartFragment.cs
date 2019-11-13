@@ -569,6 +569,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private string MDMSUnavailableCTA = "";
 
+        private int currentSelectedBar = -1;
+
+        private bool isDPCBarClicked = false;
+
         ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
@@ -4729,6 +4733,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                currentSelectedBar = index;
                 bool isHighlightNeed = false;
 
                 string message = "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.";
@@ -4769,8 +4774,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
                                     SetVirtualHeightParams(6f);
+                                }
+                                else
+                                {
+                                    if (isDPCBarClicked)
+                                    {
+                                        isDPCBarClicked = false;
+                                        isChangeVirtualHeightNeed = true;
+                                        SetVirtualHeightParams(6f);
+                                    }
                                 }
                             }
                             else
@@ -4789,8 +4805,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
                                     SetVirtualHeightParams(6f);
+                                }
+                                else
+                                {
+                                    if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                    {
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                    }
+
+                                    if (isDPCBarClicked)
+                                    {
+                                        isDPCBarClicked = false;
+                                        isChangeVirtualHeightNeed = true;
+                                        SetVirtualHeightParams(6f);
+                                    }
                                 }
                             }
                         }
@@ -4810,13 +4842,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
-                                isChangeVirtualHeightNeed = true;
-                                SetVirtualHeightParams(6f);
 
-                                if (isSMR)
+                                if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                                 }
+
+                                isDPCBarClicked = true;
+                                isChangeVirtualHeightNeed = true;
+                                SetVirtualHeightParams(6f);
+                            }
+                            else
+                            {
+                                if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                }
+
+                                if (isDPCBarClicked)
+                                {
+                                    isDPCBarClicked = false;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                            }
+                        }
+                    }
+                    else if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && isSMR)
+                    {
+                        if (isSMR && smStatisticContainer.Visibility == ViewStates.Visible)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+
+                            if (isDPCBarClicked)
+                            {
+                                isDPCBarClicked = false;
+                                isChangeVirtualHeightNeed = true;
+                                SetVirtualHeightParams(6f);
                             }
                         }
                     }
@@ -5052,9 +5114,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     tariffBlockLegendRecyclerView.RequestLayout();
 
-                    isChangeVirtualHeightNeed = true;
-                    SetVirtualHeightParams(6f);
-
                     // Lin Siong TODO: Replace the Message handling
                     if (ChartType == ChartType.Month && index != -1)
                     {
@@ -5078,8 +5137,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
-                                    isChangeVirtualHeightNeed = true;
-                                    SetVirtualHeightParams(6f);
                                 }
                             }
                             else
@@ -5100,8 +5157,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
-                                    isChangeVirtualHeightNeed = true;
-                                    SetVirtualHeightParams(6f);
 
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                                 }
@@ -5125,9 +5180,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
-                                isChangeVirtualHeightNeed = true;
-                                SetVirtualHeightParams(6f);
-
 
                                 if (isSMR)
                                 {
@@ -5137,6 +5189,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                     }
 
+                    isChangeVirtualHeightNeed = true;
+                    SetVirtualHeightParams(6f);
                 }
             }
             catch (System.Exception e)
@@ -6644,6 +6698,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             }
                                             rootView.SetBackgroundResource(Resource.Color.greyBackground);
                                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+
+                                            if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
+                                            {
+                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                            }
+
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -6699,6 +6759,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         rootView.SetBackgroundResource(Resource.Color.greyBackground);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                        if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
+                                        {
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        }
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -6759,14 +6823,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmKwhLabel.Text = "kWh";
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
-                if (CheckIsDPCIndicatorAvailable())
+                /*if (CheckIsDPCIndicatorAvailable())
                 {
                     isShowAnimationDisable = false;
                 }
                 else
                 {
                     isShowAnimationDisable = true;
-                }
+                }*/
+                isShowAnimationDisable = false;
                 ShowByKwh();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Clicked");
             }
@@ -6786,14 +6851,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmKwhLabel.Text = "RM  ";
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
-                if (CheckIsDPCIndicatorAvailable())
+                /*if (CheckIsDPCIndicatorAvailable())
                 {
                     isShowAnimationDisable = false;
                 }
                 else
                 {
                     isShowAnimationDisable = true;
-                }
+                }*/
+                isShowAnimationDisable = false;
                 ShowByRM();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Clicked");
 
@@ -6972,6 +7038,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
+                                        DashboardCustomScrolling(0);
                                         smStatisticContainer.Visibility = ViewStates.Invisible;
                                     }
                                 }
@@ -6990,6 +7057,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
+                                        DashboardCustomScrolling(0);
                                         ssmrHistoryContainer.Visibility = ViewStates.Invisible;
                                     }
                                 }
@@ -7075,6 +7143,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         rootView.SetBackgroundResource(Resource.Color.greyBackground);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                        if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
+                                        {
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        }
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7151,6 +7223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             CurrentParentIndex = -1;
             try
             {
+                isDPCBarClicked = false;
                 if (ChartType == ChartType.Month)
                 {
                     OnGenerateTariffLegendValue(-1, isToggleTariff);
