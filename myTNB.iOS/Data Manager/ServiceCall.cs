@@ -258,10 +258,11 @@ namespace myTNB.DataManager
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    InputAnswer = answer
+                    serviceManager.usrInf,
+                    InputAnswer = answer,
+                    ApiKeyID = TNBGlobal.API_KEY_ID
                 };
-                BaseResponseModel response = serviceManager.BaseServiceCall("SubmitRateUs", requestParameter);
+                BaseResponseModelV2 response = serviceManager.BaseServiceCallV6("SubmitRateUs", requestParameter);
             });
         }
 
