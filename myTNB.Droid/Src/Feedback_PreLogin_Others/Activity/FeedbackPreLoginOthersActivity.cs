@@ -812,7 +812,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
             if (string.IsNullOrEmpty(message))
             {
-                message = GetString(Resource.String.app_launch_http_exception_error);
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)

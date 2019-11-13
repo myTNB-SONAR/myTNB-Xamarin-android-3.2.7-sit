@@ -1071,7 +1071,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -1097,7 +1097,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -1138,7 +1138,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             bcrmDownDialog = new MaterialDialog.Builder(this)
                 .Title("Error")
                 .Content(msg)
-                .PositiveText(GetString(Resource.String.manage_cards_btn_ok))
+                .PositiveText(Utility.GetLocalizedCommonLabel("ok"))
                 .OnPositive((dialog, which) => NavigateToDashboard())
                 .Cancelable(false)
                 .Build();

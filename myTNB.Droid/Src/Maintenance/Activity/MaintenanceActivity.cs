@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.Maintenance.Activity
                 }
                 else
                 {
-                    mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_http_exception_error), Snackbar.LengthIndefinite)
+                    mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                     .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
@@ -181,7 +181,7 @@ namespace myTNB_Android.Src.Maintenance.Activity
                 }
                 else
                 {
-                    mUnknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_unknown_exception_error), Snackbar.LengthIndefinite)
+                    mUnknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                     .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 

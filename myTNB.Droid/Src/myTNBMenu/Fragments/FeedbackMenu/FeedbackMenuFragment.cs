@@ -331,7 +331,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -373,7 +373,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -475,7 +475,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     }
                     else
                     {
-                        message = GetString(Resource.String.app_launch_http_exception_error);
+                        message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                     }
 
                 }

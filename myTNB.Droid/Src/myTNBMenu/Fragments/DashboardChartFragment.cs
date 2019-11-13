@@ -5904,7 +5904,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
@@ -6223,7 +6223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mDisconnectionSnackbar.Dismiss();
                 }
 
-                mDisconnectionSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mDisconnectionSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
@@ -6250,7 +6250,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mSMRSnackbar.Dismiss();
                 }
 
-                mSMRSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mSMRSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 

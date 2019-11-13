@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(listView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.select_supply_activity_cancelled_exception_btn_close), delegate
             {
 
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(listView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.select_supply_activity_api_exception_btn_close), delegate
             {
 
@@ -122,7 +122,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(listView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate
             {
 

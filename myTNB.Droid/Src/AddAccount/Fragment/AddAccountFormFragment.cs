@@ -307,7 +307,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             if (selectedAccountType.Id.Equals("1"))
                             {
                                 edtOwnerMotherName.Visibility = ViewStates.Visible;
-                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_ic_no);
+                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedCommonLabel("idNumber");
                             }
                             else
                             {
@@ -487,7 +487,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mApiExcecptionSnackBar.Dismiss();
@@ -508,7 +508,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             string msg = "Something went wrong, Please try again.";
             if (IsAdded)
             {
-                msg = GetString(Resource.String.add_account_link_unknown_exception_error);
+                msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)

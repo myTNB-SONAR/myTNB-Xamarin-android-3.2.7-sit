@@ -282,7 +282,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_mobile_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.update_mobile_cancelled_exception_btn_close), delegate
             {
 
@@ -301,7 +301,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_mobile_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.update_mobile_api_exception_btn_close), delegate
             {
 
@@ -320,7 +320,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_mobile_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.update_mobile_unknown_exception_btn_close), delegate
             {
 

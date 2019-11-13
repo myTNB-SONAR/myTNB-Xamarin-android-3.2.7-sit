@@ -260,7 +260,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -283,7 +283,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -305,7 +305,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -367,7 +367,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCodeCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCodeCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_code_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCodeCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -388,7 +388,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCodeApiExceptionSnackBar.Dismiss();
             }
 
-            mCodeApiExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_code_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCodeApiExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -408,7 +408,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCodeUnknownException.Dismiss();
             }
 
-            mCodeUnknownException = Snackbar.Make(rootView, GetString(Resource.String.forget_password_code_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCodeUnknownException = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 

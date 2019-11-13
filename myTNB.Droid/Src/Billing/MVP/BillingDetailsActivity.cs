@@ -387,7 +387,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();

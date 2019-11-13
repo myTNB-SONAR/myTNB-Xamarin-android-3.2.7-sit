@@ -974,7 +974,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (string.IsNullOrEmpty(msg))
             {
-                msg = GetString(Resource.String.my_service_error);
+                msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mMyServiceRetrySnakebar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
@@ -1923,7 +1923,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
