@@ -158,6 +158,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 urlSchemaData = data;
             }
 
+            // Lin Siong Note to Sprint 3: Remove this on Sprint 3
+            if (bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
+            {
+                bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
+            }
+
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
