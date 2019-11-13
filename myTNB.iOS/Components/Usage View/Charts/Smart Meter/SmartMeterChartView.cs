@@ -19,6 +19,7 @@ namespace myTNB
         public Action PinchOverlayAction { set; private get; }
         public Action<List<String>> LoadTariffLegendWithBlockIds { set; private get; }
         public Func<string, string> GetI18NValue;
+        public Action OnMDMSIconTap { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -391,9 +392,29 @@ namespace myTNB
                         date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                     }
                 }
+
+                if (_viewType == SmartMeterConstants.SmartMeterViewType.Month)
+                {
+                    UIImageView mdmsIcon = segmentView.ViewWithTag(1009) as UIImageView;
+                    if (mdmsIcon != null)
+                    {
+                        mdmsIcon.Alpha = isSelected ? 1 : 0.5F;
+                    }
+                }
             }
             OnBarSelected(index);
             _selectedIndex = index;
+
+            if (_viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
+                int usageDataCount = usageData != null ? usageData.Count : 0;
+                if (usageDataCount > 0 && index == (usageDataCount - 1) && AccountUsageSmartCache.IsMDMSDown
+                    && OnMDMSIconTap != null)
+                {
+                    OnMDMSIconTap.Invoke();
+                }
+            }
         }
 
         private void OnBarSelected(int index)

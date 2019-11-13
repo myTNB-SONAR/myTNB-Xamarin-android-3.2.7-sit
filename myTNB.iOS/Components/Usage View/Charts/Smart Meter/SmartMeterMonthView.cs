@@ -64,13 +64,16 @@ namespace myTNB.SmartMeterView
                         Tag = 1003
                     };
 
-                    UIImageView unavailableIcon = new UIImageView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(20) - GetHeightByScreenSize(17), GetScaledWidth(20), GetScaledHeight(20)))
+                    UIImageView unavailableIcon = new UIImageView(new CGRect(0
+                        , segment.Frame.Height - lblHeight - width - GetHeightByScreenSize(17)
+                        , width, width))
                     {
-                        Image = UIImage.FromBundle(UsageConstants.IMG_MDMSDownIcon)
+                        Image = UIImage.FromBundle(UsageConstants.IMG_MDMSDownIcon),
+                        Tag = 1009
                     };
-                    ViewHelper.AdjustFrameSetX(unavailableIcon, GetXLocationToCenterObject(GetScaledWidth(20), segment));
+                    ViewHelper.AdjustFrameSetX(unavailableIcon, GetXLocationToCenterObject(width, segment));
 
-                    nfloat lblIndicatorHeight = GetScaledHeight(28);
+                    /*nfloat lblIndicatorHeight = GetScaledHeight(28);
                     UILabel lblIndicator = new UILabel(new CGRect(0, unavailableIcon.Frame.GetMinY() - GetScaledHeight(8) - lblIndicatorHeight, GetScaledWidth(54), lblIndicatorHeight))
                     {
                         TextAlignment = UITextAlignment.Center,
@@ -83,13 +86,13 @@ namespace myTNB.SmartMeterView
                     nfloat lblWidth = lblIndicator.GetLabelWidth(GetScaledWidth(54));
                     ViewHelper.AdjustFrameSetWidth(lblIndicator, lblWidth);
                     ViewHelper.AdjustFrameSetX(lblIndicator, GetXLocationToCenterObject(lblWidth, segment));
-
+                    */
                     segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
                         OnSegmentTap(index);
                     }));
 
-                    segment.AddSubviews(new UIView[] { unavailableIcon, lblIndicator, lblDate });
+                    segment.AddSubviews(new UIView[] { unavailableIcon, lblDate });
                 }
                 else
                 {

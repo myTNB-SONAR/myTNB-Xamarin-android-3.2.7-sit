@@ -1248,8 +1248,8 @@
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%402x.png" />
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%403x.png" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
