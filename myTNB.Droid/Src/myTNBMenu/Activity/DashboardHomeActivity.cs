@@ -379,7 +379,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
-            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
             ShowBillMenu(accountData);
         }
         public void EnableDropDown(bool enable)
@@ -488,6 +488,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowPromotionsMenu(Weblink weblink)
         {
             ShowBackButton(false);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
             PromotionListFragment fragment = new PromotionListFragment();
             currentFragment = fragment;
             FragmentManager.BeginTransaction()
@@ -588,7 +589,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
-            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
@@ -597,7 +598,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
-            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
             ShowBillMenu(selectedAccount);

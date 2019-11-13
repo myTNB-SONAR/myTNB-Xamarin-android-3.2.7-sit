@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             sspuid = user.UserID;
             did = "";
             ft = FirebaseTokenEntity.GetLatest().FBToken;
-            lang = "EN";
+            lang = LanguageUtil.GetAppLanguage().ToUpper();
             sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
             sec_auth_k2 = "test";
             ses_param1 = "test";

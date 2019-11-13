@@ -8,6 +8,9 @@ using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
 
 namespace myTNB_Android.Src.Utils
@@ -221,6 +224,37 @@ namespace myTNB_Android.Src.Utils
                 }
             }).Wait();
             return timestamp;
+        }
+
+        public static async Task CheckUpdatedLanguage()
+        {
+            try
+            {
+                bool IsChangedLanguage = IsLanguageChanged();
+                LanguagePreferenceResponse response;
+                AccountApiImpl accountApi = new AccountApiImpl();
+                string appLanguage = GetAppLanguage();
+                if (!IsChangedLanguage)
+                {
+                    response = await accountApi.GetLanguagePreference<LanguagePreferenceResponse>(new Base.Request.APIBaseRequest());
+                    if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                    {
+                        if (response.Data.ResponseData != null)
+                        {
+                            if (!string.IsNullOrEmpty(response.Data.ResponseData.lang))
+                            {
+                                appLanguage = response.Data.ResponseData.lang;
+                            }
+                        }
+                    }
+                }
+                await accountApi.SaveLanguagePreference<LanguagePreferenceResponse>(new LanguagePreferenceRequest(appLanguage));
+                SaveAppLanguage(appLanguage.ToUpper());
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

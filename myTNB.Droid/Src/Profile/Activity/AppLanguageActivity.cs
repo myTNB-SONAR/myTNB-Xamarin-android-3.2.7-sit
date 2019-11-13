@@ -145,9 +145,10 @@ namespace myTNB_Android.Src.Profile.Activity
             });
         }
 
-        private void UpdateLanguage()
+        private async void UpdateLanguage()
         {
             savedLanguage = LanguageUtil.GetAppLanguage();
+            await LanguageUtil.CheckUpdatedLanguage();
             UpdateLabels();
             EnableDisableButton();
         }

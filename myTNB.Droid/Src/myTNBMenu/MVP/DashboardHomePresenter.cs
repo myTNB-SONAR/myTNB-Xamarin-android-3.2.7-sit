@@ -335,7 +335,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             }
                         }
                         this.mView.ShowHideActionBar(true);
-                        this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                        //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 
                         AccountData accountData = new AccountData();
                         CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
@@ -360,7 +360,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
                         currentBottomNavigationMenu = Resource.Id.menu_promotion;
 						this.mView.HideAccountName();
-						this.mView.SetToolbarTitle(Resource.String.promotion_menu_activity_title);
+						//this.mView.SetToolbarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
 						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
                     }
 
@@ -389,7 +389,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
-                    this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
+                    //this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
 					this.mView.ShowMoreMenu();
 					break;
 			}
@@ -535,7 +535,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 AccountData accountData = AccountData.Copy(selectedAccount, true);
                 this.mView.SetAccountName(selectedAccount.AccDesc);
-                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
                 currentBottomNavigationMenu = Resource.Id.menu_bill;
             }
             catch (System.Exception e)
@@ -895,7 +895,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                 }
                 this.mView.ShowHideActionBar(true);
-                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 
                 AccountData accountData = new AccountData();
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);

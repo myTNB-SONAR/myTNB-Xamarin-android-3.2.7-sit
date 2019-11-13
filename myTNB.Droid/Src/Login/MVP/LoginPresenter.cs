@@ -278,7 +278,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 {
                                     eid = UserEntity.GetActive().UserName,
                                     sspuid = userResponse.Data.User.UserId,
-                                    lang = "EN",
+                                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                                     sec_auth_k2 = "",
                                     ses_param1 = "",
@@ -451,7 +451,7 @@ namespace myTNB_Android.Src.Login.MVP
                             {
                                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             }
-                            await CheckAppLanguageChange();
+                            await LanguageUtil.CheckUpdatedLanguage();
                             this.mView.ShowDashboard();
                         }
                         if (this.mView.IsActive())
@@ -572,37 +572,6 @@ namespace myTNB_Android.Src.Login.MVP
         public void Start()
         {
             // NO IMPL
-        }
-
-        private async Task CheckAppLanguageChange()
-        {
-            try
-            {
-                bool IsLanguageChanged = LanguageUtil.IsLanguageChanged();
-                LanguagePreferenceResponse response;
-                AccountApiImpl accountApi = new AccountApiImpl();
-                string appLanguage = LanguageUtil.GetAppLanguage();
-                if (!IsLanguageChanged)
-                {
-                    response = await accountApi.GetLanguagePreference<LanguagePreferenceResponse>(new Base.Request.APIBaseRequest());
-                    if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
-                    {
-                        if (response.Data.ResponseData != null)
-                        {
-                            if (!string.IsNullOrEmpty(response.Data.ResponseData.lang))
-                            {
-                                appLanguage = response.Data.ResponseData.lang;
-                            }
-                        }
-                    }
-                }
-                await accountApi.SaveLanguagePreference<LanguagePreferenceResponse>(new LanguagePreferenceRequest(appLanguage));
-                LanguageUtil.SaveAppLanguage(appLanguage.ToUpper());
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }
