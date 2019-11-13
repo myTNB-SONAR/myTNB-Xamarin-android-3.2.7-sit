@@ -11,20 +11,17 @@ namespace myTNB
 {
     public partial class ForgotPasswordViewController : CustomUIViewController
     {
-        UILabel lblEmailTitle;
-        UITextField txtFieldEmail;
-        UILabel lblEmailError;
-        UIView viewLineEmail;
+        public ForgotPasswordViewController(IntPtr handle) : base(handle) { }
 
-        public ForgotPasswordViewController(IntPtr handle) : base(handle)
-        {
-        }
+        private UILabel lblEmailTitle, lblEmailError;
+        private UITextField txtFieldEmail;
+        private UIView viewLineEmail;
 
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        BaseResponseModel _resetCodeList = new BaseResponseModel();
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private BaseResponseModelV2 _resetCodeList = new BaseResponseModelV2();
 
-        const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        string _email = string.Empty;
+        private const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+        private string _email = string.Empty;
 
         public override void ViewDidLoad()
         {
@@ -39,7 +36,7 @@ namespace myTNB
             SetViews();
         }
 
-        internal void InitializedSubViews()
+        private void InitializedSubViews()
         {
             lblTitle.Frame = new CGRect(18, 19, View.Frame.Width - 36, 18);
             lblTitle.TextColor = MyTNBColor.PowerBlue;
@@ -92,7 +89,7 @@ namespace myTNB
             #endregion
         }
 
-        internal void SetViews()
+        private void SetViews()
         {
             _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, "Email");
             lblEmailTitle.Hidden = true;
@@ -104,7 +101,7 @@ namespace myTNB
                 ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
-        internal void SetEvents()
+        private void SetEvents()
         {
             btnSubmit.TouchUpInside += (sender, e) =>
             {
@@ -120,7 +117,7 @@ namespace myTNB
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                             ActivityIndicator.Hide();
                         }
                     });
@@ -130,7 +127,7 @@ namespace myTNB
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
         }
 
-        internal void SetKeyboard(UITextField textField)
+        private void SetKeyboard(UITextField textField)
         {
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
@@ -138,7 +135,7 @@ namespace myTNB
             textField.ReturnKeyType = UIReturnKeyType.Done;
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
+        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
@@ -177,14 +174,14 @@ namespace myTNB
             };
         }
 
-        internal void SetSubmitButtonEnable()
+        private void SetSubmitButtonEnable()
         {
             bool isValid = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN);
             btnSubmit.Enabled = isValid;
             btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -194,7 +191,7 @@ namespace myTNB
             this.NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void OnShowLogin()
+        private void OnShowLogin()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Login", null);
             LoginViewController viewController =
@@ -202,7 +199,7 @@ namespace myTNB
             this.DismissViewController(true, null);
         }
 
-        internal void ExecuteSendResetPasswordCodeCall()
+        private void ExecuteSendResetPasswordCodeCall()
         {
             SendResetPasswordCode().ContinueWith(task =>
             {
@@ -218,31 +215,37 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
+                        DisplayServiceError(_resetCodeList?.d?.ErrorMessage);
                     }
                     ActivityIndicator.Hide();
                 });
             });
         }
 
-        internal Task SendResetPasswordCode()
+        private Task SendResetPasswordCode()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                    ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = _email,
-                    userEmail = _email
+                    usrInf = new
+                    {
+                        eid = _email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    serviceManager.deviceInf
                 };
-                _resetCodeList = serviceManager.BaseServiceCall("SendResetPasswordCode", requestParameter);
+                _resetCodeList = serviceManager.BaseServiceCallV6(ForgotPasswordConstants.Service_SendResetPasswordCode, requestParameter);
             });
         }
     }

@@ -15,6 +15,11 @@ namespace myTNB
             return OnExecuteAPI<BaseResponseModel>(suffix, requestParams);
         }
 
+        public BaseResponseModelV2 BaseServiceCallV6(string suffix, object requestParams)
+        {
+            return OnExecuteAPIV6<BaseResponseModelV2>(suffix, requestParams);
+        }
+
         public T OnExecuteAPI<T>(string suffix, object requestParams, APIVersion version = APIVersion.V5) where T : new()
         {
             T customClass = new T();

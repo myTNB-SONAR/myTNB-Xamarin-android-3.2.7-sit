@@ -10,7 +10,7 @@
         public static string I18N_LoginAgain = "loginAgain";
 
         //Service
-        public static string Service_Logout = "LogoutUser_V2";
+        public static string Service_Logout = "LogoutUser";
 
         //Image
         public static string IMG_Logout = "Logout-Logo";

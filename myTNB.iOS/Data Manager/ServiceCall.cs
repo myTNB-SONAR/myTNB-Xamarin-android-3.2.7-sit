@@ -58,6 +58,13 @@ namespace myTNB.DataManager
                 && response?.d?.didSucceed == true;
         }
 
+        public static bool ValidateBaseResponse(BaseResponseModelV2 response)
+        {
+            return response != null
+                && response.d != null
+                && response.d.IsSuccess;
+        }
+
         /// <summary>
         /// Validates the response item.
         /// </summary>
@@ -350,6 +357,5 @@ namespace myTNB.DataManager
 
             return response;
         }
-
     }
 }

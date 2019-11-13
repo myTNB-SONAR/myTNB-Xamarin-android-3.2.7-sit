@@ -19,5 +19,9 @@
         public static string I18N_ConfirmPassword = "confirmPassword";
         public static string I18N_ResetSuccessMessage = "resetSuccessMessage";
         public static string I18N_ResendPinMessage = "resendPinMessage";
+
+        //Service
+        public static string Service_ResetPasswordWithToken = "ResetPasswordWithToken";
+        public static string Service_SendResetPasswordCode = "SendResetPasswordCode";
     }
 }

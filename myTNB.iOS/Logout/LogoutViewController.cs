@@ -32,24 +32,32 @@ namespace myTNB
 
         private void SetSubView()
         {
-            UIView viewContent = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 60 : 36, View.Frame.Width - 36, 240));
-            viewContent.BackgroundColor = UIColor.White;
+            UIView viewContent = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 60 : 36, View.Frame.Width - 36, 240))
+            {
+                BackgroundColor = UIColor.White
+            };
             viewContent.Layer.CornerRadius = 5.0f;
 
-            UIImageView imgLogo = new UIImageView(new CGRect((viewContent.Frame.Width / 2) - 75, 16, 150, 150));
-            imgLogo.Image = UIImage.FromBundle(LogoutConstants.IMG_Logout);
+            UIImageView imgLogo = new UIImageView(new CGRect((viewContent.Frame.Width / 2) - 75, 16, 150, 150))
+            {
+                Image = UIImage.FromBundle(LogoutConstants.IMG_Logout)
+            };
 
-            UILabel lblThankYou = new UILabel(new CGRect(0, 182, viewContent.Frame.Width, 18));
-            lblThankYou.TextColor = MyTNBColor.PowerBlue;
-            lblThankYou.Font = MyTNBFont.MuseoSans16;
-            lblThankYou.Text = GetI18NValue(LogoutConstants.I18N_Title);
-            lblThankYou.TextAlignment = UITextAlignment.Center;
+            UILabel lblThankYou = new UILabel(new CGRect(0, 182, viewContent.Frame.Width, 18))
+            {
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans16,
+                Text = GetI18NValue(LogoutConstants.I18N_Title),
+                TextAlignment = UITextAlignment.Center
+            };
 
-            UILabel lblSubTitle = new UILabel(new CGRect(24, 200, viewContent.Frame.Width - 48, 16));
-            lblSubTitle.Font = MyTNBFont.MuseoSans12;
-            lblSubTitle.TextColor = MyTNBColor.TunaGrey();
-            lblSubTitle.TextAlignment = UITextAlignment.Center;
-            lblSubTitle.Text = GetI18NValue(LogoutConstants.I18N_Message);
+            UILabel lblSubTitle = new UILabel(new CGRect(24, 200, viewContent.Frame.Width - 48, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = UITextAlignment.Center,
+                Text = GetI18NValue(LogoutConstants.I18N_Message)
+            };
 
             viewContent.AddSubviews(new UIView[] { imgLogo, lblThankYou, lblSubTitle });
             View.AddSubview(viewContent);
@@ -105,14 +113,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    Email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    AppVersion = AppVersionHelper.GetBuildVersion(),
-                    OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
-                    OsVersion = DeviceHelper.GetOSVersion()
+                    serviceManager.usrInf,
+                    serviceManager.deviceInf
                 };
-                BaseResponseModel logoutResponse = serviceManager.BaseServiceCall(LogoutConstants.Service_Logout, requestParameter);
+                BaseResponseModelV2 logoutResponse = serviceManager.BaseServiceCallV6(LogoutConstants.Service_Logout, requestParameter);
             });
         }
 

@@ -12,33 +12,27 @@ namespace myTNB
 {
     public partial class EnterCodeViewController : CustomUIViewController
     {
-        public EnterCodeViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public EnterCodeViewController(IntPtr handle) : base(handle) { }
 
         public string EmailAddress = string.Empty;
 
-        BaseResponseModel _resetCodeList = new BaseResponseModel();
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private BaseResponseModelV2 _resetCodeList = new BaseResponseModelV2();
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        UIView _viewTokenFieldContainer;
-        UIImage _loadingImg = UIImage.FromBundle("Loading");
-        UIImage _loadedImg = UIImage.FromBundle("Loaded");
-        UIView _loadingView;
-        UIView _segment;
-        UILabel _lblError;
-        UIImageView _loadingImage;
-        UILabel _resendLabel;
-        UIView _viewPinSent;
-        UITapGestureRecognizer _onResendPin;
+        private UIView _viewTokenFieldContainer, _loadingView, _segment, _viewPinSent;
+        private UIImage _loadingImg = UIImage.FromBundle("Loading");
+        private UIImage _loadedImg = UIImage.FromBundle("Loaded");
 
-        bool _isKeyboardDismissed = false;
-        bool _isTokenInvalid = false;
-        string _token = string.Empty;
+        private UILabel _lblError, _resendLabel;
+        private UIImageView _loadingImage;
+        private UITapGestureRecognizer _onResendPin;
 
-        Timer timer;
-        const double INTERVAL = 1000f;
-        public int timerCtr = 30;
+        private bool _isKeyboardDismissed, _isTokenInvalid;
+        private string _token = string.Empty;
+
+        private Timer timer;
+        private const double INTERVAL = 1000f;
+        private int timerCtr = 30;
 
         public override void ViewDidLoad()
         {
@@ -58,7 +52,7 @@ namespace myTNB
             InitializeVerifyPinSentView();
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = GetI18NValue(ForgotPasswordConstants.I18N_Title);
@@ -70,7 +64,7 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        void SetViews()
+        private void SetViews()
         {
             UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60));
             lblDescription.Font = MyTNBFont.MuseoSans16_300;
@@ -117,7 +111,7 @@ namespace myTNB
             AnimateResendView();
         }
 
-        void CreateTokenField()
+        private void CreateTokenField()
         {
             UITextField txtFieldToken;
             UIView viewLine;
@@ -186,7 +180,7 @@ namespace myTNB
             }
         }
 
-        void AnimateResendView()
+        private void AnimateResendView()
         {
             timerCtr = 30;
             _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
@@ -211,7 +205,7 @@ namespace myTNB
             });
         }
 
-        void ClearTokenField()
+        private void ClearTokenField()
         {
             UITextField txtFieldToken1 = _viewTokenFieldContainer.ViewWithTag(1) as UITextField;
             txtFieldToken1.Text = string.Empty;
@@ -223,7 +217,7 @@ namespace myTNB
             txtFieldToken4.Text = string.Empty;
         }
 
-        void SetTextFieldEvents(UITextField textField, UIView viewLine)
+        private void SetTextFieldEvents(UITextField textField, UIView viewLine)
         {
             textField.EditingChanged += (sender, e) =>
             {
@@ -264,7 +258,7 @@ namespace myTNB
             };
         }
 
-        void InitializeVerifyPinSentView()
+        private void InitializeVerifyPinSentView()
         {
             _viewPinSent = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
             _viewPinSent.BackgroundColor = MyTNBColor.SunGlow;
@@ -285,7 +279,7 @@ namespace myTNB
             currentWindow.AddSubview(_viewPinSent);
         }
 
-        internal void ShowViewPinSent()
+        private void ShowViewPinSent()
         {
             _viewPinSent.Hidden = false;
             _viewPinSent.Alpha = 1.0f;
@@ -298,7 +292,7 @@ namespace myTNB
             });
         }
 
-        void DisplayAlertView(string title, string message)
+        private void DisplayAlertView(string title, string message)
         {
             UIAlertController alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
@@ -309,7 +303,7 @@ namespace myTNB
         /// <summary>
         /// Updates the color of the text field based on OTP validity input
         /// </summary>
-        internal void UpdateTextFieldColor()
+        private void UpdateTextFieldColor()
         {
             for (int i = 0; i < 4; i++)
             {
@@ -337,12 +331,12 @@ namespace myTNB
         /// <summary>
         /// Determines when to hide/show the error message based on OTP validity input
         /// </summary>
-        internal void IsPinInvalid()
+        private void IsPinInvalid()
         {
             _lblError.Hidden = !_isTokenInvalid;
         }
 
-        void ValidateFields(bool isKeyboardDismissed)
+        private void ValidateFields(bool isKeyboardDismissed)
         {
             UITextField txtFieldToken1 = _viewTokenFieldContainer.ViewWithTag(1) as UITextField;
             UITextField txtFieldToken2 = _viewTokenFieldContainer.ViewWithTag(2) as UITextField;
@@ -366,7 +360,7 @@ namespace myTNB
                             }
                             else
                             {
-                                AlertHandler.DisplayNoDataAlert(this);
+                                DisplayNoDataAlert();
                                 ActivityIndicator.Hide();
                             }
                         });
@@ -375,7 +369,7 @@ namespace myTNB
             }
         }
 
-        internal void ExecuteSendResetPasswordCodeCall()
+        private void ExecuteSendResetPasswordCodeCall()
         {
             ActivityIndicator.Show();
             SendResetPasswordCode().ContinueWith(task =>
@@ -399,37 +393,43 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
+                        DisplayServiceError(_resetCodeList?.d?.ErrorMessage);
                     }
                     ActivityIndicator.Hide();
                 });
             });
         }
 
-        internal Task SendResetPasswordCode()
+        private Task SendResetPasswordCode()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                   ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = EmailAddress,
-                    userEmail = EmailAddress
+                    usrInf = new
+                    {
+                        eid = EmailAddress,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    serviceManager.deviceInf
                 };
-                _resetCodeList = serviceManager.BaseServiceCall("SendResetPasswordCode", requestParameter);
+                _resetCodeList = serviceManager.BaseServiceCallV6(ForgotPasswordConstants.Service_SendResetPasswordCode, requestParameter);
             });
         }
 
-        internal void ExecuteResetPasswordWithTokenCall()
+        private void ExecuteResetPasswordWithTokenCall()
         {
-            _resetCodeList = new BaseResponseModel();
+            _resetCodeList = new BaseResponseModelV2();
             ResetPasswordWithToken().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
@@ -438,7 +438,7 @@ namespace myTNB
                     {
                         var sharedPreference = NSUserDefaults.StandardUserDefaults;
                         sharedPreference.SetBool(true, "isPasswordResetCodeSent");
-                        sharedPreference.SetString(_resetCodeList.d.message, "resetPasswordMessage");
+                        sharedPreference.SetString(_resetCodeList.d.ErrorMessage, "resetPasswordMessage");
                         sharedPreference.Synchronize();
                         UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
                         PasswordResetSuccessViewController viewController =
@@ -452,32 +452,37 @@ namespace myTNB
                         _isTokenInvalid = true;
                         IsPinInvalid();
                         UpdateTextFieldColor();
-                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
+                        DisplayServiceError(_resetCodeList?.d?.ErrorMessage);
                     }
-
                     ActivityIndicator.Hide();
                 });
             });
         }
 
-        internal Task ResetPasswordWithToken()
+        private Task ResetPasswordWithToken()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                    ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = EmailAddress,
+                    usrInf = new
+                    {
+                        eid = EmailAddress,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
                     token = _token
                 };
-                _resetCodeList = serviceManager.BaseServiceCall("ResetPasswordWithToken", requestParameter);
+                _resetCodeList = serviceManager.BaseServiceCallV6(ForgotPasswordConstants.Service_ResetPasswordWithToken, requestParameter);
             });
         }
     }
