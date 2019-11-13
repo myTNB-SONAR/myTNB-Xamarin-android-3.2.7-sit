@@ -214,7 +214,7 @@ namespace myTNB
                 Image = UIImage.FromBundle(PreloginConstants.IMG_FeedbackIcon)
             };
 
-            _lblFeedback = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(28F)))
+            _lblFeedback = new UILabel(new CGRect(GetScaledWidth(4), GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width- GetScaledWidth(8), GetScaledHeight(28F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_Feedback),
                 TextAlignment = UITextAlignment.Center,
