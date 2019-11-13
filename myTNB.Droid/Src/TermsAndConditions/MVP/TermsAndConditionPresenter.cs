@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.TermsAndConditions.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetFullRTEPagesItems();
                     //json = json.Replace("\\", string.Empty).Replace("\\n", string.Empty);
                     FullRTEPagesResponseModel responseModel = JsonConvert.DeserializeObject<FullRTEPagesResponseModel>(json);

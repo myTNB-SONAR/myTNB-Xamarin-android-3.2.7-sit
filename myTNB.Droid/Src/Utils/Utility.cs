@@ -211,7 +211,7 @@ namespace myTNB_Android.Src.Utils
             //try
             //{
             //    string density = DPUtils.GetDeviceDensity(Application.Context);
-            //    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());// SiteCoreConfig.DEFAULT_LANGUAGE);
+            //    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());// LanguageUtil.GetAppLanguage());
             //    //LanguageResponseModel responseModel = getItemsService.GetLanguageItems();
             //    var timestamp = getItemsService.GetLanguageTimestampItem();
             //    //SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_URL, JsonConvert.SerializeObject(responseModel.Data), "");

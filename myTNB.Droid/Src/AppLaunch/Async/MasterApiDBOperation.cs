@@ -31,9 +31,12 @@ namespace myTNB_Android.Src.AppLaunch.Async
                 {
                     MyTNBAccountManagement.GetInstance().SetCurentMasterData(masterDataResponse);
 
-                    foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
+                    if (masterDataResponse.Data.MasterData.WebLinks != null)
                     {
-                        int newRecord = WeblinkEntity.InsertOrReplace(web);
+                        foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
+                        {
+                            int newRecord = WeblinkEntity.InsertOrReplace(web);
+                        }
                     }
 
                     FeedbackCategoryEntity.RemoveActive();

@@ -69,10 +69,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
                             //pageTitle = "New Bill";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBill"),
+                                delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"), delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             //notificationDetailTitle = "Your May 2019 Bill Is Ready";
@@ -84,10 +85,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_bill_due_banner;
                             //pageTitle = "Bill Due";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBill"),
+                                delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"),
+                                delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             //notificationDetailTitle = "Your Apr 2019 Bill Is Due";
@@ -100,10 +103,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnect_notice_banner;
                             //pageTitle = "Disconnection Notice";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBill"),
+                                delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"),
+                                delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             //notificationDetailTitle = "Your Supply May Be Disconnected";
@@ -116,10 +121,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnected_banner;
                             //pageTitle = "Disconnection";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"),
+                                delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"),
+                                delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             //notificationDetailTitle = "Your Supply Has Been Disconnected";
@@ -132,7 +139,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_reconnected_banner;
                             //pageTitle = "Reconnection";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { ViewMyUsage(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                                delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             //notificationDetailTitle = "Your Supply Has Been Reconnected";
@@ -152,7 +160,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
                             //pageTitle = "Smart Meter Reading";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitMeterReading"),
+                                delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
@@ -161,7 +170,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitMeterReading"),
+                                delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
@@ -171,7 +181,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitMeterReading"),
+                                delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
@@ -181,7 +192,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { ViewMyUsage(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                                delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -189,7 +201,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"),
+                                delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
@@ -199,7 +212,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
                             //pageTitle = "Smart Meter Reading";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reenableSSMR"), delegate () { EnableSelfMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -207,7 +220,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
                             //pageTitle = "Smart Meter Reading";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"), delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             break;
                         }

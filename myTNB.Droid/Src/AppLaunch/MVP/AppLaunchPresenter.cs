@@ -453,7 +453,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetTimestampItem();
                     TimestampResponseModel responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))
@@ -514,7 +514,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     AppLaunchResponseModel responseModel = getItemsService.GetAppLaunchItem();
                     sw.Stop();
                     try
@@ -794,7 +794,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     AppLaunchTimeStampResponseModel responseModel = getItemsService.GetAppLaunchTimestampItem();
                     sw.Stop();
                     try
@@ -909,7 +909,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
 
                     ApplySSMRTimeStampResponseModel timestampModel = getItemsService.GetApplySSMRWalkthroughTimestampItem();
                     if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
