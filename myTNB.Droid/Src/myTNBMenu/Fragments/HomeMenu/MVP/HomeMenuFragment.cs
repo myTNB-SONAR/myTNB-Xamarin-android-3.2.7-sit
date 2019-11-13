@@ -193,6 +193,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceLoadMoreImg)]
         ImageView myServiceLoadMoreImg;
 
+        [BindView(Resource.Id.newLabel)]
+        LinearLayout newLabel;
+
+        [BindView(Resource.Id.txtNewLabel)]
+        TextView txtNewLabel;
+
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -324,14 +330,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetNotificationIndicator()
         {
-            if (UserNotificationEntity.HasNotifications())
+            /*if (UserNotificationEntity.HasNotifications())
             {
                 notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
             }
             else
             {
                 notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
-            }
+            }*/
+
+            OnSetNotificationNewLabel(UserNotificationEntity.HasNotifications(), UserNotificationEntity.Count());
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -350,7 +358,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel);
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel, txtNewLabel);
 
                 addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -2068,6 +2076,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void OnSetNotificationNewLabel(bool flag, int count)
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                if (flag && count > 0)
+                {
+                    newLabel.Visibility = ViewStates.Visible;
+                    txtNewLabel.Text = count.ToString();
+                    // Lin Siong TODO: Replace this icon
+                    notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
+                    if (count > 0 && count <= 9)
+                    {
+                        RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-16f);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(14f);
+                    }
+                    else
+                    {
+                        if (count > 99)
+                        {
+                            txtNewLabel.Text = "99+";
+                        }
+                        RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-22f);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(18f);
+                    }
+                }
+                else
+                {
+                    newLabel.Visibility = ViewStates.Gone;
+                    notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
+                    RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                    notificationHeaderIconParam.LeftMargin = 0;
+                }
+            });
         }
     }
 }
