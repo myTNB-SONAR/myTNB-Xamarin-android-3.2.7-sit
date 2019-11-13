@@ -24,8 +24,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         private BarChart barChart;
         public UsageHistoryData selectedHistoryData { get; set; }
 
-        public Context currentContext { get; set; }
-
         public Android.App.Activity currentActivity { get; set; }
 
         public float[] bufferItems { get; set; }
@@ -476,7 +474,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set the typeface to MuseoSans500
                 try
                 {
-                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                     MRenderPaint.SetTypeface(plain);
                 }
                 catch (System.Exception e)

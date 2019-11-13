@@ -1697,7 +1697,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedSMHistoryData = selectedSMHistoryData,
-                        currentContext = Activity,
                         currentActivity = Activity,
                         isStacked = true,
                         isZoomIn = isZoomIn,
@@ -1716,7 +1715,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedSMHistoryData = selectedSMHistoryData,
-                        currentContext = Activity,
                         currentActivity = Activity,
                         isStacked = false,
                         isZoomIn = isZoomIn,
@@ -1740,7 +1738,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedHistoryData = selectedHistoryData,
-                        currentContext = Activity,
                         currentActivity = Activity,
                         dpcBitmap = dpcBitmap,
                         currentChartType = ChartType,
@@ -1753,7 +1750,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedHistoryData = selectedHistoryData,
-                        currentContext = Activity,
                         currentActivity = Activity,
                         dpcBitmap = dpcBitmap,
                         currentChartType = ChartType,
@@ -2080,7 +2076,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 currentDayViewkWhList = DayViewkWhData,
                 currentDayViewRMList = DayViewRMData,
                 currentIsZoomIn = isZoomIn,
-                currentFragment = this
+                currentFragment = this,
+                currentActivity = this.Activity
             };
 
             mChart.NestedScrollingEnabled = true;
@@ -2222,7 +2219,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             try
             {
-                Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
                 xAxis.Typeface = plain;
             }
             catch (System.Exception e)
@@ -2387,7 +2384,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             try
             {
-                Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
                 xAxis.Typeface = plain;
             }
             catch (System.Exception e)
@@ -4721,6 +4718,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isHideBottomSheetShowTariff = true;
                     }
                 }
+
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Tariff Toggle Button Clicked");
             }
             catch (System.Exception ne)
@@ -4873,13 +4871,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (isSMR && smStatisticContainer.Visibility == ViewStates.Visible)
                         {
                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                        }
 
-                            if (isDPCBarClicked)
-                            {
-                                isDPCBarClicked = false;
-                                isChangeVirtualHeightNeed = true;
-                                SetVirtualHeightParams(6f);
-                            }
+                        if (isDPCBarClicked)
+                        {
+                            isDPCBarClicked = false;
+                            isChangeVirtualHeightNeed = true;
+                            SetVirtualHeightParams(6f);
                         }
                     }
 
@@ -4999,9 +4997,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
 
-                            Context context = tariffBlockLegendRecyclerView.Context;
                             LayoutAnimationController controller =
-                                    AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+                                    AnimationUtils.LoadLayoutAnimation(this.Activity, Resource.Animation.layout_animation_fall_down);
 
                             tariffBlockLegendRecyclerView.LayoutAnimation = controller;
                             tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
@@ -5087,9 +5084,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
 
-                            Context context = tariffBlockLegendRecyclerView.Context;
                             LayoutAnimationController controller =
-                                    AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+                                    AnimationUtils.LoadLayoutAnimation(this.Activity, Resource.Animation.layout_animation_fall_down);
 
                             tariffBlockLegendRecyclerView.LayoutAnimation = controller;
                             tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
@@ -7170,6 +7166,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             SetVirtualHeightParams(6f);
                             shadowLayout.SetBackgroundResource(0);
                             bottomSheet.RequestLayout();
+
+                            if (!isToggleTariff)
+                            {
+                                if (isSMAccount || isSMR)
+                                {
+                                    if (isSMAccount)
+                                    {
+                                        if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                        {
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                            smStatisticContainer.Visibility = ViewStates.Visible;
+                                        }
+                                    }
+                                    else if (isSMR)
+                                    {
+                                        if (ssmrHistoryContainer.Visibility == ViewStates.Invisible)
+                                        {
+                                            try
+                                            {
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                            if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
+                                            {
+                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                            }
+                                            ssmrHistoryContainer.Visibility = ViewStates.Visible;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     else
@@ -8239,13 +8282,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public List<double> currentDayViewRMList { get; set; }
             public List<double> currentDayViewkWhList { get; set; }
             public DashboardChartFragment currentFragment { get; set; }
-            private Context currentContext;
+            public Android.App.Activity currentActivity { get; set; }
 
             public OnBarChartTouchLister(BarLineChartBase mChart, Matrix mMatrix, float mDistance) : base(mChart, mMatrix, mDistance)
             {
                 currentChart = mChart;
                 isShowLog = false;
-                currentContext = mChart.Context;
             }
 
             protected OnBarChartTouchLister(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
@@ -8567,7 +8609,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             currentFragment.SetDayViewMonthText(dayViewMonthList[tempDayViewIndex]);
 
-                            Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
+                            Vibrator vibrator = (Vibrator)currentActivity.GetSystemService(Context.VibratorService);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));

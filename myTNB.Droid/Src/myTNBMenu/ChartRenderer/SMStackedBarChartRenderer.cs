@@ -26,8 +26,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public SMUsageHistoryData selectedSMHistoryData { get; set; }
 
-        public Context currentContext { get; set; }
-
         public Android.App.Activity currentActivity { get; set; }
 
         public ChartType currentChartType { get; set; }
@@ -69,8 +67,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         public bool isStacked { get; set; }
 
 
-        private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
-        private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
+        // private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
+        // private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
         public Bitmap mdmsBitmap { get; set; }
         public Bitmap missingBitmap { get; set; }
         public Bitmap dpcBitmap { get; set; }
@@ -808,7 +806,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set the typeface to MuseoSans500
                 try
                 {
-                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                     MRenderPaint.SetTypeface(plain);
                 }
                 catch (System.Exception e)
@@ -862,7 +860,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set the typeface to MuseoSans500
                 try
                 {
-                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                     MRenderPaint.SetTypeface(plain);
                 }
                 catch (System.Exception e)
@@ -920,7 +918,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         }
 
         // Lin Siong Note: To draw the text on last bar and always show it
-        private void DrawTextOnCanvas(Canvas c, float top, float left, float right, string currencyUnitTxt, double amount, string usageUnitTxt, double usage)
+        /*private void DrawTextOnCanvas(Canvas c, float top, float left, float right, string currencyUnitTxt, double amount, string usageUnitTxt, double usage)
         {
             try
             {
@@ -934,7 +932,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set the typeface to MuseoSans500
                 try
                 {
-                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                     MRenderPaint.SetTypeface(plain);
                 }
                 catch (System.Exception e)
@@ -969,7 +967,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }
+        }*/
 
         private Path GenerateRoundRectangle(float left, float top, float right, float bottom, float rx, float ry, bool tl, bool tr, bool br, bool bl)
         {
