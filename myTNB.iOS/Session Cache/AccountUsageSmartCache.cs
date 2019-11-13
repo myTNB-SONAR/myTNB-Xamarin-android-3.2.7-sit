@@ -102,6 +102,10 @@ namespace myTNB
                 {
                     SaveToCache(accountNumber, RefreshDataModel);
                 }
+
+                ErrorTitle = response.d.DisplayTitle ?? string.Empty;
+                ErrorMessage = response.d.DisplayMessage ?? string.Empty;
+                ErrorCTA = response.d.CTA ?? string.Empty;
             }
             else
             {
@@ -120,6 +124,12 @@ namespace myTNB
                 Tooltips = data.ToolTips;
             }
         }
+
+        #region Error
+        public static string ErrorTitle { set; get; } = string.Empty;
+        public static string ErrorMessage { set; get; } = string.Empty;
+        public static string ErrorCTA { set; get; } = string.Empty;
+        #endregion
 
         #region Dates
         private static string _currentCycle;

@@ -555,7 +555,8 @@ namespace myTNB
                     LoadTariffLegendWithIndex = LoadTariffLegendWithIndex,
                     LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds,
                     ShowMissedReadToolTip = ShowMissedReadTooltip,
-                    GetI18NValue = GetI18NValue
+                    GetI18NValue = GetI18NValue,
+                    OnMDMSIconTap = OnMDMSIconTap
                 };
             }
 
@@ -566,6 +567,14 @@ namespace myTNB
             _chart = isUpdating ? _chartView.GetShimmerUI() : _chartView.GetUI();
             _viewChart.AddSubview(_chart);
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
+        }
+
+        private void OnMDMSIconTap()
+        {
+            string title = AccountUsageSmartCache.ErrorTitle;
+            string message = AccountUsageSmartCache.ErrorMessage;
+            string ctaTitle = AccountUsageSmartCache.ErrorCTA;
+            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, null } });
         }
 
         #region TUTORIAL OVERLAY Methods
