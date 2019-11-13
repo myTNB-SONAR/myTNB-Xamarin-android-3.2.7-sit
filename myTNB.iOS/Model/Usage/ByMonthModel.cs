@@ -20,6 +20,9 @@ namespace myTNB.Model.Usage
         public string UsageTotal { set; get; }
         public string Currency { set; get; }
         public string UsageUnit { set; get; }
+        public bool DPCIndicator { set; get; }
+        public string DPCIndicatorUsageMessage { set; get; }
+        public string DPCIndicatorTariffMessage { set; get; }
         public List<TariffItemModel> tariffBlocks { set; get; }
     }
 
