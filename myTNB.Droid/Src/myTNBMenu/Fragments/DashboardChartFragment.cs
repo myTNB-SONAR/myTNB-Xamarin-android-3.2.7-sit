@@ -6819,15 +6819,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmKwhLabel.Text = "kWh";
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
-                /*if (CheckIsDPCIndicatorAvailable())
-                {
-                    isShowAnimationDisable = false;
-                }
-                else
-                {
-                    isShowAnimationDisable = true;
-                }*/
-                isShowAnimationDisable = false;
+                isShowAnimationDisable = true;
                 ShowByKwh();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Clicked");
             }
@@ -6847,15 +6839,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmKwhLabel.Text = "RM  ";
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
-                /*if (CheckIsDPCIndicatorAvailable())
-                {
-                    isShowAnimationDisable = false;
-                }
-                else
-                {
-                    isShowAnimationDisable = true;
-                }*/
-                isShowAnimationDisable = false;
+                isShowAnimationDisable = true;
                 ShowByRM();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Clicked");
 
