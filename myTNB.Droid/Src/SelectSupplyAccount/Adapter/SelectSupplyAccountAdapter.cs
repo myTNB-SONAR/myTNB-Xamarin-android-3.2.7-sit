@@ -49,7 +49,6 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 CustomerBillingAccount item = GetItemObject(position);
                 vh.txtSupplyAccountName.Text = item.AccDesc;
 
-                // Lin Siong TODO
                 if (item.AccountCategoryId.Equals("2"))
                 {
                     vh.imageLeaf.Visibility = ViewStates.Visible;

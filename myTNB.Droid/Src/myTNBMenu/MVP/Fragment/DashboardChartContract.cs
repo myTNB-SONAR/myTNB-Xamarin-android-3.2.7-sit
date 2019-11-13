@@ -150,6 +150,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             bool GetIsREAccount();
 
             void OnShowDashboardFragmentTutorialDialog();
+
+            void SetMDMSDownMessage(SMUsageHistoryResponse response);
         }
 
         public interface IUserActionsListener : IBasePresenter

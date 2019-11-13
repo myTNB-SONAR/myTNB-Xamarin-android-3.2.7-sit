@@ -65,10 +65,26 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             {
                 imgMissingCopy.Visibility = ViewStates.Gone;
                 int index = (int)e.GetX();
-                bool isDisableWord = false;
-                if (isMDMSDown)
+
+                if (ChartType == ChartType.Month)
                 {
-                    if (index == (UsageHistoryData.ByMonth.Months.Count - 1))
+                    bool isDisableWord = false;
+                    if (isMDMSDown)
+                    {
+                        if (index == (UsageHistoryData.ByMonth.Months.Count - 1))
+                        {
+                            isDisableWord = true;
+                        }
+                        else if (UsageHistoryData.ByMonth.Months[index].DPCIndicator && ChartDataType == ChartDataType.kWh)
+                        {
+                            isDisableWord = true;
+                        }
+                        else
+                        {
+                            isDisableWord = false;
+                        }
+                    }
+                    else if (UsageHistoryData.ByMonth.Months[index].DPCIndicator && ChartDataType == ChartDataType.kWh)
                     {
                         isDisableWord = true;
                     }
@@ -76,14 +92,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     {
                         isDisableWord = false;
                     }
-                }
-                else
-                {
-                    isDisableWord = false;
-                }
 
-                if (ChartType == ChartType.Month)
-                {
                     if (!isDisableWord)
                     {
                         titleMarker.Visibility = ViewStates.Visible;
@@ -108,6 +117,8 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                 }
                 else if (ChartType == ChartType.Day && isZoomIn)
                 {
+                    titleMarker.Visibility = ViewStates.Visible;
+
                     if (smMissingList[index])
                     {
                         imgMissingCopy.Visibility = ViewStates.Visible;
@@ -131,9 +142,15 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     }
 
                 }
+                else
+                {
+                    titleMarker.Visibility = ViewStates.Gone;
+                    titlekWhMarker.Visibility = ViewStates.Gone;
+                }
             }
             else
             {
+                titleMarker.Visibility = ViewStates.Visible;
                 titlekWhMarker.Visibility = ViewStates.Gone;
                 titleMarker.Text = "RM " + decimalFormat.Format(e.GetY());
             }

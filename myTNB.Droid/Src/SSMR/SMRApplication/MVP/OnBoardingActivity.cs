@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     [Activity(Label = "OnBoardingActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class OnBoardingActivity : BaseToolbarAppCompatActivity, ViewPager.IOnPageChangeListener, OnBoardingSMRContract.IView
     {
-        [BindView(Resource.Id.viewpager)]
+        [BindView(Resource.Id.onBoardingSMRViewPager)]
         ViewPager onBoardViewPager;
 
         [BindView(Resource.Id.indicatorContainer)]
