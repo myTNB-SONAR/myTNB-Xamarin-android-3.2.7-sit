@@ -14,7 +14,7 @@ namespace myTNB
     {
         public ManageCardViewController(IntPtr handle) : base(handle) { }
 
-        private BaseResponseModel _removeCardResponse = new BaseResponseModel();
+        private BaseResponseModelV2 _removeCardResponse = new BaseResponseModelV2();
 
         private UIView _viewNotificationMsg;
         private UILabel _lblNotificationDetails, _lblNoCards, _lblTitle;
@@ -135,7 +135,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    _lblNotificationDetails.Text = _removeCardResponse?.d?.message
+                                    _lblNotificationDetails.Text = _removeCardResponse?.d?.ErrorMessage
                                         ?? string.Format(GetI18NValue(MyAccountConstants.I18N_CardNotRemovedMessage), lastDigits);
                                     ActivityIndicator.Hide();
                                     ShowNotificationMessage();
@@ -220,10 +220,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
                     registeredCardId = DataManager.DataManager.SharedInstance.RegisteredCards.d.data[index].Id
                 };
-                _removeCardResponse = serviceManager.BaseServiceCall(MyAccountConstants.Service_RemoveRegisteredCard, requestParameter);
+                _removeCardResponse = serviceManager.BaseServiceCallV6(MyAccountConstants.Service_RemoveRegisteredCard, requestParameter);
             });
         }
     }

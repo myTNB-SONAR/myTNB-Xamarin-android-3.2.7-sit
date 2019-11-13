@@ -20,7 +20,7 @@ namespace myTNB
 
         public CustomerAccountRecordModel CustomerRecord = new CustomerAccountRecordModel();
         //public int AccountRecordIndex = -1;
-        private BaseResponseModel _removeAccount = new BaseResponseModel();
+        private BaseResponseModelV2 _removeAccount = new BaseResponseModelV2();
 
         public override void ViewDidLoad()
         {
@@ -161,8 +161,7 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_removeAccount != null && _removeAccount.d != null
-                       && _removeAccount.d.isError.ToLower() == "false")
+                    if (_removeAccount != null && _removeAccount.d != null && _removeAccount.d.IsSuccess)
                     {
                         DataManager.DataManager.SharedInstance.IsAccountDeleted = true;
                         int index = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == CustomerRecord.accNum);
@@ -189,7 +188,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_removeAccount?.d?.message ?? string.Empty);
+                        DisplayServiceError(_removeAccount?.d?.ErrorMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -209,18 +208,11 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    userID = DataManager.DataManager.SharedInstance.User.UserID,
+                    serviceManager.usrInf,
+                    serviceManager.deviceInf,
                     accNum = CustomerRecord.accNum,
-                    email = emailAddress
                 };
-                _removeAccount = serviceManager.BaseServiceCall(MyAccountConstants.Service_RemoveAccount, requestParameter);
+                _removeAccount = serviceManager.BaseServiceCallV6(MyAccountConstants.Service_RemoveAccount, requestParameter);
             });
         }
     }

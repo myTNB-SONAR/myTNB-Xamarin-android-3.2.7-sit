@@ -16,7 +16,7 @@ namespace myTNB
 
         const string PASSWORD_PATTERN = @"^.{8,}$"; // @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
 
-        private BaseResponseModel _saveResponse = new BaseResponseModel();
+        private BaseResponseModelV2 _saveResponse = new BaseResponseModelV2();
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
         private UITextField txtFieldPassword, txtFieldNewPassword, txtFieldConfirmNewPassword;
@@ -363,7 +363,7 @@ namespace myTNB
                                 //txtFieldPassword.TextColor = myTNBColor.Tomato;
                                 //btnSave.Enabled = false;
                                 //btnSave.BackgroundColor = myTNBColor.SilverChalice;
-                                DisplayServiceError(_saveResponse?.d?.message ?? string.Empty);
+                                DisplayServiceError(_saveResponse?.d?.ErrorMessage ?? string.Empty);
                             }
                         }
                         else
@@ -384,19 +384,12 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                    serviceManager.usrInf,
                     currentPassword = _currentPassword,
                     newPassword = _newPassword,
                     confirmNewPassword = _confirmNewPassword
                 };
-                _saveResponse = serviceManager.BaseServiceCall(MyAccountConstants.Service_ChangePassword, requestParameter);
+                _saveResponse = serviceManager.BaseServiceCallV6(MyAccountConstants.Service_ChangePassword, requestParameter);
             });
         }
     }
