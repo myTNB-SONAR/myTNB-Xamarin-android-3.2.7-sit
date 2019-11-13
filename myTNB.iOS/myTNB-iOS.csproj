@@ -1868,7 +1868,6 @@
     <Compile Include="Payment\Add Card\CreditCardScannerViewController.designer.cs">
       <DependentUpon>CreditCardScannerViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\RegistrationTokenSMSModel.cs" />
     <Compile Include="Model\RegistrationTokenSMSResponseModel.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="UserInfoViewController.cs" />
