@@ -163,13 +163,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             if (isShow)
             {
-                ((DashboardHomeActivity)this.Activity).SetToolBarTitle("My History");
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(GetLabelByLanguage("myHistory"));
                 billFilterMenuItem.SetVisible(true);
                 UpdateFilterIcon();
             }
             else
             {
-                ((DashboardHomeActivity)this.Activity).SetToolBarTitle("Bills");
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(GetLabelByLanguage("title"));
                 billFilterMenuItem.SetVisible(false);
             }
         }

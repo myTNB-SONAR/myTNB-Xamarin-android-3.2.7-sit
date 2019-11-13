@@ -283,22 +283,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             {
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
-                                    vh.serviceTitle.TextFormatted = Html.FromHtml("Pay<br/>My Bills", FromHtmlOptions.ModeLegacy);
+                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "payBills"), FromHtmlOptions.ModeLegacy);
                                 }
                                 else
                                 {
-                                    vh.serviceTitle.TextFormatted = Html.FromHtml("Pay<br/>My Bills");
+                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "payBills"));
                                 }
                             }
                             else
                             {
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
-                                    vh.serviceTitle.TextFormatted = Html.FromHtml("Pay<br/>My Bill", FromHtmlOptions.ModeLegacy);
+                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "payBill"), FromHtmlOptions.ModeLegacy);
                                 }
                                 else
                                 {
-                                    vh.serviceTitle.TextFormatted = Html.FromHtml("Pay<br/>My Bill");
+                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "payBill"));
                                 }
                             }
                             if (UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
@@ -321,15 +321,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             bool isHasREAccount = MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 0;
                             bool isHasMoreThanOneREAccount = MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 1;
 
-                            string newStringValue = "View My<br/>Bill";
+                            string newStringValue = Utility.GetLocalizedLabel("DashboardHome", "viewEBill");
 
                             if (isHasNonREAccount && isHasREAccount)
                             {
-                                newStringValue = "View My<br/>Bills / Advices";
+                                newStringValue = Utility.GetLocalizedLabel("DashboardHome", "viewEBillAndAdvice");
                             }
                             else if (isHasREAccount && !isHasNonREAccount)
                             {
-                                newStringValue = "View My<br/>Advice";
+                                newStringValue = Utility.GetLocalizedLabel("DashboardHome", "viewAdvice");
                                 if (isHasMoreThanOneREAccount)
                                 {
                                     newStringValue += "s";

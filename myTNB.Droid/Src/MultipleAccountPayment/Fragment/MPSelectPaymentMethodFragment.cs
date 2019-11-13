@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     .Cancelable(false)
                     .Build();
 
-                ((PaymentActivity)Activity).SetToolBarTitle(TOOL_BAR_TITLE);
+                ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(Arguments.GetString(Constants.SELECTED_ACCOUNT));
                 accountChargeList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(Arguments.GetString("ACCOUNT_CHARGES_LIST"));
                 List <MPAccount> accounts = JsonConvert.DeserializeObject<List<MPAccount>>(Arguments.GetString("PAYMENT_ITEMS"));
@@ -262,6 +262,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
                 TextViewUtils.SetMuseoSans300Typeface(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
+                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
+                lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("Common", "cards");
+                lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM");
+                btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
+
                 //if(selectedAccount != null){
 
                 //    txtTotalAmount.Text = decimalFormat.Format(selectedAccount.AmtCustBal).Replace(",","");
@@ -285,7 +290,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public override void OnResume()
         {
-            ((PaymentActivity)Activity).SetToolBarTitle(TOOL_BAR_TITLE);
+            ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
             base.OnResume();
 
             isClicked = false;

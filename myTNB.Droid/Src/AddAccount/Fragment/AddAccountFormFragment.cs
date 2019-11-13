@@ -137,6 +137,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
+                txtAccountType.Text = Utility.GetLocalizedLabel("Common", "accountType").ToUpper();
+                textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common","accountNo");
+                textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
+                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
+
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
                     , edtOwnersIC
@@ -178,12 +183,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 };
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
+                btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
                     dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.WhereIsMyAccountView, false)
                     .Cancelable(true)
-                    .PositiveText("Got it!")
+                    .PositiveText(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
                     .PositiveColor(Resource.Color.blue)
                     .Build();
 
@@ -196,6 +202,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         {
                             TextViewUtils.SetMuseoSans500Typeface(titleText);
                             TextViewUtils.SetMuseoSans300Typeface(infoText);
+
+                            titleText.Text = Utility.GetLocalizedLabel("AddAccount","whereIsMyAccountTitle");
+                            infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
                         }
                     }
                     dialogWhereMyAccountNo.Show();

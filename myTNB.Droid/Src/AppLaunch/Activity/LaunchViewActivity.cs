@@ -960,10 +960,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             }
 
-            string msg = "Sorry, something went wrong. Please try again later.";
+            string msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
 
             mSomethingWrongExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
-            .SetAction("Ok", delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate
             {
                 mSomethingWrongExceptionSnackBar.Dismiss();
             }

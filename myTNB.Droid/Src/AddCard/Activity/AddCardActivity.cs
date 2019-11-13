@@ -99,6 +99,12 @@ namespace myTNB_Android.Src.AddCard.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtCardNo, txtNameOfCard, txtCardExpDate, txtCVV);
                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutCardNo, textInputLayoutNameOfCard, textInputLayoutCardExpDate, textInputLayoutCVV);
 
+                SetToolBarTitle(Utility.GetLocalizedLabel("AddCard", "title"));
+                txtTitle.Text = Utility.GetLocalizedLabel("AddCard", "acceptedCardsMessage");
+                textInputLayoutCardNo.Hint = Utility.GetLocalizedLabel("AddCard", "cardNumber");
+                textInputLayoutNameOfCard.Hint = Utility.GetLocalizedLabel("AddCard", "nameOnCard");
+                textInputLayoutCardExpDate.Hint = Utility.GetLocalizedLabel("AddCard", "hintCardExpiry");
+                textInputLayoutCVV.Hint = Utility.GetLocalizedLabel("AddCard", "cvv");
 
                 txtCardNo.AddTextChangedListener(new InputFilterCreditCard(txtCardNo));
                 txtCardExpDate.SetFilters(new Android.Text.IInputFilter[] { new InputFilterExpDate(txtCardExpDate), new InputFilterLengthFilter(5) });
@@ -124,6 +130,8 @@ namespace myTNB_Android.Src.AddCard.Activity
                 TextViewUtils.SetMuseoSans300Typeface(saveCard);
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
+                saveCard.Text = Utility.GetLocalizedLabel("AddCard", "saveCardMessage");
+                btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
                 txtCardNo.TextChanged += CardTextChange;
 
                 txtNameOfCard.TextChanged += NameTextChange;

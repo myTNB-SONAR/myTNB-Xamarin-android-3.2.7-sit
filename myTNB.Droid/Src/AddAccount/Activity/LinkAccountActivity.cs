@@ -994,8 +994,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     View view = mAddAccountProgressDialog.View;
                     if (view != null)
                     {
-                        string title = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ? "Adding 1 Account" : string.Format("Adding {0} Accounts", TOTAL_NO_OF_ACCOUNTS_TO_ADD);
-                        string message = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ? "This may take a while as we add your TNB account." : "This may take a while as we add your TNB accounts.";
+                        string title = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ?
+                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccount"), TOTAL_NO_OF_ACCOUNTS_TO_ADD) :
+                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccounts"), TOTAL_NO_OF_ACCOUNTS_TO_ADD);
+                        string message = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ?
+                            Utility.GetLocalizedLabel("AddAccount", "addAccountMsg") :
+                            Utility.GetLocalizedLabel("AddAccount", "addAccountsMsg");
                         TextView titleText = view.FindViewById<TextView>(Resource.Id.txtTitle);
                         TextView infoText = view.FindViewById<TextView>(Resource.Id.txtMessage);
                         titleText.Text = title;
