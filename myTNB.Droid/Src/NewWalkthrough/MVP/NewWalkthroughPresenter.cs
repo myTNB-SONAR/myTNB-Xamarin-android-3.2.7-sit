@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             newWalkthroughList = new List<NewWalkthroughModel>();
 
-            if (false)//!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
+            if (!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
             {
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {

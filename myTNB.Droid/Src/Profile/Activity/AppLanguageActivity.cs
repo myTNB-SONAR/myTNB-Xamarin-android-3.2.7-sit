@@ -147,7 +147,6 @@ namespace myTNB_Android.Src.Profile.Activity
 
         private void UpdateLanguage()
         {
-            LanguageUtil.SetIsLanguageChanged(true);
             savedLanguage = LanguageUtil.GetAppLanguage();
             UpdateLabels();
             EnableDisableButton();

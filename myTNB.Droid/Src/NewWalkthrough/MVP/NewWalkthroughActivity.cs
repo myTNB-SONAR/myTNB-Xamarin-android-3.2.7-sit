@@ -22,6 +22,7 @@ using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
@@ -53,6 +54,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         NewWalkthroughAdapter newWalkthroughAdapter;
 
         string currentAppNavigation;
+        private LoadingOverlay loadingOverlay;
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
@@ -280,6 +282,28 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();
+            DismissProgressDialog();
+        }
+
+        public void ShowProgressDialog()
+        {
+            if (loadingOverlay != null)
+            {
+                loadingOverlay.Show();
+            }
+            else
+            {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+        }
+
+        public void DismissProgressDialog()
+        {
+            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            {
+                loadingOverlay.Dismiss();
+            }
         }
     }
 }

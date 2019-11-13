@@ -26,7 +26,7 @@ namespace myTNB.SitecoreCMS.Service
         internal List<LanguageModel> GetItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.LanguageTimestamp,
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Language,
                 PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
 
             var item = req.Result;
@@ -38,7 +38,7 @@ namespace myTNB.SitecoreCMS.Service
         internal HelpTimeStamp GetTimeStamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.LanguageTimestamp
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Language
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);

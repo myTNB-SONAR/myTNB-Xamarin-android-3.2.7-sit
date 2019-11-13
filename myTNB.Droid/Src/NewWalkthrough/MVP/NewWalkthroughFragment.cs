@@ -15,6 +15,7 @@ using CheeseBind;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
@@ -119,7 +120,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int) DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
-                    
+
                     imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
                     heightRatio = 216f / 250f;
                     imgHeight = (int)(imgWidth * (heightRatio));
@@ -202,6 +203,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
                 {
+                    ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("EN");
                     ((NewWalkthroughActivity)Activity).UpdateContent();
                 }, () =>
@@ -222,6 +224,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
                 {
+                    ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("MS");
                     ((NewWalkthroughActivity)Activity).UpdateContent();
                 }, () =>

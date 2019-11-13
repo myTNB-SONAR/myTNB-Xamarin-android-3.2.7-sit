@@ -17,6 +17,9 @@ using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -448,9 +451,8 @@ namespace myTNB_Android.Src.Login.MVP
                             {
                                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             }
-                            //UserSessions.SavePhoneVerified(mSharedPref, true);
+                            await CheckAppLanguageChange();
                             this.mView.ShowDashboard();
-
                         }
                         if (this.mView.IsActive())
                         {
@@ -570,6 +572,37 @@ namespace myTNB_Android.Src.Login.MVP
         public void Start()
         {
             // NO IMPL
+        }
+
+        private async Task CheckAppLanguageChange()
+        {
+            try
+            {
+                bool IsLanguageChanged = LanguageUtil.IsLanguageChanged();
+                LanguagePreferenceResponse response;
+                AccountApiImpl accountApi = new AccountApiImpl();
+                string appLanguage = LanguageUtil.GetAppLanguage();
+                if (!IsLanguageChanged)
+                {
+                    response = await accountApi.GetLanguagePreference<LanguagePreferenceResponse>(new Base.Request.APIBaseRequest());
+                    if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                    {
+                        if (response.Data.ResponseData != null)
+                        {
+                            if (!string.IsNullOrEmpty(response.Data.ResponseData.lang))
+                            {
+                                appLanguage = response.Data.ResponseData.lang;
+                            }
+                        }
+                    }
+                }
+                await accountApi.SaveLanguagePreference<LanguagePreferenceResponse>(new LanguagePreferenceRequest(appLanguage));
+                LanguageUtil.SaveAppLanguage(appLanguage.ToUpper());
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

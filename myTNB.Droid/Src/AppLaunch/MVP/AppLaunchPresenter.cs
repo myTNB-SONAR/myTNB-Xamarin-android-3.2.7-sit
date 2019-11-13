@@ -91,6 +91,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                    LanguageUtil.SetInitialAppLanguage();
                     LoadAccounts();
                     GetSSMRWalkThrough();
                 }
@@ -174,7 +175,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
                 }, CancellationTokenSourceWrapper.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
-                LanguageUtil.SetInitialAppLanguage();
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
                     if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")

@@ -1,6 +1,14 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Util;
 using myTNB;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SiteCore;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -70,6 +78,7 @@ namespace myTNB_Android.Src.Utils
             }
             UserSessions.SaveAppLanguage(savedLanguage);
             UpdateSavedLanguage(savedLanguage);
+            SetIsLanguageChanged(true);
         }
 
         public static string GetAppLanguage()
@@ -85,42 +94,75 @@ namespace myTNB_Android.Src.Utils
 
 		public static void UpdateSavedLanguage(string selectedLanguage)
 		{
-			LanguageManager.Language language;
-			if (selectedLanguage == "MS")
+
+            string density = DPUtils.GetDeviceDensity(Application.Context);
+            GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());
+            SitecoreCmsEntity.SITE_CORE_ID siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_EN;
+            LanguageManager.Language language = LanguageManager.Language.EN;
+
+            if (selectedLanguage != Constants.DEFAULT_LANG)
 			{
 				language = LanguageManager.Language.MS;
+                siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_MS;
+            }
+
+            string currentTimestamp = SitecoreCmsEntity.GetItemTimestampById(siteCoreLanguageId);
+            string currentLanguageResource = SitecoreCmsEntity.GetItemById(siteCoreLanguageId);
+            string updatedTimestamp;
+            string updatedLanguageResource;
+
+            if (!string.IsNullOrEmpty(currentTimestamp))
+            {
+                updatedTimestamp = GetLanguageTimeStamp(getItemsService);
+                if (currentTimestamp == updatedTimestamp)
+                {
+                    if (!string.IsNullOrEmpty(currentLanguageResource))
+                    {
+                        LanguageManager.Instance.SetLanguage(currentLanguageResource);
+                    }
+                    else
+                    {
+                        updatedLanguageResource = GetUpdatedLanguage(getItemsService);
+                        if (!string.IsNullOrEmpty(updatedLanguageResource))
+                        {
+                            SitecoreCmsEntity.InsertSiteCoreItem(siteCoreLanguageId, updatedLanguageResource, currentTimestamp);
+                            LanguageManager.Instance.SetLanguage(updatedLanguageResource);
+                        }
+                        else
+                        {
+                            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
+                        }
+                    }
+                }
+                else
+                {
+                    updatedLanguageResource = GetUpdatedLanguage(getItemsService);
+                    if (!string.IsNullOrEmpty(updatedLanguageResource))
+                    {
+                        SitecoreCmsEntity.InsertSiteCoreItem(siteCoreLanguageId, updatedLanguageResource, updatedTimestamp);
+                        LanguageManager.Instance.SetLanguage(updatedLanguageResource);
+                    }
+                    else
+                    {
+                        LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
+                    }
+                }
 			}
-			else
-			{
-				language = LanguageManager.Language.EN;
-			}
-
-			//try
-			//{
-			//    string density = DPUtils.GetDeviceDensity(Application.Context);
-			//    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());// SiteCoreConfig.DEFAULT_LANGUAGE);
-			//    //LanguageResponseModel responseModel = getItemsService.GetLanguageItems();
-			//    var timestamp = getItemsService.GetLanguageTimestampItem();
-			//    //SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_URL, JsonConvert.SerializeObject(responseModel.Data), "");
-			//    string content = string.Empty;
-			//    //WebRequest webRequest = WebRequest.Create(responseModel.Data[0].LanguageFile);
-			//    //using (WebResponse response = webRequest.GetResponse())
-			//    //using (Stream responseStream = response.GetResponseStream())
-			//    //using (StreamReader reader = new StreamReader(responseStream))
-			//    //{
-			//    //    content = reader.ReadToEnd();
-			//    //}
-
-			//    //System.Diagnostics.Debug.WriteLine("Content: " + content);
-			//    //LanguageManager.Instance.SetLanguage(content);
-			//}
-			//catch (Exception e)
-			//{
-			//    Utility.LoggingNonFatalError(e);
-			//}
-
-			LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-		}
+            else
+            {
+                updatedLanguageResource = GetUpdatedLanguage(getItemsService);
+                updatedTimestamp = GetLanguageTimeStamp(getItemsService);
+                if (!string.IsNullOrEmpty(updatedLanguageResource))
+                {
+                    SitecoreCmsEntity.InsertSiteCoreItem(siteCoreLanguageId, updatedLanguageResource, updatedTimestamp);
+                    LanguageManager.Instance.SetLanguage(updatedLanguageResource);
+                }
+                else
+                {
+                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
+                }
+            }
+        }
 
         public static void SetInitialAppLanguage()
         {
@@ -137,6 +179,48 @@ namespace myTNB_Android.Src.Utils
         public static bool IsLanguageChanged()
         {
             return UserSessions.GetIsAppLanguageChanged();
+        }
+
+        private static string GetUpdatedLanguage(GetItemsService getItemsService)
+        {
+            string languageItem = string.Empty;
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    LanguageResponseModel responseModel = getItemsService.GetLanguageItems();
+                    WebRequest webRequest = WebRequest.Create(responseModel.Data[0].LanguageFile);
+                    using (WebResponse response = webRequest.GetResponse())
+                    using (Stream responseStream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        languageItem = reader.ReadToEnd();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).Wait();
+            return languageItem;
+        }
+
+        private static string GetLanguageTimeStamp(GetItemsService getItemsService)
+        {
+            string timestamp = string.Empty;
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    LanguageTimeStampResponseModel responseModel = getItemsService.GetLanguageTimestampItem();
+                    timestamp = responseModel.Data[0].Timestamp;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).Wait();
+            return timestamp;
         }
     }
 }

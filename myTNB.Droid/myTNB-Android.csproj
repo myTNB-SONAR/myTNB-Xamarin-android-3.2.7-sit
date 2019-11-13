@@ -3886,6 +3886,10 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_4.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_4.png" />
     <AndroidResource Include="Resources\drawable\InstallWalkthroughForthBg.xml" />
+    <Compile Include="Src\MyTNBService\InterfaceAPI\IAccountAPI.cs" />
+    <Compile Include="Src\MyTNBService\ServiceImpl\AccountApiImpl.cs" />
+    <Compile Include="Src\MyTNBService\Response\LanguagePreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\LanguagePreferenceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4277,6 +4281,8 @@
     <Folder Include="Src\NewAppTutorial\" />
     <Folder Include="Src\NewAppTutorial\MVP\" />
     <Folder Include="Src\NewAppTutorial\Adapter\" />
+    <Folder Include="Src\MyTNBService\Account\" />
+    <Folder Include="Src\MyTNBService\ServiceImpl\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

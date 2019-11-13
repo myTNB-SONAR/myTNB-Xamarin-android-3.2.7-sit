@@ -120,7 +120,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs, txtChangeLanguage);
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
-
                 UpdateLabels();
 
                 GenerateTopLayoutLayout();
@@ -302,13 +301,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
             Utility.ShowChangeLanguageDialog(this, tooltipLanguage, ()=>
             {
                 LanguageUtil.SaveAppLanguage(tooltipLanguage);
-                UpdateLanguage();
+                UpdateLabels();
             });
-        }
-
-        private void UpdateLanguage()
-        {
-            UpdateLabels();
         }
 
         public void ShowPreLoginPromotion(bool success)
