@@ -28,6 +28,7 @@
         public static string IMG_EmpyUsage = "Empty-Usage-Icon";
         public static string IMG_MDMSDownIcon = "MDMS-Down-Icon";
         public static string IMG_MDMSDown = "MDMS-Down";
+        public static string IMG_DPCIndicator = "Dpc-Indicator";
 
         //I18N Keys
         public static string I18N_Usage = "navTitle";

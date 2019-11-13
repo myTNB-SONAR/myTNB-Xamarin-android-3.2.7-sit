@@ -30,6 +30,7 @@ namespace myTNB
         private bool _isOverlayDisplayed;
         private bool _isDataReceived;
         private List<string> _availableTariffBlockIDList = new List<string>();
+        private int _selectedIndex = -1;
 
         protected override void CreatUI()
         {
@@ -339,8 +340,18 @@ namespace myTNB
                 if (bar != null)
                 {
                     UIView viewCover = bar.ViewWithTag(2001);
-                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
                     UIView viewTariff = bar.ViewWithTag(2002);
+
+                    if (_isTariffView && _viewType == SmartMeterConstants.SmartMeterViewType.Month)
+                    {
+                        List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
+                        MonthItemModel item = usageData[i];
+                        if (viewCover != null) { viewCover.Hidden = !item.DPCIndicator; }
+                        if (viewTariff != null) { viewTariff.Hidden = item.DPCIndicator; }
+                    }
+
+                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+
                     if (viewTariff != null)
                     {
                         for (int j = 0; j < viewTariff.Subviews.Count(); j++)
@@ -360,7 +371,16 @@ namespace myTNB
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 if (value != null)
                 {
-                    value.Hidden = isLatestBar ? false : !isSelected;
+                    List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
+                    MonthItemModel item = usageData[i];
+                    if (_consumptionState == RMkWhEnum.RM || (_consumptionState == RMkWhEnum.kWh && !item.DPCIndicator))
+                    {
+                        value.Hidden = isLatestBar ? false : !isSelected;
+                    }
+                    else
+                    {
+                        value.Hidden = true;
+                    }
                 }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
                 if (date != null)
@@ -383,6 +403,7 @@ namespace myTNB
                 }
             }
             OnBarSelected(index);
+            _selectedIndex = index;
 
             if (_viewType == SmartMeterConstants.SmartMeterViewType.Month)
             {
@@ -423,7 +444,7 @@ namespace myTNB
                 {
                     CustomUIView segmentView = scrollview.Subviews[i] as CustomUIView;
                     if (segmentView == null) { continue; }
-                    UpdateTariffView(segmentView);
+                    UpdateTariffView(segmentView, i);
                 }
             }
             else
@@ -432,12 +453,12 @@ namespace myTNB
                 {
                     CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
                     if (segmentView == null) { continue; }
-                    UpdateTariffView(segmentView);
+                    UpdateTariffView(segmentView, i);
                 }
             }
         }
 
-        private void UpdateTariffView(CustomUIView segmentView)
+        private void UpdateTariffView(CustomUIView segmentView, int index)
         {
             nfloat amountBarMargin = GetHeightByScreenSize(4);
             CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
@@ -447,10 +468,23 @@ namespace myTNB
             bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
 
             UIView viewCover = bar.ViewWithTag(2001);
-            if (viewCover != null) { viewCover.Hidden = _isTariffView; }
-
             UIView viewTariff = bar.ViewWithTag(2002);
-            if (viewTariff != null) { viewTariff.Hidden = !_isTariffView; }
+
+            if (_isTariffView)
+            {
+                List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
+                if (index < usageData.Count)
+                {
+                    MonthItemModel item = usageData[index];
+                    if (viewCover != null) { viewCover.Hidden = !usageData[index].DPCIndicator; }
+                    if (viewTariff != null) { viewTariff.Hidden = usageData[index].DPCIndicator; }
+                }
+            }
+            else
+            {
+                if (viewCover != null) { viewCover.Hidden = _isTariffView; }
+                if (viewTariff != null) { viewTariff.Hidden = !_isTariffView; }
+            }
 
             UILabel value = segmentView.ViewWithTag(1002) as UILabel;
             CGRect valueOriginalFrame = new CGRect();
@@ -520,8 +554,24 @@ namespace myTNB
                     string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].AmountTotal.FormatAmountString(usageData[index].Currency)
                         : string.Format(Format_Value, usageData[index].UsageTotal, usageData[index].UsageUnit);
                     UpdateRMKWHValues(segmentView, usageText);
+                    if (usageData[index].DPCIndicator)
+                    {
+                        UpdateDPCIndicator(segmentView);
+                    }
                 }
             }
+        }
+
+        private void UpdateDPCIndicator(CustomUIView segmentView)
+        {
+            bool isSelected = segmentView.Tag == _selectedIndex;
+            CustomUIView viewBar = segmentView.ViewWithTag(1001) as CustomUIView;
+            UIImageView dpcIcon = segmentView.ViewWithTag(1005) as UIImageView;
+            UILabel lblConsumption = segmentView.ViewWithTag(1002) as UILabel;
+            if (viewBar == null || dpcIcon == null || lblConsumption == null) { return; }
+            viewBar.Hidden = _consumptionState == RMkWhEnum.kWh;
+            dpcIcon.Hidden = _consumptionState == RMkWhEnum.RM;
+            lblConsumption.Hidden = _consumptionState == RMkWhEnum.kWh || !isSelected;
         }
 
         private void UpdateRMKWHValues(CustomUIView segmentView, string usageText)

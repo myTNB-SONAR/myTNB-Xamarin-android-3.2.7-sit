@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -124,11 +125,11 @@ namespace myTNB.SmartMeterView
                     {
                         BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                         Tag = 2001,
-                        Hidden = IsTariffView
+                        Hidden = IsTariffView && !item.DPCIndicator
                     };
                     if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
                     viewBar.AddSubview(viewCover);
-                    if (AddTariffBlocks != null)
+                    if (AddTariffBlocks != null && !item.DPCIndicator)
                     {
                         AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
                     }
@@ -173,6 +174,19 @@ namespace myTNB.SmartMeterView
 
                     segment.AddSubviews(new UIView[] { lblConsumption, viewBar, lblDate });
 
+                    UIImageView dpcIcon = new UIImageView();
+                    if (item.DPCIndicator)
+                    {
+                        dpcIcon = new UIImageView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(12) - GetHeightByScreenSize(17), GetScaledWidth(12), GetScaledHeight(12)))
+                        {
+                            Image = UIImage.FromBundle(UsageConstants.IMG_DPCIndicator),
+                            Hidden = true,
+                            Tag = 1005
+                        };
+                        ViewHelper.AdjustFrameSetX(dpcIcon, GetXLocationToCenterObject(GetScaledWidth(12), segment));
+                        segment.AddSubview(dpcIcon);
+                    }
+
                     segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
                         if (OnSegmentTap != null)
@@ -180,15 +194,25 @@ namespace myTNB.SmartMeterView
                             OnSegmentTap.Invoke(index);
                         }
                     }));
-
-                    UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                    if (ConsumptionState == RMkWhEnum.RM || (ConsumptionState == RMkWhEnum.kWh && !item.DPCIndicator))
+                    {
+                        UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                         , () =>
                         {
                             viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
                             lblConsumption.Frame = new CGRect(lblConsumption.Frame.X, amtYLoc, lblConsumption.Frame.Width, lblConsumption.Frame.Height);
                         }
                         , () => { }
-                    );
+                        );
+                    }
+                    else
+                    {
+                        viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
+                        lblConsumption.Frame = new CGRect(lblConsumption.Frame.X, amtYLoc, lblConsumption.Frame.Width, lblConsumption.Frame.Height);
+                        viewBar.Hidden = true;
+                        lblConsumption.Hidden = true;
+                        dpcIcon.Hidden = false;
+                    }
                 }
             }
             if (LoadTariffLegendWithIndex != null)

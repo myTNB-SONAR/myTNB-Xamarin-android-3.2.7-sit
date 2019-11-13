@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -91,7 +92,10 @@ namespace myTNB
                     Hidden = false
                 };
                 viewBar.AddSubview(viewCover);
-                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size);
+                if (!item.DPCIndicator)
+                {
+                    AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size);
+                }
 
                 nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
@@ -121,6 +125,19 @@ namespace myTNB
                 lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
 
                 segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
+
+                UIImageView dpcIcon = new UIImageView();
+                if (item.DPCIndicator)
+                {
+                    dpcIcon = new UIImageView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(12) - GetHeightByScreenSize(17), GetScaledWidth(12), GetScaledHeight(12)))
+                    {
+                        Image = UIImage.FromBundle(UsageConstants.IMG_DPCIndicator),
+                        Hidden = true,
+                        Tag = 1005
+                    };
+                    ViewHelper.AdjustFrameSetX(dpcIcon, GetXLocationToCenterObject(GetScaledWidth(12), segment));
+                    segment.AddSubview(dpcIcon);
+                }
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
@@ -195,8 +212,18 @@ namespace myTNB
                 if (bar != null)
                 {
                     UIView viewCover = bar.ViewWithTag(2001);
-                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
                     UIView viewTariff = bar.ViewWithTag(2002);
+
+                    if (IsTariffView)
+                    {
+                        List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+                        MonthItemModel item = usageData[i];
+                        if (viewCover != null) { viewCover.Hidden = !item.DPCIndicator; }
+                        if (viewTariff != null) { viewTariff.Hidden = item.DPCIndicator; }
+                    }
+
+                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+
                     if (viewTariff != null)
                     {
                         for (int j = 0; j < viewTariff.Subviews.Count(); j++)
@@ -216,7 +243,17 @@ namespace myTNB
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 if (value != null)
                 {
-                    value.Hidden = !isSelected;
+                    List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+                    MonthItemModel item = usageData[i];
+
+                    if (ConsumptionState == RMkWhEnum.RM || (ConsumptionState == RMkWhEnum.kWh && !item.DPCIndicator))
+                    {
+                        value.Hidden = !isSelected;
+                    }
+                    else
+                    {
+                        value.Hidden = true;
+                    }
                 }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
                 if (date != null)
@@ -226,10 +263,12 @@ namespace myTNB
                     date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
             }
+            SelectedIndex = index;
         }
 
         public override void ToggleTariffView(bool isTariffView)
         {
+            IsTariffView = isTariffView;
             nfloat amountBarMargin = GetHeightByScreenSize(4);
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
@@ -241,9 +280,23 @@ namespace myTNB
                 bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
 
                 UIView viewCover = bar.ViewWithTag(2001);
-                if (viewCover != null) { viewCover.Hidden = isTariffView; }
                 UIView viewTariff = bar.ViewWithTag(2002);
-                if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
+
+                if (isTariffView)
+                {
+                    List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+                    if (i < usageData.Count)
+                    {
+                        MonthItemModel item = usageData[i];
+                        if (viewCover != null) { viewCover.Hidden = !usageData[i].DPCIndicator; }
+                        if (viewTariff != null) { viewTariff.Hidden = usageData[i].DPCIndicator; }
+                    }
+                }
+                else
+                {
+                    if (viewCover != null) { viewCover.Hidden = isTariffView; }
+                    if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
+                }
 
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 CGRect valueOriginalFrame = new CGRect();
@@ -269,6 +322,7 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
+            ConsumptionState = state;
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
@@ -280,7 +334,23 @@ namespace myTNB
                     : string.Format(Format_Value, usageData[i].UsageTotal, usageData[i].UsageUnit);
                 nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
                 value.Frame = new CGRect((GetWidthByScreenSize(30) - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
+                if (usageData[i].DPCIndicator)
+                {
+                    UpdateDPCIndicator(segmentView);
+                }
             }
+        }
+
+        private void UpdateDPCIndicator(CustomUIView segmentView)
+        {
+            bool isSelected = segmentView.Tag == SelectedIndex;
+            CustomUIView viewBar = segmentView.ViewWithTag(1001) as CustomUIView;
+            UIImageView dpcIcon = segmentView.ViewWithTag(1005) as UIImageView;
+            UILabel lblAmount = segmentView.ViewWithTag(1002) as UILabel;
+            if (viewBar == null || dpcIcon == null || lblAmount == null) { return; }
+            viewBar.Hidden = ConsumptionState == RMkWhEnum.kWh;
+            dpcIcon.Hidden = ConsumptionState == RMkWhEnum.RM;
+            lblAmount.Hidden = ConsumptionState == RMkWhEnum.kWh || !isSelected;
         }
     }
 }
