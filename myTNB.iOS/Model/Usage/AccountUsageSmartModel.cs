@@ -28,6 +28,7 @@ namespace myTNB.Model.Usage
                 return ErrorCode == "7201";
             }
         }
+        public string CTA { set; get; }
     }
 
     public class AccountUsageSmartDataModel

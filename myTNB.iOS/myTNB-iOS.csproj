@@ -1083,8 +1083,6 @@
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\Contents.json" />
@@ -1247,6 +1245,8 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
