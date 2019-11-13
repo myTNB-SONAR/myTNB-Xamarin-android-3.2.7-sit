@@ -1782,7 +1782,6 @@
     <Compile Include="Login\Forgot Password\ResetPasswordViewController.designer.cs">
       <DependentUpon>ResetPasswordViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\NewUserModel.cs" />
     <Compile Include="Model\NewUserResponseModel.cs" />
     <Compile Include="Sitecore CMS\Extensions\SitecoreItemExtensions.cs" />
     <Compile Include="Sitecore CMS\Service\FullRTEPagesService.cs" />
@@ -1873,8 +1872,6 @@
     <Compile Include="Model\RegistrationTokenSMSResponseModel.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="UserInfoViewController.cs" />
-    <Compile Include="Model\RegisteredCardsDataModel.cs" />
-    <Compile Include="Model\RegisteredCardsModel.cs" />
     <Compile Include="Model\RegisteredCardsResponseModel.cs" />
     <Compile Include="Home\More\MoreDataSource.cs" />
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.cs" />
@@ -2067,10 +2064,7 @@
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeModel.cs" />
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackResponseModel.cs" />
-    <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsDataModel.cs" />
-    <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsResponseModel.cs" />
-    <Compile Include="Model\GetSubmittedFeedbackDetails\FeedbackImageModel.cs" />
     <Compile Include="Enums\FeedBackEnum.cs" />
     <Compile Include="Helpers\ScrollViewDelegate.cs" />
     <Compile Include="Helpers\LabelHelper.cs" />

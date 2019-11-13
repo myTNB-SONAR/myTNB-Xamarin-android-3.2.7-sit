@@ -33,5 +33,8 @@
         //Image
         public static string IMG_CheckboxActive = "Payment-Checkbox-Active";
         public static string IMG_CheckboxInactive = "Payment-Checkbox-Inactive";
+
+        //Service
+        public static string Service_GetRegisteredCards = "GetRegisteredCards";
     }
 }

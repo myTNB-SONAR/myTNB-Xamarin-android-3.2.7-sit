@@ -24,35 +24,11 @@ namespace myTNB.DataManager
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = emailAddress
+                    serviceManager.usrInf,
+                    isOwnedAccount = true
                 };
                 DataManager.SharedInstance.RegisteredCards = serviceManager
-                    .OnExecuteAPI<RegisteredCardsResponseModel>("GetRegisteredCards", requestParameter);
-            });
-        }
-
-        /// <summary>
-        /// Gets the customer billing account list.
-        /// </summary>
-        /// <returns>The customer billing account list.</returns>
-        public static Task GetCustomerBillingAccountList()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                var userId = string.Empty;
-                if (DataManager.SharedInstance.UserEntity?.Count > 0)
-                {
-                    userId = DataManager.SharedInstance.UserEntity[0].userID;
-                }
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    userID = userId
-                };
-                DataManager.SharedInstance.CustomerAccounts =
-                serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("GetCustomerBillingAccountList", requestParameter);
+                    .OnExecuteAPIV6<RegisteredCardsResponseModel>("GetRegisteredCards", requestParameter);
             });
         }
 

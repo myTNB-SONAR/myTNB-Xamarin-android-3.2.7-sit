@@ -95,7 +95,7 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 if (_feedbackDetails != null && _feedbackDetails.d != null
-                                   && _feedbackDetails.d.data != null && _feedbackDetails.d.isError.Equals("false"))
+                                   && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess)
                                 {
                                     _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
                                     _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
@@ -112,7 +112,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, _feedbackDetails?.d?.message);
+                                    DisplayServiceError(_feedbackDetails.d.ErrorMessage);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -120,7 +120,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -133,10 +133,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
                     serviceReqNo = serviceReq
                 };
-                _feedbackDetails = serviceManager.OnExecuteAPI<SubmittedFeedbackDetailsResponseModel>("GetSubmittedFeedbackDetails", requestParameter);
+                _feedbackDetails = serviceManager.OnExecuteAPIV6<SubmittedFeedbackDetailsResponseModel>(FeedbackConstants.Service_GetSubmittedFeedbackDetails, requestParameter);
             });
         }
     }

@@ -17,12 +17,10 @@ namespace myTNB
 {
     public partial class SelectPaymentMethodViewController : CustomUIViewController
     {
-        public SelectPaymentMethodViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public SelectPaymentMethodViewController(IntPtr handle) : base(handle) { }
 
-        RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        TitleBarComponent titleBarComponent;
+        private RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
+        private TitleBarComponent titleBarComponent;
         public double TotalAmount = 0.00;
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public List<CustomerAccountRecordModel> AccountsForPayment = new List<CustomerAccountRecordModel>();
@@ -172,10 +170,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email  //"rohanbomle@gmail.com" //For Testing
+                    serviceManager.usrInf,
+                    isOwnedAccount = true
                 };
-                _registeredCards = serviceManager.OnExecuteAPI<RegisteredCardsResponseModel>("GetRegisteredCards", requestParameter);
+                _registeredCards = serviceManager.OnExecuteAPIV6<RegisteredCardsResponseModel>(PaymentConstants.Service_GetRegisteredCards, requestParameter);
             });
         }
 

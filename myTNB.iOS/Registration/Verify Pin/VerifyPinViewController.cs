@@ -425,7 +425,7 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayServiceError(_smsToken?.d?.message ?? string.Empty);
+                            DisplayServiceError(_smsToken?.d?.ErrorMessage ?? string.Empty);
                         }
                     }
                 });
@@ -444,9 +444,7 @@ namespace myTNB.Registration
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (_smsToken != null && _smsToken?.d != null
-                                    && _smsToken?.d?.didSucceed == true
-                                    && _smsToken?.d?.status?.ToLower() == "success")
+                                if (_smsToken != null && _smsToken?.d != null && _smsToken.d.IsSuccess)
                                 {
                                     ShowViewPinSent();
                                     CreateResendView();
@@ -454,7 +452,7 @@ namespace myTNB.Registration
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_smsToken?.d?.message ?? string.Empty);
+                                    DisplayServiceError(_smsToken?.d?.ErrorMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -577,7 +575,7 @@ namespace myTNB.Registration
                     if (_registerAccountList != null && _registerAccountList?.d != null)
                     {
                         NewUserModel newUser = _registerAccountList?.d;
-                        if (newUser?.didSucceed == true && newUser?.status?.ToLower() == "success")
+                        if (newUser.IsSuccess)
                         {
                             ExecuteLoginCall();
                         }
@@ -587,14 +585,14 @@ namespace myTNB.Registration
                             //DataManager.DataManager.SharedInstance.User.ICNo = DataManager.DataManager.SharedInstance.User.ICNo;
                             //ExecuteLoginCall();
 
-                            DisplayServiceError(newUser?.message ?? string.Empty);
+                            DisplayServiceError(newUser?.ErrorMessage ?? string.Empty);
                             ClearTokenField();
                             ActivityIndicator.Hide();
                         }
                     }
                     else
                     {
-                        DisplayServiceError(_registerAccountList?.d?.message ?? string.Empty);
+                        DisplayServiceError(_registerAccountList?.d?.ErrorMessage ?? string.Empty);
                         ClearTokenField();
                         ActivityIndicator.Hide();
                     }
@@ -607,25 +605,38 @@ namespace myTNB.Registration
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                   ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = AppVersionHelper.GetBuildVersion(),
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.DEVICE_PLATFORM_IOS,
-                    deviceVersion = DeviceHelper.GetOSVersion(),
-                    deviceCordova = TNBGlobal.API_KEY_ID,
+                    usrInf = new
+                    {
+                        eid = DataManager.DataManager.SharedInstance.User.Email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    deviceInf = new
+                    {
+                        DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                        AppVersion = AppVersionHelper.GetAppShortVersion(),
+                        OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                        OsVersion = DeviceHelper.GetOSVersion(),
+                        DeviceDesc = TNBGlobal.APP_LANGUAGE
+                    },
                     displayName = DataManager.DataManager.SharedInstance.User.DisplayName,
                     username = DataManager.DataManager.SharedInstance.User.Email,
-                    email = DataManager.DataManager.SharedInstance.User.Email,
                     token = _token,
                     password = DataManager.DataManager.SharedInstance.User.Password,
-                    confirmPassword = DataManager.DataManager.SharedInstance.User.Password,
                     icNo = DataManager.DataManager.SharedInstance.User.ICNo,
                     mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo
                 };
-                _registerAccountList = serviceManager.OnExecuteAPI<NewUserResponseModel>("CreateNewUserWithToken", requestParameter);
+                _registerAccountList = serviceManager.OnExecuteAPIV6<NewUserResponseModel>(RegisterConstants.Service_CreateNewUserWithToken, requestParameter);
             });
         }
 

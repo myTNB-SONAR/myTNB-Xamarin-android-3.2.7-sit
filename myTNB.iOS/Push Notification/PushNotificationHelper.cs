@@ -172,7 +172,8 @@ namespace myTNB
 
                 //UserNotificationManager.SetData();
                 //_userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
-                _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>("GetUserNotifications", requestParameter);
+                _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotifications, requestParameter);
             });
         }
         /// <summary>
@@ -186,9 +187,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID
+                    serviceManager.usrInf
                 };
-                NotificationTypeResponseModel response = serviceManager.OnExecuteAPI<NotificationTypeResponseModel>("GetAppNotificationTypes", requestParameter);
+                NotificationTypeResponseModel response = serviceManager.OnExecuteAPI<NotificationTypeResponseModel>
+                    (PushNotificationConstants.Service_GetAppNotificationTypes, requestParameter);
                 DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
                 NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel
                 {

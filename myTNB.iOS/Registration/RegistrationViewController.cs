@@ -621,22 +621,15 @@ namespace myTNB.Registration
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_smsToken != null && _smsToken.d != null)
+                    if (_smsToken != null && _smsToken.d != null && _smsToken.d.IsSuccess)
                     {
-                        if (_smsToken.d.isError.Equals("false") && _smsToken.d.status.Equals("success"))
-                        {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                            VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
-                            NavigationController.PushViewController(viewController, true);
-                        }
-                        else
-                        {
-                            DisplayServiceError(_smsToken?.d?.message ?? string.Empty);
-                        }
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+                        VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
+                        NavigationController.PushViewController(viewController, true);
                     }
                     else
                     {
-                        DisplayServiceError(_smsToken?.d?.message ?? string.Empty);
+                        DisplayServiceError(_smsToken?.d?.ErrorMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -648,9 +641,30 @@ namespace myTNB.Registration
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                   ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    usrInf = new
+                    {
+                        eid = DataManager.DataManager.SharedInstance.User.Email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    deviceInf = new
+                    {
+                        DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                        AppVersion = AppVersionHelper.GetAppShortVersion(),
+                        OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                        OsVersion = DeviceHelper.GetOSVersion(),
+                        DeviceDesc = TNBGlobal.APP_LANGUAGE
+                    },
                     ipAddress = TNBGlobal.API_KEY_ID,
                     clientType = TNBGlobal.API_KEY_ID,
                     activeUserName = TNBGlobal.API_KEY_ID,
@@ -661,7 +675,7 @@ namespace myTNB.Registration
                     userEmail = _eMail,
                     mobileNo = _mobileNo
                 };
-                _smsToken = serviceManager.OnExecuteAPI<RegistrationTokenSMSResponseModel>(
+                _smsToken = serviceManager.OnExecuteAPIV6<RegistrationTokenSMSResponseModel>(
                     RegisterConstants.Service_SendRegistrationTokenSMS, requestParameter);
             });
         }

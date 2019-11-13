@@ -40,5 +40,6 @@
 
         public static string Service_GetSubmittedFeedbackList = "GetSubmittedFeedbackList";
         public static string Service_SubmitFeedback = "SubmitFeedback";
+        public static string Service_GetSubmittedFeedbackDetails = "GetSubmittedFeedbackDetails";
     }
 }

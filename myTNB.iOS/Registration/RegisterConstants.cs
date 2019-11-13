@@ -9,6 +9,7 @@
         public static string I18N_CTATitle = "ctaTitle";
         public static string I18N_ConfirmEmail = "confirmEmail";
 
-        public static string Service_SendRegistrationTokenSMS = "SendRegistrationTokenSMS_V2";
+        public static string Service_SendRegistrationTokenSMS = "SendRegistrationTokenSMS";
+        public static string Service_CreateNewUserWithToken = "CreateNewUserWithToken";
     }
 }
