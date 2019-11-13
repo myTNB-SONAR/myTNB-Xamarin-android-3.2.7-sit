@@ -114,34 +114,39 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns>The update phone token sms.</returns>
         /// <param name="mobileNumber">Mobile number.</param>
-        public static async Task<BaseResponseModel> SendUpdatePhoneTokenSMS(string mobileNumber)
+        public static async Task<BaseResponseModelV2> SendUpdatePhoneTokenSMS(string mobileNumber)
         {
             ServiceManager serviceManager = new ServiceManager();
-            BaseResponseModel response;
-            var userId = string.Empty;
-            var emailAddress = string.Empty;
+            BaseResponseModelV2 response;
+            string userId = string.Empty;
+            string emailAddress = string.Empty;
             if (DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 userId = DataManager.SharedInstance.UserEntity[0].userID;
                 emailAddress = DataManager.SharedInstance.UserEntity[0].email;
             }
+            string fcmToken = DataManager.SharedInstance.FCMToken != null
+                ? DataManager.SharedInstance.FCMToken : string.Empty;
             object requestParameter = new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                ipAddress = TNBGlobal.API_KEY_ID,
-                clientType = TNBGlobal.API_KEY_ID,
-                activeUserName = TNBGlobal.API_KEY_ID,
-                devicePlatform = TNBGlobal.API_KEY_ID,
-                deviceVersion = TNBGlobal.API_KEY_ID,
-                deviceCordova = TNBGlobal.API_KEY_ID,
-                username = emailAddress,
-                userEmail = emailAddress,
+                usrInf = new
+                {
+                    eid = emailAddress,
+                    sspuid = DataManager.SharedInstance.User.UserID,
+                    did = DataManager.SharedInstance.UDID,
+                    ft = fcmToken,
+                    lang = TNBGlobal.APP_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                },
                 mobileNo = mobileNumber,
-                sspUserId = userId
+                updateEvent = string.Empty
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.BaseServiceCall("SendUpdatePhoneTokenSMS", requestParameter);
+                return serviceManager.BaseServiceCallV6("SendUpdatePhoneTokenSMS", requestParameter);
             });
 
             return response;
@@ -154,24 +159,35 @@ namespace myTNB.DataManager
         /// <param name="mobileNumber">Mobile number.</param>
         /// <param name="tokenStr">Token string.</param>
         /// <param name="isFromLogin">If set to <c>true</c> is from login.</param>
-        public static async Task<BaseResponseModel> UpdatePhoneNumber(string mobileNumber, string tokenStr, bool isFromLogin)
+        public static async Task<BaseResponseModelV2> UpdatePhoneNumber(string mobileNumber, string tokenStr, bool isFromLogin)
         {
-            BaseResponseModel response;
+            BaseResponseModelV2 response;
             ServiceManager serviceManager = new ServiceManager();
-            var userId = string.Empty;
-            var emailAddress = string.Empty;
-            var phoneNumber = string.Empty;
+            string userId = string.Empty;
+            string emailAddress = string.Empty;
+            string phoneNumber = string.Empty;
             if (DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 userId = DataManager.SharedInstance.UserEntity[0].userID;
                 emailAddress = DataManager.SharedInstance.UserEntity[0].email;
                 phoneNumber = DataManager.SharedInstance.UserEntity[0].mobileNo;
             }
+            string fcmToken = DataManager.SharedInstance.FCMToken != null
+                  ? DataManager.SharedInstance.FCMToken : string.Empty;
             object requestParameter = new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                sspUserId = userId,
-                email = emailAddress,
+                usrInf = new
+                {
+                    eid = emailAddress,
+                    sspuid = userId,
+                    did = DataManager.SharedInstance.UDID,
+                    ft = fcmToken,
+                    lang = TNBGlobal.APP_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                },
                 oldPhoneNumber = isFromLogin ? string.Empty : phoneNumber,
                 newPhoneNumber = mobileNumber,
                 token = tokenStr
@@ -179,7 +195,7 @@ namespace myTNB.DataManager
 
             response = await Task.Run(() =>
             {
-                return serviceManager.BaseServiceCall("UpdatePhoneNumber_v2", requestParameter);
+                return serviceManager.BaseServiceCallV6("UpdatePhoneNumber", requestParameter);
             });
 
             return response;

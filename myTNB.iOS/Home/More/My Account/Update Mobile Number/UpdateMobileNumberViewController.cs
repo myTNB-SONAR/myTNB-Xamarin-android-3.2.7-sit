@@ -273,7 +273,7 @@ namespace myTNB
             {
                 ActivityIndicator.Show();
                 _mobileNo = txtFieldMobileNo.Text.Replace(" ", string.Empty);
-                BaseResponseModel response = await ServiceCall.SendUpdatePhoneTokenSMS(_mobileNo);
+                BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMS(_mobileNo);
 
                 if (ServiceCall.ValidateBaseResponse(response))
                 {
@@ -287,7 +287,7 @@ namespace myTNB
                 }
                 else
                 {
-                    DisplayServiceError(response?.d?.message ?? string.Empty);
+                    DisplayServiceError(response?.d?.ErrorMessage ?? string.Empty);
                     ActivityIndicator.Hide();
                 }
             };

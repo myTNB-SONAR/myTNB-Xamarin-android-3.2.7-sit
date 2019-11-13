@@ -286,7 +286,7 @@ namespace myTNB.Registration
                                 }
                                 else
                                 {
-                                    BaseResponseModel response = await ServiceCall.UpdatePhoneNumber(_mobileNo, _token, IsFromLogin);
+                                    BaseResponseModelV2 response = await ServiceCall.UpdatePhoneNumber(_mobileNo, _token, IsFromLogin);
 
                                     if (response?.d?.didSucceed == true)
                                     {
@@ -320,7 +320,7 @@ namespace myTNB.Registration
                                         _isTokenInvalid = true;
                                         IsPinInvalid();
                                         UpdateTextFieldColor();
-                                        DisplayServiceError(response?.d?.message ?? string.Empty);
+                                        DisplayServiceError(response?.d?.ErrorMessage ?? string.Empty);
                                         ActivityIndicator.Hide();
                                     }
                                 }
@@ -416,8 +416,8 @@ namespace myTNB.Registration
                     if (!string.IsNullOrEmpty(mobileNo))
                     {
                         ClearTokenField();
-                        BaseResponseModel response = await ServiceCall.SendUpdatePhoneTokenSMS(mobileNo);
-                        if (response?.d?.didSucceed == true)
+                        BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMS(mobileNo);
+                        if (response != null && response.d != null && response.d.IsSuccess)
                         {
                             ShowViewPinSent();
                             CreateResendView();
