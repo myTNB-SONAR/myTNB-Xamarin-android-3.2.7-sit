@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         private Snackbar mSnackBar;
 
-        
+
 
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -121,7 +121,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 };
 
-                
+
 
                 this.userActionsListener.Start();
             }
@@ -301,7 +301,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowSuccess(string message)
         {
-           
+
             if (mSnackBar != null && mSnackBar.IsShown)
             {
                 mSnackBar.Dismiss();
@@ -325,10 +325,10 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             tv.SetMaxLines(5);
             mSnackBar.Show();
 
-            
-            
 
-            
+
+
+
 
         }
 
@@ -433,7 +433,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_cancelled_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -459,7 +459,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_api_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -484,7 +484,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_unknown_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();

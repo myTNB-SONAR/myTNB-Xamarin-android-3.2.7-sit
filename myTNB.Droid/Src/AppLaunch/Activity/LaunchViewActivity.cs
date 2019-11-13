@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 else
                 {
                     mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_http_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_http_exception_btn_retry), delegate
+                    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
                         mApiExcecptionSnackBar.Dismiss();
@@ -200,7 +200,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 else
                 {
                     mUnknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_unknown_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_unknown_exception_btn_retry), delegate
+                    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
                         mUnknownExceptionSnackBar.Dismiss();
@@ -895,7 +895,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     int secondMilli = 0;
                                     try
                                     {
-                                        secondMilli = (int) (float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000); 
+                                        secondMilli = (int) (float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
                                     }
                                     catch (Exception nea)
                                     {

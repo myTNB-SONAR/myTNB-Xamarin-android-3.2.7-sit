@@ -112,6 +112,25 @@ namespace myTNB_Android.Src.Utils
         }
 
         /// <summary>
+        /// Gets the Common labels by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedCommonLabel(string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetCommonValuePairs()[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        /// <summary>
         /// Gets the tooltip selector based on selected language.
         /// </summary>
         /// <param name="pageId"></param>

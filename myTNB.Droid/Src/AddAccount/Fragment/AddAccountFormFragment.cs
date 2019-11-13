@@ -469,8 +469,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -488,7 +488,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_api_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -512,7 +512,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_unknown_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mUknownExceptionSnackBar.Dismiss();
             }

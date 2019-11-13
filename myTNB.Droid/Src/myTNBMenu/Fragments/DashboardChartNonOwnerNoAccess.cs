@@ -593,7 +593,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
                     mCancelledExceptionSnackBar.Dismiss();
@@ -619,7 +619,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
                     mApiExcecptionSnackBar.Dismiss();
@@ -645,7 +645,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
                     mUknownExceptionSnackBar.Dismiss();

@@ -978,7 +978,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             mMyServiceRetrySnakebar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.my_service_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mMyServiceRetrySnakebar.Dismiss();

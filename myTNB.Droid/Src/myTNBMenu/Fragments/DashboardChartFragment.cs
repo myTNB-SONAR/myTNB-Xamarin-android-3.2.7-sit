@@ -5806,7 +5806,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 mDisconnectionSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
                     mDisconnectionSnackbar.Dismiss();
@@ -5833,7 +5833,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 mSMRSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
                     mSMRSnackbar.Dismiss();

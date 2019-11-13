@@ -121,14 +121,14 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
-        
+
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
             try
             {
 
-             
+
 
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
@@ -172,11 +172,11 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
                 this.DisableSubmitButton();
                 this.ClearErrorMessages();
-                
+
                 // validation new password
                 if (!string.IsNullOrEmpty(newPassword))
                 {
-                    
+
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
                     txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
                     txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                         this.ClearErrorMessages();
                         this.EnableSubmitButton();
                     }
-                    
+
                 }
                 else
                 {
@@ -354,7 +354,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_cancelled_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -375,7 +375,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_api_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -401,7 +401,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_unknown_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();

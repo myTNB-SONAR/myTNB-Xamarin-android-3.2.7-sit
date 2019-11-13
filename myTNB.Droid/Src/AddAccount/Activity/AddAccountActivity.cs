@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override string ToolbarTitle()
         {
-            return GetString(Resource.String.add_electricity_account_title);
+            return Utility.GetLocalizedLabel("AddAccount","title");
         }
 
         public override void OnTrimMemory(TrimMemory level)
