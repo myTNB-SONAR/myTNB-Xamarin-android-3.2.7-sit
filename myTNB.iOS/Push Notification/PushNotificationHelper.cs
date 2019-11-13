@@ -220,12 +220,11 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID
+                    serviceManager.usrInf
                 };
                 DataManager.DataManager.SharedInstance.NotificationTypeResponse =
-                serviceManager.OnExecuteAPI<NotificationTypeResponseModel>("GetUserNotificationTypePreferences", requestParameter);
+                serviceManager.OnExecuteAPIV6<NotificationTypeResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotificationTypePreferences, requestParameter);
             });
         }
 
@@ -236,11 +235,11 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                    serviceManager.usrInf
                 };
                 DataManager.DataManager.SharedInstance.NotificationChannelResponse =
-                serviceManager.OnExecuteAPI<NotificationChannelResponseModel>("GetUserNotificationChannelPreferences", requestParameter);
+                serviceManager.OnExecuteAPIV6<NotificationChannelResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotificationChannelPreferences, requestParameter);
             });
         }
 

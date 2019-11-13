@@ -223,12 +223,10 @@ namespace myTNB
             PushNotificationHelper.GetUserNotificationPreferences();
             if (DataManager.DataManager.SharedInstance.NotificationTypeResponse != null
                 && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d != null
-                && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.status == "success"
-                && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == true
+                && DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.IsSuccess
                 && DataManager.DataManager.SharedInstance.NotificationChannelResponse != null
                 && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d != null
-                && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.status == "success"
-                && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.didSucceed == true)
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.IsSuccess)
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("NotificationSettings", null);
                 NotificationSettingsViewController viewController = storyBoard.InstantiateViewController("NotificationSettingsViewController") as NotificationSettingsViewController;
@@ -241,14 +239,14 @@ namespace myTNB
             {
                 string errorMessage = GetErrorI18NValue(Constants.Error_DefaultErrorMessage);
                 if (DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == false
-                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.message))
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.ErrorMessage))
                 {
-                    errorMessage = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.message;
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.ErrorMessage;
                 }
                 else if (DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.didSucceed == false
-                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message))
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.ErrorMessage))
                 {
-                    errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message;
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.ErrorMessage;
                 }
                 DisplayServiceError(errorMessage);
                 ActivityIndicator.Hide();

@@ -28,5 +28,8 @@
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";
+
+        public static string Service_SaveNotificationType = "SaveUserNotificationTypePreference";
+        public static string Service_SaveNotificationChannel = "SaveUserNotificationChannelPreference";
     }
 }
