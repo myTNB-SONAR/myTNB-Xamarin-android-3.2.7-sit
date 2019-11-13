@@ -228,22 +228,21 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns>The rate us questions.</returns>
         /// <param name="questionCategory">Question category.</param>
-        public static async Task<FeedbackQuestionRequestModel> GetRateUsQuestions(QuestionCategoryEnum questionCategory)
+        public static async Task<FeedbackQuestionResponseModel> GetRateUsQuestions(QuestionCategoryEnum questionCategory)
         {
-            FeedbackQuestionRequestModel questionResponse = null;
+            FeedbackQuestionResponseModel questionResponse = null;
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
-                ApiKeyID = TNBGlobal.API_KEY_ID,
+                serviceManager.usrInf,
                 QuestionCategoryId = (int)questionCategory
             };
             questionResponse = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPIV2<FeedbackQuestionRequestModel>("GetRateUsQuestions", requestParameter);
+                return serviceManager.OnExecuteAPIV6<FeedbackQuestionResponseModel>("GetRateUsQuestions", requestParameter);
             });
 
             return questionResponse;
-
         }
 
         /// <summary>
@@ -339,14 +338,11 @@ namespace myTNB.DataManager
 
             object requestParameter = new
             {
-                ApiKeyID = TNBGlobal.API_KEY_ID,
-                SSPUserID = sspId,
-                Email = userEmail,
-                DeviceID = DataManager.SharedInstance.UDID
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPIV2<PhoneVerificationStatusResponseModel>("GetPhoneVerifyStatus", requestParameter);
+                return serviceManager.OnExecuteAPIV6<PhoneVerificationStatusResponseModel>("GetPhoneVerifyStatus", requestParameter);
             });
 
             return response;

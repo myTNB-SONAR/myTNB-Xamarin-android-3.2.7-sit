@@ -23,5 +23,6 @@
         //Service
         public static string Service_ResetPasswordWithToken = "ResetPasswordWithToken";
         public static string Service_SendResetPasswordCode = "SendResetPasswordCode";
+        public static string Service_ChangeNewPassword = "ChangeNewPassword";
     }
 }

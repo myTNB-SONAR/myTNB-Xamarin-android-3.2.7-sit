@@ -4,6 +4,16 @@ using Newtonsoft.Json;
 
 namespace myTNB.Model
 {
+    public class FeedbackQuestionResponseModel
+    {
+        public FeedbackQuestionDataModel d { set; get; }
+    }
+
+    public class FeedbackQuestionDataModel : BaseModelV2
+    {
+        public List<FeedbackQuestionModel> data { set; get; }
+    }
+
     public class FeedbackQuestionModel
     {
         string _isActive;

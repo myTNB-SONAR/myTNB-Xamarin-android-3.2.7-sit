@@ -2133,8 +2133,6 @@
     </Compile>
     <Compile Include="Sitecore CMS\Service\PromotionsV2Service.cs" />
     <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
-    <Compile Include="Model\Feedback\FeedbackQuestionRequestModel.cs" />
-    <Compile Include="Model\Feedback\FeedbackQuestionModel.cs" />
     <Compile Include="Model\Feedback\QuestionInputOption.cs" />
     <Compile Include="Enums\QuestionTypeEnum.cs" />
     <Compile Include="Enums\QuestionCategoryEnum.cs" />
@@ -2178,7 +2176,6 @@
       <DependentUpon>ReceiptTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PhoneVerificationStatusResponseModel.cs" />
-    <Compile Include="Model\PhoneVerificationStatusDataModel.cs" />
     <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
@@ -2545,6 +2542,7 @@
     <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
     <Compile Include="Components\Tutorial Overlay\UsageSSMRTutorialOverlay.cs" />
     <Compile Include="Model\Language\LanguageResponseModel.cs" />
+    <Compile Include="Model\Feedback\FeedbackQuestionResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

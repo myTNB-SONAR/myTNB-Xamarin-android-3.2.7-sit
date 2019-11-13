@@ -988,16 +988,15 @@ namespace myTNB
         /// <returns>The phone is verified.</returns>
         private async Task<bool> GetPhoneVerificationStatus()
         {
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             bool isVerified = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.PhoneVerification);
 
             if (!isVerified)
             {
-                var response = await ServiceCall.GetPhoneVerificationStatus();
-
-                if (response?.didSucceed == true && response?.data != null)
+                PhoneVerificationStatusResponseModel response = await ServiceCall.GetPhoneVerificationStatus();
+                if (response != null && response.d != null && response.d.IsSuccess)
                 {
-                    isVerified = response.data.IsVerified;
+                    isVerified = response.d.data.IsVerified;
 
                     if (isVerified)
                     {

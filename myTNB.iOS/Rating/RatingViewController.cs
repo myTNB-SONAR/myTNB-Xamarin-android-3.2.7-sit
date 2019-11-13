@@ -154,11 +154,11 @@ namespace myTNB
         private async Task LoadQuestions()
         {
             ActivityIndicator.Show();
-            FeedbackQuestionRequestModel response = await ServiceCall.GetRateUsQuestions(QuestionCategoryEnum.Payment);
+            FeedbackQuestionResponseModel response = await ServiceCall.GetRateUsQuestions(QuestionCategoryEnum.Payment);
 
-            if (response.didSucceed)
+            if (response != null && response.d != null && response.d.IsSuccess && response.d.data != null)
             {
-                displayedQuestions = response.FeedbackQuestions?.FindAll(x => x.Active);
+                displayedQuestions = response.d.data.FindAll(x => x.Active);
                 tableViewRating.Source = new RatingDataSource(displayedQuestions, Rating);
                 tableViewRating.ReloadData();
                 AddSubmitButton();

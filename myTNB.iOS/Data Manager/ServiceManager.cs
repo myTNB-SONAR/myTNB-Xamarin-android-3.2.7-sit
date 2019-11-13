@@ -10,11 +10,6 @@ namespace myTNB
 {
     public class ServiceManager
     {
-        public BaseResponseModel BaseServiceCall(string suffix, object requestParams)
-        {
-            return OnExecuteAPI<BaseResponseModel>(suffix, requestParams);
-        }
-
         public BaseResponseModelV2 BaseServiceCallV6(string suffix, object requestParams)
         {
             return OnExecuteAPIV6<BaseResponseModelV2>(suffix, requestParams);

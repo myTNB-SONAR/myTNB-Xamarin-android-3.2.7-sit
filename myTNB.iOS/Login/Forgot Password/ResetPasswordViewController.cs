@@ -10,9 +10,7 @@ namespace myTNB.Login.ForgotPassword
 {
     public partial class ResetPasswordViewController : CustomUIViewController
     {
-        public ResetPasswordViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public ResetPasswordViewController(IntPtr handle) : base(handle) { }
 
         public string _username = string.Empty;
         public string _currentPassword = string.Empty;
@@ -25,7 +23,7 @@ namespace myTNB.Login.ForgotPassword
         private UIView viewLinePassword, viewLineConfirmPassword, viewShowConfirmPassword, viewShowPassword;
 
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        private BaseResponseModel _changePasswordList = new BaseResponseModel();
+        private BaseResponseModelV2 _changePasswordList = new BaseResponseModelV2();
         const string PASSWORD_PATTERN = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
 
         public override void ViewDidLoad()
@@ -350,7 +348,7 @@ namespace myTNB.Login.ForgotPassword
             UIStoryboard storyBoard = UIStoryboard.FromName("Login", null);
             LoginViewController viewController =
                 storyBoard.InstantiateViewController("LoginViewController") as LoginViewController;
-            this.DismissViewController(true, null);
+            DismissViewController(true, null);
         }
 
         private void ExecuteChangePasswordCall()
@@ -376,7 +374,7 @@ namespace myTNB.Login.ForgotPassword
                     }
                     else
                     {
-                        DisplayServiceError(_changePasswordList?.d?.message ?? string.Empty);
+                        DisplayServiceError(_changePasswordList?.d?.ErrorMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -390,20 +388,12 @@ namespace myTNB.Login.ForgotPassword
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = _username,
-                    email = _username,
+                    serviceManager.usrInf,
                     currentPassword = _currentPassword,
                     newPassword = _password,
                     confirmNewPassword = _confirmPassword
                 };
-                _changePasswordList = serviceManager.BaseServiceCall("ChangeNewPassword", requestParameter);
+                _changePasswordList = serviceManager.BaseServiceCallV6(ForgotPasswordConstants.Service_ChangeNewPassword, requestParameter);
             });
         }
     }
