@@ -1,5 +1,5 @@
 Sprint 2 SIT Build
 
-[Task] Added Tariff Legend Note
-[Task] Remove peeking of card (SSMR & Smart Meter cards)
-[Task] Usage: Scroll down indicator icon update
+[Task] DPC scenario
+[Task] MDMS Downtime icon change and pop up implementation
+[Task] Removal of Rewards Tab
