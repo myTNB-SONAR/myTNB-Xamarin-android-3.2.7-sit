@@ -751,7 +751,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 actionBar.Hide();
                 ShowBackButton(false);
                 ShowSearchAction(false);
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
@@ -783,6 +782,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.InitiateService();
                 this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
+
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                };
+                h.PostDelayed(myAction, 50);
             }
             catch (System.Exception e)
             {

@@ -5852,19 +5852,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
 
-            try
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                if (this.mPresenter != null)
+                try
                 {
-                    this.mPresenter.OnCheckToCallDashboardTutorial();
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (this.mPresenter != null)
+                    {
+                        this.mPresenter.OnCheckToCallDashboardTutorial();
+                    }
                 }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

@@ -914,11 +914,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 Utility.LoggingNonFatalError(e);
             }
 
-            NewAppTutorialUtils.ForceCloseNewAppTutorial();
-            if (isTutorialShown)
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                OnShowSMRSubmitMeterDialog();
-            }
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                if (isTutorialShown)
+                {
+                    OnShowSMRSubmitMeterDialog();
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         protected override void OnPause()
