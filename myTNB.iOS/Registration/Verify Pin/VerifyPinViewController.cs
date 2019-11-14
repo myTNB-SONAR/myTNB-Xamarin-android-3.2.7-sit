@@ -630,7 +630,6 @@ namespace myTNB.Registration
                         DeviceDesc = TNBGlobal.APP_LANGUAGE
                     },
                     displayName = DataManager.DataManager.SharedInstance.User.DisplayName,
-                    username = DataManager.DataManager.SharedInstance.User.Email,
                     token = _token,
                     password = DataManager.DataManager.SharedInstance.User.Password,
                     icNo = DataManager.DataManager.SharedInstance.User.ICNo,
