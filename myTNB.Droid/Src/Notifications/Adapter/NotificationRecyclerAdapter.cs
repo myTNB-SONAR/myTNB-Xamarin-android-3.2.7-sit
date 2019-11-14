@@ -79,12 +79,21 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 if (!notificationData.IsRead)
                 {
+                    viewHolder.txtNotificationDate.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
                     viewHolder.txtNotificationDate.SetCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notifications_unread), null);
+                    TextViewUtils.SetMuseoSans500Typeface(viewHolder.txtNotificationTitle, viewHolder.txtNotificationContent, viewHolder.txtNotificationDate);
+                    viewHolder.txtNotificationTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(notifyContext, Resource.Color.tunaGrey)));
+                    viewHolder.txtNotificationDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(notifyContext, Resource.Color.tunaGrey)));
+                    viewHolder.txtNotificationContent.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(notifyContext, Resource.Color.silverChalice)));
                 }
                 else
                 {
+                    viewHolder.txtNotificationDate.CompoundDrawablePadding = 0;
                     viewHolder.txtNotificationDate.SetCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
+                    TextViewUtils.SetMuseoSans300Typeface(viewHolder.txtNotificationTitle, viewHolder.txtNotificationContent, viewHolder.txtNotificationDate);
+                    viewHolder.txtNotificationTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(notifyContext, Resource.Color.tunaGrey)));
+                    viewHolder.txtNotificationDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(notifyContext, Resource.Color.silverChalice)));
+                    viewHolder.txtNotificationContent.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(notifyContext, Resource.Color.silverChalice)));
                 }
 
                 if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_NEW_BILL_ID))

@@ -169,6 +169,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg);
 
             void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount);
+
+            void ShowUnreadRewards(bool flag);
+
+            void ShowUnreadRewards();
         }
 
         public interface IUserActionsListener : IBasePresenter

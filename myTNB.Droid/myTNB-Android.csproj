@@ -3120,60 +3120,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\rewards_new_selected.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\rewards_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\rewards_new_selected.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\rewards_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\rewards_new_selected.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\rewards_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\rewards_new_selected.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\rewards_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\rewards_new_selected.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\rewards_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\ViewBill\Activity\ViewBillContract.cs" />
     <Compile Include="Src\ViewBill\Activity\ViewBillPresenter.cs" />
-    <AndroidResource Include="Resources\drawable\ic_menu_reward_unread_selector.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\rewardNewTagUnread.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\rewardNewTagRead.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\smr_history_empty_icon.png" />
     <AndroidResource Include="Resources\drawable-mdpi\smr_history_empty_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\smr_history_empty_icon.png" />
@@ -3351,10 +3299,6 @@
     <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensOCROffParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingOnePhaseWalkThroughOCROffService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughOCROffService.cs" />
-    <AndroidResource Include="Resources\drawable\ic_menu_reward_unread_new_selector.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_1.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -3545,46 +3489,6 @@
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughContract.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughAdapter.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughFragment.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward_toggled_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward_unread.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\dashboard_smr_fluid_background.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -3746,6 +3650,10 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BottomViewNavigationItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward_toggled.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

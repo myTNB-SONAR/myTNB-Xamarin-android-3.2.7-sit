@@ -280,12 +280,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowBillMenu(AccountData selectedAccount)
         {
             ShowBackButton(false);
-            //this.SelectedAccountData = selectedAccount;
-            //txtAccountName.Text = SelectedAccountData.AccountNickName;
-            //currentFragment = new BillsMenuFragment();
-            //FragmentManager.BeginTransaction()
-            //    .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
-            //    .CommitAllowingStateLoss();
             txtAccountName.Visibility = ViewStates.Gone;
             currentFragment = new ItemisedBillingMenuFragment();
             FragmentManager.BeginTransaction()
@@ -698,10 +692,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                     txtNewLabel.Text = count.ToString();
                     txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                    newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                     if (count > 0 && count <= 9)
                     {
-                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(14f);
-                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-16f);
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
                     }
                     else
                     {
@@ -709,8 +703,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             txtNewLabel.Text = "99+";
                         }
-                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(18f);
-                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-20f);
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
                     }
 
                     if (!flag)
@@ -736,9 +729,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
                 v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(28f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
                 Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(28f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
                 v.Draw(c);
 
                 var bitmapDrawable = new BitmapDrawable(b);
@@ -775,13 +768,52 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
                 v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(38f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
                 Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(38f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
                 v.Draw(c);
 
                 var bitmapDrawable = new BitmapDrawable(b);
                 promotionMenuItem.SetIcon(bitmapDrawable);
+            });
+        }
+
+        private void SetNewRewardsBottomView(bool flag, string word, IMenuItem rewardMenuItem)
+        {
+            RunOnUiThread(() =>
+            {
+                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                newLabel.Visibility = ViewStates.Visible;
+                newLabel.SetBackgroundResource(Resource.Drawable.new_label);
+                RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(26f);
+                newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
+                newLabelParam.TopMargin = 0;
+                txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
+                txtNewLabel.Text = word;
+                txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                if (!flag)
+                {
+                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                }
+                else
+                {
+                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                }
+                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                v.Measure(specWidth, specWidth);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Canvas c = new Canvas(b);
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Draw(c);
+
+                var bitmapDrawable = new BitmapDrawable(b);
+                rewardMenuItem.SetIcon(bitmapDrawable);
             });
         }
 
@@ -1071,7 +1103,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_unread_selector);
+                    SetNewRewardsBottomView(rewardMenuItem.IsChecked, "New", rewardMenuItem);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
+        public void ShowUnreadRewards(bool flag)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    SetNewRewardsBottomView(flag, "New", rewardMenuItem);
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }

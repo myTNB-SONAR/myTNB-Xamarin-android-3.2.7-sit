@@ -301,7 +301,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						}
 
 					}
-					break;
+
+                    OnUpdateRewardUnRead(false);
+                    break;
 				case Resource.Id.menu_bill:
                     OnUpdatePromoUnRead();
                     if (accountList.Count > 0)
@@ -352,8 +354,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
-
-					break;
+                    OnUpdateRewardUnRead(false);
+                    break;
 				case Resource.Id.menu_promotion:
                     WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
 					if (weblinkEntity != null)
@@ -379,10 +381,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						}
 					}
-					break;
+                    OnUpdateRewardUnRead(false);
+                    break;
 				case Resource.Id.menu_reward:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    OnUpdateRewardUnRead(true);
                     this.mView.ShowToBeAddedToast();
 					break;
 				case Resource.Id.menu_more:
@@ -390,7 +394,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
-					this.mView.ShowMoreMenu();
+                    OnUpdateRewardUnRead(false);
+                    this.mView.ShowMoreMenu();
 					break;
 			}
 		}
@@ -586,9 +591,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             isPromoClicked = false;
         }
 
-		public void OnValidateData()
+        private void OnUpdateRewardUnRead(bool flag)
+        {
+            this.mView.ShowUnreadRewards(flag);
+        }
+
+        private void OnResumeUpdateRewardUnRead()
+        {
+            this.mView.ShowUnreadRewards();
+        }
+
+        public void OnValidateData()
 		{
             OnResumeUpdatePromotionUnRead();
+            OnResumeUpdateRewardUnRead();
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
             if(accountList.Count == 0)
