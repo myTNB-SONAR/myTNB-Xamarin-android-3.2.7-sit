@@ -13,6 +13,7 @@ namespace myTNB
         private static readonly string IsLanguageSetKey = "isLanguageSet";
         private static readonly string CurrentLanguageKey = "currentLanguage";
         private static readonly List<string> SupportedLanguage = new List<string> { "EN", "MS" };
+        private static readonly List<string> LanguageCodeDisplay = new List<string> { "EN", "BM" };
         private static readonly string LanguageContentKey = "LanguageContent";
 
         public static bool IsLanguageSet
@@ -142,6 +143,15 @@ namespace myTNB
             if (index > -1 && index < SupportedLanguage.Count)
             {
                 return SupportedLanguage[index];
+            }
+            return string.Empty;
+        }
+
+        public static string GetLanguageCodeForDisplayByIndex(int index)
+        {
+            if (index > -1 && index < LanguageCodeDisplay.Count)
+            {
+                return LanguageCodeDisplay[index];
             }
             return string.Empty;
         }
