@@ -594,6 +594,7 @@ namespace myTNB
                         {
                             viewController.IsFromNotification = true;
                             viewController.IsRoot = true;
+                            viewController.AccountNumber = NotificationInfo.AccountNum;
                             NavigationController.PushViewController(viewController, true);
                         }
                     }
