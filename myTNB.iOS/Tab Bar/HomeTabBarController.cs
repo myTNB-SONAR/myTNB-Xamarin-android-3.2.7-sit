@@ -10,17 +10,18 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using myTNB.TabBar;
+using System.Linq;
 
 namespace myTNB
 {
     public partial class HomeTabBarController : UITabBarController
     {
-        public HomeTabBarController(IntPtr handle) : base(handle)
-        {
-        }
+        public HomeTabBarController(IntPtr handle) : base(handle) { }
 
         private string _imageSize = string.Empty;
         private Dictionary<string, string> I18NDictionary;
+        private UIColor _badgeColor = MyTNBColor.AlgaeGreen;
+        private UIStringAttributes _badgeAttributes = new UIStringAttributes { Font = MyTNBFont.MuseoSans10_500 };
 
         public override void ViewDidLoad()
         {
@@ -357,6 +358,21 @@ namespace myTNB
         {
             TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+
+            PromotionsEntity wsManager = new PromotionsEntity();
+            List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
+            if (promotionList != null && promotionList.Count > 0)
+            {
+                int unreadCount = promotionList.Where(x => !x.IsRead).Count();
+
+                TabBar.Items[2].BadgeColor = _badgeColor;
+                TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount.ToString() : null;
+                TabBar.Items[2].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);
+            }
+            else
+            {
+                TabBar.Items[2].BadgeValue = null;
+            }
         }
 
         private Task GetPromotions()
@@ -426,9 +442,9 @@ namespace myTNB
                     {
                         PromotionsEntity wsManager = new PromotionsEntity();
                         List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
-                        imageStr = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList) ?
+                        imageStr = /*promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList) ?
                             isSelected ? TabbarConstants.Img_ActivePromotionsUnread : TabbarConstants.Img_InactivePromotionsUnread
-                            : isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
+                            :*/ isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
                     }
                     break;
                 case TabEnum.REWARDS:
