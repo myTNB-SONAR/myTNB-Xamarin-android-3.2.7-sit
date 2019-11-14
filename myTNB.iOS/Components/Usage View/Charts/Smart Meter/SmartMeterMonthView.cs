@@ -134,9 +134,10 @@ namespace myTNB.SmartMeterView
                         AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
                     }
                     nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-
+                    double usageTotal;
+                    double.TryParse(item.UsageTotal, out usageTotal);
                     string displayText = ConsumptionState == RMkWhEnum.RM ? item.AmountTotal.FormatAmountString(item.Currency) :
-                        string.Format(Format_Value, item.UsageTotal, item.UsageUnit);
+                        string.Format(Format_Value, usageTotal, item.UsageUnit);
 
                     UILabel lblConsumption = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                         , GetWidthByScreenSize(100), lblHeight))
