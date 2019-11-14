@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.Utils
                 if (bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_promotion || bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_reward)
                 {
                     layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
-                    layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 50f, displayMetrics);
+                    layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 60f, displayMetrics);
                 }
                 else
                 {
