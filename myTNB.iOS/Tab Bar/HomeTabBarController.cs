@@ -365,7 +365,7 @@ namespace myTNB
                 int unreadCount = promotionList.Where(x => !x.IsRead).Count();
 
                 TabBar.Items[2].BadgeColor = _badgeColor;
-                TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount.ToString() : null;
+                TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount > 99 ? Constants.Value_99 : unreadCount.ToString() : null;
                 TabBar.Items[2].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);
             }
             else

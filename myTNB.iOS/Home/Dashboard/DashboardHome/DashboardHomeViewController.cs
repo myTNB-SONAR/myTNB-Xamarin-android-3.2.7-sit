@@ -298,6 +298,7 @@ namespace myTNB
             if (_dashboardHomeHeader != null)
             {
                 _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+                _dashboardHomeHeader.BadgeValue = PushNotificationHelper.GetNotificationCount();
             }
             PushNotificationHelper.UpdateApplicationBadge();
         }

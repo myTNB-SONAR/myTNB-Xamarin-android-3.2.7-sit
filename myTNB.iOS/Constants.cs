@@ -61,5 +61,8 @@
 
         //User Preference Keys
         public static string Key_SiteCorePromotionTimeStamp = "SiteCorePromotionTimeStamp";
+
+        //Strings
+        public static string Value_99 = "99+";
     }
 }
