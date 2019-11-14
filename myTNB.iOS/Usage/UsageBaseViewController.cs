@@ -182,6 +182,7 @@ namespace myTNB
             }
             SetFooterView();
             AddSubviews();
+            RemoveDPCNote();
             SetContentView();
         }
 
@@ -569,7 +570,8 @@ namespace myTNB
                     LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds,
                     ShowMissedReadToolTip = ShowMissedReadTooltip,
                     GetI18NValue = GetI18NValue,
-                    OnMDMSIconTap = OnMDMSIconTap
+                    OnMDMSIconTap = OnMDMSIconTap,
+                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown
                 };
             }
 
@@ -627,6 +629,26 @@ namespace myTNB
                 if (_lastSelectedIsDPC)
                 {
                     RemoveDPCNote();
+                }
+            }
+            SetContentView();
+        }
+
+        private void SetDPCNoteForMDMSDown(bool isHidden)
+        {
+            if (isHidden)
+            {
+                if (_lastSelectedIsDPC)
+                {
+                    RemoveDPCNote();
+                }
+            }
+            else
+            {
+                if (_lastSelectedIsDPC)
+                {
+                    var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                    SetDPCNote(msg);
                 }
             }
             SetContentView();
@@ -1430,7 +1452,10 @@ namespace myTNB
                     {
                         _chartView.ToggleRMKWHValues(_rMkWhEnum);
                     }
-                    SetSmartMeterComponent(false, (_rMkWhEnum == RMkWhEnum.RM) ? model.Cost : model.Usage);
+                    if (!AccountUsageSmartCache.IsMDMSDown)
+                    {
+                        SetSmartMeterComponent(false, (_rMkWhEnum == RMkWhEnum.RM) ? model.Cost : model.Usage);
+                    }
                 }
             }
             else
@@ -1773,7 +1798,7 @@ namespace myTNB
                     }
                 }
             }
-            if (isSmartMeterAccount)
+            if (isSmartMeterAccount && !AccountUsageSmartCache.IsMDMSDown)
             {
                 if (_viewSmartMeter != null)
                 {
