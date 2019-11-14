@@ -687,8 +687,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     newLabel.SetBackgroundResource(Resource.Drawable.notification_indication_bg);
                     TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                     RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                    RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
                     newLabelParam.TopMargin = 0;
                     newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
+                    bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                     txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                     txtNewLabel.Text = count.ToString();
                     txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
@@ -699,6 +701,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
+                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
                         if (count > 99)
                         {
                             txtNewLabel.Text = "99+";
@@ -729,9 +732,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
                 v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(60f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
                 Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(60f), (int)DPUtils.ConvertDPToPx(28f));
                 v.Draw(c);
 
                 var bitmapDrawable = new BitmapDrawable(b);
@@ -750,10 +753,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 newLabel.Visibility = ViewStates.Visible;
                 newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                 RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
                 newLabelParam.Width = (int)DPUtils.ConvertDPToPx(26f);
                 newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
                 newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
                 newLabelParam.TopMargin = 0;
+                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                 txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                 txtNewLabel.Text = word;
                 txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
