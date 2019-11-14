@@ -1497,7 +1497,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
 
-                if (!isSMRApplyAllowFlag && smrAccountList.Count > 0)
+                bool IsSMRFeatureDisabled = false;
+                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                if (currentMasterData.IsSMRFeatureDisabled)
+                {
+                    IsSMRFeatureDisabled = true;
+                }
+
+                if (!isSMRApplyAllowFlag && smrAccountList.Count > 0 && !IsSMRFeatureDisabled)
                 {
                     for (int j = 0; j < splitList.Count; j++)
                     {
