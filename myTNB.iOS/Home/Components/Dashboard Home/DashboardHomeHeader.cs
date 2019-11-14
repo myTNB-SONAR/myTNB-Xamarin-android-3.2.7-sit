@@ -131,7 +131,6 @@ namespace myTNB
                     string badgeContent = value > 99 ? Constants.Value_99 : value.ToString();
                     _lblBadge.Text = badgeContent;
                     nfloat width = _lblBadge.GetLabelWidth(ScaleUtility.GetScaledWidth(28f));
-                    _lblBadge.Frame = new CGRect(ScaleUtility.GetScaledWidth(3), _lblBadge.Frame.Y, width, _lblBadge.Frame.Height);
                     nfloat containerWidth = width + ScaleUtility.GetScaledWidth(6);
                     if (containerWidth < ScaleUtility.GetScaledWidth(16))
                     {
@@ -140,6 +139,10 @@ namespace myTNB
                     _badgeView.Frame = new CGRect(_notificationView.Frame.Width - containerWidth, _badgeView.Frame.Y
                         , containerWidth, _badgeView.Frame.Height);
                     _badgeView.Layer.CornerRadius = ScaleUtility.GetScaledWidth(_badgeView.Frame.Height / 2);
+
+                    _lblBadge.Frame = new CGRect(ScaleUtility.GetXLocationToCenterObject(width, _badgeView)
+                        , ScaleUtility.GetYLocationToCenterObject(_lblBadge.Frame.Height, _badgeView)
+                        , width, _lblBadge.Frame.Height);
                 }
             }
         }
