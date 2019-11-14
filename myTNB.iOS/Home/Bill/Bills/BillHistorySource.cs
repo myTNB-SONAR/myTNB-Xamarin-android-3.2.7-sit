@@ -95,8 +95,8 @@ namespace myTNB.Home.Bill
                     BillHistoryViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillHistory) as BillHistoryViewCell;
 
                     cell.Type = item.DateAndHistoryType;
-                    cell.Source = item.PaidVia;
                     cell.Amount = item.Amount;
+                    cell.Source = item.PaidVia;
                     cell.IsArrowHidden = !item.IsDocumentAvailable;
                     cell.IsPayment = item.IsPayment;
 
