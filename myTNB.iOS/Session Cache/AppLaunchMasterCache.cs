@@ -126,5 +126,17 @@ namespace myTNB
                 return true;
             }
         }
+
+        public static bool IsSMRFeatureDisabled
+        {
+            get
+            {
+                if (dataModel != null)
+                {
+                    return dataModel.IsSMRFeatureDisabled;
+                }
+                return true;
+            }
+        }
     }
 }

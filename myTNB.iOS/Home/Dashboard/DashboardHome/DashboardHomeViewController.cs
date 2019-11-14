@@ -502,7 +502,7 @@ namespace myTNB
                    try
                    {
                        taskList.Add(GetServices());
-                       if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                       if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0 && !AppLaunchMasterCache.IsSMRFeatureDisabled)
                        {
                            taskList.Add(BatchCallForSSMRApplyAllowed());
                        }
@@ -521,25 +521,32 @@ namespace myTNB
                            _services.d.data != null)
                        {
                            List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
-                           if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                           if (!AppLaunchMasterCache.IsSMRFeatureDisabled)
                            {
-                               if (_isSMRApplyAllowedResponse != null &&
-                                   _isSMRApplyAllowedResponse.d != null &&
-                                   _isSMRApplyAllowedResponse.d.IsSuccess &&
-                                   _isSMRApplyAllowedResponse.d.data != null &&
-                                   _isSMRApplyAllowedResponse.d.data.Count > 0)
+                               if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
                                {
-                                   if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                                   if (_isSMRApplyAllowedResponse != null &&
+                                       _isSMRApplyAllowedResponse.d != null &&
+                                       _isSMRApplyAllowedResponse.d.IsSuccess &&
+                                       _isSMRApplyAllowedResponse.d.data != null &&
+                                       _isSMRApplyAllowedResponse.d.data.Count > 0)
+                                   {
+                                       if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                                       {
+                                           services.RemoveAt(ServiceItemIndexToRemove(services));
+                                       }
+                                   }
+                                   else
                                    {
                                        services.RemoveAt(ServiceItemIndexToRemove(services));
                                    }
                                }
-                               else
+                               else if (!hasExistingSSMR)
                                {
                                    services.RemoveAt(ServiceItemIndexToRemove(services));
                                }
                            }
-                           else if (!hasExistingSSMR)
+                           else
                            {
                                services.RemoveAt(ServiceItemIndexToRemove(services));
                            }
