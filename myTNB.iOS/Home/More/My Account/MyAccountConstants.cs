@@ -45,7 +45,7 @@
         //Services
         public static string Service_UpdateNickname = "UpdateLinkedAccountNickName";
         public static string Service_ChangePassword = "ChangeNewPassword";
-        public static string Service_RemoveAccount = "RemoveTNBAccountForUserFav";
+        public static string Service_RemoveAccount = "RemoveAccount";
         public static string Service_RemoveRegisteredCard = "RemoveRegisteredCard";
 
         //Table View Cell
