@@ -212,6 +212,7 @@ namespace myTNB.SmartMeterView
                         viewBar.Hidden = true;
                         lblConsumption.Hidden = true;
                         dpcIcon.Hidden = false;
+                        dpcIcon.Alpha = isSelected ? 1 : 0.5F;
                     }
                 }
             }

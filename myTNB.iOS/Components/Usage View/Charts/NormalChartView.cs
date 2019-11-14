@@ -262,6 +262,11 @@ namespace myTNB
                     nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
                     date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
+                UIImageView dpcIcon = segmentView.ViewWithTag(1005) as UIImageView;
+                if (dpcIcon != null)
+                {
+                    dpcIcon.Alpha = isSelected ? 1 : 0.5F;
+                }
             }
             SelectedIndex = index;
         }

@@ -37,6 +37,7 @@ namespace myTNB
         public bool IsFromNotification;
         public bool FromStatusPage;
         public bool IsRoot;
+        public string AccountNumber;
 
         private UIView _tutorialContainer;
         private bool IsLoading = true;
@@ -98,8 +99,7 @@ namespace myTNB
                             SSMRAccounts.SetFilteredEligibleAccounts(true);
                             if (SSMRAccounts.HasSSMRAccount)
                             {
-                                _currentIndex = 0;
-                                _currAcc = SSMRAccounts.GetFirstSSMRAccount();
+                                SetCurrentIndex();
                                 accName = _currAcc?.accountNickName ?? string.Empty;
                                 _ssmrHeaderComponent.AccountName = accName;
                                 EvaluateEntry();
@@ -144,6 +144,21 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
             CheckTutorialOverlay();
+        }
+
+        private void SetCurrentIndex()
+        {
+            _currentIndex = 0;
+            _currAcc = SSMRAccounts.GetFirstSSMRAccount();
+            if (IsFromNotification)
+            {
+                int index = SSMRAccounts.GetEligibleAccountList().FindIndex(x => x.accNum == AccountNumber);
+                if (index > -1)
+                {
+                    _currentIndex = index;
+                    _currAcc = SSMRAccounts.GetEligibleAccountList()[index];
+                }
+            }
         }
 
         private void EvaluateEntry()

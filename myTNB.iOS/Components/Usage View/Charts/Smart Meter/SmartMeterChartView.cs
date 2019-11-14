@@ -18,6 +18,7 @@ namespace myTNB
         public Action PinchOverlayAction { set; private get; }
         public Action<List<string>> LoadTariffLegendWithBlockIds { set; private get; }
         public Action OnMDMSIconTap { set; private get; }
+        public Action<bool> SetDPCNoteForMDMSDown { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -117,10 +118,18 @@ namespace myTNB
                         }
 
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
+                        if (SetDPCNoteForMDMSDown != null)
+                        {
+                            SetDPCNoteForMDMSDown.Invoke(true);
+                        }
                     }
                     else
                     {
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
+                        if (SetDPCNoteForMDMSDown != null)
+                        {
+                            SetDPCNoteForMDMSDown.Invoke(false);
+                        }
                     }
                     CreateSegment(smartMeterViewType);
                     if (_toggleBar.SelectedSegment == 0)
@@ -397,6 +406,12 @@ namespace myTNB
                     if (mdmsIcon != null)
                     {
                         mdmsIcon.Alpha = isSelected ? 1 : 0.5F;
+                    }
+
+                    UIImageView dpcIcon = segmentView.ViewWithTag(1005) as UIImageView;
+                    if (dpcIcon != null)
+                    {
+                        dpcIcon.Alpha = isSelected ? 1 : 0.5F;
                     }
                 }
             }

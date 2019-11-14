@@ -307,7 +307,14 @@ namespace myTNB
                                         if (AccountUsageSmartCache.IsSuccess || AccountUsageSmartCache.IsMDMSDown)
                                         {
                                             OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                                            SetSmartMeterComponent(false, model.Cost);
+                                            if (AccountUsageSmartCache.IsMDMSDown)
+                                            {
+                                                HideSmartMeterComponent();
+                                            }
+                                            else
+                                            {
+                                                SetSmartMeterComponent(false, model.Cost);
+                                            }
                                             SetTariffButtonState();
                                             SetTariffLegendComponent();
                                             SetChartView(false);
