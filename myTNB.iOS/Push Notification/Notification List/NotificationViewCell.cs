@@ -6,15 +6,12 @@ namespace myTNB.PushNotification
 {
     public partial class NotificationViewCell : UITableViewCell
     {
-        public UIImageView imgIcon;
-        public UILabel lblTitle;
-        public UILabel lblDetails;
-        public UILabel lblDate;
-        public UIImageView imgUnread;
+        public UIImageView imgIcon, imgUnread, imgCheckbox;
         public UIView viewCheckBox;
-        public UIImageView imgCheckbox;
 
+        private UILabel lblTitle, lblDetails, lblDate;
         private nfloat _unreadWidth;
+        private bool _isRead;
 
         public NotificationViewCell(IntPtr handle) : base(handle)
         {
@@ -100,13 +97,14 @@ namespace myTNB.PushNotification
 
         public void UpdateCell(bool isSelectionMode, bool isRead)
         {
-            UpdateStyle(isSelectionMode, isRead);
+            _isRead = isRead;
+            UpdateStyle(isSelectionMode);
         }
 
-        private void UpdateStyle(bool isSelectionMode, bool isRead)
+        private void UpdateStyle(bool isSelectionMode)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat margin = isRead ? ScaleUtility.GetScaledWidth(16) : ScaleUtility.GetScaledWidth(36);
+            nfloat margin = _isRead ? ScaleUtility.GetScaledWidth(16) : ScaleUtility.GetScaledWidth(36);
             nfloat xDate = cellWidth - ScaleUtility.GetPercentWidthValue(20) - (isSelectionMode ? ScaleUtility.GetScaledWidth(64) : margin);
             nfloat xRead = cellWidth - _unreadWidth - (isSelectionMode ? ScaleUtility.GetScaledWidth(44) : ScaleUtility.GetScaledWidth(16));
 
@@ -139,6 +137,34 @@ namespace myTNB.PushNotification
             set
             {
                 imgUnread.Hidden = value;
+            }
+        }
+
+        public string Title
+        {
+            set
+            {
+                lblTitle.Text = string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? string.Empty : value;
+                lblTitle.Font = _isRead ? TNBFont.MuseoSans_14_300 : TNBFont.MuseoSans_14_500;
+            }
+        }
+
+        public string Details
+        {
+            set
+            {
+                lblDetails.Text = string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? string.Empty : value;
+                lblDetails.Font = _isRead ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500;
+            }
+        }
+
+        public string Date
+        {
+            set
+            {
+                lblDate.Text = string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? string.Empty : value;
+                lblDate.Font = _isRead ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500;
+                lblDate.TextColor = _isRead ? MyTNBColor.BrownGrey : MyTNBColor.CharcoalGrey;
             }
         }
     }
