@@ -728,7 +728,7 @@ namespace myTNB
             {
                 _lblPaymentStatus.Text = GetI18NValue(isRe ? BillConstants.I18N_MyEarnings : BillConstants.I18N_NeedToPay);
                 string result = DateTime.ParseExact(data.DueDate, BillConstants.Format_DateParse
-                    , CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+                    , CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date, DateHelper.DateCultureInfo);
                 _lblDate.Text = string.Format(BillConstants.Format_Default
                     , GetI18NValue(isRe ? BillConstants.I18N_GetBy : BillConstants.I18N_By), result);
                 _lblDate.Hidden = false;

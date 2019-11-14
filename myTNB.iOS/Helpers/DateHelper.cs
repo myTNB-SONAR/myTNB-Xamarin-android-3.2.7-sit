@@ -16,7 +16,7 @@ namespace myTNB
         /// <param name="format">Format.</param>
         public static string GetFormattedDate(string dateString, string format)
         {
-            return GetDate(dateString).ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+            return GetDate(dateString).ToString(format, DateCultureInfo);
         }
         /// <summary>
         /// Gets the formatted date.
@@ -28,7 +28,7 @@ namespace myTNB
         public static string GetFormattedDate(string dateString, string format, bool isNotification)
         {
             _isNotification = isNotification;
-            return GetDate(dateString).ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+            return GetDate(dateString).ToString(format, DateCultureInfo);
         }
         /// <summary>
         /// Gets the formatted date.
@@ -39,7 +39,7 @@ namespace myTNB
         /// <param name="format">Format.</param>
         public static string GetFormattedDate(string dateString, char separator, string format)
         {
-            return GetDate(dateString, separator).ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+            return GetDate(dateString, separator).ToString(format, DateCultureInfo);
         }
 
         static DateTime GetDate(string dateString)
@@ -108,7 +108,7 @@ namespace myTNB
                 {
                     formattedDate = new DateTime(year, month, day);
                 }
-                addDate = formattedDate.AddMonths(1).ToString(format);
+                addDate = formattedDate.AddMonths(1).ToString(format, DateCultureInfo);
             }
             catch (Exception e)
             {
@@ -129,7 +129,7 @@ namespace myTNB
             {
                 if (date != null)
                 {
-                    formattedDate = date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.UniversalSortableDateTimePattern);
+                    formattedDate = date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.UniversalSortableDateTimePattern, DateCultureInfo);
                 }
             }
             catch (Exception e)
@@ -166,6 +166,14 @@ namespace myTNB
                 Debug.WriteLine("Parse Error: " + e.Message);
             }
             return date;
+        }
+
+        public static CultureInfo DateCultureInfo
+        {
+            get
+            {
+                return CultureInfo.CreateSpecificCulture(TNBGlobal.APP_LANGUAGE);
+            }
         }
 
     }

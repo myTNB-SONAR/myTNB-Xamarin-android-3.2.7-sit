@@ -460,7 +460,7 @@ namespace myTNB
                 try
                 {
                     result = DateTime.ParseExact(_charges.DueDate
-                   , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+                   , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date, DateHelper.DateCultureInfo);
                 }
                 catch (FormatException)
                 {
