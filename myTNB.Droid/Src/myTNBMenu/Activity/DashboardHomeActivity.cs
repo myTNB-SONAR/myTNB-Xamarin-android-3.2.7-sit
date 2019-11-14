@@ -693,7 +693,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     newLabel.SetBackgroundResource(Resource.Drawable.notification_indication_bg);
                     TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                     RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
-                    newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
+                    newLabelParam.TopMargin = 0;
+                    newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
+                    txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                     txtNewLabel.Text = count.ToString();
                     txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
                     if (count > 0 && count <= 9)
@@ -757,7 +759,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                 newLabelParam.Width = (int)DPUtils.ConvertDPToPx(26f);
                 newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
                 newLabelParam.TopMargin = 0;
+                txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                 txtNewLabel.Text = word;
                 txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                 TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
