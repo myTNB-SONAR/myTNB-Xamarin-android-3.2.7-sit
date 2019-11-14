@@ -658,6 +658,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnPause();
             this.presenter.OnCancelToken();
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
         }
 
         public void ShowSearchAction(bool isShow)
@@ -782,13 +783,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.InitiateService();
                 this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
-
-                Handler h = new Handler();
-                Action myAction = () =>
-                {
-                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                };
-                h.PostDelayed(myAction, 50);
             }
             catch (System.Exception e)
             {
@@ -1975,7 +1969,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 StopScrolling();
             });
-
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
         }
 
