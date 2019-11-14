@@ -126,7 +126,8 @@ namespace myTNB
         {
             UIView viewCard = new UIView(new CGRect(BaseMargin, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(16), BaseMarginedWidth, ViewHeight / 2))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
             };
             viewCard.Layer.CornerRadius = 2.0F;
             nfloat imgWidth = GetScaledWidth(64);
@@ -172,8 +173,8 @@ namespace myTNB
                     Font = TNBFont.MuseoSans_10_300,
                     Text = GetText(StatusPageConstants.ReferenceTitle).ToUpper()
                 };
-                UILabel lblDate = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - GetScaledWidth(16)
-                    , GetYLocationFromFrame(viewLine.Frame, 16), viewCard.Frame.Width * 0.40F, GetScaledHeight(14)))
+                UILabel lblDate = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.60F) - GetScaledWidth(16)
+                    , GetYLocationFromFrame(viewLine.Frame, 16), viewCard.Frame.Width * 0.60F, GetScaledHeight(14)))
                 {
                     TextAlignment = UITextAlignment.Right,
                     TextColor = MyTNBColor.SilverChalice,
@@ -193,8 +194,8 @@ namespace myTNB
                 {
                     refDate = GetDate();
                 }
-                UILabel lblDateVal = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - GetScaledWidth(16)
-                    , GetYLocationFromFrame(lblDate.Frame, 1), viewCard.Frame.Width * 0.40F, GetScaledHeight(18)))
+                UILabel lblDateVal = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.60F) - GetScaledWidth(16)
+                    , GetYLocationFromFrame(lblDate.Frame, 1), viewCard.Frame.Width * 0.60F, GetScaledHeight(18)))
                 {
                     TextAlignment = UITextAlignment.Right,
                     TextColor = MyTNBColor.CharcoalGrey,
