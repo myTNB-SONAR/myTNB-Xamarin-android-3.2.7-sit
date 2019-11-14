@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="19dp"
         android:layout_marginTop="17dp"
-        android:src="@drawable/ic_notification_billing_due"
+        android:src="@drawable/notification_new_bill"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
