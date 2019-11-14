@@ -178,7 +178,7 @@ namespace myTNB.Home.More.MyAccount
                     cell.imgLeaf.Hidden = !GetAccountModel(indexPath.Row).accountCategoryId.Equals("2");
                 }
 
-                cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     _controller.ManageSupplyAccount(indexPath.Row);
                 }));
