@@ -9,9 +9,6 @@
         public static string Tab_Rewards = "rewards";
         public static string Tab_Profile = "profile";
 
-        //SiteCore
-        public static string Sitecore_Timestamp = "SiteCorePromotionTimeStamp";
-
         //Format
         public static string Format_Date = "yyyyMMdd";
 

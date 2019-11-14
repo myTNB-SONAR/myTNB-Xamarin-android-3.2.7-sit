@@ -112,10 +112,10 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCorePromotionTimeStamp");
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_SiteCorePromotionTimeStamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_SiteCorePromotionTimeStamp);
                         sharedPreference.Synchronize();
                         isValidTimeStamp = true;
                     }
@@ -127,14 +127,14 @@ namespace myTNB
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_SiteCorePromotionTimeStamp);
                             sharedPreference.Synchronize();
                             isValidTimeStamp = true;
                         }
                     }
                 }
-                Debug.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
-                if (!isValidTimeStamp)
+
+                if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);

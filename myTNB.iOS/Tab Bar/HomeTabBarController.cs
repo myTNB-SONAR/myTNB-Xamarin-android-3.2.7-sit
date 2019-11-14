@@ -129,8 +129,7 @@ namespace myTNB
         {
             if (!ShowNewIndicator("2"))
             {
-                TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-                TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                UpdatePromotionTabBarIcon();
             }
             /*if (!ShowNewIndicator("3"))
             {
@@ -361,7 +360,7 @@ namespace myTNB
 
             PromotionsEntity wsManager = new PromotionsEntity();
             List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
-            if (promotionList != null && promotionList.Count > 0)
+            if (!ShowNewIndicator("2") && promotionList != null && promotionList.Count > 0)
             {
                 int unreadCount = promotionList.Where(x => !x.IsRead).Count();
 
@@ -389,10 +388,10 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(TabbarConstants.Sitecore_Timestamp);
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_SiteCorePromotionTimeStamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, TabbarConstants.Sitecore_Timestamp);
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_SiteCorePromotionTimeStamp);
                         sharedPreference.Synchronize();
                         isValidTimeStamp = true;
                     }
@@ -404,7 +403,7 @@ namespace myTNB
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, TabbarConstants.Sitecore_Timestamp);
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_SiteCorePromotionTimeStamp);
                             sharedPreference.Synchronize();
                             isValidTimeStamp = true;
                         }
@@ -440,8 +439,8 @@ namespace myTNB
                     }
                     else
                     {
-                        PromotionsEntity wsManager = new PromotionsEntity();
-                        List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
+                        //PromotionsEntity wsManager = new PromotionsEntity();
+                        //List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
                         imageStr = /*promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList) ?
                             isSelected ? TabbarConstants.Img_ActivePromotionsUnread : TabbarConstants.Img_InactivePromotionsUnread
                             :*/ isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;

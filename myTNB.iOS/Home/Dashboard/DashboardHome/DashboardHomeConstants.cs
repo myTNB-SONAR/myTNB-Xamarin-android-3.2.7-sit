@@ -84,7 +84,6 @@ namespace myTNB
         public static string CTA_ShowSubmitReading = "s";
 
         //SiteCore
-        public static string Sitecore_Timestamp = "SiteCorePromotionTimeStamp";
         public static string Sitecore_Success = "SUCCESS";
 
         //Format

@@ -1,12 +1,7 @@
-﻿using System;
-
-namespace myTNB
+﻿namespace myTNB
 {
     public static class Constants
     {
-        // Float Values
-        public static nfloat PageControlHeight = ScaleUtility.GetScaledHeight(20f);
-
         //Common Images
         public static string IMG_Back = "Back-White";
         public static string IMG_Dropdown = "IC-Header-Dropdown";
@@ -63,5 +58,8 @@ namespace myTNB
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
+
+        //User Preference Keys
+        public static string Key_SiteCorePromotionTimeStamp = "SiteCorePromotionTimeStamp";
     }
 }
