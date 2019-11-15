@@ -134,8 +134,7 @@ namespace myTNB
                         }
                     }
                 }
-                Debug.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
-                if (!isValidTimeStamp)
+                if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
