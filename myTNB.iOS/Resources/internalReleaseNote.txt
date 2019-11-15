@@ -8,12 +8,7 @@ Sprint 3 SIT Build
 [Story] 2857: [Multi language Support (BM) - M6] As a myTNB App user, I want to view all the updated features in my preferred language.
 [Story] 861 : [Multi language Support (BM)] As a myTNB App user, I can choose my preferred language for ease of navigation
 
-Following services are not BE ready.
-1. ValidateManualAccountLinking
-2. CreateNewUserWithToken
-3. RemoveTNBAccountForUserFav
-4. SendUpdatePhoneTokenSMS
-5. SubmitRateUs
+Additional UI Fixes.
 
 Note to tester.
 Please test the following.
@@ -21,3 +16,9 @@ Please test the following.
 2. 1.1.9 update to Sprint 3
 3. 1.2.0 update to Sprint 3
 4. Fresh install
+5. App updates should be on same environment, not Prod to SIT
+	ie. If you have Prod app and want to download Sprint 2 or 3, App should be uninstalled first.
+6. Updates should be a proper update. Since you can downgrade in test flight, if your are downgrading your app version, make sure that you uninstall your app first.
+	ie. Current app is Sprint 3. Going to Sprint 2 build, app should be uninstalled first.
+7. For all defects multilingual defects, please assign to Ron for assessment.
+8. Android and iOS have different release notes. Please check it first before raising a defect.
