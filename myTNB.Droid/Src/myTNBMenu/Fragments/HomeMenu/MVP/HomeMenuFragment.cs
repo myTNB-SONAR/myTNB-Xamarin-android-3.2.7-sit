@@ -1748,7 +1748,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         loadMoreLabel.Text = Activity.GetString(Resource.String.show_less_accounts);
                     }
 
-                    IsRearrangeButtonVisible(true);
+                    // Lin Siong TODO: Hide this on 15 Nov Release
+                    // IsRearrangeButtonVisible(true);
+                    IsRearrangeButtonVisible(false);
                 }
                 else
                 {
