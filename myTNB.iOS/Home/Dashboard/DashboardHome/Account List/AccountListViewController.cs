@@ -708,7 +708,6 @@ namespace myTNB
 
         private void ReloadViews(bool isLoading, bool isFromSearch = false, bool hasEmptyAcct = false)
         {
-            _homeViewController._accountListIsShimmering = isLoading;
             if (_addAccountView != null)
             {
                 _addAccountView.Hidden = _isOnSearchMode;
@@ -741,6 +740,11 @@ namespace myTNB
             else
             {
                 SetFooterView(_dashboardHomeHelper.AllAccountsAreVisible);
+            }
+            if (_homeViewController != null)
+            {
+                _homeViewController._accountListIsShimmering = isLoading;
+                _homeViewController.CheckTutorialOverlay();
             }
         }
 

@@ -44,7 +44,6 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
-        private Timer tutorialOverlayTimer;
 
         public override void ViewDidLoad()
         {
@@ -58,6 +57,11 @@ namespace myTNB
             base.ViewDidLoad();
             AddFooterBG();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0 && accNum != null && !string.IsNullOrEmpty(accNum) && !string.IsNullOrWhiteSpace(accNum))
+            {
+                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+            }
             DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d;
             NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
@@ -146,7 +150,6 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            CheckTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -170,7 +173,7 @@ namespace myTNB
         }
 
         #region Tutorial Overlay Methods
-        private void CheckTutorialOverlay()
+        public void CheckTutorialOverlay()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
@@ -178,20 +181,8 @@ namespace myTNB
             if (tutorialOverlayHasShown)
                 return;
 
-            tutorialOverlayTimer = new Timer
-            {
-                Interval = 500F,
-                AutoReset = true,
-                Enabled = true
-            };
-            tutorialOverlayTimer.Elapsed += TimerElapsed;
-        }
-
-        private void TimerElapsed(object sender, ElapsedEventArgs e)
-        {
             if (!_accountListIsShimmering && !_servicesIsShimmering && !_helpIsShimmering)
             {
-                tutorialOverlayTimer.Enabled = false;
                 InvokeOnMainThread(() =>
                 {
                     var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
@@ -209,15 +200,14 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
+            if (_tutorialContainer != null)
+                return;
+
             ScrollTableToTheTop();
             ResetTableView();
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
-            if (_tutorialContainer != null)
-            {
-                _tutorialContainer.RemoveFromSuperview();
-            }
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear
@@ -247,10 +237,18 @@ namespace myTNB
                 ScrollTableToTheBottom = ScrollTableToTheBottom,
                 GetI18NValue = GetI18NValue
             };
-            _tutorialContainer.AddSubview(tutorialView.GetView());
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is DashboardHomeViewController)
+                {
+                    _tutorialContainer.AddSubview(tutorialView.GetView());
 
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+                }
+            }
         }
 
         private void HideTutorialOverlay()
@@ -366,6 +364,7 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.HelpList = _helpList;
                                 _helpIsShimmering = false;
                                 OnUpdateTable();
+                                CheckTutorialOverlay();
                             });
                         });
                     });
@@ -558,6 +557,7 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.ServicesList.Clear();
                             }
                             OnUpdateTable();
+                            CheckTutorialOverlay();
                         });
                     }
                     else
@@ -580,9 +580,9 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.ServicesList.Clear();
                             }
                             OnUpdateTable();
+                            CheckTutorialOverlay();
                         });
                     }
-
                 });
             });
         }
