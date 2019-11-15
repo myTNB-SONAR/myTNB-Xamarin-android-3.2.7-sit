@@ -68,7 +68,6 @@ namespace myTNB.Home.Bill
                 BillSectionViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillSection) as BillSectionViewCell;
                 cell.SectionTitle = GetI18NValue(BillConstants.I18N_MyHistory);
                 cell.filterAction = OnShowFilter;
-                cell.IsLoading = _isLoading;
                 cell.Layer.ZPosition = 1;
                 cell.SetFilterImage(IsFiltered);
                 return cell;
@@ -95,8 +94,8 @@ namespace myTNB.Home.Bill
                     BillHistoryViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillHistory) as BillHistoryViewCell;
 
                     cell.Type = item.DateAndHistoryType;
-                    cell.Source = item.PaidVia;
                     cell.Amount = item.Amount;
+                    cell.Source = item.PaidVia;
                     cell.IsArrowHidden = !item.IsDocumentAvailable;
                     cell.IsPayment = item.IsPayment;
 

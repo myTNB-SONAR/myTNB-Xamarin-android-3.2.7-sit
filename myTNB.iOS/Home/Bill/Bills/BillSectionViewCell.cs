@@ -57,46 +57,6 @@ namespace myTNB.Home.Bill
             }
         }
 
-        public bool IsLoading
-        {
-            set
-            {
-                if (value)
-                {
-                    if (_viewParent != null)
-                    {
-                        _viewParent.RemoveFromSuperview();
-                    }
-                    CustomShimmerView shimmeringView = new CustomShimmerView();
-                    _viewParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear, Tag = 99 };
-                    UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
-                    UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
-                    _viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
-
-                    UIView viewGroupedData = new UIView(new CGRect(_baseHMargin, _view.Frame.GetMaxY() - ScaleUtility.GetScaledHeight(12)
-                        , ScaleUtility.GetScaledWidth(100), ScaleUtility.GetScaledHeight(12)))
-                    {
-                        BackgroundColor = MyTNBColor.PaleGrey,
-                    };
-                    viewShimmerContent.AddSubviews(new UIView[] { viewGroupedData });
-
-                    viewShimmerParent.AddSubview(shimmeringView);
-                    shimmeringView.ContentView = viewShimmerContent;
-                    shimmeringView.Shimmering = true;
-                    shimmeringView.SetValues();
-
-                    _view.AddSubview(_viewParent);
-                }
-                else
-                {
-                    if (_viewParent != null)
-                    {
-                        _viewParent.RemoveFromSuperview();
-                    }
-                }
-            }
-        }
-
         public Action filterAction
         {
             set

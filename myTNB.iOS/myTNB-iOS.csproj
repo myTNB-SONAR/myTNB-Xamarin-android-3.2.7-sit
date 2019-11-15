@@ -2582,6 +2582,7 @@
     <Compile Include="Components\Tutorial Overlay\SSMReadTutorialOveraly.cs" />
     <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
     <Compile Include="Components\Tutorial Overlay\UsageSSMRTutorialOverlay.cs" />
+    <Compile Include="Home\Promotions\PromotionsConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -344,8 +344,6 @@ namespace myTNB
                 {
                     BackgroundColor = UIColor.White
                 };
-                UIView viewLine = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(1))) { BackgroundColor = MyTNBColor.LightGrayBG };
-                _viewCTA.AddSubview(viewLine);
                 EvaluateCTA();
             }
             View.AddSubview(_viewCTA);
@@ -594,6 +592,7 @@ namespace myTNB
                         {
                             viewController.IsFromNotification = true;
                             viewController.IsRoot = true;
+                            viewController.AccountNumber = NotificationInfo.AccountNum;
                             NavigationController.PushViewController(viewController, true);
                         }
                     }
