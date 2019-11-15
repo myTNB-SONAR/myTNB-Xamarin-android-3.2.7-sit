@@ -670,11 +670,16 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 Utility.LoggingNonFatalError(e);
             }
 
-            NewAppTutorialUtils.ForceCloseNewAppTutorial();
-            if (isTutorialShown)
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                OnShowSMRMeterReadingDialog();
-            }
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                if (isTutorialShown)
+                {
+                    OnShowSMRMeterReadingDialog();
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         protected override void OnPause()

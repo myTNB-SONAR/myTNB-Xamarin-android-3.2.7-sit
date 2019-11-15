@@ -598,7 +598,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isUsageLoadedNeeded = false;
                     selectedSMHistoryData = null;
                     var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null)
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null && IsCheckDataReadyData(usageHistoryDataResponse.Data.UsageHistoryData))
                     {
                         selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
                         if (!usageHistoryDataResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryDataResponse.Data.IsMonthlyTariffBlocksUnavailable)
@@ -609,38 +609,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             OnSetBackendTariffDisabled(true);
                         }
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+
+                        try
                         {
-                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                            {
+                                txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            }
+                            else
+                            {
+                                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            }
                         }
-                        else
+                        catch (System.Exception e)
                         {
                             txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            Utility.LoggingNonFatalError(e);
                         }
-                    }
-                    catch (System.Exception e)
-                    {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
-                        Utility.LoggingNonFatalError(e);
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        try
                         {
-                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                            {
+                                txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                            }
+                            else
+                            {
+                                txtBtnRefreshTitle = "Refresh Now";
+                            }
                         }
-                        else
+                        catch (System.Exception e)
                         {
                             txtBtnRefreshTitle = "Refresh Now";
+                            Utility.LoggingNonFatalError(e);
                         }
                     }
-                    catch (System.Exception e)
+                    else
                     {
+                        isUsageLoadedNeeded = true;
+                        selectedHistoryData = null;
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
                         txtBtnRefreshTitle = "Refresh Now";
-                        Utility.LoggingNonFatalError(e);
                     }
                 }
                 else
@@ -649,7 +657,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isUsageLoadedNeeded = false;
                     selectedHistoryData = null;
                     var usageHistoryDataResponse = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(extras.GetString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE));
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null)
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null && IsCheckDataReadyData(usageHistoryDataResponse.Data.SMUsageHistoryData))
                     {
                         selectedSMHistoryData = usageHistoryDataResponse.Data.SMUsageHistoryData;
                         if (!usageHistoryDataResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryDataResponse.Data.IsMonthlyTariffBlocksUnavailable)
@@ -660,38 +668,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             OnSetBackendTariffDisabled(true);
                         }
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+
+                        try
                         {
-                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                            {
+                                txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            }
+                            else
+                            {
+                                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            }
                         }
-                        else
+                        catch (System.Exception e)
                         {
                             txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            Utility.LoggingNonFatalError(e);
                         }
-                    }
-                    catch (System.Exception e)
-                    {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
-                        Utility.LoggingNonFatalError(e);
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        try
                         {
-                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                            {
+                                txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                            }
+                            else
+                            {
+                                txtBtnRefreshTitle = "Refresh Now";
+                            }
                         }
-                        else
+                        catch (System.Exception e)
                         {
                             txtBtnRefreshTitle = "Refresh Now";
+                            Utility.LoggingNonFatalError(e);
                         }
                     }
-                    catch (System.Exception e)
+                    else
                     {
+                        isUsageLoadedNeeded = true;
+                        selectedSMHistoryData = null;
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
                         txtBtnRefreshTitle = "Refresh Now";
-                        Utility.LoggingNonFatalError(e);
                     }
                 }
             }
@@ -5836,19 +5852,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
 
-            try
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                if (this.mPresenter != null)
+                try
                 {
-                    this.mPresenter.OnCheckToCallDashboardTutorial();
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (this.mPresenter != null)
+                    {
+                        this.mPresenter.OnCheckToCallDashboardTutorial();
+                    }
                 }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -8952,6 +8972,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     MDMSUnavailableCTA = this.Activity.GetString(Resource.String.tooltip_btnLabel);
                 }
             }
+        }
+
+        private bool IsCheckDataReadyData(UsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
+                {
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (System.Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && System.Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
+                    }
+                }
+            }
+
+            return isHaveData;
+        }
+
+        private bool IsCheckDataReadyData(SMUsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
+                {
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (System.Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && System.Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
+                    }
+                }
+            }
+
+            return isHaveData;
         }
     }
 }
