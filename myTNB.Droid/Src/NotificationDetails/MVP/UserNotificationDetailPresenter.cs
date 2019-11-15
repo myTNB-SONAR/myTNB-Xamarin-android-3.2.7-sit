@@ -199,7 +199,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
                             //pageTitle = "Smart Meter Reading";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-start Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
