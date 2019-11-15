@@ -278,7 +278,13 @@ namespace myTNB
                 _footerView.RemoveFromSuperview();
             }
 
-            _footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, allAcctsAreVisible ? GetScaledHeight(85F) : GetScaledHeight(44F)))
+            // HIDE REARRANGE ACCOUNT
+            //_footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, allAcctsAreVisible ? GetScaledHeight(85F) : GetScaledHeight(44F)))
+            //{
+            //    BackgroundColor = UIColor.Clear
+            //};
+
+            _footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(44F)))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -288,7 +294,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            ViewHelper.AdjustFrameSetY(moreLessContainer, allAcctsAreVisible ? GetScaledHeight(41F) : 0);
+            // HIDE REARRANGE ACCOUNT
+            //ViewHelper.AdjustFrameSetY(moreLessContainer, allAcctsAreVisible ? GetScaledHeight(41F) : 0);
             moreLessContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (allAcctsAreVisible)
@@ -329,6 +336,8 @@ namespace myTNB
             moreLessContainer.AddSubview(moreLessView);
             _footerView.AddSubview(moreLessContainer);
 
+            // HIDE REARRANGE ACCOUNT
+            /*
             if (allAcctsAreVisible)
             {
                 CustomUIView rearrangeContainer = new CustomUIView(_footerView.Bounds)
@@ -378,6 +387,7 @@ namespace myTNB
 
                 _footerView.AddSubview(rearrangeContainer);
             }
+            */
 
             if (_accountListTableView != null)
             {
