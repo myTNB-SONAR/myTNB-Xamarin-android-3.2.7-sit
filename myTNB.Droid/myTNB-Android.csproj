@@ -3820,6 +3820,9 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\RearrangeAccount\MVP\RearrangeAccountListView.cs" />
+    <Compile Include="Src\AppLaunch\Api\IUpdateAppUserDeviceApi.cs" />
+    <Compile Include="Src\AppLaunch\Models\UpdateAppUserDeviceResponse.cs" />
+    <Compile Include="Src\AppLaunch\Requests\UpdateAppUserDeviceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

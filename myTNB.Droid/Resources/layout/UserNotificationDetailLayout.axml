@@ -26,6 +26,7 @@
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:overScrollMode="never"
+            android:id="@+id/notificationMainLayout"
             android:layout_above="@+id/notificationCTAComponent"
             android:background="@color/lightGrey">
             <LinearLayout
