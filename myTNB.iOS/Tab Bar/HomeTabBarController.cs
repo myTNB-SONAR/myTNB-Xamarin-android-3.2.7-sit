@@ -20,7 +20,7 @@ namespace myTNB
 
         private string _imageSize = string.Empty;
         private Dictionary<string, string> I18NDictionary;
-        private UIColor _badgeColor = MyTNBColor.AlgaeGreen;
+        private UIColor _badgeColor = MyTNBColor.FreshGreen;
         private UIStringAttributes _badgeAttributes = new UIStringAttributes { Font = MyTNBFont.MuseoSans10_500 };
 
         public override void ViewDidLoad()

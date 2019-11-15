@@ -60,11 +60,12 @@ namespace myTNB
             };
             _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageWidth))
             {
-                UserInteractionEnabled = true
+                UserInteractionEnabled = true,
+                ClipsToBounds = false
             };
             _badgeView = new UIView(new CGRect(ScaleUtility.GetScaledWidth(12), 0, ScaleUtility.GetScaledWidth(16), ScaleUtility.GetScaledWidth(16)))
             {
-                BackgroundColor = MyTNBColor.AlgaeGreen
+                BackgroundColor = MyTNBColor.FreshGreen
             };
             _badgeView.Layer.CornerRadius = ScaleUtility.GetScaledWidth(_badgeView.Frame.Height / 2);
 
@@ -136,7 +137,7 @@ namespace myTNB
                     {
                         containerWidth = ScaleUtility.GetScaledWidth(16);
                     }
-                    _badgeView.Frame = new CGRect(_notificationView.Frame.Width - containerWidth, _badgeView.Frame.Y
+                    _badgeView.Frame = new CGRect(ScaleUtility.GetScaledWidth(14), _badgeView.Frame.Y
                         , containerWidth, _badgeView.Frame.Height);
                     _badgeView.Layer.CornerRadius = ScaleUtility.GetScaledWidth(_badgeView.Frame.Height / 2);
 
