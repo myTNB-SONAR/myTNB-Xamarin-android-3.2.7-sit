@@ -41,7 +41,6 @@ namespace myTNB
         public bool NeedsUpdate = true;
         private UIView _tutorialContainer;
         private bool isGetAcctChargesLoading = true, isGetAcctBillPayHistoryLoading = true;
-        private Timer tutorialOverlayTimer;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
