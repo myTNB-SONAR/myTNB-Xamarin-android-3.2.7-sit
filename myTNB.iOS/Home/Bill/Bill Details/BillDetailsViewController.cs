@@ -109,7 +109,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    //TO DO: Handling if API fails...
+                                    AlertHandler.DisplayServiceError(this, _accountCharges?.d?.DisplayMessage);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -180,14 +180,13 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
+            if (_tutorialContainer != null)
+                return;
+
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
 
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
-            if (_tutorialContainer != null)
-            {
-                _tutorialContainer.RemoveFromSuperview();
-            }
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear

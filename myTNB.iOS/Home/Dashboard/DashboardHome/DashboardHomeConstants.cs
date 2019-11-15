@@ -20,6 +20,7 @@ namespace myTNB
         public static string Cell_Promotion = "promotionTableViewCell";
         public static string Cell_AccountList = "accountListTableViewCell";
         public static string Cell_AccountListEmpty = "accountListEmptyTableViewCell";
+        public static string Cell_RearrangeAccount = "rearrangeAccountTableViewCell";
 
         //I18N Keys
         public static string I18N_Afternoon = "greeting_afternoon";
@@ -55,6 +56,8 @@ namespace myTNB
         public static string I18N_TutorialQuickActionDesc = "tutorialQuickActionDesc";
         public static string I18N_TutorialNeedHelpDesc = "tutorialNeedHelpDesc";
         public static string I18N_GotIt = "gotIt";
+        public static string I18N_RearrangeNavTitle = "navTitle";
+        public static string I18N_RearrangeBtnTitle = "btnTitle";
 
         //Image
         public static string Img_Notification = "Notification";
@@ -69,9 +72,11 @@ namespace myTNB
         public static string Img_ArrowDownWhite = "Arrow-Down-White-Small";
         public static string Img_RearrangeIcon = "Rearrange-Icon";
         public static string Img_RELeaf = "RE-Leaf";
+        public static string IMG_Back = "Back-White";
 
         //PageName
         public static string PageName = "DashboardHome";
+        public static string PageNameRearrange = "RearrangeAccount";
 
         //Cell Index
         public static int CellIndex_Accounts = 0;

@@ -335,8 +335,10 @@ namespace myTNB
                 if (segmentView == null) { continue; }
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 if (value == null) { continue; }
+                double usageTotal;
+                double.TryParse(usageData[i].UsageTotal, out usageTotal);
                 value.Text = state == RMkWhEnum.RM ? usageData[i].AmountTotal.FormatAmountString(usageData[i].Currency)
-                    : string.Format(Format_Value, usageData[i].UsageTotal, usageData[i].UsageUnit);
+                    : string.Format(Format_Value, usageTotal, usageData[i].UsageUnit);
                 nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
                 value.Frame = new CGRect((GetWidthByScreenSize(30) - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
                 if (usageData[i].DPCIndicator)

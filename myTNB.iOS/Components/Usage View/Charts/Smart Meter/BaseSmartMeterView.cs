@@ -9,7 +9,7 @@ namespace myTNB.SmartMeterView
 {
     public class BaseSmartMeterView
     {
-        protected string Format_Value = "{0} {1}";
+        protected string Format_Value = "{0:n0} {1}";
 
         public virtual void CreateSegment(ref CustomUIView view) { }
         public CGRect ReferenceWidget { set; protected get; }

@@ -780,6 +780,10 @@ namespace myTNB
 
         private void ScrollToTop()
         {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(UsageConstants.Pref_UsageSSMRTutorialOverlay);
+            if (tutorialOverlayHasShown || !accountIsSSMR)
+                return;
             Debug.WriteLine("ScrollToTop()");
             CGPoint topOffset = new CGPoint(0, 0);
             _scrollViewContent.SetContentOffset(topOffset, false);

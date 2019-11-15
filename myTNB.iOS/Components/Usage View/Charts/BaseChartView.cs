@@ -15,7 +15,7 @@ namespace myTNB
         protected UILabel _lblDateRange;
         protected UISegmentedControl _toggleBar;
 
-        protected string Format_Value = "{0} {1}";
+        protected string Format_Value = "{0:n0} {1}";
         protected nfloat ShimmerHeight;
 
         public virtual void ToggleTariffView(bool isTariffView) { }

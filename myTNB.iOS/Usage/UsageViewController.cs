@@ -472,6 +472,7 @@ namespace myTNB
                                                         string accountNo = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
                                                         if (accountNo.Equals(statusDetails.ContractAccount))
                                                         {
+                                                            DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(accountNo, statusDetails.IsTaggedSMR);
                                                             if (statusDetails.isTaggedSMR)
                                                             {
                                                                 SSMRUsageParallelAPICalls();

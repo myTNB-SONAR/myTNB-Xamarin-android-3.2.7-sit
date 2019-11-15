@@ -1721,6 +1721,7 @@
     <Folder Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\" />
     <Folder Include="Assets.xcassets\Dpc-Indicator.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Rearrange Account\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1759,6 +1760,7 @@
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
     <InterfaceDefinition Include="Usage\Usage.storyboard" />
     <InterfaceDefinition Include="Home\Bill\Bill Details\BillDetails.storyboard" />
+    <InterfaceDefinition Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeAccountViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2583,6 +2585,12 @@
     <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
     <Compile Include="Components\Tutorial Overlay\UsageSSMRTutorialOverlay.cs" />
     <Compile Include="Home\Promotions\PromotionsConstants.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeAccountViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeAccountViewController.designer.cs">
+      <DependentUpon>RearrangeAccountViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
