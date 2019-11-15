@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace myTNB
 {
-    public partial class PromotionDetailsViewController : UIViewController
+    public partial class PromotionDetailsViewController : CustomUIViewController
     {
         public PromotionDetailsViewController(IntPtr handle) : base(handle)
         {
@@ -20,6 +20,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = PromotionsConstants.Pagename;
             base.ViewDidLoad();
             SetNavigationBar();
             SetSubViews();
@@ -33,7 +34,7 @@ namespace myTNB
         void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Promotion_Title".Translate();
+            NavigationItem.Title = GetI18NValue(PromotionsConstants.I18N_NavTitle);
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
