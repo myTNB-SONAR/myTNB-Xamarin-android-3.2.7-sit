@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
 
-			var updateAppUserDeviceApi = RestService.For<UpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
+			var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
 
 #endif
 			try
