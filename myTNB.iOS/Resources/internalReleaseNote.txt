@@ -1,9 +1,4 @@
 Sprint 2 SIT Build
 
-[Task] Rearrange removal
-[Task] Promotion title copy update to What's New
-[Task] Notification delete copy grammar fix
-[Bug] 2829 iOS: Smart Meter Usage Dashboard - Misalignment in Padding, Copy and Image
-[Bug] 3297 Tutorial Overlay :RE Account tutorial overlay for bills content does not matching with Zeplin
-[Bug] 2922 Regression_iOS : Itemized Billing - Misalignment in myhistory section (Space issue)
-[Bug] 3338 iOS: SSMR Notification - Misalignment with Font Style and Design 
+[Bug] Blinking tutorial overlays
+Code clean up
