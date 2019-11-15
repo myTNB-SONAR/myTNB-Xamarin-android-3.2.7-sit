@@ -104,6 +104,8 @@ namespace myTNB.Home.Bill
                     value = string.Empty;
                 }
                 _lblSource.Text = value;
+                nfloat width = _lblSource.GetLabelWidth(_cellWidth - _lblAmount.Frame.Width - _baseHMargin - ScaleUtility.GetScaledWidth(48));
+                _lblSource.Frame = new CGRect(_baseHMargin, ScaleUtility.GetYLocationFromFrame(_lblDate.Frame, 4), width, _baseVMargin);
             }
         }
         public string Amount
@@ -115,6 +117,9 @@ namespace myTNB.Home.Bill
                     value = string.Empty;
                 }
                 _lblAmount.Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, value);
+                nfloat width = _lblAmount.GetLabelWidth(_cellWidth - ScaleUtility.GetScaledWidth(48));
+                _lblAmount.Frame = new CGRect(_cellWidth - width - ScaleUtility.GetScaledWidth(48)
+                    , ScaleUtility.GetScaledHeight(26), width, _baseVMargin);
             }
         }
         public bool IsArrowHidden

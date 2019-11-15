@@ -12,7 +12,7 @@ namespace myTNB.Home.Bill
 
         public BillHistoryShimmerViewCell(IntPtr handle) : base(handle)
         {
-            _view = new CustomUIView(new CGRect(0, 0, _cellWidth, ScaleUtility.GetScaledHeight(100))) { ClipsToBounds = false };
+            _view = new CustomUIView(new CGRect(0, 0, _cellWidth, ScaleUtility.GetScaledHeight(80))) { ClipsToBounds = false };
             AddShimmerView();
             AddSubview(_view);
             if (_view != null)
@@ -33,41 +33,31 @@ namespace myTNB.Home.Bill
             UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
             viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
-            UIView viewGroupedData = new UIView(new CGRect(_baseHMargin, 0
-                  , ScaleUtility.GetScaledWidth(80), ScaleUtility.GetScaledHeight(12)))
-            {
-                BackgroundColor = MyTNBColor.PaleGrey,
-            };
-
             UIView viewDate = new UIView(new CGRect(_baseHMargin, ScaleUtility.GetScaledHeight(28)
-                  , ScaleUtility.GetScaledWidth(120), ScaleUtility.GetScaledHeight(16)))
+                  , ScaleUtility.GetScaledWidth(96), ScaleUtility.GetScaledHeight(14)))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
 
-            UIView viewSource = new UIView(new CGRect(_baseHMargin, ScaleUtility.GetYLocationFromFrame(viewDate.Frame, 8)
-                  , ScaleUtility.GetScaledWidth(80), ScaleUtility.GetScaledHeight(14)))
+            UIView viewSource = new UIView(new CGRect(_baseHMargin, ScaleUtility.GetYLocationFromFrame(viewDate.Frame, 6)
+                  , ScaleUtility.GetScaledWidth(80), ScaleUtility.GetScaledHeight(8)))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
 
-            UIView viewAmount = new UIView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(128), ScaleUtility.GetScaledHeight(28)
-                  , ScaleUtility.GetScaledWidth(80), ScaleUtility.GetScaledHeight(24)))
+            UIView viewAmount = new UIView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(109), ScaleUtility.GetScaledHeight(32)
+                  , ScaleUtility.GetScaledWidth(66), ScaleUtility.GetScaledHeight(20)))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
 
-            UIImageView imgArrow = new UIImageView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(32)
+            UIImageView imgArrow = new UIImageView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(36)
                 , _baseHMargin, _baseHMargin))
             {
                 Image = UIImage.FromBundle(BillConstants.IMG_ArrowExpand)
             };
 
-            UIView viewLine = new UIView(new CGRect(_baseHMargin, _view.Frame.Height - ScaleUtility.GetScaledHeight(21)
-              , _cellWidth - (_baseHMargin * 2), ScaleUtility.GetScaledHeight(1)))
-            { BackgroundColor = MyTNBColor.VeryLightPinkThree };
-
-            viewShimmerContent.AddSubviews(new UIView[] { viewGroupedData, viewDate, viewSource, viewAmount, imgArrow, viewLine });
+            viewShimmerContent.AddSubviews(new UIView[] { viewDate, viewSource, viewAmount, imgArrow });
 
             viewShimmerParent.AddSubview(shimmeringView);
             shimmeringView.ContentView = viewShimmerContent;
