@@ -779,7 +779,10 @@ namespace myTNB
         }
         private void OnRearrangeAction()
         {
-            Debug.WriteLine("OnRearrangeAction()");
+            if (_homeViewController != null)
+            {
+                _homeViewController.OnRearrangeAccountAction();
+            }
         }
         #endregion
     }

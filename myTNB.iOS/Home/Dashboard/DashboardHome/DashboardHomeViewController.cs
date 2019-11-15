@@ -423,6 +423,14 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
+        public void OnRearrangeAccountAction()
+        {
+            RearrangeAccountViewController rearrangeAccountView = new RearrangeAccountViewController();
+            UINavigationController navController = new UINavigationController(rearrangeAccountView);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(navController, true, null);
+        }
+
         public string GetGreeting()
         {
             DateTime now = DateTime.Now;
@@ -468,97 +476,114 @@ namespace myTNB
                 OnUpdateTable();
                 bool hasExistingSSMR = false;
                 InvokeInBackground(async () =>
-               {
-                   SSMRAccounts.SetFilteredEligibleAccounts();
-                   List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
-                   if (contractAccounts != null && contractAccounts.Count > 0)
-                   {
-                       SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(contractAccounts);
-                       InvokeOnMainThread(() =>
-                       {
-                           if (response != null &&
-                               response.d != null &&
-                               response.d.IsSuccess &&
-                               response.d.data != null &&
-                               response.d.data.Count > 0)
-                           {
-                               List<SMRAccountStatusModel> smrList = new List<SMRAccountStatusModel>(response.d.data);
-                               if (smrList != null && smrList.Count > 0)
-                               {
-                                   foreach (var item in smrList)
-                                   {
-                                       DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(item.ContractAccount, item.IsTaggedSMR);
-                                       if (item.isTaggedSMR)
-                                       {
-                                           hasExistingSSMR = true;
-                                       }
-                                   }
-                               }
-                           }
-                       });
-                   }
+                {
+                    if (!AppLaunchMasterCache.IsSMRFeatureDisabled)
+                    {
+                        List<string> contractAccounts = _dashboardHomeHelper.GetOwnedAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+                        if (contractAccounts != null && contractAccounts.Count > 0)
+                        {
+                            SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(contractAccounts);
+                            InvokeOnMainThread(() =>
+                            {
+                                if (response != null &&
+                                    response.d != null &&
+                                    response.d.IsSuccess &&
+                                    response.d.data != null &&
+                                    response.d.data.Count > 0)
+                                {
+                                    List<SMRAccountStatusModel> smrList = new List<SMRAccountStatusModel>(response.d.data);
+                                    if (smrList != null && smrList.Count > 0)
+                                    {
+                                        foreach (var item in smrList)
+                                        {
+                                            DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(item.ContractAccount, item.IsTaggedSMR);
+                                            if (item.isTaggedSMR)
+                                            {
+                                                hasExistingSSMR = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                        List<Task> taskList = new List<Task>();
+                        try
+                        {
+                            taskList.Add(GetServices());
+                            if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                            {
+                                taskList.Add(BatchCallForSSMRApplyAllowed());
+                            }
+                            Task.WaitAll(taskList.ToArray());
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Error in services: " + e.Message);
+                        }
+                        InvokeOnMainThread(() =>
+                        {
+                            _servicesIsShimmering = false;
+                            if (_services != null &&
+                                _services.d != null &&
+                                _services.d.IsSuccess &&
+                                _services.d.data != null)
+                            {
+                                List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
+                                if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                                {
+                                    if (_isSMRApplyAllowedResponse != null &&
+                                        _isSMRApplyAllowedResponse.d != null &&
+                                        _isSMRApplyAllowedResponse.d.IsSuccess &&
+                                        _isSMRApplyAllowedResponse.d.data != null &&
+                                        _isSMRApplyAllowedResponse.d.data.Count > 0)
+                                    {
+                                        if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                                        {
+                                            services.RemoveAt(ServiceItemIndexToRemove(services));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        services.RemoveAt(ServiceItemIndexToRemove(services));
+                                    }
+                                }
+                                else if (!hasExistingSSMR)
+                                {
+                                    services.RemoveAt(ServiceItemIndexToRemove(services));
+                                }
+                                DataManager.DataManager.SharedInstance.ServicesList = services;
+                            }
+                            else
+                            {
+                                DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                            }
+                            OnUpdateTable();
+                        });
+                    }
+                    else
+                    {
+                        await GetServices();
+                        InvokeOnMainThread(() =>
+                        {
+                            _servicesIsShimmering = false;
+                            if (_services != null &&
+                                _services.d != null &&
+                                _services.d.IsSuccess &&
+                                _services.d.data != null)
+                            {
+                                List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
+                                services.RemoveAt(ServiceItemIndexToRemove(services));
+                                DataManager.DataManager.SharedInstance.ServicesList = services;
+                            }
+                            else
+                            {
+                                DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                            }
+                            OnUpdateTable();
+                        });
+                    }
 
-                   List<Task> taskList = new List<Task>();
-                   try
-                   {
-                       taskList.Add(GetServices());
-                       if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0 && !AppLaunchMasterCache.IsSMRFeatureDisabled)
-                       {
-                           taskList.Add(BatchCallForSSMRApplyAllowed());
-                       }
-                       Task.WaitAll(taskList.ToArray());
-                   }
-                   catch (Exception e)
-                   {
-                       Debug.WriteLine("Error in services: " + e.Message);
-                   }
-                   InvokeOnMainThread(() =>
-                   {
-                       _servicesIsShimmering = false;
-                       if (_services != null &&
-                           _services.d != null &&
-                           _services.d.IsSuccess &&
-                           _services.d.data != null)
-                       {
-                           List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
-                           if (!AppLaunchMasterCache.IsSMRFeatureDisabled)
-                           {
-                               if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
-                               {
-                                   if (_isSMRApplyAllowedResponse != null &&
-                                       _isSMRApplyAllowedResponse.d != null &&
-                                       _isSMRApplyAllowedResponse.d.IsSuccess &&
-                                       _isSMRApplyAllowedResponse.d.data != null &&
-                                       _isSMRApplyAllowedResponse.d.data.Count > 0)
-                                   {
-                                       if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
-                                       {
-                                           services.RemoveAt(ServiceItemIndexToRemove(services));
-                                       }
-                                   }
-                                   else
-                                   {
-                                       services.RemoveAt(ServiceItemIndexToRemove(services));
-                                   }
-                               }
-                               else if (!hasExistingSSMR)
-                               {
-                                   services.RemoveAt(ServiceItemIndexToRemove(services));
-                               }
-                           }
-                           else
-                           {
-                               services.RemoveAt(ServiceItemIndexToRemove(services));
-                           }
-                           DataManager.DataManager.SharedInstance.ServicesList = services;
-                       }
-                       else
-                       {
-                           DataManager.DataManager.SharedInstance.ServicesList.Clear();
-                       }
-                       OnUpdateTable();
-                   });
-               });
+                });
             });
         }
 

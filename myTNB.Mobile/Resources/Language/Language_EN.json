@@ -474,5 +474,9 @@
         "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
         "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
         "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+    },
+    "RearrangeAccount": {
+        "navTitle": "Rearrange Accounts",
+        "btnTitle": "Save Changes"
     }
 }
