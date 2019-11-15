@@ -2093,7 +2093,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             txtNewLabel.Text = "99+";
                         }
                         RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
-                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-22f);
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-10f);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         newLabelParam.Width = (int)DPUtils.ConvertDPToPx(18f);
                         newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);

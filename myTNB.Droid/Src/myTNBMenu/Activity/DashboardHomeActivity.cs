@@ -754,7 +754,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                 RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                 RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(26f);
                 newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
                 newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
                 newLabelParam.TopMargin = 0;
@@ -795,7 +794,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                 RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                 RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(26f);
                 newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
                 newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
                 newLabelParam.TopMargin = 0;
