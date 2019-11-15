@@ -657,6 +657,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnPause();
             this.presenter.OnCancelToken();
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
         }
 
         public void ShowSearchAction(bool isShow)
@@ -750,7 +751,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 actionBar.Hide();
                 ShowBackButton(false);
                 ShowSearchAction(false);
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
@@ -1968,7 +1968,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 StopScrolling();
             });
-
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
         }
 

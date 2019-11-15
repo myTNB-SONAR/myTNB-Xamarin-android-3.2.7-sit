@@ -1455,56 +1455,81 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param2 = ""
                 };
 
-                List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
-                List<string> smrAccountList = new List<string>();
-                for (int i = 0; i < customerBillingAccountList.Count; i++)
-                {
-                    if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
-                    {
-                        smrAccountList.Add(customerBillingAccountList[i].AccNum);
-                    }
-                }
-
                 isSMRApplyAllowFlag = false;
 
-                List<List<string>> splitList = new List<List<string>>();
-
-                if (smrAccountList.Count > 0)
+                bool IsSMRFeatureDisabled = false;
+                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                if (currentMasterData.IsSMRFeatureDisabled)
                 {
-                    for (int i = 0; i < smrAccountList.Count; i+=5)
-                    {
-                        List<string> tempList = new List<string>();
-                        tempList.AddRange(smrAccountList.GetRange(i, Math.Min(5, smrAccountList.Count - i)));
-                        splitList.Add(tempList);
-                    }
-
-                    for (int j = 0; j < splitList.Count; j++)
-                    {
-                        await OnCheckSMRAccountStatus(splitList[j]);
-                        if (isSMRApplyAllowFlag)
-                        {
-                            List<List<string>> remainingList = new List<List<string>>();
-                            for (int k = j + 1; k < splitList.Count; k++)
-                            {
-                                remainingList.Add(splitList[k]);
-                            }
-                            if (remainingList.Count > 0)
-                            {
-                                _ = OnStartCheckSMRAccountStatus(remainingList);
-                            }
-                            break;
-                        }
-                    }
+                    IsSMRFeatureDisabled = true;
                 }
 
-                if (!isSMRApplyAllowFlag && smrAccountList.Count > 0)
+                if (IsSMRFeatureDisabled)
                 {
-                    for (int j = 0; j < splitList.Count; j++)
+                    List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.CurrentSMRAccountList();
+                    if (customerBillingAccountList != null && customerBillingAccountList.Count > 0)
                     {
-                        await GetIsSmrApplyAllowedService(splitList[j]);
-                        if (isSMRApplyAllowFlag)
+                        for (int i = 0; i < customerBillingAccountList.Count; i++)
                         {
-                            break;
+                            CustomerBillingAccount.UpdateIsSMRTagged(customerBillingAccountList[i].AccNum, false);
+                        }
+
+                        this.mView.UpdateCurrentSMRAccountList();
+                        this.mView.UpdateEligibilitySMRAccountList();
+                    }
+                }
+                else
+                {
+                    List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+
+                    List<string> smrAccountList = new List<string>();
+                    for (int i = 0; i < customerBillingAccountList.Count; i++)
+                    {
+                        if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                        {
+                            smrAccountList.Add(customerBillingAccountList[i].AccNum);
+                        }
+                    }
+
+                    List<List<string>> splitList = new List<List<string>>();
+
+                    if (smrAccountList.Count > 0)
+                    {
+                        for (int i = 0; i < smrAccountList.Count; i += 5)
+                        {
+                            List<string> tempList = new List<string>();
+                            tempList.AddRange(smrAccountList.GetRange(i, Math.Min(5, smrAccountList.Count - i)));
+                            splitList.Add(tempList);
+                        }
+
+                        for (int j = 0; j < splitList.Count; j++)
+                        {
+                            await OnCheckSMRAccountStatus(splitList[j]);
+                            if (isSMRApplyAllowFlag)
+                            {
+                                List<List<string>> remainingList = new List<List<string>>();
+                                for (int k = j + 1; k < splitList.Count; k++)
+                                {
+                                    remainingList.Add(splitList[k]);
+                                }
+                                if (remainingList.Count > 0)
+                                {
+                                    _ = OnStartCheckSMRAccountStatus(remainingList);
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!isSMRApplyAllowFlag && smrAccountList.Count > 0)
+                    {
+                        for (int j = 0; j < splitList.Count; j++)
+                        {
+                            await GetIsSmrApplyAllowedService(splitList[j]);
+                            if (isSMRApplyAllowFlag)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
