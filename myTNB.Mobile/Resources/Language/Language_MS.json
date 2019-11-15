@@ -69,9 +69,9 @@
     "logout": "Log Keluar",
     "idNumber": "Nombor KP / ROC / Pasport",
     "password": "Kata Laluan",
-    "mobileNo": "No. Mudah Alih",
+    "mobileNo": "Nombor Telefon",
     "email": "Emel",
-    "addAnotherAcct": "Masukkan Satu Lagi Akaun",
+    "addAnotherAcct": "Tambah Akaun",
     "setAppLanguage": "Tetapkan Bahasa Aplikasi",
     "setAppLanguageDescription": "Pilih Bahasa",
     "english": "English",
@@ -590,8 +590,8 @@
     "operationHours": "Buka 24 jam"
   },
   "MyAccount": {
-    "title": "Akaun Saya",
-    "detailSectionTitle": "myTNB Akaun",
+    "title": "Akaun myTNB",
+    "detailSectionTitle": "Akaun myTNB",
     "accountSectionTitle": "Akaun Bekalan Elektrik TNB",
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
