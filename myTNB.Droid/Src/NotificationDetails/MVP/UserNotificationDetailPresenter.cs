@@ -454,8 +454,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 CARegisteredContactInfoResponse response = await this.terminationApi.GetCARegisteredContactInfo(new GetRegisteredContactInfoRequest()
                 {
                     AccountNumber = notificationDetails.AccountNum,
-                    IsOwnedAccount = "true",
-                    ICNumber = account.ICNum,
+                    IsOwnedAccount = account.isOwned ? "true" : "false",
+                    ICNumber = UserEntity.GetActive().IdentificationNo,
                     usrInf = currentUsrInf
                 });
 
