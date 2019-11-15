@@ -3815,6 +3815,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\AccountRearrangeLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\RearrangeAccount\MVP\RearrangeAccountListView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
