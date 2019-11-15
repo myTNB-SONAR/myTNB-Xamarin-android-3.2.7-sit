@@ -26,6 +26,7 @@ using myTNB_Android.Src.Notifications.Api;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -572,7 +573,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
                                 if (!userNotificationData.IsDeleted)
                                 {
-                                    listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                    if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                    {
+                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                    }
                                 }
                             }
                         }
