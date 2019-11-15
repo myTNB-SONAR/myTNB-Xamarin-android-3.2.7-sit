@@ -91,12 +91,6 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
-            CheckTutorialOverlay();
-        }
-
         private void OnEnterForeground(NSNotification notification)
         {
             NeedsUpdate = true;
@@ -113,20 +107,8 @@ namespace myTNB
             if (tutorialOverlayHasShown)
                 return;
 
-            tutorialOverlayTimer = new Timer
-            {
-                Interval = 500F,
-                AutoReset = true,
-                Enabled = true
-            };
-            tutorialOverlayTimer.Elapsed += TimerElapsed;
-        }
-
-        private void TimerElapsed(object sender, ElapsedEventArgs e)
-        {
             if (!isGetAcctChargesLoading && !isGetAcctBillPayHistoryLoading)
             {
-                tutorialOverlayTimer.Enabled = false;
                 InvokeOnMainThread(() =>
                 {
                     var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
@@ -144,15 +126,15 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
+            if (_tutorialContainer != null)
+                return;
+
             ScrollTableToTheTop();
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
 
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
-            if (_tutorialContainer != null)
-            {
-                _tutorialContainer.RemoveFromSuperview();
-            }
+
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear
@@ -172,10 +154,18 @@ namespace myTNB
                 ScrollTableToTheTop = ScrollTableToTheTop,
                 ScrollToHistorySection = ScrollToHistorySection
             };
-            _tutorialContainer.AddSubview(tutorialView.GetView());
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is BillViewController)
+                {
+                    _tutorialContainer.AddSubview(tutorialView.GetView());
 
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, BillConstants.Pref_BillTutorialOverlay);
+                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    sharedPreference.SetBool(true, BillConstants.Pref_BillTutorialOverlay);
+                }
+            }
         }
 
         private void HideTutorialOverlay()
@@ -664,9 +654,12 @@ namespace myTNB
                                {
                                    AccountChargesCache.SetData(_accountCharges);
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                                   CheckTutorialOverlay();
                                }
                                else
                                {
+                                   isGetAcctChargesLoading = true;
+                                   isGetAcctBillPayHistoryLoading = true;
                                    _historyTableView.Hidden = true;
                                    DisplayRefresh();
                                }
@@ -694,9 +687,12 @@ namespace myTNB
                                    };
                                    _historyTableView.ReloadData();
                                    isGetAcctBillPayHistoryLoading = false;
+                                   CheckTutorialOverlay();
                                }
                                else
                                {
+                                   isGetAcctChargesLoading = true;
+                                   isGetAcctBillPayHistoryLoading = true;
                                    _historyTableView.Hidden = true;
                                    DisplayRefresh();
                                }
