@@ -284,6 +284,8 @@ namespace myTNB_Android.Src.Utils
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
 
+        public const string APP_TUTORIAL_PATTERN = "#dropdown#";
+
         //Timeout Duration
         internal static readonly int SERVICE_TIMEOUT_DEFAULT = 60000;
         internal static readonly int ACCOUNT_LIST_TIMEOUT = 8000;

@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Fragments;
@@ -29,7 +30,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private NewAppTutorialPagerAdapter adapter;
         private LinearLayout swipeDoubleTapLayout;
         private LinearLayout indicator;
-        private TextView txtSwipeSeeMore;
         private TextView txtDoubleTapDismiss;
         private List<NewAppModel> NewAppTutorialList = new List<NewAppModel>();
         private GestureDetector mGeatureDetector;
@@ -84,10 +84,18 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 pager = rootView.FindViewById<ViewPager>(Resource.Id.viewPager);
                 indicator = rootView.FindViewById<LinearLayout>(Resource.Id.indicatorContainer);
                 swipeDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeDoubleTapLayout);
-                txtSwipeSeeMore = rootView.FindViewById<TextView>(Resource.Id.txtSwipeSeeMore);
                 txtDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtDoubleTapDismiss);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtSwipeSeeMore, txtDoubleTapDismiss);
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml("Swipe to see more,<br/>double tap to dismiss.", FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml("Swipe to see more,<br/>double tap to dismiss.");
+                }
+
+                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss);
 
                 if (this.mFragment != null)
                 {
@@ -222,7 +230,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     if (NewAppTutorialList.Count > 1)
                     {
                         swipeDoubleTapLayout.Visibility = ViewStates.Visible;
-                        txtSwipeSeeMore.Visibility = ViewStates.Visible;
                         txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                         indicator.Visibility = ViewStates.Visible;
                     }
@@ -247,7 +254,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                             {
-                                txtSwipeSeeMore.Visibility = ViewStates.Gone;
                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
                             }
                             else
@@ -305,12 +311,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (e.Position == NewAppTutorialList.Count - 1)
                             {
-                                txtSwipeSeeMore.Visibility = ViewStates.Gone;
                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
                             }
                             else
                             {
-                                txtSwipeSeeMore.Visibility = ViewStates.Visible;
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
 
@@ -445,7 +449,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                                     {
                                                         ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
-                                                        txtSwipeSeeMore.Visibility = ViewStates.Gone;
                                                         txtDoubleTapDismiss.Visibility = ViewStates.Gone;
                                                     }
                                                     else
@@ -538,7 +541,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
-                                                    txtSwipeSeeMore.Visibility = ViewStates.Gone;
                                                     txtDoubleTapDismiss.Visibility = ViewStates.Gone;
                                                 }
                                                 else

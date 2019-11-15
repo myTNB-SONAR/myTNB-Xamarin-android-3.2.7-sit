@@ -146,8 +146,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     ImageSpan imageSpan = new ImageSpan(this.mContext, Resource.Drawable.ic_display_dropdown, SpanAlign.Baseline);
                     SpannableString firstPageString = new SpannableString(txtBottomContent.TextFormatted);
-                    int start = 5;
-                    int end = 6;
+                    string searchText = model.ContentMessage;
+
+                    int start = searchText.LastIndexOf("\" #") + 1;
+                    int end = searchText.LastIndexOf("# \"") + 2;
                     firstPageString.SetSpan(imageSpan, start, end, SpanTypes.ExclusiveExclusive);
                     txtBottomContent.TextFormatted = firstPageString;
                 }
