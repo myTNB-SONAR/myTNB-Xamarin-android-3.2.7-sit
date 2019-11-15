@@ -483,7 +483,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
         IAxisValueFormatter XLabelsFormatter;
-        private int currentParentIndex = 0;
         private string errorMSG = null;
 
         private MaterialDialog mWhyThisAmtCardDialog;
@@ -2622,7 +2621,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
 
                                 valList[0] = System.Math.Abs(val);
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -2652,7 +2651,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         valList[j] = newValList[j];
                                     }
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -2664,7 +2663,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float[] valList = new float[1];
                                     valList[0] = 0f;
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -2678,7 +2677,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             float[] valList = new float[1];
                             valList[0] = 0f;
 
-                            if (i == barLength - 1)
+                            if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                             {
                                 stackIndex = valList.Length - 1;
                             }
@@ -2806,8 +2805,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
                 else
@@ -2877,8 +2879,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
             }
@@ -2907,7 +2912,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
 
                                     valList[0] = System.Math.Abs(val);
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -2939,7 +2944,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             valList[j] = newValList[j];
                                         }
 
-                                        if (i == barLength - 1)
+                                        if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                         {
                                             stackIndex = valList.Length - 1;
                                         }
@@ -2950,7 +2955,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         float[] valList = new float[1];
                                         valList[0] = 0f;
-                                        if (i == barLength - 1)
+                                        if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                         {
                                             stackIndex = valList.Length - 1;
                                         }
@@ -2962,7 +2967,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 float[] valList = new float[1];
                                 valList[0] = 0f;
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -3335,8 +3340,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -3509,8 +3517,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -3562,7 +3573,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     valList[j] = newValList[j];
                                 }
 
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -3574,7 +3585,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 float[] valList = new float[1];
                                 valList[0] = 0f;
 
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -3587,7 +3598,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             float[] valList = new float[1];
                             valList[0] = 0f;
 
-                            if (i == barLength - 1)
+                            if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                             {
                                 stackIndex = valList.Length - 1;
                             }
@@ -3711,8 +3722,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
                 else
@@ -3791,8 +3805,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         mChart.Data = data;
                     }
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
             }
@@ -3834,7 +3851,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         valList[j] = newValList[j];
                                     }
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -3846,7 +3863,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float[] valList = new float[1];
                                     valList[0] = 0f;
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -3859,7 +3876,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 float[] valList = new float[1];
                                 valList[0] = 0f;
 
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -4226,8 +4243,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -4404,8 +4424,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -4453,6 +4476,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowByDay()
         {
             ChartType = ChartType.Day;
+
+            CurrentParentIndex = -1;
 
             mChart.Visibility = ViewStates.Visible;
 
