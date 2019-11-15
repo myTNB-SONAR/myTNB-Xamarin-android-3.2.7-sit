@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
@@ -50,16 +51,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 string pageTitle = "Notification";
                 string notificationDetailTitle = notificationDetails.Title;
                 string notificationDetailMessage = notificationDetails.Message;
-                string accountName = "Customer Account Number " + notificationDetails.AccountNum;
-
-                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
-                if (customerBillingAccount != null)
-                {
-                    if (!string.IsNullOrEmpty(customerBillingAccount.AccDesc))
-                    {
-                        accountName = customerBillingAccount.AccDesc;
-                    }
-                }
+                string accountName = MyTNBAccountManagement.GetInstance().GetNotificationAccountName(notificationDetails.AccountNum);
 
                 ctaList = new List<NotificationDetailModel.NotificationCTA>();
 
