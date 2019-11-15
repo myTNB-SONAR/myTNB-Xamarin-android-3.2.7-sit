@@ -169,7 +169,9 @@ namespace myTNB
             nfloat totalCellHeight;
             if (HasAccounts)
             {
-                nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                // HIDE REARRANGE ACCOUNT
+                //nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                nfloat footerHeight = HasMoreThanThreeAccts ? ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
                 var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
                 nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
                 totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F);
