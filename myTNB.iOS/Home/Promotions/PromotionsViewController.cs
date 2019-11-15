@@ -30,6 +30,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = PromotionsConstants.Pagename;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             Debug.WriteLine("PROMOTION DID LOAD");
@@ -42,7 +43,7 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PROMOTIONS LanguageDidChange");
-            _titleBarComponent?.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent?.SetTitle(GetI18NValue(PromotionsConstants.I18N_NavTitle));
         }
 
         public override void ViewWillAppear(bool animated)
@@ -177,7 +178,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(PromotionsConstants.I18N_NavTitle));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
