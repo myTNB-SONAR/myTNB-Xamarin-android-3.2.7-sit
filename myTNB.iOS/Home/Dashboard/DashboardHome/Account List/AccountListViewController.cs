@@ -548,11 +548,6 @@ namespace myTNB
                         }
                         ReloadViews(false, isFromSearch);
                     }
-                    var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(acctNumList, activeAccountList);
-                    if (eligibleSSMRAccounts?.Count > 0)
-                    {
-                        GetAccountsSMRStatus(eligibleSSMRAccounts);
-                    }
                 }
             }
             else
@@ -631,24 +626,6 @@ namespace myTNB
             }
         }
 
-        private void UpdateIsSSMRForDisplayedAccounts(List<SMRAccountStatusModel> statusDetails)
-        {
-            var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-            foreach (var status in statusDetails)
-            {
-                foreach (var account in activeAccountList)
-                {
-                    if (account.accNum == status.ContractAccount)
-                    {
-                        var item = account;
-                        item.UpdateIsSSMRValue(status);
-                        DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(account.accNum, status.IsTaggedSMR);
-                        break;
-                    }
-                }
-            }
-        }
-
         private List<string> GetAccountsToUpdate(List<string> accNumList)
         {
             var acctsToGetLatestDues = new List<string>();
@@ -718,38 +695,6 @@ namespace myTNB
                                     _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
                                 }
                                 ActivityIndicator.Hide();
-                            });
-                        });
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
-        }
-
-        private void GetAccountsSMRStatus(List<string> accounts)
-        {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        InvokeInBackground(async () =>
-                        {
-                            SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(accounts);
-                            InvokeOnMainThread(() =>
-                            {
-                                if (response != null &&
-                                    response.d != null &&
-                                    response.d.IsSuccess &&
-                                    response.d.data != null &&
-                                    response.d.data.Count > 0)
-                                {
-                                    UpdateIsSSMRForDisplayedAccounts(response.d.data);
-                                }
                             });
                         });
                     }
@@ -844,7 +789,10 @@ namespace myTNB
         }
         private void OnRearrangeAction()
         {
-            Debug.WriteLine("OnRearrangeAction()");
+            if (_homeViewController != null)
+            {
+                _homeViewController.OnRearrangeAccountAction();
+            }
         }
         #endregion
     }
