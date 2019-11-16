@@ -145,7 +145,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 registerdAccounts.RemoveAll(x => x.AccountCategoryId == "2");
 
                 TOTAL_ACCOUNTS = registerdAccounts.Count;
-                NO_OF_ITARATION = (TOTAL_ACCOUNTS / TOTAL_NUMBER_OF_ITEMS_TO_GET);
+                NO_OF_ITARATION = selectedAccount != null ? (TOTAL_ACCOUNTS / TOTAL_NUMBER_OF_ITEMS_TO_GET) : (TOTAL_ACCOUNTS - 1 / TOTAL_NUMBER_OF_ITEMS_TO_GET);
                 REMAINING_ITEM_COUNT = TOTAL_ACCOUNTS - (NO_OF_ITARATION * TOTAL_NUMBER_OF_ITEMS_TO_GET);
                 if (TOTAL_ACCOUNTS < 8 && TOTAL_ACCOUNTS > 4)
                 {
