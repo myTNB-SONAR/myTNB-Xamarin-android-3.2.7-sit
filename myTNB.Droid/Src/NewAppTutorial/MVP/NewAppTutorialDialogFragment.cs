@@ -562,7 +562,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                 }
 
-                mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment, this.mContext, this.mPref));
+                mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment, this.mContext, this.mPref, this.NewAppTutorialList));
                 pager.SetOnTouchListener(this);
                 pager.SetPageTransformer(false, this);
 
@@ -675,13 +675,18 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             Android.App.Fragment mFragment;
             Android.App.Activity mActivity;
             ISharedPreferences mPref;
+            List<NewAppModel> NewAppTutorialList = new List<NewAppModel>();
 
-            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment, Android.App.Activity activity, ISharedPreferences pref)
+            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment, Android.App.Activity activity, ISharedPreferences pref, List<NewAppModel> list)
             {
                 this.mDialog = dialog;
                 this.mFragment = fragment;
                 this.mActivity = activity;
                 this.mPref = pref;
+                if (list != null && list.Count > 0)
+                {
+                    this.NewAppTutorialList = list;
+                }
             }
 
             public override bool OnDoubleTap(MotionEvent e)
@@ -698,7 +703,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mFragment is ItemisedBillingMenuFragment)
                     {
                         ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                        UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+                        if (NewAppTutorialList.Count == 2)
+                        {
+                            UserSessions.DoItemizedBillingRETutorialShown(this.mPref);
+                        }
+                        else
+                        {
+                            UserSessions.DoItemizedBillingNMSMTutorialShown(this.mPref);
+                        }
                     }
                     else if (this.mFragment is DashboardChartFragment)
                     {

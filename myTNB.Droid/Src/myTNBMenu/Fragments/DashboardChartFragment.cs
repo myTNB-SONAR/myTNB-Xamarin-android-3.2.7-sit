@@ -1626,11 +1626,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (!isSMAccount)
                 {
-                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 else
                 {
-                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
             }
             else
@@ -1638,11 +1638,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 tarifToggle.Enabled = false;
                 if (!isSMAccount)
                 {
-                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 else
                 {
-                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
                 txtTarifToggle.Text = "Show Tariff";
@@ -2630,10 +2630,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 float[] valList = new float[1];
 
-                                float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
+                                }
+
+                                if (val < 0)
+                                {
+                                    val = 0;
                                 }
 
                                 valList[0] = System.Math.Abs(val);
@@ -2646,16 +2651,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             else
                             {
                                 List<float> newValList = new List<float>();
-                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+
+                                float valTotal = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                                if (valTotal > 0)
                                 {
-                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                                    if (float.IsPositiveInfinity(val))
+                                    for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                     {
-                                        val = float.PositiveInfinity;
-                                    }
-                                    if (System.Math.Abs(val) > 0)
-                                    {
-                                        newValList.Add(System.Math.Abs(val));
+                                        float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                        if (float.IsPositiveInfinity(val))
+                                        {
+                                            val = float.PositiveInfinity;
+                                        }
+                                        if (System.Math.Abs(val) > 0)
+                                        {
+                                            newValList.Add(System.Math.Abs(val));
+                                        }
                                     }
                                 }
 
@@ -2731,7 +2741,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                if (selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                                if (selectedHistoryData.ByMonth.Months[i].DPCIndicator || (float) selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                 {
                                     listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                 }
@@ -2835,10 +2845,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         float[] valList = new float[1];
                         float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+
+                        if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                        {
+                            val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        }
+
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
                         }
+
+                        if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator && val < 0)
+                        {
+                            val = 0;
+                        }
+                        else if (!isREAccount && (float)selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
+                        {
+                            val = 0;
+                        }
+
                         valList[0] = System.Math.Abs(val);
                         yVals1.Add(new BarEntry(i, valList));
                     }
@@ -2921,10 +2947,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     float[] valList = new float[1];
 
-                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
+                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
                                     if (float.IsPositiveInfinity(val))
                                     {
                                         val = float.PositiveInfinity;
+                                    }
+
+                                    if (val < 0)
+                                    {
+                                        val = 0;
                                     }
 
                                     valList[0] = System.Math.Abs(val);
@@ -2937,17 +2968,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 else
                                 {
                                     List<float> newValList = new List<float>();
-                                    for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                                    {
-                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                                        if (float.IsPositiveInfinity(val))
-                                        {
-                                            val = float.PositiveInfinity;
-                                        }
 
-                                        if (System.Math.Abs(val) > 0)
+                                    float valTotal = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
+
+                                    if (valTotal > 0)
+                                    {
+                                        for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                         {
-                                            newValList.Add(System.Math.Abs(val));
+                                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                            if (float.IsPositiveInfinity(val))
+                                            {
+                                                val = float.PositiveInfinity;
+                                            }
+
+                                            if (System.Math.Abs(val) > 0)
+                                            {
+                                                newValList.Add(System.Math.Abs(val));
+                                            }
                                         }
                                     }
 
@@ -3143,7 +3180,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                                 {
-                                    if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                                    if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator || (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                     {
                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
@@ -3385,9 +3422,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
+                                if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                                {
+                                    val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
+                                }
+
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
+                                }
+
+                                if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator && val < 0)
+                                {
+                                    val = 0;
+                                }
+                                else if ((float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
+                                {
+                                    val = 0;
                                 }
                             }
                             valList[0] = System.Math.Abs(val);
@@ -4791,7 +4842,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
 
-                    // Lin Siong TODO: Replace the Message handling
                     if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && index != -1)
                     {
                         if (isSMAccount)
@@ -4943,6 +4993,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 startCount = selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
                             }
+
+                            if (ChartDataType == ChartDataType.RM && (float)selectedHistoryData.ByMonth.Months[index].AmountTotal <= 0.00)
+                            {
+                                startCount = -1;
+                            }
+
                             if (startCount == -1)
                             {
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
@@ -4978,6 +5034,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
                             }
+
+                            if (ChartDataType == ChartDataType.RM && (float)selectedSMHistoryData.ByMonth.Months[index].AmountTotal <= 0.00)
+                            {
+                                startCount = -1;
+                            }
+
                             if (startCount == -1)
                             {
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
@@ -5600,6 +5662,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                             }
+
+                            if (!isREAccount && MonthData.DPCIndicator)
+                            {
+                                valTotal = MonthData.AmountTotal < 0? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+
                             if (System.Math.Abs(valTotal) > val)
                             {
                                 val = System.Math.Abs((float)valTotal);
@@ -5614,9 +5682,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            if (!isREAccount && MonthData.DPCIndicator)
                             {
-                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                                float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                if (System.Math.Abs(valTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)valTotal);
+                                }
+                            }
+                            else
+                            {
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                }
                             }
                         }
                         if (val == 0)
@@ -5638,6 +5718,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                                 }
+
+                                if (MonthData.DPCIndicator)
+                                {
+                                    valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+
                                 if (System.Math.Abs(valTotal) > val)
                                 {
                                     val = System.Math.Abs((float)valTotal);
@@ -5652,9 +5738,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
-                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                if (MonthData.DPCIndicator)
                                 {
-                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                    if (System.Math.Abs(valTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)valTotal);
+                                    }
+                                }
+                                else
+                                {
+                                    if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    }
                                 }
                             }
                             if (val == 0)
@@ -5730,6 +5828,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                             }
+
+                            if (!isREAccount && MonthData.DPCIndicator)
+                            {
+                                valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+
                             if (System.Math.Abs(valTotal) > val)
                             {
                                 val = System.Math.Abs((float)valTotal);
@@ -5744,9 +5848,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            if (!isREAccount && MonthData.DPCIndicator)
                             {
-                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                                float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                if (System.Math.Abs(valTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)valTotal);
+                                }
+                            }
+                            else
+                            {
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                }
                             }
                         }
                         if (val == 0)
@@ -5768,6 +5884,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                                 }
+
+                                if (!isREAccount && MonthData.DPCIndicator)
+                                {
+                                    valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+
                                 if (System.Math.Abs(valTotal) > val)
                                 {
                                     val = System.Math.Abs((float)valTotal);
@@ -5782,9 +5904,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
-                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                if (!isREAccount && MonthData.DPCIndicator)
                                 {
-                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                    if (System.Math.Abs(valTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)valTotal);
+                                    }
+                                }
+                                else
+                                {
+                                    if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    }
                                 }
                             }
                             if (val == 0)

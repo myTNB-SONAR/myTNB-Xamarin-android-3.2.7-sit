@@ -148,7 +148,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			{
                 isSMR = false;
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage);

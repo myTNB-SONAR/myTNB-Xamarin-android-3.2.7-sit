@@ -90,6 +90,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     Utility.LoggingNonFatalError(e);
                 }
             }
+            accountList = null;
             if (accountList != null && accountList.Count > 0)
             {
                 if (CustomerBillingAccount.HasSelected())
@@ -121,7 +122,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             else
             {
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 noEligibleAccountContainer.Visibility = ViewStates.Visible;
                 eligibleAccountListContainer.Visibility = ViewStates.Gone;
             }

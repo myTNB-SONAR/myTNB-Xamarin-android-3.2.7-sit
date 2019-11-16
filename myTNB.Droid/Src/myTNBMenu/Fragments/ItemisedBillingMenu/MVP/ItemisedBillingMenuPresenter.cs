@@ -306,7 +306,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
         public void OnCheckToCallItemizedTutorial()
         {
-            if (!UserSessions.HasItemizedBillingTutorialShown(this.mPref))
+            if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
             {
                 this.mView.OnShowItemizedFragmentTutorialDialog();
             }

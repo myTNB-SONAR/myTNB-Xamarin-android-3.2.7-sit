@@ -176,15 +176,27 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasItemizedBillingTutorialShown(ISharedPreferences prefs)
+        public static System.Boolean HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
         {
-            return prefs.GetBoolean("hasItemizedBillingTutorialShown", false);
+            return prefs.GetBoolean("hasItemizedBillingNMSMTutorialShown", false);
         }
 
-        public static void DoItemizedBillingTutorialShown(ISharedPreferences prefs)
+        public static void DoItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("hasItemizedBillingTutorialShown", true);
+            editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingRETutorialShown", false);
+        }
+
+        public static void DoItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingRETutorialShown", true);
             editor.Apply();
         }
 
