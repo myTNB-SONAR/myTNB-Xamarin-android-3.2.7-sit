@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.Login.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
 
-                txtAccountLogin.Text = GetLabelByLanguage("title");
+                txtAccountLogin.Text = GetLabelByLanguage("loginTitle");
                 chkRemeberMe.Text = GetLabelByLanguage("rememberEmail");
                 txtForgotPassword.Text = GetLabelByLanguage("forgotPassword");
                 txtNoAccount.Text = GetLabelByLanguage("dontHaveAcct");

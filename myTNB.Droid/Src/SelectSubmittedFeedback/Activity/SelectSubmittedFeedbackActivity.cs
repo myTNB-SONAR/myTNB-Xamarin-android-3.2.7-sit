@@ -72,6 +72,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyFeedback);
 
+                txtEmptyFeedback.Text = Utility.GetLocalizedLabel("SubmittedFeedback", "noFeedback");
+
                 mPresenter = new SelectSubmittedFeedbackPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
             }

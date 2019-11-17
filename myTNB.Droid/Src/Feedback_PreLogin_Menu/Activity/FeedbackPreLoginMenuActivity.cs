@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
     [Activity(Label = "@string/menu_feedback"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Feedback")]
-    public class FeedbackPreLoginMenuActivity : BaseToolbarAppCompatActivity, FeedbackPreLoginMenuContract.IView
+    public class FeedbackPreLoginMenuActivity : BaseActivityCustom, FeedbackPreLoginMenuContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -90,6 +90,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         string feedbackStreetLampTitle = "";
         string feedbackOthersTitle = "";
         string submittedFeedbackTitle = "";
+
+        const string PAGE_ID = "FeedbackList";
 
         public override int ResourceId()
         {
@@ -479,5 +481,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

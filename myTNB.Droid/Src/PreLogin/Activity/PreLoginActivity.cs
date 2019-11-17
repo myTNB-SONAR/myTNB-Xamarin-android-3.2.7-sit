@@ -107,8 +107,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
             txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
             txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
             txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
-            txtFeedback.Text = Utility.GetLocalizedLabel("Prelogin", "feedback");
             txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -512,15 +520,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
                 currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
-
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                {
-                    txtFeedback.TextFormatted = Html.FromHtml(GetString(Resource.String.prelogin_feedback), FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    txtFeedback.TextFormatted = Html.FromHtml(GetString(Resource.String.prelogin_feedback));
-                }
             }
             catch (Exception ex)
             {
