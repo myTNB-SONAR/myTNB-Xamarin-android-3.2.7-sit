@@ -90,7 +90,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     Utility.LoggingNonFatalError(e);
                 }
             }
-            accountList = null;
             if (accountList != null && accountList.Count > 0)
             {
                 if (CustomerBillingAccount.HasSelected())
