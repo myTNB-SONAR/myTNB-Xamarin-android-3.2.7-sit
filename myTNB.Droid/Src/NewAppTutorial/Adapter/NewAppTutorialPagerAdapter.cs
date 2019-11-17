@@ -1647,15 +1647,17 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                    UserSessions.DoItemizedBillingTutorialShown(this.mPref);
 
-                    if (list.Count == 2)
+                    // Lin Siong TODO: To implement once iOS had implemented
+                    /*if (list.Count == 2)
                     {
                         UserSessions.DoItemizedBillingRETutorialShown(this.mPref);
                     }
                     else
                     {
                         UserSessions.DoItemizedBillingNMSMTutorialShown(this.mPref);
-                    }
+                    }*/
                 }
                 else if (this.mFragment is DashboardChartFragment)
                 {

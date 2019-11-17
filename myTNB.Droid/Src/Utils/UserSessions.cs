@@ -176,7 +176,8 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
+        // Lin Siong TODO:  To enable once iOS Implementation done
+        /*public static System.Boolean HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingNMSMTutorialShown", false);
         }
@@ -197,6 +198,17 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("hasItemizedBillingRETutorialShown", true);
+            editor.Apply();
+        }*/
+
+        public static System.Boolean HasItemizedBillingTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingTutorialShown", false);
+        }
+        public static void DoItemizedBillingTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingTutorialShown", true);
             editor.Apply();
         }
 
