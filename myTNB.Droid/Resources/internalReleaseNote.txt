@@ -1,14 +1,3 @@
-PROD Build v2.0.0(151)- 11/15
-Thanks to your feedback, we’ve got a refreshing new look, a whole new service with greater control and understanding. In this update, you’ll find:
+SIT Build v2.0.0(151)- 11/17
+Please check SIT Deployment Wiki for the release notes.
 
- 
-
-1. A redesigned Homepage to view all your accounts and quickly access TNB services
-
-2. An enhanced Usage view to understand tariffs
-
-3. Itemised billing for a breakdown of your charges
-
- 
-
-We value your feedback! If you want us to know something, tap “Submit Feedback” via the Homepage.
