@@ -152,6 +152,7 @@ namespace myTNB
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
                 DueEntity.DeleteTable();
+                sharedPreference.RemoveObject(Constants.Key_PromotionTimestamp);
             }
         }
 
