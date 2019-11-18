@@ -2201,5 +2201,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void CheckSearchEditAction()
+        {
+            if (searchEditText.Visibility == ViewStates.Visible)
+            {
+                ShowSearchAction(false);
+            }
+        }
     }
 }
