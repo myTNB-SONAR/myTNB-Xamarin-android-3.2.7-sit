@@ -1895,7 +1895,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     fetchList.Add(currentMyServiceList[i]);
                 }
-                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                if (currentMyServiceList.Count > 3)
+                {
+                    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                }
+                else
+                {
+                    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                }
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServiceResult(fetchList);
             }
@@ -2795,9 +2802,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         normalTokenSource.Cancel();
                         this.mView.OnSearchOutFocus(true);
-                        isQuery = false;
                         trackCurrentLoadMoreCount = 0;
                         HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+                        isMyServiceExpanded = false;
+                        HomeMenuUtils.SetIsMyServiceExpanded(false);
+                        isQuery = false;
+                        HomeMenuUtils.SetIsQuery(false);
+                        HomeMenuUtils.SetQueryWord("");
                         updateDashboardInfoList = new List<SummaryDashBoardDetails>();
                         List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                         summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
