@@ -485,7 +485,7 @@ namespace myTNB
             UIView viewCover = bar.ViewWithTag(2001);
             UIView viewTariff = bar.ViewWithTag(2002);
 
-            if (_isTariffView)
+            if (_isTariffView && _viewType == SmartMeterConstants.SmartMeterViewType.Month)
             {
                 List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
                 if (index < usageData.Count)
