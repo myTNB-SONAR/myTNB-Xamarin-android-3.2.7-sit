@@ -787,6 +787,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
+                HomeMenuCustomScrolling(0);
             }
             catch (System.Exception e)
             {
@@ -2182,6 +2183,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 summaryNestScrollView.SmoothScrollBy(0, 0);
                 summaryNestScrollView.ScrollTo(0, 0);
                 summaryNestScrollView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void RestartHomeMenu()
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).ShowHomeDashBoard();
             }
             catch (System.Exception e)
             {

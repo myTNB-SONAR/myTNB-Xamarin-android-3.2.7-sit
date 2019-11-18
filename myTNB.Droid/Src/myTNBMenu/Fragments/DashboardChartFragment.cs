@@ -8302,6 +8302,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnPause()
         {
             base.OnPause();
+            try
+            {
+                if (isSMR)
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         // Lin Siong Note: Set New Account layout param
