@@ -48,13 +48,15 @@ namespace myTNB_Android.Src.Promotions.Adapter
             TextViewUtils.SetMuseoSans300Typeface(vh.Description);
             TextViewUtils.SetMuseoSans300Typeface(vh.Date);
 
-            if (model.LandscapeImage != null)
+            if (!string.IsNullOrEmpty(model.LandscapeImage))
             {
                 if (model.LandscapeImage.Contains("jpeg"))
                 {
                     Log.Debug("Promotion Adapter", "Image path saved");
                     Picasso.With(vh.PromotionImgView.Context)
                    .Load(new Java.IO.File(model.LandscapeImage))
+                   //TO DO: Default image pending
+                   .Error(Resource.Drawable.ic_empty_promotions)
                    .Fit()
                    .Into(vh.PromotionImgView);
                     vh.PromotionImgProgress.Visibility = ViewStates.Gone;
@@ -63,6 +65,11 @@ namespace myTNB_Android.Src.Promotions.Adapter
                 {
                     GetImageAsync(vh.PromotionImgView, vh.PromotionImgProgress, model);
                 }
+            }
+            //TO DO: Default image pending
+            else
+            {
+                vh.PromotionImgView.SetImageResource(Resource.Drawable.ic_empty_promotions);
             }
 
             if (model.Read)

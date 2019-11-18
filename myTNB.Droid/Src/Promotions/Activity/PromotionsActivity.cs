@@ -105,22 +105,28 @@ namespace myTNB_Android.Src.Promotions.Activity
                     textCampaign.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
                     textPrizes.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
                     textPromotionInfo.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
-                    //if(model.Image != null)
-                    //{
-                    //    GetImageAsync(imgPromotion, mProgressBar, model);
-                    //}
 
-                    if (model.LandscapeImage.Contains("jpeg"))
+                    if (!string.IsNullOrEmpty(model.LandscapeImage))
                     {
-                        Picasso.With(imgPromotion.Context)
-                       .Load(new Java.IO.File(model.LandscapeImage))
-                       .Fit()
-                       .Into(imgPromotion);
-                        mProgressBar.Visibility = ViewStates.Gone;
+                        if (model.LandscapeImage.Contains("jpeg"))
+                        {
+                            Picasso.With(imgPromotion.Context)
+                           .Load(new Java.IO.File(model.LandscapeImage))
+                           //TO DO: Default image pending
+                           .Error(Resource.Drawable.ic_empty_promotions)
+                           .Fit()
+                           .Into(imgPromotion);
+                            mProgressBar.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            GetImageAsync(imgPromotion, mProgressBar, model);
+                        }
                     }
                     else
                     {
-                        GetImageAsync(imgPromotion, mProgressBar, model);
+                        //TO DO: Default image pending
+                        imgPromotion.SetImageResource(Resource.Drawable.ic_empty_promotions);
                     }
                 }
             }
