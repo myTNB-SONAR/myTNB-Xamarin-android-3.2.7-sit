@@ -542,6 +542,9 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
+            if (_segmentContainer == null)
+                return;
+
             _consumptionState = state;
             if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
