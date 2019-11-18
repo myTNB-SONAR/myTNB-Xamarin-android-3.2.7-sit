@@ -164,6 +164,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
+
+            void OnCheckToCallHomeMenuTutorial();
         }
 
         public interface IHomeMenuService

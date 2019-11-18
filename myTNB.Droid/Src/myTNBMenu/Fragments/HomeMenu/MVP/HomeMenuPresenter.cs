@@ -1337,9 +1337,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             threePhaseWalkthroughTokenSource.Cancel();
             threePhaseWalkthroughNoOCRTokenSource.Cancel();
             energyTipsTokenSource.Cancel();
-            isSummaryDone = false;
-            isMyServiceDone = false;
-            isNeedHelpDone = false;
             isHomeMenuTutorialShown = false;
 
     }
@@ -2473,7 +2470,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return isSummaryDone && isMyServiceDone && isNeedHelpDone;
         }
 
-        private void OnCheckToCallHomeMenuTutorial()
+        public void OnCheckToCallHomeMenuTutorial()
         {
             if (isAllDone() && !isHomeMenuTutorialShown)
             {

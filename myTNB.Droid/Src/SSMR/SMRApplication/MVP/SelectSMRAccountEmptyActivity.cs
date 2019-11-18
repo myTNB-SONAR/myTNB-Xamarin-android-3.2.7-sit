@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 base.OnCreate(savedInstanceState);
                 // Create your application here
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainTitle);
             }
             catch (Exception e)

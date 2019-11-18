@@ -449,6 +449,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+
+                ShowSearchAction(false);
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                SMRPopUpUtils.SetFromUsageFlag(false);
+                SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                {
+                    isBCRMDown = true;
+                }
+                else
+                {
+                    isBCRMDown = false;
+                }
+
+                if (!isBCRMDown)
+                {
+                    OnStartLoadAccount();
+                }
+                else
+                {
+                    IsLoadMoreButtonVisible(false, false);
+
+                    IsMyServiceLoadMoreButtonVisible(false, false);
+
+                    IsRearrangeButtonVisible(false);
+
+                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+                }
+
+                SetBottomLayoutBackground(false);
+                this.presenter.InitiateService();
+                this.presenter.GetUserNotifications();
+                SetNotificationIndicator();
             }
             catch (System.Exception e)
             {
@@ -751,38 +784,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Hide();
                 ShowBackButton(false);
-                ShowSearchAction(false);
-                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                SMRPopUpUtils.SetFromUsageFlag(false);
-                SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
-                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                if (this.presenter != null)
                 {
-                    isBCRMDown = true;
+                    this.presenter.OnCheckToCallHomeMenuTutorial();
                 }
-                else
-                {
-                    isBCRMDown = false;
-                }
-
-                if (!isBCRMDown)
-                {
-                    OnStartLoadAccount();
-                }
-                else
-                {
-                    IsLoadMoreButtonVisible(false, false);
-
-                    IsMyServiceLoadMoreButtonVisible(false, false);
-
-                    IsRearrangeButtonVisible(false);
-
-                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
-                }
-
-                SetBottomLayoutBackground(false);
-                this.presenter.InitiateService();
-                this.presenter.GetUserNotifications();
-                SetNotificationIndicator();
             }
             catch (System.Exception e)
             {
