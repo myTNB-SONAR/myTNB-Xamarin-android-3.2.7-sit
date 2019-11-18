@@ -918,7 +918,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        isSMR = this.mPresenter.IsOwnedSMR(selectedAccount.AccountNum);
+                        isSMR = this.mPresenter.IsOwnedSMRLocal(selectedAccount.AccountNum);
                         if (isSMR)
                         {
                             StartSSMRDashboardViewShimmer();
@@ -9210,6 +9210,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             return isHaveData;
+        }
+
+        public void CheckSMRAccountValidaty()
+        {
+            if (!isSMR)
+            {
+                isSMR = true;
+                StartSSMRDashboardViewShimmer();
+                isChangeVirtualHeightNeed = true;
+                SetVirtualHeightParams(6f);
+                isChangeBackgroundNeeded = true;
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
+                param.Height = (int)DPUtils.ConvertDPToPx(170);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(200f);
+            }
         }
     }
 }
