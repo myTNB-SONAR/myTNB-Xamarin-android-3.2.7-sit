@@ -2845,25 +2845,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         float[] valList = new float[1];
                         float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        if (!isREAccount)
+                        {
+                            if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                            {
+                                val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                            }
 
-                        if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+
+                            if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator && val < 0)
+                            {
+                                val = 0;
+                            }
+                            else if (!isREAccount && (float)selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
+                            {
+                                val = 0;
+                            }
+                        }
+                        else
                         {
-                            val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                            val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
                         }
 
-                        if (float.IsPositiveInfinity(val))
-                        {
-                            val = float.PositiveInfinity;
-                        }
-
-                        if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator && val < 0)
-                        {
-                            val = 0;
-                        }
-                        else if (!isREAccount && (float)selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
-                        {
-                            val = 0;
-                        }
 
                         valList[0] = System.Math.Abs(val);
                         yVals1.Add(new BarEntry(i, valList));
@@ -5694,11 +5705,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     val = System.Math.Abs((float)valTotal);
                                 }
                             }
-                            else
+                            else if (!isREAccount)
                             {
                                 if (MonthData.AmountTotal > 0 && System.Math.Abs(MonthData.AmountTotal) > val)
                                 {
                                     val = System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+                            }
+                            else
+                            {
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
                                 }
                             }
                         }
