@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageSupplyAccount.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -114,6 +115,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     REPaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
                     AccountDataEntity.RemoveAccountData(accountData.AccountNum);
                     SummaryDashBoardAccountEntity.RemoveAll();
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
                     this.mView.ShowSuccessRemovedAccount();
                 }
                 else

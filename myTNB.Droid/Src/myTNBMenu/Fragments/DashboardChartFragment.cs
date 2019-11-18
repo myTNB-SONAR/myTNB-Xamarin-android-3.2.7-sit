@@ -1626,11 +1626,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (!isSMAccount)
                 {
-                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 else
                 {
-                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
             }
             else
@@ -1638,11 +1638,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 tarifToggle.Enabled = false;
                 if (!isSMAccount)
                 {
-                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 else
                 {
-                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
                 txtTarifToggle.Text = "Show Tariff";

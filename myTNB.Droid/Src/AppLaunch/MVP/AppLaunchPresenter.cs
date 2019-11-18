@@ -126,16 +126,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
 
+            var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(httpClient);
 #else
-            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
+			var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
             var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
 
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
 
+			var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
+
 #endif
-            try
+			try
             {
                 Context mContext = MyTNBApplication.Context;
 
@@ -263,6 +266,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                                        HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
                                         CustomerBillingAccount.RemoveSelected();
                                         CustomerBillingAccount.MakeFirstAsSelected();
@@ -285,32 +289,22 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         {
                                             if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                             {
-                                                UserEntity.RemoveActive();
-                                                UserRegister.RemoveActive();
-                                                CustomerBillingAccount.RemoveActive();
-                                                NotificationFilterEntity.RemoveAll();
-                                                UserNotificationEntity.RemoveAll();
-                                                SubmittedFeedbackEntity.Remove();
-                                                SMUsageHistoryEntity.RemoveAll();
-                                                UsageHistoryEntity.RemoveAll();
-                                                BillHistoryEntity.RemoveAll();
-                                                PaymentHistoryEntity.RemoveAll();
-                                                REPaymentHistoryEntity.RemoveAll();
-                                                AccountDataEntity.RemoveAll();
-                                                SummaryDashBoardAccountEntity.RemoveAll();
-                                                SelectBillsEntity.RemoveAll();
-                                                UserSessions.UpdateDeviceId(mSharedPref);
-                                                UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
-                                                this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Logout);
-                                                this.mView.ShowLogout();
-
+                                                //If DeviceId is not the same with the saved, call UpdateAppUserDevice service.
+                                                var updateAppDeviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(new UpdateAppUserDeviceRequest()
+                                                {
+                                                    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                                                    Email = UserEntity.GetActive().Email,
+                                                    FCMToken = FirebaseTokenEntity.GetLatest().FBToken,
+                                                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                                                    OsType = Constants.DEVICE_PLATFORM,
+                                                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                                                    DeviceIdOld = UserSessions.GetDeviceId(mSharedPref),
+                                                    DeviceIdNew = this.mView.GetDeviceId()
+                                                }, CancellationTokenSourceWrapper.GetToken());
                                             }
-                                            else
-                                            {
-                                                this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                                                this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
-                                                this.mView.ShowDashboard();
-                                            }
+                                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                            this.mView.ShowDashboard();
                                         }
 
                                     }

@@ -329,7 +329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             try
             {
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (System.Exception e)
             {

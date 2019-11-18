@@ -1,4 +1,5 @@
 ﻿using Android.Text;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.Api;
@@ -105,6 +106,9 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                     /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
 
                     SummaryDashBoardAccountEntity.RemoveAll();
+
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
 
                     this.mView.ShowSuccessUpdateNickname(newAccountNickName);
                 }
