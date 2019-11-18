@@ -2657,7 +2657,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                     {
-                                        float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                        float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                         if (float.IsPositiveInfinity(val))
                                         {
                                             val = float.PositiveInfinity;
@@ -2759,7 +2759,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 {
                                                     isFound = true;
 
-                                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                                     if (float.IsPositiveInfinity(val))
                                                     {
                                                         val = float.PositiveInfinity;
@@ -2844,7 +2844,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     for (int i = 0; i < barLength; i++)
                     {
                         float[] valList = new float[1];
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
 
                         if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                         {
@@ -2975,7 +2975,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                         {
-                                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                             if (float.IsPositiveInfinity(val))
                                             {
                                                 val = float.PositiveInfinity;
@@ -3044,7 +3044,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             List<float> newValList = new List<float>();
                                             for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
                                             {
-                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
+                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
                                                 if (float.IsPositiveInfinity(val))
                                                 {
                                                     val = float.PositiveInfinity;
@@ -3199,7 +3199,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                     {
                                                         isFound = true;
 
-                                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                                         if (float.IsPositiveInfinity(val))
                                                         {
                                                             val = float.PositiveInfinity;
@@ -3270,7 +3270,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                             {
                                                                 isFound = true;
 
-                                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
+                                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
                                                                 if (float.IsPositiveInfinity(val))
                                                                 {
                                                                     val = float.PositiveInfinity;
@@ -3415,7 +3415,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (ChartType == ChartType.Month)
                         {
                             float[] valList = new float[1];
-                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
+                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
                             if (i == barLength - 1 && GetIsMDMSDown())
                             {
                                 val = 0;
@@ -3447,7 +3447,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         else if (ChartType == ChartType.Day)
                         {
                             float[] valList = new float[1];
-                            float val = (float)DayViewkWhData[i];
+                            float val = (float)DayViewRMData[i];
                             if (float.IsPositiveInfinity(val))
                             {
                                 val = float.PositiveInfinity;
@@ -5658,9 +5658,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
                             float valTotal = 0;
-                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            if (MonthData.AmountTotal > 0)
                             {
-                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                                for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                                {
+                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                }
                             }
 
                             if (!isREAccount && MonthData.DPCIndicator)
@@ -5693,9 +5696,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                if (MonthData.AmountTotal > 0 && System.Math.Abs(MonthData.AmountTotal) > val)
                                 {
-                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    val = System.Math.Abs((float)MonthData.AmountTotal);
                                 }
                             }
                         }
@@ -5714,9 +5717,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
                                 float valTotal = 0;
-                                for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+
+                                if (MonthData.AmountTotal > 0)
                                 {
-                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                                    for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                                    {
+                                        valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                    }
                                 }
 
                                 if (MonthData.DPCIndicator)
@@ -5749,9 +5756,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                                 else
                                 {
-                                    if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                    if (MonthData.AmountTotal > 0 && System.Math.Abs(MonthData.AmountTotal) > val)
                                     {
-                                        val = System.Math.Abs((float)MonthData.UsageTotal);
+                                        val = System.Math.Abs((float)MonthData.AmountTotal);
                                     }
                                 }
                             }
@@ -5772,7 +5779,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float valTotal = 0;
                                     for (int i = 0; i < IndividualDayData.TariffBlocksList.Count; i++)
                                     {
-                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Usage);
+                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Amount);
                                     }
                                     if (System.Math.Abs(valTotal) > val)
                                     {
@@ -5793,7 +5800,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (System.Math.Abs(IndividualDayData.Consumption) > val)
                                     {
-                                        val = System.Math.Abs((float)IndividualDayData.Consumption);
+                                        val = System.Math.Abs((float)IndividualDayData.Amount);
                                     }
                                 }
                             }
