@@ -37,6 +37,7 @@ namespace myTNB
         internal nfloat _lastContentOffset, _footerYPos, _scrollViewYPos;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
         internal bool _legendIsVisible, _footerIsDocked, _isEmptyData, _isDPCIndicator, _lastSelectedIsDPC;
+        public bool SMChartIsLoading, NormalChartIsLoading;
 
         internal CGRect _origViewFrame;
 
@@ -1421,6 +1422,12 @@ namespace myTNB
 
         private void ShowHideRMKwHDropDown()
         {
+            if (isSmartMeterAccount && SMChartIsLoading)
+                return;
+
+            if (!isREAccount && isNormalChart && NormalChartIsLoading)
+                return;
+
             nfloat dropDownYPos = _viewToggle.Frame.GetMinY() + GetScaledHeight(-56f);
             ViewHelper.AdjustFrameSetY(_rmKwhDropDownView, dropDownYPos);
             _rmkWhFlag = !_rmkWhFlag;

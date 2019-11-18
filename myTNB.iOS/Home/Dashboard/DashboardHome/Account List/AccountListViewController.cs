@@ -542,10 +542,6 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.AccountListIsLoaded = true;
                         _homeViewController.ShowRefreshScreen(false, null);
-                        if (_homeViewController != null)
-                        {
-                            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
-                        }
                         ReloadViews(false, isFromSearch);
                     }
                 }
