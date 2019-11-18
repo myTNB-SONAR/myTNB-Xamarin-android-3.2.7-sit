@@ -82,8 +82,8 @@ namespace myTNB
             {
                 var title = SSMRActivityInfoCache.DashboardDataModel.DisplayTitle;
                 var msg = SSMRActivityInfoCache.DashboardDataModel.DisplayMessage;
-                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : "Sorry, we are unable to perform this action right now.";
-                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.";
+                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : GetI18NValue(UsageConstants.I18N_PrevReadingEmptyTitle);
+                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : GetI18NValue(UsageConstants.I18N_PrevReadingEmptyMsg);
 
                 DisplayCustomAlert(displayTitle, displayMsg, GetCommonI18NValue(Constants.Common_GotIt), null);
             }
