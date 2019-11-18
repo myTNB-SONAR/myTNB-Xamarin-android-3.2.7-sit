@@ -9222,9 +9222,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetVirtualHeightParams(6f);
                 isChangeBackgroundNeeded = true;
                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
-                param.Height = (int)DPUtils.ConvertDPToPx(170);
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(200f);
             }
         }
     }
