@@ -66,6 +66,7 @@ namespace myTNB
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver(UIApplication.WillChangeStatusBarFrameNotification, OnChangeStatusBarFrame);
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();
             SetActionsDictionary();
@@ -305,7 +306,6 @@ namespace myTNB
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
         }
-        #endregion
 
         private void OnEnterForeground(NSNotification notification)
         {
@@ -322,6 +322,7 @@ namespace myTNB
                         {
                             if (topVc is DashboardHomeViewController)
                             {
+                                OnChangeStatusBarFrame(null);
                                 if (_accountListViewController != null)
                                 {
                                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -343,6 +344,28 @@ namespace myTNB
             });
         }
 
+        private void OnChangeStatusBarFrame(NSNotification notification)
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+                return;
+
+            Debug.WriteLine("OnChangeStatusBarFrame");
+            nfloat yPos = DeviceHelper.GetStatusBarHeight();
+            nfloat addtlHeight = DeviceHelper.GetStatusBarHeight();
+            if (DeviceHelper.GetStatusBarHeight() > 20)
+            {
+                yPos = 0;
+            }
+            else
+            {
+                addtlHeight += DeviceHelper.GetStatusBarHeight();
+            }
+
+            ViewHelper.AdjustFrameSetY(_homeTableView, yPos);
+            ViewHelper.AdjustFrameSetHeight(_homeTableView, ViewHeight + addtlHeight);
+            UpdateFooterBG();
+        }
+        #endregion
         private void OnLoadHomeData()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -411,8 +434,15 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight()
-                , ViewWidth, ViewHeight))
+            nfloat yPos = DeviceHelper.GetStatusBarHeight();
+            nfloat addtlHeight = 0;
+            if (DeviceHelper.GetStatusBarHeight() > 20 && !DeviceHelper.IsIphoneXUpResolution())
+            {
+                yPos = 0;
+                addtlHeight = DeviceHelper.GetStatusBarHeight();
+            }
+            _homeTableView = new UITableView(new CGRect(0, yPos
+                , ViewWidth, ViewHeight + addtlHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
@@ -871,8 +901,13 @@ namespace myTNB
 
         private void UpdateFooterBG()
         {
+            nfloat yPosBG = 0;
+            if (DeviceHelper.GetStatusBarHeight() > 20 && !DeviceHelper.IsIphoneXUpResolution())
+            {
+                yPosBG -= 20;
+            }
             CGRect servicesCellRect = _homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services));
-            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset);
+            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset + yPosBG);
         }
 
         public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
@@ -891,7 +926,7 @@ namespace myTNB
                 if (_isRefreshScreenEnabled)
                 {
                     var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-                    var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
+                    var bcrmMsg = bcrm?.DowntimeMessage ?? GetCommonI18NValue(Constants.Common_BCRMMessage);
                     string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
 
                     _refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(24f));
