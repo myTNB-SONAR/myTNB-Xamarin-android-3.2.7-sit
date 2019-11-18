@@ -3797,6 +3797,7 @@
     <Compile Include="Src\AppLaunch\Api\IUpdateAppUserDeviceApi.cs" />
     <Compile Include="Src\AppLaunch\Models\UpdateAppUserDeviceResponse.cs" />
     <Compile Include="Src\AppLaunch\Requests\UpdateAppUserDeviceRequest.cs" />
+    <Compile Include="Src\Utils\HomeMenuUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
