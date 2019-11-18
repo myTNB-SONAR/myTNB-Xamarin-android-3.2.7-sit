@@ -46,8 +46,7 @@ namespace myTNB.Model
                     && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
                     && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
                 {
-                    int accIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == AccountNum
-                        || NotificationType == "ODN");
+                    int accIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == AccountNum);
                     return accIndex > -1;
                 }
                 return false;
