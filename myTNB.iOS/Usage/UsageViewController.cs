@@ -82,8 +82,8 @@ namespace myTNB
             {
                 var title = SSMRActivityInfoCache.DashboardDataModel.DisplayTitle;
                 var msg = SSMRActivityInfoCache.DashboardDataModel.DisplayMessage;
-                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : "Sorry, we are unable to perform this action right now.";
-                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.";
+                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : GetI18NValue(UsageConstants.I18N_PrevReadingEmptyTitle);
+                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : GetI18NValue(UsageConstants.I18N_PrevReadingEmptyMsg);
 
                 DisplayCustomAlert(displayTitle, displayMsg, GetCommonI18NValue(Constants.Common_GotIt), null);
             }
@@ -228,6 +228,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        NormalChartIsLoading = true;
                         if (AccountUsageCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                         {
                             AccountUsageCache.ClearTariffLegendList();
@@ -261,6 +262,7 @@ namespace myTNB
                                                 HideREAmountView();
                                             }
                                         }
+                                        NormalChartIsLoading = false;
                                     }
                                 });
                             });
@@ -272,6 +274,7 @@ namespace myTNB
                             SetTariffButtonState();
                             SetTariffLegendComponent();
                             SetChartView(false);
+                            NormalChartIsLoading = false;
                         }
                     }
                     else
@@ -290,6 +293,7 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         AccountUsageSmartCache.IsMDMSDown = false;
+                        SMChartIsLoading = true;
                         if (AccountUsageSmartCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                         {
                             SetSmartMeterComponent(true);
@@ -331,6 +335,7 @@ namespace myTNB
                                             HideREAmountView();
                                             HideSSMRViewForRefresh();
                                         }
+                                        SMChartIsLoading = false;
                                     }
 
                                 });
@@ -345,6 +350,7 @@ namespace myTNB
                             SetTariffButtonState();
                             SetTariffLegendComponent();
                             SetChartView(false);
+                            SMChartIsLoading = false;
                         }
                     }
                     else
@@ -520,6 +526,7 @@ namespace myTNB
         }
         private void SSMRUsageParallelAPICalls()
         {
+            NormalChartIsLoading = true;
             accountIsSSMR = true;
             SetSSMRComponent(true, false);
             AccountUsageCache.ClearTariffLegendList();
@@ -595,6 +602,7 @@ namespace myTNB
                             HideSSMRView();
                             HideREAmountView();
                         }
+                        NormalChartIsLoading = false;
                     });
                 }
                 catch (Exception e)

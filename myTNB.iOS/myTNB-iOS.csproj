@@ -1250,6 +1250,9 @@
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%403x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1722,6 +1725,7 @@
     <Folder Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\" />
     <Folder Include="Assets.xcassets\Dpc-Indicator.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Rearrange Account\" />
+    <Folder Include="Assets.xcassets\Promotion-Default.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
