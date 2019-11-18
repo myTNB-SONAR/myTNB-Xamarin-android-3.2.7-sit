@@ -55,8 +55,7 @@ namespace myTNB_Android.Src.Promotions.Adapter
                     Log.Debug("Promotion Adapter", "Image path saved");
                     Picasso.With(vh.PromotionImgView.Context)
                    .Load(new Java.IO.File(model.LandscapeImage))
-                   //TO DO: Default image pending
-                   .Error(Resource.Drawable.ic_empty_promotions)
+                   .Error(Resource.Drawable.promotions_default_image)
                    .Fit()
                    .Into(vh.PromotionImgView);
                     vh.PromotionImgProgress.Visibility = ViewStates.Gone;
@@ -66,10 +65,10 @@ namespace myTNB_Android.Src.Promotions.Adapter
                     GetImageAsync(vh.PromotionImgView, vh.PromotionImgProgress, model);
                 }
             }
-            //TO DO: Default image pending
             else
             {
-                vh.PromotionImgView.SetImageResource(Resource.Drawable.ic_empty_promotions);
+                vh.PromotionImgView.SetImageResource(Resource.Drawable.promotions_default_image);
+                vh.PromotionImgProgress.Visibility = ViewStates.Gone;
             }
 
             if (model.Read)
@@ -157,6 +156,10 @@ namespace myTNB_Android.Src.Promotions.Adapter
                 };
                 wtManager.UpdateItem(wtManager);
             }
+            else
+            {
+                icon.SetImageResource(Resource.Drawable.promotions_default_image);
+            }
 
             progressBar.Visibility = ViewStates.Gone;
         }
@@ -164,13 +167,20 @@ namespace myTNB_Android.Src.Promotions.Adapter
         private Android.Graphics.Bitmap GetImageBitmapFromUrl(ImageView icon, string url)
         {
             Bitmap image = null;
-            using (WebClient webClient = new WebClient())
+            try
             {
-                var imageBytes = webClient.DownloadData(url);
-                if (imageBytes != null && imageBytes.Length > 0)
+                using (WebClient webClient = new WebClient())
                 {
-                    image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             return image;
         }

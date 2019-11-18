@@ -112,8 +112,7 @@ namespace myTNB_Android.Src.Promotions.Activity
                         {
                             Picasso.With(imgPromotion.Context)
                            .Load(new Java.IO.File(model.LandscapeImage))
-                           //TO DO: Default image pending
-                           .Error(Resource.Drawable.ic_empty_promotions)
+                           .Error(Resource.Drawable.promotions_default_image)
                            .Fit()
                            .Into(imgPromotion);
                             mProgressBar.Visibility = ViewStates.Gone;
@@ -125,8 +124,8 @@ namespace myTNB_Android.Src.Promotions.Activity
                     }
                     else
                     {
-                        //TO DO: Default image pending
-                        imgPromotion.SetImageResource(Resource.Drawable.ic_empty_promotions);
+                        imgPromotion.SetImageResource(Resource.Drawable.promotions_default_image);
+                        mProgressBar.Visibility = ViewStates.Gone;
                     }
                 }
             }
@@ -188,6 +187,10 @@ namespace myTNB_Android.Src.Promotions.Activity
                 if (imageBitmap != null)
                 {
                     icon.SetImageBitmap(imageBitmap);
+                }
+                else
+                {
+                    icon.SetImageResource(Resource.Drawable.promotions_default_image);
                 }
 
                 progressBar.Visibility = ViewStates.Gone;
