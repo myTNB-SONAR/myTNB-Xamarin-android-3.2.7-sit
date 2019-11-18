@@ -1233,6 +1233,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             isSummaryDone = false;
             isMyServiceDone = false;
+            isHomeMenuTutorialShown = false;
 
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();

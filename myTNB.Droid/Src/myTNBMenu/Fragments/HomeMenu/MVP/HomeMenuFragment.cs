@@ -1597,6 +1597,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
+            HomeMenuUtils.ResetAll();
+
             isRefreshShown = false;
 
             IsLoadMoreButtonVisible(false, false);
@@ -1606,6 +1608,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             IsRearrangeButtonVisible(false);
 
             SetBottomLayoutBackground(false);
+
+            ShowSearchAction(false);
 
             List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
             List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
@@ -1677,7 +1681,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             searchEditText.SetQuery("", false);
-            searchEditText.Visibility = ViewStates.Gone;
 
             this.presenter.RefreshAccountSummary();
 
