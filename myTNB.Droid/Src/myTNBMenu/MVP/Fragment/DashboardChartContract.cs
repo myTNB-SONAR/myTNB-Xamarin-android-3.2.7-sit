@@ -152,6 +152,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnShowDashboardFragmentTutorialDialog();
 
             void SetMDMSDownMessage(SMUsageHistoryResponse response);
+
+            void CheckSMRAccountValidaty();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -196,7 +198,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void OnLearnMore();
 
-            bool IsOwnedSMR(string accountNumber);
+            bool IsOwnedSMRLocal(string accountNumber);
 
             bool IsBillingAvailable();
 

@@ -326,6 +326,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         //((PaymentActivity)this.mActivity).Finish();
                         Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);
                         //view.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
@@ -400,6 +401,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         isRedirected = true;
                         progressBar.Visibility = ViewStates.Gone;
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
                         Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);

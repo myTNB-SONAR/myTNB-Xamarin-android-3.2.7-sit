@@ -662,6 +662,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 isQuery = false;
                 trackCurrentLoadMoreCount = 0;
+                HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
             }
 
             if (billingAccoutCount > 0)
@@ -691,7 +692,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 updateDashboardInfoList = new List<SummaryDashBoardDetails>();
                 this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
                 curentLoadMoreCount = trackCurrentLoadMoreCount;
-
+                HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
                 int forLoopCount = 0;
 
                 int i = 0;
@@ -773,7 +774,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void SetQueryClose()
         {
             isQuery = false;
+            HomeMenuUtils.SetIsQuery(false);
+            HomeMenuUtils.SetQueryWord("");
             trackCurrentLoadMoreCount = 0;
+            HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+            LoadAccounts();
         }
 
         public void LoadQueryAccounts(string searchText)
@@ -826,11 +831,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 isQuery = false;
                 trackCurrentLoadMoreCount = 0;
+                HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
             }
             else
             {
                 isQuery = true;
             }
+
+            HomeMenuUtils.SetIsQuery(isQuery);
+            HomeMenuUtils.SetQueryWord(searchText);
 
             try
             {
@@ -924,6 +933,244 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void RestoreQueryAccounts()
+        {
+            this.mView.IsLoadMoreButtonVisible(false, false);
+
+            queryTokenSource.Cancel();
+            queryTokenSource = new CancellationTokenSource();
+
+            string searchText = HomeMenuUtils.GetQueryWord();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                searchText = "";
+            }
+            updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+            List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                customerBillingAccountList = customerBillingAccountList.FindAll(cardModel => cardModel.AccNum.ToLower().Contains(searchText.ToLower()) ||
+                            (cardModel.AccDesc != null &&
+                            cardModel.AccDesc.ToLower().Contains(searchText.ToLower())));
+            }
+
+            summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+
+            foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
+            {
+                SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
+                summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
+                summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
+                summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
+                summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
+                summaryDashboardInfoList.Add(summaryDashBoardDetails);
+            }
+
+            List<string> accountList = new List<string>();
+            for (int i = 0; i < customerBillingAccountList.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                {
+                    accountList.Add(customerBillingAccountList[i].AccNum);
+                }
+            }
+
+            billingAccoutCount = summaryDashboardInfoList.Count;
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                isQuery = false;
+                trackCurrentLoadMoreCount = 0;
+                curentLoadMoreCount = 0;
+                HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+            }
+            else
+            {
+                isQuery = true;
+                trackCurrentLoadMoreCount = HomeMenuUtils.GetTrackCurrentLoadMoreCount();
+                curentLoadMoreCount = trackCurrentLoadMoreCount;
+            }
+
+            HomeMenuUtils.SetIsQuery(isQuery);
+            HomeMenuUtils.SetQueryWord(searchText);
+
+
+            if (trackCurrentLoadMoreCount > 0)
+            {
+                this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                curentLoadMoreCount = trackCurrentLoadMoreCount;
+                HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+                int forLoopCount = 0;
+
+                int i = 0;
+
+                if (billingAccoutCount > 3)
+                {
+                    forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
+                    if (billingAccoutCount < forLoopCount)
+                    {
+                        forLoopCount = billingAccoutCount;
+                    }
+                }
+                else
+                {
+                    forLoopCount = billingAccoutCount;
+                }
+
+                bool isLoadNeed = false;
+
+                List<string> accounts = new List<string>();
+                for (; i < forLoopCount; i++)
+                {
+                    if (!string.IsNullOrEmpty(summaryDashboardInfoList[i].AccNumber))
+                    {
+                        accounts.Add(summaryDashboardInfoList[i].AccNumber);
+                        CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(summaryDashboardInfoList[i].AccNumber);
+                        if (selected.billingDetails != null)
+                        {
+                            SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                            cached.IsTaggedSMR = selected.IsTaggedSMR;
+                            summaryDashboardInfoList[i] = cached;
+                        }
+                        else
+                        {
+                            isLoadNeed = true;
+                        }
+                        updateDashboardInfoList.Add(summaryDashboardInfoList[i]);
+                    }
+                }
+
+                if (isLoadNeed)
+                {
+                    this.mView.SetAccountListCards(updateDashboardInfoList);
+                    this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                    LoadSummaryDetails(accounts);
+                }
+                else
+                {
+                    this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                    LoadSummaryDetailsBackground(accounts);
+
+                    if (billingAccoutCount > 3)
+                    {
+                        if (billingAccoutCount == updateDashboardInfoList.Count())
+                        {
+                            this.mView.IsLoadMoreButtonVisible(true, true);
+                        }
+                        else if (billingAccoutCount > updateDashboardInfoList.Count())
+                        {
+                            this.mView.IsLoadMoreButtonVisible(true, false);
+                        }
+                    }
+                    else
+                    {
+                        this.mView.IsLoadMoreButtonVisible(false, false);
+                    }
+
+                    isSummaryDone = true;
+                    OnCheckToCallHomeMenuTutorial();
+                }
+            }
+            else
+            {
+                try
+                {
+                    int forLoopCount = 0;
+
+                    int previousCount = 0;
+
+                    int i = 0;
+
+                    if (updateDashboardInfoList != null && updateDashboardInfoList.Count() > 0)
+                    {
+                        curentLoadMoreCount = ((updateDashboardInfoList.Count - 3) / Constants.SUMMARY_DASHBOARD_PAGE_COUNT);
+                    }
+
+                    if (billingAccoutCount > 3)
+                    {
+                        previousCount = curentLoadMoreCount;
+                        curentLoadMoreCount = curentLoadMoreCount + 1;
+                        forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
+                        i = previousCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                        if (i > 0)
+                        {
+                            i -= 2;
+                        }
+                        if (billingAccoutCount < forLoopCount)
+                        {
+                            int diff = forLoopCount - billingAccoutCount;
+                            diff = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - diff;
+                            forLoopCount = i + diff;
+                        }
+                    }
+                    else
+                    {
+                        forLoopCount = billingAccoutCount;
+                    }
+
+                    bool isLoadNeed = false;
+
+                    List<string> accounts = new List<string>();
+                    for (; i < forLoopCount; i++)
+                    {
+                        if (!string.IsNullOrEmpty(summaryDashboardInfoList[i].AccNumber))
+                        {
+                            accounts.Add(summaryDashboardInfoList[i].AccNumber);
+                            CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(summaryDashboardInfoList[i].AccNumber);
+                            if (selected.billingDetails != null)
+                            {
+                                SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                                cached.IsTaggedSMR = selected.IsTaggedSMR;
+                                summaryDashboardInfoList[i] = cached;
+                            }
+                            else
+                            {
+                                isLoadNeed = true;
+                            }
+                            updateDashboardInfoList.Add(summaryDashboardInfoList[i]);
+                        }
+                    }
+
+                    if (isLoadNeed)
+                    {
+                        this.mView.SetAccountListCards(updateDashboardInfoList);
+                        this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                        LoadSummaryDetailsQuery(accounts);
+                    }
+                    else
+                    {
+                        this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                        LoadSummaryDetailsQueryBackground(accounts);
+
+                        if (billingAccoutCount > 3)
+                        {
+                            if (billingAccoutCount == updateDashboardInfoList.Count())
+                            {
+                                this.mView.IsLoadMoreButtonVisible(true, true);
+                            }
+                            else if (billingAccoutCount > updateDashboardInfoList.Count())
+                            {
+                                this.mView.IsLoadMoreButtonVisible(true, false);
+                            }
+                        }
+                        else
+                        {
+                            this.mView.IsLoadMoreButtonVisible(false, false);
+                        }
+
+                        isSummaryDone = true;
+                        OnCheckToCallHomeMenuTutorial();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
         public void FetchAccountSummary(bool makeSummaryApiCall = false, bool isFirstInitiate = false, bool isReset = false)
         {
             try
@@ -932,6 +1179,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     curentLoadMoreCount = 0;
                     trackCurrentLoadMoreCount = 0;
+                    HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
                     updateDashboardInfoList = new List<SummaryDashBoardDetails>();
                     this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
                 }
@@ -955,6 +1203,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (!isQuery)
                     {
                         trackCurrentLoadMoreCount = curentLoadMoreCount;
+                        HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
                     }
 
                     if (billingAccoutCount > 3)
@@ -984,6 +1233,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             isSummaryDone = false;
             isMyServiceDone = false;
+            isHomeMenuTutorialShown = false;
 
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
@@ -1084,10 +1334,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     forLoopCount = billingAccoutCount;
                 }
 
-                if (!isQuery)
-                {
-                    trackCurrentLoadMoreCount = curentLoadMoreCount;
-                }
+                trackCurrentLoadMoreCount = curentLoadMoreCount;
+                HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
 
                 bool isLoadNeed = false;
 
@@ -1310,6 +1558,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             energyTipsTokenSource = new CancellationTokenSource();
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
+            HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
         }
@@ -1325,6 +1574,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             energyTipsTokenSource = new CancellationTokenSource();
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
+            HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
             this.mView.SetMyServiceRecycleView();
         }
 
@@ -1337,9 +1587,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             threePhaseWalkthroughTokenSource.Cancel();
             threePhaseWalkthroughNoOCRTokenSource.Cancel();
             energyTipsTokenSource.Cancel();
-            isSummaryDone = false;
-            isMyServiceDone = false;
-            isNeedHelpDone = false;
             isHomeMenuTutorialShown = false;
 
     }
@@ -1541,14 +1788,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.CurrentServices.Count > 0)
                 {
-                    // MyServiceEntity.RemoveAll();
+                    MyServiceEntity.RemoveAll();
                     currentMyServiceList.Clear();
                     List<MyService> fetchList = new List<MyService>();
                     foreach (MyService service in getServicesResponse.Data.Data.CurrentServices)
                     {
                         fetchList.Add(service);
                         currentMyServiceList.Add(service);
-                        // MyServiceEntity.InsertOrReplace(service);
                     }
                     // this.mView.SetMyServiceResult(fetchList);
                     OnProcessMyServiceCards();
@@ -1581,11 +1827,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (isSMRApplyAllowFlag)
                     {
                         filterList.Add(currentMyServiceList[i]);
+                        MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                     }
                 }
                 else
                 {
                     filterList.Add(currentMyServiceList[i]);
+                    MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                 }
             }
             currentMyServiceList = filterList;
@@ -1610,6 +1858,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             OnCheckToCallHomeMenuTutorial();
         }
 
+        public void RestoreCurrentAccountState()
+        {
+            trackCurrentLoadMoreCount = HomeMenuUtils.GetTrackCurrentLoadMoreCount();
+            LoadAccounts();
+        }
+
+        public void RestoreCurrentMyServiceState()
+        {
+            List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
+
+            List<MyService> cachedList = new List<MyService>();
+            cachedDBList = MyServiceEntity.GetAll();
+            for (int i = 0; i < cachedDBList.Count; i++)
+            {
+                cachedList.Add(new MyService()
+                {
+                    ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                    serviceCategoryName = cachedDBList[i].serviceCategoryName
+                });
+            }
+
+            currentMyServiceList = cachedList;
+            isMyServiceExpanded = HomeMenuUtils.GetIsMyServiceExpanded();
+            List<MyService> fetchList = new List<MyService>();
+            if (isMyServiceExpanded)
+            {
+                fetchList = currentMyServiceList;
+                this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
+                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                this.mView.SetMyServiceResult(fetchList);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    fetchList.Add(currentMyServiceList[i]);
+                }
+                if (currentMyServiceList.Count > 3)
+                {
+                    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                }
+                else
+                {
+                    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                }
+                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                this.mView.SetMyServiceResult(fetchList);
+            }
+            isMyServiceDone = true;
+            OnCheckToCallHomeMenuTutorial();
+        }
+
         public void DoMySerivceLoadMoreAccount()
         {
             try
@@ -1619,6 +1919,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (!isMyServiceExpanded)
                 {
                     isMyServiceExpanded = true;
+                    HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
                     fetchList = currentMyServiceList;
                     this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
                     this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
@@ -1627,6 +1928,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     isMyServiceExpanded = false;
+                    HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
                     for (int i = 0; i < 3; i++)
                     {
                         fetchList.Add(currentMyServiceList[i]);
@@ -2473,69 +2775,79 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return isSummaryDone && isMyServiceDone && isNeedHelpDone;
         }
 
-        private void OnCheckToCallHomeMenuTutorial()
+        public void OnCheckToCallHomeMenuTutorial()
         {
             if (isAllDone() && !isHomeMenuTutorialShown)
             {
                 isHomeMenuTutorialShown = true;
+                HomeMenuUtils.SetIsLoadedHomeMenu(true);
 
-                if (this.mView.CheckMyServiceList() <= 0)
+                if (!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
-                    isHomeMenuTutorialShown = false;
-                    isMyServiceDone = false;
-                    isMyServiceExpanded = false;
-                    OnProcessMyServiceCards();
-                }
-                else if (this.mView.CheckNewFaqList() <= 0)
-                {
-                    isHomeMenuTutorialShown = false;
-                    isNeedHelpDone = false;
-                    ReadNewFAQFromCache();
-                }
-                else
-                {
-                    if (!UserSessions.HasHomeTutorialShown(this.mPref))
+                    if (this.mView.CheckMyServiceList() <= 0)
+                    {
+                        isHomeMenuTutorialShown = false;
+                        isMyServiceDone = false;
+                        isMyServiceExpanded = false;
+                        HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+                        OnProcessMyServiceCards();
+                    }
+                    else if (this.mView.CheckNewFaqList() <= 0)
+                    {
+                        isHomeMenuTutorialShown = false;
+                        isNeedHelpDone = false;
+                        ReadNewFAQFromCache();
+                    }
+                    else
                     {
                         normalTokenSource.Cancel();
-                        this.mView.OnSearchOutFocus(true);
                         isQuery = false;
-                        trackCurrentLoadMoreCount = 0;
-                        updateDashboardInfoList = new List<SummaryDashBoardDetails>();
-                        List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-                        summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-                        foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
-                        {
-                            SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
-                            summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
-                            summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
-                            summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
-                            summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
-                            summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
-                            summaryDashboardInfoList.Add(summaryDashBoardDetails);
-                        }
+                        HomeMenuUtils.SetIsQuery(false);
+                        HomeMenuUtils.SetQueryWord("");
+                        this.mView.OnSearchOutFocus(true);
 
-                        List<string> accountList = new List<string>();
-                        for (int i = 0; i < customerBillingAccountList.Count; i++)
+                        if (billingAccoutCount > 3 && trackCurrentLoadMoreCount > 1)
                         {
-                            if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                            trackCurrentLoadMoreCount = 0;
+                            HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+                            updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+                            List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                            summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+                            foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
                             {
-                                accountList.Add(customerBillingAccountList[i].AccNum);
+                                SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                                summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
+                                summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
+                                summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
+                                summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
+                                summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
+                                summaryDashboardInfoList.Add(summaryDashBoardDetails);
                             }
-                        }
 
-                        billingAccoutCount = summaryDashboardInfoList.Count;
+                            List<string> accountList = new List<string>();
+                            for (int i = 0; i < customerBillingAccountList.Count; i++)
+                            {
+                                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                                {
+                                    accountList.Add(customerBillingAccountList[i].AccNum);
+                                }
+                            }
 
-                        this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
+                            billingAccoutCount = summaryDashboardInfoList.Count;
 
-                        if (billingAccoutCount > 0)
-                        {
-                            FetchAccountSummary(true, true, true);
+                            this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
+
+                            if (billingAccoutCount > 0)
+                            {
+                                FetchAccountSummary(true, true, true);
+                            }
                         }
 
                         if (isMyServiceExpanded)
                         {
                             List<MyService> fetchList = new List<MyService>();
                             isMyServiceExpanded = false;
+                            HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
                             for (int i = 0; i < 3; i++)
                             {
                                 fetchList.Add(currentMyServiceList[i]);
