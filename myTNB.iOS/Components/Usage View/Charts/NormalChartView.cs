@@ -197,7 +197,7 @@ namespace myTNB
                 TariffItemModel item = tariffList[i];
                 double val = IsAmountState ? item.Amount : item.Usage;
                 double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
-                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
+                nfloat blockHeight = (nfloat)(baseHeigt * percentage) ;
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
@@ -289,53 +289,56 @@ namespace myTNB
         {
             IsTariffView = isTariffView;
             nfloat amountBarMargin = GetHeightByScreenSize(4);
-            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            if (_segmentContainer != null)
             {
-                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                if (segmentView == null) { continue; }
-                CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
-                if (bar == null) { continue; }
-                CGRect barOriginalFrame = bar.Frame;
-                bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
-
-                UIView viewCover = bar.ViewWithTag(2001);
-                UIView viewTariff = bar.ViewWithTag(2002);
-
-                if (isTariffView)
+                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
                 {
-                    List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
-                    if (i < usageData.Count)
+                    CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                    if (segmentView == null) { continue; }
+                    CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
+                    if (bar == null) { continue; }
+                    CGRect barOriginalFrame = bar.Frame;
+                    bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
+
+                    UIView viewCover = bar.ViewWithTag(2001);
+                    UIView viewTariff = bar.ViewWithTag(2002);
+
+                    if (isTariffView)
                     {
-                        MonthItemModel item = usageData[i];
-                        if (viewCover != null) { viewCover.Hidden = !usageData[i].DPCIndicator; }
-                        if (viewTariff != null) { viewTariff.Hidden = usageData[i].DPCIndicator; }
+                        List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+                        if (i < usageData.Count)
+                        {
+                            MonthItemModel item = usageData[i];
+                            if (viewCover != null) { viewCover.Hidden = !usageData[i].DPCIndicator; }
+                            if (viewTariff != null) { viewTariff.Hidden = usageData[i].DPCIndicator; }
+                        }
                     }
-                }
-                else
-                {
-                    if (viewCover != null) { viewCover.Hidden = isTariffView; }
-                    if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
-                }
+                    else
+                    {
+                        if (viewCover != null) { viewCover.Hidden = isTariffView; }
+                        if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
+                    }
 
-                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
-                CGRect valueOriginalFrame = new CGRect();
-                if (value != null)
-                {
-                    valueOriginalFrame = value.Frame;
-                    value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
-                        , value.Frame.Width, value.Frame.Height);
-                }
-                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
-                   , () =>
-                   {
-                       bar.Frame = barOriginalFrame;
-                       if (value != null)
+                    UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+                    CGRect valueOriginalFrame = new CGRect();
+                    if (value != null)
+                    {
+                        valueOriginalFrame = value.Frame;
+                        value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
+                            , value.Frame.Width, value.Frame.Height);
+                    }
+                    UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                       , () =>
                        {
-                           value.Frame = valueOriginalFrame;
+                           bar.Frame = barOriginalFrame;
+                           if (value != null)
+                           {
+                               value.Frame = valueOriginalFrame;
+                           }
                        }
-                   }
-                   , () => { }
-               );
+                       , () => { }
+                   );
+                }
             }
         }
 
