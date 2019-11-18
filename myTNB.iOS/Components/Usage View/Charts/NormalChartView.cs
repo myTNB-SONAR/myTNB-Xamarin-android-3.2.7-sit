@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -40,6 +39,10 @@ namespace myTNB
 
         protected override void CreateSegment()
         {
+            if (_segmentContainer != null)
+            {
+                _segmentContainer.RemoveFromSuperview();
+            }
             _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 16)
                , _width, GetHeightByScreenSize(157)));
 
@@ -55,9 +58,7 @@ namespace myTNB
             nfloat barMargin = GetWidthByScreenSize(9);
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
-            //List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
-            List<string> valueList = IsAmountState
-                ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
+            List<string> valueList = IsAmountState ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
@@ -75,7 +76,6 @@ namespace myTNB
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                //double.TryParse(item.UsageTotal, out double value);
                 string valReference = IsAmountState ? item.AmountTotal : item.UsageTotal;
                 double.TryParse(valReference, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
@@ -93,7 +93,7 @@ namespace myTNB
                 {
                     BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                     Tag = 2001,
-                    Hidden = false
+                    Hidden = IsTariffView
                 };
                 viewBar.AddSubview(viewCover);
                 if (!item.DPCIndicator)
@@ -190,7 +190,7 @@ namespace myTNB
             UIView viewTariffContainer = new UIView(new CGRect(0, 0, size.Width, size.Height))
             {
                 Tag = 2002,
-                Hidden = true
+                Hidden = !IsTariffView
             };
             for (int i = 0; i < tariffList.Count; i++)
             {
@@ -342,9 +342,9 @@ namespace myTNB
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
             if (_segmentContainer == null)
-                return;
-
+            { return; }
             ConsumptionState = state;
+            CreateSegment();
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {

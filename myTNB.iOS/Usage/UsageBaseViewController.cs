@@ -1242,14 +1242,17 @@ namespace myTNB
                 if (isSmartMeterAccount)
                 {
                     tariffList = new List<LegendItemModel>(AccountUsageSmartCache.GetTariffLegendList());
-                    isDisable = AccountUsageSmartCache.IsMDMSDown || AccountUsageSmartCache.IsMonthlyTariffDisable || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                    isDisable = AccountUsageSmartCache.IsMDMSDown || AccountUsageSmartCache.IsMonthlyTariffDisable
+                        || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
                 }
                 else
                 {
                     tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
-                    isDisable = AccountUsageCache.IsMonthlyTariffDisable || AccountUsageCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                    isDisable = AccountUsageCache.IsMonthlyTariffDisable || AccountUsageCache.IsMonthlyTariffUnavailable
+                        || tariffList == null || tariffList.Count == 0;
                 }
-                _tariffSelectionComponent.SetTariffButtonDisable(isDisable);
+                bool areAllTariffEmpty = isSmartMeterAccount ? AccountUsageSmartCache.AreAllTariffEmpty : AccountUsageCache.AreAllTariffEmpty;
+                _tariffSelectionComponent.SetTariffButtonDisable(isDisable || areAllTariffEmpty);
             }
         }
 
