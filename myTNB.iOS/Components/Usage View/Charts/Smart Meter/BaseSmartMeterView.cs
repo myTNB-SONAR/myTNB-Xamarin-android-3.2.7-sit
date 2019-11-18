@@ -76,5 +76,13 @@ namespace myTNB.SmartMeterView
         {
             return ScaleUtility.GetXLocationToCenterObject(width, view);
         }
+
+        protected bool IsAmountState
+        {
+            get
+            {
+                return ConsumptionState == RMkWhEnum.RM;
+            }
+        }
     }
 }

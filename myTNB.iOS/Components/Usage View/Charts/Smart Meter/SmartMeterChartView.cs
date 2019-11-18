@@ -292,6 +292,16 @@ namespace myTNB
             nfloat barMaxY = size.Height;
             nfloat xLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
             nfloat yLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
+
+            nfloat totalTariffValue = GetTotalTariff(tariffList);
+            int tariffCount = GetTariffWithValueCount(tariffList);
+            nfloat sharedMissingPercentage = 0;
+            if (baseValue > 0 && baseValue > totalTariffValue)
+            {
+                double percentMissing = 1 - (totalTariffValue / baseValue);
+                sharedMissingPercentage = (nfloat)(percentMissing / tariffCount);
+            }
+
             UIView viewTariffContainer = new UIView(new CGRect(xLoc, yLoc, size.Width, size.Height))
             {
                 Tag = 2002,
@@ -304,8 +314,8 @@ namespace myTNB
             {
                 TariffItemModel item = tariffList[i];
                 UpdateAvailableTariffList(item);
-                double val = item.Usage;
-                double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
+                double val = IsAmountState ? item.Amount : item.Usage;
+                double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
                 nfloat blockHeight = (nfloat)(baseHeigt * percentage);
 
                 barMaxY -= blockHeight;
@@ -542,10 +552,10 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
-            if (_segmentContainer == null)
-                return;
-
+            if (_segmentContainer == null) { return; }
             _consumptionState = state;
+            CreateSegment(_viewType);
+
             if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
                 UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;

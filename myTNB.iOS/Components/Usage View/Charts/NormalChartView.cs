@@ -341,8 +341,7 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
-            if (_segmentContainer == null)
-            { return; }
+            if (_segmentContainer == null) { return; }
             ConsumptionState = state;
             CreateSegment();
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;

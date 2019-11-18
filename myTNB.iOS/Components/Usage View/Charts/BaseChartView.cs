@@ -140,7 +140,7 @@ namespace myTNB
         {
             get
             {
-                return ConsumptionState.ToString().ToUpper() == "RM";
+                return ConsumptionState == RMkWhEnum.RM;
             }
         }
 
