@@ -67,7 +67,7 @@ namespace myTNB
         public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env, bool isRetry = false)
         {
             //SIT Test
-            //env = APIEnvironment.SIT;
+            env = APIEnvironment.SIT;
             string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 

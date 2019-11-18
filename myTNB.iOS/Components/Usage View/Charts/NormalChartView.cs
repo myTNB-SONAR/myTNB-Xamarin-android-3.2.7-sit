@@ -55,7 +55,9 @@ namespace myTNB
             nfloat barMargin = GetWidthByScreenSize(9);
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
-            List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
+            //List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
+            List<string> valueList = IsAmountState
+                ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
@@ -73,7 +75,9 @@ namespace myTNB
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                double.TryParse(item.UsageTotal, out double value);
+                //double.TryParse(item.UsageTotal, out double value);
+                string valReference = IsAmountState ? item.AmountTotal : item.UsageTotal;
+                double.TryParse(valReference, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
@@ -173,6 +177,16 @@ namespace myTNB
             if (viewBar == null || tariffList == null || tariffList.Count == 0) { return; }
             nfloat baseHeigt = size.Height;
             nfloat barMaxY = size.Height;
+
+            nfloat totalTariffValue = GetTotalTariff(tariffList);
+            int tariffCount = GetTariffWithValueCount(tariffList);
+            nfloat sharedMissingPercentage = 0;
+            if (baseValue > 0 && baseValue > totalTariffValue)
+            {
+                double percentMissing = 1 - (totalTariffValue / baseValue);
+                sharedMissingPercentage = (nfloat)(percentMissing / tariffCount);
+            }
+
             UIView viewTariffContainer = new UIView(new CGRect(0, 0, size.Width, size.Height))
             {
                 Tag = 2002,
@@ -181,8 +195,8 @@ namespace myTNB
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
-                double val = item.Usage;
-                double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
+                double val = IsAmountState ? item.Amount : item.Usage;
+                double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
                 nfloat blockHeight = (nfloat)(baseHeigt * percentage);
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
