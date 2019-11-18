@@ -94,6 +94,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             int CheckMyServiceList();
 
+            void ShowSearchAction(bool isShow);
+
+            void CheckSearchEditAction();
+
         }
 
         public interface IHomeMenuPresenter

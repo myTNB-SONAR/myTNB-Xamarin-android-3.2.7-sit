@@ -787,6 +787,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
+                HomeMenuCustomScrolling(0);
             }
             catch (System.Exception e)
             {
@@ -1597,6 +1598,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
+            HomeMenuUtils.ResetAll();
+
             isRefreshShown = false;
 
             IsLoadMoreButtonVisible(false, false);
@@ -1606,6 +1609,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             IsRearrangeButtonVisible(false);
 
             SetBottomLayoutBackground(false);
+
+            ShowSearchAction(false);
 
             List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
             List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
@@ -1677,7 +1682,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             searchEditText.SetQuery("", false);
-            searchEditText.Visibility = ViewStates.Gone;
 
             this.presenter.RefreshAccountSummary();
 
@@ -2183,6 +2187,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void RestartHomeMenu()
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).ShowHomeDashBoard();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckSearchEditAction()
+        {
+            if (searchEditText.Visibility == ViewStates.Visible)
+            {
+                ShowSearchAction(false);
             }
         }
     }

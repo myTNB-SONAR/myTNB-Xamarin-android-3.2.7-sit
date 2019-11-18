@@ -764,6 +764,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnPause()
         {
             base.OnPause();
+            try
+            {
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)

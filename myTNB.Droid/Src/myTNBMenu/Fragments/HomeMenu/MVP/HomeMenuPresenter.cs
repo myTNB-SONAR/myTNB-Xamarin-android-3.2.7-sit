@@ -1233,6 +1233,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             isSummaryDone = false;
             isMyServiceDone = false;
+            isHomeMenuTutorialShown = false;
 
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
@@ -1894,7 +1895,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     fetchList.Add(currentMyServiceList[i]);
                 }
-                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                if (currentMyServiceList.Count > 3)
+                {
+                    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                }
+                else
+                {
+                    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                }
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServiceResult(fetchList);
             }
@@ -2793,40 +2801,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     else
                     {
                         normalTokenSource.Cancel();
-                        this.mView.OnSearchOutFocus(true);
                         isQuery = false;
-                        trackCurrentLoadMoreCount = 0;
-                        HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
-                        updateDashboardInfoList = new List<SummaryDashBoardDetails>();
-                        List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-                        summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-                        foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
-                        {
-                            SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
-                            summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
-                            summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
-                            summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
-                            summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
-                            summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
-                            summaryDashboardInfoList.Add(summaryDashBoardDetails);
-                        }
+                        HomeMenuUtils.SetIsQuery(false);
+                        HomeMenuUtils.SetQueryWord("");
+                        this.mView.OnSearchOutFocus(true);
 
-                        List<string> accountList = new List<string>();
-                        for (int i = 0; i < customerBillingAccountList.Count; i++)
+                        if (billingAccoutCount > 3 && trackCurrentLoadMoreCount > 1)
                         {
-                            if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                            trackCurrentLoadMoreCount = 0;
+                            HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+                            updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+                            List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                            summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+                            foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
                             {
-                                accountList.Add(customerBillingAccountList[i].AccNum);
+                                SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                                summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
+                                summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
+                                summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
+                                summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
+                                summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
+                                summaryDashboardInfoList.Add(summaryDashBoardDetails);
                             }
-                        }
 
-                        billingAccoutCount = summaryDashboardInfoList.Count;
+                            List<string> accountList = new List<string>();
+                            for (int i = 0; i < customerBillingAccountList.Count; i++)
+                            {
+                                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                                {
+                                    accountList.Add(customerBillingAccountList[i].AccNum);
+                                }
+                            }
 
-                        this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
+                            billingAccoutCount = summaryDashboardInfoList.Count;
 
-                        if (billingAccoutCount > 0)
-                        {
-                            FetchAccountSummary(true, true, true);
+                            this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
+
+                            if (billingAccoutCount > 0)
+                            {
+                                FetchAccountSummary(true, true, true);
+                            }
                         }
 
                         if (isMyServiceExpanded)
