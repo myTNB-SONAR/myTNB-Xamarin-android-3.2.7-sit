@@ -16,7 +16,6 @@ using myTNB.Home.Components;
 using Newtonsoft.Json;
 using myTNB.DataManager;
 using static myTNB.HomeTutorialOverlay;
-using System.Timers;
 
 namespace myTNB
 {
@@ -135,6 +134,8 @@ namespace myTNB
             UpdateGreeting(GetGreeting());
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
+                DataManager.DataManager.SharedInstance.ServicesList = new List<ServiceItemModel>();
+                DataManager.DataManager.SharedInstance.HelpList = new List<HelpModel>();
                 if (_accountListViewController != null)
                 {
                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -348,26 +349,45 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
-                    _services = new ServicesResponseModel();
-                    _helpList = new List<HelpModel>();
-                    OnGetServices();
-                    OnUpdateNotification();
-                    InvokeOnMainThread(() =>
+                    if (DataManager.DataManager.SharedInstance.ServicesList == null ||
+                        DataManager.DataManager.SharedInstance.ServicesList.Count == 0)
                     {
-                        _helpIsShimmering = true;
-                        OnUpdateTable();
-                        OnGetHelpInfo().ContinueWith(task =>
+                        _services = new ServicesResponseModel();
+                        OnGetServices();
+                    }
+                    else
+                    {
+                        _servicesIsShimmering = false;
+                        CheckTutorialOverlay();
+                    }
+
+                    if (DataManager.DataManager.SharedInstance.HelpList == null ||
+                        DataManager.DataManager.SharedInstance.HelpList.Count == 0)
+                    {
+                        _helpList = new List<HelpModel>();
+                        InvokeOnMainThread(() =>
                         {
-                            InvokeOnMainThread(() =>
+                            _helpIsShimmering = true;
+                            OnUpdateTable();
+                            OnGetHelpInfo().ContinueWith(task =>
                             {
-                                _helpList = new HelpEntity().GetAllItems();
-                                DataManager.DataManager.SharedInstance.HelpList = _helpList;
-                                _helpIsShimmering = false;
-                                OnUpdateTable();
-                                CheckTutorialOverlay();
+                                InvokeOnMainThread(() =>
+                                {
+                                    _helpList = new HelpEntity().GetAllItems();
+                                    DataManager.DataManager.SharedInstance.HelpList = _helpList;
+                                    _helpIsShimmering = false;
+                                    OnUpdateTable();
+                                    CheckTutorialOverlay();
+                                });
                             });
                         });
-                    });
+                    }
+                    else
+                    {
+                        _helpIsShimmering = false;
+                        CheckTutorialOverlay();
+                    }
+                    OnUpdateNotification();
                 }
                 else
                 {
