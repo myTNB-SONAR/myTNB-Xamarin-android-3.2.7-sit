@@ -481,7 +481,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetBottomLayoutBackground(false);
                 this.presenter.InitiateService();
                 this.presenter.GetUserNotifications();
-                SetNotificationIndicator();
             }
             catch (System.Exception e)
             {
@@ -788,6 +787,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.OnCheckToCallHomeMenuTutorial();
                 }
+                SetNotificationIndicator();
             }
             catch (System.Exception e)
             {
