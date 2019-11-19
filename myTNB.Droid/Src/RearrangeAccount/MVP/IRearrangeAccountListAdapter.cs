@@ -35,5 +35,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
         void SwapItems(int from, int to);
+
+        bool GetIsChange();
     }
 }

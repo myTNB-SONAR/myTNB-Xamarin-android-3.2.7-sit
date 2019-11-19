@@ -78,7 +78,22 @@ namespace myTNB_Android.Src.Database.Model
             {
                 try
                 {
-
+                    customerAccounts = ReturnList(email);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                try
+                {
+                    customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                    if (customerAccounts == null)
+                    {
+                        customerAccounts = new List<CustomerBillingAccount>();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -89,23 +104,79 @@ namespace myTNB_Android.Src.Database.Model
             return customerAccounts;
         }
 
-        public static bool HasItems(string email)
+        private static bool HasItems(string email)
         {
             var db = DBHelper.GetSQLiteConnection();
             return db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ?", email).Count > 0;
         }
 
-        public static List<CustomerBillingAccount> ReturnList(string email)
+        private static List<CustomerBillingAccount> ReturnList(string email)
         {
             var db = DBHelper.GetSQLiteConnection();
 
             List<CustomerBillingAccount> customerAccounts = new List<CustomerBillingAccount>();
 
-            AccountSortingEntity item = db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ?", email).ToList()[0]
+            AccountSortingEntity item = db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ?", email).ToList()[0];
 
             if (item != null)
             {
-                
+                string accountList = item.AccountList;
+                if (!string.IsNullOrEmpty(accountList))
+                {
+                    try
+                    {
+                        customerAccounts = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
+                        if (customerAccounts == null)
+                        {
+                            try
+                            {
+                                customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                                if (customerAccounts == null)
+                                {
+                                    customerAccounts = new List<CustomerBillingAccount>();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                        if (customerAccounts == null)
+                        {
+                            customerAccounts = new List<CustomerBillingAccount>();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+            }
+            else
+            {
+                try
+                {
+                    customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                    if (customerAccounts == null)
+                    {
+                        customerAccounts = new List<CustomerBillingAccount>();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
 
             return customerAccounts;

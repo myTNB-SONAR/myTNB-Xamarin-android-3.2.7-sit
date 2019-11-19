@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -25,7 +26,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         private RearrangeAccountListView listView;
 
-        List<CustomerBillingAccount> items;
+        List<CustomerBillingAccount> items = new List<CustomerBillingAccount>();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -36,7 +37,11 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
                 listView = FindViewById<RearrangeAccountListView>(Resource.Id.list_view);
 
+                items = AccountSortingEntity.List(UserEntity.GetActive().Email);
 
+                listView.Adapter = new RearrangeAccountListAdapter(this, items);
+
+                DisableSaveButton();
             }
             catch (Exception e)
             {
@@ -75,6 +80,18 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                     GC.Collect();
                     break;
             }
+        }
+
+        public void EnableSaveButton()
+        {
+            btnSubmit.Enabled = true;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+        }
+
+        public void DisableSaveButton()
+        {
+            btnSubmit.Enabled = false;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
     }
 }

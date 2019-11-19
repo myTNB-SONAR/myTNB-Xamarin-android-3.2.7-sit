@@ -54,6 +54,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         Rect mHoverCellOriginalBounds;
         BitmapDrawable mHoverCell;
         GestureDetector dectector;
+        Context mContext;
 
         ///
         /// Constructors
@@ -76,6 +77,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         public void init(Context context)
         {
             //	the detector handles all the gestures
+            mContext = context;
             dectector = new GestureDetector(this);
             ItemLongClick += HandleItemLongClick;
         }
@@ -436,6 +438,11 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                 hoverViewAnimator.AnimationStart += HandleHoverAnimationStart;
                 hoverViewAnimator.AnimationEnd += HandleHoverAnimationEnd;
                 hoverViewAnimator.Start();
+
+                if (((IRearrangeAccountListAdapter)Adapter).GetIsChange())
+                {
+                    ((RearrangeAccountActivity)mContext).EnableSaveButton();
+                }
             }
             else
             {

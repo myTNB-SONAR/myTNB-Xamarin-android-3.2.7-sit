@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
     {
         public List<CustomerBillingAccount> Items { get; set; }
 
+        private bool isChange = false;
 
         public int mMobileCellPosition { get; set; }
 
@@ -81,6 +82,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+            convertView.Visibility = mMobileCellPosition == position ? ViewStates.Invisible : ViewStates.Visible;
+            convertView.TranslationY = 0;
             return convertView;
         }
 
@@ -90,6 +93,11 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 return Items.Count;
             }
+        }
+
+        public bool GetIsChange()
+        {
+            return isChange;
         }
 
         public class RearrangeAccountListViewHolder : BaseAdapterViewHolder
@@ -116,6 +124,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             Items[indexOne] = Items[indexTwo];
             Items[indexTwo] = oldValue;
             mMobileCellPosition = indexTwo;
+            isChange = true;
             NotifyDataSetChanged();
         }
     }

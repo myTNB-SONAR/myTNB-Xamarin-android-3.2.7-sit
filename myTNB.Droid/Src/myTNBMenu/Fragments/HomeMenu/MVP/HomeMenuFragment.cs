@@ -45,6 +45,7 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.RearrangeAccount.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1748,9 +1749,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         loadMoreLabel.Text = Activity.GetString(Resource.String.show_less_accounts);
                     }
 
-                    // Lin Siong TODO: Hide this on 15 Nov Release
-                    // IsRearrangeButtonVisible(true);
-                    IsRearrangeButtonVisible(false);
+                    IsRearrangeButtonVisible(true);
                 }
                 else
                 {
@@ -1878,7 +1877,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.rearrangeContainer)]
         internal void OnRearrangeClick(object sender, EventArgs e)
         {
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent rearrangeAccount = new Intent(this.Activity, typeof(RearrangeAccountActivity));
+                StartActivity(rearrangeAccount);
+            }
         }
 
         void View.IOnFocusChangeListener.OnFocusChange(View v, bool hasFocus)

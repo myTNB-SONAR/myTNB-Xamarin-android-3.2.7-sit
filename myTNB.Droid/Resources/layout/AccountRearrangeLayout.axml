@@ -2,31 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minWidth="25px"
-    android:minHeight="25px">
+    android:layout_height="match_parent">
     <include
         layout="@layout/toolbar"
         android:id="@+id/toolbar" />
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_marginTop="?actionBarSize"
         android:background="@color/white" 
         android:orientation="vertical">
-        <ScrollView
-            android:layout_width="match_parent"
+        <LinearLayout
             android:layout_height="0dp"
+            android:layout_width="match_parent"
             android:layout_weight="1"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            android:fillViewport="false">
+            android:orientation="vertical">
             <myTNB_Android.Src.RearrangeAccount.MVP.RearrangeAccountListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_view">
-            </myTNB_Android.Src.RearrangeAccount.MVP.RearrangeAccountListView>
-        </ScrollView>
+                android:id="@+id/list_view" />
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@color/platinumGrey" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
