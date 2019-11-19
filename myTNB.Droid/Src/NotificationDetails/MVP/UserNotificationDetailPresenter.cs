@@ -4,10 +4,14 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
@@ -33,6 +37,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         BillingApiImpl api;
         SSMRTerminateImpl terminationApi;
         AccountData mSelectedAccountData;
+        bool isTaggedSMR = true;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view)
         {
@@ -60,90 +65,58 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_NEW_BILL_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
-                            //pageTitle = "New Bill";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
-
-                            //notificationDetailTitle = "Your May 2019 Bill Is Ready";
-                            //notificationDetailMessage = "Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>" +
-                            //    "Account: #accountName#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_BILL_DUE_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_bill_due_banner;
-                            //pageTitle = "Bill Due";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
-
-                            //notificationDetailTitle = "Your Apr 2019 Bill Is Due";
-                            //notificationDetailMessage = "Hi, Mohd Zulkifli! On 15 May, your Apr 2019 TNB bill amounting to RM 76.65 will be due. <br/><br/>" +
-                            //    "No time to queue at TNB? No problem!Pay now on the myTNB app.Please disregard if paid.<br/><br/>" +
-                            //    "Account: #accountName#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnect_notice_banner;
-                            //pageTitle = "Disconnection Notice";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
-
-                            //notificationDetailTitle = "Your Supply May Be Disconnected";
-                            //notificationDetailMessage = "Urgent notice, Mohd Zulkifli. Your electricity supply may be disconnected between 22 and 31 May if you haven't already paid the bill. No worries, just pay before 21 May on the myTNB app and all will be well! <br/><br/> " +
-                            //    "Account: #name#<br/><br/>" +
-                            //    "PS: Alternatively, you can pay via <a href=\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">other methods</a> too but it’s quicker and easier on the app!​";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnected_banner;
-                            //pageTitle = "Disconnection";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
-
-                            //notificationDetailTitle = "Your Supply Has Been Disconnected";
-                            //notificationDetailMessage = "Don't panic, you can make a full payment on the myTNB app and you'll see the light again!<br/><br/>" +
-                            //    "Account: #name#<br/><br/>" +
-                            //    "PS: Alternatively, you can pay via other methods too but it’s quicker and easier on the app!​";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_reconnected_banner;
-                            //pageTitle = "Reconnection";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-
-                            //notificationDetailTitle = "Your Supply Has Been Reconnected";
-                            //notificationDetailMessage = "Hooray, the lights are back on! Your account has been reconnected. Stay on top of your monthly payments and your usage with the myTNB app.<br/><br/>" +
-                            //    "Account: #name#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MAINTENANCE_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_maintenance_banner;
-                            //pageTitle = "Maintenance";
-                            //notificationDetailTitle = "Down For Maintenance from 4PM to 8PM on 31 Aug 2019";
-                            //notificationDetailMessage = "Don't worry, we'll be up and running quickly and better than before! We apologize for any inconvenience.";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
-                            //pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
@@ -157,7 +130,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
-                            //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
                             break;
                         }
@@ -167,7 +139,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
-                            //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
                             break;
                         }
@@ -175,7 +146,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-                            //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
                             break;
                         }
@@ -183,22 +153,21 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
-                            //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID:
                         {
+                            Task.Run(async () => await GetSMRAccountStatus(notificationDetails.AccountNum)).Wait();
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
-                            //pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Re-start Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            primaryCTA.SetEnabled(!isTaggedSMR);
                             ctaList.Add(primaryCTA);
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
-                            //pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             break;
@@ -495,6 +464,63 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private async Task GetSMRAccountStatus(string accountContractNumber)
+        {
+            HomeMenuServiceImpl serviceImpl = new HomeMenuServiceImpl();
+            List<string> accountList = new List<string>();
+            accountList.Add(accountContractNumber);
+            this.mView.ShowLoadingScreen();
+            try
+            {
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                AccountSMRStatusResponse accountSMRResponse = await serviceImpl.GetSMRAccountStatus(new AccountsSMRStatusRequest()
+                {
+                    ContractAccounts = accountList,
+                    UserInterface = currentUsrInf
+                });
+                if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
+                {
+                    List<AccountSMRStatus> updateSMRStatus = accountSMRResponse.Response.Data;
+                    foreach (AccountSMRStatus status in updateSMRStatus)
+                    {
+                        if (status.ContractAccount == accountContractNumber)
+                        {
+                            isTaggedSMR = (status.IsTaggedSMR == "true");
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
+            finally
+            {
+                this.mView.HideLoadingScreen();
             }
         }
 

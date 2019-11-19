@@ -3798,6 +3798,11 @@
     <Compile Include="Src\AppLaunch\Models\UpdateAppUserDeviceResponse.cs" />
     <Compile Include="Src\AppLaunch\Requests\UpdateAppUserDeviceRequest.cs" />
     <Compile Include="Src\Utils\HomeMenuUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\promotions_default_image.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\promotions_default_image.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\promotions_default_image.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\promotions_default_image.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\promotions_default_image.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
