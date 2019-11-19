@@ -60,7 +60,7 @@ namespace myTNB
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = IsAmountState ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
             List<bool> dpcIndicatorList = usageData.Select(x => x.DPCIndicator).ToList();
-            double maxValue = GetMaxValue(RMkWhEnum.RM, valueList, dpcIndicatorList);
+            double maxValue = GetMaxValue(ConsumptionState, valueList, dpcIndicatorList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
