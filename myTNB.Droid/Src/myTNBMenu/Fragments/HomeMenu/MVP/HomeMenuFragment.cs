@@ -786,7 +786,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowBackButton(false);
                 if (this.presenter != null)
                 {
-                    this.presenter.OnCheckToCallHomeMenuTutorial();
                     this.presenter.GetUserNotifications();
                     this.presenter.OnCheckMyServiceState();
                 }
@@ -1554,7 +1553,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.RestoreCurrentAccountState();
                 }
-                this.presenter.RestoreCurrentMyServiceState();
                 this.presenter.ReadNewFAQFromCache();
             }
         }

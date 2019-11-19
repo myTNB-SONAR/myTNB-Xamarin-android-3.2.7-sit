@@ -1912,7 +1912,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnCheckMyServiceState()
         {
-            if (isMyServiceDone)
+            if (HomeMenuUtils.GetIsLoadedHomeMenu())
             {
                 isMyServiceDone = false;
                 isHomeMenuTutorialShown = false;
