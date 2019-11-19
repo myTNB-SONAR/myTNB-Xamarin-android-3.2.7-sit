@@ -37,27 +37,36 @@ namespace myTNB.Model
         public string NotificationType { set; get; } = string.Empty;
         public string Target { set; get; } = string.Empty;
         public bool IsSMRPeriodOpen { set; get; }
-        public bool IsAccountNumberExist
-        {
-            get
-            {
-                if (DataManager.DataManager.SharedInstance != null
-                    && DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                    && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-                    && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
-                {
-                    int accIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == AccountNum);
-                    return accIndex > -1;
-                }
-                return false;
-            }
-        }
 
         public class AccountDetailsModel
         {
             public string BillDate { set; get; } = string.Empty;
             public double AmountPayable { set; get; } = 0;
             public string PaymentDueDate { set; get; } = string.Empty;
+        }
+
+        [JsonIgnore]
+        public bool IsValidNotification
+        {
+            get
+            {
+                if (!NotificationType.Equals("ODN"))
+                {
+                    var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                                          : new SQLite.SQLiteDataManager.UserEntity();
+                    int accIndex = -1;
+                    if (DataManager.DataManager.SharedInstance != null
+                    && DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                    && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                    && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                    {
+                        accIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == AccountNum);
+                    }
+                    return Email.Equals(userInfo.email) && accIndex > -1;
+                }
+                return true;
+            }
         }
 
         [JsonIgnore]
