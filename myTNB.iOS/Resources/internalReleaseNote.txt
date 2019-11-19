@@ -1,5 +1,4 @@
 Sprint 2 SIT Build
 
-[Bug] 3342 SMR Notification - Tap on Re-start self meter reading is displaying as something went wrong when re-start self meter again in notification
-[Bug] Values for RM and kWh show same amount
-[Enhancement] Notification badge count and indicator code enhancements
+[Bug] Negative RM value label is being displayed outside the chart area
+[Bug] Chart area is not being utilised by kWh graph with DPC indicator
