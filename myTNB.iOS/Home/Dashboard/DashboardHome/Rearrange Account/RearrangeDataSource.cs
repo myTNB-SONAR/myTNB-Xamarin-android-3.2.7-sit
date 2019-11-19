@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -65,10 +66,6 @@ namespace myTNB
         {
             switch (editingStyle)
             {
-                case UITableViewCellEditingStyle.Delete:
-                    _accountList.RemoveAt(indexPath.Row);
-                    tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
-                    break;
                 case UITableViewCellEditingStyle.None:
                     Console.WriteLine("CommitEditingStyle:None called");
                     break;
@@ -106,6 +103,10 @@ namespace myTNB
             }
             _accountList.Insert(insertAt, item);
             _accountList.RemoveAt(deleteAt);
+            foreach (var obj in _accountList)
+            {
+                Debug.WriteLine(obj.accDesc);
+            }
         }
     }
 }

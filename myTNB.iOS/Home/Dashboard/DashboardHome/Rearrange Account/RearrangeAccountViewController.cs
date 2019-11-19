@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -9,6 +11,7 @@ namespace myTNB
     {
         private UITableView _accountListTableView;
         private UIView _footerView;
+        private List<CustomerAccountRecordModel> _accountList = new List<CustomerAccountRecordModel>();
 
         public override void ViewDidLoad()
         {
@@ -80,6 +83,16 @@ namespace myTNB
                 Debug.WriteLine("btnSave on tap!");
             };
             _footerView.AddSubview(btnSave);
+        }
+
+        public void RearrangeAction(List<CustomerAccountRecordModel> acctList)
+        {
+            _accountList = acctList;
+        }
+
+        private void OnSaveAction()
+        {
+
         }
 
         public override void DidReceiveMemoryWarning()
