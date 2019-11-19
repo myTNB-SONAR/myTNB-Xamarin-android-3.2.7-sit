@@ -34,7 +34,8 @@ namespace myTNB.SmartMeterView
 
             List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
             List<string> valueList = IsAmountState ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
-            double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
+            List<bool> dpcIndicatorList = usageData.Select(x => x.DPCIndicator).ToList();
+            double maxValue = GetMaxValue(RMkWhEnum.RM, valueList, dpcIndicatorList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
