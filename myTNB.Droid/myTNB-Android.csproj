@@ -3829,6 +3829,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Database\Model\AccountSortingEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
