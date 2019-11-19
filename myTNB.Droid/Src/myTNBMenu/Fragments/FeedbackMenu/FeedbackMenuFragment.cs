@@ -122,6 +122,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                         txtSubmittedFeedback,
                         txtFeedbackOthers);
 
+            ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
+
             this.userActionsListener.Start();
 
 
@@ -481,7 +483,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 }
 
                 mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
                 );
                 View v = mErrorMessageSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

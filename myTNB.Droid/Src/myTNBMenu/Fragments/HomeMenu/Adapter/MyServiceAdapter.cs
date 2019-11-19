@@ -257,6 +257,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     {
                         case "1001":
                             vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "selfMeterReading"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "selfMeterReading"));
+                            }
                             if (UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
@@ -268,6 +276,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             break;
                         case "1003":
                             vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
+                            }
                             vh.newLabel.Visibility = ViewStates.Gone;
                             break;
                         case "1004":
