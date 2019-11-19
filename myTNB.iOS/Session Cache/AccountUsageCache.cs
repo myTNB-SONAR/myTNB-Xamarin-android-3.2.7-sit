@@ -229,14 +229,14 @@ namespace myTNB
                         {
                             double amountTotal = monthUsage.tariffBlocks.Sum(x => x.Amount);
                             double usageTotal = monthUsage.tariffBlocks.Sum(x => x.Usage);
-                            if (amountTotal > 0 || usageTotal > 0)
+                            if (amountTotal > 0 && usageTotal > 0)
                             {
                                 return false;
                             }
                         }
                     }
                 }
-                return false;
+                return true;
             }
         }
     }

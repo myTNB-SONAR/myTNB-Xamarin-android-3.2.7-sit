@@ -148,7 +148,7 @@ namespace myTNB
             {
                 try
                 {
-                    int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsAccountNumberExist && x.IsRead.ToLower().Equals("false")).Count;
+                    int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsValidNotification && !x.IsReadNotification).Count;
                     return count < 0 ? 0 : count;
                 }
                 catch (Exception e)
@@ -249,7 +249,7 @@ namespace myTNB
         {
             if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
             {
-                int index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.IsRead.ToLower() == "false");
+                int index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.IsValidNotification && !x.IsReadNotification);
                 DataManager.DataManager.SharedInstance.HasNewNotification = index > -1;
             }
             else
