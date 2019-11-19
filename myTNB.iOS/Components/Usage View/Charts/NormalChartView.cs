@@ -78,6 +78,8 @@ namespace myTNB
 
                 string valReference = IsAmountState ? item.AmountTotal : item.UsageTotal;
                 double.TryParse(valReference, out double value);
+                if (value < 0) { value = 0; }
+
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
@@ -197,7 +199,7 @@ namespace myTNB
                 TariffItemModel item = tariffList[i];
                 double val = IsAmountState ? item.Amount : item.Usage;
                 double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
-                nfloat blockHeight = (nfloat)(baseHeigt * percentage) ;
+                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {

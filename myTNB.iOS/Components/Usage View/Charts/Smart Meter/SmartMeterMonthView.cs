@@ -98,6 +98,7 @@ namespace myTNB.SmartMeterView
                 {
                     string valReference = IsAmountState ? item.AmountTotal : item.UsageTotal;
                     double.TryParse(valReference, out double value);
+                    if (value < 0) { value = 0; }
                     nfloat barHeight = (nfloat)(divisor * value);
                     nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
@@ -135,8 +136,7 @@ namespace myTNB.SmartMeterView
                         AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
                     }
                     nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-                    double usageTotal;
-                    double.TryParse(item.UsageTotal, out usageTotal);
+                    double.TryParse(item.UsageTotal, out double usageTotal);
                     string displayText = ConsumptionState == RMkWhEnum.RM ? item.AmountTotal.FormatAmountString(item.Currency) :
                         string.Format(Format_Value, usageTotal, item.UsageUnit);
 
