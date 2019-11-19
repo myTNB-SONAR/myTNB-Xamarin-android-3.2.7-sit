@@ -135,5 +135,33 @@ namespace myTNB
         {
             return ScaleUtility.GetYLocationFromFrameScreenSize(frame, yValue);
         }
+
+        protected bool IsAmountState
+        {
+            get
+            {
+                return ConsumptionState == RMkWhEnum.RM;
+            }
+        }
+
+        protected nfloat GetTotalTariff(List<TariffItemModel> tariffList)
+        {
+            if (tariffList == null || tariffList.Count < 1)
+            {
+                return 0;
+            }
+            return (nfloat)tariffList.Sum(x => IsAmountState ? x.Amount : x.Usage);
+        }
+
+        protected int GetTariffWithValueCount(List<TariffItemModel> tariffList)
+        {
+            int tariffBlkCount = 0;
+            if (tariffList == null || tariffList.Count < 1)
+            {
+                return tariffBlkCount;
+            }
+            tariffBlkCount = tariffList.FindAll(x => IsAmountState ? x.Amount > 0 : x.Usage > 0).Count;
+            return tariffBlkCount;
+        }
     }
 }
