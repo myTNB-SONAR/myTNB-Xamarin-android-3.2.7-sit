@@ -1,4 +1,4 @@
-﻿using AFollestad.MaterialDialogs;
+using AFollestad.MaterialDialogs;
 using Android.Animation;
 using Android.App;
 using Android.Content;
@@ -68,7 +68,7 @@ using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragmentCustom, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport, View.IOnTouchListener
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport, View.IOnTouchListener
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -483,7 +483,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
         IAxisValueFormatter XLabelsFormatter;
-        private int currentParentIndex = 0;
         private string errorMSG = null;
 
         private MaterialDialog mWhyThisAmtCardDialog;
@@ -575,8 +574,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         ScaleGestureDetector mScaleDetector;
 
-        const string PAGE_ID = "Usage";
-
         public override int ResourceId()
         {
             return Resource.Layout.DashboardNewChartView;
@@ -600,7 +597,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isUsageLoadedNeeded = false;
                     selectedSMHistoryData = null;
                     var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null)
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null && IsCheckDataReadyData(usageHistoryDataResponse.Data.UsageHistoryData))
                     {
                         selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
                         if (!usageHistoryDataResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryDataResponse.Data.IsMonthlyTariffBlocksUnavailable)
@@ -611,38 +608,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             OnSetBackendTariffDisabled(true);
                         }
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+
+                        try
                         {
-                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                            {
+                                txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            }
+                            else
+                            {
+                                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            }
                         }
-                        else
+                        catch (System.Exception e)
                         {
-                            txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        try
+                        {
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                            {
+                                txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                            }
+                            else
+                            {
+                                txtBtnRefreshTitle = "Refresh Now";
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            txtBtnRefreshTitle = "Refresh Now";
+                            Utility.LoggingNonFatalError(e);
                         }
                     }
-                    catch (System.Exception e)
+                    else
                     {
-                        txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
-                        Utility.LoggingNonFatalError(e);
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
-                        {
-                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
-                        }
-                        else
-                        {
-                            txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
-                        Utility.LoggingNonFatalError(e);
+                        isUsageLoadedNeeded = true;
+                        selectedHistoryData = null;
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                        txtBtnRefreshTitle = "Refresh Now";
                     }
                 }
                 else
@@ -651,7 +656,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isUsageLoadedNeeded = false;
                     selectedHistoryData = null;
                     var usageHistoryDataResponse = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(extras.GetString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE));
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null)
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null && IsCheckDataReadyData(usageHistoryDataResponse.Data.SMUsageHistoryData))
                     {
                         selectedSMHistoryData = usageHistoryDataResponse.Data.SMUsageHistoryData;
                         if (!usageHistoryDataResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryDataResponse.Data.IsMonthlyTariffBlocksUnavailable)
@@ -662,38 +667,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             OnSetBackendTariffDisabled(true);
                         }
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+
+                        try
                         {
-                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                            {
+                                txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                            }
+                            else
+                            {
+                                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            }
                         }
-                        else
+                        catch (System.Exception e)
                         {
-                            txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        try
+                        {
+                            if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                            {
+                                txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                            }
+                            else
+                            {
+                                txtBtnRefreshTitle = "Refresh Now";
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            txtBtnRefreshTitle = "Refresh Now";
+                            Utility.LoggingNonFatalError(e);
                         }
                     }
-                    catch (System.Exception e)
+                    else
                     {
-                        txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
-                        Utility.LoggingNonFatalError(e);
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
-                        {
-                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
-                        }
-                        else
-                        {
-                            txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
-                        Utility.LoggingNonFatalError(e);
+                        isUsageLoadedNeeded = true;
+                        selectedSMHistoryData = null;
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                        txtBtnRefreshTitle = "Refresh Now";
                     }
                 }
             }
@@ -710,8 +723,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isUsageLoadedNeeded = true;
                 selectedHistoryData = null;
                 selectedSMHistoryData = null;
-                txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
-                txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
+                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                txtBtnRefreshTitle = "Refresh Now";
             }
 
             errorMSG = "";
@@ -720,6 +733,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
             }
+
 
             SetHasOptionsMenu(true);
             this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
@@ -807,15 +821,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 currentDayViewIndex = 0;
                 dayViewTariffList = new List<BarEntry>();
 
-                TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate, txtNewRefreshMessage, ssmrAccountStatusText, reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable,
-                    smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency,
-                    smStatisticTrendSubTitle, smStatisticTrend, btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory,
-                    btnReadingHistory, txtEnergyDisconnection, reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency, smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-
-                txtTarifToggle.Text = GetLabelByLanguage("showTariff");
-                btnToggleDay.Text = GetLabelCommonByLanguage("day");
-                btnToggleMonth.Text = GetLabelCommonByLanguage("month");
+                TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
+                TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory, txtEnergyDisconnection);
+                TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
+                TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
+                TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
+                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent, txtTariffBlockLegendDisclaimer);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -875,11 +888,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         ssmrHistoryContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Gone;
                         energyTipsView.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetLabelByLanguage("viewPaymentAdvice");
-                        reTotalPayableTitle.Text = GetLabelByLanguage("myEarnings");
-                        btnReView.Text = GetLabelByLanguage("viewPaymentAdvice");
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         // txtUsageHistory.Visibility = ViewStates.Gone;
-                        txtTotalPayableTitle.Text = GetLabelByLanguage("myEarnings");// GetString(Resource.String.title_payment_advice_amount);
+                        txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
@@ -895,9 +906,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         SetVirtualHeightParams(6f);
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
-                        btnPay.Text = GetLabelByLanguage("pay");
                         btnPay.Visibility = ViewStates.Visible;
-                        btnViewBill.Text = GetLabelByLanguage("viewDetails");
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
@@ -908,7 +918,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        isSMR = this.mPresenter.IsOwnedSMR(selectedAccount.AccountNum);
+                        isSMR = this.mPresenter.IsOwnedSMRLocal(selectedAccount.AccountNum);
                         if (isSMR)
                         {
                             StartSSMRDashboardViewShimmer();
@@ -937,11 +947,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
-                        txtTotalPayableTitle.Text = GetLabelByLanguage("needToPay");
-                        btnPay.Text = GetLabelByLanguage("pay");
                         btnPay.Visibility = ViewStates.Visible;
                         layoutSMSegmentGroup.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetLabelByLanguage("viewDetails"); //GetString(Resource.String.dashboard_chartview_view_bill);
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                     }
@@ -1250,8 +1258,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                string textMessage = GetLabelByLanguage("projectedCostMsg");
-                string btnLabel = GetLabelByLanguage("gotIt");
+                string textMessage = Activity.GetString(Resource.String.tooltip_sm_what_are_these_message);
+                string btnLabel = Activity.GetString(Resource.String.tooltip_btnLabel);
 
                 if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
                 {
@@ -1608,21 +1616,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = GetLabelByLanguage("showTariff");
+                    txtTarifToggle.Text = "Show Tariff";
                 }
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = GetLabelByLanguage("hideTariff");
+                    txtTarifToggle.Text = "Hide Tariff";
                 }
 
                 if (!isSMAccount)
                 {
-                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 else
                 {
-                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
             }
             else
@@ -1630,14 +1638,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 tarifToggle.Enabled = false;
                 if (!isSMAccount)
                 {
-                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 else
                 {
-                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                    OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
-                txtTarifToggle.Text = GetLabelByLanguage("showTariff");
+                txtTarifToggle.Text = "Show Tariff";
                 txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
 
@@ -2622,14 +2630,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 float[] valList = new float[1];
 
-                                float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
                                 }
 
+                                if (val < 0)
+                                {
+                                    val = 0;
+                                }
+
                                 valList[0] = System.Math.Abs(val);
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -2638,16 +2651,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             else
                             {
                                 List<float> newValList = new List<float>();
-                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+
+                                float valTotal = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                                if (valTotal > 0)
                                 {
-                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                                    if (float.IsPositiveInfinity(val))
+                                    for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                     {
-                                        val = float.PositiveInfinity;
-                                    }
-                                    if (System.Math.Abs(val) > 0)
-                                    {
-                                        newValList.Add(System.Math.Abs(val));
+                                        float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                        if (float.IsPositiveInfinity(val))
+                                        {
+                                            val = float.PositiveInfinity;
+                                        }
+                                        if (System.Math.Abs(val) > 0)
+                                        {
+                                            newValList.Add(System.Math.Abs(val));
+                                        }
                                     }
                                 }
 
@@ -2659,7 +2677,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         valList[j] = newValList[j];
                                     }
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -2671,7 +2689,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float[] valList = new float[1];
                                     valList[0] = 0f;
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -2685,7 +2703,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             float[] valList = new float[1];
                             valList[0] = 0f;
 
-                            if (i == barLength - 1)
+                            if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                             {
                                 stackIndex = valList.Length - 1;
                             }
@@ -2723,7 +2741,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                if (selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                                if (selectedHistoryData.ByMonth.Months[i].DPCIndicator || (float) selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                 {
                                     listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                 }
@@ -2741,7 +2759,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 {
                                                     isFound = true;
 
-                                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                                     if (float.IsPositiveInfinity(val))
                                                     {
                                                         val = float.PositiveInfinity;
@@ -2813,8 +2831,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
                 else
@@ -2823,11 +2844,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     for (int i = 0; i < barLength; i++)
                     {
                         float[] valList = new float[1];
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
-                        if (float.IsPositiveInfinity(val))
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        if (!isREAccount)
                         {
-                            val = float.PositiveInfinity;
+                            if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                            {
+                                val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                            }
+
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+
+                            if (!isREAccount && selectedHistoryData.ByMonth.Months[i].DPCIndicator && val < 0)
+                            {
+                                val = 0;
+                            }
+                            else if (!isREAccount && (float)selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
+                            {
+                                val = 0;
+                            }
                         }
+                        else
+                        {
+                            val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                        }
+
+
                         valList[0] = System.Math.Abs(val);
                         yVals1.Add(new BarEntry(i, valList));
                     }
@@ -2884,8 +2932,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
             }
@@ -2907,14 +2958,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     float[] valList = new float[1];
 
-                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
+                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
                                     if (float.IsPositiveInfinity(val))
                                     {
                                         val = float.PositiveInfinity;
                                     }
 
+                                    if (val < 0)
+                                    {
+                                        val = 0;
+                                    }
+
                                     valList[0] = System.Math.Abs(val);
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -2923,17 +2979,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 else
                                 {
                                     List<float> newValList = new List<float>();
-                                    for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                                    {
-                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                                        if (float.IsPositiveInfinity(val))
-                                        {
-                                            val = float.PositiveInfinity;
-                                        }
 
-                                        if (System.Math.Abs(val) > 0)
+                                    float valTotal = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
+
+                                    if (valTotal > 0)
+                                    {
+                                        for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                         {
-                                            newValList.Add(System.Math.Abs(val));
+                                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                            if (float.IsPositiveInfinity(val))
+                                            {
+                                                val = float.PositiveInfinity;
+                                            }
+
+                                            if (System.Math.Abs(val) > 0)
+                                            {
+                                                newValList.Add(System.Math.Abs(val));
+                                            }
                                         }
                                     }
 
@@ -2946,7 +3008,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             valList[j] = newValList[j];
                                         }
 
-                                        if (i == barLength - 1)
+                                        if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                         {
                                             stackIndex = valList.Length - 1;
                                         }
@@ -2957,7 +3019,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         float[] valList = new float[1];
                                         valList[0] = 0f;
-                                        if (i == barLength - 1)
+                                        if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                         {
                                             stackIndex = valList.Length - 1;
                                         }
@@ -2969,7 +3031,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 float[] valList = new float[1];
                                 valList[0] = 0f;
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -2993,7 +3055,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             List<float> newValList = new List<float>();
                                             for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
                                             {
-                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
+                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
                                                 if (float.IsPositiveInfinity(val))
                                                 {
                                                     val = float.PositiveInfinity;
@@ -3129,7 +3191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                                 {
-                                    if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                                    if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator || (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                     {
                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
@@ -3148,7 +3210,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                     {
                                                         isFound = true;
 
-                                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                                         if (float.IsPositiveInfinity(val))
                                                         {
                                                             val = float.PositiveInfinity;
@@ -3219,7 +3281,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                             {
                                                                 isFound = true;
 
-                                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
+                                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
                                                                 if (float.IsPositiveInfinity(val))
                                                                 {
                                                                     val = float.PositiveInfinity;
@@ -3342,8 +3404,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -3361,16 +3426,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (ChartType == ChartType.Month)
                         {
                             float[] valList = new float[1];
-                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
+                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
                             if (i == barLength - 1 && GetIsMDMSDown())
                             {
                                 val = 0;
                             }
                             else
                             {
+                                if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                                {
+                                    val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
+                                }
+
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
+                                }
+
+                                if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator && val < 0)
+                                {
+                                    val = 0;
+                                }
+                                else if ((float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
+                                {
+                                    val = 0;
                                 }
                             }
                             valList[0] = System.Math.Abs(val);
@@ -3379,7 +3458,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         else if (ChartType == ChartType.Day)
                         {
                             float[] valList = new float[1];
-                            float val = (float)DayViewkWhData[i];
+                            float val = (float)DayViewRMData[i];
                             if (float.IsPositiveInfinity(val))
                             {
                                 val = float.PositiveInfinity;
@@ -3516,8 +3595,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -3569,7 +3651,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     valList[j] = newValList[j];
                                 }
 
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -3581,7 +3663,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 float[] valList = new float[1];
                                 valList[0] = 0f;
 
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -3594,7 +3676,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             float[] valList = new float[1];
                             valList[0] = 0f;
 
-                            if (i == barLength - 1)
+                            if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                             {
                                 stackIndex = valList.Length - 1;
                             }
@@ -3718,8 +3800,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
                 else
@@ -3798,8 +3883,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         mChart.Data = data;
                     }
                     // HIGHLIGHT RIGHT MOST ITEM
-                    CurrentParentIndex = barLength - 1;
-                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    if (CurrentParentIndex == -1)
+                    {
+                        CurrentParentIndex = barLength - 1;
+                    }
+                    Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                     mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
             }
@@ -3841,7 +3929,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         valList[j] = newValList[j];
                                     }
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -3853,7 +3941,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float[] valList = new float[1];
                                     valList[0] = 0f;
 
-                                    if (i == barLength - 1)
+                                    if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
@@ -3866,7 +3954,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 float[] valList = new float[1];
                                 valList[0] = 0f;
 
-                                if (i == barLength - 1)
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
@@ -4233,8 +4321,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, stackIndex);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -4411,8 +4502,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (ChartType == ChartType.Month)
                     {
                         // HIGHLIGHT RIGHT MOST ITEM
-                        CurrentParentIndex = barLength - 1;
-                        Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                        if (CurrentParentIndex == -1)
+                        {
+                            CurrentParentIndex = barLength - 1;
+                        }
+                        Highlight rightMostBar = new Highlight(CurrentParentIndex, 0, 0);
                         mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
                     else if (ChartType == ChartType.Day)
@@ -4460,6 +4554,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowByDay()
         {
             ChartType = ChartType.Day;
+
+            CurrentParentIndex = -1;
 
             mChart.Visibility = ViewStates.Visible;
 
@@ -4670,7 +4766,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = GetLabelByLanguage("showTariff");
+                    txtTarifToggle.Text = "Show Tariff";
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
@@ -4697,7 +4793,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = GetLabelByLanguage("hideTariff");
+                    txtTarifToggle.Text = "Hide Tariff";
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
                     {
@@ -4757,7 +4853,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
 
-                    // Lin Siong TODO: Replace the Message handling
                     if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && index != -1)
                     {
                         if (isSMAccount)
@@ -4909,6 +5004,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 startCount = selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
                             }
+
+                            if (ChartDataType == ChartDataType.RM && (float)selectedHistoryData.ByMonth.Months[index].AmountTotal <= 0.00)
+                            {
+                                startCount = -1;
+                            }
+
                             if (startCount == -1)
                             {
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
@@ -4944,6 +5045,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
                             }
+
+                            if (ChartDataType == ChartDataType.RM && (float)selectedSMHistoryData.ByMonth.Months[index].AmountTotal <= 0.00)
+                            {
+                                startCount = -1;
+                            }
+
                             if (startCount == -1)
                             {
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
@@ -5308,7 +5415,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         HideSMStatisticCard();
                         energyTipsView.Visibility = ViewStates.Gone;
 
-                        string defaultMessage = GetLabelByLanguage("emptyDataMsg");
+                        string defaultMessage = Activity.GetString(Resource.String.new_account_view);
 
                         if (isREAccount)
                         {
@@ -5499,9 +5606,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextView txtMessage = mDialog.FindViewById<TextView>(Resource.Id.txtMessage);
                 TextView btnGotIt = mDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
                 txtMessage.MovementMethod = new ScrollingMovementMethod();
-                txtMessage.Text = GetLabelByLanguage("missedReadTitle");
-                txtTitle.Text = GetLabelByLanguage("missedReadMsg");
-                btnGotIt.Text = GetLabelByLanguage("SMOverlayBtnTxt");
+
+                txtMessage.Text = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
+                txtTitle.Text = "Your full usage for this particular day has not been retrieved yet. Check back in a while.";
+                btnGotIt.Text = "Got It!";
 
 
                 foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
@@ -5561,10 +5669,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
                             float valTotal = 0;
-                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            if (MonthData.AmountTotal > 0)
                             {
-                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                                for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                                {
+                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                }
                             }
+
+                            if (!isREAccount && MonthData.DPCIndicator)
+                            {
+                                valTotal = MonthData.AmountTotal < 0? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+
                             if (System.Math.Abs(valTotal) > val)
                             {
                                 val = System.Math.Abs((float)valTotal);
@@ -5579,9 +5696,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            if (!isREAccount && MonthData.DPCIndicator)
                             {
-                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                                float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                if (System.Math.Abs(valTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)valTotal);
+                                }
+                            }
+                            else if (!isREAccount)
+                            {
+                                if (MonthData.AmountTotal > 0 && System.Math.Abs(MonthData.AmountTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+                            }
+                            else
+                            {
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                }
                             }
                         }
                         if (val == 0)
@@ -5599,10 +5735,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
                                 float valTotal = 0;
-                                for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+
+                                if (MonthData.AmountTotal > 0)
                                 {
-                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                                    for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                                    {
+                                        valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                    }
                                 }
+
+                                if (MonthData.DPCIndicator)
+                                {
+                                    valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+
                                 if (System.Math.Abs(valTotal) > val)
                                 {
                                     val = System.Math.Abs((float)valTotal);
@@ -5617,9 +5763,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
-                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                if (MonthData.DPCIndicator)
                                 {
-                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                    if (System.Math.Abs(valTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)valTotal);
+                                    }
+                                }
+                                else
+                                {
+                                    if (MonthData.AmountTotal > 0 && System.Math.Abs(MonthData.AmountTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)MonthData.AmountTotal);
+                                    }
                                 }
                             }
                             if (val == 0)
@@ -5639,7 +5797,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float valTotal = 0;
                                     for (int i = 0; i < IndividualDayData.TariffBlocksList.Count; i++)
                                     {
-                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Usage);
+                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Amount);
                                     }
                                     if (System.Math.Abs(valTotal) > val)
                                     {
@@ -5660,7 +5818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (System.Math.Abs(IndividualDayData.Consumption) > val)
                                     {
-                                        val = System.Math.Abs((float)IndividualDayData.Consumption);
+                                        val = System.Math.Abs((float)IndividualDayData.Amount);
                                     }
                                 }
                             }
@@ -5695,6 +5853,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                             }
+
+                            if (!isREAccount && MonthData.DPCIndicator)
+                            {
+                                valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+
                             if (System.Math.Abs(valTotal) > val)
                             {
                                 val = System.Math.Abs((float)valTotal);
@@ -5709,9 +5873,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            if (!isREAccount && MonthData.DPCIndicator)
                             {
-                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                                float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                if (System.Math.Abs(valTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)valTotal);
+                                }
+                            }
+                            else
+                            {
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                }
                             }
                         }
                         if (val == 0)
@@ -5733,6 +5909,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                                 }
+
+                                if (!isREAccount && MonthData.DPCIndicator)
+                                {
+                                    valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+
                                 if (System.Math.Abs(valTotal) > val)
                                 {
                                     val = System.Math.Abs((float)valTotal);
@@ -5747,9 +5929,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
-                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                if (!isREAccount && MonthData.DPCIndicator)
                                 {
-                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    float valTotal = MonthData.AmountTotal < 0 ? 0 : System.Math.Abs((float)MonthData.AmountTotal);
+
+                                    if (System.Math.Abs(valTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)valTotal);
+                                    }
+                                }
+                                else
+                                {
+                                    if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)MonthData.UsageTotal);
+                                    }
                                 }
                             }
                             if (val == 0)
@@ -5842,19 +6036,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
 
-            try
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                if (this.mPresenter != null)
+                try
                 {
-                    this.mPresenter.OnCheckToCallDashboardTutorial();
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (this.mPresenter != null)
+                    {
+                        this.mPresenter.OnCheckToCallDashboardTutorial();
+                    }
                 }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -5904,7 +6102,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
@@ -6022,8 +6220,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         else
                                         {
-                                            txtDueDate.Text = GetLabelByLanguage("iWillGetBy") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                            reDueDate.Text = GetLabelByLanguage("iWillGetBy") + " " + dateString;
+                                            txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                            reDueDate.Text = "I will get by " + dateString;
                                         }
                                     }
                                     else
@@ -6047,13 +6245,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
-                                                txtNoPayableTitle.Text = GetLabelByLanguage("clearedAllBills");
+                                                txtNoPayableTitle.Text = "I’ve cleared all bills";
                                                 txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                                 txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             }
                                             else
                                             {
-                                                txtNoPayableTitle.Text = GetLabelByLanguage("paidExtra");
+                                                txtNoPayableTitle.Text = "I’ve paid extra";
                                                 txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                                 txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                             }
@@ -6062,10 +6260,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         else
                                         {
-                                            txtNoPayableTitle.Text = GetLabelByLanguage("needToPay");
                                             totalPayableLayout.Visibility = ViewStates.Visible;
                                             noPayableLayout.Visibility = ViewStates.Gone;
-                                            txtDueDate.Text = GetLabelByLanguage("by") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                                            txtDueDate.Text = "by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                                         }
                                     }
                                 }
@@ -6148,7 +6345,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             totalPayableLayout.Visibility = ViewStates.Gone;
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                                            txtNoPayableTitle.Text = GetLabelByLanguage("clearedAllBills");
+                                            txtNoPayableTitle.Text = "I’ve cleared all bills";
                                             txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
@@ -6223,8 +6420,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mDisconnectionSnackbar.Dismiss();
                 }
 
-                mDisconnectionSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+                mDisconnectionSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
                 {
 
                     mDisconnectionSnackbar.Dismiss();
@@ -6250,8 +6447,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mSMRSnackbar.Dismiss();
                 }
 
-                mSMRSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+                mSMRSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
                 {
 
                     mSMRSnackbar.Dismiss();
@@ -6348,10 +6545,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!string.IsNullOrEmpty(accountStatusData.DisconnectionStatus) && accountStatusData.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                 {
                     energyDisconnectionButton.Visibility = ViewStates.Visible;
-                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? GetLabelCommonByLanguage("disconnectionMsg");
-                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? GetLabelByLanguage("missedReadTitle");
-                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? GetLabelByLanguage("disconnectionMsg");
-                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? GetLabelByLanguage("gotIt");
+                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
+                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? "What does this mean?";
+                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? "<strong>What does this mean?</strong><br/><br/>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br/><br/>If you’ve made a payment, please give us some time for this to be reflected.";
+                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? "Got It!";
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                     {
                         txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
@@ -7940,13 +8137,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticBillCurrency.Visibility = ViewStates.Visible;
                         smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
                         smStatisticBillKwh.Visibility = ViewStates.Gone;
-                        smStatisticBillTitle.Text = "My bill amount so far"; //TODO: Need to add fallback
+                        smStatisticBillTitle.Text = "My bill amount so far";
                         smStatisticBillSubTitle.Text = "- -";
                         smStatisticBill.Text = "- -";
-                        smStatisticPredictTitle.Text = "My bill may reach"; //TODO: Need to add fallback
+                        smStatisticPredictTitle.Text = "My bill may reach";
                         smStatisticPredictSubTitle.Text = "- -";
                         smStatisticPredict.Text = "- -";
-                        txtSmStatisticTooltip.Text = GetLabelByLanguage("projectedCostTitle");
+                        txtSmStatisticTooltip.Text = "What are these?";
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
@@ -7984,7 +8181,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (costValue.Type == Constants.PROJECTED_COST_KEY)
                                 {
-                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink; //TODO: Need to add fallback
+                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink;
                                 }
                             }
                         }
@@ -7998,10 +8195,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticBillCurrency.Visibility = ViewStates.Gone;
                         smStatisticBillKwhUnit.Visibility = ViewStates.Visible;
                         smStatisticBillKwh.Visibility = ViewStates.Visible;
-                        smStatisticBillTitle.Text = "My current usage"; //TODO: Need to add fallback
+                        smStatisticBillTitle.Text = "My current usage";
                         smStatisticBillSubTitle.Text = "- -";
                         smStatisticBillKwh.Text = "- -";
-                        smStatisticTrendTitle.Text = "My current usage trend is"; //TODO: Need to add fallback
+                        smStatisticTrendTitle.Text = "My current usage trend is";
                         smStatisticTrendSubTitle.Text = "- -";
                         smStatisticTrend.Text = "- -%";
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
@@ -8105,6 +8302,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnPause()
         {
             base.OnPause();
+            try
+            {
+                if (isSMR)
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         // Lin Siong Note: Set New Account layout param
@@ -8254,11 +8462,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private void SetDayViewMonthText(string str)
         {
             txtDayViewZoomInIndicator.Text = str;
-        }
-
-        public override string GetPageId()
-        {
-            return PAGE_ID;
         }
 
         public void ShowBillDetails(AccountData accountData, List<AccountChargeModel> selectedAccountChargesModelList)
@@ -8963,6 +9166,73 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     MDMSUnavailableCTA = this.Activity.GetString(Resource.String.tooltip_btnLabel);
                 }
+            }
+        }
+
+        private bool IsCheckDataReadyData(UsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
+                {
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (System.Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && System.Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
+                    }
+                }
+            }
+
+            return isHaveData;
+        }
+
+        private bool IsCheckDataReadyData(SMUsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
+                {
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (System.Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && System.Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
+                    }
+                }
+            }
+
+            return isHaveData;
+        }
+
+        public void CheckSMRAccountValidaty()
+        {
+            if (!isSMR)
+            {
+                isSMR = true;
+                StartSSMRDashboardViewShimmer();
+                isChangeVirtualHeightNeed = true;
+                SetVirtualHeightParams(6f);
+                isChangeBackgroundNeeded = true;
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
             }
         }
     }

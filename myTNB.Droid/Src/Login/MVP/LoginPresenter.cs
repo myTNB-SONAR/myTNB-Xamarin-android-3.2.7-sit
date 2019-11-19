@@ -235,6 +235,7 @@ namespace myTNB_Android.Src.Login.MVP
                         SummaryDashBoardAccountEntity.RemoveAll();
                         SelectBillsEntity.RemoveAll();
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
                         UserSessions.RemoveSessionData();
                         NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
                         NewFAQParentManager.DeleteTable();

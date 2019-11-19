@@ -182,11 +182,35 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        // Lin Siong TODO:  To enable once iOS Implementation done
+        /*public static System.Boolean HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingNMSMTutorialShown", false);
+        }
+
+        public static void DoItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingRETutorialShown", false);
+        }
+
+        public static void DoItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingRETutorialShown", true);
+            editor.Apply();
+        }*/
+
         public static System.Boolean HasItemizedBillingTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingTutorialShown", false);
         }
-
         public static void DoItemizedBillingTutorialShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

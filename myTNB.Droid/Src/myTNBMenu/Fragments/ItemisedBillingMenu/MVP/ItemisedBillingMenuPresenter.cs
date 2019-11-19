@@ -306,6 +306,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
         public void OnCheckToCallItemizedTutorial()
         {
+            // Lin Siong TODO: To implement once iOS implement
+            //if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
             if (!UserSessions.HasItemizedBillingTutorialShown(this.mPref))
             {
                 this.mView.OnShowItemizedFragmentTutorialDialog();

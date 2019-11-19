@@ -246,5 +246,28 @@ namespace myTNB_Android.Src.Base
         {
             return currentMasterDataRes;
         }
+
+        public bool IsAccountNumberExist(string accountNumber)
+        {
+            return (CustomerBillingAccount.FindByAccNum(accountNumber) != null);
+        }
+
+        public string GetNotificationAccountName(string accountNumber)
+        {
+            string notificationAccountName = string.Empty;
+            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNumber);
+            if (customerBillingAccount != null)
+            {
+                if (!string.IsNullOrEmpty(customerBillingAccount.AccDesc))
+                {
+                    notificationAccountName = customerBillingAccount.AccDesc;
+                }
+                else
+                {
+                    notificationAccountName = "Customer Account Number " + customerBillingAccount.AccNum;
+                }
+            }
+            return notificationAccountName;
+        }
     }
 }

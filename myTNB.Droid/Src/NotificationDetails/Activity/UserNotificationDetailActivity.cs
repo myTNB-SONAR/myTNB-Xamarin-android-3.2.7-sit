@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Text;
@@ -48,6 +49,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         [BindView(Resource.Id.rootView)]
         ViewGroup rootView;
+
+        [BindView(Resource.Id.notificationMainLayout)]
+        ScrollView notificationMainLayout;
+        
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
@@ -170,6 +175,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
                 TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
+
+                if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
+                {
+                    notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
+                }
+
                 mPresenter.EvaluateDetail(notificationDetails);
                 RenderUI();
             }

@@ -233,6 +233,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isRefreshShown = false;
 
+        private bool isInitiate = false;
+
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -457,6 +459,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+
+                ShowSearchAction(false);
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                SMRPopUpUtils.SetFromUsageFlag(false);
+                SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                {
+                    isBCRMDown = true;
+                }
+                else
+                {
+                    isBCRMDown = false;
+                }
+
+                if (!isBCRMDown)
+                {
+                    OnStartLoadAccount();
+                }
+                else
+                {
+                    IsLoadMoreButtonVisible(false, false);
+
+                    IsMyServiceLoadMoreButtonVisible(false, false);
+
+                    IsRearrangeButtonVisible(false);
+
+                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+                }
             }
             catch (System.Exception e)
             {
@@ -666,6 +696,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnPause();
             this.presenter.OnCancelToken();
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
         }
 
         public void ShowSearchAction(bool isShow)
@@ -760,39 +791,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Hide();
                 ShowBackButton(false);
-                ShowSearchAction(false);
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                SMRPopUpUtils.SetFromUsageFlag(false);
-                SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
-                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                if (this.presenter != null)
                 {
-                    isBCRMDown = true;
+                    this.presenter.OnCheckToCallHomeMenuTutorial();
                 }
-                else
-                {
-                    isBCRMDown = false;
-                }
-
-                if (!isBCRMDown)
-                {
-                    OnStartLoadAccount();
-                }
-                else
-                {
-                    IsLoadMoreButtonVisible(false, false);
-
-                    IsMyServiceLoadMoreButtonVisible(false, false);
-
-                    IsRearrangeButtonVisible(false);
-
-                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
-                }
-
-                SetBottomLayoutBackground(false);
-                this.presenter.InitiateService();
                 this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
+                HomeMenuCustomScrolling(0);
             }
             catch (System.Exception e)
             {
@@ -1153,6 +1158,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         if (isSearchLayoutInRange)
                         {
+                            HomeMenuUtils.SetIsQuery(false);
+                            HomeMenuUtils.SetQueryWord("");
+
                             try
                             {
                                 searchEditText.SetQuery("", false);
@@ -1385,77 +1393,176 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             IsRearrangeButtonVisible(false);
 
-            List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
-            List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
-            List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-            List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
-            List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
-            if (eligibleSMRBillingAccounts.Count > 0)
+            if (!HomeMenuUtils.GetIsLoadedHomeMenu())
             {
-                foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+                List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                if (eligibleSMRBillingAccounts.Count > 0)
                 {
-                    SMRAccount smrAccount = new SMRAccount();
-                    smrAccount.accountNumber = billingAccount.AccNum;
-                    smrAccount.accountName = billingAccount.AccDesc;
-                    smrAccount.accountAddress = billingAccount.AccountStAddress;
-                    smrAccount.accountSelected = false;
-                    eligibleSmrAccountList.Add(smrAccount);
+                    foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        eligibleSmrAccountList.Add(smrAccount);
+                    }
                 }
-            }
 
-            if (currentSMRBillingAccounts.Count > 0)
-            {
-                foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                if (currentSMRBillingAccounts.Count > 0)
                 {
-                    SMRAccount smrAccount = new SMRAccount();
-                    smrAccount.accountNumber = billingAccount.AccNum;
-                    smrAccount.accountName = billingAccount.AccDesc;
-                    smrAccount.accountAddress = billingAccount.AccountStAddress;
-                    smrAccount.accountSelected = false;
-                    currentSmrAccountList.Add(smrAccount);
+                    foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        currentSmrAccountList.Add(smrAccount);
+                    }
                 }
-            }
 
-            if (list.Count > 0)
-            {
-                accountListContainer.Visibility = ViewStates.Visible;
-                accountCard.Visibility = ViewStates.Gone;
-                addActionContainer.Visibility = ViewStates.Visible;
-                accountActionDivider.Visibility = ViewStates.Gone;
-                if (list.Count == 1)
+                if (list.Count > 0)
                 {
-                    SetBottmLayoutParams(21f);
-                }
-                else if (list.Count > 1 && list.Count <= 3)
-                {
-                    SetBottmLayoutParams(13f);
+                    accountListContainer.Visibility = ViewStates.Visible;
+                    accountCard.Visibility = ViewStates.Gone;
+                    addActionContainer.Visibility = ViewStates.Visible;
+                    accountActionDivider.Visibility = ViewStates.Gone;
+                    if (list.Count == 1)
+                    {
+                        SetBottmLayoutParams(21f);
+                    }
+                    else if (list.Count > 1 && list.Count <= 3)
+                    {
+                        SetBottmLayoutParams(13f);
+                    }
+                    else
+                    {
+                        SetBottmLayoutParams(5f);
+                    }
                 }
                 else
                 {
-                    SetBottmLayoutParams(5f);
+                    addActionContainer.Visibility = ViewStates.Gone;
+                    accountListContainer.Visibility = ViewStates.Gone;
+                    accountActionDivider.Visibility = ViewStates.Gone;
+                    accountCard.Visibility = ViewStates.Visible;
+                    SetBottmLayoutParams(21f);
                 }
+
+                UserSessions.SetSMRAccountList(currentSmrAccountList);
+                UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+
+                accountListRefreshContainer.Visibility = ViewStates.Gone;
+                accountListViewContainer.Visibility = ViewStates.Visible;
+                if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
+                }
+
+                searchEditText.SetQuery("", false);
+                OnLoadAccount();
+
+                SetBottomLayoutBackground(false);
+                this.presenter.InitiateService();
             }
             else
             {
-                addActionContainer.Visibility = ViewStates.Gone;
-                accountListContainer.Visibility = ViewStates.Gone;
-                accountActionDivider.Visibility = ViewStates.Gone;
-                accountCard.Visibility = ViewStates.Visible;
-                SetBottmLayoutParams(21f);
+                List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+                List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                if (eligibleSMRBillingAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        eligibleSmrAccountList.Add(smrAccount);
+                    }
+                }
+
+                if (currentSMRBillingAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        currentSmrAccountList.Add(smrAccount);
+                    }
+                }
+
+                if (list.Count > 0)
+                {
+                    accountListContainer.Visibility = ViewStates.Visible;
+                    accountCard.Visibility = ViewStates.Gone;
+                    addActionContainer.Visibility = ViewStates.Visible;
+                    accountActionDivider.Visibility = ViewStates.Gone;
+                    if (list.Count == 1)
+                    {
+                        SetBottmLayoutParams(21f);
+                    }
+                    else if (list.Count > 1 && list.Count <= 3)
+                    {
+                        SetBottmLayoutParams(13f);
+                    }
+                    else
+                    {
+                        SetBottmLayoutParams(5f);
+                    }
+                }
+                else
+                {
+                    addActionContainer.Visibility = ViewStates.Gone;
+                    accountListContainer.Visibility = ViewStates.Gone;
+                    accountActionDivider.Visibility = ViewStates.Gone;
+                    accountCard.Visibility = ViewStates.Visible;
+                    SetBottmLayoutParams(21f);
+                }
+
+                UserSessions.SetSMRAccountList(currentSmrAccountList);
+                UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+
+                accountListRefreshContainer.Visibility = ViewStates.Gone;
+                accountListViewContainer.Visibility = ViewStates.Visible;
+                if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
+                }
+
+                if (HomeMenuUtils.GetIsQuery())
+                {
+                    accountHeaderTitle.Visibility = ViewStates.Gone;
+                    searchEditText.Visibility = ViewStates.Visible;
+                    searchEditText.SetMaxWidth(Integer.MaxValue);
+                    searchActionContainer.Visibility = ViewStates.Gone;
+                    accountHeaderTitle.Visibility = ViewStates.Gone;
+                    addActionContainer.Visibility = ViewStates.Gone;
+                    accountActionDivider.Visibility = ViewStates.Gone;
+                    searchEditText.OnActionViewExpanded();
+                    isInitiate = false;
+                    searchEditText.SetQuery(HomeMenuUtils.GetQueryWord(), false);
+                    searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                    closeImageView.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    this.presenter.RestoreCurrentAccountState();
+                }
+                this.presenter.RestoreCurrentMyServiceState();
+                this.presenter.ReadNewFAQFromCache();
             }
-
-            UserSessions.SetSMRAccountList(currentSmrAccountList);
-            UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
-
-            accountListRefreshContainer.Visibility = ViewStates.Gone;
-            accountListViewContainer.Visibility = ViewStates.Visible;
-            if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
-            {
-                UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
-            }
-
-            searchEditText.SetQuery("", false);
-            OnLoadAccount();
         }
 
         public void UpdateEligibilitySMRAccountList()
@@ -1501,6 +1608,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
+            HomeMenuUtils.ResetAll();
+
             isRefreshShown = false;
 
             IsLoadMoreButtonVisible(false, false);
@@ -1510,6 +1619,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             IsRearrangeButtonVisible(false);
 
             SetBottomLayoutBackground(false);
+
+            ShowSearchAction(false);
 
             List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
             List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
@@ -1581,7 +1692,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             searchEditText.SetQuery("", false);
-            searchEditText.Visibility = ViewStates.Gone;
 
             this.presenter.RefreshAccountSummary();
 
@@ -1698,7 +1808,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 closeImageView.Visibility = ViewStates.Visible;
             }
 
-            this.presenter.LoadQueryAccounts(searchText);
+            if (!isInitiate && HomeMenuUtils.GetIsQuery())
+            {
+                isInitiate = true;
+                this.presenter.RestoreQueryAccounts();
+            }
+            else
+            {
+                this.presenter.LoadQueryAccounts(searchText);
+            }
         }
 
         void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
@@ -1758,7 +1876,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         loadMoreLabel.Text = GetLabelByLanguage("showLess");
                     }
 
-                    IsRearrangeButtonVisible(true);
+                    // Lin Siong TODO: Hide this on 15 Nov Release
+                    // IsRearrangeButtonVisible(true);
+                    IsRearrangeButtonVisible(false);
                 }
                 else
                 {
@@ -1984,7 +2104,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 StopScrolling();
             });
-
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
         }
 
@@ -2082,6 +2202,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void RestartHomeMenu()
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).ShowHomeDashBoard();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckSearchEditAction()
+        {
+            if (searchEditText.Visibility == ViewStates.Visible)
+            {
+                ShowSearchAction(false);
             }
         }
     }

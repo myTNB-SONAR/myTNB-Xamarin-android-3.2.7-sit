@@ -199,6 +199,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddAccountFail(result.response.Message);
                     mView.ShowAddAccountSuccess(result.response);
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
                 }
                 else
                 {

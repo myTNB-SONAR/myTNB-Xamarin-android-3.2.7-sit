@@ -306,11 +306,16 @@ namespace myTNB_Android.Src.Billing.MVP
         protected override void OnResume()
         {
             base.OnResume();
-            NewAppTutorialUtils.ForceCloseNewAppTutorial();
-            if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                OnShowItemizedBillingTutorialDialog();
-            }
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+                {
+                    OnShowItemizedBillingTutorialDialog();
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         protected override void OnPause()

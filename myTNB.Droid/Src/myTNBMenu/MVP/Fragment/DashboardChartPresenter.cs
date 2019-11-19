@@ -3,10 +3,12 @@ using Android.Graphics;
 using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.Billing;
@@ -26,6 +28,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
@@ -153,9 +156,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     else
                     {
                         this.mView.ShowAccountStatus(null);
-                        bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
+                        bool isSMR = await IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                         if (isSMR)
                         {
+                            this.mView.CheckSMRAccountValidaty();
                             await GetSSMRAccountStatus();
                         }
                         else
@@ -167,9 +171,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else
                 {
                     this.mView.ShowAccountStatus(null);
-                    bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
+                    bool isSMR = await IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                     if (isSMR)
                     {
+                        this.mView.CheckSMRAccountValidaty();
                         await GetSSMRAccountStatus();
                     }
                     else
@@ -182,9 +187,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowAccountStatus(null);
                 Utility.LoggingNonFatalError(e);
-                bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
+                bool isSMR = await IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                 if (isSMR)
                 {
+                    this.mView.CheckSMRAccountValidaty();
                     await GetSSMRAccountStatus();
                 }
                 else
@@ -197,9 +203,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowAccountStatus(null);
                 Utility.LoggingNonFatalError(apiException);
-                bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
+                bool isSMR = await IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                 if (isSMR)
                 {
+                    this.mView.CheckSMRAccountValidaty();
                     await GetSSMRAccountStatus();
                 }
                 else
@@ -212,9 +219,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowAccountStatus(null);
                 Utility.LoggingNonFatalError(e);
-                bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
+                bool isSMR = await IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                 if (isSMR)
                 {
+                    this.mView.CheckSMRAccountValidaty();
                     await GetSSMRAccountStatus();
                 }
                 else
@@ -773,7 +781,138 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             }
         }
 
-        public bool IsOwnedSMR(string accountNumber)
+        public async Task<bool> IsOwnedSMR(string accountNumber)
+        {
+            bool IsSMRFeatureDisabled = false;
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            if (currentMasterData.IsSMRFeatureDisabled)
+            {
+                IsSMRFeatureDisabled = true;
+            }
+
+            if (IsSMRFeatureDisabled)
+            {
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+                    foreach (CustomerBillingAccount account in eligibleSMRAccountList)
+                    {
+                        if (account.AccNum == accountNumber)
+                        {
+#if DEBUG || STUB
+                            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
+                            var api = RestService.For<IAccountsSMRStatusApi>(httpClient);
+#else
+                            var api = RestService.For<IAccountsSMRStatusApi>(Constants.SERVER_URL.END_POINT);
+#endif
+
+                            UserInterface currentUsrInf = new UserInterface()
+                            {
+                                eid = UserEntity.GetActive().Email,
+                                sspuid = UserEntity.GetActive().UserID,
+                                did = this.mView.GetDeviceId(),
+                                ft = FirebaseTokenEntity.GetLatest().FBToken,
+                                lang = Constants.DEFAULT_LANG.ToUpper(),
+                                sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                                sec_auth_k2 = "",
+                                ses_param1 = "",
+                                ses_param2 = ""
+                            };
+
+                            List<string> accountList = new List<string>();
+                            accountList.Add(accountNumber);
+
+                            AccountSMRStatusResponse accountSMRResponse = await api.AccountsSMRStatusApi(new AccountsSMRStatusRequest()
+                            {
+                                ContractAccounts = accountList,
+                                UserInterface = currentUsrInf
+                            }, new CancellationTokenSource().Token);
+
+                            List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
+                            if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
+                            {
+                                bool selectedUpdateIsTaggedSMR = false;
+
+                                updateSMRStatus = accountSMRResponse.Response.Data;
+                                foreach (AccountSMRStatus status in updateSMRStatus)
+                                {
+                                    CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(status.ContractAccount);
+                                    if (status.IsTaggedSMR == "true")
+                                    {
+                                        selectedUpdateIsTaggedSMR = true;
+                                    }
+
+                                    if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
+                                    {
+                                        CustomerBillingAccount.UpdateIsSMRTagged(status.ContractAccount, selectedUpdateIsTaggedSMR);
+                                    }
+                                }
+                                List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                                List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                                if (currentSMRBillingAccounts.Count > 0)
+                                {
+                                    foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                                    {
+                                        SMRAccount currentSMRAccount = new SMRAccount();
+                                        currentSMRAccount.accountNumber = billingAccount.AccNum;
+                                        currentSMRAccount.accountName = billingAccount.AccDesc;
+                                        currentSMRAccount.accountAddress = billingAccount.AccountStAddress;
+                                        currentSMRAccount.accountSelected = false;
+                                        currentSmrAccountList.Add(currentSMRAccount);
+                                    }
+                                }
+                                UserSessions.SetSMRAccountList(currentSmrAccountList);
+
+                                List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                                List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+                                if (eligibleSMRBillingAccounts.Count > 0)
+                                {
+                                    foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                                    {
+                                        SMRAccount currentSMRAccount = new SMRAccount();
+                                        currentSMRAccount.accountNumber = billingAccount.AccNum;
+                                        currentSMRAccount.accountName = billingAccount.AccDesc;
+                                        currentSMRAccount.accountAddress = billingAccount.AccountStAddress;
+                                        currentSMRAccount.accountSelected = false;
+                                        eligibleSmrAccountList.Add(currentSMRAccount);
+                                    }
+                                }
+                                UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+                                UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
+
+                                if (selectedUpdateIsTaggedSMR)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (System.OperationCanceledException cancelledException)
+                {
+                    Utility.LoggingNonFatalError(cancelledException);
+                }
+                catch (ApiException apiException)
+                {
+                    Utility.LoggingNonFatalError(apiException);
+                }
+                catch (Exception unknownException)
+                {
+                    Utility.LoggingNonFatalError(unknownException);
+                }
+            }
+            return false;
+        }
+
+        public bool IsOwnedSMRLocal(string accountNumber)
         {
             try
             {

@@ -1642,12 +1642,23 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (this.mFragment is HomeMenuFragment)
                 {
                     ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                    ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
                     UserSessions.DoHomeTutorialShown(this.mPref);
                 }
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                     UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+
+                    // Lin Siong TODO: To implement once iOS had implemented
+                    /*if (list.Count == 2)
+                    {
+                        UserSessions.DoItemizedBillingRETutorialShown(this.mPref);
+                    }
+                    else
+                    {
+                        UserSessions.DoItemizedBillingNMSMTutorialShown(this.mPref);
+                    }*/
                 }
                 else if (this.mFragment is DashboardChartFragment)
                 {

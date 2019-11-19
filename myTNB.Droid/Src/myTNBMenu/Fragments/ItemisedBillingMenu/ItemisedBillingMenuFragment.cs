@@ -330,7 +330,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             try
             {
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
             }
             catch (System.Exception e)
@@ -747,23 +747,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnResume()
         {
             base.OnResume();
-            try
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                if (this.mPresenter != null && this.mPresenter.IsTutorialShowNeeded())
+                try
                 {
-                    this.mPresenter.OnCheckToCallItemizedTutorial();
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (this.mPresenter != null && this.mPresenter.IsTutorialShowNeeded())
+                    {
+                        this.mPresenter.OnCheckToCallItemizedTutorial();
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public override void OnPause()
         {
             base.OnPause();
+            try
+            {
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)

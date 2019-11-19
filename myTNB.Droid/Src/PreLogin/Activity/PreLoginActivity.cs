@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
             try
             {
-                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (Exception e)
             {

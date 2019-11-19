@@ -19,6 +19,8 @@ using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Notifications.MVP;
 using static Android.Widget.CompoundButton;
+using myTNB_Android.Src.Base;
+using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
@@ -128,7 +130,8 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 viewHolder.txtNotificationTitle.Text = notificationData.Title;
 
-                viewHolder.txtNotificationContent.Text = notificationData.Message;
+                string notificationAccountName = MyTNBAccountManagement.GetInstance().GetNotificationAccountName(notificationData.AccountNum);
+                viewHolder.txtNotificationContent.Text = Regex.Replace(notificationData.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
 
                 if (notificationData.ShowSelectButton)
                 {

@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             else
             {
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 noEligibleAccountContainer.Visibility = ViewStates.Visible;
                 eligibleAccountListContainer.Visibility = ViewStates.Gone;
             }

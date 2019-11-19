@@ -221,7 +221,7 @@ namespace myTNB_Android.Src.Login.Activity
 
             try
             {
-                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (Exception e)
             {
