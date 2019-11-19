@@ -1,7 +1,9 @@
-Thanks to your feedback, we’ve got a refreshing new look, a whole new service with greater control and understanding. In this update, you’ll find:
- 
-1. A redesigned Homepage to view all your accounts and quickly access TNB services
-2. An enhanced Usage view to understand tariffs
-3. A refreshed view of your Bills with a simplified breakdown of charges.
- 
-We value your feedback! If you want us to know something, tap “Submit Feedback” via the Homepage.
+Sprint 2 SIT Build
+
+[Bug] Feedback page displayed as blank. Not able to see “Give us feedback” and “View Submitted Feedback”.
+[Bug] Bar graph is not visible when clicks on show tariff option though amount/kWh is visible to user
+[Bug] What’s new showing empty content
+[Enhancement] Home screen - refresh Quick actions & Need Help only at App Launch, not every time user comes back to home
+[Enhancement] For DPC month height should be independent irrespective of RM & kWh
+[Bug] 3249 iOS: Home Screen Redesign - Misalignment in Spacing (in iOS 12)
+[Bug] 3345 iOS: Home Screen - Glitch on Quick Actions
