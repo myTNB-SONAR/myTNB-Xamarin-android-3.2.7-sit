@@ -9,6 +9,7 @@ using Foundation;
 using System.Collections.Generic;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Text.RegularExpressions;
+using myTNB.DataManager;
 
 namespace myTNB
 {
@@ -29,6 +30,7 @@ namespace myTNB
 
         private DeleteNotificationResponseModel _deleteNotificationResponse;
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
+        private bool _isCTAEnabled = false;
         public UserNotificationDataModel NotificationInfo { set; private get; } = new UserNotificationDataModel();
 
         public override void ViewDidLoad()
@@ -47,6 +49,24 @@ namespace myTNB
             NavigationController.SetNavigationBarHidden(true, true);
             int unreadCount = PushNotificationHelper.GetNotificationCount();
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount == 0 ? 0 : unreadCount - 1;
+            if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    ActivityIndicator.Show();
+                    SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(new List<string> { NotificationInfo.AccountNum ?? string.Empty });
+                    if (response != null && response.d != null && response.d.IsSuccess && response.d.data != null && response.d.data.Count == 1)
+                    {
+                        _isCTAEnabled = !response.d.data[0].isTaggedSMR;
+                        if (_btnPrimary != null)
+                        {
+                            _btnPrimary.Enabled = _isCTAEnabled;
+                            UpdateCTA(ref _btnPrimary, true, _isCTAEnabled);
+                        }
+                    }
+                    ActivityIndicator.Hide();
+                });
+            }
         }
 
         #region Navigation
@@ -427,7 +447,8 @@ namespace myTNB
             }
             else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
             {
-                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.Enabled = _isCTAEnabled;
+                UpdateCTA(ref _btnPrimary, true, _isCTAEnabled);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ReenableSSMR), UIControlState.Normal);
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
