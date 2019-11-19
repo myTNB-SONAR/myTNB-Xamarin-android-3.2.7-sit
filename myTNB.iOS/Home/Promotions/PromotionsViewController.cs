@@ -103,7 +103,8 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                bool isValidTimeStamp = false;
+                bool needsUpdate = false;
+
                 string promotionTS = iService.GetPromotionsTimestampItem();
                 PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
                 if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
@@ -112,29 +113,29 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCorePromotionTimeStamp");
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                         sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
+                        needsUpdate = true;
                     }
                     else
                     {
                         if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
                         {
-                            isValidTimeStamp = false;
+                            needsUpdate = false;
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                             sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
+                            needsUpdate = true;
                         }
                     }
                 }
-                Debug.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
-                if (!isValidTimeStamp)
+
+                if (needsUpdate)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);

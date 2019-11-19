@@ -48,10 +48,18 @@ namespace myTNB.Home.Promotions
                         {
                             cell.imgBanner.Image = UIImage.LoadFromData(data);
                         }
+                        else
+                        {
+                            cell.imgBanner.Image = UIImage.FromBundle(PromotionConstants.Img_DefaultImage);
+                        }
                         _activityIndicator.Hide();
                     });
                 });
                 dataTask.Resume();
+            }
+            else
+            {
+                cell.imgBanner.Image = UIImage.FromBundle(PromotionConstants.Img_DefaultImage);
             }
 
             cell.lblTitle.Text = promotion.Title;

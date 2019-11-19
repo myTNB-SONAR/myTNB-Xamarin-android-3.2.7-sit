@@ -385,7 +385,9 @@
     "beenPaidExtra": "Saya telah dibayar lebih",
     "tutorialSMRTitle": "Your reading status at a glance.",
     "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
-    "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill."
+    "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
+    "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
+    "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you."
   },
   "Bills": {
     "title": "Bil",
@@ -402,11 +404,13 @@
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
     "tutorialBillTitle": "Ringkasan keseluruhan bil anda",
+    "tutorialAdviceTitle": "Your advice overview.",
     "tutorialPayTitle": "Bayar cara mudah.",
     "tutorialViewDetailsTitle": "Fahami bil anda.",
+    "tutorialHistoryNormalTitle": "Keep track of payments.",
     "tutorialHistoryTitle": "Pantau rekod bil dan pembayaran anda.",
-    "tutorialBillREAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
-    "tutorialBillNormalAcctDesc": "Tekan \"...\" untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
+    "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tekan “ #dropdown# ” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
     "tutorialViewDetailsDesc": "\"Lihat Butiran\" untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
@@ -807,7 +811,11 @@
     "backToHome": "Kembali ke Laman Utama"
   },
   "Promotions": {
-    "title": "Promosi",
-    "noPromotions": "Tiada promosi buat masa ini.  Cuba semak kemudian!"
+    "title": "Terbaru",
+    "noPromotions": "Tiada promosi buat masa ini. Cuba semak kemudian!"
+  },
+  "RearrangeAccount": {
+    "title": "Rearrange Accounts",
+    "btnTitle": "Save Changes"
   }
 }

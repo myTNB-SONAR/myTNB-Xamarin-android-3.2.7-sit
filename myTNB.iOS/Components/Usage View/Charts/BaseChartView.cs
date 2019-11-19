@@ -15,7 +15,7 @@ namespace myTNB
         protected UILabel _lblDateRange;
         protected UISegmentedControl _toggleBar;
 
-        protected string Format_Value = "{0} {1}";
+        protected string Format_Value = "{0:n0} {1}";
         protected nfloat ShimmerHeight;
 
         public virtual void ToggleTariffView(bool isTariffView) { }
@@ -134,6 +134,34 @@ namespace myTNB
         protected nfloat GetYLocationFromFrameScreenSize(CGRect frame, nfloat yValue)
         {
             return ScaleUtility.GetYLocationFromFrameScreenSize(frame, yValue);
+        }
+
+        protected bool IsAmountState
+        {
+            get
+            {
+                return ConsumptionState == RMkWhEnum.RM;
+            }
+        }
+
+        protected nfloat GetTotalTariff(List<TariffItemModel> tariffList)
+        {
+            if (tariffList == null || tariffList.Count < 1)
+            {
+                return 0;
+            }
+            return (nfloat)tariffList.Sum(x => IsAmountState ? x.Amount : x.Usage);
+        }
+
+        protected int GetTariffWithValueCount(List<TariffItemModel> tariffList)
+        {
+            int tariffBlkCount = 0;
+            if (tariffList == null || tariffList.Count < 1)
+            {
+                return tariffBlkCount;
+            }
+            tariffBlkCount = tariffList.FindAll(x => IsAmountState ? x.Amount > 0 : x.Usage > 0).Count;
+            return tariffBlkCount;
         }
     }
 }

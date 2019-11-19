@@ -44,8 +44,10 @@
         public static string I18N_ViewBill = "viewBill";
         public static string I18N_All = "all";
         public static string I18N_TutorialBillTitle = "tutorialBillTitle";
+        public static string I18N_TutorialAdviceTitle = "tutorialAdviceTitle";
         public static string I18N_TutorialPayTitle = "tutorialPayTitle";
         public static string I18N_TutorialViewDetailsTitle = "tutorialViewDetailsTitle";
+        public static string I18N_TutorialHistoryNormalTitle = "tutorialHistoryNormalTitle";
         public static string I18N_TutorialHistoryTitle = "tutorialHistoryTitle";
         public static string I18N_TutorialBillREAcctDesc = "tutorialBillREAcctDesc";
         public static string I18N_TutorialBillNormalAcctDesc = "tutorialBillNormalAcctDesc";
@@ -99,5 +101,8 @@
         //Preference Key
         public static string Pref_BillTutorialOverlay = "BillTutorialOverlayV2.0.0";
         public static string Pref_BillDetailsTutorialOverlay = "BillDetailsTutorialOverlayV2.0.0";
+
+        //Regex Constants
+        public static string REGEX_Dropdown = "#dropdown#";
     }
 }

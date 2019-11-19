@@ -163,17 +163,17 @@ namespace myTNB
         private void ShowPromotionsModal()
         {
             PromotionsEntity wsManager = new PromotionsEntity();
-            var items = wsManager.GetAllItemsV2();
+            List<PromotionsModelV2> items = wsManager.GetAllItemsV2();
 
             if (items?.Count > 0)
             {
                 CheckResetPromoShown(items);
-                var filtered = items.FindAll(item => ShouldDisplayAppLaunch(item));
+                List<PromotionsModelV2> filtered = items.FindAll(item => ShouldDisplayAppLaunch(item));
 
                 if (filtered?.Count > 0)
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName(TabbarConstants.Storyboard_Promotion, null);
-                    var viewController =
+                    PromotionsModalViewController viewController =
                         storyBoard.InstantiateViewController(TabbarConstants.Controller_Promotion) as PromotionsModalViewController;
                     if (viewController != null)
                     {
@@ -201,17 +201,17 @@ namespace myTNB
         /// <param name="promotions">Promotions.</param>
         private void CheckResetPromoShown(List<PromotionsModelV2> promotions)
         {
-            foreach (var promo in promotions)
+            foreach (PromotionsModelV2 promo in promotions)
             {
-                var shownDate = GetShownDate(promo);
+                DateTime shownDate = GetShownDate(promo);
                 if (shownDate != default(DateTime))
                 {
-                    var endDate = shownDate.AddDays(TNBGlobal.PromoOverlayDisplayIntervalDays);
-                    var now = DateTime.Now.Date;
+                    DateTime endDate = shownDate.AddDays(TNBGlobal.PromoOverlayDisplayIntervalDays);
+                    DateTime now = DateTime.Now.Date;
                     if (now >= endDate)
                     {
                         promo.PromoShownDate = string.Empty;
-                        var entity = promo.ToEntity();
+                        PromotionsEntity entity = promo.ToEntity();
                         PromotionsEntity.UpdateItem(entity);
                     }
                 }
@@ -239,11 +239,11 @@ namespace myTNB
         {
             bool res = true;
 
-            var shownDate = GetShownDate(promo);
+            DateTime shownDate = GetShownDate(promo);
             if (shownDate != default(DateTime))
             {
-                var endDate = shownDate.AddDays(TNBGlobal.PromoOverlayDisplayIntervalDays);
-                var now = DateTime.Now.Date;
+                DateTime endDate = shownDate.AddDays(TNBGlobal.PromoOverlayDisplayIntervalDays);
+                DateTime now = DateTime.Now.Date;
                 if (now >= shownDate && now < endDate)
                 {
                     res = false;
@@ -261,10 +261,10 @@ namespace myTNB
         {
             if (!string.IsNullOrEmpty(promo.ID))
             {
-                var entity = PromotionsEntity.GetItem(promo.ID);
+                PromotionsEntity entity = PromotionsEntity.GetItem(promo.ID);
                 if (entity != null)
                 {
-                    var shownStr = entity.PromoShownDate;
+                    string shownStr = entity.PromoShownDate;
                     if (!string.IsNullOrEmpty(shownStr))
                     {
                         return DateHelper.GetDateWithoutSeparator(shownStr);
@@ -281,9 +281,9 @@ namespace myTNB
         /// <param name="promo">Promo.</param>
         private bool IsPromoWithinCampaignPeriod(PromotionsModelV2 promo)
         {
-            var res = false;
-            var now = DateTime.Today.Date;
-            var startDate = DateHelper.GetDateWithoutSeparator(promo.PromoStartDate);
+            bool res = false;
+            DateTime now = DateTime.Today.Date;
+            DateTime startDate = DateHelper.GetDateWithoutSeparator(promo.PromoStartDate);
             DateTime endDate;
             if (!string.IsNullOrEmpty(promo.PromoEndDate))
             {
@@ -310,11 +310,11 @@ namespace myTNB
         public static List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
         {
             List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
-            foreach (var promo in promotions)
+            foreach (PromotionsModelV2 promo in promotions)
             {
                 if (string.IsNullOrEmpty(promo.PromoEndDate))
                 {
-                    var nowDate = DateTime.Today.Date;
+                    DateTime nowDate = DateTime.Today.Date;
                     DateTime endDate = nowDate.AddDays(90);
                     promo.PromoEndDate = endDate.ToString(TabbarConstants.Format_Date);
                 }
@@ -363,7 +363,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                bool isValidTimeStamp = false;
+                bool needsUpdate = false;
                 string promotionTS = iService.GetPromotionsTimestampItem();
                 PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
                 if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
@@ -371,30 +371,30 @@ namespace myTNB
                     && !string.IsNullOrEmpty(promotionTimeStamp.Data[0].Timestamp)
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(TabbarConstants.Sitecore_Timestamp);
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, TabbarConstants.Sitecore_Timestamp);
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                         sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
+                        needsUpdate = true;
                     }
                     else
                     {
                         if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
                         {
-                            isValidTimeStamp = false;
+                            needsUpdate = false;
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, TabbarConstants.Sitecore_Timestamp);
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                             sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
+                            needsUpdate = true;
                         }
                     }
                 }
 
-                if (isValidTimeStamp)
+                if (needsUpdate)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
@@ -454,7 +454,7 @@ namespace myTNB
         {
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
             {
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetBool(true, "Tab Id - " + key);
             }
         }
@@ -464,7 +464,7 @@ namespace myTNB
             bool res = false;
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
             {
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 res = sharedPreference.BoolForKey("Tab Id - " + key);
             }
             return !res;

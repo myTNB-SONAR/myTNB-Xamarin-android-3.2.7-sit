@@ -6,5 +6,7 @@
 
         public static string I18N_Title = "title";
         public static string I18N_NoPromotions = "noPromotions";
+
+        public static string Img_DefaultImage = "Promotion-Default";
     }
 }

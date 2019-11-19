@@ -569,7 +569,7 @@ namespace myTNB.PushNotification
                                     UpdateTitleRightIconImage();
                                     UpdateNotificationDisplay(true);
                                     NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
-                                    DisplayToast(GetI18NValue(PushNotificationConstants.I18N_NotificationsDeleted));
+                                    DisplayToast(GetI18NValue(isMultiple ? PushNotificationConstants.I18N_NotificationsDeleted : PushNotificationConstants.I18N_NotificationDeleted));
                                     OnDismiss();
                                 }
                                 else

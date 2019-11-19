@@ -30,6 +30,7 @@ namespace myTNB
             Camera,
             Gallery
         }
+        public CustomUIViewController() { }
 
         public CustomUIViewController(IntPtr handle) : base(handle)
         {

@@ -148,22 +148,22 @@ namespace myTNB
                     PresentViewController(navController, true, null);
                 }
             }
+            else
+            {
+                DisplayServiceError(_submittedFeedback?.d?.ErrorMessage ?? string.Empty);
+            }
         }
 
         internal void DisplayFeedbackEntry(string id)
         {
-            if (_submittedFeedback != null && _submittedFeedback?.d != null
-                && _submittedFeedback?.d?.data != null && _submittedFeedback?.d?.didSucceed == true)
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                FeedbackEntryViewController feedbackEntryViewController =
-                 storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
-                feedbackEntryViewController.FeedbackID = id;
-                feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
-                UINavigationController navController = new UINavigationController(feedbackEntryViewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
-            }
+            UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+            FeedbackEntryViewController feedbackEntryViewController =
+             storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
+            feedbackEntryViewController.FeedbackID = id;
+            feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
+            UINavigationController navController = new UINavigationController(feedbackEntryViewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(navController, true, null);
         }
 
         private Task GetSubmittedFeedbackList()

@@ -144,5 +144,7 @@
                 return LanguageUtility.GetCommonI18NValue("unitEmission");
             }
         }
+
+        public static string Key_PromotionTimestamp = "SiteCorePromotionTimeStamp";
     }
 }

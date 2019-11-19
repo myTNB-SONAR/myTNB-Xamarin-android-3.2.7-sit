@@ -9,7 +9,7 @@ namespace myTNB.SmartMeterView
 {
     public class BaseSmartMeterView
     {
-        protected string Format_Value = "{0} {1}";
+        protected string Format_Value = "{0:n0} {1}";
 
         public virtual void CreateSegment(ref CustomUIView view) { }
         public CGRect ReferenceWidget { set; protected get; }
@@ -75,6 +75,14 @@ namespace myTNB.SmartMeterView
         public nfloat GetXLocationToCenterObject(nfloat width, UIView view = null)
         {
             return ScaleUtility.GetXLocationToCenterObject(width, view);
+        }
+
+        protected bool IsAmountState
+        {
+            get
+            {
+                return ConsumptionState == RMkWhEnum.RM;
+            }
         }
     }
 }

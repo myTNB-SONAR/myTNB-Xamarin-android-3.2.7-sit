@@ -33,7 +33,7 @@ namespace myTNB.SmartMeterView
             nfloat barMargin = GetWidthByScreenSize(7);
 
             List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
-            List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
+            List<string> valueList = IsAmountState ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
@@ -96,7 +96,8 @@ namespace myTNB.SmartMeterView
                 }
                 else
                 {
-                    double.TryParse(item.UsageTotal, out double value);
+                    string valReference = IsAmountState ? item.AmountTotal : item.UsageTotal;
+                    double.TryParse(valReference, out double value);
                     nfloat barHeight = (nfloat)(divisor * value);
                     nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
@@ -134,9 +135,10 @@ namespace myTNB.SmartMeterView
                         AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
                     }
                     nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-
+                    double usageTotal;
+                    double.TryParse(item.UsageTotal, out usageTotal);
                     string displayText = ConsumptionState == RMkWhEnum.RM ? item.AmountTotal.FormatAmountString(item.Currency) :
-                        string.Format(Format_Value, item.UsageTotal, item.UsageUnit);
+                        string.Format(Format_Value, usageTotal, item.UsageUnit);
 
                     UILabel lblConsumption = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                         , GetWidthByScreenSize(100), lblHeight))

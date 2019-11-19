@@ -67,7 +67,7 @@ namespace myTNB.SmartMeterView
             nfloat amountBarMargin = GetHeightByScreenSize(4);
 
             _usageData = AccountUsageSmartCache.FlatDays;
-            List<string> valueList = _usageData.Select(x => x.Consumption).ToList();
+            List<string> valueList = IsAmountState ? _usageData.Select(x => x.Amount).ToList() : _usageData.Select(x => x.Consumption).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
             CGPoint lastSegment = new CGPoint();
@@ -97,7 +97,8 @@ namespace myTNB.SmartMeterView
                 _segmentScrollView.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                double.TryParse(item.Consumption, out double value);
+                string valReference = IsAmountState ? item.Amount : item.Consumption;
+                double.TryParse(valReference, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = GetHeightByScreenSize(34) + maxBarHeight - barHeight;
 
@@ -121,7 +122,7 @@ namespace myTNB.SmartMeterView
                     AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, isSelected, viewCover.Frame.Size, false);
                 }
                 segment.AddSubview(viewBar);
-
+                double.TryParse(item.Consumption, out double consumption);
                 string displayText = ConsumptionState == RMkWhEnum.RM ? item.Amount.FormatAmountString(TNBGlobal.UNIT_CURRENCY) :
                     string.Format(Format_Value, item.Consumption, Constants.UnitEnergy);
                 nfloat consumptionYLoc = yLoc - amountBarMargin - lblHeight;
