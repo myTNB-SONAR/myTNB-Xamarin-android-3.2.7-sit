@@ -270,8 +270,9 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(BillConstants.I18N_TutorialBillTitle)
+                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialAdviceTitle) : GetI18NValue(BillConstants.I18N_TutorialBillTitle)
             };
+
             string desc;
             if (IsREAccount)
             {
@@ -281,11 +282,25 @@ namespace myTNB
             {
                 desc = GetI18NValue(BillConstants.I18N_TutorialBillNormalAcctDesc);
             }
+
+            string dropdownKey = BillConstants.REGEX_Dropdown;
+            int startIndex = desc.IndexOf(dropdownKey, StringComparison.InvariantCulture);
+            int endIndex = startIndex + dropdownKey.Length;
+            string preText = desc.Substring(0, startIndex - 1);
+            string postText = desc.Substring(endIndex + 1);
+
+            NSAttributedString preAttibutedString = new NSAttributedString(
+                   preText
+                   , font: TNBFont.MuseoSans_14_300
+                   , foregroundColor: UIColor.White
+                   , strokeWidth: 0
+               );
+
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(postText
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
-            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
-            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            NSMutableAttributedString postAttibutedString = new NSMutableAttributedString(htmlBody);
+            postAttibutedString.AddAttributes(new UIStringAttributes
             {
                 ForegroundColor = UIColor.White,
                 ParagraphStyle = new NSMutableParagraphStyle
@@ -300,9 +315,22 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
                 ScrollEnabled = false,
-                AttributedText = mutableHTMLBody,
+                AttributedText = preAttibutedString,
                 UserInteractionEnabled = false
             };
+
+            var imgWidth = GetScaledWidth(16F);
+            NSTextAttachment arrowDown = new NSTextAttachment
+            {
+                Bounds = new CGRect(0, -GetScaledHeight(4F), imgWidth, imgWidth),
+                Image = UIImage.FromBundle(Constants.IMG_Dropdown)
+            };
+            var descAttributed = description.AttributedText;
+            NSMutableAttributedString newText = new NSMutableAttributedString(descAttributed);
+            newText.Append(NSAttributedString.CreateFrom(arrowDown));
+            newText.Append(postAttibutedString);
+            description.AttributedText = newText;
+
             CGSize cGSize = description.SizeThatFits(new CGSize(textWidth, GetScaledHeight(100F)));
             ViewHelper.AdjustFrameSetHeight(description, cGSize.Height);
 
@@ -528,7 +556,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(BillConstants.I18N_TutorialHistoryTitle)
+                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialHistoryNormalTitle) : GetI18NValue(BillConstants.I18N_TutorialHistoryTitle)
             };
             string desc;
             if (IsREAccount)

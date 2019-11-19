@@ -16,7 +16,6 @@ using myTNB.Home.Components;
 using Newtonsoft.Json;
 using myTNB.DataManager;
 using static myTNB.HomeTutorialOverlay;
-using System.Timers;
 
 namespace myTNB
 {
@@ -44,7 +43,6 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
-        private Timer tutorialOverlayTimer;
 
         public override void ViewDidLoad()
         {
@@ -58,11 +56,17 @@ namespace myTNB
             base.ViewDidLoad();
             AddFooterBG();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0 && accNum != null && !string.IsNullOrEmpty(accNum) && !string.IsNullOrWhiteSpace(accNum))
+            {
+                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+            }
             DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d;
             NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver(UIApplication.WillChangeStatusBarFrameNotification, OnChangeStatusBarFrame);
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();
             SetActionsDictionary();
@@ -131,6 +135,8 @@ namespace myTNB
             UpdateGreeting(GetGreeting());
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
+                DataManager.DataManager.SharedInstance.ServicesList = new List<ServiceItemModel>();
+                DataManager.DataManager.SharedInstance.HelpList = new List<HelpModel>();
                 if (_accountListViewController != null)
                 {
                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -146,7 +152,6 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            CheckTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -170,7 +175,7 @@ namespace myTNB
         }
 
         #region Tutorial Overlay Methods
-        private void CheckTutorialOverlay()
+        public void CheckTutorialOverlay()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
@@ -178,20 +183,8 @@ namespace myTNB
             if (tutorialOverlayHasShown)
                 return;
 
-            tutorialOverlayTimer = new Timer
-            {
-                Interval = 500F,
-                AutoReset = true,
-                Enabled = true
-            };
-            tutorialOverlayTimer.Elapsed += TimerElapsed;
-        }
-
-        private void TimerElapsed(object sender, ElapsedEventArgs e)
-        {
             if (!_accountListIsShimmering && !_servicesIsShimmering && !_helpIsShimmering)
             {
-                tutorialOverlayTimer.Enabled = false;
                 InvokeOnMainThread(() =>
                 {
                     var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
@@ -209,15 +202,14 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
+            if (_tutorialContainer != null)
+                return;
+
             ScrollTableToTheTop();
             ResetTableView();
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
-            if (_tutorialContainer != null)
-            {
-                _tutorialContainer.RemoveFromSuperview();
-            }
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear
@@ -247,10 +239,18 @@ namespace myTNB
                 ScrollTableToTheBottom = ScrollTableToTheBottom,
                 GetI18NValue = GetI18NValue
             };
-            _tutorialContainer.AddSubview(tutorialView.GetView());
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is DashboardHomeViewController)
+                {
+                    _tutorialContainer.AddSubview(tutorialView.GetView());
 
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+                }
+            }
         }
 
         private void HideTutorialOverlay()
@@ -306,7 +306,6 @@ namespace myTNB
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
         }
-        #endregion
 
         private void OnEnterForeground(NSNotification notification)
         {
@@ -323,6 +322,7 @@ namespace myTNB
                         {
                             if (topVc is DashboardHomeViewController)
                             {
+                                OnChangeStatusBarFrame(null);
                                 if (_accountListViewController != null)
                                 {
                                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -344,31 +344,73 @@ namespace myTNB
             });
         }
 
+        private void OnChangeStatusBarFrame(NSNotification notification)
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+                return;
+
+            Debug.WriteLine("OnChangeStatusBarFrame");
+            nfloat yPos = DeviceHelper.GetStatusBarHeight();
+            nfloat addtlHeight = DeviceHelper.GetStatusBarHeight();
+            if (DeviceHelper.GetStatusBarHeight() > 20)
+            {
+                yPos = 0;
+            }
+            else
+            {
+                addtlHeight += DeviceHelper.GetStatusBarHeight();
+            }
+
+            ViewHelper.AdjustFrameSetY(_homeTableView, yPos);
+            ViewHelper.AdjustFrameSetHeight(_homeTableView, ViewHeight + addtlHeight);
+            UpdateFooterBG();
+        }
+        #endregion
         private void OnLoadHomeData()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 if (NetworkUtility.isReachable)
                 {
-                    _services = new ServicesResponseModel();
-                    _helpList = new List<HelpModel>();
-                    OnGetServices();
-                    OnUpdateNotification();
-                    InvokeOnMainThread(() =>
+                    if (DataManager.DataManager.SharedInstance.ServicesList == null ||
+                        DataManager.DataManager.SharedInstance.ServicesList.Count == 0)
                     {
-                        _helpIsShimmering = true;
-                        OnUpdateTable();
-                        OnGetHelpInfo().ContinueWith(task =>
+                        _services = new ServicesResponseModel();
+                        OnGetServices();
+                    }
+                    else
+                    {
+                        _servicesIsShimmering = false;
+                        CheckTutorialOverlay();
+                    }
+
+                    if (DataManager.DataManager.SharedInstance.HelpList == null ||
+                        DataManager.DataManager.SharedInstance.HelpList.Count == 0)
+                    {
+                        _helpList = new List<HelpModel>();
+                        InvokeOnMainThread(() =>
                         {
-                            InvokeOnMainThread(() =>
+                            _helpIsShimmering = true;
+                            OnUpdateTable();
+                            OnGetHelpInfo().ContinueWith(task =>
                             {
-                                _helpList = new HelpEntity().GetAllItems();
-                                DataManager.DataManager.SharedInstance.HelpList = _helpList;
-                                _helpIsShimmering = false;
-                                OnUpdateTable();
+                                InvokeOnMainThread(() =>
+                                {
+                                    _helpList = new HelpEntity().GetAllItems();
+                                    DataManager.DataManager.SharedInstance.HelpList = _helpList;
+                                    _helpIsShimmering = false;
+                                    OnUpdateTable();
+                                    CheckTutorialOverlay();
+                                });
                             });
                         });
-                    });
+                    }
+                    else
+                    {
+                        _helpIsShimmering = false;
+                        CheckTutorialOverlay();
+                    }
+                    OnUpdateNotification();
                 }
                 else
                 {
@@ -392,8 +434,15 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight()
-                , ViewWidth, ViewHeight))
+            nfloat yPos = DeviceHelper.GetStatusBarHeight();
+            nfloat addtlHeight = 0;
+            if (DeviceHelper.GetStatusBarHeight() > 20 && !DeviceHelper.IsIphoneXUpResolution())
+            {
+                yPos = 0;
+                addtlHeight = DeviceHelper.GetStatusBarHeight();
+            }
+            _homeTableView = new UITableView(new CGRect(0, yPos
+                , ViewWidth, ViewHeight + addtlHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
@@ -419,6 +468,14 @@ namespace myTNB
             viewController.isDashboardFlow = true;
             viewController._needsUpdate = true;
             UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(navController, true, null);
+        }
+
+        public void OnRearrangeAccountAction()
+        {
+            RearrangeAccountViewController rearrangeAccountView = new RearrangeAccountViewController();
+            UINavigationController navController = new UINavigationController(rearrangeAccountView);
             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
@@ -468,90 +525,115 @@ namespace myTNB
                 OnUpdateTable();
                 bool hasExistingSSMR = false;
                 InvokeInBackground(async () =>
-               {
-                   SSMRAccounts.SetFilteredEligibleAccounts();
-                   List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
-                   if (contractAccounts != null && contractAccounts.Count > 0)
-                   {
-                       SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(contractAccounts);
-                       InvokeOnMainThread(() =>
-                       {
-                           if (response != null &&
-                               response.d != null &&
-                               response.d.IsSuccess &&
-                               response.d.data != null &&
-                               response.d.data.Count > 0)
-                           {
-                               List<SMRAccountStatusModel> smrList = new List<SMRAccountStatusModel>(response.d.data);
-                               if (smrList != null && smrList.Count > 0)
-                               {
-                                   foreach (var item in smrList)
-                                   {
-                                       DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(item.ContractAccount, item.IsTaggedSMR);
-                                       if (item.isTaggedSMR)
-                                       {
-                                           hasExistingSSMR = true;
-                                       }
-                                   }
-                               }
-                           }
-                       });
-                   }
-
-                   List<Task> taskList = new List<Task>();
-                   try
-                   {
-                       taskList.Add(GetServices());
-                       if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
-                       {
-                           taskList.Add(BatchCallForSSMRApplyAllowed());
-                       }
-                       Task.WaitAll(taskList.ToArray());
-                   }
-                   catch (Exception e)
-                   {
-                       Debug.WriteLine("Error in services: " + e.Message);
-                   }
-                   InvokeOnMainThread(() =>
-                   {
-                       _servicesIsShimmering = false;
-                       if (_services != null &&
-                           _services.d != null &&
-                           _services.d.IsSuccess &&
-                           _services.d.data != null)
-                       {
-                           List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
-                           if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
-                           {
-                               if (_isSMRApplyAllowedResponse != null &&
-                                   _isSMRApplyAllowedResponse.d != null &&
-                                   _isSMRApplyAllowedResponse.d.IsSuccess &&
-                                   _isSMRApplyAllowedResponse.d.data != null &&
-                                   _isSMRApplyAllowedResponse.d.data.Count > 0)
-                               {
-                                   if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
-                                   {
-                                       services.RemoveAt(ServiceItemIndexToRemove(services));
-                                   }
-                               }
-                               else
-                               {
-                                   services.RemoveAt(ServiceItemIndexToRemove(services));
-                               }
-                           }
-                           else if (!hasExistingSSMR)
-                           {
-                               services.RemoveAt(ServiceItemIndexToRemove(services));
-                           }
-                           DataManager.DataManager.SharedInstance.ServicesList = services;
-                       }
-                       else
-                       {
-                           DataManager.DataManager.SharedInstance.ServicesList.Clear();
-                       }
-                       OnUpdateTable();
-                   });
-               });
+                {
+                    if (!AppLaunchMasterCache.IsSMRFeatureDisabled)
+                    {
+                        List<string> contractAccounts = _dashboardHomeHelper.GetOwnedAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+                        if (contractAccounts != null && contractAccounts.Count > 0)
+                        {
+                            SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(contractAccounts);
+                            InvokeOnMainThread(() =>
+                            {
+                                if (response != null &&
+                                    response.d != null &&
+                                    response.d.IsSuccess &&
+                                    response.d.data != null &&
+                                    response.d.data.Count > 0)
+                                {
+                                    List<SMRAccountStatusModel> smrList = new List<SMRAccountStatusModel>(response.d.data);
+                                    if (smrList != null && smrList.Count > 0)
+                                    {
+                                        foreach (var item in smrList)
+                                        {
+                                            DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(item.ContractAccount, item.IsTaggedSMR);
+                                            if (item.isTaggedSMR)
+                                            {
+                                                hasExistingSSMR = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                        List<Task> taskList = new List<Task>();
+                        try
+                        {
+                            taskList.Add(GetServices());
+                            if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                            {
+                                taskList.Add(BatchCallForSSMRApplyAllowed());
+                            }
+                            Task.WaitAll(taskList.ToArray());
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Error in services: " + e.Message);
+                        }
+                        InvokeOnMainThread(() =>
+                        {
+                            _servicesIsShimmering = false;
+                            if (_services != null &&
+                                _services.d != null &&
+                                _services.d.IsSuccess &&
+                                _services.d.data != null)
+                            {
+                                List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
+                                if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                                {
+                                    if (_isSMRApplyAllowedResponse != null &&
+                                        _isSMRApplyAllowedResponse.d != null &&
+                                        _isSMRApplyAllowedResponse.d.IsSuccess &&
+                                        _isSMRApplyAllowedResponse.d.data != null &&
+                                        _isSMRApplyAllowedResponse.d.data.Count > 0)
+                                    {
+                                        if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                                        {
+                                            services.RemoveAt(ServiceItemIndexToRemove(services));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        services.RemoveAt(ServiceItemIndexToRemove(services));
+                                    }
+                                }
+                                else if (!hasExistingSSMR)
+                                {
+                                    services.RemoveAt(ServiceItemIndexToRemove(services));
+                                }
+                                DataManager.DataManager.SharedInstance.ServicesList = services;
+                            }
+                            else
+                            {
+                                DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                            }
+                            OnUpdateTable();
+                            CheckTutorialOverlay();
+                        });
+                    }
+                    else
+                    {
+                        await GetServices();
+                        InvokeOnMainThread(() =>
+                        {
+                            _servicesIsShimmering = false;
+                            if (_services != null &&
+                                _services.d != null &&
+                                _services.d.IsSuccess &&
+                                _services.d.data != null)
+                            {
+                                List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
+                                services.RemoveAt(ServiceItemIndexToRemove(services));
+                                DataManager.DataManager.SharedInstance.ServicesList = services;
+                            }
+                            else
+                            {
+                                DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                            }
+                            OnUpdateTable();
+                            CheckTutorialOverlay();
+                        });
+                    }
+                });
             });
         }
 
@@ -819,8 +901,13 @@ namespace myTNB
 
         private void UpdateFooterBG()
         {
+            nfloat yPosBG = 0;
+            if (DeviceHelper.GetStatusBarHeight() > 20 && !DeviceHelper.IsIphoneXUpResolution())
+            {
+                yPosBG -= 20;
+            }
             CGRect servicesCellRect = _homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services));
-            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset);
+            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset + yPosBG);
         }
 
         public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
@@ -839,7 +926,7 @@ namespace myTNB
                 if (_isRefreshScreenEnabled)
                 {
                     var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-                    var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
+                    var bcrmMsg = bcrm?.DowntimeMessage ?? GetCommonI18NValue(Constants.Common_BCRMMessage);
                     string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
 
                     _refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(24f));

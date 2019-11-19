@@ -43,7 +43,7 @@ namespace myTNB
             UIView toggleView = GetToggleView(_mainView);
             _mainView.AddSubview(toggleView);
 
-            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(24), _baseMarginedWidth, GetHeightByScreenSize(16)))
+            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(12), _baseMarginedWidth, GetHeightByScreenSize(16)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.ButterScotch,
@@ -186,7 +186,7 @@ namespace myTNB
             UIView toggleView = GetToggleView(parentView);
             parentView.AddSubview(toggleView);
 
-            UIView viewShDate = new UIView(new CGRect(GetWidthByScreenSize(82), toggleView.Frame.GetMaxY() + GetScaledHeight(24)
+            UIView viewShDate = new UIView(new CGRect(GetWidthByScreenSize(82), toggleView.Frame.GetMaxY() + GetScaledHeight(12)
                 , parentView.Frame.Width - GetWidthByScreenSize(164), GetHeightByScreenSize(14)))
             {
                 BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f)
@@ -292,6 +292,16 @@ namespace myTNB
             nfloat barMaxY = size.Height;
             nfloat xLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
             nfloat yLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
+
+            nfloat totalTariffValue = GetTotalTariff(tariffList);
+            int tariffCount = GetTariffWithValueCount(tariffList);
+            nfloat sharedMissingPercentage = 0;
+            if (baseValue > 0 && baseValue > totalTariffValue)
+            {
+                double percentMissing = 1 - (totalTariffValue / baseValue);
+                sharedMissingPercentage = (nfloat)(percentMissing / tariffCount);
+            }
+
             UIView viewTariffContainer = new UIView(new CGRect(xLoc, yLoc, size.Width, size.Height))
             {
                 Tag = 2002,
@@ -304,8 +314,8 @@ namespace myTNB
             {
                 TariffItemModel item = tariffList[i];
                 UpdateAvailableTariffList(item);
-                double val = item.Usage;
-                double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
+                double val = IsAmountState ? item.Amount : item.Usage;
+                double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
                 nfloat blockHeight = (nfloat)(baseHeigt * percentage);
 
                 barMaxY -= blockHeight;
@@ -485,7 +495,7 @@ namespace myTNB
             UIView viewCover = bar.ViewWithTag(2001);
             UIView viewTariff = bar.ViewWithTag(2002);
 
-            if (_isTariffView)
+            if (_isTariffView && _viewType == SmartMeterConstants.SmartMeterViewType.Month)
             {
                 List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
                 if (index < usageData.Count)
@@ -542,7 +552,10 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
+            if (_segmentContainer == null) { return; }
             _consumptionState = state;
+            CreateSegment(_viewType);
+
             if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
                 UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
@@ -553,8 +566,10 @@ namespace myTNB
                     int index = i;
                     CustomUIView segmentView = scrollview.Subviews[index] as CustomUIView;
                     if (segmentView == null || index >= usageData.Count) { continue; }
+                    double consumption;
+                    double.TryParse(usageData[index].Consumption, out consumption);
                     string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].Amount.FormatAmountString(TNBGlobal.UNIT_CURRENCY)
-                        : string.Format(Format_Value, usageData[index].Consumption, TNBGlobal.UNITENERGY);
+                        : string.Format(Format_Value, consumption, TNBGlobal.UNITENERGY);
                     UpdateRMKWHValues(segmentView, usageText);
                 }
             }
@@ -566,8 +581,10 @@ namespace myTNB
                     int index = i;
                     CustomUIView segmentView = _segmentContainer.Subviews[index] as CustomUIView;
                     if (segmentView == null || index >= usageData.Count) { continue; }
+                    double usageTotal;
+                    double.TryParse(usageData[index].UsageTotal, out usageTotal);
                     string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].AmountTotal.FormatAmountString(usageData[index].Currency)
-                        : string.Format(Format_Value, usageData[index].UsageTotal, usageData[index].UsageUnit);
+                        : string.Format(Format_Value, usageTotal, usageData[index].UsageUnit);
                     UpdateRMKWHValues(segmentView, usageText);
                     if (usageData[index].DPCIndicator)
                     {

@@ -30,6 +30,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = PromotionsConstants.Pagename;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             Debug.WriteLine("PROMOTION DID LOAD");
@@ -42,7 +43,7 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PROMOTIONS LanguageDidChange");
-            _titleBarComponent?.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent?.SetTitle(GetI18NValue(PromotionsConstants.I18N_NavTitle));
         }
 
         public override void ViewWillAppear(bool animated)
@@ -103,7 +104,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                bool isValidTimeStamp = false;
+                bool needsUpdate = false;
                 string promotionTS = iService.GetPromotionsTimestampItem();
                 PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
                 if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
@@ -112,29 +113,29 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCorePromotionTimeStamp");
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                         sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
+                        needsUpdate = true;
                     }
                     else
                     {
                         if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
                         {
-                            isValidTimeStamp = false;
+                            needsUpdate = false;
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                             sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
+                            needsUpdate = true;
                         }
                     }
                 }
-                Debug.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
-                if (!isValidTimeStamp)
+
+                if (needsUpdate)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
@@ -177,7 +178,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(PromotionsConstants.I18N_NavTitle));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);

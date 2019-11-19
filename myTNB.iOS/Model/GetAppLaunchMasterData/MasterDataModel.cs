@@ -20,7 +20,7 @@ namespace myTNB.Model
         [JsonProperty("State")]
         public List<StatesForFeedbackDataModel> States { set; get; }
 
-        [JsonProperty("FeedbackCategory_v2")]
+        [JsonProperty("FeedbackCategory")]
         public List<FeedbackCategoryDataModel> FeedbackCategories { set; get; }
 
         [JsonProperty("FeedbackType")]

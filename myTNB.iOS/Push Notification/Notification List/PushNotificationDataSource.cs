@@ -17,7 +17,7 @@ namespace myTNB.PushNotification
         public PushNotificationDataSource(PushNotificationViewController controller, List<UserNotificationDataModel> data)
         {
             _controller = controller;
-            _data = data.FindAll(x => x.IsAccountNumberExist);
+            _data = data.FindAll(x => x.NotificationType.Equals("ODN") || x.IsAccountNumberExist);
         }
 
         public override nint NumberOfSections(UITableView tableView)

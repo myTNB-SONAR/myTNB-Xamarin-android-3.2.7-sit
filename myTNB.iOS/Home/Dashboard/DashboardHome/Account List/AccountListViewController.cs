@@ -278,7 +278,13 @@ namespace myTNB
                 _footerView.RemoveFromSuperview();
             }
 
-            _footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, allAcctsAreVisible ? GetScaledHeight(85F) : GetScaledHeight(44F)))
+            // HIDE REARRANGE ACCOUNT
+            //_footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, allAcctsAreVisible ? GetScaledHeight(85F) : GetScaledHeight(44F)))
+            //{
+            //    BackgroundColor = UIColor.Clear
+            //};
+
+            _footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(44F)))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -288,7 +294,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            ViewHelper.AdjustFrameSetY(moreLessContainer, allAcctsAreVisible ? GetScaledHeight(41F) : 0);
+            // HIDE REARRANGE ACCOUNT
+            //ViewHelper.AdjustFrameSetY(moreLessContainer, allAcctsAreVisible ? GetScaledHeight(41F) : 0);
             moreLessContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (allAcctsAreVisible)
@@ -329,6 +336,8 @@ namespace myTNB
             moreLessContainer.AddSubview(moreLessView);
             _footerView.AddSubview(moreLessContainer);
 
+            // HIDE REARRANGE ACCOUNT
+            /*
             if (allAcctsAreVisible)
             {
                 CustomUIView rearrangeContainer = new CustomUIView(_footerView.Bounds)
@@ -378,6 +387,7 @@ namespace myTNB
 
                 _footerView.AddSubview(rearrangeContainer);
             }
+            */
 
             if (_accountListTableView != null)
             {
@@ -532,16 +542,7 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.AccountListIsLoaded = true;
                         _homeViewController.ShowRefreshScreen(false, null);
-                        if (_homeViewController != null)
-                        {
-                            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
-                        }
                         ReloadViews(false, isFromSearch);
-                    }
-                    var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(acctNumList, activeAccountList);
-                    if (eligibleSSMRAccounts?.Count > 0)
-                    {
-                        GetAccountsSMRStatus(eligibleSSMRAccounts);
                     }
                 }
             }
@@ -615,24 +616,6 @@ namespace myTNB
                         var item = account;
                         item.UpdateValues(due);
                         DataManager.DataManager.SharedInstance.SaveDue(item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void UpdateIsSSMRForDisplayedAccounts(List<SMRAccountStatusModel> statusDetails)
-        {
-            var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-            foreach (var status in statusDetails)
-            {
-                foreach (var account in activeAccountList)
-                {
-                    if (account.accNum == status.ContractAccount)
-                    {
-                        var item = account;
-                        item.UpdateIsSSMRValue(status);
-                        DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(account.accNum, status.IsTaggedSMR);
                         break;
                     }
                 }
@@ -719,41 +702,8 @@ namespace myTNB
             });
         }
 
-        private void GetAccountsSMRStatus(List<string> accounts)
-        {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        InvokeInBackground(async () =>
-                        {
-                            SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(accounts);
-                            InvokeOnMainThread(() =>
-                            {
-                                if (response != null &&
-                                    response.d != null &&
-                                    response.d.IsSuccess &&
-                                    response.d.data != null &&
-                                    response.d.data.Count > 0)
-                                {
-                                    UpdateIsSSMRForDisplayedAccounts(response.d.data);
-                                }
-                            });
-                        });
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
-        }
-
         private void ReloadViews(bool isLoading, bool isFromSearch = false, bool hasEmptyAcct = false)
         {
-            _homeViewController._accountListIsShimmering = isLoading;
             if (_addAccountView != null)
             {
                 _addAccountView.Hidden = _isOnSearchMode;
@@ -786,6 +736,11 @@ namespace myTNB
             else
             {
                 SetFooterView(_dashboardHomeHelper.AllAccountsAreVisible);
+            }
+            if (_homeViewController != null)
+            {
+                _homeViewController._accountListIsShimmering = isLoading;
+                _homeViewController.CheckTutorialOverlay();
             }
         }
 
@@ -834,7 +789,10 @@ namespace myTNB
         }
         private void OnRearrangeAction()
         {
-            Debug.WriteLine("OnRearrangeAction()");
+            if (_homeViewController != null)
+            {
+                _homeViewController.OnRearrangeAccountAction();
+            }
         }
         #endregion
     }

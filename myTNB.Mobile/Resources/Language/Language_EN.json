@@ -311,7 +311,9 @@
         "beenPaidExtra": "I’ve been paid extra",
         "tutorialSMRTitle": "Your reading status at a glance.",
         "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
-        "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill."
+        "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
+        "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
+        "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you."
     },
     "Bills": {
         "navTitle": "Bills",
@@ -328,11 +330,13 @@
         "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
         "pay": "Pay",
         "tutorialBillTitle": "Your bill overview.",
+        "tutorialAdviceTitle": "Your advice overview.",
         "tutorialPayTitle": "Pay without hassle.",
         "tutorialViewDetailsTitle": "Understand your bill.",
+        "tutorialHistoryNormalTitle": "Keep track of payments.",
         "tutorialHistoryTitle": "Keep track of your charges.",
-        "tutorialBillREAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
-        "tutorialBillNormalAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+        "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+        "tutorialBillNormalAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
         "tutorialPayDesc": "Tap here to pay your bill.",
         "tutorialViewDetailsDesc": "‘View Details’ to review your bill breakdown.",
         "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
@@ -474,5 +478,12 @@
         "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
         "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
         "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+    },
+    "WhatsNew": {
+        "navTitle": "What's New"
+    },
+    "RearrangeAccount": {
+        "navTitle": "Rearrange Accounts",
+        "btnTitle": "Save Changes"
     }
 }
