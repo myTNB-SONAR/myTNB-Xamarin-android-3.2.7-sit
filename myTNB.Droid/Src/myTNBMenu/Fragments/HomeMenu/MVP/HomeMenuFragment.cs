@@ -478,6 +478,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     IsRearrangeButtonVisible(false);
 
                     ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+
+                    SetBottomLayoutBackground(false);
+                    this.presenter.InitiateService();
                 }
             }
             catch (System.Exception e)
