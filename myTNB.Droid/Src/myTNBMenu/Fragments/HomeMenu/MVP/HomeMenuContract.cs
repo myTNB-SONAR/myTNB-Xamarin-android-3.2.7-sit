@@ -94,6 +94,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             int CheckMyServiceList();
 
+            void ShowSearchAction(bool isShow);
+
+            void CheckSearchEditAction();
+
         }
 
         public interface IHomeMenuPresenter
@@ -164,6 +168,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
+
+            void OnCheckToCallHomeMenuTutorial();
+
+            void RestoreCurrentMyServiceState();
+
+            void RestoreCurrentAccountState();
+
+            void RestoreQueryAccounts();
         }
 
         public interface IHomeMenuService

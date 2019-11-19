@@ -266,6 +266,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                                        HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
                                         CustomerBillingAccount.RemoveSelected();
                                         CustomerBillingAccount.MakeFirstAsSelected();

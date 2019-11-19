@@ -5,6 +5,7 @@ using Android.Util;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
@@ -184,6 +185,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             }
 
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
                             this.mView.ShowAccountListActivity();
                             UserSessions.SavePhoneVerified(mSharedPref, true);
                         }

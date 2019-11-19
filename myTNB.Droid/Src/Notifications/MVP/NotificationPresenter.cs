@@ -573,7 +573,14 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
                                 if (!userNotificationData.IsDeleted)
                                 {
-                                    if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                    if (userNotificationData.NotificationType != "ODN")
+                                    {
+                                        if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                        {
+                                            listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                        }
+                                    }
+                                    else
                                     {
                                         listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
                                     }
