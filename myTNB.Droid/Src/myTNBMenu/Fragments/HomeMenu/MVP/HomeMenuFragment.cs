@@ -784,8 +784,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (this.presenter != null)
                 {
                     this.presenter.OnCheckToCallHomeMenuTutorial();
+                    this.presenter.GetUserNotifications();
+                    this.presenter.OnCheckMyServiceState();
                 }
-                this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
                 HomeMenuCustomScrolling(0);
             }

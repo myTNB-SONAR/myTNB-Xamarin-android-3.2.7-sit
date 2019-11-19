@@ -1910,6 +1910,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             OnCheckToCallHomeMenuTutorial();
         }
 
+        public void OnCheckMyServiceState()
+        {
+            if (isMyServiceDone)
+            {
+                isMyServiceDone = false;
+                isHomeMenuTutorialShown = false;
+                RestoreCurrentMyServiceState();
+            }
+        }
+
         public void DoMySerivceLoadMoreAccount()
         {
             try
