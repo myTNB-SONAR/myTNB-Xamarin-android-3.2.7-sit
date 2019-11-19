@@ -1,9 +1,5 @@
 Sprint 2 SIT Build
 
-[Bug] Feedback page displayed as blank. Not able to see “Give us feedback” and “View Submitted Feedback”.
-[Bug] Bar graph is not visible when clicks on show tariff option though amount/kWh is visible to user
-[Bug] What’s new showing empty content
-[Enhancement] Home screen - refresh Quick actions & Need Help only at App Launch, not every time user comes back to home
-[Enhancement] For DPC month height should be independent irrespective of RM & kWh
-[Bug] 3249 iOS: Home Screen Redesign - Misalignment in Spacing (in iOS 12)
-[Bug] 3345 iOS: Home Screen - Glitch on Quick Actions
+[Bug] 3342 SMR Notification - Tap on Re-start self meter reading is displaying as something went wrong when re-start self meter again in notification
+[Bug] Values for RM and kWh show same amount
+[Enhancement] Notification badge count and indicator code enhancements
