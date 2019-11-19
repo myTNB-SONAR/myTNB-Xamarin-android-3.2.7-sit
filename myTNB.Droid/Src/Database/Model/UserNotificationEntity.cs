@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -204,7 +205,25 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-            int count = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            int count = 0;
+            
+            List<UserNotificationEntity> notificationList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false);
+            //Added checking on notification count.
+            notificationList.ForEach(item =>
+            {
+                if (item.NotificationType != "ODN")
+                {
+                    if (UserEntity.GetActive().Email.Equals(item.Email) &&
+                    MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum))
+                    {
+                        count++;
+                    }
+                }
+                else
+                {
+                    count++;
+                }
+            });
             //db.Close();
             return count;
             //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
@@ -236,6 +255,5 @@ namespace myTNB_Android.Src.Database.Model
             //}
             return (Count() > 0);
         }
-
     }
 }
