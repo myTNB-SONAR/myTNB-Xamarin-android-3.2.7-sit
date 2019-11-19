@@ -10,8 +10,10 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.RearrangeAccount.MVP
 {
@@ -22,50 +24,64 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         public int mMobileCellPosition { get; set; }
 
-        Activity context;
+        Context context;
 
-        public RearrangeAccountListAdapter(Activity context, List<CustomerBillingAccount> items) : base()
+
+        public RearrangeAccountListAdapter(Context context) : base(context)
         {
-            Items = items;
+        }
+
+        public RearrangeAccountListAdapter(Context context, bool notify) : base(context, notify)
+        {
+        }
+
+        public RearrangeAccountListAdapter(Context context, List<CustomerBillingAccount> itemList) : base(context, itemList)
+        {
+            Items = itemList;
             this.context = context;
             mMobileCellPosition = int.MinValue;
-        }
-        public RearrangeAccountListAdapter(Android.Content.Context context) : base(context)
-        {
-        }
-
-        public RearrangeAccountListAdapter(Android.Content.Context context, bool notify) : base(context, notify)
-        {
-        }
-
-        public RearrangeAccountListAdapter(Android.Content.Context context, List<CustomerBillingAccount> itemList) : base(context, itemList)
-        {
         }
 
         public RearrangeAccountListAdapter(Android.Content.Context context, List<CustomerBillingAccount> itemList, bool notify) : base(context, itemList, notify)
         {
+
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            View cell = convertView;
-            if (cell == null)
+            RearrangeAccountListViewHolder vh = null;
+            if (convertView == null)
             {
-                cell = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, parent, false);
-                cell.SetMinimumHeight(150);
-                cell.SetBackgroundColor(Color.DarkViolet);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.AccountRearrangeItemLayout, parent, false);
+                vh = new RearrangeAccountListViewHolder(convertView);
+                convertView.Tag = vh;
             }
-
-            var text = cell.FindViewById<TextView>(Android.Resource.Id.Text1);
-            if (text != null)
+            else
             {
-                text.Text = position.ToString();
+                vh = convertView.Tag as RearrangeAccountListViewHolder;
+
             }
+            try
+            {
+                CustomerBillingAccount item = GetItemObject(position);
+                vh.txtSupplyAccountName.Text = item.AccDesc;
 
-            cell.Visibility = mMobileCellPosition == position ? ViewStates.Invisible : ViewStates.Visible;
-            cell.TranslationY = 0;
+                if (item.AccountCategoryId.Equals("2"))
+                {
+                    vh.imageLeaf.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    vh.imageLeaf.Visibility = ViewStates.Gone;
+                }
 
-            return cell;
+                vh.imageActionIcon.Visibility = ViewStates.Visible;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return convertView;
         }
 
         public override int Count
@@ -87,12 +103,14 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             [BindView(Resource.Id.imageLeaf)]
             public ImageView imageLeaf;
 
-            public AccountListViewHolder(View itemView) : base(itemView)
+            public RearrangeAccountListViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
+            }
+        }
 
 
-                public void SwapItems(int indexOne, int indexTwo)
+        public void SwapItems(int indexOne, int indexTwo)
         {
             var oldValue = Items[indexOne];
             Items[indexOne] = Items[indexTwo];
@@ -100,6 +118,5 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mMobileCellPosition = indexTwo;
             NotifyDataSetChanged();
         }
-
     }
 }

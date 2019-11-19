@@ -3825,6 +3825,10 @@
     <Compile Include="Src\AppLaunch\Requests\UpdateAppUserDeviceRequest.cs" />
     <Compile Include="Src\RearrangeAccount\MVP\IRearrangeAccountListAdapter.cs" />
     <Compile Include="Src\RearrangeAccount\MVP\RearrangeAccountListAdapter.cs" />
+    <AndroidResource Include="Resources\layout\AccountRearrangeItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
