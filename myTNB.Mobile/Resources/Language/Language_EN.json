@@ -104,6 +104,7 @@
     "changeLanguageNo_MS": "Tidak",
     "changeLanguageTitle_EN": "Change language to Bahasa Malaysia?",
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to Bahasa Malaysia?",
+    "saveLanguageMessage": "Would you like to save the change you made to your language preference?",
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
     "new": "New",
@@ -383,7 +384,10 @@
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
     "beenPaidExtra": "I’ve been paid extra",
     "tutorialSMRTitle": "Your reading status at a glance.",
-    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings."
+    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
+    "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
+    "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
+    "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you."
   },
   "Bills": {
     "title": "Bills",
@@ -400,11 +404,13 @@
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
     "pay": "Pay",
     "tutorialBillTitle": "Your bill overview.",
+    "tutorialAdviceTitle": "Your advice overview.",
     "tutorialPayTitle": "Pay without hassle.",
     "tutorialViewDetailsTitle": "Understand your bill.",
+    "tutorialHistoryNormalTitle": "Keep track of payments.",
     "tutorialHistoryTitle": "Keep track of your charges.",
-    "tutorialBillREAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
-    "tutorialBillNormalAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
     "tutorialPayDesc": "Tap here to pay your bill.",
     "tutorialViewDetailsDesc": "\"View Details\" to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
@@ -805,7 +811,11 @@
     "backToHome": "Back to Home"
   },
   "Promotions": {
-    "title": "Promotions",
+    "title": "What's New",
     "noPromotions": "No promotions currently. Check back later!"
+  },
+  "RearrangeAccount": {
+    "title": "Rearrange Accounts",
+    "btnTitle": "Save Changes"
   }
 }

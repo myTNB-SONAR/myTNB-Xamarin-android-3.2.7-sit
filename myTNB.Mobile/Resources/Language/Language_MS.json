@@ -69,9 +69,9 @@
     "logout": "Log Keluar",
     "idNumber": "Nombor KP / ROC / Pasport",
     "password": "Kata Laluan",
-    "mobileNo": "No. Mudah Alih",
+    "mobileNo": "Nombor Telefon",
     "email": "Emel",
-    "addAnotherAcct": "Masukkan Satu Lagi Akaun",
+    "addAnotherAcct": "Tambah Akaun",
     "setAppLanguage": "Tetapkan Bahasa Aplikasi",
     "setAppLanguageDescription": "Pilih Bahasa",
     "english": "English",
@@ -104,6 +104,7 @@
     "changeLanguageNo_MS": "Tidak",
     "changeLanguageTitle_EN": "Change language to English?",
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to English?",
+    "saveLanguageMessage": "Would you like to save the change you made to your language preference?",
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
     "new": "Baru",
@@ -126,7 +127,7 @@
     "invalidNickname": "Aksara tidak sah. Gunakan huruf atau nombor sahaja.",
     "duplicateNickname": "Nama ringkas sudah digunakan. Sila buat yang baru.",
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
-    "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
+    "serviceErrorDefaultMessage": "Maaf, berlaku kesilapan teknikal. Sila cuba lagi.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "PIN tidak sah",
@@ -180,17 +181,17 @@
     "submitFeedback": "Hantar<br>Maklum Balas",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
-    "tutorialAccountTitle": "Your Accounts at a glance.",
-    "tutorialQuickAccessTitle": "Quick account access.",
-    "tutorialQuickActionTitle": "Quick actions.",
-    "tutorialNeedHelpTitle": "Need help?",
-    "tutorialNoAcctDesc": "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.",
-    "tutorialSingleAcctDesc": "View a summary of all your linked electricity accounts here.",
-    "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB.",
-    "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here.",
-    "tutorialQuickAccessDesc": "Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number.",
-    "tutorialQuickActionDesc": "Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!",
-    "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
+    "tutorialAccountTitle": "Ringkasan akaun anda",
+    "tutorialQuickAccessTitle": "Akses pantas akaun.",
+    "tutorialQuickActionTitle": "Akses Pantas",
+    "tutorialNeedHelpTitle": "Perlu bantuan?",
+    "tutorialNoAcctDesc": "Masukkan akaun elektrik ke myTNB untuk mengakses penggunaan dan perkhidmatan yang ditawarkan.",
+    "tutorialSingleAcctDesc": "Lihat ringkasan semua akaun elektrik anda di sini.",
+    "tutorialThreeAcctsDesc": "Lihat ringkasan semua akaun elektrik anda di sini. Tekan \"Tambah\" untuk menambah akaun ke myTNB.",
+    "tutorialMoreAcctsDesc": "Lihat ringkasan semua akaun elektrik anda di sini.",
+    "tutorialQuickAccessDesc": "Tekan <b>\"Tambah\"</b> untuk menambah akaun ke myTNB. <b>\"Cari\"</b> akaun yang telah ditambah dengan menaip nama ringkas atau nombor akaun.",
+    "tutorialQuickActionDesc": "Ciri baru diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
+    "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "Faham!"
   },
   "Tabbar": {
@@ -244,7 +245,7 @@
     "ssmrReadingFailTitle": "Sila Cuba Lagi",
     "ssmrReadingSuccessMessage": "Terima kasih kerana menghantar bacaan meter. Kami akan memaklumkan apabila bil anda telah sedia.",
     "ssmrReadingFailMessage": "Nampaknya kami tidak dapat mengesahkan bacaan meter anda buat masa ini.",
-    "backToFeedback": "Back to Feedback",
+    "backToFeedback": "Kembali ke maklum balas",
     "ssmrTrackApplication": "Pantau Permohonan",
     "ssmrBackToUsage": "Kembali ke Penggunaaan",
     "ssmrTrackUsage": "Track Application Usage",
@@ -260,8 +261,8 @@
     "noEligibleAccount": "Maaf, akaun anda tidak layak untuk memulakan perkhidmatan Self Meter Reading",
     "selectAccountNavTitle": "Pilih Akaun Elektrik",
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
-    "tutorialHeaderTitle": "Your reading status at a glance.",
-    "tutorialHeaderDesc": "Switch between your accounts and get an overview of your meter reading status here.",
+    "tutorialHeaderTitle": "Status Bacaan Anda Sepintas Lalu.",
+    "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
     "tutorialGotIt": "Faham!"
   },
   "SSMRReadingHistory_selector": {
@@ -286,14 +287,14 @@
     "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
     "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
     "headerDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
-    "imReady": "I'm Ready!",
+    "imReady": "Saya Bersedia!",
     "note": "Nota: Sila genapkan nombor sekiranya bacaan pada meter anda memiliki titik perpuluhan.",
     "previousMeterReading": "Bacaan Meter Sebelum",
     "submitReading": "Hantar Bacaan",
     "takeOrUploadPhoto": "Tangkap / Muat Naik Gambar",
-    "manualInputTitle": "Please enter your meter reading for the unit(s) below.",
-    "tutorialReadMeterTitle": "Enter your meter reading here.",
-    "tutorialReadMeterDesc": "Enter according to its unit(s). You’ll see your previous month's reading as a reference.",
+    "manualInputTitle": "Sila masukkan bacaan meter anda untuk unit berkenaan di bawah.",
+    "tutorialReadMeterTitle": "Masukkan bacaan meter anda di sini.",
+    "tutorialReadMeterDesc": "Masukkan mengikut unit. Anda akan dapat melihat bacaan bulan sebelumnya sebagai rujukan.",
     "tutorialReadMeterGotIt": "Faham!"
   },
   "SSMRCaptureMeter": {
@@ -383,7 +384,10 @@
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
     "beenPaidExtra": "Saya telah dibayar lebih",
     "tutorialSMRTitle": "Your reading status at a glance.",
-    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings."
+    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
+    "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
+    "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
+    "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you."
   },
   "Bills": {
     "title": "Bil",
@@ -400,15 +404,17 @@
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
     "tutorialBillTitle": "Ringkasan keseluruhan bil anda",
+    "tutorialAdviceTitle": "Your advice overview.",
     "tutorialPayTitle": "Bayar cara mudah.",
     "tutorialViewDetailsTitle": "Fahami bil anda.",
+    "tutorialHistoryNormalTitle": "Keep track of payments.",
     "tutorialHistoryTitle": "Pantau rekod bil dan pembayaran anda.",
-    "tutorialBillREAcctDesc": "Tekan \"...\" untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
-    "tutorialBillNormalAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tekan “ #dropdown# ” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
     "tutorialViewDetailsDesc": "\"Lihat Butiran\" untuk menyemak pecahan bil anda.",
-    "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
-    "tutorialHistoryREAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
+    "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
+    "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
     "gotIt": "Faham!"
   },
   "Bills_selector": {
@@ -511,7 +517,7 @@
     "addAccounts": "Akaun Sedang Ditambah",
     "addAccountMsg": "Proses ini mungkin mengambil sedikit masa",
     "addAccountsMsg": "Proses ini mungkin mengambil sedikit masa",
-    "noAccountsTitle": "Tiada Akaun Ditemui!p",
+    "noAccountsTitle": "Tiada Akaun Ditemui!",
     "additionalAccts": "Akaun tambahan",
     "removeAcct": "Keluarkan Akaun",
     "removeAcctMsg": "Anda sedang mengeluarkan {0}, Nombor Akaun: {1}",
@@ -588,8 +594,8 @@
     "operationHours": "Buka 24 jam"
   },
   "MyAccount": {
-    "title": "Akaun Saya",
-    "detailSectionTitle": "myTNB Akaun",
+    "title": "Akaun myTNB",
+    "detailSectionTitle": "Akaun myTNB",
     "accountSectionTitle": "Akaun Bekalan Elektrik TNB",
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
@@ -601,10 +607,10 @@
   },
   "Prelogin": {
     "welcomeTitle": "Selamat datang ke myTNB",
-    "tagline": "Wajah baru penuh bertenaga dan  ceria.",
+    "tagline": "Wajah baru penuh bertenaga dan ceria.",
     "register": "Daftar",
     "login": "Log masuk",
-    "quickAccess": "Quick Actions",
+    "quickAccess": "Tindakan Pantas",
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
     "feedback": "Beri Maklumbalas",
@@ -805,7 +811,11 @@
     "backToHome": "Kembali ke Laman Utama"
   },
   "Promotions": {
-    "title": "Promosi",
-    "noPromotions": "Tiada promosi buat masa ini.  Cuba semak kemudian!"
+    "title": "Terbaru",
+    "noPromotions": "Tiada promosi buat masa ini. Cuba semak kemudian!"
+  },
+  "RearrangeAccount": {
+    "title": "Rearrange Accounts",
+    "btnTitle": "Save Changes"
   }
 }
