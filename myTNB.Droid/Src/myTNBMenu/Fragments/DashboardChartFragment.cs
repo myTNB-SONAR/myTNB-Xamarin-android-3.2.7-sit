@@ -5816,7 +5816,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                 {
-                                    if (System.Math.Abs(IndividualDayData.Consumption) > val)
+                                    if (System.Math.Abs(IndividualDayData.Amount) > val)
                                     {
                                         val = System.Math.Abs((float)IndividualDayData.Amount);
                                     }
