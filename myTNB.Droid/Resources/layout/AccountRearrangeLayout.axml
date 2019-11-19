@@ -1,3 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:background="@color/white" 
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:fillViewport="false">
+            <myTNB_Android.Src.RearrangeAccount.MVP.RearrangeAccountListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_view">
+            </myTNB_Android.Src.RearrangeAccount.MVP.RearrangeAccountListView>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            android:id="@+id/submitLayout">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Changes"
+                android:id="@+id/btnSubmit"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                style="@style/Theme.SubmitButton" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

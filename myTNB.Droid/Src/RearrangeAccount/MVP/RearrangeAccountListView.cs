@@ -6,10 +6,11 @@ using Android.Graphics;
 using Android.Content;
 using Android.Util;
 using System;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.RearrangeAccount.MVP
 {
-    public class DraggableListView : ListView, ITypeEvaluator, GestureDetector.IOnGestureListener
+    public class RearrangeAccountListView : ListView, ITypeEvaluator, GestureDetector.IOnGestureListener
     {
         bool _reorderingEnabled = true;
 
@@ -33,7 +34,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
         }
 
-        const int LINE_THICKNESS = 15;
         const int INVALID_ID = -1;
         const int INVALID_POINTER_ID = -1;
 
@@ -58,17 +58,17 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         ///
         /// Constructors
         ///
-        public DraggableListView(Context context) : base(context)
+        public RearrangeAccountListView(Context context) : base(context)
         {
             init(context);
         }
 
-        public DraggableListView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
+        public RearrangeAccountListView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
         {
             init(context);
         }
 
-        public DraggableListView(Context context, IAttributeSet attrs) : base(context, attrs)
+        public RearrangeAccountListView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             init(context);
         }
@@ -211,8 +211,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
             Paint paint = new Paint();
             paint.SetStyle(Paint.Style.Stroke);
-            paint.StrokeWidth = LINE_THICKNESS;
-            paint.Color = Color.Red;
+            paint.StrokeWidth = (int)DPUtils.ConvertDPToPx(1f);
+            paint.Color = Color.ParseColor("#e4e4e4"); 
 
             can.DrawBitmap(bitmap, 0, 0, null);
             can.DrawRect(rect, paint);
@@ -403,7 +403,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                         //						switchView.Visibility = ViewStates.Invisible;
 
                         // Swap the items in the data source and then NotifyDataSetChanged()
-                        ((IDraggableListAdapter)Adapter).SwapItems(GetPositionForView(mobileView), GetPositionForView(switchView));
+                        ((IRearrangeAccountListAdapter)Adapter).SwapItems(GetPositionForView(mobileView), GetPositionForView(switchView));
                     };
                 }
             }
@@ -427,7 +427,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 mCellIsMobile = false;
                 mActivePointerId = INVALID_POINTER_ID;
-                ((DraggableListAdapter)Adapter).mMobileCellPosition = int.MinValue;
+                ((IRearrangeAccountListAdapter)Adapter).mMobileCellPosition = int.MinValue;
 
                 mHoverCellCurrentBounds.OffsetTo(mHoverCellOriginalBounds.Left, mobileView.Top);
 
