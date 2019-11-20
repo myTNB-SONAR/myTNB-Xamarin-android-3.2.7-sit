@@ -8,7 +8,7 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.MyTNBService.Notification
 {
-    public class NotificationApiImpl : INotificationAPI
+    public class NotificationApiImpl
     {
         INotificationAPI api = null;
         HttpClient httpClient = null;
@@ -24,22 +24,22 @@ namespace myTNB_Android.Src.MyTNBService.Notification
         }
         public Task<T> DeleteUserNotification<T>([Body] APIBaseRequest request)
         {
-            return api.DeleteUserNotification<T>(request);
+            return api.DeleteUserNotification<T>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         public Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request)
         {
-            return api.GetNotificationDetailedInfo<T>(request);
+            return api.GetNotificationDetailedInfo<T>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         public Task<T> GetUserNotifications<T>([Body] APIBaseRequest request)
         {
-            return api.GetUserNotifications<T>(request);
+            return api.GetUserNotifications<T>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         public Task<T> ReadUserNotification<T>([Body] APIBaseRequest request)
         {
-            return api.ReadUserNotification<T>(request);
+            return api.ReadUserNotification<T>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }
