@@ -19,7 +19,7 @@ namespace myTNB
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
         private List<PromotionsModelV2> _promotions;
-        public Action<int> _onReloadCell;
+        public Action _onReload;
         public Func<string, string> _getI18NValue;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
@@ -31,8 +31,8 @@ namespace myTNB
             bool isHelpShimmering,
             bool showRefreshScreen,
             RefreshScreenComponent refreshScreenComponent,
-            Action<int> onReloadCell,
-            Func<string, string> getI18NValue)
+            Func<string, string> getI18NValue,
+            Action onReload)
         {
             _controller = controller;
             _accountListViewController = accountListViewController;
@@ -43,8 +43,8 @@ namespace myTNB
             _isHelpShimmering = isHelpShimmering;
             _showRefreshScreen = showRefreshScreen;
             _refreshScreenComponent = refreshScreenComponent;
-            _onReloadCell = onReloadCell;
             _getI18NValue = getI18NValue;
+            _onReload = onReload;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -101,7 +101,7 @@ namespace myTNB
                 cell.GetI18NValue = _getI18NValue;
                 cell.IsRefreshScreen = _showRefreshScreen;
                 cell.IsLoading = _isServicesShimmering;
-                cell.ReloadCell = _onReloadCell;
+                cell.OnReload = _onReload;
                 cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
                 cell.ClipsToBounds = true;
                 return cell;
