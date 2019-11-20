@@ -572,7 +572,8 @@ namespace myTNB
                     ShowMissedReadToolTip = ShowMissedReadTooltip,
                     GetI18NValue = GetI18NValue,
                     OnMDMSIconTap = OnMDMSIconTap,
-                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown
+                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown,
+                    OnMDMSRefresh = OnMDMSRefresh
                 };
             }
 
@@ -590,7 +591,14 @@ namespace myTNB
             string title = AccountUsageSmartCache.ErrorTitle;
             string message = AccountUsageSmartCache.ErrorMessage;
             string ctaTitle = AccountUsageSmartCache.ErrorCTA;
-            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, null } });
+            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, OnMDMSRefresh } });
+        }
+
+        private void OnMDMSRefresh()
+        {
+            Debug.WriteLine("MDMS Refresh");
+            ResetViews();
+            InitiateAPICalls();
         }
 
         #region DPC Methods

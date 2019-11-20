@@ -21,6 +21,7 @@ namespace myTNB
         public Func<string, string> GetI18NValue;
         public Action OnMDMSIconTap { set; private get; }
         public Action<bool> SetDPCNoteForMDMSDown { set; private get; }
+        public Action OnMDMSRefresh { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -43,7 +44,8 @@ namespace myTNB
             UIView toggleView = GetToggleView(_mainView);
             _mainView.AddSubview(toggleView);
 
-            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(12), _baseMarginedWidth, GetHeightByScreenSize(16)))
+            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(12)
+                , _baseMarginedWidth, GetHeightByScreenSize(16)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.ButterScotch,
@@ -251,7 +253,8 @@ namespace myTNB
             {
                 _baseSmartMeterView = new SmartMeterMDMSDownView()
                 {
-                    GetI18NValue = GetI18NValue
+                    GetI18NValue = GetI18NValue,
+                    OnMDMSRefresh = OnMDMSRefresh
                 };
             }
             else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
