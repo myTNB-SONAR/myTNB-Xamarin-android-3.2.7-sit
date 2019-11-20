@@ -477,6 +477,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     IsRearrangeButtonVisible(false);
 
                     ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+
+                    SetBottomLayoutBackground(false);
+                    this.presenter.InitiateService();
                 }
             }
             catch (System.Exception e)
@@ -782,9 +785,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowBackButton(false);
                 if (this.presenter != null)
                 {
-                    this.presenter.OnCheckToCallHomeMenuTutorial();
+                    this.presenter.GetUserNotifications();
+                    this.presenter.OnCheckMyServiceState();
                 }
-                this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
                 HomeMenuCustomScrolling(0);
             }
@@ -1549,7 +1552,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.RestoreCurrentAccountState();
                 }
-                this.presenter.RestoreCurrentMyServiceState();
                 this.presenter.ReadNewFAQFromCache();
             }
         }

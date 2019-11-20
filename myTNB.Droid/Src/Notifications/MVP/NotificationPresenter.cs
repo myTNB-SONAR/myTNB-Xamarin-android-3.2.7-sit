@@ -575,7 +575,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     if (userNotificationData.NotificationType != "ODN")
                                     {
-                                        if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                        if (UserEntity.GetActive().Email.Equals(userNotificationData.Email) &&
+                                            MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
                                         {
                                             listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
                                         }
