@@ -893,6 +893,7 @@ namespace myTNB
         private void OnReload()
         {
             _homeTableView.ReloadData();
+            UpdateFooterBG();
         }
 
         public void OnUpdateCellWithoutReload(int row)
