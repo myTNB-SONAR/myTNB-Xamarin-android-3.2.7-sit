@@ -215,26 +215,110 @@ namespace myTNB_Android.Src.Database.Model
 
         public static bool HasSelected()
         {
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            return updatedList.FindIndex(x => x.IsSelected) != -1;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var db = DBHelper.GetSQLiteConnection();
             return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).Count > 0;
         }
 
         public static bool HasItems()
         {
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            return updatedList.Count > 0;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var db = DBHelper.GetSQLiteConnection();
-            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity ").Count > 0;
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").Count > 0;
         }
 
         public static CustomerBillingAccount GetSelected()
         {
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            return updatedList.Find(x => x.IsSelected);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var db = DBHelper.GetSQLiteConnection();
             return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).ToList()[0];
         }
 
         public static CustomerBillingAccount GetFirst()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity", true).ToList()[0];
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            return updatedList[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+            return GetSortedCustomerBillingAccounts()[0];
         }
 
         public static CustomerBillingAccount GetSelectedOrFirst()
@@ -263,9 +347,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSelected = false;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -379,31 +467,41 @@ namespace myTNB_Android.Src.Database.Model
         public static void UpdateBillingDetails(List<SummaryDashBoardAccountEntity> summaryDetails)
         {
             var db = DBHelper.GetSQLiteConnection();
-            foreach(SummaryDashBoardAccountEntity billingDetails in summaryDetails)
-            {
-                db.Execute("Update CustomerBillingAccountEntity SET billingDetails = ? WHERE accNum = ?", billingDetails.JsonResponse, billingDetails.AccountNo);
-            }
+            bool isUpdateNeeded = false;
+
+            UserEntity activeUser = UserEntity.GetActive();
 
             try
             {
-                UserEntity activeUser = UserEntity.GetActive();
                 if (activeUser != null)
                 {
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
-                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
-                        if (updatedList != null && updatedList.Count > 0)
-                        {
-                            string updatedListString = JsonConvert.SerializeObject(updatedList);
-                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
-                        }
+                        isUpdateNeeded = true;
                     }
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+
+            foreach (SummaryDashBoardAccountEntity billingDetails in summaryDetails)
+            {
+                db.Execute("Update CustomerBillingAccountEntity SET billingDetails = ? WHERE accNum = ?", billingDetails.JsonResponse, billingDetails.AccountNo);
+
+                if (isUpdateNeeded && activeUser != null)
+                {
+                    try
+                    {
+                        CustomerBillingAccount acc = FindByAccNum(billingDetails.AccountNo);
+                        AccountSortingEntity.InsertOrReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, acc);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
             }
         }
 
@@ -420,9 +518,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.billingDetails = null;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -659,9 +761,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMROnboardingShown = true;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -699,9 +805,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingOnBoardShown = true;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -727,9 +837,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingOnBoardShown = false;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -767,9 +881,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingThreePhaseOnBoardShown = true;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -795,9 +913,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingThreePhaseOnBoardShown = false;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }
@@ -823,9 +945,13 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
-                        updatedList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").ToList();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRTakePhotoOnBoardShown = true;
+                            }
                             string updatedListString = JsonConvert.SerializeObject(updatedList);
                             AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
                         }

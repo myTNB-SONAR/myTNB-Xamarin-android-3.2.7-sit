@@ -596,6 +596,7 @@ namespace myTNB_Android.Src.Login.MVP
                     List<CustomerBillingAccount> fetchList = new List<CustomerBillingAccount>();
 
                     List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
+                    List<int> newExisitingListArray = new List<int>();
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
 
                     foreach (Account acc in list)
@@ -623,7 +624,7 @@ namespace myTNB_Android.Src.Login.MVP
 
                         if (index != -1)
                         {
-                            newExistingList.Add(newRecord);
+                            newExisitingListArray.Add(index);
                         }
                         else
                         {
@@ -631,8 +632,42 @@ namespace myTNB_Android.Src.Login.MVP
                         }
                     }
 
+                    if (newExisitingListArray.Count > 0)
+                    {
+                        newExisitingListArray.Sort();
+
+                        foreach(int index in newExisitingListArray)
+                        {
+                            CustomerBillingAccount oldAcc = existingSortedList[index];
+
+                            Account newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+
+                            var newRecord = new CustomerBillingAccount()
+                            {
+                                Type = newAcc.Type,
+                                AccNum = newAcc.AccountNumber,
+                                AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
+                                UserAccountId = newAcc.UserAccountID,
+                                ICNum = newAcc.IcNum,
+                                AmtCurrentChg = newAcc.AmCurrentChg,
+                                IsRegistered = newAcc.IsRegistered,
+                                IsPaid = newAcc.IsPaid,
+                                isOwned = newAcc.IsOwned,
+                                AccountTypeId = newAcc.AccountTypeId,
+                                AccountStAddress = newAcc.AccountStAddress,
+                                OwnerName = newAcc.OwnerName,
+                                AccountCategoryId = newAcc.AccountCategoryId,
+                                SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
+                                IsSelected = false
+                            };
+
+                            newExistingList.Add(newRecord);
+                        }
+                    }
+
                     if (newAccountList.Count > 0)
                     {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
                         newExistingList.AddRange(newAccountList);
                     }
 

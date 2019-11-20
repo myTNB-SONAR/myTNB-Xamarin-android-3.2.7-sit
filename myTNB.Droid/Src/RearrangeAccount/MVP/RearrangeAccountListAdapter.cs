@@ -23,6 +23,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         private bool isChange = false;
 
+        private int FirstMoveCell = -1;
+
+        private int EndMoveCell = -1;
+
         public int mMobileCellPosition { get; set; }
 
         Context context;
@@ -97,6 +101,17 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         public bool GetIsChange()
         {
+            if (!isChange && FirstMoveCell != -1 && EndMoveCell != -1)
+            {
+                if (FirstMoveCell != EndMoveCell)
+                {
+                    isChange = true;
+                }
+            }
+
+            FirstMoveCell = -1;
+            EndMoveCell = -1;
+
             return isChange;
         }
 
@@ -124,10 +139,11 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             Items[indexOne] = Items[indexTwo];
             Items[indexTwo] = oldValue;
             mMobileCellPosition = indexTwo;
-            if (indexOne != indexTwo && !isChange)
+            if (!isChange && FirstMoveCell == -1)
             {
-                isChange = true;
+                FirstMoveCell = indexOne;
             }
+            EndMoveCell = indexTwo;
             NotifyDataSetChanged();
         }
     }

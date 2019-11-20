@@ -2794,104 +2794,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
-                    if (this.mView.CheckMyServiceList() <= 0)
+                    if (HomeMenuUtils.GetIsRestartHomeMenu())
                     {
-                        isHomeMenuTutorialShown = false;
-                        isMyServiceDone = false;
-                        isMyServiceExpanded = false;
-                        HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                        OnProcessMyServiceCards();
-                    }
-                    else if (this.mView.CheckNewFaqList() <= 0)
-                    {
-                        isHomeMenuTutorialShown = false;
-                        isNeedHelpDone = false;
-                        ReadNewFAQFromCache();
+                        this.mView.ResetNewFAQScroll();
+                        this.mView.OnShowHomeMenuFragmentTutorialDialog();
                     }
                     else
                     {
                         normalTokenSource.Cancel();
+                        trackCurrentLoadMoreCount = 0;
+                        HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
+                        isMyServiceExpanded = false;
+                        HomeMenuUtils.SetIsMyServiceExpanded(false);
                         isQuery = false;
                         HomeMenuUtils.SetIsQuery(false);
                         HomeMenuUtils.SetQueryWord("");
-                        this.mView.OnSearchOutFocus(true);
-
-                        if (billingAccoutCount > 3 && trackCurrentLoadMoreCount > 1)
-                        {
-                            trackCurrentLoadMoreCount = 0;
-                            HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
-                            updateDashboardInfoList = new List<SummaryDashBoardDetails>();
-                            List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-                            summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-                            foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
-                            {
-                                SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
-                                summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
-                                summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
-                                summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
-                                summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
-                                summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
-                                summaryDashboardInfoList.Add(summaryDashBoardDetails);
-                            }
-
-                            List<string> accountList = new List<string>();
-                            for (int i = 0; i < customerBillingAccountList.Count; i++)
-                            {
-                                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
-                                {
-                                    accountList.Add(customerBillingAccountList[i].AccNum);
-                                }
-                            }
-
-                            billingAccoutCount = summaryDashboardInfoList.Count;
-
-                            this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
-
-                            if (billingAccoutCount > 0)
-                            {
-                                FetchAccountSummary(true, true, true);
-                            }
-                        }
-
-                        if (isMyServiceExpanded)
-                        {
-                            List<MyService> fetchList = new List<MyService>();
-                            isMyServiceExpanded = false;
-                            HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                            for (int i = 0; i < 3; i++)
-                            {
-                                fetchList.Add(currentMyServiceList[i]);
-                            }
-
-                            if (currentMyServiceList.Count > 3)
-                            {
-                                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                            }
-                            else
-                            {
-                                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                            }
-                            this.mView.SetMyServiceResult(fetchList);
-                        }
-                        else
-                        {
-                            if (currentMyServiceList.Count > 3)
-                            {
-                                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                            }
-                            else
-                            {
-                                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                            }
-                        }
-
-                        this.mView.ResetNewFAQScroll();
-
-                        this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                        HomeMenuUtils.SetIsRestartHomeMenu(true);
+                        this.mView.RestartHomeMenu();
                     }
                 }
             }

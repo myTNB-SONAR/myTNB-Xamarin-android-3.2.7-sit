@@ -7,10 +7,11 @@ using Android.Content;
 using Android.Util;
 using System;
 using myTNB_Android.Src.Utils;
+using Android.OS;
 
 namespace myTNB_Android.Src.RearrangeAccount.MVP
 {
-    public class RearrangeAccountListView : ListView, ITypeEvaluator, GestureDetector.IOnGestureListener
+    public class RearrangeAccountListView : ListView, ITypeEvaluator, GestureDetector.IOnGestureListener, AbsListView.IOnScrollListener
     {
         bool _reorderingEnabled = true;
 
@@ -34,17 +35,20 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
         }
 
-        const int INVALID_ID = -1;
-        const int INVALID_POINTER_ID = -1;
+        const int SMOOTH_SCROLL_AMOUNT_AT_EDGE = 60;
 
         int mLastEventY = -1;
+
         int mDownY = -1;
         int mDownX = -1;
+
         int mTotalOffset = 0;
-        int mActivePointerId = INVALID_POINTER_ID;
 
         bool mCellIsMobile = false;
+        private bool mIsMobileScrolling = false;
+        private int mSmoothScrollAmountAtEdge = 0;
 
+        const int INVALID_ID = -1;
         long mAboveItemId = INVALID_ID;
         long mMobileItemId = INVALID_ID;
         long mBelowItemId = INVALID_ID;
@@ -52,9 +56,24 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         View mobileView;
         Rect mHoverCellCurrentBounds;
         Rect mHoverCellOriginalBounds;
+
+        const int INVALID_POINTER_ID = -1;
+        int mActivePointerId = INVALID_POINTER_ID;
+
+        private bool mIsWaitingForScrollFinish = false;
+        private int mScrollState = (int) ScrollState.Idle;
+        private const int mPointerIndexMask = (int)MotionEventActions.PointerIndexMask;
+        private const int mPointerIndexShift = (int)MotionEventActions.PointerIndexShift;
+
         BitmapDrawable mHoverCell;
         GestureDetector dectector;
         Context mContext;
+
+        private int mPreviousFirstVisibleItem = -1;
+        private int mPreviousVisibleItemCount = -1;
+        private int mCurrentFirstVisibleItem;
+        private int mCurrentVisibleItemCount;
+        private int mCurrentScrollState;
 
         ///
         /// Constructors
@@ -80,6 +99,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mContext = context;
             dectector = new GestureDetector(this);
             ItemLongClick += HandleItemLongClick;
+            SetOnScrollListener(this);
+            mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / DPUtils.GetDensity());
         }
 
         #region Handlers
@@ -144,6 +165,17 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         /// </summary>
         public void OnLongPress(MotionEvent e)
         {
+            Vibrator vibrator = (Vibrator)mContext.GetSystemService(Context.VibratorService);
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+            {
+                vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
+
+            }
+            else
+            {
+                vibrator.Vibrate(150);
+
+            }
             mTotalOffset = 0;
 
             int position = PointToPosition(mDownX, mDownY);
@@ -338,6 +370,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                             mHoverCell.SetBounds(mHoverCellCurrentBounds.Left, mHoverCellCurrentBounds.Top, mHoverCellCurrentBounds.Right, mHoverCellCurrentBounds.Bottom);
                             Invalidate();
                             HandleCellSwitch();
+
+                            mIsMobileScrolling = false;
+
+                            HandleMobileCellScroll();
                         }
                         break;
                     case MotionEventActions.Up:
@@ -345,6 +381,15 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                         break;
                     case MotionEventActions.Cancel:
                         TouchEventsCancelled();
+                        break;
+                    case MotionEventActions.PointerUp:
+                        pointerIndex = ((int)e.Action & mPointerIndexMask) >>
+                            (mPointerIndexShift);
+                        int pointerId = e.GetPointerId(pointerIndex);
+                        if (pointerId == mActivePointerId)
+                        {
+                            TouchEventsEnded();
+                        }
                         break;
                     default:
                         break;
@@ -428,8 +473,16 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             if (mCellIsMobile)
             {
                 mCellIsMobile = false;
+                mIsWaitingForScrollFinish = false;
+                mIsMobileScrolling = false;
                 mActivePointerId = INVALID_POINTER_ID;
                 ((IRearrangeAccountListAdapter)Adapter).mMobileCellPosition = int.MinValue;
+
+                if (mScrollState != (int) ScrollState.Idle)
+                {
+                    mIsWaitingForScrollFinish = true;
+                    return;
+                }
 
                 mHoverCellCurrentBounds.OffsetTo(mHoverCellOriginalBounds.Left, mobileView.Top);
 
@@ -494,7 +547,102 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
             Enabled = true;
             mCellIsMobile = false;
+            mIsMobileScrolling = false;
             mActivePointerId = INVALID_POINTER_ID;
+        }
+
+        private void HandleMobileCellScroll()
+        {
+            mIsMobileScrolling = HandleMobileCellScroll(mHoverCellCurrentBounds);
+        }
+
+        public bool HandleMobileCellScroll(Rect r)
+        {
+            int offset = ComputeVerticalScrollOffset();
+            int height = Height;
+            int extent = ComputeVerticalScrollExtent();
+            int range = ComputeVerticalScrollRange();
+            int hoverViewTop = r.Top;
+            int hoverHeight = r.Height();
+
+            if (hoverViewTop <= 0 && offset > 0)
+            {
+                SmoothScrollBy(-mSmoothScrollAmountAtEdge, 0);
+                return true;
+            }
+
+            if (hoverViewTop + hoverHeight >= height && (offset + extent) < range)
+            {
+                SmoothScrollBy(mSmoothScrollAmountAtEdge, 0);
+                return true;
+            }
+
+            return false;
+        }
+
+        void IOnScrollListener.OnScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+        {
+            mCurrentFirstVisibleItem = firstVisibleItem;
+            mCurrentVisibleItemCount = visibleItemCount;
+
+            mPreviousFirstVisibleItem = (mPreviousFirstVisibleItem == -1) ? mCurrentFirstVisibleItem
+                    : mPreviousFirstVisibleItem;
+            mPreviousVisibleItemCount = (mPreviousVisibleItemCount == -1) ? mCurrentVisibleItemCount
+                    : mPreviousVisibleItemCount;
+
+            CheckAndHandleFirstVisibleCellChange();
+            CheckAndHandleLastVisibleCellChange();
+
+            mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
+            mPreviousVisibleItemCount = mCurrentVisibleItemCount;
+        }
+
+        void IOnScrollListener.OnScrollStateChanged(AbsListView view, ScrollState scrollState)
+        {
+            mCurrentScrollState = (int) scrollState;
+            mScrollState = (int) scrollState;
+            IsScrollCompleted();
+        }
+
+        public void CheckAndHandleFirstVisibleCellChange()
+        {
+            if (mCurrentFirstVisibleItem != mPreviousFirstVisibleItem)
+            {
+                if (mCellIsMobile && mMobileItemId != INVALID_ID)
+                {
+                    UpdateNeighborViewsForID(mMobileItemId);
+                    HandleCellSwitch();
+                }
+            }
+        }
+
+        public void CheckAndHandleLastVisibleCellChange()
+        {
+            int currentLastVisibleItem = mCurrentFirstVisibleItem + mCurrentVisibleItemCount;
+            int previousLastVisibleItem = mPreviousFirstVisibleItem + mPreviousVisibleItemCount;
+            if (currentLastVisibleItem != previousLastVisibleItem)
+            {
+                if (mCellIsMobile && mMobileItemId != INVALID_ID)
+                {
+                    UpdateNeighborViewsForID(mMobileItemId);
+                    HandleCellSwitch();
+                }
+            }
+        }
+
+        private void IsScrollCompleted()
+        {
+            if (mCurrentVisibleItemCount > 0 && mCurrentScrollState == (int) ScrollState.Idle)
+            {
+                if (mCellIsMobile && mIsMobileScrolling)
+                {
+                    HandleMobileCellScroll();
+                }
+                else if (mIsWaitingForScrollFinish)
+                {
+                    TouchEventsEnded();
+                }
+            }
         }
     }
 }

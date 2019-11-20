@@ -10,6 +10,7 @@ namespace myTNB_Android.Src.Utils
         private static int trackCurrentLoadMoreCount = 0;
         private static bool isQuery = false;
         private static string queryString = "";
+        private static bool isRestartHomeMenu = false;
 
         public static void ResetAll()
         {
@@ -17,6 +18,7 @@ namespace myTNB_Android.Src.Utils
             isMyServiceExpanded = false;
             trackCurrentLoadMoreCount = 0;
             isQuery = false;
+            isRestartHomeMenu = false;
             queryString = "";
         }
 
@@ -28,6 +30,16 @@ namespace myTNB_Android.Src.Utils
         public static bool GetIsLoadedHomeMenu()
         {
             return isLoadedHomeMenu;
+        }
+
+        public static void SetIsRestartHomeMenu(bool flag)
+        {
+            isRestartHomeMenu = flag;
+        }
+
+        public static bool GetIsRestartHomeMenu()
+        {
+            return isRestartHomeMenu;
         }
 
         public static void SetTrackCurrentLoadMoreCount(int count)

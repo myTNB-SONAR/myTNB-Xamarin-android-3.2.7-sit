@@ -99,7 +99,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                 {
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
-                    this.Finish();
+                    SetResult(Result.Ok);
+                    Finish();
                 }
                 else
                 {
