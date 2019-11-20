@@ -9,7 +9,7 @@ namespace myTNB.SmartMeterView
 {
     public class BaseSmartMeterView
     {
-        protected string Format_Value = "{0} {1}";
+        protected string Format_Value = "{0:n0} {1}";
 
         public virtual void CreateSegment(ref CustomUIView view) { }
         public CGRect ReferenceWidget { set; protected get; }
@@ -19,22 +19,31 @@ namespace myTNB.SmartMeterView
         public RMkWhEnum ConsumptionState { set; protected get; } = RMkWhEnum.kWh;
         public Func<string, string> GetI18NValue;
 
-        protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
+        protected virtual double GetMaxValue(RMkWhEnum view, List<string> value, List<bool> dpcIndicatorList = null)
         {
+            if (dpcIndicatorList != null && view == RMkWhEnum.kWh)
+            {
+                for (int i = 0; i < dpcIndicatorList.Count; i++)
+                {
+                    if (dpcIndicatorList[i])
+                    {
+                        value[i] = "0";
+                    }
+                }
+            }
             double maxValue = 0;
-            if (value != null &&
-               value.Count > 0)
+            if (value != null && value.Count > 0)
             {
                 switch (view)
                 {
                     case RMkWhEnum.kWh:
                         {
-                            maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
+                            maxValue = value.Max(x => Math.Abs(ParseValue(x)));
                             break;
                         }
                     case RMkWhEnum.RM:
                         {
-                            maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
+                            maxValue = value.Max(x => Math.Abs(ParseValue(x)));
                             break;
                         }
                     default:
@@ -45,6 +54,16 @@ namespace myTNB.SmartMeterView
                 }
             }
             return maxValue;
+        }
+
+        private double ParseValue(string val)
+        {
+            double parsedValue = TextHelper.ParseStringToDouble(val);
+            if (parsedValue < 0)
+            {
+                parsedValue = 0;
+            }
+            return parsedValue;
         }
 
         public nfloat GetWidthByScreenSize(nfloat value)
@@ -75,6 +94,14 @@ namespace myTNB.SmartMeterView
         public nfloat GetXLocationToCenterObject(nfloat width, UIView view = null)
         {
             return ScaleUtility.GetXLocationToCenterObject(width, view);
+        }
+
+        protected bool IsAmountState
+        {
+            get
+            {
+                return ConsumptionState == RMkWhEnum.RM;
+            }
         }
     }
 }

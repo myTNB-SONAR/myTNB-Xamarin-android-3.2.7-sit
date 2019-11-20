@@ -8,5 +8,8 @@ namespace myTNB
 
         //I18N Keys
         public static string I18N_NavTitle = "navTitle";
+
+        //Imag
+        public static string Img_DefaultImage = "Promotion-Default";
     }
 }

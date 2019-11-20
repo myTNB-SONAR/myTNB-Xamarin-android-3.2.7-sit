@@ -10,18 +10,17 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using myTNB.TabBar;
-using System.Linq;
 
 namespace myTNB
 {
     public partial class HomeTabBarController : UITabBarController
     {
-        public HomeTabBarController(IntPtr handle) : base(handle) { }
+        public HomeTabBarController(IntPtr handle) : base(handle)
+        {
+        }
 
         private string _imageSize = string.Empty;
         private Dictionary<string, string> I18NDictionary;
-        private UIColor _badgeColor = MyTNBColor.FreshGreen;
-        private UIStringAttributes _badgeAttributes = new UIStringAttributes { Font = MyTNBFont.MuseoSans10_500 };
 
         public override void ViewDidLoad()
         {
@@ -129,7 +128,8 @@ namespace myTNB
         {
             if (!ShowNewIndicator("2"))
             {
-                UpdatePromotionTabBarIcon();
+                TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             }
             /*if (!ShowNewIndicator("3"))
             {
@@ -357,21 +357,6 @@ namespace myTNB
         {
             TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-
-            PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
-            if (!ShowNewIndicator("2") && promotionList != null && promotionList.Count > 0)
-            {
-                int unreadCount = promotionList.Where(x => !x.IsRead).Count();
-
-                TabBar.Items[2].BadgeColor = _badgeColor;
-                TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount > 99 ? Constants.Value_99 : unreadCount.ToString() : null;
-                TabBar.Items[2].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);
-            }
-            else
-            {
-                TabBar.Items[2].BadgeValue = null;
-            }
         }
 
         private Task GetPromotions()
@@ -379,7 +364,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                bool isValidTimeStamp = false;
+                bool needsUpdate = false;
                 string promotionTS = iService.GetPromotionsTimestampItem();
                 PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
                 if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
@@ -388,29 +373,29 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(Constants.Key_SiteCorePromotionTimeStamp);
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_SiteCorePromotionTimeStamp);
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                         sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
+                        needsUpdate = true;
                     }
                     else
                     {
                         if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
                         {
-                            isValidTimeStamp = false;
+                            needsUpdate = false;
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_SiteCorePromotionTimeStamp);
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                             sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
+                            needsUpdate = true;
                         }
                     }
                 }
 
-                if (isValidTimeStamp)
+                if (needsUpdate)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
@@ -439,11 +424,11 @@ namespace myTNB
                     }
                     else
                     {
-                        //PromotionsEntity wsManager = new PromotionsEntity();
-                        //List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
-                        imageStr = /*promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList) ?
+                        PromotionsEntity wsManager = new PromotionsEntity();
+                        List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
+                        imageStr = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList) ?
                             isSelected ? TabbarConstants.Img_ActivePromotionsUnread : TabbarConstants.Img_InactivePromotionsUnread
-                            :*/ isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
+                            : isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
                     }
                     break;
                 case TabEnum.REWARDS:

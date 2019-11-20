@@ -114,12 +114,18 @@ namespace myTNB
 
         public void SetNotificationImage(string image)
         {
-            _notificationIcon.Image = UIImage.FromBundle(image);
+            if (_notificationIcon != null)
+            {
+                _notificationIcon.Image = UIImage.FromBundle(image);
+            }
         }
 
         public void SetNotificationActionRecognizer(UITapGestureRecognizer recognizer)
         {
-            _notificationView.AddGestureRecognizer(recognizer);
+            if (_notificationView != null)
+            {
+                _notificationView.AddGestureRecognizer(recognizer);
+            }
         }
 
         public int BadgeValue

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Force.DeepCloner;
 using Foundation;
 using myTNB.Model.Usage;
@@ -214,5 +215,29 @@ namespace myTNB
             userDefaults.Synchronize();
         }
         #endregion
+
+        public static bool AreAllTariffEmpty
+        {
+            get
+            {
+                if (ByMonthUsage != null && ByMonthUsage.Count > 0)
+                {
+                    for (int i = 0; i < ByMonthUsage.Count; i++)
+                    {
+                        MonthItemModel monthUsage = ByMonthUsage[i];
+                        if (monthUsage != null && monthUsage.tariffBlocks != null && monthUsage.tariffBlocks.Count > 0)
+                        {
+                            double amountTotal = monthUsage.tariffBlocks.Sum(x => x.Amount);
+                            double usageTotal = monthUsage.tariffBlocks.Sum(x => x.Usage);
+                            if (amountTotal > 0 && usageTotal > 0)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
     }
 }

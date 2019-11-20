@@ -92,6 +92,8 @@ namespace myTNB
                     Hidden = false
                 };
                 viewBar.AddSubview(viewCover);
+
+                double.TryParse(item.UsageTotal, out double consumptionValue);
                 nfloat usageYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblUsage = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                     , GetWidthByScreenSize(100), lblHeight))
@@ -99,23 +101,22 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
                     TextColor = UIColor.White,
-                    Text = string.Format(Format_Value, item.UsageTotal, item.UsageUnit),
+                    Text = string.Format(Format_Value, consumptionValue, item.UsageUnit),
                     Hidden = !isSelected,
                     Tag = 1002
                 };
                 nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetWidthByScreenSize(100));
                 lblUsage.Frame = new CGRect((segmentWidth - lblUsageWidth) / 2, lblUsage.Frame.Y, lblUsageWidth, lblUsage.Frame.Height);
-
-                double consumptionValue;
-                double.TryParse(item.UsageTotal, out consumptionValue);
                 nfloat amtYLoc = usageYLoc - lblHeight;
+
+                double.TryParse(item.AmountTotal, out double amountValue);
                 UILabel lblAmount = new UILabel(new CGRect(0, lblUsage.Frame.GetMinY() - lblHeight
                    , GetWidthByScreenSize(100), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
-                    Text = Math.Abs(consumptionValue).ToString("N2", CultureInfo.InvariantCulture).FormatAmountString(item.Currency),
+                    Text = Math.Abs(amountValue).ToString("N2", CultureInfo.InvariantCulture).FormatAmountString(item.Currency),
                     Hidden = !isSelected,
                     Tag = 1003
                 };

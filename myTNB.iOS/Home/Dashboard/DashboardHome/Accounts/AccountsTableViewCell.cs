@@ -16,6 +16,7 @@ namespace myTNB
         {
             if (accountListViewController != null)
             {
+                ViewHelper.AdjustFrameSetY(accountListViewController.View, 0);
                 AddSubview(accountListViewController.View);
             }
         }

@@ -59,8 +59,8 @@
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
 
-        //User Preference Keys
-        public static string Key_SiteCorePromotionTimeStamp = "SiteCorePromotionTimeStamp";
+        //Key
+        public static string Key_PromotionTimestamp = "SiteCorePromotionTimeStamp";
 
         //Strings
         public static string Value_99 = "99+";

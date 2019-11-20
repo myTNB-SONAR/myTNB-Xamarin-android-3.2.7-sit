@@ -129,22 +129,16 @@ namespace myTNB
                     if (appBuildVersion != AppVersionHelper.GetBuildVersion())
                     {
                         _onboardingEnum = OnboardingEnum.AppUpdate;
-                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
-                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
                     }
                 }
                 else
                 {
                     _onboardingEnum = OnboardingEnum.AppUpdate;
-                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
-                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
                 }
             }
             else
             {
                 _onboardingEnum = OnboardingEnum.FreshInstall;
-                sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
-                sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
             }
 
             if (_onboardingEnum == OnboardingEnum.AppUpdate)
@@ -152,7 +146,15 @@ namespace myTNB
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
                 DueEntity.DeleteTable();
+                //sharedPreference.RemoveObject(Constants.Key_PromotionTimestamp);
             }
+        }
+
+        private void UpdateVersionUpdate()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
+            sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
         }
 
         public void GetAccountsForAppUpdate()
@@ -1018,6 +1020,7 @@ namespace myTNB
             onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
             onboardingVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(onboardingVC, true, null);
+            UpdateVersionUpdate();
         }
 
         internal void ShowPrelogin()
@@ -1050,6 +1053,7 @@ namespace myTNB
             else
             {
                 ProceedOnNormalLaunch();
+                UpdateVersionUpdate();
             }
         }
 

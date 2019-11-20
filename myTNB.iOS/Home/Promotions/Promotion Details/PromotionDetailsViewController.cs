@@ -86,6 +86,10 @@ namespace myTNB
                                 _activityIndicator.Hide();
                             });
                         }
+                        else
+                        {
+                            imgBanner.Image = UIImage.FromBundle(PromotionsConstants.Img_DefaultImage);
+                        }
                     });
                     dataTask.Resume();
                 }
@@ -93,6 +97,10 @@ namespace myTNB
                 {
                     Debug.WriteLine("Image load Error: " + e.Message);
                 }
+            }
+            else
+            {
+                imgBanner.Image = UIImage.FromBundle(PromotionsConstants.Img_DefaultImage);
             }
 
             UILabel lblTitle = new UILabel(new CGRect(18, viewBanner.Frame.Height + 16, View.Frame.Width - 36, 18))

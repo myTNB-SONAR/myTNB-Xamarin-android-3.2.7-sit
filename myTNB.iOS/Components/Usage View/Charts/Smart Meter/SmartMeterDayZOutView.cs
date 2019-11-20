@@ -26,7 +26,7 @@ namespace myTNB.SmartMeterView
             nfloat missingReadingBarMargin = GetHeightByScreenSize(10);
 
             List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
-            List<string> valueList = usageData.Select(x => x.Consumption).ToList();
+            List<string> valueList = IsAmountState ? usageData.Select(x => x.Amount).ToList() : usageData.Select(x => x.Consumption).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
             for (int i = 0; i < usageData.Count; i++)
@@ -40,7 +40,8 @@ namespace myTNB.SmartMeterView
                 view.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                double.TryParse(item.Consumption, out double value);
+                string valReference = IsAmountState ? item.Amount : item.Consumption;
+                double.TryParse(valReference, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = maxBarHeight - barHeight + missingReadingBarMargin;
 

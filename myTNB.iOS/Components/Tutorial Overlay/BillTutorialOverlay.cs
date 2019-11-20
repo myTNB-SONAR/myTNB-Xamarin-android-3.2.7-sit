@@ -556,7 +556,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialHistoryTitle) : GetI18NValue(BillConstants.I18N_TutorialHistoryNormalTitle)
+                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialHistoryNormalTitle) : GetI18NValue(BillConstants.I18N_TutorialHistoryTitle)
             };
             string desc;
             if (IsREAccount)

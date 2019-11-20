@@ -164,6 +164,23 @@ namespace myTNB
             return accounts;
         }
 
+        public List<string> GetOwnedAccountsList(List<CustomerAccountRecordModel> acctList)
+        {
+            List<string> accounts = new List<string>();
+
+            if (acctList.Count <= 0)
+                return accounts;
+
+            foreach (var acct in acctList)
+            {
+                if (acct.IsNormalMeter && acct.IsOwnedAccount)
+                {
+                    accounts.Add(acct.accNum);
+                }
+            }
+            return accounts;
+        }
+
         public nfloat GetHeightForAccountList()
         {
             nfloat totalCellHeight;

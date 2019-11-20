@@ -13,6 +13,7 @@ namespace myTNB
         public MasterDataModel data { get; set; }
         public bool IsSMRApplyDisabled { get; set; }
         public bool IsEnergyTipsDisabled { get; set; }
+        public bool IsSMRFeatureDisabled { get; set; }
         public bool IsOCRDown { get; set; }
         [JsonIgnore]
         public bool IsMaintenance
