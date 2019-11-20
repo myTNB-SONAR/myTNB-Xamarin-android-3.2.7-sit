@@ -74,7 +74,7 @@ namespace myTNB
 
         protected virtual double GetMaxValue(RMkWhEnum view, List<string> value, List<bool> dpcIndicatorList = null)
         {
-            if (dpcIndicatorList != null)
+            if (dpcIndicatorList != null && view == RMkWhEnum.kWh)
             {
                 for (int i = 0; i < dpcIndicatorList.Count; i++)
                 {
