@@ -383,8 +383,8 @@
     "mdmsUnavailable": "Currently Unavailable",
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
     "beenPaidExtra": "Saya telah dibayar lebih",
-    "tutorialSMRTitle": "Your reading status at a glance.",
-    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
+    "tutorialSMRTitle": "Status Bacaan Anda Sepintas Lalu.",
+    "tutorialSMRDesc": "Dapatkan status bacaan anda di sini. Kami juga akan memaklumkan apabila tiba masanya untuk menghantar bacaan.",
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you."
@@ -449,8 +449,8 @@
     "tooltipdesc1": "Jumlah perlu dibayar|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
     "pay": "Bayar",
-    "tutorialTitle": "View your e-bill",
-    "tutorialDesc": "Tap here to acess the PDF version of your bill.",
+    "tutorialTitle": "Lihat Bil anda.",
+    "tutorialDesc": "Tekan sini untuk mengakses bil versi PDF anda.",
     "gotIt": "Faham!"
   },
   "BillFilter": {
