@@ -124,7 +124,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             Items[indexOne] = Items[indexTwo];
             Items[indexTwo] = oldValue;
             mMobileCellPosition = indexTwo;
-            isChange = true;
+            if (indexOne != indexTwo && !isChange)
+            {
+                isChange = true;
+            }
             NotifyDataSetChanged();
         }
     }

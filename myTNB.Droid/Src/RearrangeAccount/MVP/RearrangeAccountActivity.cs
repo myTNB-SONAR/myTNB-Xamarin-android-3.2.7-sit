@@ -6,6 +6,7 @@ using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
@@ -37,7 +38,9 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
                 listView = FindViewById<RearrangeAccountListView>(Resource.Id.list_view);
 
-                items = AccountSortingEntity.List(UserEntity.GetActive().Email);
+                string env = Constants.APP_CONFIG.ENV;
+
+                items = AccountSortingEntity.List(UserEntity.GetActive().Email, env);
 
                 listView.Adapter = new RearrangeAccountListAdapter(this, items);
 
@@ -64,6 +67,46 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return Resource.Layout.AccountRearrangeLayout;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Rearrange Accounts");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
+        [OnClick(Resource.Id.btnSubmit)]
+        void OnSubmit(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+
+                List<CustomerBillingAccount> sortedList = ((RearrangeAccountListAdapter)listView.Adapter).Items;
+
+                int rowChange = AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, sortedList);
+                if (rowChange != 0)
+                {
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    this.Finish();
+                }
+                else
+                {
+                    // Failed
+                }
+            }
+        }
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -93,5 +136,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             btnSubmit.Enabled = false;
             btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
+
+
     }
 }

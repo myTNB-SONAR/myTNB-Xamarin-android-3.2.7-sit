@@ -15,6 +15,9 @@ namespace myTNB_Android.Src.Database.Model
         [PrimaryKey, Column("EmailAddress")]
         public string EmailAddress { get; set; }
 
+        [Column("Environment")]
+        public string Environment { get; set; }
+
         [Column("AccountList")]
         public string AccountList { get; set; }
 
@@ -29,13 +32,14 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<AccountSortingEntity>();
         }
 
-        public static int InsertOrReplace(string emailAddress
+        public static int InsertOrReplace(string emailAddress, string env
             , string accountList)
         {
             var db = DBHelper.GetSQLiteConnection();
             var newRecord = new AccountSortingEntity()
             {
                 EmailAddress = emailAddress,
+                Environment = env,
                 AccountList = accountList
             };
 
@@ -44,7 +48,63 @@ namespace myTNB_Android.Src.Database.Model
             return newRecordRow;
         }
 
-        public static int InsertOrReplace(string emailAddress
+        public static void InsertOrReplaceSpecificAccount(string emailAddress, string env
+            , CustomerBillingAccount addAcc)
+        {
+            List<CustomerBillingAccount> existingList = List(emailAddress, env);
+
+            if (existingList != null && existingList.Count > 0 && addAcc != null && !string.IsNullOrEmpty(addAcc.AccNum))
+            {
+                int index = existingList.FindIndex(x => x.AccNum == addAcc.AccNum);
+                if (index == -1)
+                {
+                    existingList.Add(addAcc);
+
+                    InsertOrReplace(emailAddress, env, existingList);
+                }
+                else if (index != -1)
+                {
+                    existingList[index] = addAcc;
+
+                    InsertOrReplace(emailAddress, env, existingList);
+                }
+            }
+
+        }
+
+        public static void RemoveSpecificAccount(string emailAddress, string env
+            , string accNum)
+        {
+            List<CustomerBillingAccount> existingList = List(emailAddress, env);
+
+            if (existingList != null && existingList.Count > 0 && !string.IsNullOrEmpty(accNum))
+            {
+                int index = existingList.FindIndex(x => x.AccNum == accNum);
+                if (index != -1)
+                {
+                    existingList.RemoveAt(index);
+
+                    InsertOrReplace(emailAddress, env, existingList);
+                }
+            }
+
+        }
+
+        public static void RemoveSpecificAccountSorting(string emailAddress, string env)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Delete from CustomerBillingAccountEntity WHERE EmailAddress = ? AND Environment = ?", emailAddress, env);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        public static int InsertOrReplace(string emailAddress, string env
                 , List<CustomerBillingAccount> customerBillingAccounts)
         {
             int newRecordRow = 0;
@@ -57,6 +117,7 @@ namespace myTNB_Android.Src.Database.Model
                 var newRecord = new AccountSortingEntity()
                 {
                     EmailAddress = emailAddress,
+                    Environment = env,
                     AccountList = accountList
                 };
 
@@ -70,15 +131,15 @@ namespace myTNB_Android.Src.Database.Model
             return newRecordRow;
         }
 
-        public static List<CustomerBillingAccount> List(string email)
+        public static List<CustomerBillingAccount> List(string email, string env)
         {
             List<CustomerBillingAccount> customerAccounts = new List<CustomerBillingAccount>();
 
-            if (HasItems(email))
+            if (HasItems(email, env))
             {
                 try
                 {
-                    customerAccounts = ReturnList(email);
+                    customerAccounts = ReturnList(email, env);
                 }
                 catch (Exception e)
                 {
@@ -89,7 +150,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 try
                 {
-                    customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                    customerAccounts = CustomerBillingAccount.GetDefaultSortedCustomerBillingAccounts();
                     if (customerAccounts == null)
                     {
                         customerAccounts = new List<CustomerBillingAccount>();
@@ -104,19 +165,19 @@ namespace myTNB_Android.Src.Database.Model
             return customerAccounts;
         }
 
-        private static bool HasItems(string email)
+        public static bool HasItems(string email, string env)
         {
             var db = DBHelper.GetSQLiteConnection();
-            return db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ?", email).Count > 0;
+            return db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ? AND Environment = ?", email, env).Count > 0;
         }
 
-        private static List<CustomerBillingAccount> ReturnList(string email)
+        private static List<CustomerBillingAccount> ReturnList(string email, string env)
         {
             var db = DBHelper.GetSQLiteConnection();
 
             List<CustomerBillingAccount> customerAccounts = new List<CustomerBillingAccount>();
 
-            AccountSortingEntity item = db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ?", email).ToList()[0];
+            AccountSortingEntity item = db.Query<AccountSortingEntity>("SELECT * FROM AccountSortingEntity WHERE EmailAddress = ? AND Environment = ?", email, env).ToList()[0];
 
             if (item != null)
             {
@@ -130,7 +191,7 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             try
                             {
-                                customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                                customerAccounts = CustomerBillingAccount.GetDefaultSortedCustomerBillingAccounts();
                                 if (customerAccounts == null)
                                 {
                                     customerAccounts = new List<CustomerBillingAccount>();
@@ -151,7 +212,7 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     try
                     {
-                        customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                        customerAccounts = CustomerBillingAccount.GetDefaultSortedCustomerBillingAccounts();
                         if (customerAccounts == null)
                         {
                             customerAccounts = new List<CustomerBillingAccount>();
@@ -167,7 +228,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 try
                 {
-                    customerAccounts = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                    customerAccounts = CustomerBillingAccount.GetDefaultSortedCustomerBillingAccounts();
                     if (customerAccounts == null)
                     {
                         customerAccounts = new List<CustomerBillingAccount>();
