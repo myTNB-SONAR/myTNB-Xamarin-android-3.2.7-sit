@@ -463,6 +463,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.shimmerSSMRMessage)]
         ShimmerFrameLayout shimmerSSMRMessage;
 
+        [BindView(Resource.Id.btnMDMSDownRefresh)]
+        Button btnMDMSDownRefresh;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -4710,6 +4713,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Refresh Buttom Clicked");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        [OnClick(Resource.Id.btnMDMSDownRefresh)]
+        internal void OnMDMSDownRefresh(object sender, EventArgs e)
+        {
+            this.userActionsListener.OnTapRefresh();
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard MDMS Down Refresh Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -9136,6 +9153,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetTitle(MDMSUnavailableTitle)
                     .SetMessage(MDMSUnavailableMessage)
                     .SetCTALabel(MDMSUnavailableCTA)
+                    .SetCTAaction(userActionsListener.OnTapRefresh)
                     .Build().Show();
             }
         }
