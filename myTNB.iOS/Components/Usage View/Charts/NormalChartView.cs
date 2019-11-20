@@ -59,7 +59,8 @@ namespace myTNB
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = IsAmountState ? usageData.Select(x => x.AmountTotal).ToList() : usageData.Select(x => x.UsageTotal).ToList();
-            double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
+            List<bool> dpcIndicatorList = usageData.Select(x => x.DPCIndicator).ToList();
+            double maxValue = GetMaxValue(ConsumptionState, valueList, dpcIndicatorList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
@@ -78,6 +79,8 @@ namespace myTNB
 
                 string valReference = IsAmountState ? item.AmountTotal : item.UsageTotal;
                 double.TryParse(valReference, out double value);
+                if (value < 0) { value = 0; }
+
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
@@ -197,7 +200,7 @@ namespace myTNB
                 TariffItemModel item = tariffList[i];
                 double val = IsAmountState ? item.Amount : item.Usage;
                 double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
-                nfloat blockHeight = (nfloat)(baseHeigt * percentage) ;
+                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
