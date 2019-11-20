@@ -84,7 +84,7 @@
     "retry": "Retry", //missing
     "save": "Simpan",
     "fullname": "Nama Penuh",
-    "confirmPassword": "Sahkan Kata Laluan",
+    "confirmPassword": "Sahkan Kata Laluan Baharu",
     "accountNo": "Nombor Akaun",
     "accountType": "Jenis Akaun",
     "allNotifications": "Semua Pemberitahuan",
@@ -132,10 +132,10 @@
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "PIN tidak sah",
     "invalid_password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka).",
-    "invalid_mismatchedPassword": "Kata laluan baru anda tidak sepadan.",
+    "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
     "invalid_fullname": "Nama Penuh Tidak Sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport Tidak Sah",
-    "invalid_mismatchedEmail": "E-mel yang anda masukkan tidak sepadan.",
+    "invalid_mismatchedEmail": "Kedua-dua emel tidak padan",
     "error_duplicateAccountMessage": "Nombor akaun ini telah ditambah ke senarai.",
     "error_duplicateAccountTitle": "Akaun Yang Sama",
     "invalid_icNumber": "Nombor IC Tidak Sah",
@@ -686,7 +686,7 @@
     "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   },
   "Onboarding": {
-    "letsStart": "Let's get started!",
+    "letsStart": "Jom Mulakan!",
     "skip": "Langkau",
     "title1": "Selamat datang ke myTNB!",
     "title2": "Ketahui penggunaan terkini anda",
