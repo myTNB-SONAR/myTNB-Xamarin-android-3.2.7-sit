@@ -103,6 +103,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / DPUtils.GetDensity());
         }
 
+
         #region Handlers
 
 
@@ -183,6 +184,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return false;
         }
 
+        
+
         public void OnLongPress(MotionEvent e)
         {
 
@@ -229,12 +232,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
             Rect rect = new Rect(0, 0, bitmap.Width, bitmap.Height);
 
-            Paint paint = new Paint(PaintFlags.AntiAlias);
+            Paint paint = new Paint();
             paint.SetStyle(Paint.Style.Stroke);
             paint.StrokeWidth = (int)DPUtils.ConvertDPToPx(2f);
             paint.Color = Color.ParseColor("#e4e4e4");
-            paint.SetShadowLayer(50, -4, -4, Color.ParseColor("#ffffff"));
-            v.SetLayerType(LayerType.Software, paint);
             can.DrawBitmap(bitmap, 0, 0, null);
             can.DrawRect(rect, paint);
 
