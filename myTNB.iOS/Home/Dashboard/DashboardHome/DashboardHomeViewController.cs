@@ -160,9 +160,10 @@ namespace myTNB
                 if (status != null && !string.IsNullOrEmpty(status?.DowntimeMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeMessage))
                 {
                     errMsg = status.DowntimeMessage;
-                   // errMsg = "Dear valued customer, myTNB system update is currently in progress from 11:30 PM to 11:59 PM. In the meantime, you can still pay your bill via JomPAY and online banking. <br><br>Stay tuned as we’ll be back shortly at 12:00AM! Thank you for your understanding. -myTNB Team";
                 }
-                DisplayCustomAlert(GetCommonI18NValue(Constants.Common_WellBeBack), errMsg, new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }, UIImage.FromBundle("BCRM-Down-Background"));
+                DisplayCustomAlert(GetCommonI18NValue(Constants.Common_WellBeBack), errMsg
+                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                    , UIImage.FromBundle("BCRM-Down-Background"));
             }
         }
 

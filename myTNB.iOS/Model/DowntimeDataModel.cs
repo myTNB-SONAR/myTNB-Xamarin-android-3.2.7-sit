@@ -7,12 +7,12 @@ namespace myTNB.Model
     public class DowntimeDataModel
     {
         public string System { get; set; }
-        public string IsDown { get; set; }
+        //public string IsDown { get; set; }
         public string DowntimeMessage { get; set; }
         public string DowntimeTextMessage { get; set; }
 
         //Stub
-        /* private bool _isDown;
+         private bool _isDown;
          public string IsDown
          {
              set
@@ -35,7 +35,7 @@ namespace myTNB.Model
              {
                  return _isDown.ToString();
              }
-         }*/
+         }
 
         [JsonIgnore]
         public bool IsAvailable
