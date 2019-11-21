@@ -1079,9 +1079,6 @@
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%402x.png" />
-    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%403x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%402x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%403x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\Contents.json" />
@@ -1253,6 +1250,12 @@
     <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%402x.png" />
     <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Planned.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Planned.imageset\refresh1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Planned.imageset\refresh1%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1670,7 +1673,6 @@
     <Folder Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Icon.imageset\" />
-    <Folder Include="Assets.xcassets\MDMS-Down.imageset\" />
     <Folder Include="Assets.xcassets\AppLaunch.imageset\" />
     <Folder Include="Assets.xcassets\SplashImageDefault.imageset\" />
     <Folder Include="Assets.xcassets\Delete-Icon.imageset\" />
@@ -1726,6 +1728,8 @@
     <Folder Include="Assets.xcassets\Dpc-Indicator.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Rearrange Account\" />
     <Folder Include="Assets.xcassets\Promotion-Default.imageset\" />
+    <Folder Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\" />
+    <Folder Include="Assets.xcassets\MDMS-Down-Planned.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
