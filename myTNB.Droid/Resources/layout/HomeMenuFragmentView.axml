@@ -52,15 +52,44 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/accountGreeting"
                         />
-                        <ImageView
-                            android:id="@+id/notificationHeaderIcon"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/notificationLayout"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_header_notification_unread"
+                            android:layout_width="wrap_content"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                            app:layout_constraintBottom_toBottomOf="parent">
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                    <ImageView
+                                    android:id="@+id/notificationHeaderIcon"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_gravity="center"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginLeft="-16dp"
+                                    android:src="@drawable/ic_header_notification_unread"/>
+                                    <LinearLayout
+                                        android:id="@+id/newLabel"
+                                        android:layout_width="14dp"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/notification_indication_bg"
+                                        android:layout_toRightOf="@+id/notificationHeaderIcon"
+                                        android:visibility="visible"
+                                        android:gravity="center">
+                                        <TextView
+                                            android:id="@+id/txtNewLabel"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/white"
+                                            android:textSize="8dp"
+                                            android:gravity="center"
+                                            android:layout_gravity="center|center_vertical"
+                                            android:text="1"/>
+                                    </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
                     </android.support.constraint.ConstraintLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

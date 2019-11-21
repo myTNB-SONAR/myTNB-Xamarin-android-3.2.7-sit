@@ -23,15 +23,6 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:paddingBottom="32dp">
-        <TextView
-            android:id="@+id/txtSwipeSeeMore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Swipe to see more,"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:layout_marginBottom="2dp"
-            android:textSize="12dp"/>
             <TextView
                 android:id="@+id/txtDoubleTapDismiss"
                 android:layout_width="match_parent"
@@ -40,6 +31,7 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:layout_marginBottom="18dp"
+                android:lineSpacingExtra="2dp"
                 android:textSize="12dp"/>
         <LinearLayout
             android:id="@+id/indicatorContainer"

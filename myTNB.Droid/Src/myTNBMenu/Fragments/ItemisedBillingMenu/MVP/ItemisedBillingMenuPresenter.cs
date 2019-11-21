@@ -319,7 +319,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return mainBillingHistoryList != null;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(string downArrow)
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -348,7 +348,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your advice overview.",
-                    ContentMessage = "Tap “ ” to switch between<br/>different accounts. You’ll see how<br/>much you have earned or if you’ve <br/>been paid extra.",
+                    ContentMessage = "Tap \" " +Constants.APP_TUTORIAL_PATTERN+ " \" to switch between<br/>different accounts. You’ll see how<br/>much you have earned or if you’ve <br/>been paid extra.",
                     ItemCount = ItemCount,
                     IsButtonShow = false
                 });
@@ -368,7 +368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your bill overview.",
-                    ContentMessage = "Tap “ ” to switch between<br/>different accounts. You’ll see how<br/>much is due, if you’ve cleared your<br/>bill or if you’ve paid extra.",
+                    ContentMessage = "Tap \" " + Constants.APP_TUTORIAL_PATTERN + " \" to switch between<br/>different accounts. You’ll see how<br/>much is due, if you’ve cleared your<br/>bill or if you’ve paid extra.",
                     ItemCount = ItemCount,
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
