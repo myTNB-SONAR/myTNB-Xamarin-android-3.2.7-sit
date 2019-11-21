@@ -11,6 +11,32 @@ namespace myTNB.Model
         public string DowntimeMessage { get; set; }
         public string DowntimeTextMessage { get; set; }
 
+        //Stub
+        /* private bool _isDown;
+         public string IsDown
+         {
+             set
+             {
+                 if (System == "BCRM")
+                 {
+                     value = "true";
+                 }
+                 if (System == "PG_CC")
+                 {
+                     value = "false";
+                 }
+                 if (System == "PG_FPX")
+                 {
+                     value = "false";
+                 }
+                 bool.TryParse(value, out _isDown);
+             }
+             get
+             {
+                 return _isDown.ToString();
+             }
+         }*/
+
         [JsonIgnore]
         public bool IsAvailable
         {
@@ -20,7 +46,7 @@ namespace myTNB.Model
                 if (!string.IsNullOrEmpty(IsDown))
                 {
                     bool parsed = default(bool);
-                    if(bool.TryParse(IsDown, out parsed))
+                    if (bool.TryParse(IsDown, out parsed))
                     {
                         res = !parsed;
                     }
@@ -36,7 +62,7 @@ namespace myTNB.Model
             {
                 SystemEnum sysType = default(SystemEnum);
 
-                if(!string.IsNullOrWhiteSpace(System))
+                if (!string.IsNullOrWhiteSpace(System))
                 {
                     var sysStr = System.ToUpper();
 

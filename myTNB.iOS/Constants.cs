@@ -47,6 +47,7 @@
         public static string Common_Email = "email";
         public static string Common_Password = "password";
         public static string Common_SwipeText = "tutorialSwipeText";
+        public static string Common_WellBeBack = "wellBeBack";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

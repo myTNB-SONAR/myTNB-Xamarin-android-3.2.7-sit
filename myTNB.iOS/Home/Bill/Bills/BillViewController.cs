@@ -55,7 +55,7 @@ namespace myTNB
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
-            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
             SetNavigation();
             SetHeaderView();
