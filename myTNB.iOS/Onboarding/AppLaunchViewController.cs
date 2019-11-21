@@ -185,6 +185,7 @@ namespace myTNB
                                 uaManager.CreateTable();
                                 uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
                                 DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
+                                DataManager.DataManager.SharedInstance.AccountRecordsList.d = DataManager.DataManager.SharedInstance.GetCombinedAcctList();
                             }
 
                             if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
@@ -1257,6 +1258,7 @@ namespace myTNB
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
+                DataManager.DataManager.SharedInstance.AccountRecordsList.d = DataManager.DataManager.SharedInstance.GetCombinedAcctList();
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
 
                 if (forGetAccountsFailed)

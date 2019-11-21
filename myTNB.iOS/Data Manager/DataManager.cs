@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.Enums;
 using myTNB.Model;
@@ -246,6 +248,173 @@ namespace myTNB.DataManager
             SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
         }
 
+        public void RemoveAccountFromArrangedList(string accountNo)
+        {
+            if (!accountNo.IsValid()) { return; }
+
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+            var userInfo = UserEntity?.Count > 0
+                      ? UserEntity[0]
+                      : new UserEntity();
+            if (userInfo.email.IsValid())
+            {
+                var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                if (stringData.IsValid())
+                {
+                    CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                    if (accountListModel != null && accountListModel.d != null)
+                    {
+                        int index = accountListModel.d.FindIndex(x => x.accNum == accountNo);
+                        if (index > -1)
+                        {
+                            accountListModel.d.RemoveAt(index);
+                            string acctListData = JsonConvert.SerializeObject(accountListModel);
+                            userDefaults.SetString(acctListData, string.Format("{0}-{1}", env, userInfo.email));
+                            userDefaults.Synchronize();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void UpdateNicknameFromArrangedList(string accountNo, string nickname)
+        {
+            if (!accountNo.IsValid() || !nickname.IsValid()) { return; }
+
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+            var userInfo = UserEntity?.Count > 0
+                      ? UserEntity[0]
+                      : new UserEntity();
+            if (userInfo.email.IsValid())
+            {
+                var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                if (stringData.IsValid())
+                {
+                    CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                    if (accountListModel != null && accountListModel.d != null)
+                    {
+                        int index = accountListModel.d.FindIndex(x => x.accNum == accountNo);
+                        if (index > -1)
+                        {
+                            accountListModel.d[index].accDesc = nickname;
+                            string acctListData = JsonConvert.SerializeObject(accountListModel);
+                            userDefaults.SetString(acctListData, string.Format("{0}-{1}", env, userInfo.email));
+                            userDefaults.Synchronize();
+                        }
+                    }
+                }
+            }
+        }
+
+        public List<CustomerAccountRecordModel> GetSortedAcctList(List<CustomerAccountRecordModel> acctsList)
+        {
+            var sortedAccounts = new List<CustomerAccountRecordModel>();
+            var results = acctsList.GroupBy(x => x.IsREAccount);
+            if (results != null && results?.Count() > 0)
+            {
+                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                reAccts.AddRange(normalAccts);
+                sortedAccounts = reAccts;
+            }
+            return sortedAccounts;
+        }
+
+        public List<CustomerAccountRecordModel> GetCombinedAcctList(List<CustomerAccountRecordModel> arrangedAcctList = null)
+        {
+            List<CustomerAccountRecordModel> newArrangedList = new List<CustomerAccountRecordModel>();
+            if (arrangedAcctList == null || arrangedAcctList.Count <= 0)
+            {
+                APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                var userInfo = UserEntity?.Count > 0
+                          ? UserEntity[0]
+                          : new UserEntity();
+                if (userInfo.email.IsValid())
+                {
+                    var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                    if (stringData.IsValid())
+                    {
+                        CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                        if (accountListModel != null && accountListModel.d != null)
+                        {
+                            newArrangedList = accountListModel.d;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                newArrangedList = arrangedAcctList.DeepClone();
+            }
+            List<CustomerAccountRecordModel> combinedAccounts = new List<CustomerAccountRecordModel>();
+            List<CustomerAccountRecordModel> sortedAccounts;
+            List<CustomerAccountRecordModel> removedAccounts = new List<CustomerAccountRecordModel>();
+            var currentAcctList = AccountRecordsList?.d;
+            if (currentAcctList != null && currentAcctList.Count > 0)
+            {
+                sortedAccounts = GetSortedAcctList(currentAcctList);
+                if (newArrangedList != null && newArrangedList.Count > 0)
+                {
+                    foreach (var aAcct in newArrangedList)
+                    {
+                        bool isRemoved = true;
+                        foreach (var sAcct in sortedAccounts)
+                        {
+                            if (aAcct.accNum.Equals(sAcct.accNum))
+                            {
+                                isRemoved = false;
+                                if (!aAcct.accDesc.Equals(sAcct.accDesc))
+                                {
+                                    UpdateNicknameFromArrangedList(sAcct.accNum, sAcct.accDesc);
+                                    combinedAccounts.Add(sAcct);
+                                }
+                                else
+                                {
+                                    combinedAccounts.Add(aAcct);
+                                }
+                                break;
+                            }
+                        }
+                        if (isRemoved)
+                        {
+                            removedAccounts.Add(aAcct);
+                        }
+                    }
+                    if (removedAccounts != null && removedAccounts.Count > 0)
+                    {
+                        foreach (var rAcct in removedAccounts)
+                        {
+                            RemoveAccountFromArrangedList(rAcct.accNum);
+                        }
+                    }
+                    foreach (var sAcct in sortedAccounts)
+                    {
+                        bool acctIsNew = true;
+                        foreach (var cAcct in combinedAccounts)
+                        {
+                            if (sAcct.accNum.Equals(cAcct.accNum))
+                            {
+                                acctIsNew = false;
+                                break;
+                            }
+                        }
+                        if (acctIsNew)
+                        {
+                            combinedAccounts.Add(sAcct);
+                        }
+                    }
+                }
+                else
+                {
+                    combinedAccounts = sortedAccounts;
+                }
+            }
+            return combinedAccounts;
+        }
+
         /// <summary>
         /// Refreshs the data from account update.
         /// </summary>
@@ -253,6 +422,7 @@ namespace myTNB.DataManager
         {
             UserAccountsEntity uaManager = new UserAccountsEntity();
             AccountRecordsList = uaManager.GetCustomerAccountRecordList();
+            AccountRecordsList.d = GetCombinedAcctList();
             string currentSelectedAccountNum = SelectedAccount.accNum;
             int selectedAccountIndex = AccountRecordsList.d.FindIndex(x => x.accNum == currentSelectedAccountNum);
 

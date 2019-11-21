@@ -86,17 +86,17 @@ namespace myTNB
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
                 ForegroundColor = MyTNBColor.PowerBlue,
-                Font = MyTNBFont.MuseoSans14_300,
+                Font = TNBFont.MuseoSans_14_300,
                 UnderlineStyle = NSUnderlineStyle.None,
                 UnderlineColor = UIColor.Clear
             };
 
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message + "<br>"
-                , ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = MyTNBColor.TunaGrey()
+                ForegroundColor = MyTNBColor.CharcoalGrey
             }, new NSRange(0, htmlBody.Length));
 
             UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : width / 1.33F));
@@ -108,8 +108,8 @@ namespace myTNB
             //Title
             UILabel lblTitle = new UILabel(new CGRect(16, 0, width - 32, 0))
             {
-                Font = MyTNBFont.MuseoSans14_500,
-                TextColor = MyTNBColor.TunaGrey(),
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = titleAlignment,
                 Text = title,
                 Lines = 0
@@ -174,9 +174,9 @@ namespace myTNB
                 UILabel ctaLbl = new UILabel(new CGRect(0, 0, ctaBtn.Frame.Width, ctaBtn.Frame.Height))
                 {
                     Text = item.Key,
-                    Font = MyTNBFont.MuseoSans16_500,
+                    Font = TNBFont.MuseoSans_16_500,
                     TextAlignment = UITextAlignment.Center,
-                    TextColor = MyTNBColor.PowerBlue,
+                    TextColor = MyTNBColor.WaterBlue,
                     ClipsToBounds = true
                 };
                 ctaBtn.AddSubview(ctaLbl);

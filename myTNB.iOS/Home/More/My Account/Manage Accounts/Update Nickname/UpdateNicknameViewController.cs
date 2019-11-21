@@ -237,6 +237,9 @@ namespace myTNB
                                 int accountRecordIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == CustomerRecord.accNum);
                                 DataManager.DataManager.SharedInstance.AccountRecordIndex = accountRecordIndex;
 
+                                // update the new nickname from the rearrange list if it exists
+                                DataManager.DataManager.SharedInstance.UpdateNicknameFromArrangedList(CustomerRecord.accNum, _newName);
+
                                 DismissViewController(true, null);
                             }
                             else

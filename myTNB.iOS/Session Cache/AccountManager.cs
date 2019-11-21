@@ -24,6 +24,10 @@ namespace myTNB
                 if (isRecursed) { CAData = new List<CustomerAccountRecordModel>(); }
                 UserAccountsEntity entity = new UserAccountsEntity();
                 CustomerAccountRecordListModel eAccounts = entity.GetCustomerAccountRecordList();
+                if (eAccounts != null)
+                {
+                    eAccounts.d = DataManager.DataManager.SharedInstance.GetCombinedAcctList();
+                }
                 SetAccounts(eAccounts, true);
             }
         }
