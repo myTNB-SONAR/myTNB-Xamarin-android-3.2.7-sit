@@ -466,6 +466,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.btnMDMSDownRefresh)]
         Button btnMDMSDownRefresh;
 
+        [BindView(Resource.Id.imgMdmsDayViewDown)]
+        ImageView imgMdmsDayViewDown;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -574,6 +577,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private int currentSelectedBar = -1;
 
         private bool isDPCBarClicked = false;
+
+        private bool isMDMSPlannedDownTime = false;
 
         ScaleGestureDetector mScaleDetector;
 
@@ -9149,17 +9154,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (GetIsMDMSDown() && isSMAccount)
             {
-                MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                MyTNBAppToolTipBuilder mdmsDownPopup =  MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(MDMSUnavailableTitle)
                     .SetMessage(MDMSUnavailableMessage)
                     .SetCTALabel(MDMSUnavailableCTA)
-                    .SetCTAaction(userActionsListener.OnTapRefresh)
-                    .Build().Show();
+                    .Build();
+                if (!isMDMSPlannedDownTime)
+                {
+                    mdmsDownPopup.SetCTAaction(userActionsListener.OnTapRefresh);
+                }
+                mdmsDownPopup.Show();
             }
         }
 
+        /// <summary>
+        /// Set MDMS Down Message - Planned
+        /// </summary>
+        /// <param name="response"></param>
         public void SetMDMSDownMessage(SMUsageHistoryResponse response)
         {
+            isMDMSPlannedDownTime = true;
             if (response != null && response.Data != null)
             {
                 if (!string.IsNullOrEmpty(response.Data.DisplayTitle))
@@ -9184,6 +9198,61 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     MDMSUnavailableCTA = this.Activity.GetString(Resource.String.tooltip_btnLabel);
                 }
+
+                imgMdmsDayViewDown.SetImageResource(Resource.Drawable.mdms_down_dayview);
+                btnMDMSDownRefresh.Visibility = ViewStates.Gone;
+
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(MDMSUnavailableMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(MDMSUnavailableMessage);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set MDMS Down Message - Unplanned
+        /// </summary>
+        /// <param name="response"></param>
+        public void SetMDMSDownRefreshMessage(SMUsageHistoryResponse response)
+        {
+            isMDMSPlannedDownTime = false;
+            if (!string.IsNullOrEmpty(response.Data.DisplayTitle))
+            {
+                MDMSUnavailableTitle = response.Data.DisplayTitle;
+            }
+            else
+            {
+                MDMSUnavailableTitle = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
+            }
+
+            if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+            {
+                MDMSUnavailableMessage = response.Data.DisplayMessage;
+            }
+
+            if (!string.IsNullOrEmpty(response.Data.CTA))
+            {
+                MDMSUnavailableCTA = response.Data.CTA;
+            }
+            else
+            {
+                MDMSUnavailableCTA = this.Activity.GetString(Resource.String.text_new_refresh);
+            }
+
+            imgMdmsDayViewDown.SetImageResource(Resource.Drawable.refresh_white);
+            btnMDMSDownRefresh.Visibility = ViewStates.Visible;
+            string txtMdmsDayViewDownMessage = this.Activity.GetString(Resource.String.unavailable_refresh_message);
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                txtMdmsDayViewDown.TextFormatted = Html.FromHtml(txtMdmsDayViewDownMessage, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtMdmsDayViewDown.TextFormatted = Html.FromHtml(txtMdmsDayViewDownMessage);
             }
         }
 
