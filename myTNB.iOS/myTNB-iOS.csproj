@@ -346,8 +346,6 @@
     <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\ Logo-Title.png" />
     <ImageAsset Include="Assets.xcassets\Tagline.imageset\ Tagline%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%403x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json" />
@@ -397,8 +395,6 @@
     <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active.png" />
@@ -824,8 +820,6 @@
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
@@ -1250,6 +1244,12 @@
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%403x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\group3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\unreadSm%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\unreadSm%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\notificationUnreadCountEmpty%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\notificationUnreadCountEmpty%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notificationUnreadCountCopy13%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notificationUnreadCountCopy13%403x.png" />
     <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%402x.png" />
     <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%403x.png" />
