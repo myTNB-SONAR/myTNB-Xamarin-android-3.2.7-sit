@@ -82,7 +82,7 @@ namespace myTNB.SitecoreCMS.Service
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception: " + e.Message);
+                Debug.WriteLine("Exception: AppLaunchImageService/GenerateTimestamp " + e.Message);
             }
             return listlItem;
         }

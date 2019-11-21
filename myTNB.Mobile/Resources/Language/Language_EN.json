@@ -219,6 +219,7 @@
         "submitReading": "Submit Reading",
         "takeOrUploadPhoto": "Take Or Upload Photo",
         "manualInputTitle": "Please enter your meter reading for the unit(s) below.",
+        "ocrDownMessage": "Photo submission is currently unavailable. Please <b>enter your reading manually</b> below.",
         "tutorialReadMeterTitle": "Enter your meter reading here.",
         "tutorialReadMeterDesc": "Enter according to its unit(s). You’ll see your previous month's reading as a reference.",
         "tutorialReadMeterGotIt": "Got it!"
