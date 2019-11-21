@@ -25,11 +25,13 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 if (!value)
                 {
-                    ItemLongClick -= HandleItemLongClick;
+                    // ItemLongClick -= HandleItemLongClick;
+                    ItemClick -= HandleItemClick;
                 }
                 else
                 {
-                    ItemLongClick += HandleItemLongClick;
+                    // ItemLongClick += HandleItemLongClick;
+                    ItemClick += HandleItemClick;
                 }
                 _reorderingEnabled = value;
             }
@@ -98,7 +100,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             //	the detector handles all the gestures
             mContext = context;
             dectector = new GestureDetector(this);
-            ItemLongClick += HandleItemLongClick;
+            // ItemLongClick += HandleItemLongClick;
+            ItemClick += HandleItemClick;
             SetOnScrollListener(this);
             mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / DPUtils.GetDensity());
         }
@@ -108,8 +111,39 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         void HandleItemLongClick(object sender, ItemLongClickEventArgs e)
         {
-            // Long press is handeled in the OnLongPress method of the IOnGestureListener Interface
-            // for some reason we have to wire this up to detect the long press, otherwise, the gesture gets ignored
+            Vibrator vibrator = (Vibrator)mContext.GetSystemService(Context.VibratorService);
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+            {
+                vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
+
+            }
+            else
+            {
+                vibrator.Vibrate(150);
+
+            }
+            mTotalOffset = 0;
+
+            int position = PointToPosition(mDownX, mDownY);
+
+            if (position < 0 || !LongClickable)
+                return;
+
+            int itemNum = position - FirstVisiblePosition;
+
+            View selectedView = GetChildAt(itemNum);
+            mMobileItemId = Adapter.GetItemId(position); // use this varable to keep track of which view is currently moving
+            mHoverCell = GetAndAddHoverView(selectedView);
+            selectedView.Visibility = ViewStates.Invisible; // set the visibility of the selected view to invisible
+
+            mCellIsMobile = true;
+
+            UpdateNeighborViewsForID(mMobileItemId);
+        }
+
+        void HandleItemClick(object sender, ItemClickEventArgs e)
+        {
+
         }
 
 
@@ -147,9 +181,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return true;
         }
 
-        /// <summary>
-        /// Determines if the touch event was right or left swipe
-        /// </summary>
         public bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
             return false;
@@ -160,10 +191,17 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return false;
         }
 
-        /// <summary>
-        /// Handles the item long click by hiding the selected view, creating the dummy view drawable and adding it to the screen
-        /// </summary>
         public void OnLongPress(MotionEvent e)
+        {
+
+        }
+
+        public bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+        {
+            return false;
+        }
+
+        public void OnShowPress(MotionEvent e)
         {
             Vibrator vibrator = (Vibrator)mContext.GetSystemService(Context.VibratorService);
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
@@ -180,7 +218,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
             int position = PointToPosition(mDownX, mDownY);
 
-            if (position < 0 || !LongClickable)
+            if (position < 0 || !Clickable)
                 return;
 
             int itemNum = position - FirstVisiblePosition;
@@ -195,24 +233,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             UpdateNeighborViewsForID(mMobileItemId);
         }
 
-        public bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-        {
-            return false;
-        }
-
-        public void OnShowPress(MotionEvent e)
-        {
-        }
-
         #endregion
 
         #region Bitmap Drawable Creation
 
-        /// <summary>
-        /// Creates the hover cell with the appropriate bitmap and of appropriate
-        /// size. The hover cell's BitmapDrawable is drawn on top of the bitmap every
-        /// single time an invalidate call is made.
-        /// </summary>
         BitmapDrawable GetAndAddHoverView(View v)
         {
 
@@ -233,9 +257,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return drawable;
         }
 
-        /// <summary>
-        /// Draws a red border over the screenshot of the view passed in.
-        /// </summary>
         static Bitmap GetBitmapWithBorder(View v)
         {
             Bitmap bitmap = GetBitmapFromView(v);
@@ -254,9 +275,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return bitmap;
         }
 
-        /// <summary>
-        /// Returns a bitmap showing a screenshot of the view passed in
-        /// </summary>
         static Bitmap GetBitmapFromView(View v)
         {
             try
@@ -268,7 +286,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Utility.LoggingNonFatalError(ex);
             }
             return default(Bitmap);
 
@@ -276,11 +294,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         #endregion
 
-        /// <summary>
-        /// Stores a reference to the views above and below the item currently
-        /// corresponding to the hover cell. It is important to note that if this
-        /// item is either at the top or bottom of the list, mAboveItemId or mBelowItemId
-        /// may be invalid.
         void UpdateNeighborViewsForID(long itemID)
         {
             int position = GetPositionForID(itemID);
@@ -289,9 +302,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         }
 
-        /// <summary>
-        /// Retrieves the view in the list corresponding to itemID 
-        /// </summary>
         public View GetViewForID(long itemID)
         {
             for (int i = 0; i < ChildCount; i++)
@@ -307,9 +317,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             return null;
         }
 
-        /// <summary>
-        /// Retrieves the position in the list corresponding to itemID
-        /// </summary>
         public int GetPositionForID(long itemID)
         {
             View v = GetViewForID(itemID);
@@ -323,11 +330,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
         }
 
-        /// <summary>
-        ///  DispatchDraw gets invoked when all the child views are about to be drawn.
-        ///  By overriding this method, the hover cell (BitmapDrawable) can be drawn
-        /// over the listview's items whenever the listview is redrawn.
-        /// </summary>
         protected override void DispatchDraw(Canvas canvas)
         {
             base.DispatchDraw(canvas);
@@ -337,9 +339,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
         }
 
-        /// <summary>
-        /// Gets data related to touch events, moves the bitmap drawable to location of touch, and calls the HandleCellSwitch method to animate cell swaps
-        /// </summary>
         public override bool OnTouchEvent(MotionEvent e)
         {
             try
@@ -397,17 +396,13 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error Processing OnTouchEvent in DynamicListView.cs - Message: {0}", ex.Message);
-                Console.WriteLine("Error Processing OnTouchEvent in DynamicListView.cs - Stacktrace: {0}", ex.StackTrace);
+                Utility.LoggingNonFatalError(ex);
             }
 
             return base.OnTouchEvent(e);
         }
 
 
-        /// <summary>
-        /// This Method handles the animation of the cells switching as also switches the underlying data set
-        /// </summary>
         void HandleCellSwitch()
         {
             try
@@ -456,9 +451,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error Switching Cells in DynamicListView.cs - Message: {0}", ex.Message);
-                Console.WriteLine("Error Switching Cells in DynamicListView.cs - Stacktrace: {0}", ex.StackTrace);
-
+                Utility.LoggingNonFatalError(ex);
             }
 
         }
