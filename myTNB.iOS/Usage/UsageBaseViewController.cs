@@ -1203,6 +1203,14 @@ namespace myTNB
                                     _legendIsVisible = _tariffIsVisible;
                                     SetTariffLegendComponent(_tariffList);
                                 }
+                                else
+                                {
+                                    ShowHideTariffLegends(false);
+                                }
+                            }
+                            else
+                            {
+                                ShowHideTariffLegends(false);
                             }
                         }
                         else
@@ -1211,7 +1219,19 @@ namespace myTNB
                         }
                         SetDPCNoteOnBarTap(item);
                     }
+                    else
+                    {
+                        ShowHideTariffLegends(false);
+                    }
                 }
+                else
+                {
+                    ShowHideTariffLegends(false);
+                }
+            }
+            else
+            {
+                ShowHideTariffLegends(false);
             }
         }
         public void LoadTariffLegendWithBlockIds(List<String> blockIdList = null)

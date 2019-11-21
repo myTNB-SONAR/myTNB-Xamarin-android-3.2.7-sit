@@ -424,10 +424,10 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController,
-                DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
-                _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                OnUpdateCellWithoutReload, GetI18NValue);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
+                , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                , GetI18NValue, OnReload);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -883,9 +883,15 @@ namespace myTNB
         public void OnUpdateTable()
         {
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
-                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
-                _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                OnUpdateCellWithoutReload, GetI18NValue);
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
+                , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                , GetI18NValue, OnReload);
+            _homeTableView.ReloadData();
+            UpdateFooterBG();
+        }
+
+        private void OnReload()
+        {
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -938,9 +944,9 @@ namespace myTNB
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                     _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList,
-                        _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                        OnUpdateCellWithoutReload, GetI18NValue);
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList
+                        , _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                        , GetI18NValue, OnReload);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();

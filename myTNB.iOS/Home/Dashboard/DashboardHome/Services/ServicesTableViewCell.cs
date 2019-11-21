@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Home.Dashboard.DashboardHome.Services;
@@ -20,6 +19,7 @@ namespace myTNB
         private Dictionary<string, Action> _actionsDictionary;
         private nfloat _cardHeight = ScaleUtility.GetScaledHeight(84F);
         public Action<int> ReloadCell;
+        public Action OnReload;
         private CustomUIView _moreLessContainer;
         public bool IsLoading, IsRefreshScreen;
         public ServicesTableViewCell(IntPtr handle) : base(handle)
@@ -163,13 +163,13 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
             DataManager.DataManager.SharedInstance.ActiveServicesList = DataManager.DataManager.SharedInstance.ServicesList;
             AddContentData(DataManager.DataManager.SharedInstance.ActiveServicesList);
-            ReloadCell?.Invoke(DashboardHomeConstants.CellIndex_Help);
+            OnReload.Invoke();
         }
 
         private void OnShowLessAction()
         {
             ShowInitialItems(DataManager.DataManager.SharedInstance.ServicesList);
-            ReloadCell?.Invoke(DashboardHomeConstants.CellIndex_Help);
+            OnReload.Invoke();
         }
 
         private nfloat GetViewHeight(List<ServiceItemModel> serviceList, bool isMorethanThreeItems)
