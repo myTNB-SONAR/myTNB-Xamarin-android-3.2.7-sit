@@ -61,5 +61,8 @@
 
         //Key
         public static string Key_PromotionTimestamp = "SiteCorePromotionTimeStamp";
+
+        //Strings
+        public static string Value_99 = "99+";
     }
 }

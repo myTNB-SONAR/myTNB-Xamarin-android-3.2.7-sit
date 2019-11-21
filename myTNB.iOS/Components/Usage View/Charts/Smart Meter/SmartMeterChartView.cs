@@ -21,6 +21,7 @@ namespace myTNB
         public Func<string, string> GetI18NValue;
         public Action OnMDMSIconTap { set; private get; }
         public Action<bool> SetDPCNoteForMDMSDown { set; private get; }
+        public Action OnMDMSRefresh { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -43,7 +44,8 @@ namespace myTNB
             UIView toggleView = GetToggleView(_mainView);
             _mainView.AddSubview(toggleView);
 
-            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(12), _baseMarginedWidth, GetHeightByScreenSize(16)))
+            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(12)
+                , _baseMarginedWidth, GetHeightByScreenSize(16)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.ButterScotch,
@@ -251,7 +253,8 @@ namespace myTNB
             {
                 _baseSmartMeterView = new SmartMeterMDMSDownView()
                 {
-                    GetI18NValue = GetI18NValue
+                    GetI18NValue = GetI18NValue,
+                    OnMDMSRefresh = OnMDMSRefresh
                 };
             }
             else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
@@ -287,7 +290,8 @@ namespace myTNB
         protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
             , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         {
-            if (viewBar == null || tariffList == null || tariffList.Count == 0 || baseValue == 0) { return; }
+            //if (viewBar == null || tariffList == null || tariffList.Count == 0 || baseValue == 0) { return; }
+            if (viewBar == null || baseValue == 0) { return; }
             nfloat baseHeigt = size.Height;
             nfloat barMaxY = size.Height;
             nfloat xLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
@@ -306,25 +310,30 @@ namespace myTNB
             {
                 Tag = 2002,
                 Hidden = !_isTariffView,
-                ClipsToBounds = true
+                ClipsToBounds = true,
+                BackgroundColor = tariffCount > 0 ? UIColor.Clear : UIColor.White
             };
+            viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
 
-            for (int i = 0; i < tariffList.Count; i++)
+            if (tariffCount > 0)
             {
-                TariffItemModel item = tariffList[i];
-                UpdateAvailableTariffList(item);
-                double val = IsAmountState ? item.Amount : item.Usage;
-                double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
-                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
-
-                barMaxY -= blockHeight;
-                UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
+                for (int i = 0; i < tariffList.Count; i++)
                 {
-                    BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected, true)
-                };
-                viewTariffContainer.AddSubview(viewTariffBlock);
-                barMaxY -= GetHeightByScreenSize(1);
+                    TariffItemModel item = tariffList[i];
+                    UpdateAvailableTariffList(item);
+                    double val = IsAmountState ? item.Amount : item.Usage;
+                    double percentage = (baseValue > 0 && val > 0) ? (nfloat)(val / baseValue) + sharedMissingPercentage : 0;
+                    nfloat blockHeight = (nfloat)(baseHeigt * percentage);
+
+                    barMaxY -= blockHeight;
+                    UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
+                    {
+                        BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected, true)
+                    };
+                    viewTariffContainer.AddSubview(viewTariffBlock);
+                    barMaxY -= GetHeightByScreenSize(1);
+                }
             }
             viewBar.AddSubview(viewTariffContainer);
         }
@@ -373,6 +382,7 @@ namespace myTNB
 
                     if (viewTariff != null)
                     {
+                        viewTariff.Alpha = isSelected ? 1F : 0.5F;
                         for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                         {
                             UIView tBlock = viewTariff.Subviews[j];

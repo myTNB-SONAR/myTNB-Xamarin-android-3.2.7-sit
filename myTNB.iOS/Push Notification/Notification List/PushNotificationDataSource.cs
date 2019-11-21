@@ -38,10 +38,11 @@ namespace myTNB.PushNotification
             {
                 cell = new NotificationViewCell("pushNotificationCell");
             }
+
             cell.UpdateCell(_controller._isSelectionMode, notification.IsReadNotification);
             cell.ClearsContextBeforeDrawing = true;
             cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationType));
-            cell.lblTitle.Text = notification.Title;
+            cell.Title = notification.Title;
 
             string message = notification.Message;
             int accountIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == notification.AccountNum);
@@ -59,8 +60,8 @@ namespace myTNB.PushNotification
                 message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname
                     , string.Format(_controller.GetCommonI18NValue(PushNotificationConstants.I18N_CustomerAccountNumber), notification.AccountNum));
             }
-            cell.lblDetails.Text = message;
-            cell.lblDate.Text = GetDate(notification.CreatedDate);
+            cell.Details = message;
+            cell.Date = GetDate(notification.CreatedDate);
             cell.IsRead = notification.IsReadNotification;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                 ? PushNotificationConstants.IMG_ChkActive : PushNotificationConstants.IMG_ChkInactive);

@@ -14,18 +14,32 @@ namespace myTNB.Model.Usage
         public bool IsMonthlyTariffBlocksDisabled { get; set; }
         public bool IsMonthlyTariffBlocksUnavailable { get; set; }
         public bool IsMDMSCurrentlyUnavailable { get; set; }
+        public bool IsUnplannedMDMSDown
+        {
+            get
+            {
+                return ErrorCode == StatusCodes.UnplannedMDMSDown;
+            }
+        }
+        public bool IsPlannedMDMSDown
+        {
+            get
+            {
+                return ErrorCode == StatusCodes.PlannedMDMSDown;
+            }
+        }
         public bool IsMDMSDown
         {
             get
             {
-                return ErrorCode == "7204";
+                return IsUnplannedMDMSDown || IsPlannedMDMSDown;
             }
         }
         public bool IsDataEmpty
         {
             get
             {
-                return ErrorCode == "7201";
+                return ErrorCode == StatusCodes.EmptyData;
             }
         }
         public string CTA { set; get; }
