@@ -298,6 +298,7 @@ namespace myTNB
             if (_dashboardHomeHeader != null)
             {
                 _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+                _dashboardHomeHeader.BadgeValue = PushNotificationHelper.GetNotificationCount();
             }
             PushNotificationHelper.UpdateApplicationBadge();
         }
@@ -724,10 +725,10 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(DashboardHomeConstants.Sitecore_Timestamp);
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                         sharedPreference.Synchronize();
                         isValidTimeStamp = true;
                     }
@@ -739,7 +740,7 @@ namespace myTNB
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                             sharedPreference.Synchronize();
                             isValidTimeStamp = true;
                         }

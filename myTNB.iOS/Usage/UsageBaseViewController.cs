@@ -8,7 +8,6 @@ using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
-using CoreAnimation;
 using Foundation;
 using System.Diagnostics;
 
@@ -573,7 +572,8 @@ namespace myTNB
                     ShowMissedReadToolTip = ShowMissedReadTooltip,
                     GetI18NValue = GetI18NValue,
                     OnMDMSIconTap = OnMDMSIconTap,
-                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown
+                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown,
+                    OnMDMSRefresh = OnMDMSRefresh
                 };
             }
 
@@ -591,7 +591,16 @@ namespace myTNB
             string title = AccountUsageSmartCache.ErrorTitle;
             string message = AccountUsageSmartCache.ErrorMessage;
             string ctaTitle = AccountUsageSmartCache.ErrorCTA;
-            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, null } });
+            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, OnMDMSRefresh } });
+        }
+
+        private void OnMDMSRefresh()
+        {
+            if (AccountUsageSmartCache.IsUnplannedMDMSDown)
+            {
+                ResetViews();
+                InitiateAPICalls();
+            }
         }
 
         #region DPC Methods
