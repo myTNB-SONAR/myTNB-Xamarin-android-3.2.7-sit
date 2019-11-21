@@ -125,23 +125,6 @@ namespace myTNB_Android.Src.Database.Model
 
             int newRecordRow = db.InsertOrReplace(newRecord);
 
-            try
-            {
-                UserEntity activiUser = UserEntity.GetActive();
-
-                if (activiUser != null)
-                {
-                    if (AccountSortingEntity.HasItems(activiUser.Email, Constants.APP_CONFIG.ENV))
-                    {
-                        AccountSortingEntity.InsertOrReplaceSpecificAccount(activiUser.Email, Constants.APP_CONFIG.ENV, newRecord);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
             return newRecordRow;
         }
 
@@ -198,6 +181,16 @@ namespace myTNB_Android.Src.Database.Model
                 if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                 {
                     sortedList.AddRange(AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV));
+                    List<CustomerBillingAccount> excludeREList = REAccountListExclude(sortedList);
+                    List<CustomerBillingAccount> excludeNonREList = NonREAccountListExclude(sortedList);
+                    if (excludeREList != null && excludeREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeREList);
+                    }
+                    if (excludeNonREList != null && excludeNonREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeNonREList);
+                    }
                 }
                 else
                 {
@@ -226,7 +219,12 @@ namespace myTNB_Android.Src.Database.Model
                         updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
-                            return updatedList.FindIndex(x => x.IsSelected) != -1;
+                            CustomerBillingAccount selected = updatedList.Find(x => x.IsSelected);
+
+                            if (selected != null)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -280,7 +278,11 @@ namespace myTNB_Android.Src.Database.Model
                         updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
-                            return updatedList.Find(x => x.IsSelected);
+                            CustomerBillingAccount selected =  updatedList.Find(x => x.IsSelected);
+                            if (selected != null)
+                            {
+                                return selected;
+                            }
                         }
                     }
                 }
@@ -384,7 +386,7 @@ namespace myTNB_Android.Src.Database.Model
                     {
                         if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                         {
-                            AccountSortingEntity.InsertOrReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, customerBARecord);
+                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, customerBARecord);
                         }
                     }
                 }
@@ -453,7 +455,7 @@ namespace myTNB_Android.Src.Database.Model
                         CustomerBillingAccount updatedAccount = FindByAccNum(accNum);
                         if (updatedAccount != null)
                         {
-                            AccountSortingEntity.InsertOrReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
+                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
                         }
                     }
                 }
@@ -495,7 +497,7 @@ namespace myTNB_Android.Src.Database.Model
                     try
                     {
                         CustomerBillingAccount acc = FindByAccNum(billingDetails.AccountNo);
-                        AccountSortingEntity.InsertOrReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, acc);
+                        AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, acc);
                     }
                     catch (Exception e)
                     {
@@ -552,7 +554,7 @@ namespace myTNB_Android.Src.Database.Model
                         CustomerBillingAccount updatedAccount = FindByAccNum(accNum);
                         if (updatedAccount != null)
                         {
-                            AccountSortingEntity.InsertOrReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
+                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
                         }
                     }
                 }
@@ -584,6 +586,56 @@ namespace myTNB_Android.Src.Database.Model
             return reAccountList;
         }
 
+        public static List<CustomerBillingAccount> REAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 AND accNum NOT IN ("+ excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
+        public static List<CustomerBillingAccount> NonREAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
 
         public static List<CustomerBillingAccount> NonREAccountList()
         {
@@ -603,6 +655,16 @@ namespace myTNB_Android.Src.Database.Model
                 if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                 {
                     sortedList.AddRange(AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV));
+                    List<CustomerBillingAccount> excludeREList = REAccountListExclude(sortedList);
+                    List<CustomerBillingAccount> excludeNonREList = NonREAccountListExclude(sortedList);
+                    if (excludeREList != null && excludeREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeREList);
+                    }
+                    if (excludeNonREList != null && excludeNonREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeNonREList);
+                    }
                 }
                 else
                 {
@@ -640,6 +702,12 @@ namespace myTNB_Android.Src.Database.Model
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
 
                         eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && !x.IsTaggedSMR && x.isOwned));
+                        List<CustomerBillingAccount> existingList = EligibleSMRAccountListExclude(eligibleSMRAccounts);
+                        if (existingList != null && existingList.Count > 0)
+                        {
+                            eligibleSMRAccounts.AddRange(existingList);
+                        }
+
                         return eligibleSMRAccounts;
                     }
                 }
@@ -652,6 +720,31 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMRAccounts;
+        }
+
+        public static List<CustomerBillingAccount> EligibleSMRAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
         }
 
         public static List<CustomerBillingAccount> SMAccountList()
@@ -676,6 +769,11 @@ namespace myTNB_Android.Src.Database.Model
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
 
                         eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.isOwned));
+                        List<CustomerBillingAccount> existingList = GetEligibleAndSMRAccountListExclude(eligibleSMRAccounts);
+                        if (existingList != null && existingList.Count > 0)
+                        {
+                            eligibleSMRAccounts.AddRange(existingList);
+                        }
                         return eligibleSMRAccounts;
                     }
                 }
@@ -685,8 +783,33 @@ namespace myTNB_Android.Src.Database.Model
                 Utility.LoggingNonFatalError(e);
             }
             var db = DBHelper.GetSQLiteConnection();
-            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE (accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1)").ToList().OrderBy(x => !x.IsTaggedSMR).ToList();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1").ToList().OrderBy(x => !x.IsTaggedSMR).ToList();
             return eligibleSMRAccounts;
+        }
+
+        public static List<CustomerBillingAccount> GetEligibleAndSMRAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
         }
 
         public static List<CustomerBillingAccount> CurrentSMRAccountList()
@@ -703,6 +826,11 @@ namespace myTNB_Android.Src.Database.Model
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
 
                         eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR && x.isOwned));
+                        List<CustomerBillingAccount> existingList = CurrentSMRAccountListExclude(eligibleSMRAccounts);
+                        if (existingList != null && existingList.Count > 0)
+                        {
+                            eligibleSMRAccounts.AddRange(existingList);
+                        }
                         return eligibleSMRAccounts;
                     }
                 }
@@ -717,23 +845,34 @@ namespace myTNB_Android.Src.Database.Model
             return eligibleSMRAccounts;
         }
 
+        public static List<CustomerBillingAccount> CurrentSMRAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 1 AND isOwned = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
         public static void MakeFirstAsSelected()
         {
-            List<CustomerBillingAccount> ReAccount = REAccountList();
-            if (ReAccount != null && ReAccount.Count() > 0)
-            {
-                SetSelected(ReAccount[0].AccNum);
-            }
-            else
-            {
-                List<CustomerBillingAccount> NonReAccount = NonREAccountList();
-                if (NonReAccount != null && NonReAccount.Count() > 0)
-                {
-                    SetSelected(NonReAccount[0].AccNum);
-                }
-            }
-
-
+            SetSelected(GetSortedCustomerBillingAccounts()[0].AccNum);
         }
 
         public static bool HasUpdatedBillingDetails(string accountNumber)

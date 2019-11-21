@@ -665,12 +665,6 @@ namespace myTNB_Android.Src.Login.MVP
                         }
                     }
 
-                    if (newAccountList.Count > 0)
-                    {
-                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
-                        newExistingList.AddRange(newAccountList);
-                    }
-
                     if (newExistingList.Count > 0)
                     {
                         newExistingList[0].IsSelected = true;
@@ -688,6 +682,16 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
                     }
+
+                    if (newAccountList.Count > 0)
+                    {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (CustomerBillingAccount acc in newAccountList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+                    }
                 }
                 else
                 {
@@ -697,12 +701,6 @@ namespace myTNB_Android.Src.Login.MVP
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
                         ctr++;
                     }
-
-                    List<CustomerBillingAccount> saveList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-
-                    string accountList = JsonConvert.SerializeObject(saveList);
-
-                    AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, accountList);
                 }
             }
             catch (Exception e)

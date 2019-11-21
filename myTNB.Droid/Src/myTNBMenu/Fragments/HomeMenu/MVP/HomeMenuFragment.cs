@@ -329,6 +329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (resultCode == Result.Ok)
                 {
+                    HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(true);
                     RestartHomeMenu();
                 }
             }
@@ -801,6 +802,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 SetNotificationIndicator();
                 HomeMenuCustomScrolling(0);
+                if (HomeMenuUtils.GetIsShowRearrangeAccountSuccessfulNeed())
+                {
+                    HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
+                    ShowRearrangeAccountSuccessful();
+                }
             }
             catch (System.Exception e)
             {
@@ -994,6 +1000,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             );
             mMyServiceRetrySnakebar.Show();
+        }
+
+        private Snackbar mRearrangeSnackbar;
+        public void ShowRearrangeAccountSuccessful()
+        {
+            if (mRearrangeSnackbar != null && mRearrangeSnackbar.IsShown)
+            {
+                mRearrangeSnackbar.Dismiss();
+            }
+
+            mRearrangeSnackbar = Snackbar.Make(rootView,
+                "Your new account arrangement has successfully been saved!",
+                Snackbar.LengthLong);
+            mRearrangeSnackbar.Show();
         }
 
         private void RetryMyService()

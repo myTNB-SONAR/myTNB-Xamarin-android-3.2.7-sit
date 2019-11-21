@@ -11,6 +11,7 @@ namespace myTNB_Android.Src.Utils
         private static bool isQuery = false;
         private static string queryString = "";
         private static bool isRestartHomeMenu = false;
+        private static bool isShowRearrangeAccountSuccessfulNeed = false;
 
         public static void ResetAll()
         {
@@ -20,6 +21,16 @@ namespace myTNB_Android.Src.Utils
             isQuery = false;
             isRestartHomeMenu = false;
             queryString = "";
+        }
+
+        public static void SetIsShowRearrangeAccountSuccessfulNeed(bool flag)
+        {
+            isShowRearrangeAccountSuccessfulNeed = flag;
+        }
+
+        public static bool GetIsShowRearrangeAccountSuccessfulNeed()
+        {
+            return isShowRearrangeAccountSuccessfulNeed;
         }
 
         public static void SetIsLoadedHomeMenu(bool flag)

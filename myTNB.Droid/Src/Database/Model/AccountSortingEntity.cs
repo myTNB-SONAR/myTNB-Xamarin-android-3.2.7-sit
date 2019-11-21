@@ -72,6 +72,24 @@ namespace myTNB_Android.Src.Database.Model
 
         }
 
+        public static void ReplaceSpecificAccount(string emailAddress, string env
+                    , CustomerBillingAccount addAcc)
+        {
+            List<CustomerBillingAccount> existingList = List(emailAddress, env);
+
+            if (existingList != null && existingList.Count > 0 && addAcc != null && !string.IsNullOrEmpty(addAcc.AccNum))
+            {
+                int index = existingList.FindIndex(x => x.AccNum == addAcc.AccNum);
+                if (index != -1)
+                {
+                    existingList[index] = addAcc;
+
+                    InsertOrReplace(emailAddress, env, existingList);
+                }
+            }
+
+        }
+
         public static void RemoveSpecificAccount(string emailAddress, string env
             , string accNum)
         {
@@ -140,6 +158,50 @@ namespace myTNB_Android.Src.Database.Model
                 try
                 {
                     customerAccounts = ReturnList(email, env);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                try
+                {
+                    customerAccounts = CustomerBillingAccount.GetDefaultSortedCustomerBillingAccounts();
+                    if (customerAccounts == null)
+                    {
+                        customerAccounts = new List<CustomerBillingAccount>();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            return customerAccounts;
+        }
+
+        public static List<CustomerBillingAccount> GetRearrangeList(string email, string env)
+        {
+            List<CustomerBillingAccount> customerAccounts = new List<CustomerBillingAccount>();
+
+            if (HasItems(email, env))
+            {
+                try
+                {
+                    customerAccounts = ReturnList(email, env);
+                    List<CustomerBillingAccount> excludeREList = CustomerBillingAccount.REAccountListExclude(customerAccounts);
+                    List<CustomerBillingAccount> excludeNonREList = CustomerBillingAccount.NonREAccountListExclude(customerAccounts);
+                    if (excludeREList != null && excludeREList.Count > 0)
+                    {
+                        customerAccounts.AddRange(excludeREList);
+                    }
+                    if (excludeNonREList != null && excludeNonREList.Count > 0)
+                    {
+                        customerAccounts.AddRange(excludeNonREList);
+                    }
                 }
                 catch (Exception e)
                 {

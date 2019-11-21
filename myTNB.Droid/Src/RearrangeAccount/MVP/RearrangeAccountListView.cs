@@ -25,13 +25,11 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 if (!value)
                 {
-                    // ItemLongClick -= HandleItemLongClick;
-                    ItemClick -= HandleItemClick;
+                    ItemLongClick -= HandleItemLongClick;
                 }
                 else
                 {
-                    // ItemLongClick += HandleItemLongClick;
-                    ItemClick += HandleItemClick;
+                    ItemLongClick += HandleItemLongClick;
                 }
                 _reorderingEnabled = value;
             }
@@ -100,8 +98,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             //	the detector handles all the gestures
             mContext = context;
             dectector = new GestureDetector(this);
-            // ItemLongClick += HandleItemLongClick;
-            ItemClick += HandleItemClick;
+            ItemLongClick += HandleItemLongClick;
             SetOnScrollListener(this);
             mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / DPUtils.GetDensity());
         }
@@ -139,11 +136,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mCellIsMobile = true;
 
             UpdateNeighborViewsForID(mMobileItemId);
-        }
-
-        void HandleItemClick(object sender, ItemClickEventArgs e)
-        {
-
         }
 
 
@@ -203,34 +195,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         public void OnShowPress(MotionEvent e)
         {
-            Vibrator vibrator = (Vibrator)mContext.GetSystemService(Context.VibratorService);
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
-            {
-                vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
-            }
-            else
-            {
-                vibrator.Vibrate(150);
-
-            }
-            mTotalOffset = 0;
-
-            int position = PointToPosition(mDownX, mDownY);
-
-            if (position < 0 || !Clickable)
-                return;
-
-            int itemNum = position - FirstVisiblePosition;
-
-            View selectedView = GetChildAt(itemNum);
-            mMobileItemId = Adapter.GetItemId(position); // use this varable to keep track of which view is currently moving
-            mHoverCell = GetAndAddHoverView(selectedView);
-            selectedView.Visibility = ViewStates.Invisible; // set the visibility of the selected view to invisible
-
-            mCellIsMobile = true;
-
-            UpdateNeighborViewsForID(mMobileItemId);
         }
 
         #endregion
@@ -264,11 +229,12 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
             Rect rect = new Rect(0, 0, bitmap.Width, bitmap.Height);
 
-            Paint paint = new Paint();
+            Paint paint = new Paint(PaintFlags.AntiAlias);
             paint.SetStyle(Paint.Style.Stroke);
-            paint.StrokeWidth = (int)DPUtils.ConvertDPToPx(1f);
-            paint.Color = Color.ParseColor("#e4e4e4"); 
-
+            paint.StrokeWidth = (int)DPUtils.ConvertDPToPx(2f);
+            paint.Color = Color.ParseColor("#e4e4e4");
+            paint.SetShadowLayer(50, -4, -4, Color.ParseColor("#ffffff"));
+            v.SetLayerType(LayerType.Software, paint);
             can.DrawBitmap(bitmap, 0, 0, null);
             can.DrawRect(rect, paint);
 
@@ -474,6 +440,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                 if (mScrollState != (int) ScrollState.Idle)
                 {
                     mIsWaitingForScrollFinish = true;
+                    mCellIsMobile = true;
                     return;
                 }
 
@@ -533,6 +500,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                 mBelowItemId = INVALID_ID;
                 mHoverCell = null;
                 Invalidate();
+                RequestLayout();
             }
 
             if (mobileView != null)
@@ -575,26 +543,40 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         void IOnScrollListener.OnScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
         {
-            mCurrentFirstVisibleItem = firstVisibleItem;
-            mCurrentVisibleItemCount = visibleItemCount;
+            try
+            {
+                mCurrentFirstVisibleItem = firstVisibleItem;
+                mCurrentVisibleItemCount = visibleItemCount;
 
-            mPreviousFirstVisibleItem = (mPreviousFirstVisibleItem == -1) ? mCurrentFirstVisibleItem
-                    : mPreviousFirstVisibleItem;
-            mPreviousVisibleItemCount = (mPreviousVisibleItemCount == -1) ? mCurrentVisibleItemCount
-                    : mPreviousVisibleItemCount;
+                mPreviousFirstVisibleItem = (mPreviousFirstVisibleItem == -1) ? mCurrentFirstVisibleItem
+                        : mPreviousFirstVisibleItem;
+                mPreviousVisibleItemCount = (mPreviousVisibleItemCount == -1) ? mCurrentVisibleItemCount
+                        : mPreviousVisibleItemCount;
 
-            CheckAndHandleFirstVisibleCellChange();
-            CheckAndHandleLastVisibleCellChange();
+                CheckAndHandleFirstVisibleCellChange();
+                CheckAndHandleLastVisibleCellChange();
 
-            mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
-            mPreviousVisibleItemCount = mCurrentVisibleItemCount;
+                mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
+                mPreviousVisibleItemCount = mCurrentVisibleItemCount;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         void IOnScrollListener.OnScrollStateChanged(AbsListView view, ScrollState scrollState)
         {
-            mCurrentScrollState = (int) scrollState;
-            mScrollState = (int) scrollState;
-            IsScrollCompleted();
+            try
+            {
+                mCurrentScrollState = (int)scrollState;
+                mScrollState = (int)scrollState;
+                IsScrollCompleted();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void CheckAndHandleFirstVisibleCellChange()

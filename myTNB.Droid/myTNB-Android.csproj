@@ -3836,6 +3836,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\promotions_default_image.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\promotions_default_image.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\promotions_default_image.png" />
+    <AndroidResource Include="Resources\values\RearrangeStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
