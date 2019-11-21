@@ -673,13 +673,13 @@ namespace myTNB
                         SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse, _currAcc);
                         UpdateTable();
                         _readingHistoryTableView.Hidden = false;
+                        IsLoading = false;
                     }
                     else
                     {
                         _readingHistoryTableView.Hidden = true;
                         DisplayRefresh();
                     }
-                    IsLoading = false;
                     ActivityIndicator.Hide();
                 });
             });
