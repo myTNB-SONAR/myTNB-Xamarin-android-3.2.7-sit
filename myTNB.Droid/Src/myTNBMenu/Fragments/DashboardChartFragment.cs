@@ -847,6 +847,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
                     isBCRMDown = true;
+                    isPaymentDown = true;
                 }
                 else
                 {
@@ -857,16 +858,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isPaymentDown = true;
 
                         DisablePayButton();
-                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                bcrmEntity.DowntimeTextMessage,
-                                Snackbar.LengthLong);
-                        View v = downtimeSnackBar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        if (!selectedAccount.AccountCategoryId.Equals("2"))
-                        {
-                            downtimeSnackBar.Show();
-                        }
+                        //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                        //        bcrmEntity.DowntimeTextMessage,
+                        //        Snackbar.LengthLong);
+                        //View v = downtimeSnackBar.View;
+                        //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        //tv.SetMaxLines(5);
+                        //if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        //{
+                        //    downtimeSnackBar.Show();
+                        //}
                     }
                     else
                     {
@@ -1032,37 +1033,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
-                if (isBCRMDown)
-                {
-                    ShowAmountDueNotAvailable();
+                //if (isBCRMDown)
+                //{
+                //    ShowAmountDueNotAvailable();
 
-                    HideSSMRDashboardView();
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    dashboardAccountName.Visibility = ViewStates.Gone;
+                //    HideSSMRDashboardView();
+                //    energyTipsView.Visibility = ViewStates.Gone;
+                //    dashboardAccountName.Visibility = ViewStates.Gone;
 
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                    }
-                    else
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                    }
+                //    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                //    {
+                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
+                //    }
+                //    else
+                //    {
+                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
+                //    }
 
-                    this.userActionsListener?.Start();
+                //    this.userActionsListener?.Start();
 
-                    Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                        bcrmEntity.DowntimeTextMessage,
-                        Snackbar.LengthLong);
-                    View v = downtimeSnackBar.View;
-                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                    tv.SetMaxLines(5);
-                    downtimeSnackBar.Show();
+                //    //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                //    //    bcrmEntity.DowntimeTextMessage,
+                //    //    Snackbar.LengthLong);
+                //    //View v = downtimeSnackBar.View;
+                //    //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                //    //tv.SetMaxLines(5);
+                //    //downtimeSnackBar.Show();
 
 
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     ((DashboardHomeActivity)Activity).HideAccountName();
                     dashboardAccountName.Visibility = ViewStates.Gone;
                     dashboardAccountName.Text = selectedAccount.AccountNickName;
@@ -1162,7 +1163,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         ShowUnableToFecthSmartMeterData(errorMSG);
                     }
-                }
+                //}
 
                 txtNewRefreshMessage.Click += delegate
                 {
@@ -6264,16 +6265,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                                         DisablePayButton();
-                                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                                bcrmEntity.DowntimeTextMessage,
-                                                Snackbar.LengthLong);
-                                        View v = downtimeSnackBar.View;
-                                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                        tv.SetMaxLines(5);
-                                        if (!selectedAccount.AccountCategoryId.Equals("2"))
-                                        {
-                                            downtimeSnackBar.Show();
-                                        }
+                                        //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                        //        bcrmEntity.DowntimeTextMessage,
+                                        //        Snackbar.LengthLong);
+                                        //View v = downtimeSnackBar.View;
+                                        //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                                        //tv.SetMaxLines(5);
+                                        //if (!selectedAccount.AccountCategoryId.Equals("2"))
+                                        //{
+                                        //    downtimeSnackBar.Show();
+                                        //}
                                     }
                                     else
                                     {
@@ -6385,16 +6386,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                                         DisablePayButton();
-                                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                                bcrmEntity.DowntimeTextMessage,
-                                                Snackbar.LengthLong);
-                                        View v = downtimeSnackBar.View;
-                                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                        tv.SetMaxLines(5);
-                                        if (!selectedAccount.AccountCategoryId.Equals("2"))
-                                        {
-                                            downtimeSnackBar.Show();
-                                        }
+                                        //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                        //        bcrmEntity.DowntimeTextMessage,
+                                        //        Snackbar.LengthLong);
+                                        //View v = downtimeSnackBar.View;
+                                        //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                                        //tv.SetMaxLines(5);
+                                        //if (!selectedAccount.AccountCategoryId.Equals("2"))
+                                        //{
+                                        //    downtimeSnackBar.Show();
+                                        //}
                                     }
                                     else
                                     {

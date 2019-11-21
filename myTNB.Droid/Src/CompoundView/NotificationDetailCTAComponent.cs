@@ -102,6 +102,15 @@ namespace myTNB_Android.Src.CompoundView
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(primaryBtn, secondaryBtn);
+                secondaryBtn.Enabled = ctaList[1].isEnabled;
+                if (ctaList[1].isEnabled)
+                {
+                    secondaryBtn.Background = ContextCompat.GetDrawable(mContext, Resource.Drawable.green_button_background);
+                }
+                else
+                {
+                    secondaryBtn.Background = ContextCompat.GetDrawable(mContext, Resource.Drawable.silver_chalice_button_background);
+                }
             }
         }
     }

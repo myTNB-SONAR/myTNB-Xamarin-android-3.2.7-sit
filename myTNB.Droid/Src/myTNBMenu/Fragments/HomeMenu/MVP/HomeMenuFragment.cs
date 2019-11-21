@@ -464,23 +464,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isBCRMDown = false;
                 }
 
-                if (!isBCRMDown)
-                {
-                    OnStartLoadAccount();
-                }
-                else
-                {
-                    IsLoadMoreButtonVisible(false, false);
+                OnStartLoadAccount();
 
-                    IsMyServiceLoadMoreButtonVisible(false, false);
+                //if (!isBCRMDown)
+                //{
+                //    OnStartLoadAccount();
+                //}
+                //else
+                //{
+                //    IsLoadMoreButtonVisible(false, false);
 
-                    IsRearrangeButtonVisible(false);
+                //    IsMyServiceLoadMoreButtonVisible(false, false);
 
-                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+                //    IsRearrangeButtonVisible(false);
 
-                    SetBottomLayoutBackground(false);
-                    this.presenter.InitiateService();
-                }
+                //    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+
+                //    SetBottomLayoutBackground(false);
+                //    this.presenter.InitiateService();
+                //}
             }
             catch (System.Exception e)
             {
@@ -865,7 +867,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
                             StartActivity(payment_activity);
                         }
-                        else if (selectedService.ServiceCategoryId == "1005" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {

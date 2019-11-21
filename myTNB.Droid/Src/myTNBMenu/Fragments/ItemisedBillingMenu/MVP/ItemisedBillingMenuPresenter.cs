@@ -91,12 +91,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                if (bcrmEntity.IsDown || pgCCEntity.IsDown && pgFPXEntity.IsDown)
-                {
-                    mView.ShowUnavailableBillContent(false);
-                }
-                else
-                {
+                //if (bcrmEntity.IsDown)
+                //{
+                //    mView.ShowUnavailableBillContent(false);
+                //}
+                //else
+                //{
                     if (showRefreshState)
                     {
                         mView.ShowUnavailableBillContent(true);
@@ -124,15 +124,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         OnGetBillTooltipContent();
                     }
-                }
-
-                if (pgCCEntity != null && pgFPXEntity != null)
-                {
-                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
-                    {
-                        mView.ShowUnavailableBillContent(false);
-                    }
-                }
+                //}
             }
             catch (System.OperationCanceledException e)
             {

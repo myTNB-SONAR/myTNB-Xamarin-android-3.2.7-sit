@@ -772,20 +772,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             try
             {
-                if (this.mView.IsBCRMDownFlag())
-                {
-                    this.mView.ShowNoInternet(null, null);
-                    this.mView.ShowAmountDueFailed();
-                }
-                else
-                {
+                //if (this.mView.IsBCRMDownFlag())
+                //{
+                //    this.mView.ShowNoInternet(null, null);
+                //    this.mView.ShowAmountDueFailed();
+                //}
+                //else
+                //{
                     if (!this.mView.IsLoadUsageNeeded())
                     {
                         OnByRM();
                     }
 
                     _ = LoadUsageHistory();
-                }
+                //}
             }
             catch (Exception e)
             {
