@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -17,7 +18,7 @@ namespace myTNB
             _controller = controller;
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
-                _accountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d ?? new List<CustomerAccountRecordModel>();
+                _accountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.DeepClone() ?? new List<CustomerAccountRecordModel>();
             }
         }
 
@@ -62,16 +63,6 @@ namespace myTNB
             return iconName;
         }
 
-        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, Foundation.NSIndexPath indexPath)
-        {
-            switch (editingStyle)
-            {
-                case UITableViewCellEditingStyle.None:
-                    Console.WriteLine("CommitEditingStyle:None called");
-                    break;
-            }
-        }
-
         public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
         {
             return true;
@@ -103,9 +94,9 @@ namespace myTNB
             }
             _accountList.Insert(insertAt, item);
             _accountList.RemoveAt(deleteAt);
-            foreach (var obj in _accountList)
+            if (_controller != null)
             {
-                Debug.WriteLine(obj.accDesc);
+                _controller.RearrangeAction(_accountList);
             }
         }
     }

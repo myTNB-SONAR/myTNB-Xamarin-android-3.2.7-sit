@@ -484,6 +484,10 @@
     },
     "RearrangeAccount": {
         "navTitle": "Rearrange Accounts",
-        "btnTitle": "Save Changes"
+        "btnTitle": "Save Changes",
+        "rearrangeTitle": "Leave without saving changes?",
+        "rearrangeMsg": "Looks like you’ve rearranged your accounts. Would you like to keep this new arrangement?",
+        "rearrangeToastFailMsg": "Uh oh, your changes were not saved. Please try again.",
+        "rearrangeToastSuccessMsg": "Your new account arrangement has successfully been saved!"
     }
 }

@@ -184,6 +184,9 @@ namespace myTNB
                             DataManager.DataManager.SharedInstance.DeleteDetailsFromBillingAccount(CustomerRecord.accNum);
                             DataManager.DataManager.SharedInstance.DeleteDetailsFromBillHistory(CustomerRecord.accNum);
                             DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(CustomerRecord.accNum);
+
+                            // remove deleted account from the rearrange list if it exists
+                            DataManager.DataManager.SharedInstance.RemoveAccountFromArrangedList(CustomerRecord.accNum);
                         }
                         DismissViewController(true, null);
                     }
