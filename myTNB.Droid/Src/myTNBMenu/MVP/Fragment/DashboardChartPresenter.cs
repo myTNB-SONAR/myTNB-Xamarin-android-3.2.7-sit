@@ -547,7 +547,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     userInterface = currentUsrInf
                 }, cts.Token);
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200" && usageHistoryResponse.Data.ErrorCode != "7204" && usageHistoryResponse.Data.ErrorCode != "7201")
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null
+                    && usageHistoryResponse.Data.ErrorCode != "7200"
+                    && usageHistoryResponse.Data.ErrorCode != "7204"
+                    && usageHistoryResponse.Data.ErrorCode != "8304"
+                    && usageHistoryResponse.Data.ErrorCode != "7201")
                 {
                     isBillAvailable = true;
                     this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
@@ -559,6 +563,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.ShowNewAccountView(usageHistoryResponse.Data.DisplayTitle);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
+                {
+                    this.mView.SetISMDMSDown(true);
+                    this.mView.OnSetBackendTariffDisabled(true);
+                    this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
+                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse);
+                    OnByRM();
+                }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8304")
                 {
                     this.mView.SetISMDMSDown(true);
                     this.mView.OnSetBackendTariffDisabled(true);
@@ -760,20 +772,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             try
             {
-                if (this.mView.IsBCRMDownFlag())
-                {
-                    this.mView.ShowNoInternet(null, null);
-                    this.mView.ShowAmountDueFailed();
-                }
-                else
-                {
+                //if (this.mView.IsBCRMDownFlag())
+                //{
+                //    this.mView.ShowNoInternet(null, null);
+                //    this.mView.ShowAmountDueFailed();
+                //}
+                //else
+                //{
                     if (!this.mView.IsLoadUsageNeeded())
                     {
                         OnByRM();
                     }
 
                     _ = LoadUsageHistory();
-                }
+                //}
             }
             catch (Exception e)
             {

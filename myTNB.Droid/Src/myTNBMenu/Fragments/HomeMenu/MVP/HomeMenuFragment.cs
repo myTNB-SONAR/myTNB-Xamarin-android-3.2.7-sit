@@ -194,6 +194,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceLoadMoreImg)]
         ImageView myServiceLoadMoreImg;
 
+        [BindView(Resource.Id.newLabel)]
+        LinearLayout newLabel;
+
+        [BindView(Resource.Id.txtNewLabel)]
+        TextView txtNewLabel;
+
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -337,14 +343,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetNotificationIndicator()
         {
-            if (UserNotificationEntity.HasNotifications())
-            {
-                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
-            }
-            else
-            {
-                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
-            }
+            OnSetNotificationNewLabel(UserNotificationEntity.HasNotifications(), UserNotificationEntity.Count());
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -363,7 +362,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel);
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel, txtNewLabel);
 
                 addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -476,23 +475,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isBCRMDown = false;
                 }
 
-                if (!isBCRMDown)
-                {
-                    OnStartLoadAccount();
-                }
-                else
-                {
-                    IsLoadMoreButtonVisible(false, false);
+                OnStartLoadAccount();
 
-                    IsMyServiceLoadMoreButtonVisible(false, false);
+                //if (!isBCRMDown)
+                //{
+                //    OnStartLoadAccount();
+                //}
+                //else
+                //{
+                //    IsLoadMoreButtonVisible(false, false);
 
-                    IsRearrangeButtonVisible(false);
+                //    IsMyServiceLoadMoreButtonVisible(false, false);
 
-                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+                //    IsRearrangeButtonVisible(false);
 
-                    SetBottomLayoutBackground(false);
-                    this.presenter.InitiateService();
-                }
+                //    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+
+                //    SetBottomLayoutBackground(false);
+                //    this.presenter.InitiateService();
+                //}
             }
             catch (System.Exception e)
             {
@@ -882,7 +883,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
                             StartActivity(payment_activity);
                         }
-                        else if (selectedService.ServiceCategoryId == "1005" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -2230,6 +2231,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        private void OnSetNotificationNewLabel(bool flag, int count)
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                if (flag && count > 0)
+                {
+                    newLabel.Visibility = ViewStates.Visible;
+                    txtNewLabel.Text = count.ToString();
+                    notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
+                    if (count > 0 && count <= 9)
+                    {
+                        RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-16f);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(14f);
+                        newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
+                    }
+                    else
+                    {
+                        if (count > 99)
+                        {
+                            txtNewLabel.Text = "99+";
+                        }
+                        RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-10f);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(18f);
+                        newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
+                    }
+                }
+                else
+                {
+                    newLabel.Visibility = ViewStates.Gone;
+                    notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
+                    RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                    notificationHeaderIconParam.LeftMargin = 0;
+                }
+            });
+        }
         public void RestartHomeMenu()
         {
             try

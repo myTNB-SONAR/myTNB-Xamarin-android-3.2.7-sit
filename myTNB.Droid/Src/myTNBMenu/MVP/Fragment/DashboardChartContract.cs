@@ -154,6 +154,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void SetMDMSDownMessage(SMUsageHistoryResponse response);
 
             void CheckSMRAccountValidaty();
+
+            void SetMDMSDownRefreshMessage(SMUsageHistoryResponse response);
         }
 
         public interface IUserActionsListener : IBasePresenter
