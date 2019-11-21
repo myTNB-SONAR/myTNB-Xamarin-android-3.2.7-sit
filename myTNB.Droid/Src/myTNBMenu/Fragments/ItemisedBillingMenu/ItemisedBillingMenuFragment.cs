@@ -521,17 +521,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             billFilterIcon.Clickable = isEnable;
             btnViewDetails.Enabled = isEnable;
-            btnPayBill.Enabled = isEnable;
+            
             if (isEnable)
             {
                 btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background);
-                btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
             }
             else
             {
                 btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background_disabled);
+            }
+
+            bool isPaymentButtonEnable = Utility.IsEnablePayment();
+            btnPayBill.Enabled = isPaymentButtonEnable;
+            if (isPaymentButtonEnable)
+            {
+                btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+            }
+            else
+            {
                 btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
             }
         }

@@ -296,6 +296,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 captureReadingLayout.Visibility = ViewStates.Gone;
                 meterReadingManualTitle.Visibility = ViewStates.Visible;
+                if (currentMasterData.IsOCRDown)
+                {
+                    string downMessage = GetString(Resource.String.smr_manual_reading_down_title);
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        meterReadingManualTitle.TextFormatted = Html.FromHtml(downMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        meterReadingManualTitle.TextFormatted = Html.FromHtml(downMessage);
+                    }
+                }
             }
 
             meterReadingTitle.TextFormatted = (meterReadingModelList.Count == 1) ? GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_single))

@@ -35,6 +35,7 @@ using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
@@ -186,14 +187,38 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             if (!alreadyStarted)
             {
-                this.userActionsListener.Start();
+                EvaluateBCRMDowntime();
                 alreadyStarted = true;
-                ShowPromotion(true);
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
 
             ShowUnreadRewards();
+        }
+
+        private void EvaluateBCRMDowntime()
+        {
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+            if (bcrmEntity != null && bcrmEntity.IsDown)
+            {
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(Resource.Drawable.downtime_banner)
+                .SetTitle("We'll be back shortly!")
+                .SetMessage(bcrmEntity.DowntimeMessage)
+                .SetCTALabel("Got It!")
+                .SetCTAaction(()=>
+                {
+                    this.userActionsListener.Start();
+                    ShowPromotion(true);
+                })
+                .Build()
+                .Show();
+            }
+            else
+            {
+                this.userActionsListener.Start();
+                ShowPromotion(true);
+            }
         }
 
         public void ShowBackButton(bool flag)

@@ -69,6 +69,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
                         }
@@ -79,6 +80,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
                         }
@@ -89,6 +91,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
                         }
@@ -99,6 +102,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
                         }

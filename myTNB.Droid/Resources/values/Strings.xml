@@ -1473,6 +1473,7 @@ Please try again later.]]>
 <string name="smr_contact_not_available_btn">Got It!</string>
 
 <string name="smr_manual_reading_title">Please enter your meter reading for the unit(s) below.</string>
+<string name="smr_manual_reading_down_title"><![CDATA[Photo submission is currently unavailable. Please <b>enter your reading manually</b> below.]]></string>
 
 <string name="walkthrough_install_title_1">Welcome to myTNB!</string>
 <string name="walkthrough_install_title_2">Bills at Your Fingertips.</string>
