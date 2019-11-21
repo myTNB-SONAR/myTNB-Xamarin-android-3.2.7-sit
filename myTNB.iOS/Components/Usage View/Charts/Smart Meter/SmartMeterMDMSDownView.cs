@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using Foundation;
 using myTNB.SmartMeterView;
 using UIKit;
 
@@ -15,40 +16,66 @@ namespace myTNB
         {
             view = new CustomUIView(new CGRect(0, ReferenceWidget.GetMaxY(), _width, GetHeightByScreenSize(157)));
 
-            UIImageView icon = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(68), view), 0, GetScaledWidth(68), GetScaledHeight(63)))
+            string mdmsImageString = UsageConstants.IMG_MDMSDownUnplanned;
+            string descriptionString = LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshMessage);
+            nfloat imgWidth = GetScaledWidth(68);
+            nfloat imgHeight = GetScaledWidth(63);
+            if (AccountUsageSmartCache.IsPlannedMDMSDown)
             {
-                Image = UIImage.FromBundle(UsageConstants.IMG_MDMSDown),
+                mdmsImageString = UsageConstants.IMG_MDMSDownPlanned;
+                descriptionString = AccountUsageSmartCache.ErrorMessage;
+                imgWidth = GetScaledWidth(70);
+                imgHeight = GetScaledWidth(72);
+            }
+
+            UIImageView icon = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(68), view), 0, imgWidth, imgHeight))
+            {
+                Image = UIImage.FromBundle(mdmsImageString),
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
             view.AddSubview(icon);
             nfloat descWidth = _width - (GetScaledWidth(32) * 2);
-            UILabel desc = new UILabel(new CGRect(GetScaledWidth(32), icon.Frame.GetMaxY() + GetScaledHeight(17), descWidth, 0))
-            {
-                TextAlignment = UITextAlignment.Center,
-                Font = TNBFont.MuseoSans_14_300,
-                TextColor = UIColor.White,
-                Lines = 0,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshMessage)
-            };
-            CGSize descSize = desc.SizeThatFits(new CGSize(descWidth, 1000f));
-            ViewHelper.AdjustFrameSetHeight(desc, descSize.Height);
-            view.AddSubview(desc);
 
-            CustomUIButtonV2 btnRefresh = new CustomUIButtonV2(true)
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descriptionString + "<br>"
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                Frame = new CGRect(GetScaledWidth(16), desc.Frame.GetMaxY() + GetScaledHeight(16)
-                    , view.Frame.Width - GetScaledWidth(32), GetScaledHeight(48))
+                ForegroundColor = UIColor.White
+            }, new NSRange(0, htmlBody.Length));
+
+            UITextView txtViewDescription = new UITextView
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                ContentInset = new UIEdgeInsets(-5, -5, -5, -5),
+                BackgroundColor = UIColor.Clear
             };
-            btnRefresh.SetTitle(AccountUsageSmartCache.ErrorCTA ?? LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow)
-                , UIControlState.Normal);
-            btnRefresh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            txtViewDescription.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            CGSize size = txtViewDescription.SizeThatFits(new CGSize(descWidth, 1000f));
+            txtViewDescription.Frame = new CGRect(GetScaledWidth(32), icon.Frame.GetMaxY() + GetScaledHeight(16), descWidth, size.Height);
+            txtViewDescription.TextAlignment = UITextAlignment.Center;
+            view.AddSubview(txtViewDescription);
+
+            if (AccountUsageSmartCache.IsUnplannedMDMSDown)
             {
-                if (OnMDMSRefresh != null)
+                CustomUIButtonV2 btnRefresh = new CustomUIButtonV2(true)
                 {
-                    OnMDMSRefresh.Invoke();
-                }
-            }));
-            view.AddSubview(btnRefresh);
+                    Frame = new CGRect(GetScaledWidth(16), txtViewDescription.Frame.GetMaxY() + GetScaledHeight(16)
+                        , view.Frame.Width - GetScaledWidth(32), GetScaledHeight(48))
+                };
+                btnRefresh.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow), UIControlState.Normal);
+                btnRefresh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    if (OnMDMSRefresh != null)
+                    {
+                        OnMDMSRefresh.Invoke();
+                    }
+                }));
+                view.AddSubview(btnRefresh);
+            }
         }
     }
 }

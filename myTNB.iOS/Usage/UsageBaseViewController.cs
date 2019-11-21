@@ -8,7 +8,6 @@ using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
-using CoreAnimation;
 using Foundation;
 using System.Diagnostics;
 
@@ -596,9 +595,11 @@ namespace myTNB
 
         private void OnMDMSRefresh()
         {
-            Debug.WriteLine("MDMS Refresh");
-            ResetViews();
-            InitiateAPICalls();
+            if (AccountUsageSmartCache.IsUnplannedMDMSDown)
+            {
+                ResetViews();
+                InitiateAPICalls();
+            }
         }
 
         #region DPC Methods
