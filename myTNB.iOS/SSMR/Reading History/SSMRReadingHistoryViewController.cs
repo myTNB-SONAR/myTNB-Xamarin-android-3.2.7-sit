@@ -1,7 +1,6 @@
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;

@@ -16,6 +16,19 @@ namespace myTNB.Model
         {
             get
             {
+                if (SystemType == SystemEnum.BCRM)
+                {
+                    return true;
+                }
+                if (SystemType == SystemEnum.PaymentCreditCard)
+                {
+                    return true;
+                }
+                if (SystemType == SystemEnum.PaymentFPX)
+                {
+                    return true;
+                }
+
                 bool res = true;
                 if (!string.IsNullOrEmpty(IsDown))
                 {
