@@ -1,5 +1,4 @@
-﻿using System;
-using myTNB.Enums;
+﻿using myTNB.Enums;
 using Newtonsoft.Json;
 
 namespace myTNB.Model
@@ -7,35 +6,9 @@ namespace myTNB.Model
     public class DowntimeDataModel
     {
         public string System { get; set; }
-        //public string IsDown { get; set; }
+        public string IsDown { get; set; }
         public string DowntimeMessage { get; set; }
         public string DowntimeTextMessage { get; set; }
-
-        //Stub
-         private bool _isDown;
-         public string IsDown
-         {
-             set
-             {
-                 if (System == "BCRM")
-                 {
-                     value = "true";
-                 }
-                 if (System == "PG_CC")
-                 {
-                     value = "false";
-                 }
-                 if (System == "PG_FPX")
-                 {
-                     value = "false";
-                 }
-                 bool.TryParse(value, out _isDown);
-             }
-             get
-             {
-                 return _isDown.ToString();
-             }
-         }
 
         [JsonIgnore]
         public bool IsAvailable

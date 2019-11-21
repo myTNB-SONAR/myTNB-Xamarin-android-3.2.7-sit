@@ -141,6 +141,7 @@ namespace myTNB.SSMR
         public static string I18N_SubmitReading = "submitReading";
         public static string I18N_TakeOrUploadPhoto = "takeOrUploadPhoto";
         public static string I18N_ManualInputTitle = "manualInputTitle";
+        public static string I18N_OCRDownMessage = "ocrDownMessage";
         public static string I18N_TutorialReadMeterTitle = "tutorialReadMeterTitle";
         public static string I18N_TutorialReadMeterDesc = "tutorialReadMeterDesc";
         public static string I18N_TutorialReadMeterGotIt = "tutorialReadMeterGotIt";

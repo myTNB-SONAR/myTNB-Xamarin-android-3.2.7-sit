@@ -43,6 +43,7 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
+        private bool isBCRMPopupDisplayed;
 
         public override void ViewDidLoad()
         {
@@ -153,8 +154,9 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
             bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
-            if (!isBRCRMAvailable)
+            if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
             {
+                isBCRMPopupDisplayed = true;
                 DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
                 string errMsg = GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
                 if (status != null && !string.IsNullOrEmpty(status?.DowntimeMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeMessage))
@@ -162,7 +164,11 @@ namespace myTNB
                     errMsg = status.DowntimeMessage;
                 }
                 DisplayCustomAlert(GetCommonI18NValue(Constants.Common_WellBeBack), errMsg
-                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), ()=> {
+                        AppLaunchMasterCache.IsBCRMPopupDisplayed = true;
+                        isBCRMPopupDisplayed = false;
+                        CheckTutorialOverlay();
+                    }}}
                     , UIImage.FromBundle("BCRM-Down-Background"));
             }
         }
@@ -190,6 +196,7 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
+            if (isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
