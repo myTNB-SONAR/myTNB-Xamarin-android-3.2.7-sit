@@ -54,6 +54,15 @@ namespace myTNB
             if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
+            if ((DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                && (DataManager.DataManager.SharedInstance.SelectedAccount == null
+                || string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.SelectedAccount.accNum)
+                || string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.SelectedAccount.accNum)))
+            {
+                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+            }
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
@@ -379,6 +388,12 @@ namespace myTNB
                     });
                 });
             }));
+
+            if (AppLaunchMasterCache.IsPayDisabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+            }
 
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 

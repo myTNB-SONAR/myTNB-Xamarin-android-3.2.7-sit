@@ -668,6 +668,12 @@ namespace myTNB
             _btnPay.SetTitle(GetI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
 
+            if (AppLaunchMasterCache.IsPayDisabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+            }
+
             _viewCTAContainer.AddSubviews(new UIView[] { _btnViewBill, _btnPay });
 
             View.AddSubview(_viewCTAContainer);

@@ -399,12 +399,13 @@ namespace myTNB
                 {
                     Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
                 };
-                UpdateCTA(ref _btnSecondary);
+                UpdateCTA(ref _btnSecondary, true, !AppLaunchMasterCache.IsPayDisabled);
                 _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Paynow), UIControlState.Normal);
                 _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnPay();
                 }));
+
                 _viewCTA.AddSubviews(new UIView[] { _btnPrimary, _btnSecondary });
             }
             else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Reconnection)

@@ -2,6 +2,14 @@
 
 namespace myTNB.Model
 {
+    public struct StatusCodes
+    {
+        public const string Success = "7200";
+        public const string EmptyData = "7201";
+        public const string PlannedMDMSDown = "8304";
+        public const string UnplannedMDMSDown = "7204";
+    }
+
     public class BaseModelV2
     {
         public string ErrorCode { set; get; }
@@ -13,7 +21,7 @@ namespace myTNB.Model
         {
             get
             {
-                return ErrorCode == "7200";
+                return ErrorCode == StatusCodes.Success;
             }
         }
         [JsonIgnore]
