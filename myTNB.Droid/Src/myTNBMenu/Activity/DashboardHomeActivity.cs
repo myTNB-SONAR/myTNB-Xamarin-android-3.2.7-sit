@@ -684,7 +684,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (isGotRead && count > 0)
                 {
                     newLabel.Visibility = ViewStates.Visible;
-                    newLabel.SetBackgroundResource(Resource.Drawable.notification_indication_bg);
+                    newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
                     TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                     RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                     RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
