@@ -358,7 +358,7 @@
                                     <ImageView
                                         android:layout_width="65dp"
                                         android:layout_height="72dp"
-                                        android:src="@drawable/mdms_down_dayview"
+                                        android:src="@drawable/refresh_white"
                                         android:id="@+id/imgMdmsDayViewDown"
                                         android:layout_gravity="center"/>
                                     <TextView
@@ -372,8 +372,17 @@
                                         android:lineSpacingExtra="3dp"
                                         android:textSize="15dp"
                                         android:textColor="@color/white"
-                                        android:text="@string/dayview_mdms_down"
+                                        android:text="@string/unavailable_refresh_message"
                                         android:layout_gravity="center"/>
+                                        <Button
+                                            android:layout_width="match_parent"
+                                            android:layout_height="48dp"
+                                            android:layout_marginTop="16dp"
+                                            android:layout_marginLeft="16dp"
+                                            android:layout_marginRight="16dp"
+                                            android:text="Refresh Now"
+                                            android:id="@+id/btnMDMSDownRefresh"
+                                            style="@style/Theme.RefreshWhiteButton" />
                                 </LinearLayout>
 					            <com.github.mikephil.charting.charts.BarChart
 						            android:id="@+id/bar_chart"
@@ -441,7 +450,7 @@
                                     android:layout_width="65dp"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
-                                    android:layout_alignParentBottom="true"  
+                                    android:layout_alignParentBottom="true"
                                     android:id="@+id/rmKwhSelectDropdown"
                                     android:visibility="gone"
                                     android:layout_marginLeft="16dp">
@@ -570,7 +579,7 @@
                             segmentedgroup:cardUseCompatPadding="true"
                             segmentedgroup:cardElevation="4dp"
                             android:id="@+id/re_account_status_card">
-                            <LinearLayout 
+                            <LinearLayout
                                 android:id="@+id/re_account_status"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -751,7 +760,7 @@
                             segmentedgroup:cardUseCompatPadding="true"
                             segmentedgroup:cardElevation="4dp"
                             android:id="@+id/ssmr_account_status_card">
-                            <LinearLayout 
+                            <LinearLayout
                                 android:id="@+id/ssmr_account_status"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -777,7 +786,7 @@
                                         android:layout_centerVertical="true"
                                         android:scaleType="fitCenter"
                                         android:visibility="visible" />
-                                    <LinearLayout 
+                                    <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
@@ -827,7 +836,7 @@
                                             android:scaleType="fitCenter"
                                             android:src="@drawable/round_circle"/>
                                     </com.facebook.shimmer.ShimmerFrameLayout>
-                                    <LinearLayout 
+                                    <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
@@ -896,7 +905,7 @@
                             segmentedgroup:cardUseCompatPadding="true"
                             segmentedgroup:cardElevation="4dp"
                             android:id="@+id/sm_statistic_status_card">
-                            <LinearLayout 
+                            <LinearLayout
                                 android:id="@+id/sm_statistic_status"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
