@@ -58,6 +58,10 @@ namespace myTNB
         public static string I18N_GotIt = "gotIt";
         public static string I18N_RearrangeNavTitle = "navTitle";
         public static string I18N_RearrangeBtnTitle = "btnTitle";
+        public static string I18N_RearrangeTitle = "rearrangeTitle";
+        public static string I18N_RearrangeMsg = "rearrangeMsg";
+        public static string I18N_RearrangeToastFailMsg = "rearrangeToastFailMsg";
+        public static string I18N_RearrangeToastSuccessMsg = "rearrangeToastSuccessMsg";
 
         //Image
         public static string Img_Notification = "Notification";

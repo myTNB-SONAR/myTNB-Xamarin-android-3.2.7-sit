@@ -212,8 +212,8 @@ namespace myTNB
                     , View.Frame.Height - ((_viewToast.Frame.X * 2) + 32)))
                 {
                     TextAlignment = UITextAlignment.Left,
-                    Font = MyTNBFont.MuseoSans12,
-                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = TNBFont.MuseoSans_12_300,
+                    TextColor = MyTNBColor.CharcoalGrey,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap
                 };

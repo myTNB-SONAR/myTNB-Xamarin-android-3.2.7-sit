@@ -517,6 +517,7 @@ namespace myTNB
             {
                 if (_rmKwhDropDownView != null)
                 {
+                    _rmkWhFlag = false;
                     _rmKwhDropDownView.Hidden = true;
                 }
                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
@@ -1163,6 +1164,11 @@ namespace myTNB
         }
         private void LoadTariffLegendWithIndex(int index)
         {
+            if (_rmKwhDropDownView != null)
+            {
+                _rmkWhFlag = false;
+                _rmKwhDropDownView.Hidden = true;
+            }
             List<MonthItemModel> usageData = isSmartMeterAccount ? AccountUsageSmartCache.ByMonthUsage : AccountUsageCache.ByMonthUsage;
             if (usageData != null && usageData.Count > 0)
             {
@@ -1314,6 +1320,11 @@ namespace myTNB
                 }));
                 _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
                 {
+                    if (_rmKwhDropDownView != null)
+                    {
+                        _rmkWhFlag = false;
+                        _rmKwhDropDownView.Hidden = true;
+                    }
                     if (!_tariffSelectionComponent.isTariffDisabled)
                     {
                         ValidateTariffLegend();
@@ -1366,6 +1377,7 @@ namespace myTNB
                 {
                     if (_rmKwhDropDownView != null)
                     {
+                        _rmkWhFlag = false;
                         _rmKwhDropDownView.Hidden = true;
                     }
                     _tariffIsVisible = !_tariffIsVisible;

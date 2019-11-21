@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using Foundation;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 using UIKit;
 
 namespace myTNB
@@ -24,17 +24,38 @@ namespace myTNB
             return string.Empty;
         }
 
-        public List<DueAmountDataModel> GetAccountList(List<CustomerAccountRecordModel> acctsList)
+        public List<DueAmountDataModel> GetAccountListForDashboard(List<CustomerAccountRecordModel> acctsList)
         {
-            var sortedAccounts = new List<CustomerAccountRecordModel>();
+            List<CustomerAccountRecordModel> sortedAccounts;
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+            var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                      ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                      : new UserEntity();
 
-            var results = acctsList.GroupBy(x => x.IsREAccount);
-            if (results != null && results?.Count() > 0)
+            if (userInfo.email.IsValid())
             {
-                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                reAccts.AddRange(normalAccts);
-                sortedAccounts = reAccts;
+                var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                if (stringData.IsValid())
+                {
+                    CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                    if (accountListModel != null && accountListModel.d != null && accountListModel.d.Count > 0)
+                    {
+                        sortedAccounts = DataManager.DataManager.SharedInstance.GetCombinedAcctList(accountListModel.d);
+                    }
+                    else
+                    {
+                        sortedAccounts = DataManager.DataManager.SharedInstance.GetSortedAcctList(acctsList);
+                    }
+                }
+                else
+                {
+                    sortedAccounts = DataManager.DataManager.SharedInstance.GetSortedAcctList(acctsList);
+                }
+            }
+            else
+            {
+                sortedAccounts = DataManager.DataManager.SharedInstance.GetSortedAcctList(acctsList);
             }
 
             List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
@@ -71,7 +92,7 @@ namespace myTNB
             DueAmountDataModel model = new DueAmountDataModel();
             if (!string.IsNullOrEmpty(accountNo))
             {
-                var accountList = GetAccountList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+                var accountList = GetAccountListForDashboard(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
                 foreach (var account in accountList)
                 {
                     if (account.accNum == accountNo)
@@ -186,9 +207,7 @@ namespace myTNB
             nfloat totalCellHeight;
             if (HasAccounts)
             {
-                // HIDE REARRANGE ACCOUNT
-                //nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
-                nfloat footerHeight = HasMoreThanThreeAccts ? ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
                 var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
                 nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
                 totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F);

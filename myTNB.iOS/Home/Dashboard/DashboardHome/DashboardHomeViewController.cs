@@ -496,9 +496,15 @@ namespace myTNB
         public void OnRearrangeAccountAction()
         {
             RearrangeAccountViewController rearrangeAccountView = new RearrangeAccountViewController();
+            rearrangeAccountView.OnRearrangeSuccess = OnRearrangeSuccess;
             UINavigationController navController = new UINavigationController(rearrangeAccountView);
             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
+        }
+
+        private void OnRearrangeSuccess(string message)
+        {
+            DisplayToast(message);
         }
 
         public string GetGreeting()
