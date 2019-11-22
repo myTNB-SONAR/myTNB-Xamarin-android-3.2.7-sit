@@ -1257,11 +1257,11 @@
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Planned.imageset\refresh1%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Planned.imageset\refresh1%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x.png" />
-    <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x.png" />
     <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\grey%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\grey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
