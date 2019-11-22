@@ -283,7 +283,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                if (CustomerBillingAccount.Enumerate().Count() > 0)
+                if (CustomerBillingAccount.HasItems())
                 {
                     List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
                     if (customerAccountList != null && customerAccountList.Count > 0)

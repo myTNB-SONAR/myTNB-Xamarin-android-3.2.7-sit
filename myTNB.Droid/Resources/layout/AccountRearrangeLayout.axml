@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/white" 
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <myTNB_Android.Src.RearrangeAccount.MVP.RearrangeAccountListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_view" />
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@color/platinumGrey" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@null"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            android:padding="16dp"
+            android:id="@+id/submitLayout">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Changes"
+                android:id="@+id/btnSubmit"
+                style="@style/Theme.SubmitButton" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

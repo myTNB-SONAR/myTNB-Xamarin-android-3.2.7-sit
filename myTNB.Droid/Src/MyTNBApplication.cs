@@ -64,6 +64,7 @@ namespace myTNB_Android.Src
             SelectBillsEntity.CreateTable();
             MyServiceEntity.CreateTable();
             SitecoreCmsEntity.CreateTable();
+            AccountSortingEntity.CreateTable();
         }
     }
 }

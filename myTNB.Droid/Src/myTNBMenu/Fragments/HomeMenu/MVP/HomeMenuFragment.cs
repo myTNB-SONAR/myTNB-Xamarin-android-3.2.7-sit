@@ -45,6 +45,7 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.RearrangeAccount.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -217,6 +218,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
+        public readonly static int REARRANGE_ACTIVITY_CODE = 8806;
+
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
@@ -326,6 +329,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                     viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
                     StartActivity(viewBill);
+                }
+            }
+            else if (requestCode == REARRANGE_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(true);
+                    RestartHomeMenu();
                 }
             }
         }
@@ -792,6 +803,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 SetNotificationIndicator();
                 HomeMenuCustomScrolling(0);
+                if (HomeMenuUtils.GetIsShowRearrangeAccountSuccessfulNeed())
+                {
+                    HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
+                    ShowRearrangeAccountSuccessful();
+                }
             }
             catch (System.Exception e)
             {
@@ -985,6 +1001,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             );
             mMyServiceRetrySnakebar.Show();
+        }
+
+        private Snackbar mRearrangeSnackbar;
+        public void ShowRearrangeAccountSuccessful()
+        {
+            if (mRearrangeSnackbar != null && mRearrangeSnackbar.IsShown)
+            {
+                mRearrangeSnackbar.Dismiss();
+            }
+
+            mRearrangeSnackbar = Snackbar.Make(rootView,
+                "Your new account arrangement has successfully been saved!",
+                Snackbar.LengthLong);
+            mRearrangeSnackbar.Show();
         }
 
         private void RetryMyService()
@@ -1869,9 +1899,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         loadMoreLabel.Text = Activity.GetString(Resource.String.show_less_accounts);
                     }
 
-                    // Lin Siong TODO: Hide this on 15 Nov Release
-                    // IsRearrangeButtonVisible(true);
-                    IsRearrangeButtonVisible(false);
+                    IsRearrangeButtonVisible(true);
                 }
                 else
                 {
@@ -1999,7 +2027,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.rearrangeContainer)]
         internal void OnRearrangeClick(object sender, EventArgs e)
         {
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent rearrangeAccount = new Intent(this.Activity, typeof(RearrangeAccountActivity));
+                StartActivityForResult(rearrangeAccount, REARRANGE_ACTIVITY_CODE);
+            }
         }
 
         void View.IOnFocusChangeListener.OnFocusChange(View v, bool hasFocus)
@@ -2088,12 +2121,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnShowHomeMenuFragmentTutorialDialog()
         {
-            Activity.RunOnUiThread(() =>
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                StopScrolling();
-            });
-            NewAppTutorialUtils.ForceCloseNewAppTutorial();
-            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                Activity.RunOnUiThread(() =>
+                {
+                    StopScrolling();
+                });
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public void HomeMenuCustomScrolling(int yPosition)

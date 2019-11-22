@@ -134,10 +134,12 @@ namespace myTNB_Android.Src.Utils
             //internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
             internal static readonly int IN_SAMPLE_SIZE = 4;
+            internal static readonly string ENV = "SIT";
 #else //create new flavour called PROD, SIT, UAT
-                internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
-                internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
-                internal static readonly int IN_SAMPLE_SIZE = 4;
+            internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
+            internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
+            internal static readonly int IN_SAMPLE_SIZE = 4;
+            internal static readonly string ENV = "PROD";
 #endif
         }
 
