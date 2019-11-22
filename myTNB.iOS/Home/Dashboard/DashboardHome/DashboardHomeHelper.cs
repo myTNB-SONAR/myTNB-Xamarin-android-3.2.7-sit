@@ -26,38 +26,7 @@ namespace myTNB
 
         public List<DueAmountDataModel> GetAccountListForDashboard(List<CustomerAccountRecordModel> acctsList)
         {
-            List<CustomerAccountRecordModel> sortedAccounts;
-            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
-            var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                      ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                      : new UserEntity();
-
-            if (userInfo.email.IsValid())
-            {
-                var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
-                if (stringData.IsValid())
-                {
-                    CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
-                    if (accountListModel != null && accountListModel.d != null && accountListModel.d.Count > 0)
-                    {
-                        sortedAccounts = DataManager.DataManager.SharedInstance.GetCombinedAcctList(accountListModel.d);
-                    }
-                    else
-                    {
-                        sortedAccounts = DataManager.DataManager.SharedInstance.GetSortedAcctList(acctsList);
-                    }
-                }
-                else
-                {
-                    sortedAccounts = DataManager.DataManager.SharedInstance.GetSortedAcctList(acctsList);
-                }
-            }
-            else
-            {
-                sortedAccounts = DataManager.DataManager.SharedInstance.GetSortedAcctList(acctsList);
-            }
-
+            List<CustomerAccountRecordModel> sortedAccounts = acctsList;
             List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
             if (sortedAccounts != null &&
                 sortedAccounts.Count > 0)
