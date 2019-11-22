@@ -159,17 +159,26 @@ namespace myTNB
                 isBCRMPopupDisplayed = true;
                 DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
                 string errMsg = GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
-                if (status != null && !string.IsNullOrEmpty(status?.DowntimeMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeMessage))
+                string errorTitle = GetCommonI18NValue(Constants.Common_WellBeBack);
+                if (status != null)
                 {
-                    errMsg = status.DowntimeMessage;
+                    if (!string.IsNullOrEmpty(status?.DowntimeMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeMessage))
+                    {
+                        errMsg = status.DowntimeMessage;
+                    }
+                    if (!string.IsNullOrEmpty(status?.DowntimeTextMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeTextMessage))
+                    {
+                        errorTitle = status.DowntimeTextMessage;
+                    }
                 }
-                DisplayCustomAlert(GetCommonI18NValue(Constants.Common_WellBeBack), errMsg
+
+                DisplayCustomAlert(errorTitle, errMsg
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), ()=> {
                         AppLaunchMasterCache.IsBCRMPopupDisplayed = true;
                         isBCRMPopupDisplayed = false;
                         CheckTutorialOverlay();
                     }}}
-                    , UIImage.FromBundle("BCRM-Down-Background"));
+                    , UIImage.FromBundle(DashboardHomeConstants.IMG_BCRMDownPopup));
             }
         }
 
