@@ -970,35 +970,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override bool DispatchTouchEvent(MotionEvent ev)
         {
-            if (ev.Action == MotionEventActions.Down
-                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
-                && currentFragment.GetType() == typeof(HomeMenuFragment))
+            try
             {
-                View view = CurrentFocus;
-                if (view != null && view.GetType() != typeof(EditText))
+                if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                    && currentFragment.GetType() == typeof(HomeMenuFragment))
                 {
-                    Rect rect = new Rect();
-                    view.GetGlobalVisibleRect(rect);
-                    if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
+                    View view = CurrentFocus;
+                    if (view != null && view.GetType() != typeof(EditText))
                     {
-                        HomeMenuFragment fragment = (HomeMenuFragment) FragmentManager.FindFragmentById(Resource.Id.content_layout);
-                        LinearLayout searchContainer = fragment.GetSearchLayout();
-                        if (IsViewInBounds(searchContainer, (int)ev.RawX, (int)ev.RawY))
+                        Rect rect = new Rect();
+                        view.GetGlobalVisibleRect(rect);
+                        if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
                         {
-                            fragment.OnSearchOutFocus(true);
-                        }
-                        else
-                        {
-                            fragment.OnSearchClearFocus();
+                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            LinearLayout searchContainer = fragment.GetSearchLayout();
+                            if (IsViewInBounds(searchContainer, (int)ev.RawX, (int)ev.RawY))
+                            {
+                                fragment.OnSearchOutFocus(true);
+                            }
+                            else
+                            {
+                                fragment.OnSearchClearFocus();
+                            }
                         }
                     }
                 }
-            }
-            else if (ev.Action == MotionEventActions.Down
-                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
-                && currentFragment.GetType() == typeof(DashboardChartFragment))
-            {
-                try
+                else if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                    && currentFragment.GetType() == typeof(DashboardChartFragment))
                 {
                     DashboardChartFragment fragment = (DashboardChartFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
                     TextView kwhLabel = fragment.GetkwhLabel();
@@ -1011,12 +1011,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         fragment.CheckRMKwhSelectDropDown();
                     }
                 }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
+                return base.DispatchTouchEvent(ev);
             }
-            return base.DispatchTouchEvent(ev);
+            catch (System.Exception e)
+            {
+                SoftKillApps();
+                Utility.LoggingNonFatalError(e);
+            }
+            return false;
+        }
+
+        public void SoftKillApps()
+        {
+            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+            HomeMenuUtils.ResetAll();
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
         }
 
         private bool IsViewInBounds(View view, int x, int y)
