@@ -65,7 +65,8 @@ namespace myTNB
             };
             _badgeView = new UIView(new CGRect(ScaleUtility.GetScaledWidth(12), 0, ScaleUtility.GetScaledWidth(16), ScaleUtility.GetScaledWidth(16)))
             {
-                BackgroundColor = MyTNBColor.FreshGreen
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Hidden = true
             };
             _badgeView.Layer.CornerRadius = ScaleUtility.GetScaledWidth(_badgeView.Frame.Height / 2);
 
