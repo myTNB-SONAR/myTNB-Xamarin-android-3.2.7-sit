@@ -21,18 +21,20 @@ namespace myTNB
         private List<PromotionsModelV2> _promotions;
         public Action _onReload;
         public Func<string, string> _getI18NValue;
+        private Action _onServicesRefresh;
 
-        public DashboardHomeDataSource(DashboardHomeViewController controller,
-            AccountListViewController accountListViewController,
-            List<ServiceItemModel> services,
-            List<PromotionsModelV2> promotions,
-            List<HelpModel> helpList,
-            bool isServicesShimmering,
-            bool isHelpShimmering,
-            bool showRefreshScreen,
-            RefreshScreenComponent refreshScreenComponent,
-            Func<string, string> getI18NValue,
-            Action onReload)
+        public DashboardHomeDataSource(DashboardHomeViewController controller
+            , AccountListViewController accountListViewController
+            , List<ServiceItemModel> services
+            , List<PromotionsModelV2> promotions
+            , List<HelpModel> helpList
+            , bool isServicesShimmering
+            , bool isHelpShimmering
+            , bool showRefreshScreen
+            , RefreshScreenComponent refreshScreenComponent
+            , Func<string, string> getI18NValue
+            , Action onReload
+            , Action OnServicesRefresh)
         {
             _controller = controller;
             _accountListViewController = accountListViewController;
@@ -45,6 +47,7 @@ namespace myTNB
             _refreshScreenComponent = refreshScreenComponent;
             _getI18NValue = getI18NValue;
             _onReload = onReload;
+            _onServicesRefresh = OnServicesRefresh;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -70,7 +73,7 @@ namespace myTNB
             }
             if (indexPath.Row == 1)
             {
-                return _dashboardHomeHelper.GetHeightForServices(_isServicesShimmering);
+                return _dashboardHomeHelper.GetHeightForServices(_isServicesShimmering, _controller._isGetServicesFailed);
             }
             if (indexPath.Row == 2)
             {
@@ -102,7 +105,15 @@ namespace myTNB
                 cell.IsRefreshScreen = _showRefreshScreen;
                 cell.IsLoading = _isServicesShimmering;
                 cell.OnReload = _onReload;
-                cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
+                if (_controller._isGetServicesFailed)
+                {
+                    cell.OnServicesRefresh = _onServicesRefresh;
+                    cell.SetRefreshCard();
+                }
+                else
+                {
+                    cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
+                }
                 cell.ClipsToBounds = true;
                 return cell;
             }

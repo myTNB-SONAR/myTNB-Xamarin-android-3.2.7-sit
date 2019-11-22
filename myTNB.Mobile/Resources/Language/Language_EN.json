@@ -119,7 +119,8 @@
     "tutorialQuickAccessDesc": "Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number.",
     "tutorialQuickActionDesc": "Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!",
     "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
-    "gotIt": "Got it!"
+    "gotIt": "Got it!",
+    "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!"
   },
   "Tabbar": {
     "home": "Home",

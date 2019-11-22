@@ -62,6 +62,7 @@ namespace myTNB
         public static string I18N_RearrangeMsg = "rearrangeMsg";
         public static string I18N_RearrangeToastFailMsg = "rearrangeToastFailMsg";
         public static string I18N_RearrangeToastSuccessMsg = "rearrangeToastSuccessMsg";
+        public static string I18N_ServiceRefreshMessage = "serviceRefreshMessage";
 
         //Image
         public static string Img_Notification = "Notification";
@@ -78,6 +79,7 @@ namespace myTNB
         public static string Img_RELeaf = "RE-Leaf";
         public static string IMG_Back = "Back-White";
         public static string IMG_BCRMDownPopup = "BCRM-Down-Popup";
+        public static string IMG_ServicesRefresh = "Services-Refresh";
 
         //PageName
         public static string PageName = "DashboardHome";
