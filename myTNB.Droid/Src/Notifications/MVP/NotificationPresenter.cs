@@ -80,6 +80,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                         }
                         else
                         {
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideProgress();
+                            }
                             this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Data.ErrorMessage);
                             this.mView.OnFailedNotificationAction();
                         }
@@ -96,6 +100,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                         }
                         else
                         {
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideProgress();
+                            }
                             this.mView.ShowFailedErrorMessage(notificationReadResponse.Data.ErrorMessage);
                             this.mView.OnFailedNotificationAction();
                         }

@@ -734,7 +734,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     {
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
                     }
-                    CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.MakeFirstAsSelected();
                 }
             }
