@@ -308,8 +308,12 @@ namespace myTNB
         /// Returns the height for Services Cell
         /// </summary>
         /// <returns></returns>
-        public nfloat GetHeightForServices(bool isShimmering)
+        public nfloat GetHeightForServices(bool isShimmering, bool isServiceFail = false)
         {
+            if (isServiceFail)
+            {
+                return ScaleUtility.GetScaledHeight(224);
+            }
             nfloat tableViewCellHeight = 0;
             nfloat cardHeight = ScaleUtility.GetScaledHeight(84F);
 

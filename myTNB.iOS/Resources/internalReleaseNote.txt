@@ -1,4 +1,7 @@
 Sprint 2 SIT Build
 
-[Bug] Negative RM value label is being displayed outside the chart area
-[Bug] Chart area is not being utilised by kWh graph with DPC indicator
+[Task] Fail handling on quick action, refresh screen implementation
+[Task] BCRM downtime handling (planned)
+[Bug] Inconsistent selected account in Bill screen after rearrange action
+[Bug] Fix on empty notification badge
+[Bug] initial handling for site core downtime

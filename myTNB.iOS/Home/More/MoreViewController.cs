@@ -22,6 +22,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.PageName;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             NotifCenterUtility.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
@@ -45,7 +46,7 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
-            _titleBarComponent?.SetTitle("More_Title".Translate());
+            _titleBarComponent?.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
             _lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate(), AppVersionHelper.GetAppShortVersion());
             if (!TNBGlobal.IsProduction)
             {
@@ -92,7 +93,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("More_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
