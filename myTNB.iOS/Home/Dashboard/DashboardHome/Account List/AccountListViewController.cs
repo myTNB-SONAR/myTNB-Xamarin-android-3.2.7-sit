@@ -730,7 +730,10 @@ namespace myTNB
             if (_homeViewController != null)
             {
                 _homeViewController._accountListIsShimmering = isLoading;
-                _homeViewController.CheckTutorialOverlay();
+                if (!isLoading)
+                {
+                    _homeViewController.CheckTutorialOverlay();
+                }
             }
         }
 

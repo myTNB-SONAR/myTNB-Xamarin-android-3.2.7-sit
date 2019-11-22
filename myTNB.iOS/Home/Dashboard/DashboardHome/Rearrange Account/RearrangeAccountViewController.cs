@@ -15,9 +15,14 @@ namespace myTNB
         private UITableView _accountListTableView;
         private UIView _footerView;
         private List<CustomerAccountRecordModel> _accountList = new List<CustomerAccountRecordModel>();
-        public Action<string> OnRearrangeSuccess;
         private bool _hasArrangedAccts;
         private UIButton _btnSave;
+        private DashboardHomeViewController _controller;
+
+        public RearrangeAccountViewController(DashboardHomeViewController controller)
+        {
+            _controller = controller;
+        }
 
         public override void ViewDidLoad()
         {
@@ -131,11 +136,12 @@ namespace myTNB
                     userDefaults.SetString(acctListData, string.Format("{0}-{1}", env, userInfo.email));
                     userDefaults.Synchronize();
 
-                    DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
+                    DataManager.DataManager.SharedInstance.RefreshDataFromAccountUpdate();
 
-                    if (OnRearrangeSuccess != null)
+                    if (_controller != null)
                     {
-                        OnRearrangeSuccess.Invoke(GetI18NValue(DashboardHomeConstants.I18N_RearrangeToastSuccessMsg));
+                        _controller.RearrangeSuccessMsg = GetI18NValue(DashboardHomeConstants.I18N_RearrangeToastSuccessMsg);
+                        _controller.IsRearrangeSaved = true;
                         DismissViewController(true, null);
                     }
                     else

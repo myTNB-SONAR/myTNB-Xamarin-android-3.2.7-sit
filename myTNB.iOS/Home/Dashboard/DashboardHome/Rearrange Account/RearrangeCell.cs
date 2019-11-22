@@ -12,6 +12,7 @@ namespace myTNB
         private nfloat _imgWidth = ScaleUtility.GetScaledWidth(20F);
         public RearrangeCell(IntPtr handle) : base(handle)
         {
+            BackgroundColor = UIColor.White;
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             lblAccountName = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(18F), GetNicknameWidth(), GetScaledHeight(24F)))
             {
