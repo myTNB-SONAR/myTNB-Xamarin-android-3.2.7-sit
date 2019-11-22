@@ -10,8 +10,6 @@ namespace myTNB_Android.Src.Base
     public class MyTNBAccountManagement
     {
         private static MyTNBAccountManagement Instance = null;
-        private List<CustomerBillingAccount> masterCustomerBillingAccountList = new List<CustomerBillingAccount>();
-        private bool HasLoaded = false;
         private bool IsNeeUpdate = false;
         private static MasterDataResponse currentMasterDataRes = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
@@ -26,35 +24,6 @@ namespace myTNB_Android.Src.Base
                 Instance = new MyTNBAccountManagement();
             }
             return Instance;
-        }
-
-        public bool IsCustomerBillingAccountsLoaded()
-        {
-            return CustomerBillingAccount.List().Count > 0;
-        }
-
-        public List<CustomerBillingAccount> GetEligibleSMRBillingAccounts()
-        {
-            return CustomerBillingAccount.EligibleSMRAccountList();
-        }
-
-        public void SetSMRCustomerBillingAccounts()
-        {
-            masterCustomerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-            List<CustomerBillingAccount> smrEligible = CustomerBillingAccount.EligibleSMRAccountList();
-            CustomerBillingAccount.Replace(smrEligible);
-        }
-
-        public void SetMasterCustomerBillingAccountList()
-        {
-            if (masterCustomerBillingAccountList.Count > 0)
-            {
-                CustomerBillingAccount.Replace(masterCustomerBillingAccountList);
-            }
-            else
-            {
-                CustomerBillingAccount.Replace(CustomerBillingAccount.GetSortedCustomerBillingAccounts());
-            }
         }
 
         public void UpdateCustomerBillingDetails(List<SummaryDashBoardAccountEntity> summaryDetails)
@@ -93,39 +62,9 @@ namespace myTNB_Android.Src.Base
             CustomerBillingAccount.UpdateIsSMROnboardingShown();
         }
 
-        public void UpdateIsPayBillShown()
-        {
-            CustomerBillingAccount.UpdateIsPayBillShown();
-        }
-
-        public void UpdateIsWhatNewShown()
-        {
-            CustomerBillingAccount.UpdateIsWhatNewShown();
-        }
-
-        public void UpdateIsViewBillShown()
-        {
-            CustomerBillingAccount.UpdateIsViewBillShown();
-        }
-
         public bool IsSMROnboardingShown()
         {
             return CustomerBillingAccount.GetIsSMROnboardingShown();
-        }
-
-        public bool IsPayBillShown()
-        {
-            return CustomerBillingAccount.GetIsPayBillShown();
-        }
-
-        public bool IsWhatNewShown()
-        {
-            return CustomerBillingAccount.GetIsWhatNewShown();
-        }
-
-        public bool IsViewBillShown()
-        {
-            return CustomerBillingAccount.GetIsViewBillShown();
         }
 
         public bool IsPayBillEnabledNeeded()

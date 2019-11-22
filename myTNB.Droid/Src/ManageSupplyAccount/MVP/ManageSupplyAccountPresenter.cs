@@ -97,7 +97,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     }
 
                     CustomerBillingAccount.Remove(accountData.AccountNum);
-                    if (isSelectedAcc && CustomerBillingAccount.Enumerate().ToList().Count() > 0)
+                    if (isSelectedAcc && CustomerBillingAccount.HasItems())
                     {
                         /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
                         //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();

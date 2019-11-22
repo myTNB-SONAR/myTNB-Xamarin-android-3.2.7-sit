@@ -16,6 +16,7 @@ using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.UpdateMobileNo.Api;
 using myTNB_Android.Src.UpdateMobileNo.Request;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -406,14 +407,15 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             }
                         };
                         var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);
-                        if (customerAccountsResponse.D.ErrorCode == "7200" && customerAccountsResponse.D.AccountListData.Count > 0)
+                        if (customerAccountsResponse != null && customerAccountsResponse.D != null && customerAccountsResponse.D.ErrorCode == "7200")
                         {
-                            int ctr = 0;
-                            foreach (Account acc in customerAccountsResponse.D.AccountListData)
+                            if (customerAccountsResponse.D.AccountListData.Count > 0)
                             {
-                                bool isSelected = ctr == 0 ? true : false;
-                                int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
-                                ctr++;
+                                ProcessCustomerAccount(customerAccountsResponse.D.AccountListData);
+                            }
+                            else
+                            {
+                                AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
                             }
                         }
 
@@ -613,6 +615,131 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ProcessCustomerAccount(List<Account> list)
+        {
+            try
+            {
+                int ctr = 0;
+                if (AccountSortingEntity.HasItems(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV))
+                {
+                    List<CustomerBillingAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                    List<CustomerBillingAccount> fetchList = new List<CustomerBillingAccount>();
+
+                    List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
+                    List<int> newExisitingListArray = new List<int>();
+                    List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
+
+                    foreach (Account acc in list)
+                    {
+                        int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+
+                        var newRecord = new CustomerBillingAccount()
+                        {
+                            Type = acc.Type,
+                            AccNum = acc.AccountNumber,
+                            AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
+                            UserAccountId = acc.UserAccountID,
+                            ICNum = acc.IcNum,
+                            AmtCurrentChg = acc.AmCurrentChg,
+                            IsRegistered = acc.IsRegistered,
+                            IsPaid = acc.IsPaid,
+                            isOwned = acc.IsOwned,
+                            AccountTypeId = acc.AccountTypeId,
+                            AccountStAddress = acc.AccountStAddress,
+                            OwnerName = acc.OwnerName,
+                            AccountCategoryId = acc.AccountCategoryId,
+                            SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
+                            IsSelected = false
+                        };
+
+                        if (index != -1)
+                        {
+                            newExisitingListArray.Add(index);
+                        }
+                        else
+                        {
+                            newAccountList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExisitingListArray.Count > 0)
+                    {
+                        newExisitingListArray.Sort();
+
+                        foreach(int index in newExisitingListArray)
+                        {
+                            CustomerBillingAccount oldAcc = existingSortedList[index];
+
+                            Account newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+
+                            var newRecord = new CustomerBillingAccount()
+                            {
+                                Type = newAcc.Type,
+                                AccNum = newAcc.AccountNumber,
+                                AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
+                                UserAccountId = newAcc.UserAccountID,
+                                ICNum = newAcc.IcNum,
+                                AmtCurrentChg = newAcc.AmCurrentChg,
+                                IsRegistered = newAcc.IsRegistered,
+                                IsPaid = newAcc.IsPaid,
+                                isOwned = newAcc.IsOwned,
+                                AccountTypeId = newAcc.AccountTypeId,
+                                AccountStAddress = newAcc.AccountStAddress,
+                                OwnerName = newAcc.OwnerName,
+                                AccountCategoryId = newAcc.AccountCategoryId,
+                                SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
+                                IsSelected = false
+                            };
+
+                            newExistingList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExistingList.Count > 0)
+                    {
+                        newExistingList[0].IsSelected = true;
+                        foreach (CustomerBillingAccount acc in newExistingList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+
+                        string accountList = JsonConvert.SerializeObject(newExistingList);
+
+                        AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, accountList);
+                    }
+                    else
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                    }
+
+                    if (newAccountList.Count > 0)
+                    {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (CustomerBillingAccount acc in newAccountList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Account acc in list)
+                    {
+                        bool isSelected = ctr == 0 ? true : false;
+                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
+                        ctr++;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

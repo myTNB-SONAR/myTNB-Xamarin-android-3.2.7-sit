@@ -1,6 +1,7 @@
 ﻿using Android.Content.PM;
 using Android.Text;
 using Android.Text.Style;
+using myTNB_Android.Src.Database.Model;
 using System;
 using System.Text.RegularExpressions;
 
@@ -75,6 +76,30 @@ namespace myTNB_Android.Src.Utils
                 s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
             }
             return s;
+        }
+
+        public static bool IsEnablePayment()
+        {
+            bool isPaymentEnable = true;
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+            DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+            DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+            if (bcrmEntity != null && bcrmEntity.IsDown)
+            {
+                isPaymentEnable = false;
+            }
+            else
+            {
+                if (pgCCEntity != null && pgFPXEntity != null)
+                {
+                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    {
+                        isPaymentEnable = false;
+                    }
+                }
+            }
+            return isPaymentEnable;
         }
     }
 }

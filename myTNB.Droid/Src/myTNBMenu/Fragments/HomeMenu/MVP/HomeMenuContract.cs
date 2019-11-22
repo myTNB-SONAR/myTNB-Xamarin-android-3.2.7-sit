@@ -98,6 +98,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckSearchEditAction();
 
+            void RestartHomeMenu();
+
         }
 
         public interface IHomeMenuPresenter

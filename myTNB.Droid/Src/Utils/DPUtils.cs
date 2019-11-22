@@ -28,6 +28,11 @@ namespace myTNB_Android.Src.Utils
             return dp;
         }
 
+        internal static float GetDensity()
+        {
+            return Android.App.Application.Context.Resources.DisplayMetrics.Density;
+        }
+
         internal static String GetDeviceDensity(Context context)
         {
             String deviceDensity = "hdpi";

@@ -87,6 +87,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.btnViewBill)]
         Button btnViewBill;
 
+        [BindView(Resource.Id.btnPayBill)]
+        Button btnPayBill;
+
         [BindView(Resource.Id.bottomLayout)]
         LinearLayout bottomLayout;
 
@@ -168,7 +171,8 @@ namespace myTNB_Android.Src.Billing.MVP
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, accountPayAmountValue);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
-                accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
+                accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
+                accountMinChargeLabel, btnPayBill, btnViewBill);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
@@ -198,20 +202,20 @@ namespace myTNB_Android.Src.Billing.MVP
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
             PopulateCharges();
+            EnablePayBillButtons();
         }
 
-        private void EnableShowBillButtons(bool isEnable)
+        private void EnablePayBillButtons()
         {
-            btnViewBill.Enabled = isEnable;
-            if (isEnable)
+            bool isPaymentButtonEnable = Utility.IsEnablePayment();
+            btnPayBill.Enabled = isPaymentButtonEnable;
+            if (isPaymentButtonEnable)
             {
-                btnViewBill.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
-                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_button_background);
+                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
             else
             {
-                btnViewBill.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.silverChalice)));
-                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_button_background_disabled);
+                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             }
         }
 
