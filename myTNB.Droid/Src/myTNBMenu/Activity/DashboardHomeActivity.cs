@@ -204,7 +204,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetHeaderImage(Resource.Drawable.downtime_banner)
-                .SetTitle("We'll be back shortly!")
+                .SetTitle(bcrmEntity.DowntimeTextMessage)
                 .SetMessage(bcrmEntity.DowntimeMessage)
                 .SetCTALabel("Got It!")
                 .SetCTAaction(()=>
