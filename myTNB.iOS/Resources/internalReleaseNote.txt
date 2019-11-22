@@ -1,4 +1,17 @@
 Sprint 2 SIT Build
 
-[Bug] Negative RM value label is being displayed outside the chart area
-[Bug] Chart area is not being utilised by kWh graph with DPC indicator
+[Rearrange Account] 2589 [New Home Screen] As a myTNB App user, I want to see a whole new look for home screen with account listing.
+[Bug] Testing tariff block scenario for some Smart meter accounts
+[Bug] Usage dashboard – When tap on RM & KWH option in dropdown, both KWH & RM displaying separately
+[Task] Downtime handling:
+
+1. Overall user blocking screen (like DB Migration)
+2. Specific System Planned Downtime – MDMS
+3. Specific System Planned Downtime – BCRM (currently this one is put down for daily 	maintenance at 11.30 to 12)
+	a. Handling of Home screen as per design
+	b. Pay Button must be disabled in CA Dashboard
+4. Specific System Planned Downtime – PG_CC or PG_FPX or both
+	a. Pay Button must be disabled in CA Dashboard
+5. Specific System Planned Downtime – OCR
+	a. We already have a flag for isOCRDisabled and using it.
+	b. We also have a flag isOCRDown – We need to capture this in order to handle planned OCR service downtimes
