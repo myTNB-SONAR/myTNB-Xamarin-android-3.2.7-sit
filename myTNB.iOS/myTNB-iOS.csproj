@@ -1259,6 +1259,9 @@
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\grey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\grey%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1734,6 +1737,7 @@
     <Folder Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Planned.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Popup.imageset\" />
+    <Folder Include="Assets.xcassets\Services-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

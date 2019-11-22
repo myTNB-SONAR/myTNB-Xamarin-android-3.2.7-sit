@@ -20,6 +20,7 @@ namespace myTNB
         private nfloat _cardHeight = ScaleUtility.GetScaledHeight(84F);
         public Action<int> ReloadCell;
         public Action OnReload;
+        public Action OnServicesRefresh;
         private CustomUIView _moreLessContainer;
         public bool IsLoading, IsRefreshScreen;
         public ServicesTableViewCell(IntPtr handle) : base(handle)
@@ -30,6 +31,7 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
             _view.Layer.CornerRadius = GetScaledHeight(5F);
+
             //AddCardShadow(ref _view);
             AddSubview(_view);
             BackgroundColor = UIColor.Clear;
@@ -68,6 +70,48 @@ namespace myTNB
                     ShowInitialItems(services);
                 }
             }
+        }
+
+        public void SetRefreshCard()
+        {
+            for (int i = _view.Subviews.Length; i-- > 0;)
+            {
+                _view.Subviews[i].RemoveFromSuperview();
+            }
+
+            _view.Frame = new CGRect(_view.Frame.Location, new CGSize(_view.Frame.Width, GetScaledHeight(208)));
+            UIImageView imgRefresh = new UIImageView(new CGRect((_view.Frame.Width - GetScaledWidth(68)) / 2, GetScaledHeight(16), GetScaledWidth(68), GetScaledHeight(63)))
+            {
+                Image = UIImage.FromBundle(DashboardHomeConstants.IMG_ServicesRefresh)
+            };
+
+            UILabel refreshMessage = new UILabel(new CGRect(GetScaledWidth(16), imgRefresh.Frame.GetMaxY() + GetScaledHeight(16)
+                , _view.Frame.Width - GetScaledWidth(32), GetScaledWidth(32)))
+            {
+                Text = GetI18NValue(DashboardHomeConstants.I18N_ServiceRefreshMessage),
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.Grey,
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+
+            CustomUIButtonV2 btnRefesh = new CustomUIButtonV2
+            {
+                Frame = new CGRect(GetScaledWidth(16), refreshMessage.Frame.GetMaxY() + GetScaledHeight(16)
+                , _view.Frame.Width - GetScaledWidth(32), GetScaledWidth(48)),
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            btnRefesh.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow), UIControlState.Normal);
+            btnRefesh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (OnServicesRefresh != null)
+                {
+                    OnServicesRefresh.Invoke();
+                }
+            }));
+            _view.AddSubviews(new UIView[] { imgRefresh, refreshMessage });
+            _view.AddSubview(btnRefesh);
         }
 
         private void ShowInitialItems(List<ServiceItemModel> serviceItems)

@@ -38,12 +38,11 @@ namespace myTNB
         public bool _accountListIsShimmering = true;
         private bool _servicesIsShimmering = true;
         private bool _helpIsShimmering = true;
-        public bool _isRefreshScreenEnabled;
-        private bool _isBCRMAvailable;
+        public bool _isRefreshScreenEnabled, _isGetServicesFailed;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
-        private bool isBCRMPopupDisplayed;
+        private bool _isBCRMAvailable, _isBCRMPopupDisplayed;
 
         public override void ViewDidLoad()
         {
@@ -156,7 +155,7 @@ namespace myTNB
             bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
             {
-                isBCRMPopupDisplayed = true;
+                _isBCRMPopupDisplayed = true;
                 DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
                 string errMsg = GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
                 string errorTitle = GetCommonI18NValue(Constants.Common_WellBeBack);
@@ -175,7 +174,7 @@ namespace myTNB
                 DisplayCustomAlert(errorTitle, errMsg
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), ()=> {
                         AppLaunchMasterCache.IsBCRMPopupDisplayed = true;
-                        isBCRMPopupDisplayed = false;
+                        _isBCRMPopupDisplayed = false;
                         CheckTutorialOverlay();
                     }}}
                     , UIImage.FromBundle(DashboardHomeConstants.IMG_BCRMDownPopup));
@@ -205,7 +204,7 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
-            if (isBCRMPopupDisplayed) { return; }
+            if (_isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
@@ -457,7 +456,7 @@ namespace myTNB
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
                 , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
                 , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
-                , GetI18NValue, OnReload);
+                , GetI18NValue, OnReload, OnServicesRefresh);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -637,10 +636,12 @@ namespace myTNB
                                     services.RemoveAt(ServiceItemIndexToRemove(services));
                                 }
                                 DataManager.DataManager.SharedInstance.ServicesList = services;
+                                _isGetServicesFailed = false;
                             }
                             else
                             {
                                 DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                                _isGetServicesFailed = true;
                             }
                             OnUpdateTable();
                             CheckTutorialOverlay();
@@ -660,10 +661,12 @@ namespace myTNB
                                 List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
                                 services.RemoveAt(ServiceItemIndexToRemove(services));
                                 DataManager.DataManager.SharedInstance.ServicesList = services;
+                                _isGetServicesFailed = false;
                             }
                             else
                             {
                                 DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                                _isGetServicesFailed = true;
                             }
                             OnUpdateTable();
                             CheckTutorialOverlay();
@@ -921,7 +924,7 @@ namespace myTNB
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
                 , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
                 , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
-                , GetI18NValue, OnReload);
+                , GetI18NValue, OnReload, OnServicesRefresh);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -930,6 +933,19 @@ namespace myTNB
         {
             _homeTableView.ReloadData();
             UpdateFooterBG();
+        }
+
+        private void OnServicesRefresh()
+        {
+            Debug.WriteLine("OnServicesRefresh");
+            _servicesIsShimmering = true;
+            _isGetServicesFailed = false;
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
+                , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                , GetI18NValue, OnReload, OnServicesRefresh);
+            _homeTableView.ReloadData();
+            OnGetServices();
         }
 
         public void OnUpdateCellWithoutReload(int row)
@@ -982,7 +998,7 @@ namespace myTNB
                     _homeTableView.BeginUpdates();
                     _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList
                         , _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
-                        , GetI18NValue, OnReload);
+                        , GetI18NValue, OnReload, OnServicesRefresh);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();
