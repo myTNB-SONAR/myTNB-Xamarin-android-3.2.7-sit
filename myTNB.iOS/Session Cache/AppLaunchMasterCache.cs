@@ -165,5 +165,23 @@ namespace myTNB
                 return false;
             }
         }
+
+        private static bool _isBCRMPopupDisplayed;
+        public static bool IsBCRMPopupDisplayed
+        {
+            set
+            {
+                _isBCRMPopupDisplayed = value;
+            }
+            get
+            {
+                DowntimeDataModel bcrm = dataModel.data.SystemStatus.Find(x => x.SystemType == SystemEnum.BCRM);
+                if (bcrm == null || bcrm.IsAvailable)
+                {
+                    return true;
+                }
+                return _isBCRMPopupDisplayed;
+            }
+        }
     }
 }

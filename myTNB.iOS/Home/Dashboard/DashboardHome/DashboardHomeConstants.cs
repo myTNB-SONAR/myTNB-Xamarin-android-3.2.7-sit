@@ -77,6 +77,7 @@ namespace myTNB
         public static string Img_RearrangeIcon = "Rearrange-Icon";
         public static string Img_RELeaf = "RE-Leaf";
         public static string IMG_Back = "Back-White";
+        public static string IMG_BCRMDownPopup = "BCRM-Down-Popup";
 
         //PageName
         public static string PageName = "DashboardHome";

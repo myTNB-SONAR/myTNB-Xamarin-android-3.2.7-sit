@@ -131,7 +131,7 @@ namespace myTNB
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
-                ContentInset = new UIEdgeInsets(-5, -5, -5, -5)
+                ContentInset = new UIEdgeInsets(-5, 0, -5, 0)
             };
             txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
 

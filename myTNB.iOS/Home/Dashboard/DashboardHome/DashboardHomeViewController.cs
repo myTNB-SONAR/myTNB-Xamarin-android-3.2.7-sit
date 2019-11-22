@@ -43,6 +43,7 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
+        private bool isBCRMPopupDisplayed;
 
         public override void ViewDidLoad()
         {
@@ -55,7 +56,7 @@ namespace myTNB
             IsNewGradientRequired = true;
             base.ViewDidLoad();
             AddFooterBG();
-            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0 && accNum != null && !string.IsNullOrEmpty(accNum) && !string.IsNullOrWhiteSpace(accNum))
             {
@@ -152,6 +153,33 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
+            {
+                isBCRMPopupDisplayed = true;
+                DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
+                string errMsg = GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
+                string errorTitle = GetCommonI18NValue(Constants.Common_WellBeBack);
+                if (status != null)
+                {
+                    if (!string.IsNullOrEmpty(status?.DowntimeMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeMessage))
+                    {
+                        errMsg = status.DowntimeMessage;
+                    }
+                    if (!string.IsNullOrEmpty(status?.DowntimeTextMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeTextMessage))
+                    {
+                        errorTitle = status.DowntimeTextMessage;
+                    }
+                }
+
+                DisplayCustomAlert(errorTitle, errMsg
+                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), ()=> {
+                        AppLaunchMasterCache.IsBCRMPopupDisplayed = true;
+                        isBCRMPopupDisplayed = false;
+                        CheckTutorialOverlay();
+                    }}}
+                    , UIImage.FromBundle(DashboardHomeConstants.IMG_BCRMDownPopup));
+            }
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -177,6 +205,7 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
+            if (isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 

@@ -64,7 +64,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
             }
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
-            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
             SetNavigation();
             SetHeaderView();

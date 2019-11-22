@@ -226,7 +226,7 @@ namespace myTNB
             DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == methodType);
             if (status != null && !string.IsNullOrEmpty(status?.DowntimeTextMessage))
             {
-                errMsg = status?.DowntimeTextMessage;
+                errMsg = status?.DowntimeMessage;
             }
             AlertHandler.DisplayGenericAlert(this, string.Empty, errMsg);
         }
