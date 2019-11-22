@@ -2607,6 +2607,7 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeDataSource.cs" />
+    <Compile Include="Home\More\My Account\ProfileConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
