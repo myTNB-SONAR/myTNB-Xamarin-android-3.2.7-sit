@@ -3649,6 +3649,32 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\RearrangeAccount\MVP\RearrangeAccountActivity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\rearrange_account.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\rearrange_account.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\rearrange_account.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\rearrange_account.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\rearrange_account.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AccountRearrangeLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\RearrangeAccount\MVP\RearrangeAccountListView.cs" />
     <AndroidResource Include="Resources\layout\BottomViewNavigationItemLayout.axml">
       <SubType></SubType>
       <Generator></Generator>
@@ -3660,12 +3686,23 @@
     <Compile Include="Src\AppLaunch\Api\IUpdateAppUserDeviceApi.cs" />
     <Compile Include="Src\AppLaunch\Models\UpdateAppUserDeviceResponse.cs" />
     <Compile Include="Src\AppLaunch\Requests\UpdateAppUserDeviceRequest.cs" />
+    <Compile Include="Src\RearrangeAccount\MVP\IRearrangeAccountListAdapter.cs" />
+    <Compile Include="Src\RearrangeAccount\MVP\RearrangeAccountListAdapter.cs" />
+    <AndroidResource Include="Resources\layout\AccountRearrangeItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Database\Model\AccountSortingEntity.cs" />
     <Compile Include="Src\Utils\HomeMenuUtils.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\promotions_default_image.png" />
     <AndroidResource Include="Resources\drawable-mdpi\promotions_default_image.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\promotions_default_image.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\promotions_default_image.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\promotions_default_image.png" />
+    <AndroidResource Include="Resources\values\RearrangeStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable\bottom_indication_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -4030,6 +4067,8 @@
     <Folder Include="Src\NewAppTutorial\" />
     <Folder Include="Src\NewAppTutorial\MVP\" />
     <Folder Include="Src\NewAppTutorial\Adapter\" />
+    <Folder Include="Src\RearrangeAccount\" />
+    <Folder Include="Src\RearrangeAccount\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
