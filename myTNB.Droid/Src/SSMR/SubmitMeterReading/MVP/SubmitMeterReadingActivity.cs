@@ -11,6 +11,7 @@ using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
@@ -284,21 +285,24 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            bool isOCRDisabled = false;
             MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
-            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
-            {
-                isOCRDisabled = true;
-            }
+            bool isOCRDisabled = SMRPopUpUtils.IsOCRDisabled();
+            bool smrAccountOCRDown = SMRPopUpUtils.IsOCRDown();
 
             if (isOCRDisabled)
             {
                 captureReadingLayout.Visibility = ViewStates.Gone;
                 meterReadingManualTitle.Visibility = ViewStates.Visible;
-                if (currentMasterData.IsOCRDown)
+                meterReadingManualTitle.Text = GetString(Resource.String.smr_manual_reading_title);
+            }
+            else
+            {
+                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
                 {
+                    captureReadingLayout.Visibility = ViewStates.Gone;
+                    meterReadingManualTitle.Visibility = ViewStates.Visible;
                     string downMessage = GetString(Resource.String.smr_manual_reading_down_title);
+                    meterReadingManualTitle.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
                         meterReadingManualTitle.TextFormatted = Html.FromHtml(downMessage, FromHtmlOptions.ModeLegacy);

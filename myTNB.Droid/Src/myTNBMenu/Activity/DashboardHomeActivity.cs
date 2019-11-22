@@ -203,7 +203,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (bcrmEntity != null && bcrmEntity.IsDown)
             {
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                .SetHeaderImage(Resource.Drawable.downtime_banner)
+                .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
                 .SetTitle(bcrmEntity.DowntimeTextMessage)
                 .SetMessage(bcrmEntity.DowntimeMessage)
                 .SetCTALabel("Got It!")

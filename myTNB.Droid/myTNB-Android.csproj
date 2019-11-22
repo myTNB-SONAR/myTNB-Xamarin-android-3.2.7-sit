@@ -3707,6 +3707,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\maintenance_bcrm.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\maintenance_bcrm.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_bcrm.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_bcrm.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
