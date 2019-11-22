@@ -14,6 +14,7 @@ namespace myTNB
 
         public override void CreateSegment(ref CustomUIView view)
         {
+            nfloat margin = AccountUsageSmartCache.IsUnplannedMDMSDown ? GetScaledHeight(10) : GetScaledHeight(16);
             view = new CustomUIView(new CGRect(0, ReferenceWidget.GetMaxY(), _width, GetHeightByScreenSize(157)));
 
             string mdmsImageString = UsageConstants.IMG_MDMSDownUnplanned;
@@ -37,7 +38,7 @@ namespace myTNB
             nfloat descWidth = _width - (GetScaledWidth(32) * 2);
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descriptionString + "<br>"
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descriptionString
                 , ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -50,12 +51,11 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
-                ContentInset = new UIEdgeInsets(-5, -5, -5, -5),
                 BackgroundColor = UIColor.Clear
             };
             txtViewDescription.ScrollIndicatorInsets = UIEdgeInsets.Zero;
             CGSize size = txtViewDescription.SizeThatFits(new CGSize(descWidth, 1000f));
-            txtViewDescription.Frame = new CGRect(GetScaledWidth(32), icon.Frame.GetMaxY() + GetScaledHeight(16), descWidth, size.Height);
+            txtViewDescription.Frame = new CGRect(GetScaledWidth(32), icon.Frame.GetMaxY() + margin, descWidth, size.Height);
             txtViewDescription.TextAlignment = UITextAlignment.Center;
             view.AddSubview(txtViewDescription);
 
@@ -63,7 +63,7 @@ namespace myTNB
             {
                 CustomUIButtonV2 btnRefresh = new CustomUIButtonV2(true)
                 {
-                    Frame = new CGRect(GetScaledWidth(16), txtViewDescription.Frame.GetMaxY() + GetScaledHeight(16)
+                    Frame = new CGRect(GetScaledWidth(16), txtViewDescription.Frame.GetMaxY() + margin
                         , view.Frame.Width - GetScaledWidth(32), GetScaledHeight(48))
                 };
                 btnRefresh.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow), UIControlState.Normal);
