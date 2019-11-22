@@ -33,7 +33,7 @@ namespace myTNB.SitecoreCMS.Services
             {
                 Debug.WriteLine("Exception: SitecoreService/GetItemByPath " + e.Message);
             }
-            return null;
+            return new ScItemsResponse(0, 0, new List<ISitecoreItem>());
         }
 
         public async Task<ScItemsResponse> GetItemById(string itemId, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
@@ -54,7 +54,7 @@ namespace myTNB.SitecoreCMS.Services
             {
                 Debug.WriteLine("Exception: SitecoreService/GetItemById " + e.Message);
             }
-            return null;
+            return new ScItemsResponse(0, 0, new List<ISitecoreItem>());
         }
 
         public async Task<Byte[]> GetMediaByUrl(string mediaUrl)
