@@ -183,8 +183,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
             {
-                bool IsWidgetVisible = isViewVisible(v, mBillHistoryTitle);
-                mOnScrollMethod(IsWidgetVisible);
+                try
+                {
+                    bool IsWidgetVisible = isViewVisible(v, mBillHistoryTitle);
+                    mOnScrollMethod(IsWidgetVisible);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
 
             private bool isViewVisible(NestedScrollView v, View view)

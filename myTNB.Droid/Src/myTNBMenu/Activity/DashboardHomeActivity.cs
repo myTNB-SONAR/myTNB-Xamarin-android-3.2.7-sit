@@ -1015,7 +1015,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             catch (System.Exception e)
             {
-                Toast.MakeText(this, "Crash on DispatchTouch", ToastLength.Long);
                 SoftKillApps();
                 Utility.LoggingNonFatalError(e);
             }

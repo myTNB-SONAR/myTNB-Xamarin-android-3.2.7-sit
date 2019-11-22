@@ -2254,7 +2254,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SoftKillApplication(string place)
         {
-            Toast.MakeText(this.Activity, "Die on " + place, ToastLength.Long);
             try
             {
                 ((DashboardHomeActivity)Activity).SoftKillApps();
