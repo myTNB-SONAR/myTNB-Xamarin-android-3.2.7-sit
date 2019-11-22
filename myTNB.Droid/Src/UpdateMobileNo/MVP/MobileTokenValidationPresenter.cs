@@ -732,10 +732,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 {
                     foreach (Account acc in list)
                     {
-                        bool isSelected = ctr == 0 ? true : false;
-                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
-                        ctr++;
+                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
                     }
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.MakeFirstAsSelected();
                 }
             }
             catch (Exception e)

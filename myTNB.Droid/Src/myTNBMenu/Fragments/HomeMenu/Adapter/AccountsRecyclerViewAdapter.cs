@@ -186,7 +186,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         {
             if (accountsFilter == null)
             {
-                accountsFilter = new AccountCardsFilter(this, accountCardModelList);
+                accountsFilter = new AccountCardsFilter(viewListener, this, accountCardModelList);
             }
             return accountsFilter;
         }

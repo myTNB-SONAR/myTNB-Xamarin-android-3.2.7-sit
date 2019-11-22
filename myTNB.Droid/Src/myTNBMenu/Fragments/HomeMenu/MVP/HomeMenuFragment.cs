@@ -2289,5 +2289,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowSearchAction(false);
             }
         }
+
+        public void SoftKillApplication(string place)
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).SoftKillApps();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
