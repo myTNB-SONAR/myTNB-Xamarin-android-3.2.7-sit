@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     android:gravity="center|bottom"
     android:id="@+id/rootView">
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/feedbackContent"
+        android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <ScrollView
         android:minWidth="25px"
         android:minHeight="25px"
@@ -283,4 +291,6 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+            </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

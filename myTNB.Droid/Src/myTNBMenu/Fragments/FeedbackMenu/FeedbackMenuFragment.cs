@@ -26,9 +26,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 {
     public class FeedbackMenuFragment : BaseFragment, FeedbackMenuContract.IView
     {
-        [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
-
+        [BindView(Resource.Id.feedbackContent)]
+        CoordinatorLayout feedbackContent;
 
         [BindView(Resource.Id.txtFeedbackBillingAndPayment)]
         TextView txtFeedbackBillingAndPayment;
@@ -331,7 +330,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(feedbackContent, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
             {
 
@@ -352,7 +351,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(feedbackContent, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
             {
 
@@ -373,7 +372,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(feedbackContent, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
             {
 
@@ -480,7 +479,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
                 }
 
-                mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                mErrorMessageSnackBar = Snackbar.Make(feedbackContent, message, Snackbar.LengthIndefinite)
                 .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
                 );
                 View v = mErrorMessageSnackBar.View;

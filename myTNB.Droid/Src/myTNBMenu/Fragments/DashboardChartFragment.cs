@@ -5548,27 +5548,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         newAccountLayout.Visibility = ViewStates.Gone;
                         allGraphLayout.Visibility = ViewStates.Gone;
                         smStatisticContainer.Visibility = ViewStates.Gone;
-                        if (isBCRMDown)
-                        {
-                            rootView.SetBackgroundResource(0);
-                            scrollViewContent.SetBackgroundResource(0);
-                            try
-                            {
-                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
-                            }
-                            catch (System.Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
+                        //if (isBCRMDown)
+                        //{
+                        //    rootView.SetBackgroundResource(0);
+                        //    scrollViewContent.SetBackgroundResource(0);
+                        //    try
+                        //    {
+                        //        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                        //        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                        //    }
+                        //    catch (System.Exception e)
+                        //    {
+                        //        Utility.LoggingNonFatalError(e);
+                        //    }
 
-                            refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
-                            SetMaintenanceLayoutParams();
-                            btnNewRefresh.Visibility = ViewStates.Gone;
+                        //    refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
+                        //    SetMaintenanceLayoutParams();
+                        //    btnNewRefresh.Visibility = ViewStates.Gone;
 
-                        }
-                        else
-                        {
+                        //}
+                        //else
+                        //{
                             if (isREAccount || isSMR)
                             {
 
@@ -5627,7 +5627,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
                                 }
                             }
-                        }
+                        //}
                     }
                     catch (System.Exception e)
                     {
@@ -9289,11 +9289,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(MDMSUnavailableMessage, FromHtmlOptions.ModeLegacy);
+                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(response.Data.ErrorMessage, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(MDMSUnavailableMessage);
+                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(response.Data.ErrorMessage);
                 }
             }
         }
