@@ -154,7 +154,7 @@ namespace myTNB
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
             isSmartMeterAccount = !isREAccount && !isNormalChart;
-            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            isBcrmAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             accountIsSSMR = false;
         }
 
