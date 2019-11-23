@@ -99,7 +99,7 @@ namespace myTNB
                 ForegroundColor = MyTNBColor.CharcoalGrey
             }, new NSRange(0, htmlBody.Length));
 
-            UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : width / 1.33F));
+            UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : ScaleUtility.GetScaledHeight(155)));//width / 1.33F));
             if (image != null)
             {
                 imgView.Image = image;
