@@ -7,11 +7,11 @@ namespace myTNB
     public class DashboardHomeHeader
     {
         private readonly UIView _parentView;
-        public UIView _accountHeaderView, _greetingView, _notificationView;
-        UILabel _greetingLabel, _accountName;
-        UIImageView _notificationIcon;
-        DashboardHomeViewController _controller;
-        string _strGreeting, _strName;
+        public UIView _accountHeaderView, _greetingView, _notificationView, _badgeView;
+        private UILabel _greetingLabel, _accountName, _lblBadge;
+        private UIImageView _notificationIcon;
+        private DashboardHomeViewController _controller;
+        private string _strGreeting, _strName;
 
         public DashboardHomeHeader(UIView view, DashboardHomeViewController controller)
         {
@@ -26,7 +26,7 @@ namespace myTNB
             nfloat padding = ScaleUtility.BaseMarginWidth16;
             nfloat headerHeight = ScaleUtility.GetScaledHeight(68f);
             nfloat labelHeight = ScaleUtility.GetScaledHeight(24f);
-            nfloat imageWidth = ScaleUtility.GetScaledWidth(24f);
+            nfloat imageWidth = ScaleUtility.GetScaledWidth(28f);
 
             _accountHeaderView = new UIView(new CGRect(0, 0, parentWidth, headerHeight))
             {
@@ -61,13 +61,30 @@ namespace myTNB
             };
             _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageWidth))
             {
-                UserInteractionEnabled = true
+                UserInteractionEnabled = true,
+                ClipsToBounds = false
             };
+            _badgeView = new UIView(new CGRect(ScaleUtility.GetScaledWidth(12), 0, ScaleUtility.GetScaledWidth(16), ScaleUtility.GetScaledWidth(16)))
+            {
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Hidden = true
+            };
+            _badgeView.Layer.CornerRadius = ScaleUtility.GetScaledWidth(_badgeView.Frame.Height / 2);
+
+            _lblBadge = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(3), 0, 0, _badgeView.Frame.Height))
+            {
+                TextAlignment = UITextAlignment.Center,
+                TextColor = UIColor.White,
+                Font = TNBFont.MuseoSans_10_500
+            };
+            _badgeView.AddSubview(_lblBadge);
+
             _notificationIcon = new UIImageView(new CGRect(0, 0, imageWidth, imageWidth))
             {
                 Image = UIImage.FromBundle("Notification")
             };
-            _notificationView.AddSubview(_notificationIcon);
+
+            _notificationView.AddSubviews(new UIView[] { _notificationIcon, _badgeView });
 
             _greetingView.AddSubview(_greetingLabel);
             _greetingView.AddSubview(_accountName);
@@ -110,6 +127,32 @@ namespace myTNB
             if (_notificationView != null)
             {
                 _notificationView.AddGestureRecognizer(recognizer);
+            }
+        }
+
+        public int BadgeValue
+        {
+            set
+            {
+                _badgeView.Hidden = value == 0;
+                if (value > 0)
+                {
+                    string badgeContent = value > 99 ? Constants.Value_99 : value.ToString();
+                    _lblBadge.Text = badgeContent;
+                    nfloat width = _lblBadge.GetLabelWidth(ScaleUtility.GetScaledWidth(28f));
+                    nfloat containerWidth = width + ScaleUtility.GetScaledWidth(6);
+                    if (containerWidth < ScaleUtility.GetScaledWidth(16))
+                    {
+                        containerWidth = ScaleUtility.GetScaledWidth(16);
+                    }
+                    _badgeView.Frame = new CGRect(ScaleUtility.GetScaledWidth(14), _badgeView.Frame.Y
+                        , containerWidth, _badgeView.Frame.Height);
+                    _badgeView.Layer.CornerRadius = ScaleUtility.GetScaledWidth(_badgeView.Frame.Height / 2);
+
+                    _lblBadge.Frame = new CGRect(ScaleUtility.GetXLocationToCenterObject(width, _badgeView)
+                        , ScaleUtility.GetYLocationToCenterObject(_lblBadge.Frame.Height, _badgeView)
+                        , width, _lblBadge.Frame.Height);
+                }
             }
         }
     }

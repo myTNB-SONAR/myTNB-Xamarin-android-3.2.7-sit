@@ -20,6 +20,8 @@ namespace myTNB
 
         public static bool IsSuccess { private set; get; }
         public static bool IsMDMSDown { set; get; }
+        public static bool IsPlannedMDMSDown { set; get; }
+        public static bool IsUnplannedMDMSDown { set; get; }
         public static bool IsDataEmpty { set; get; }
 
         public static void ClearTariffLegendList()
@@ -79,6 +81,8 @@ namespace myTNB
         {
             IsSuccess = response?.d?.IsSuccess ?? false;
             IsMDMSDown = response?.d?.IsMDMSDown ?? false;
+            IsPlannedMDMSDown = response?.d?.IsPlannedMDMSDown ?? false;
+            IsUnplannedMDMSDown = response?.d?.IsUnplannedMDMSDown ?? false;
             IsDataEmpty = response?.d?.IsDataEmpty ?? false;
             if (response != null && response.d != null
                 && (response.d.IsSuccess || response.d.IsMDMSDown)
@@ -105,7 +109,8 @@ namespace myTNB
                 }
 
                 ErrorTitle = response.d.DisplayTitle ?? string.Empty;
-                ErrorMessage = response.d.DisplayMessage ?? string.Empty;
+                ErrorMessage = response.d.ErrorMessage ?? string.Empty;
+                DisplayMessage = response.d.DisplayMessage ?? string.Empty;
                 ErrorCTA = response.d.CTA ?? string.Empty;
             }
             else
@@ -129,6 +134,7 @@ namespace myTNB
         #region Error
         public static string ErrorTitle { set; get; } = string.Empty;
         public static string ErrorMessage { set; get; } = string.Empty;
+        public static string DisplayMessage { set; get; } = string.Empty;
         public static string ErrorCTA { set; get; } = string.Empty;
         #endregion
 

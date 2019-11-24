@@ -141,6 +141,12 @@ namespace myTNB
             _btnPay.Layer.BorderWidth = GetScaledHeight(1f);
             _btnPay.SetTitle(GetI18NValue(UsageConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.Font = TNBFont.MuseoSans_16_500;
+            if (AppLaunchMasterCache.IsPayDisabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                _btnPay.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+            }
             _containerView.AddSubview(_btnPay);
         }
 
@@ -159,6 +165,12 @@ namespace myTNB
                 _btnPay.Enabled = !isUpdating;
                 _btnPay.Layer.BackgroundColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
                 _btnPay.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
+            }
+            if (_btnPay != null && AppLaunchMasterCache.IsPayDisabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                _btnPay.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
             }
         }
 

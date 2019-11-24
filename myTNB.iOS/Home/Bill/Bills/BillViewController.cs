@@ -54,8 +54,17 @@ namespace myTNB
             if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
+            if ((DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                && (DataManager.DataManager.SharedInstance.SelectedAccount == null
+                || string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.SelectedAccount.accNum)
+                || string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.SelectedAccount.accNum)))
+            {
+                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+            }
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
-            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
             SetNavigation();
             SetHeaderView();
@@ -380,6 +389,12 @@ namespace myTNB
                 });
             }));
 
+            if (AppLaunchMasterCache.IsPayDisabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+            }
+
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
             _shimmerView = GetShimmerView();
@@ -492,6 +507,7 @@ namespace myTNB
         #region Refresh
         private void DisplayRefresh()
         {
+            _historyTableView.Hidden = true;
             string errMessage = GetCommonI18NValue(SSMRConstants.I18N_RefreshDescription);
             if (!_isBCRMAvailable)
             {
@@ -553,6 +569,10 @@ namespace myTNB
             {
                 // call services again
                 OnSelectAccount(0);
+                if (_viewRefreshContainer != null)
+                {
+                    _viewRefreshContainer.RemoveFromSuperview();
+                }
             }));
 
             _viewRefreshContainer.AddSubview(txtViewDetails);
@@ -612,7 +632,6 @@ namespace myTNB
             }
         }
         #endregion
-
         private void OnSelectAccount(int index)
         {
             if (_imgFilter != null)
@@ -653,6 +672,7 @@ namespace myTNB
                                {
                                    AccountChargesCache.SetData(_accountCharges);
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                                   isGetAcctChargesLoading = false;
                                    CheckTutorialOverlay();
                                }
                                else

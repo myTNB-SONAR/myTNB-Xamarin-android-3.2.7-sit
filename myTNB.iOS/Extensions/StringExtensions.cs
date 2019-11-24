@@ -24,5 +24,10 @@ namespace myTNB
             string formattedAmount = parsedAmount.ToString("N2", CultureInfo.InvariantCulture);
             return string.Format("{0} {1}", currency, formattedAmount);
         }
+
+        public static bool IsValid(this string key)
+        {
+            return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
+        }
     }
 }

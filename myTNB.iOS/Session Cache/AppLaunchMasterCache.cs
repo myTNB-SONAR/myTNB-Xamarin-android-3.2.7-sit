@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB.Enums;
 using myTNB.Model;
 
 namespace myTNB
@@ -142,6 +143,50 @@ namespace myTNB
                     return dataModel.IsSMRFeatureDisabled;
                 }
                 return true;
+            }
+        }
+
+        public static bool IsPayDisabled
+        {
+            get
+            {
+                if (dataModel != null && dataModel.data != null && dataModel.data.SystemStatus != null && dataModel.data.SystemStatus.Count > 0)
+                {
+                    DowntimeDataModel bcrm = dataModel.data.SystemStatus.Find(x => x.SystemType == SystemEnum.BCRM);
+                    DowntimeDataModel cc = dataModel.data.SystemStatus.Find(x => x.SystemType == SystemEnum.PaymentCreditCard);
+                    DowntimeDataModel fpx = dataModel.data.SystemStatus.Find(x => x.SystemType == SystemEnum.PaymentFPX);
+                    if (cc != null && fpx != null && bcrm != null)
+                    {
+                        if (!bcrm.IsAvailable)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            bool pgDisable = !cc.IsAvailable && !fpx.IsAvailable;
+                            return pgDisable;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+
+        private static bool _isBCRMPopupDisplayed;
+        public static bool IsBCRMPopupDisplayed
+        {
+            set
+            {
+                _isBCRMPopupDisplayed = value;
+            }
+            get
+            {
+                DowntimeDataModel bcrm = dataModel.data.SystemStatus.Find(x => x.SystemType == SystemEnum.BCRM);
+                if (bcrm == null || bcrm.IsAvailable)
+                {
+                    return true;
+                }
+                return _isBCRMPopupDisplayed;
             }
         }
     }

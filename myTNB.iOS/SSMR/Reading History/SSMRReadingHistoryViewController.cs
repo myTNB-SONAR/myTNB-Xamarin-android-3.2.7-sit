@@ -1,7 +1,6 @@
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
@@ -673,13 +672,13 @@ namespace myTNB
                         SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse, _currAcc);
                         UpdateTable();
                         _readingHistoryTableView.Hidden = false;
+                        IsLoading = false;
                     }
                     else
                     {
                         _readingHistoryTableView.Hidden = true;
                         DisplayRefresh();
                     }
-                    IsLoading = false;
                     ActivityIndicator.Hide();
                 });
             });

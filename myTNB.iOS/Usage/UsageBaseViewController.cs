@@ -8,7 +8,6 @@ using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
-using CoreAnimation;
 using Foundation;
 using System.Diagnostics;
 
@@ -155,7 +154,7 @@ namespace myTNB
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
             isSmartMeterAccount = !isREAccount && !isNormalChart;
-            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            isBcrmAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             accountIsSSMR = false;
         }
 
@@ -518,6 +517,7 @@ namespace myTNB
             {
                 if (_rmKwhDropDownView != null)
                 {
+                    _rmkWhFlag = false;
                     _rmKwhDropDownView.Hidden = true;
                 }
                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
@@ -572,7 +572,8 @@ namespace myTNB
                     ShowMissedReadToolTip = ShowMissedReadTooltip,
                     GetI18NValue = GetI18NValue,
                     OnMDMSIconTap = OnMDMSIconTap,
-                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown
+                    SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown,
+                    OnMDMSRefresh = OnMDMSRefresh
                 };
             }
 
@@ -588,9 +589,18 @@ namespace myTNB
         private void OnMDMSIconTap()
         {
             string title = AccountUsageSmartCache.ErrorTitle;
-            string message = AccountUsageSmartCache.ErrorMessage;
+            string message = AccountUsageSmartCache.DisplayMessage;
             string ctaTitle = AccountUsageSmartCache.ErrorCTA;
-            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, null } });
+            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, OnMDMSRefresh } });
+        }
+
+        private void OnMDMSRefresh()
+        {
+            if (AccountUsageSmartCache.IsUnplannedMDMSDown)
+            {
+                ResetViews();
+                InitiateAPICalls();
+            }
         }
 
         #region DPC Methods
@@ -1154,6 +1164,11 @@ namespace myTNB
         }
         private void LoadTariffLegendWithIndex(int index)
         {
+            if (_rmKwhDropDownView != null)
+            {
+                _rmkWhFlag = false;
+                _rmKwhDropDownView.Hidden = true;
+            }
             List<MonthItemModel> usageData = isSmartMeterAccount ? AccountUsageSmartCache.ByMonthUsage : AccountUsageCache.ByMonthUsage;
             if (usageData != null && usageData.Count > 0)
             {
@@ -1195,6 +1210,14 @@ namespace myTNB
                                     _legendIsVisible = _tariffIsVisible;
                                     SetTariffLegendComponent(_tariffList);
                                 }
+                                else
+                                {
+                                    ShowHideTariffLegends(false);
+                                }
+                            }
+                            else
+                            {
+                                ShowHideTariffLegends(false);
                             }
                         }
                         else
@@ -1203,7 +1226,19 @@ namespace myTNB
                         }
                         SetDPCNoteOnBarTap(item);
                     }
+                    else
+                    {
+                        ShowHideTariffLegends(false);
+                    }
                 }
+                else
+                {
+                    ShowHideTariffLegends(false);
+                }
+            }
+            else
+            {
+                ShowHideTariffLegends(false);
             }
         }
         public void LoadTariffLegendWithBlockIds(List<String> blockIdList = null)
@@ -1285,6 +1320,11 @@ namespace myTNB
                 }));
                 _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
                 {
+                    if (_rmKwhDropDownView != null)
+                    {
+                        _rmkWhFlag = false;
+                        _rmKwhDropDownView.Hidden = true;
+                    }
                     if (!_tariffSelectionComponent.isTariffDisabled)
                     {
                         ValidateTariffLegend();
@@ -1337,6 +1377,7 @@ namespace myTNB
                 {
                     if (_rmKwhDropDownView != null)
                     {
+                        _rmkWhFlag = false;
                         _rmKwhDropDownView.Hidden = true;
                     }
                     _tariffIsVisible = !_tariffIsVisible;

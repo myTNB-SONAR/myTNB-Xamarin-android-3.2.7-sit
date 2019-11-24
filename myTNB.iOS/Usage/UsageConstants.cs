@@ -27,7 +27,8 @@
         public static string IMG_ScrollIndicator = "Scroll-Indicator";
         public static string IMG_EmpyUsage = "Empty-Usage-Icon";
         public static string IMG_MDMSDownIcon = "MDMS-Down-Icon";
-        public static string IMG_MDMSDown = "MDMS-Down";
+        public static string IMG_MDMSDownUnplanned = "MDMS-Down-Unplanned";
+        public static string IMG_MDMSDownPlanned = "MDMS-Down-Planned";
         public static string IMG_DPCIndicator = "Dpc-Indicator";
 
         //I18N Keys

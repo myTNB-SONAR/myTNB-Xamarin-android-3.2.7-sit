@@ -38,11 +38,13 @@ namespace myTNB
         public bool _accountListIsShimmering = true;
         private bool _servicesIsShimmering = true;
         private bool _helpIsShimmering = true;
-        public bool _isRefreshScreenEnabled;
-        private bool _isBCRMAvailable;
+        public bool _isRefreshScreenEnabled, _isGetServicesFailed;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
+        private bool _isBCRMAvailable, _isBCRMPopupDisplayed;
+        public string RearrangeSuccessMsg;
+        public bool IsRearrangeSaved;
 
         public override void ViewDidLoad()
         {
@@ -55,7 +57,7 @@ namespace myTNB
             IsNewGradientRequired = true;
             base.ViewDidLoad();
             AddFooterBG();
-            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0 && accNum != null && !string.IsNullOrEmpty(accNum) && !string.IsNullOrWhiteSpace(accNum))
             {
@@ -151,6 +153,38 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            if (IsRearrangeSaved)
+            {
+                OnRearrangeSuccess(RearrangeSuccessMsg);
+                IsRearrangeSaved = false;
+            }
+            bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
+            {
+                _isBCRMPopupDisplayed = true;
+                DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
+                string errMsg = GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
+                string errorTitle = GetCommonI18NValue(Constants.Common_WellBeBack);
+                if (status != null)
+                {
+                    if (!string.IsNullOrEmpty(status?.DowntimeMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeMessage))
+                    {
+                        errMsg = status.DowntimeMessage;
+                    }
+                    if (!string.IsNullOrEmpty(status?.DowntimeTextMessage) && !string.IsNullOrWhiteSpace(status?.DowntimeTextMessage))
+                    {
+                        errorTitle = status.DowntimeTextMessage;
+                    }
+                }
+
+                DisplayCustomAlert(errorTitle, errMsg
+                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), ()=> {
+                        AppLaunchMasterCache.IsBCRMPopupDisplayed = true;
+                        _isBCRMPopupDisplayed = false;
+                        CheckTutorialOverlay();
+                    }}}
+                    , UIImage.FromBundle(DashboardHomeConstants.IMG_BCRMDownPopup));
+            }
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -176,11 +210,11 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
+            if (_isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown)
-                return;
+            if (tutorialOverlayHasShown) { return; }
 
             if (!_accountListIsShimmering && !_servicesIsShimmering && !_helpIsShimmering)
             {
@@ -194,6 +228,13 @@ namespace myTNB
                         {
                             ShowTutorialOverlay();
                         }
+                        else
+                        {
+                            if (_tutorialContainer != null)
+                            {
+                                _tutorialContainer.RemoveFromSuperview();
+                            }
+                        }
                     }
                 });
             }
@@ -201,19 +242,20 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
-            if (_tutorialContainer != null)
-                return;
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            if (_tutorialContainer != null && _tutorialContainer.IsDescendantOfView(currentWindow)) { return; }
 
             ScrollTableToTheTop();
             ResetTableView();
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
+
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = 1001
             };
-            currentWindow.AddSubview(_tutorialContainer);
 
             HomeTutorialEnum tutorialType;
 
@@ -242,12 +284,30 @@ namespace myTNB
             var topVc = AppDelegate.GetTopViewController(baseRootVc);
             if (topVc != null)
             {
-                if (topVc is DashboardHomeViewController)
+                if (topVc is DashboardHomeViewController && _tutorialContainer != null && !_tutorialContainer.IsDescendantOfView(currentWindow))
                 {
+                    foreach (UIView view in currentWindow.Subviews)
+                    {
+                        if (view.Tag == 1001)
+                        {
+                            view.RemoveFromSuperview();
+                            break;
+                        }
+                    }
+
                     _tutorialContainer.AddSubview(tutorialView.GetView());
+                    currentWindow.AddSubview(_tutorialContainer);
 
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
                     sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+                    sharedPreference.Synchronize();
+                }
+                else
+                {
+                    if (_tutorialContainer != null)
+                    {
+                        _tutorialContainer.RemoveFromSuperview();
+                    }
                 }
             }
         }
@@ -297,6 +357,7 @@ namespace myTNB
             if (_dashboardHomeHeader != null)
             {
                 _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+                _dashboardHomeHeader.BadgeValue = PushNotificationHelper.GetNotificationCount();
             }
             PushNotificationHelper.UpdateApplicationBadge();
         }
@@ -325,7 +386,6 @@ namespace myTNB
 
         private void OnEnterForeground(NSNotification notification)
         {
-            Debug.WriteLine("On Enter Foreground");
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 if (NetworkUtility.isReachable)
@@ -365,20 +425,13 @@ namespace myTNB
             if (DeviceHelper.IsIphoneXUpResolution())
                 return;
 
-            Debug.WriteLine("OnChangeStatusBarFrame");
             nfloat yPos = DeviceHelper.GetStatusBarHeight();
-            nfloat addtlHeight = DeviceHelper.GetStatusBarHeight();
             if (DeviceHelper.GetStatusBarHeight() > 20)
             {
                 yPos = 0;
             }
-            else
-            {
-                addtlHeight += DeviceHelper.GetStatusBarHeight();
-            }
 
             ViewHelper.AdjustFrameSetY(_homeTableView, yPos);
-            ViewHelper.AdjustFrameSetHeight(_homeTableView, ViewHeight + addtlHeight);
             UpdateFooterBG();
         }
         #endregion
@@ -440,10 +493,10 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController,
-                DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
-                _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                OnUpdateCellWithoutReload);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
+                , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                , OnReload, OnServicesRefresh);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -490,10 +543,15 @@ namespace myTNB
 
         public void OnRearrangeAccountAction()
         {
-            RearrangeAccountViewController rearrangeAccountView = new RearrangeAccountViewController();
+            RearrangeAccountViewController rearrangeAccountView = new RearrangeAccountViewController(this);
             UINavigationController navController = new UINavigationController(rearrangeAccountView);
             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
+        }
+
+        private void OnRearrangeSuccess(string message)
+        {
+            DisplayToast(message);
         }
 
         public string GetGreeting()
@@ -617,10 +675,12 @@ namespace myTNB
                                     services.RemoveAt(ServiceItemIndexToRemove(services));
                                 }
                                 DataManager.DataManager.SharedInstance.ServicesList = services;
+                                _isGetServicesFailed = false;
                             }
                             else
                             {
                                 DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                                _isGetServicesFailed = true;
                             }
                             OnUpdateTable();
                             CheckTutorialOverlay();
@@ -640,10 +700,12 @@ namespace myTNB
                                 List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
                                 services.RemoveAt(ServiceItemIndexToRemove(services));
                                 DataManager.DataManager.SharedInstance.ServicesList = services;
+                                _isGetServicesFailed = false;
                             }
                             else
                             {
                                 DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                                _isGetServicesFailed = true;
                             }
                             OnUpdateTable();
                             CheckTutorialOverlay();
@@ -734,10 +796,10 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(DashboardHomeConstants.Sitecore_Timestamp);
+                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                         sharedPreference.Synchronize();
                         isValidTimeStamp = true;
                     }
@@ -749,7 +811,7 @@ namespace myTNB
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
                             sharedPreference.Synchronize();
                             isValidTimeStamp = true;
                         }
@@ -899,11 +961,30 @@ namespace myTNB
         public void OnUpdateTable()
         {
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
-                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
-                _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                OnUpdateCellWithoutReload);
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
+                , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                , OnReload, OnServicesRefresh);
             _homeTableView.ReloadData();
             UpdateFooterBG();
+        }
+
+        private void OnReload()
+        {
+            _homeTableView.ReloadData();
+            UpdateFooterBG();
+        }
+
+        private void OnServicesRefresh()
+        {
+            Debug.WriteLine("OnServicesRefresh");
+            _servicesIsShimmering = true;
+            _isGetServicesFailed = false;
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList
+                , _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                , OnReload, OnServicesRefresh);
+            _homeTableView.ReloadData();
+            OnGetServices();
         }
 
         public void OnUpdateCellWithoutReload(int row)
@@ -923,8 +1004,7 @@ namespace myTNB
                 yPosBG -= 20;
             }
             CGRect servicesCellRect = _homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services));
-            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight()
-                + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset + yPosBG);
+            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset + yPosBG);
         }
 
         public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
@@ -955,9 +1035,9 @@ namespace myTNB
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                     _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList,
-                        _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                        OnUpdateCellWithoutReload);
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList
+                        , _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent
+                        , OnReload, OnServicesRefresh);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();

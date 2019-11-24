@@ -12,6 +12,8 @@ namespace myTNB.Model
     public class SMRAccountActivityInfoDataModel : BaseModelV2
     {
         public MeterReadingHistoryModel data { set; get; }
+        public bool IsOCRDisabled { set; get; }
+        public bool IsOCRDown { set; get; }
     }
 
     public class MeterReadingHistoryModel
@@ -30,8 +32,7 @@ namespace myTNB.Model
         public string previousReadingKwh { set; get; }
         public string previousReadingKvarh { set; get; }
         public string previousReadingKw { set; get; }
-        public bool IsOCRDisabled { set; get; }
-        public bool IsOCRDown { set; get; }
+
         public string isDashboardCTADisabled
         {
             set

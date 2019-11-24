@@ -31,9 +31,9 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception: " + e.Message);
+                Debug.WriteLine("Exception: SitecoreService/GetItemByPath " + e.Message);
             }
-            return null;
+            return new ScItemsResponse(0, 0, new List<ISitecoreItem>());
         }
 
         public async Task<ScItemsResponse> GetItemById(string itemId, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
@@ -52,9 +52,9 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception: " + e.Message);
+                Debug.WriteLine("Exception: SitecoreService/GetItemById " + e.Message);
             }
-            return null;
+            return new ScItemsResponse(0, 0, new List<ISitecoreItem>());
         }
 
         public async Task<Byte[]> GetMediaByUrl(string mediaUrl)
@@ -80,7 +80,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception: " + e.Message);
+                Debug.WriteLine("Exception: SitecoreService/GetMediaByUrl " + e.Message);
             }
             return null;
         }
@@ -171,7 +171,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception: " + e.Message);
+                Debug.WriteLine("Exception: SitecoreService/GetSession " + e.Message);
             }
             return null;
         }

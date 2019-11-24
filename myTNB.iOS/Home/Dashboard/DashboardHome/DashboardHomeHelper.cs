@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using Foundation;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 using UIKit;
 
 namespace myTNB
@@ -24,19 +24,9 @@ namespace myTNB
             return string.Empty;
         }
 
-        public List<DueAmountDataModel> GetAccountList(List<CustomerAccountRecordModel> acctsList)
+        public List<DueAmountDataModel> GetAccountListForDashboard(List<CustomerAccountRecordModel> acctsList)
         {
-            var sortedAccounts = new List<CustomerAccountRecordModel>();
-
-            var results = acctsList.GroupBy(x => x.IsREAccount);
-            if (results != null && results?.Count() > 0)
-            {
-                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                reAccts.AddRange(normalAccts);
-                sortedAccounts = reAccts;
-            }
-
+            List<CustomerAccountRecordModel> sortedAccounts = acctsList;
             List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
             if (sortedAccounts != null &&
                 sortedAccounts.Count > 0)
@@ -71,7 +61,7 @@ namespace myTNB
             DueAmountDataModel model = new DueAmountDataModel();
             if (!string.IsNullOrEmpty(accountNo))
             {
-                var accountList = GetAccountList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+                var accountList = GetAccountListForDashboard(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
                 foreach (var account in accountList)
                 {
                     if (account.accNum == accountNo)
@@ -186,9 +176,7 @@ namespace myTNB
             nfloat totalCellHeight;
             if (HasAccounts)
             {
-                // HIDE REARRANGE ACCOUNT
-                //nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
-                nfloat footerHeight = HasMoreThanThreeAccts ? ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
                 var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
                 nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
                 totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F);
@@ -289,8 +277,12 @@ namespace myTNB
         /// Returns the height for Services Cell
         /// </summary>
         /// <returns></returns>
-        public nfloat GetHeightForServices(bool isShimmering)
+        public nfloat GetHeightForServices(bool isShimmering, bool isServiceFail = false)
         {
+            if (isServiceFail)
+            {
+                return ScaleUtility.GetScaledHeight(224);
+            }
             nfloat tableViewCellHeight = 0;
             nfloat cardHeight = ScaleUtility.GetScaledHeight(84F);
 

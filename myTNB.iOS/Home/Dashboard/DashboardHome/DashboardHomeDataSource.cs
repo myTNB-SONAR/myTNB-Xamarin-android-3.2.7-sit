@@ -18,18 +18,20 @@ namespace myTNB
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
         private List<PromotionsModelV2> _promotions;
-        public Action<int> _onReloadCell;
+        public Action _onReload;
+        private Action _onServicesRefresh;
 
-        public DashboardHomeDataSource(DashboardHomeViewController controller,
-            AccountListViewController accountListViewController,
-            List<ServiceItemModel> services,
-            List<PromotionsModelV2> promotions,
-            List<HelpModel> helpList,
-            bool isServicesShimmering,
-            bool isHelpShimmering,
-            bool showRefreshScreen,
-            RefreshScreenComponent refreshScreenComponent,
-            Action<int> onReloadCell)
+        public DashboardHomeDataSource(DashboardHomeViewController controller
+            , AccountListViewController accountListViewController
+            , List<ServiceItemModel> services
+            , List<PromotionsModelV2> promotions
+            , List<HelpModel> helpList
+            , bool isServicesShimmering
+            , bool isHelpShimmering
+            , bool showRefreshScreen
+            , RefreshScreenComponent refreshScreenComponent
+            , Action onReload
+            , Action OnServicesRefresh)
         {
             _controller = controller;
             _accountListViewController = accountListViewController;
@@ -40,7 +42,8 @@ namespace myTNB
             _isHelpShimmering = isHelpShimmering;
             _showRefreshScreen = showRefreshScreen;
             _refreshScreenComponent = refreshScreenComponent;
-            _onReloadCell = onReloadCell;
+            _onReload = onReload;
+            _onServicesRefresh = OnServicesRefresh;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -66,7 +69,7 @@ namespace myTNB
             }
             if (indexPath.Row == 1)
             {
-                return _dashboardHomeHelper.GetHeightForServices(_isServicesShimmering);
+                return _dashboardHomeHelper.GetHeightForServices(_isServicesShimmering, _controller._isGetServicesFailed);
             }
             if (indexPath.Row == 2)
             {
@@ -97,8 +100,16 @@ namespace myTNB
                 cell.GetI18NValue = _controller.GetI18NValue;
                 cell.IsRefreshScreen = _showRefreshScreen;
                 cell.IsLoading = _isServicesShimmering;
-                cell.ReloadCell = _onReloadCell;
-                cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
+                cell.OnReload = _onReload;
+                if (_controller._isGetServicesFailed)
+                {
+                    cell.OnServicesRefresh = _onServicesRefresh;
+                    cell.SetRefreshCard();
+                }
+                else
+                {
+                    cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
+                }
                 cell.ClipsToBounds = true;
                 return cell;
             }

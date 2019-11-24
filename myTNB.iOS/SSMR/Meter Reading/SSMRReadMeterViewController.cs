@@ -329,15 +329,42 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Tag = 3
             };
-            UILabel label = new UILabel(new CGRect(0, 0, _manualInputView.Frame.Width, _manualInputView.Frame.Height))
+
+            UIColor descriptionColor = MyTNBColor.WaterBlue;
+            string descriptionKey = SSMRConstants.I18N_ManualInputTitle;
+            if (ocrIsDisabled)
             {
-                Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.WaterBlue,
-                Lines = 0,
-                TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(SSMRConstants.I18N_ManualInputTitle)
+                descriptionColor = MyTNBColor.WaterBlue;
+            }
+            else if (ocrIsDown)
+            {
+                descriptionColor = MyTNBColor.CharcoalGrey;
+                descriptionKey = SSMRConstants.I18N_OCRDownMessage;
+            }
+
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(descriptionKey) + "<br>"
+                , ref htmlBodyError, MyTNBFont.FONTNAME_500, (float)GetScaledHeight(14));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = descriptionColor
+            }, new NSRange(0, htmlBody.Length));
+            UITextView description = new UITextView(new CGRect(0, 0, _manualInputView.Frame.Width, GetScaledHeight(44)))
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false,
+                ContentInset = new UIEdgeInsets(0, -5, 0, -5),
+                BackgroundColor = UIColor.Clear
             };
-            _manualInputView.AddSubview(label);
+            description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, 1000F));
+            description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
+            description.TextAlignment = UITextAlignment.Left;
+
+            _manualInputView.AddSubview(description);
             _meterReadScrollView.AddSubview(_manualInputView);
         }
 

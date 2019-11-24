@@ -87,6 +87,7 @@
         public static string Common_New = "new";
         public static string Common_SwipeText = "tutorialSwipeText";
         public static string Common_SaveLanguageMessage = "saveLanguageMessage";
+        public static string Common_WellBeBack = "wellBeBack";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -146,5 +147,8 @@
         }
 
         public static string Key_PromotionTimestamp = "SiteCorePromotionTimeStamp";
+
+        //Strings
+        public static string Value_99 = "99+";
     }
 }

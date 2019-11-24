@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Home.Dashboard.DashboardHome.Services;
@@ -13,15 +12,14 @@ namespace myTNB
     {
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-        private nfloat cellHeight = UIApplication.SharedApplication.KeyWindow.Frame.Height;
         private UIView _view;
         private int rowFactor = -1;
         private nfloat xLoc;
         private Dictionary<string, Action> _actionsDictionary;
         private nfloat _cardHeight = ScaleUtility.GetScaledHeight(84F);
+        public Action OnReload;
+        public Action OnServicesRefresh;
         private CustomUIView _moreLessContainer;
-
-        public Action<int> ReloadCell;
         public bool IsLoading, IsRefreshScreen;
 
         public ServicesTableViewCell(IntPtr handle) : base(handle)
@@ -32,16 +30,8 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
             _view.Layer.CornerRadius = GetScaledHeight(5F);
-            //AddCardShadow(ref _view);
             AddSubview(_view);
             BackgroundColor = UIColor.Clear;
-            //if (_view != null)
-            //{
-            //    _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            //    _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            //    _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            //    _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
-            //}
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
@@ -70,6 +60,48 @@ namespace myTNB
                     ShowInitialItems(services);
                 }
             }
+        }
+
+        public void SetRefreshCard()
+        {
+            for (int i = _view.Subviews.Length; i-- > 0;)
+            {
+                _view.Subviews[i].RemoveFromSuperview();
+            }
+
+            _view.Frame = new CGRect(_view.Frame.Location, new CGSize(_view.Frame.Width, GetScaledHeight(208)));
+            UIImageView imgRefresh = new UIImageView(new CGRect((_view.Frame.Width - GetScaledWidth(68)) / 2, GetScaledHeight(16), GetScaledWidth(68), GetScaledHeight(63)))
+            {
+                Image = UIImage.FromBundle(DashboardHomeConstants.IMG_ServicesRefresh)
+            };
+
+            UILabel refreshMessage = new UILabel(new CGRect(GetScaledWidth(16), imgRefresh.Frame.GetMaxY() + GetScaledHeight(16)
+                , _view.Frame.Width - GetScaledWidth(32), GetScaledWidth(32)))
+            {
+                Text = GetI18NValue(DashboardHomeConstants.I18N_ServiceRefreshMessage),
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.Grey,
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+
+            CustomUIButtonV2 btnRefesh = new CustomUIButtonV2
+            {
+                Frame = new CGRect(GetScaledWidth(16), refreshMessage.Frame.GetMaxY() + GetScaledHeight(16)
+                , _view.Frame.Width - GetScaledWidth(32), GetScaledWidth(48)),
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            btnRefesh.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow), UIControlState.Normal);
+            btnRefesh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (OnServicesRefresh != null)
+                {
+                    OnServicesRefresh.Invoke();
+                }
+            }));
+            _view.AddSubviews(new UIView[] { imgRefresh, refreshMessage });
+            _view.AddSubview(btnRefesh);
         }
 
         private void ShowInitialItems(List<ServiceItemModel> serviceItems)
@@ -165,13 +197,13 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
             DataManager.DataManager.SharedInstance.ActiveServicesList = DataManager.DataManager.SharedInstance.ServicesList;
             AddContentData(DataManager.DataManager.SharedInstance.ActiveServicesList);
-            ReloadCell?.Invoke(DashboardHomeConstants.CellIndex_Help);
+            OnReload.Invoke();
         }
 
         private void OnShowLessAction()
         {
             ShowInitialItems(DataManager.DataManager.SharedInstance.ServicesList);
-            ReloadCell?.Invoke(DashboardHomeConstants.CellIndex_Help);
+            OnReload.Invoke();
         }
 
         private nfloat GetViewHeight(List<ServiceItemModel> serviceList, bool isMorethanThreeItems)
@@ -462,7 +494,7 @@ namespace myTNB
                 switch (serviceItem.ServiceType)
                 {
                     case ServiceEnum.PAYBILL:
-                        if (IsRefreshScreen)
+                        if (IsRefreshScreen || AppLaunchMasterCache.IsPayDisabled)
                         {
                             res = true;
                         }
