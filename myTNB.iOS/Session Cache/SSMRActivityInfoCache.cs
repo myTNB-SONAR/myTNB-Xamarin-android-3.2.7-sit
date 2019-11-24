@@ -208,7 +208,7 @@ namespace myTNB
             {
                 if (RH_MeterReadingHistory != null)
                 {
-                    return RH_MeterReadingHistory.IsOCRDown;
+                    return RH_DataModel.IsOCRDown;
                 }
                 return true;
             }
@@ -220,7 +220,7 @@ namespace myTNB
             {
                 if (RH_MeterReadingHistory != null)
                 {
-                    return RH_MeterReadingHistory.IsOCRDisabled;
+                    return RH_DataModel.IsOCRDisabled;
                 }
                 return true;
             }
@@ -232,7 +232,7 @@ namespace myTNB
             {
                 if (DB_MeterReadingHistory != null)
                 {
-                    return DB_MeterReadingHistory.IsOCRDown;
+                    return DB_DataModel.IsOCRDown;
                 }
                 return true;
             }
@@ -244,7 +244,7 @@ namespace myTNB
             {
                 if (DB_MeterReadingHistory != null)
                 {
-                    return DB_MeterReadingHistory.IsOCRDisabled;
+                    return DB_DataModel.IsOCRDisabled;
                 }
                 return true;
             }
