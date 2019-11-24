@@ -464,6 +464,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 ShowSearchAction(false);
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCDownTime = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXDownTime = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 if (bcrmDownTime != null && bcrmDownTime.IsDown)
@@ -874,7 +876,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
