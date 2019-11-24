@@ -502,7 +502,7 @@ namespace myTNB
                 switch (serviceItem.ServiceType)
                 {
                     case ServiceEnum.PAYBILL:
-                        if (IsRefreshScreen)
+                        if (IsRefreshScreen || AppLaunchMasterCache.IsPayDisabled)
                         {
                             res = true;
                         }

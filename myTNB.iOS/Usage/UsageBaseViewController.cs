@@ -154,7 +154,7 @@ namespace myTNB
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
             isSmartMeterAccount = !isREAccount && !isNormalChart;
-            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            isBcrmAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             accountIsSSMR = false;
         }
 
@@ -589,7 +589,7 @@ namespace myTNB
         private void OnMDMSIconTap()
         {
             string title = AccountUsageSmartCache.ErrorTitle;
-            string message = AccountUsageSmartCache.ErrorMessage;
+            string message = AccountUsageSmartCache.DisplayMessage;
             string ctaTitle = AccountUsageSmartCache.ErrorCTA;
             DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, OnMDMSRefresh } });
         }

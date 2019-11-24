@@ -18,13 +18,13 @@ namespace myTNB
             view = new CustomUIView(new CGRect(0, ReferenceWidget.GetMaxY(), _width, GetHeightByScreenSize(157)));
 
             string mdmsImageString = UsageConstants.IMG_MDMSDownUnplanned;
-            string descriptionString = LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshMessage);
+            string descriptionString = AccountUsageSmartCache.ErrorMessage
+                ?? LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshMessage);
             nfloat imgWidth = GetScaledWidth(68);
             nfloat imgHeight = GetScaledWidth(63);
             if (AccountUsageSmartCache.IsPlannedMDMSDown)
             {
                 mdmsImageString = UsageConstants.IMG_MDMSDownPlanned;
-                descriptionString = AccountUsageSmartCache.ErrorMessage;
                 imgWidth = GetScaledWidth(70);
                 imgHeight = GetScaledWidth(72);
             }

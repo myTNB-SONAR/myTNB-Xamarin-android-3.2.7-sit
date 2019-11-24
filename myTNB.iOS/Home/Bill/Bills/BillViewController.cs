@@ -507,6 +507,7 @@ namespace myTNB
         #region Refresh
         private void DisplayRefresh()
         {
+            _historyTableView.Hidden = true;
             string errMessage = GetCommonI18NValue(SSMRConstants.I18N_RefreshDescription);
             if (!_isBCRMAvailable)
             {
@@ -568,6 +569,10 @@ namespace myTNB
             {
                 // call services again
                 OnSelectAccount(0);
+                if (_viewRefreshContainer != null)
+                {
+                    _viewRefreshContainer.RemoveFromSuperview();
+                }
             }));
 
             _viewRefreshContainer.AddSubview(txtViewDetails);
@@ -627,7 +632,6 @@ namespace myTNB
             }
         }
         #endregion
-
         private void OnSelectAccount(int index)
         {
             if (_imgFilter != null)
@@ -668,6 +672,7 @@ namespace myTNB
                                {
                                    AccountChargesCache.SetData(_accountCharges);
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                                   isGetAcctChargesLoading = false;
                                    CheckTutorialOverlay();
                                }
                                else

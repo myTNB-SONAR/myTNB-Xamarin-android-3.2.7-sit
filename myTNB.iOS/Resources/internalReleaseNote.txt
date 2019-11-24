@@ -1,7 +1,8 @@
 Sprint 2 SIT Build
 
-[Task] Fail handling on quick action, refresh screen implementation
-[Task] BCRM downtime handling (planned)
-[Bug] Inconsistent selected account in Bill screen after rearrange action
-[Bug] Fix on empty notification badge
-[Bug] initial handling for site core downtime
+[Bug #2] Maintenance pop-up screen on iphone XR or device with high screen size is stretched
+[Bug #3] During unplanned maintenance, in bills tab user is observing CA’s name appeared in drop-down
+[Bug #5] During bcrm planned downtime, Pay my Bills option in QA section was active
+[Bug #7] iOS : Search functionality is not working after rearranging accounts in iOS
+[Bug #8] iOS : More accounts still displaying though after search results
+[Bug #9] Pay bills option is still enable though PG_CC & PG_FPX down also in bcrm downtime.

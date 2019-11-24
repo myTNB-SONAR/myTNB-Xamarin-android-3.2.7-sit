@@ -109,7 +109,8 @@ namespace myTNB
                 }
 
                 ErrorTitle = response.d.DisplayTitle ?? string.Empty;
-                ErrorMessage = response.d.DisplayMessage ?? string.Empty;
+                ErrorMessage = response.d.ErrorMessage ?? string.Empty;
+                DisplayMessage = response.d.DisplayMessage ?? string.Empty;
                 ErrorCTA = response.d.CTA ?? string.Empty;
             }
             else
@@ -133,6 +134,7 @@ namespace myTNB
         #region Error
         public static string ErrorTitle { set; get; } = string.Empty;
         public static string ErrorMessage { set; get; } = string.Empty;
+        public static string DisplayMessage { set; get; } = string.Empty;
         public static string ErrorCTA { set; get; } = string.Empty;
         #endregion
 
