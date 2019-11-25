@@ -104,11 +104,13 @@ namespace myTNB.SitecoreCMS.Services
                     {
                         continue;
                     }
+                         // Image = item.GetImageUrlFromMediaField(_imgSize, _websiteURL),
                     list.Add(new RewardsModel
                     {
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
                         DisplayName = item.DisplayName,
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
+                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Rewards.Image, _os, _imgSize, _websiteURL, _language),
                         ID = item.Id
                     });
                 }
@@ -144,21 +146,5 @@ namespace myTNB.SitecoreCMS.Services
             }
             return new RewardsTimeStamp();
         }
-
-        /*private IEnumerable<Item> FetchAllChildrenItems(Item p_Item, bool p_ReturnRootItem = false)
-        {
-            if (p_ReturnRootItem)
-            {
-                yield return p_Item;
-            }
-
-            foreach (Item child in p_Item.GetChildren(ChildListOptions.SkipSorting))
-            {
-                foreach (Item subChild in FetchAllChildrenItems(child, true))
-                {
-                    yield return subChild;
-                }
-            }
-        }*/
     }
 }

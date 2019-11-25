@@ -155,6 +155,7 @@
                     public const string Title = "Title";
                     public const string DisplayName = "DisplayName";
                     public const string Description = "Description";
+                    public const string Image = "Image";
                 }
             }
 
