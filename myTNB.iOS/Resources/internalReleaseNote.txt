@@ -1,8 +1,5 @@
 Sprint 2 SIT Build
 
-[Bug #2] Maintenance pop-up screen on iphone XR or device with high screen size is stretched
-[Bug #3] During unplanned maintenance, in bills tab user is observing CA’s name appeared in drop-down
-[Bug #5] During bcrm planned downtime, Pay my Bills option in QA section was active
-[Bug #7] iOS : Search functionality is not working after rearranging accounts in iOS
-[Bug #8] iOS : More accounts still displaying though after search results
-[Bug #9] Pay bills option is still enable though PG_CC & PG_FPX down also in bcrm downtime.
+[Bug] Smart Meter UI misalignment issues
+[Bug] Fix crashing issue on photo permission
+[Enhancement] Decrease compression factor for SSMR OCR photos. Set capture high resolution to true.
