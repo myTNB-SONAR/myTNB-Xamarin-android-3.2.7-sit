@@ -103,6 +103,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     }
                     else
                     {
+                        mView.PopulateAccountCharge(accountChargeModelList);
+                        mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         if (billingHistoryList != null)
                         {
                             mainBillingHistoryList = billingHistoryList;
@@ -120,8 +122,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                             mainAccountChargeModelList = new List<AccountChargeModel>();
                         }
                         OnCheckToCallItemizedTutorial();
-                        mView.PopulateAccountCharge(accountChargeModelList);
-                        mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         OnGetBillTooltipContent();
                     }
                 //}
