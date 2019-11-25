@@ -22,3 +22,4 @@ Please test the following.
 	ie. Current app is Sprint 3. Going to Sprint 2 build, app should be uninstalled first.
 7. For all defects multilingual defects, please assign to Ron for assessment.
 8. Android and iOS have different release notes. Please check it first before raising a defect.
+9. This app was compiled using iOS 13 SDK to test app compatibility.
