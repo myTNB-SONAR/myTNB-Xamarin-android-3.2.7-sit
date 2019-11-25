@@ -149,6 +149,13 @@
                     public const string Image_XXHDPI = "image_xxhdpi";
                     public const string Image_XXXHDPI = "image_xxxhdpi";
                 }
+
+                public struct Rewards
+                {
+                    public const string Title = "Title";
+                    public const string DisplayName = "DisplayName";
+                    public const string Description = "Description";
+                }
             }
 
             public struct ItemID
@@ -187,6 +194,8 @@
 
                 public const string SSMRMeterReadingOnePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase OCR Off";
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
+
+                public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
             }
         }
     }

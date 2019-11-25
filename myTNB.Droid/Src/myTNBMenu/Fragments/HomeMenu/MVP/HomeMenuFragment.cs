@@ -802,6 +802,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.GetUserNotifications();
                     this.presenter.OnCheckMyServiceState();
+                    this.presenter.OnGetRewards();
                 }
                 SetNotificationIndicator();
                 HomeMenuCustomScrolling(0);

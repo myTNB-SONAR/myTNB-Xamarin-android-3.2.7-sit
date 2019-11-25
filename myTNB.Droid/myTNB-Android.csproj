@@ -3712,6 +3712,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\maintenance_bcrm.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_bcrm.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm.png" />
+    <Compile Include="Src\SitecoreCMS\Model\RewardsModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\RewardsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
