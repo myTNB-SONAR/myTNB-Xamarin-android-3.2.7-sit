@@ -84,29 +84,29 @@ namespace myTNB
             tabbarItem[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
             tabbarItem[1].Title = GetI18NValue(TabbarConstants.Tab_Bill);
             tabbarItem[2].Title = GetI18NValue(TabbarConstants.Tab_Promotion);
-            //tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
-            tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Profile);
+            tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
+            tabbarItem[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
 
             tabbarItem[0].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
             tabbarItem[1].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
             tabbarItem[2].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
-            //tabbarItem[3].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
             tabbarItem[3].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+            tabbarItem[4].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
 
             tabbarItem[0].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             tabbarItem[1].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             tabbarItem[2].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            //tabbarItem[3].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             tabbarItem[3].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            tabbarItem[4].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
 
             tabbarItem[0].Tag = 0;
             tabbarItem[1].Tag = 1;
             tabbarItem[2].Tag = 2;
-            //tabbarItem[3].Tag = 3;
-            tabbarItem[3].Tag = 4;
+            tabbarItem[3].Tag = 3;
+            tabbarItem[4].Tag = 4;
 
-            //tabbarItem[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-            //tabbarItem[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            tabbarItem[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            tabbarItem[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 
             foreach (UITabBarItem item in tabbarItem)
             {
@@ -130,15 +130,13 @@ namespace myTNB
         {
             if (!ShowNewIndicator("2"))
             {
-                //TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-                //TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
                 UpdatePromotionTabBarIcon();
             }
-            /*if (!ShowNewIndicator("3"))
+            if (!ShowNewIndicator("3"))
             {
                 TabBar.Items[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
                 TabBar.Items[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-            }*/
+            }
 
             if (tabbar.SelectedItem.Tag == 1)
             {
@@ -150,10 +148,10 @@ namespace myTNB
             {
                 SetNewIndicator("2");
             }
-            /*else if (tabbar.SelectedItem.Tag == 3)
+            else if (tabbar.SelectedItem.Tag == 3)
             {
                 SetNewIndicator("3");
-            }*/
+            }
         }
 
         public bool ShouldSelectTab(UITabBarController tabBarController, UIViewController viewController)
