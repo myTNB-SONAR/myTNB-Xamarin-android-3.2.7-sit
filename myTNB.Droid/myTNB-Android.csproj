@@ -3714,6 +3714,11 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm.png" />
     <Compile Include="Src\SitecoreCMS\Model\RewardsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Service\RewardsService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardMenuFragment.cs" />
+    <AndroidResource Include="Resources\layout\RewardListView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4076,6 +4081,8 @@
     <Folder Include="Src\NewAppTutorial\Adapter\" />
     <Folder Include="Src\RearrangeAccount\" />
     <Folder Include="Src\RearrangeAccount\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
