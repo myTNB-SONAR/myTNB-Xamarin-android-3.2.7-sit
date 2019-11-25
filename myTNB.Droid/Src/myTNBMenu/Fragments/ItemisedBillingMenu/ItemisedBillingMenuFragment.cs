@@ -567,10 +567,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList, List<AccountBillPayFilter> billPayFilters)
         {
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
-            
-            if (billingHistoryModelList.Count > 0)
+
+            if (billPayFilters != null && billPayFilters.Count > 0)
             {
                 UpdateFilterItems(billPayFilters);
+            }
+
+            if (billingHistoryModelList.Count > 0)
+            {
                 selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
