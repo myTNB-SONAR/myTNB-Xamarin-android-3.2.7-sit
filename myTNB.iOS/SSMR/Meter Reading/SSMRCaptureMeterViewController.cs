@@ -788,25 +788,28 @@ namespace myTNB
 
         private void UpdateViewGallery()
         {
-            CGSize thumbnailSize = _viewGallery.Frame.Size;
-            PHFetchResult phFetchResult = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
-            if (phFetchResult == null) { return; }
-            PHAsset lastAsset = (PHAsset)phFetchResult.LastObject;
-            if (lastAsset == null) { return; }
-            PHImageManager phImageManager = new PHImageManager();
-            phImageManager.RequestImageForAsset(lastAsset, thumbnailSize
-                , PHImageContentMode.AspectFill, null
-                , (result, info) =>
-                {
-                    if (result != null)
+            InvokeOnMainThread(() =>
+            {
+                CGSize thumbnailSize = _viewGallery.Frame.Size;
+                PHFetchResult phFetchResult = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
+                if (phFetchResult == null) { return; }
+                PHAsset lastAsset = (PHAsset)phFetchResult.LastObject;
+                if (lastAsset == null) { return; }
+                PHImageManager phImageManager = new PHImageManager();
+                phImageManager.RequestImageForAsset(lastAsset, thumbnailSize
+                    , PHImageContentMode.AspectFill, null
+                    , (result, info) =>
                     {
-                        UIImageView thumbnailView = new UIImageView(new CGRect(new CGPoint(0, 0), thumbnailSize))
+                        if (result != null)
                         {
-                            Image = result
-                        };
-                        _viewGallery.AddSubview(thumbnailView);
-                    }
-                });
+                            UIImageView thumbnailView = new UIImageView(new CGRect(new CGPoint(0, 0), thumbnailSize))
+                            {
+                                Image = result
+                            };
+                            _viewGallery.AddSubview(thumbnailView);
+                        }
+                    });
+            });
         }
 
         public void SetupLiveCameraStream()
@@ -825,7 +828,7 @@ namespace myTNB
 
                 _output = new AVCapturePhotoOutput
                 {
-                    IsHighResolutionCaptureEnabled = false
+                    IsHighResolutionCaptureEnabled = true
                 };
 
                 _captureSession = new AVCaptureSession();
@@ -858,7 +861,7 @@ namespace myTNB
                 {
                     //Settings cannot be reused, should create at every invoke of capture
                     AVCapturePhotoSettings settings = AVCapturePhotoSettings.Create();
-                    settings.IsHighResolutionPhotoEnabled = false;
+                    settings.IsHighResolutionPhotoEnabled = true;
                     settings.IsAutoStillImageStabilizationEnabled = true;
                     settings.FlashMode = AVCaptureFlashMode.Off;
 
@@ -982,7 +985,7 @@ namespace myTNB
             fileSize = 0;
             if (img != null)
             {
-                NSData imgData = img.AsJPEG(0.0F);
+                NSData imgData = img.AsJPEG(0.75F);
                 if (imgData != null)
                 {
                     fileSize = imgData.Length / 1000;
