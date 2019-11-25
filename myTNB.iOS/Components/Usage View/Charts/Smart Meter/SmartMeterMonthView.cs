@@ -132,9 +132,10 @@ namespace myTNB.SmartMeterView
                     };
                     if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
                     viewBar.AddSubview(viewCover);
-                    if (AddTariffBlocks != null && !item.DPCIndicator)
+                    if (AddTariffBlocks != null)
                     {
-                        AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
+                        AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1
+                            , viewCover.Frame.Size, isLatestBar, item.DPCIndicator);
                     }
                     nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                     double.TryParse(item.UsageTotal, out double usageTotal);
