@@ -288,7 +288,7 @@ namespace myTNB
         }
 
         protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
-            , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
+            , double baseValue, bool isSelected, CGSize size, bool isLatestBar, bool isDPC)
         {
             //if (viewBar == null || tariffList == null || tariffList.Count == 0 || baseValue == 0) { return; }
             if (viewBar == null || baseValue == 0) { return; }
@@ -313,7 +313,10 @@ namespace myTNB
                 ClipsToBounds = true,
                 BackgroundColor = tariffCount > 0 ? UIColor.Clear : UIColor.White
             };
-            viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;
+            if (_viewType != SmartMeterConstants.SmartMeterViewType.DayZOut)
+            {
+                viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;
+            }
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
 
             if (tariffCount > 0)
@@ -348,7 +351,7 @@ namespace myTNB
 
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
-                bool isLatestBar = i == _segmentContainer.Subviews.Count() - 1;
+                bool isLatestBar = false;// i == _segmentContainer.Subviews.Count() - 1;
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
                 if (segmentView == null) { continue; }
                 bool isSelected = segmentView.Tag == index;
@@ -606,7 +609,7 @@ namespace myTNB
 
         private void UpdateDPCIndicator(CustomUIView segmentView)
         {
-            bool isSelected = segmentView.Tag == _selectedIndex;
+            bool isSelected = false;// segmentView.Tag == _selectedIndex;
             CustomUIView viewBar = segmentView.ViewWithTag(1001) as CustomUIView;
             UIImageView dpcIcon = segmentView.ViewWithTag(1005) as UIImageView;
             UILabel lblConsumption = segmentView.ViewWithTag(1002) as UILabel;

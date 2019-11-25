@@ -120,7 +120,7 @@ namespace myTNB.SmartMeterView
                 viewBar.AddSubview(viewCover);
                 if (AddTariffBlocks != null)
                 {
-                    AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, isSelected, viewCover.Frame.Size, false);
+                    AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, isSelected, viewCover.Frame.Size, false, false);
                 }
                 segment.AddSubview(viewBar);
                 double consumption;
