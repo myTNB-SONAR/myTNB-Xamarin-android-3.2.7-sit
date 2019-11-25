@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     {
                         titlekWhMarker.Visibility = ViewStates.Gone;
                         float valKwh = (float)smDayViewUsageList[index];
-                        titleMarker.Text = zoonInkWhFormat.Format(Math.Abs(valKwh)) + " " + smDayUsageUnit;
+                        titleMarker.Text = kwhFormat.Format(Math.Round(Math.Abs(valKwh), MidpointRounding.AwayFromZero)) + " " + smDayUsageUnit;
                     }
 
                 }
