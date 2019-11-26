@@ -8,6 +8,7 @@ using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS
 {
@@ -450,6 +451,45 @@ namespace myTNB.SitecoreCMS
                         LanguageManager.Instance.SetLanguage(content ?? string.Empty);
                     }
                     LanguageUtility.SetLanguageGlobals();
+                }
+            });
+        }
+
+        public Task LoadRewards()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                RewardsTimestampResponseModel timeStamp = iService.GetRewardsTimestampItem();
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new RewardsTimestampResponseModel();
+                    timeStamp.Data = new List<RewardsTimestamp> { new RewardsTimestamp { Timestamp = string.Empty } };
+                }
+
+                //UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
+                    if (rewardsResponse != null && rewardsResponse.Status != null &&
+                        rewardsResponse.Status.Equals("Success") &&
+                        rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
+                    {
+                        string acctListData = JsonConvert.SerializeObject(rewardsResponse.Data);
+                        NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                        userDefaults.SetString(acctListData, "SiteCoreRewardsData");
+                        userDefaults.Synchronize();
+                        Debug.WriteLine("LoadRewards Done");
+                    }
                 }
             });
         }

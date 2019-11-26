@@ -1198,6 +1198,9 @@
     <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\grey%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1678,6 +1681,8 @@
     <Folder Include="Assets.xcassets\MDMS-Down-Planned.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Popup.imageset\" />
     <Folder Include="Assets.xcassets\Services-Refresh.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Rewards\" />
+    <Folder Include="Assets.xcassets\Heart-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2534,6 +2539,11 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeDataSource.cs" />
+    <Compile Include="Sitecore CMS\Service\RewardsService.cs" />
+    <Compile Include="Sitecore CMS\Model\Rewards\RewardsResponseModel.cs" />
+    <Compile Include="Rewards\RewardsConstants.cs" />
+    <Compile Include="Rewards\RewardsDataSource.cs" />
+    <Compile Include="Rewards\RewardsCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
