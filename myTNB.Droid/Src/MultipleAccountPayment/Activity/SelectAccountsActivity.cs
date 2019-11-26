@@ -141,6 +141,46 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         registerdAccounts.Remove(found);
                     }
                 }
+                else if (registerdAccounts != null && registerdAccounts.Count > 0)
+                {
+                    if (CustomerBillingAccount.HasSelected())
+                    {
+                        CustomerBillingAccount preSelected = CustomerBillingAccount.GetSelected();
+                        if (preSelected.AccountCategoryId == "2")
+                        {
+                            preSelected = registerdAccounts.Find(x => x.AccountCategoryId != "2");
+                            selectedAccount = AccountData.Copy(preSelected, false);
+                            preSelectedAccount = selectedAccount.AccountNum;
+                            var found = registerdAccounts.Where(x => x.AccNum == selectedAccount.AccountNum).FirstOrDefault();
+                            if (found != null)
+                            {
+                                registerdAccounts.Remove(found);
+                            }
+                        }
+                        else
+                        {
+                            selectedAccount = AccountData.Copy(preSelected, true);
+                            preSelectedAccount = selectedAccount.AccountNum;
+                            var found = registerdAccounts.Where(x => x.AccNum == selectedAccount.AccountNum).FirstOrDefault();
+                            if (found != null)
+                            {
+                                registerdAccounts.Remove(found);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        CustomerBillingAccount preSelected = registerdAccounts.Find(x => x.AccountCategoryId != "2");
+                        CustomerBillingAccount.SetSelected(preSelected.AccNum);
+                        selectedAccount = AccountData.Copy(preSelected, true);
+                        preSelectedAccount = selectedAccount.AccountNum;
+                        var found = registerdAccounts.Where(x => x.AccNum == selectedAccount.AccountNum).FirstOrDefault();
+                        if (found != null)
+                        {
+                            registerdAccounts.Remove(found);
+                        }
+                    }
+                }
 
                 registerdAccounts.RemoveAll(x => x.AccountCategoryId == "2");
 
