@@ -33,26 +33,17 @@ namespace myTNB_Android.Src.Utils
             return imageBitmap;
         }
 
-        public static string GetBase64FromBitmap(Bitmap bitmap)
+        public static string GetBase64FromBitmap(Bitmap bitmap, int imageQuality)
         {
             string base64String = "";
-
-            //MemoryStream stream = new MemoryStream();
-            //bitmap.Compress(Bitmap.CompressFormat.Png, 0, stream);
-            //byte[] byteArray = stream.ToArray();
-            //int length = byteArray.Length;
-            //base64String = Base64.EncodeToString(byteArray, Base64Flags.Default);
-            //return base64String;
-
             using (var stream = new MemoryStream())
             {
-                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, imageQuality, stream);
 
                 var byteArray = stream.ToArray();
                 int length = byteArray.Length;
                 base64String = Convert.ToBase64String(byteArray);
             }
-
             return base64String;
         }
     }
