@@ -73,7 +73,7 @@ namespace myTNB.SmartMeterView
                 viewBar.AddSubview(viewCover);
                 if (AddTariffBlocks != null)
                 {
-                    AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, true, viewCover.Frame.Size, false);
+                    AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, true, viewCover.Frame.Size, false, false);
                 }
                 segment.AddSubview(viewBar);
 

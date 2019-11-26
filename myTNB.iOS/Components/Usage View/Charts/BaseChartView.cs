@@ -127,6 +127,10 @@ namespace myTNB
             , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         { }
 
+        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
+            , double baseValue, bool isSelected, CGSize size, bool isLatestBar, bool isDPC)
+        { }
+
         protected virtual UIColor GetTariffBlockColor(string blockID, bool isSelected, bool isSmartMeter)
         {
             List<LegendItemModel> legend = isSmartMeter ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList();

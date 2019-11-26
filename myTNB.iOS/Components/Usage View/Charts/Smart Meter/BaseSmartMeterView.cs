@@ -13,7 +13,7 @@ namespace myTNB.SmartMeterView
 
         public virtual void CreateSegment(ref CustomUIView view) { }
         public CGRect ReferenceWidget { set; protected get; }
-        public Action<CustomUIView, List<TariffItemModel>, double, bool, CGSize, bool> AddTariffBlocks { set; protected get; }
+        public Action<CustomUIView, List<TariffItemModel>, double, bool, CGSize, bool, bool> AddTariffBlocks { set; protected get; }
         public Action<UIPinchGestureRecognizer> PinchAction { set; protected get; }
         public bool IsTariffView { set; protected get; } = false;
         public RMkWhEnum ConsumptionState { set; protected get; } = RMkWhEnum.kWh;
