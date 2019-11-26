@@ -61,7 +61,7 @@ namespace myTNB
                         if (_btnPrimary != null)
                         {
                             _btnPrimary.Enabled = _isCTAEnabled;
-                            UpdateCTA(ref _btnPrimary, true, _isCTAEnabled);
+                            UpdateCTA(ref _btnPrimary, false, _isCTAEnabled);
                         }
                     }
                     ActivityIndicator.Hide();
@@ -449,7 +449,7 @@ namespace myTNB
             else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
             {
                 _btnPrimary.Enabled = _isCTAEnabled;
-                UpdateCTA(ref _btnPrimary, true, _isCTAEnabled);
+                UpdateCTA(ref _btnPrimary, false, _isCTAEnabled);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ReenableSSMR), UIControlState.Normal);
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {

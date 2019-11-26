@@ -263,9 +263,6 @@ namespace myTNB
                 HeaderHeight = _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
-
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, SSMRConstants.Pref_SSMRHistoryTutorialOverlay);
         }
 
         private void HideTutorialOverlay()
@@ -278,6 +275,9 @@ namespace myTNB
                 {
                     _tutorialContainer.Alpha = 0F;
                 }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, SSMRConstants.Pref_SSMRHistoryTutorialOverlay);
             }
         }
         #endregion

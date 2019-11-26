@@ -240,15 +240,8 @@ namespace myTNB
         {
             if (isSmartMeterAccount)
             {
-                if (!_viewSmartMeter.Hidden)
-                {
-                    _footerBGImage.Hidden = false;
-                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
-                }
-                else
-                {
-                    _footerBGImage.Hidden = true;
-                }
+                _footerBGImage.Hidden = _viewSmartMeter.Hidden;
+                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
             }
             else if (isREAccount)
             {
@@ -257,15 +250,8 @@ namespace myTNB
             }
             else if (accountIsSSMR)
             {
-                if (!_viewSSMR.Hidden)
-                {
-                    _footerBGImage.Hidden = false;
-                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSSMR));
-                }
-                else
-                {
-                    _footerBGImage.Hidden = true;
-                }
+                _footerBGImage.Hidden = _viewSSMR.Hidden;
+                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSSMR));
             }
             else
             {
@@ -770,9 +756,6 @@ namespace myTNB
                 OnDismissAction = HideTutorialOverlay
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
-
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, UsageConstants.Pref_UsageSSMRTutorialOverlay);
         }
 
         private void HideTutorialOverlay()
@@ -786,6 +769,9 @@ namespace myTNB
                 {
                     _tutorialContainer.Alpha = 0F;
                 }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, UsageConstants.Pref_UsageSSMRTutorialOverlay);
             }
         }
 
@@ -1699,11 +1685,11 @@ namespace myTNB
                 {
                     _viewFooter.RemoveFromSuperview();
                 }
-                nfloat componentHeight = GetScaledHeight(136);
-                nfloat indicatorHeight = !isRefreshScreen || (isRefreshScreen && accountIsSSMR) ? GetScaledHeight(48) : 0;
+                nfloat componentHeight = GetScaledHeight(136F);
+                nfloat indicatorHeight = !isRefreshScreen || (isRefreshScreen && accountIsSSMR) ? GetScaledHeight(33F) : 0;
                 nfloat footerHeight = indicatorHeight + componentHeight;
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
-                _footerYPos = footerYPos;
+                _footerYPos = footerYPos + GetScaledHeight(33F);
                 _viewFooter = new CustomUIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
                 {
                     BackgroundColor = UIColor.Clear
@@ -1736,7 +1722,7 @@ namespace myTNB
                     {
                         _scrollIndicatorView.RemoveFromSuperview();
                     }
-                    _scrollIndicatorView = new UIImageView(new CGRect(0, 0, ViewWidth, GetScaledHeight(48)))
+                    _scrollIndicatorView = new UIImageView(new CGRect(0, 0, ViewWidth, GetScaledHeight(33F)))
                     {
                         UserInteractionEnabled = true
                     };

@@ -325,9 +325,15 @@ namespace myTNB
             if (!_dashboardHomeHelper.HasMoreThanThreeAccts)
                 return;
 
+            if (_accountListTableView.TableFooterView != null)
+            {
+                return;
+            }
+
             if (_footerView != null)
             {
                 _footerView.RemoveFromSuperview();
+                _accountListTableView.TableFooterView = null;
             }
 
             _footerView = new CustomUIView(new CGRect(0, 0, ViewWidth, allAcctsAreVisible ? GetScaledHeight(85F) : GetScaledHeight(44F)))
@@ -525,7 +531,7 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
             if (_footerView != null)
             {
-                _footerView.RemoveFromSuperview();
+                //_footerView.RemoveFromSuperview();
             }
             var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
             var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
@@ -773,6 +779,7 @@ namespace myTNB
                 if (_footerView != null)
                 {
                     _footerView.RemoveFromSuperview();
+                    _accountListTableView.TableFooterView = null;
                 }
             }
             else

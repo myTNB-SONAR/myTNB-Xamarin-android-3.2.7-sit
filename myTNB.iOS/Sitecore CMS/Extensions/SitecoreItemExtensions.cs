@@ -69,9 +69,9 @@ namespace myTNB.SitecoreCMS.Extensions
             return mediaId;
         }
 
-        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string imgSize, string websiteUrl = null, bool hasSize = true)
+        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string fieldNameOrSize, string websiteUrl = null, bool hasSize = true)
         {
-            string mediafieldName = hasSize ? GetImageFieldName(imgSize) : imgSize;
+            string mediafieldName = hasSize ? GetImageFieldName(fieldNameOrSize) : fieldNameOrSize;
             XElement xmlElement = GetXElement(item, mediafieldName);
 
             if (xmlElement == null)

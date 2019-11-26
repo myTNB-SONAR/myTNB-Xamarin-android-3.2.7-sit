@@ -297,10 +297,6 @@ namespace myTNB
 
                     _tutorialContainer.AddSubview(tutorialView.GetView());
                     currentWindow.AddSubview(_tutorialContainer);
-
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
-                    sharedPreference.Synchronize();
                 }
                 else
                 {
@@ -323,6 +319,10 @@ namespace myTNB
                 {
                     _tutorialContainer.Alpha = 0F;
                 }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+                sharedPreference.Synchronize();
             }
         }
 

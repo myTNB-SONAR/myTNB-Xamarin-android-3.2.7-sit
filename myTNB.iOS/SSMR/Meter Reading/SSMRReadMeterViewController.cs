@@ -55,6 +55,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            View.BackgroundColor = MyTNBColor.SectionGrey;
             PageName = SSMRConstants.Pagename_SSMRMeterRead;
             NavigationController.NavigationBarHidden = false;
 
@@ -129,9 +130,6 @@ namespace myTNB
                 OCRIsDown = AppLaunchMasterCache.IsOCRDown || ocrIsDown || ocrIsDisabled
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
-
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, SSMRConstants.Pref_SSMRReadTutorialOverlay);
         }
 
         private void HideTutorialOverlay()
@@ -144,6 +142,9 @@ namespace myTNB
                 {
                     _tutorialContainer.Alpha = 0F;
                 }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, SSMRConstants.Pref_SSMRReadTutorialOverlay);
             }
         }
         #endregion
@@ -275,6 +276,7 @@ namespace myTNB
             _txtViewNote = new UITextView(new CGRect(0, _errorLabel.Frame.GetMaxY() + GetScaledHeight(24f)
                 , _noteView.Frame.Width, GetScaledHeight(40f)))
             {
+                BackgroundColor = UIColor.Clear,
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
@@ -324,45 +326,67 @@ namespace myTNB
             if (!AppLaunchMasterCache.IsOCRDown && !ocrIsDown && !ocrIsDisabled)
                 return;
 
-            _manualInputView = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), View.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(44F)))
-            {
-                BackgroundColor = UIColor.Clear,
-                Tag = 3
-            };
-
+            UIColor bgColor = UIColor.Clear;
             UIColor descriptionColor = MyTNBColor.WaterBlue;
             string descriptionKey = SSMRConstants.I18N_ManualInputTitle;
+            string fontSize = MyTNBFont.FONTNAME_300;
+            nfloat lessHeight = 0;
             if (ocrIsDisabled)
             {
                 descriptionColor = MyTNBColor.WaterBlue;
+                fontSize = MyTNBFont.FONTNAME_500;
+                bgColor = UIColor.Clear;
+                lessHeight = -GetScaledHeight(16F);
             }
             else if (ocrIsDown)
             {
                 descriptionColor = MyTNBColor.CharcoalGrey;
                 descriptionKey = SSMRConstants.I18N_OCRDownMessage;
+                fontSize = MyTNBFont.FONTNAME_300;
+                bgColor = UIColor.White;
+                lessHeight = 0;
+            }
+
+            _manualInputView = new UIView(new CGRect(0, 0, View.Frame.Width, 0))
+            {
+                BackgroundColor = bgColor,
+                Tag = 3
+            };
+
+            if (ocrIsDown)
+            {
+                _manualInputView.Layer.CornerRadius = 5f;
+                _manualInputView.Layer.MasksToBounds = false;
+                _manualInputView.Layer.ShadowColor = MyTNBColor.SilverChalice10.CGColor;
+                _manualInputView.Layer.ShadowOpacity = 0.5f;
+                _manualInputView.Layer.ShadowOffset = new CGSize(0, 1);
+                _manualInputView.Layer.ShadowRadius = 8;
+                _manualInputView.Layer.ShadowPath = UIBezierPath.FromRect(_manualInputView.Bounds).CGPath;
             }
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(descriptionKey) + "<br>"
-                , ref htmlBodyError, MyTNBFont.FONTNAME_500, (float)GetScaledHeight(14));
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(descriptionKey)
+                , ref htmlBodyError, fontSize, (float)GetScaledHeight(14));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
                 ForegroundColor = descriptionColor
             }, new NSRange(0, htmlBody.Length));
-            UITextView description = new UITextView(new CGRect(0, 0, _manualInputView.Frame.Width, GetScaledHeight(44)))
+            UITextView description = new UITextView(new CGRect(BaseMarginWidth16, GetScaledHeight(16), _manualInputView.Frame.Width - (BaseMarginWidth16 * 2), 0))
             {
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false,
+                BackgroundColor = UIColor.Clear,
+                TextAlignment = UITextAlignment.Left,
                 ContentInset = new UIEdgeInsets(0, -5, 0, -5),
-                BackgroundColor = UIColor.Clear
+                TextContainerInset = UIEdgeInsets.Zero
             };
-            description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
             CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, 1000F));
-            description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
-            description.TextAlignment = UITextAlignment.Left;
+
+            ViewHelper.AdjustFrameSetHeight(description, size.Height);
+            ViewHelper.AdjustFrameSetHeight(_manualInputView, description.Frame.Height + (GetScaledHeight(16) * 2) + lessHeight);
 
             _manualInputView.AddSubview(description);
             _meterReadScrollView.AddSubview(_manualInputView);
