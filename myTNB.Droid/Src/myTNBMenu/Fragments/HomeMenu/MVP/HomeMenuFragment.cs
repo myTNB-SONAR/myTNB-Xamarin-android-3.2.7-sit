@@ -46,6 +46,7 @@ using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.RearrangeAccount.MVP;
+using myTNB_Android.Src.AppLaunch.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -499,6 +500,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
+                Intent LaunchViewIntent = new Intent(this.Activity, typeof(LaunchViewActivity));
+                LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -2235,7 +2240,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void OnSetNotificationNewLabel(bool flag, int count)
         {
-            this.Activity.RunOnUiThread(() =>
+            try
+            {
+                this.Activity.RunOnUiThread(() =>
+                {
+                    OnSetupNotificationNewLabel(flag, count);
+                });
+            }
+            catch (System.Exception e)
+            {
+                OnSetupNotificationNewLabel(flag, count);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnSetupNotificationNewLabel(bool flag, int count)
+        {
+            try
             {
                 if (flag && count > 0)
                 {
@@ -2270,8 +2291,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
                     notificationHeaderIconParam.LeftMargin = 0;
                 }
-            });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
+
         public void RestartHomeMenu()
         {
             try
@@ -2289,18 +2315,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (searchEditText.Visibility == ViewStates.Visible)
             {
                 ShowSearchAction(false);
-            }
-        }
-
-        public void SoftKillApplication(string place)
-        {
-            try
-            {
-                ((DashboardHomeActivity)Activity).SoftKillApps();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
     }
