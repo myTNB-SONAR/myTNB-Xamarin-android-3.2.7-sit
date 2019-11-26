@@ -5299,7 +5299,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     tariffBlockLegendRecyclerView.RequestLayout();
 
-                    // Lin Siong TODO: Replace the Message handling
                     if (ChartType == ChartType.Month && index != -1)
                     {
                         if (isSMAccount)
