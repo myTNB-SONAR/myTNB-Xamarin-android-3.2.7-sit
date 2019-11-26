@@ -14,6 +14,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         SubmitMeterReadingApi api;
         List<MeterImageModel> meterImageList;
 
+        const int OCR_IMAGE_QUALITY = 60;
+
         public SubmitMeterTakePhotoPresenter(SubmitMeterTakePhotoContract.IView view)
         {
             mView = view;
@@ -36,7 +38,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meterImage.RequestReadingUnit = meterImageModel.RequestReadingUnit;
                     meterImage.ImageId = meterImageModel.ImageId;
                     meterImage.ImageSize = meterImageModel.ImageData.ByteCount.ToString();
-                    meterImage.ImageData = Utils.ImageUtils.GetBase64FromBitmap(meterImageModel.ImageData);
+                    meterImage.ImageData = Utils.ImageUtils.GetBase64FromBitmap(meterImageModel.ImageData, OCR_IMAGE_QUALITY);
 
                     request = new GetMeterReadingOCRValueRequest(contractAccount, meterImage);
                     ocrSubmitTasks.Add(api.GetMeterReadingOCRValue(request));
