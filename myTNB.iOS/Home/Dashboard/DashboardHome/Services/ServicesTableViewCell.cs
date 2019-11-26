@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.Home.Dashboard.DashboardHome.Services;
 using myTNB.Model;
@@ -23,11 +24,15 @@ namespace myTNB
         public Action OnServicesRefresh;
         private CustomUIView _moreLessContainer;
         public bool IsLoading, IsRefreshScreen;
+
+        private UIImageView _arrowUpDown;
+        private UILabel _moreAcctsLabel;
+
         public ServicesTableViewCell(IntPtr handle) : base(handle)
         {
             _view = new UIView(new CGRect(BaseMarginWidth16, 0, cellWidth - (BaseMarginWidth16 * 2), _cardHeight))
             {
-                ClipsToBounds = false,
+                ClipsToBounds = true,
                 BackgroundColor = UIColor.White
             };
             _view.Layer.CornerRadius = GetScaledHeight(5F);
@@ -146,7 +151,7 @@ namespace myTNB
             nfloat width = _view.Frame.Width;
             _moreLessContainer = new CustomUIView(new CGRect(0, yPos, _view.Frame.Width, GetScaledHeight(41F)))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.White
             };
 
             _moreLessContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -177,52 +182,72 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-
-            UILabel moreAcctsLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+            _moreAcctsLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 Text = isShowMore ? "Show More" : "Show Less"
             };
-            moreLessView.AddSubview(moreAcctsLabel);
-            UIImageView arrowUpDown = new UIImageView(new CGRect(moreAcctsLabel.Frame.GetMaxX(), 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+            moreLessView.AddSubview(_moreAcctsLabel);
+            _arrowUpDown = new UIImageView(new CGRect(_moreAcctsLabel.Frame.GetMaxX(), 0, GetScaledWidth(16F), GetScaledHeight(16F)))
             {
                 Image = UIImage.FromBundle(isShowMore ? "Arrow-Down-Blue-Small" : "Arrow-Up-Blue-Small")
             };
-            moreLessView.AddSubview(arrowUpDown);
+            moreLessView.AddSubview(_arrowUpDown);
 
-            CGSize lblSize = moreAcctsLabel.SizeThatFits(new CGSize(1000F, 1000F));
-            ViewHelper.AdjustFrameSetWidth(moreAcctsLabel, lblSize.Width);
-            ViewHelper.AdjustFrameSetX(arrowUpDown, moreAcctsLabel.Frame.GetMaxX() + GetScaledWidth(4F));
+            CGSize lblSize = _moreAcctsLabel.SizeThatFits(new CGSize(1000F, 1000F));
+            ViewHelper.AdjustFrameSetWidth(_moreAcctsLabel, lblSize.Width);
+            ViewHelper.AdjustFrameSetX(_arrowUpDown, _moreAcctsLabel.Frame.GetMaxX() + GetScaledWidth(4F));
 
-            ViewHelper.AdjustFrameSetWidth(moreLessView, moreAcctsLabel.Frame.Width + GetScaledWidth(4F) + arrowUpDown.Frame.Width);
+            ViewHelper.AdjustFrameSetWidth(moreLessView, _moreAcctsLabel.Frame.Width + GetScaledWidth(4F) + _arrowUpDown.Frame.Width);
             ViewHelper.AdjustFrameSetX(moreLessView, GetXLocationToCenterObject(moreLessView.Frame.Width, _moreLessContainer));
 
             _moreLessContainer.AddSubview(moreLessView);
             _view.AddSubview(_moreLessContainer);
+            _view.BringSubviewToFront(_moreLessContainer);
+
         }
 
         private void OnShowMoreAction()
         {
             DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
             DataManager.DataManager.SharedInstance.ActiveServicesList = DataManager.DataManager.SharedInstance.ServicesList;
-            AddContentData(DataManager.DataManager.SharedInstance.ActiveServicesList);
+            //AddContentData(DataManager.DataManager.SharedInstance.ActiveServicesList);
+
+            _arrowUpDown.Image = UIImage.FromBundle("Arrow-Down-Blue-Small");
+            _moreAcctsLabel.Text = "Show More";
+
+            bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
+            ViewHelper.AdjustFrameSetHeight(_view, GetViewHeight(DataManager.DataManager.SharedInstance.ServicesList, isMoreThanThreeItems, true));
             OnReload.Invoke();
         }
 
         private void OnShowLessAction()
         {
-            ShowInitialItems(DataManager.DataManager.SharedInstance.ServicesList);
+            //ShowInitialItems(DataManager.DataManager.SharedInstance.ServicesList);
+            DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
+            for (int i = 0; i < DataManager.DataManager.SharedInstance.ServicesList.Count; i++)
+            {
+                if (i < 3)
+                {
+                    DataManager.DataManager.SharedInstance.ActiveServicesList.Add(DataManager.DataManager.SharedInstance.ServicesList[i]);
+                }
+            }
+
+            _arrowUpDown.Image = UIImage.FromBundle("Arrow-Up-Blue-Small");
+            _moreAcctsLabel.Text = "Show Less";
+            bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
+            ViewHelper.AdjustFrameSetHeight(_view, GetViewHeight(DataManager.DataManager.SharedInstance.ServicesList, isMoreThanThreeItems, false));
             OnReload.Invoke();
         }
 
-        private nfloat GetViewHeight(List<ServiceItemModel> serviceList, bool isMorethanThreeItems)
+        private nfloat GetViewHeight(List<ServiceItemModel> serviceList, bool isMorethanThreeItems, bool isShowMore)
         {
             nfloat totalHeight = 0;
             if (serviceList != null &&
                 serviceList.Count > 0)
             {
-                var multiplier = Math.Ceiling((double)serviceList.Count / 3);
+                var multiplier = isShowMore ? 1 : Math.Ceiling((double)serviceList.Count / 3);
                 totalHeight += _cardHeight * (nfloat)multiplier;
                 if (isMorethanThreeItems)
                 {
@@ -235,18 +260,20 @@ namespace myTNB
         private void AddContentData(List<ServiceItemModel> serviceList)
         {
             bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
-
+            serviceList = DataManager.DataManager.SharedInstance.ServicesList.DeepClone();
             for (int i = 0; i < serviceList.Count; i++)
             {
-                if (RemoveServiceItem(serviceList[i].ServiceId)) { continue; }
+                //if (RemoveServiceItem(serviceList[i].ServiceId)) { continue; }
                 UIView card = GetCard(serviceList[i], i);
                 SetCardAction(ref card, serviceList[i]);
                 _view.AddSubview(card);
             }
-            ViewHelper.AdjustFrameSetHeight(_view, GetViewHeight(serviceList, isMoreThanThreeItems));
+
+            bool isShowMore = DataManager.DataManager.SharedInstance.ActiveServicesList.Count < DataManager.DataManager.SharedInstance.ServicesList.Count;
+            ViewHelper.AdjustFrameSetHeight(_view, GetViewHeight(serviceList, isMoreThanThreeItems, isShowMore));
+
             if (isMoreThanThreeItems)
             {
-                bool isShowMore = DataManager.DataManager.SharedInstance.ActiveServicesList.Count < DataManager.DataManager.SharedInstance.ServicesList.Count;
                 AddShowLessView(isShowMore);
             }
         }
