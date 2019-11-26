@@ -79,14 +79,12 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void OnConfirm(List<NewAccount> newList)
         {
-            int ctr = 0;
             foreach (NewAccount newAccount in newList)
             {
-                bool isSelected = ctr == 0 ? true : false;
-                CustomerBillingAccount.InsertOrReplace(newAccount, isSelected);
-                ctr++;
+                CustomerBillingAccount.InsertOrReplace(newAccount, false);
             }
-
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.MakeFirstAsSelected();
             this.mView.ShowDashboard();
         }
 

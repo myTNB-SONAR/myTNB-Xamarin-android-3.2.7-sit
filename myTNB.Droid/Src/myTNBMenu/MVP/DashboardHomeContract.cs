@@ -109,20 +109,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// <param name="count">integer</param>
 			void ShowNotificationCount(int count);
 
-			/// <summary>
-			/// Shows unread promotions
-			/// </summary>
-			void ShowUnreadPromotions();
+            /// <summary>
+            /// Shows unread promotions
+            /// </summary>
+            void ShowUnreadPromotions(bool flag);
 
-			/// <summary>
-			/// Hides unread promotions
-			/// </summary>
-			void HideUnreadPromotions();
+            void ShowUnreadPromotions();
 
-			/// <summary>
-			/// return saved time stamp to view
-			/// </summary>
-			void OnSavedTimeStamp(string savedTimeStamp);
+            /// <summary>
+            /// Hides unread promotions
+            /// </summary>
+            void HideUnreadPromotions(bool flag);
+
+            void HideUnreadPromotions();
+
+            /// <summary>
+            /// return saved time stamp to view
+            /// </summary>
+            void OnSavedTimeStamp(string savedTimeStamp);
 
 			/// <summary>
 			/// Show promotion timestamp success/error
@@ -165,6 +169,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg);
 
             void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount);
+
+            void ShowUnreadRewards(bool flag);
+
+            void ShowUnreadRewards();
         }
 
         public interface IUserActionsListener : IBasePresenter

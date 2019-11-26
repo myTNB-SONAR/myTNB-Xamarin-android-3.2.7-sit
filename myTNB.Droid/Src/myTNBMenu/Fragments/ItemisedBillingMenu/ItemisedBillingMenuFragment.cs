@@ -185,8 +185,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
             {
-                bool IsWidgetVisible = isViewVisible(v, mBillHistoryTitle);
-                mOnScrollMethod(IsWidgetVisible);
+                try
+                {
+                    bool IsWidgetVisible = isViewVisible(v, mBillHistoryTitle);
+                    mOnScrollMethod(IsWidgetVisible);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
 
             private bool isViewVisible(NestedScrollView v, View view)
@@ -527,17 +534,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             billFilterIcon.Clickable = isEnable;
             btnViewDetails.Enabled = isEnable;
-            btnPayBill.Enabled = isEnable;
+
             if (isEnable)
             {
                 btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background);
-                btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
             }
             else
             {
                 btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background_disabled);
+            }
+
+            bool isPaymentButtonEnable = Utility.IsEnablePayment();
+            btnPayBill.Enabled = isPaymentButtonEnable;
+            if (isPaymentButtonEnable)
+            {
+                btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+            }
+            else
+            {
                 btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
             }
         }
@@ -558,9 +574,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
 
-            if (billingHistoryModelList.Count > 0)
+            if (billPayFilters != null && billPayFilters.Count > 0)
             {
                 UpdateFilterItems(billPayFilters);
+            }
+
+            if (billingHistoryModelList.Count > 0)
+            {
                 selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
@@ -799,7 +819,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 StopScrolling();
             });
-            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
         }
 
         public void ItemizedBillingCustomScrolling(int yPosition)

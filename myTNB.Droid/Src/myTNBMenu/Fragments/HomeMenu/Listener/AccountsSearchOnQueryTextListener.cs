@@ -2,6 +2,7 @@
 using Android.Widget;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 {
@@ -18,14 +19,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 
 		public bool OnQueryTextChange(string newText)
 		{
-            this.mViewListerner.UpdateQueryListing(newText);
+            try
+            {
+                this.mViewListerner.UpdateQueryListing(newText);
+            }
+            catch (Exception e)
+            {
+                this.mViewListerner.SoftKillApplication("QueryTextChange");
+                Utility.LoggingNonFatalError(e);
+            }
             return true;
         }
 
 		public bool OnQueryTextSubmit(string query)
 		{
-            //this.mAdapter.Filter.InvokeFilter(query);
-            this.mViewListerner.OnUpdateAccountListChanged(true);
+            try
+            {
+                this.mViewListerner.OnUpdateAccountListChanged(true);
+            }
+            catch (Exception e)
+            {
+                this.mViewListerner.SoftKillApplication("QueryTextSubmit");
+                Utility.LoggingNonFatalError(e);
+            }
             return false;
         }
 	}

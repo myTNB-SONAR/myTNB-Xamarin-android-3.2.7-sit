@@ -72,24 +72,18 @@ namespace myTNB_Android.Src.Utils
                 ViewGroup.LayoutParams layoutParams = iconView.LayoutParameters;
                 var paddingTop = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, topPadding, displayMetrics);
                 iconView.SetPadding(0, paddingTop, 0, 0);
-                layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
-                layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
-                if (bottomNavigationMenuView.ChildCount == 5)
+                if (bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_promotion || bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_reward)
                 {
-                    if (i == 2 || i == 3)
-                    {
-                        layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
-                        layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 38f, displayMetrics);
-                    }
+                    layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
+                    layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 60f, displayMetrics);
                 }
                 else
                 {
-                    if (i == 2)
-                    {
-                        layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
-                        layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 38f, displayMetrics);
-                    }
+                    layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
+                    layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
                 }
+
+                iconView.LayoutParameters = layoutParams;
 
                 TextView selectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.largeLabel);
                 TextView unselectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.smallLabel);

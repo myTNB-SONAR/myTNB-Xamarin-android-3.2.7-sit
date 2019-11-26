@@ -170,8 +170,9 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, accountPayAmountValue);
-            TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue, btnViewBill, btnPayBill,
-                accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
+            TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
+                accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
+                accountMinChargeLabel, btnPayBill, btnViewBill);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
             accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
@@ -206,8 +207,22 @@ namespace myTNB_Android.Src.Billing.MVP
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
             PopulateCharges();
+            EnablePayBillButtons();
         }
 
+        private void EnablePayBillButtons()
+        {
+            bool isPaymentButtonEnable = Utility.IsEnablePayment();
+            btnPayBill.Enabled = isPaymentButtonEnable;
+            if (isPaymentButtonEnable)
+            {
+                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            }
+            else
+            {
+                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
+        }
         private void PopulateCharges()
         {
             if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)

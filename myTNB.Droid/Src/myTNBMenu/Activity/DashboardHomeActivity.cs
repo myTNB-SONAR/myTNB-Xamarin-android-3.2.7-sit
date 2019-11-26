@@ -35,11 +35,13 @@ using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
+using static Android.Views.View;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -216,14 +218,38 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             if (!alreadyStarted)
             {
-                this.userActionsListener.Start();
+                EvaluateBCRMDowntime();
                 alreadyStarted = true;
-                ShowPromotion(true);
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
 
             ShowUnreadRewards();
+        }
+
+        private void EvaluateBCRMDowntime()
+        {
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+            if (bcrmEntity != null && bcrmEntity.IsDown)
+            {
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
+                .SetTitle(bcrmEntity.DowntimeTextMessage)
+                .SetMessage(bcrmEntity.DowntimeMessage)
+                .SetCTALabel("Got It!")
+                .SetCTAaction(()=>
+                {
+                    this.userActionsListener.Start();
+                    ShowPromotion(true);
+                })
+                .Build()
+                .Show();
+            }
+            else
+            {
+                this.userActionsListener.Start();
+                ShowPromotion(true);
+            }
         }
 
         public void ShowBackButton(bool flag)
@@ -309,12 +335,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowBillMenu(AccountData selectedAccount)
         {
             ShowBackButton(false);
-            //this.SelectedAccountData = selectedAccount;
-            //txtAccountName.Text = SelectedAccountData.AccountNickName;
-            //currentFragment = new BillsMenuFragment();
-            //FragmentManager.BeginTransaction()
-            //    .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
-            //    .CommitAllowingStateLoss();
             txtAccountName.Visibility = ViewStates.Gone;
             currentFragment = new ItemisedBillingMenuFragment();
             FragmentManager.BeginTransaction()
@@ -605,6 +625,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
+        public void ShowUnreadPromotions(bool flag)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
+                if (promotionMenuItem != null)
+                {
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        int count = PromotionsEntityV2.Count();
+                        if (count > 0)
+                        {
+                            SetReadUnReadNewBottomView(flag, true, count, promotionMenuItem);
+                        }
+                        else
+                        {
+                            HideUnreadPromotions(flag);
+                        }
+                    }
+                    else
+                    {
+                        SetNewWhatsNewBottomView(flag, "New", promotionMenuItem);
+                    }
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
         public void ShowUnreadPromotions()
         {
             if (bottomNavigationView != null && bottomNavigationView.Menu != null)
@@ -616,11 +666,41 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
-                        promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
+                        int count = PromotionsEntityV2.Count();
+                        if (count > 0)
+                        {
+                            SetReadUnReadNewBottomView(promotionMenuItem.IsChecked, true, count, promotionMenuItem);
+                        }
+                        else
+                        {
+                            HideUnreadPromotions(promotionMenuItem.IsChecked);
+                        }
                     }
                     else
                     {
-                        promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_new_selector);
+                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, "New", promotionMenuItem);
+                    }
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
+        public void HideUnreadPromotions(bool flag)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
+                if (promotionMenuItem != null)
+                {
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        SetReadUnReadNewBottomView(flag, false, 0, promotionMenuItem);
+                    }
+                    else
+                    {
+                        SetNewWhatsNewBottomView(flag, "New", promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -636,10 +716,166 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_selector);
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        SetReadUnReadNewBottomView(promotionMenuItem.IsChecked, false, 0, promotionMenuItem);
+                    }
+                    else
+                    {
+                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, "New", promotionMenuItem);
+                    }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
+        }
+
+        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
+        {
+            RunOnUiThread(() =>
+            {
+                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                if (isGotRead && count > 0)
+                {
+                    newLabel.Visibility = ViewStates.Visible;
+                    newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
+                    TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                    RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                    RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                    newLabelParam.TopMargin = 0;
+                    newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
+                    bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                    txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
+                    txtNewLabel.Text = count.ToString();
+                    txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                    newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
+                    if (count > 0 && count <= 9)
+                    {
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                    }
+                    else
+                    {
+                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
+                        if (count > 99)
+                        {
+                            txtNewLabel.Text = "99+";
+                        }
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
+                    }
+
+                    if (!flag)
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                    }
+                    else
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                    }
+                }
+                else
+                {
+                    newLabel.Visibility = ViewStates.Gone;
+                    if (!flag)
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                    }
+                    else
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                    }
+                }
+                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                v.Measure(specWidth, specWidth);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Canvas c = new Canvas(b);
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Draw(c);
+
+                var bitmapDrawable = new BitmapDrawable(b);
+                promotionMenuItem.SetIcon(bitmapDrawable);
+            });
+        }
+
+        private void SetNewWhatsNewBottomView(bool flag, string word, IMenuItem promotionMenuItem)
+        {
+            RunOnUiThread(() =>
+            {
+                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                newLabel.Visibility = ViewStates.Visible;
+                newLabel.SetBackgroundResource(Resource.Drawable.new_label);
+                RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
+                newLabelParam.TopMargin = 0;
+                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
+                txtNewLabel.Text = word;
+                txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                if (!flag)
+                {
+                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                }
+                else
+                {
+                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                }
+                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                v.Measure(specWidth, specWidth);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Canvas c = new Canvas(b);
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Draw(c);
+
+                var bitmapDrawable = new BitmapDrawable(b);
+                promotionMenuItem.SetIcon(bitmapDrawable);
+            });
+        }
+
+        private void SetNewRewardsBottomView(bool flag, string word, IMenuItem rewardMenuItem)
+        {
+            RunOnUiThread(() =>
+            {
+                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                newLabel.Visibility = ViewStates.Visible;
+                newLabel.SetBackgroundResource(Resource.Drawable.new_label);
+                RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
+                newLabelParam.TopMargin = 0;
+                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
+                txtNewLabel.Text = word;
+                txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                if (!flag)
+                {
+                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                }
+                else
+                {
+                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                }
+                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                v.Measure(specWidth, specWidth);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Canvas c = new Canvas(b);
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Draw(c);
+
+                var bitmapDrawable = new BitmapDrawable(b);
+                rewardMenuItem.SetIcon(bitmapDrawable);
+            });
         }
 
         public void ShowPromotionTimestamp(bool success)
@@ -765,35 +1001,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override bool DispatchTouchEvent(MotionEvent ev)
         {
-            if (ev.Action == MotionEventActions.Down
-                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
-                && currentFragment.GetType() == typeof(HomeMenuFragment))
+            try
             {
-                View view = CurrentFocus;
-                if (view != null && view.GetType() != typeof(EditText))
+                if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                    && currentFragment.GetType() == typeof(HomeMenuFragment))
                 {
-                    Rect rect = new Rect();
-                    view.GetGlobalVisibleRect(rect);
-                    if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
+                    View view = CurrentFocus;
+                    if (view != null && view.GetType() != typeof(EditText))
                     {
-                        HomeMenuFragment fragment = (HomeMenuFragment) FragmentManager.FindFragmentById(Resource.Id.content_layout);
-                        LinearLayout searchContainer = fragment.GetSearchLayout();
-                        if (IsViewInBounds(searchContainer, (int)ev.RawX, (int)ev.RawY))
+                        Rect rect = new Rect();
+                        view.GetGlobalVisibleRect(rect);
+                        if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
                         {
-                            fragment.OnSearchOutFocus(true);
-                        }
-                        else
-                        {
-                            fragment.OnSearchClearFocus();
+                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            LinearLayout searchContainer = fragment.GetSearchLayout();
+                            if (IsViewInBounds(searchContainer, (int)ev.RawX, (int)ev.RawY))
+                            {
+                                fragment.OnSearchOutFocus(true);
+                            }
+                            else
+                            {
+                                fragment.OnSearchClearFocus();
+                            }
                         }
                     }
                 }
-            }
-            else if (ev.Action == MotionEventActions.Down
-                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
-                && currentFragment.GetType() == typeof(DashboardChartFragment))
-            {
-                try
+                else if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                    && currentFragment.GetType() == typeof(DashboardChartFragment))
                 {
                     DashboardChartFragment fragment = (DashboardChartFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
                     TextView kwhLabel = fragment.GetkwhLabel();
@@ -806,12 +1042,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         fragment.CheckRMKwhSelectDropDown();
                     }
                 }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
+                return base.DispatchTouchEvent(ev);
             }
-            return base.DispatchTouchEvent(ev);
+            catch (System.Exception e)
+            {
+                SoftKillApps();
+                Utility.LoggingNonFatalError(e);
+            }
+            return false;
+        }
+
+        public void SoftKillApps()
+        {
+            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+            HomeMenuUtils.ResetAll();
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
         }
 
         private bool IsViewInBounds(View view, int x, int y)
@@ -928,7 +1175,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_unread_selector);
+                    SetNewRewardsBottomView(rewardMenuItem.IsChecked, "New", rewardMenuItem);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
+        public void ShowUnreadRewards(bool flag)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    SetNewRewardsBottomView(flag, "New", rewardMenuItem);
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }

@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="19dp"
         android:layout_marginTop="17dp"
-        android:src="@drawable/ic_notification_billing_due"
+        android:src="@drawable/notification_new_bill"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +38,7 @@
 				android:layout_height="14dp"
 				android:layout_marginLeft="8dp"
 				android:text="Power disruption reported at your nearest "
-				android:textSize="9sp"
+				android:textSize="10sp"
 				android:maxLines="1"
 				android:maxEms="18"
 				android:ellipsize="end"
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="10 Jul 2017"
-        android:textSize="9sp"
+        android:textSize="10sp"
         android:textColor="@color/silverChalice"
         android:layout_marginLeft="5dp"
 				android:layout_marginRight="6dp"

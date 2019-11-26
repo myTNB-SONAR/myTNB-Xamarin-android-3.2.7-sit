@@ -98,6 +98,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckSearchEditAction();
 
+            void SoftKillApplication(string place);
+            void RestartHomeMenu();
+
         }
 
         public interface IHomeMenuPresenter
@@ -176,6 +179,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void RestoreCurrentAccountState();
 
             void RestoreQueryAccounts();
+
+            void OnCheckMyServiceState();
         }
 
         public interface IHomeMenuService

@@ -14,9 +14,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         List<List<AccountCardModel>> filterCardList;
         List<AccountCardModel> originalCardModelList = new List<AccountCardModel>();
         AccountsRecyclerViewAdapter mAdapter;
+        HomeMenuContract.IHomeMenuView mViewListerner;
 
-        public AccountCardsFilter(AccountsRecyclerViewAdapter adapter, List<AccountCardModel> cardModelList)
+        public AccountCardsFilter(HomeMenuContract.IHomeMenuView viewListerner, AccountsRecyclerViewAdapter adapter, List<AccountCardModel> cardModelList)
         {
+            this.mViewListerner = viewListerner;
             this.mAdapter = adapter;
             if (cardModelList != null && cardModelList.Count > 0)
             {
@@ -45,16 +47,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             (cardModel.AccountName != null &&
                             cardModel.AccountName.ToLower().Contains(constraint.ToString().ToLower())))));
                 }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
 
-            filterResults.Values = FromArray(results.Select(r => r.ToJavaObject()).ToArray());
+                filterResults.Values = FromArray(results.Select(r => r.ToJavaObject()).ToArray());
                 filterResults.Count = results.Count;
-            try
-            {
+
                 if (constraint != null)
                 {
                     constraint.Dispose();
@@ -62,6 +58,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
+                this.mViewListerner.SoftKillApplication("PerformFiltering");
                 Utility.LoggingNonFatalError(e);
             }
             return filterResults;
@@ -76,26 +73,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         .Select(r => r.ToNetObject<AccountCardModel>()).ToList();
                 this.mAdapter.UpdatedCardList();
                 this.mAdapter.NotifyDataSetChanged();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
 
-            try
-            {
                 if (constraint != null)
                 {
                     constraint.Dispose();
                 }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
 
-            try
-            {
                 if (results != null)
                 {
                     results.Dispose();
@@ -103,6 +86,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
+                this.mViewListerner.SoftKillApplication("PublishResults");
                 Utility.LoggingNonFatalError(e);
             }
         }

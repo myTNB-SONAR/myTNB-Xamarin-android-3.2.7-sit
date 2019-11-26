@@ -287,7 +287,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             vh.newLabel.Visibility = ViewStates.Gone;
                             break;
                         case "1004":
-                            if (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
+                            if (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.bills);
                             }
@@ -323,7 +323,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             break;
                         case "1005":
-                            if (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded())
+                            if (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill);
                             }

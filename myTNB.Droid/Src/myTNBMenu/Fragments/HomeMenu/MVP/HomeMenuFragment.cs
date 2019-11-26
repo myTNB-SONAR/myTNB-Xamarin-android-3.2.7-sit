@@ -45,6 +45,7 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.RearrangeAccount.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -193,6 +194,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceLoadMoreImg)]
         ImageView myServiceLoadMoreImg;
 
+        [BindView(Resource.Id.newLabel)]
+        LinearLayout newLabel;
+
+        [BindView(Resource.Id.txtNewLabel)]
+        TextView txtNewLabel;
+
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -210,6 +217,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private string savedEnergySavingTipsTimeStamp = "0000000";
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+
+        public readonly static int REARRANGE_ACTIVITY_CODE = 8806;
 
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
@@ -322,18 +331,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     StartActivity(viewBill);
                 }
             }
+            else if (requestCode == REARRANGE_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(true);
+                    RestartHomeMenu();
+                }
+            }
         }
 
         private void SetNotificationIndicator()
         {
-            if (UserNotificationEntity.HasNotifications())
-            {
-                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
-            }
-            else
-            {
-                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
-            }
+            OnSetNotificationNewLabel(UserNotificationEntity.HasNotifications(), UserNotificationEntity.Count());
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -352,7 +362,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel);
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel, txtNewLabel);
 
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");
@@ -462,6 +472,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 ShowSearchAction(false);
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCDownTime = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXDownTime = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 if (bcrmDownTime != null && bcrmDownTime.IsDown)
@@ -473,20 +485,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isBCRMDown = false;
                 }
 
-                if (!isBCRMDown)
-                {
-                    OnStartLoadAccount();
-                }
-                else
-                {
-                    IsLoadMoreButtonVisible(false, false);
+                OnStartLoadAccount();
 
-                    IsMyServiceLoadMoreButtonVisible(false, false);
+                //if (!isBCRMDown)
+                //{
+                //    OnStartLoadAccount();
+                //}
+                //else
+                //{
+                //    IsLoadMoreButtonVisible(false, false);
 
-                    IsRearrangeButtonVisible(false);
+                //    IsMyServiceLoadMoreButtonVisible(false, false);
 
-                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
-                }
+                //    IsRearrangeButtonVisible(false);
+
+                //    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+
+                //    SetBottomLayoutBackground(false);
+                //    this.presenter.InitiateService();
+                //}
             }
             catch (System.Exception e)
             {
@@ -793,11 +810,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowBackButton(false);
                 if (this.presenter != null)
                 {
-                    this.presenter.OnCheckToCallHomeMenuTutorial();
+                    this.presenter.GetUserNotifications();
+                    this.presenter.OnCheckMyServiceState();
                 }
-                this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
                 HomeMenuCustomScrolling(0);
+                if (HomeMenuUtils.GetIsShowRearrangeAccountSuccessfulNeed())
+                {
+                    HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
+                    ShowRearrangeAccountSuccessful();
+                }
             }
             catch (System.Exception e)
             {
@@ -864,7 +886,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -873,7 +895,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
                             StartActivity(payment_activity);
                         }
-                        else if (selectedService.ServiceCategoryId == "1005" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -991,6 +1013,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             );
             mMyServiceRetrySnakebar.Show();
+        }
+
+        private Snackbar mRearrangeSnackbar;
+        public void ShowRearrangeAccountSuccessful()
+        {
+            if (mRearrangeSnackbar != null && mRearrangeSnackbar.IsShown)
+            {
+                mRearrangeSnackbar.Dismiss();
+            }
+
+            mRearrangeSnackbar = Snackbar.Make(rootView,
+                "Your new account arrangement has successfully been saved!",
+                Snackbar.LengthLong);
+            mRearrangeSnackbar.Show();
         }
 
         private void RetryMyService()
@@ -1560,7 +1596,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.RestoreCurrentAccountState();
                 }
-                this.presenter.RestoreCurrentMyServiceState();
                 this.presenter.ReadNewFAQFromCache();
             }
         }
@@ -1876,9 +1911,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         loadMoreLabel.Text = GetLabelByLanguage("showLess");
                     }
 
-                    // Lin Siong TODO: Hide this on 15 Nov Release
-                    // IsRearrangeButtonVisible(true);
-                    IsRearrangeButtonVisible(false);
+                    IsRearrangeButtonVisible(true);
                 }
                 else
                 {
@@ -2006,7 +2039,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.rearrangeContainer)]
         internal void OnRearrangeClick(object sender, EventArgs e)
         {
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent rearrangeAccount = new Intent(this.Activity, typeof(RearrangeAccountActivity));
+                StartActivityForResult(rearrangeAccount, REARRANGE_ACTIVITY_CODE);
+            }
         }
 
         void View.IOnFocusChangeListener.OnFocusChange(View v, bool hasFocus)
@@ -2100,12 +2138,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
           
         public void OnShowHomeMenuFragmentTutorialDialog()
         {
-            Activity.RunOnUiThread(() =>
+            Handler h = new Handler();
+            Action myAction = () =>
             {
-                StopScrolling();
-            });
-            NewAppTutorialUtils.ForceCloseNewAppTutorial();
-            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                Activity.RunOnUiThread(() =>
+                {
+                    StopScrolling();
+                });
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public void HomeMenuCustomScrolling(int yPosition)
@@ -2205,6 +2248,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        private void OnSetNotificationNewLabel(bool flag, int count)
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                if (flag && count > 0)
+                {
+                    newLabel.Visibility = ViewStates.Visible;
+                    txtNewLabel.Text = count.ToString();
+                    notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
+                    if (count > 0 && count <= 9)
+                    {
+                        RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-16f);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(14f);
+                        newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
+                    }
+                    else
+                    {
+                        if (count > 99)
+                        {
+                            txtNewLabel.Text = "99+";
+                        }
+                        RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                        notificationHeaderIconParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-10f);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(18f);
+                        newLabelParam.TopMargin = (int)DPUtils.ConvertDPToPx(2f);
+                    }
+                }
+                else
+                {
+                    newLabel.Visibility = ViewStates.Gone;
+                    notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
+                    RelativeLayout.LayoutParams notificationHeaderIconParam = notificationHeaderIcon.LayoutParameters as RelativeLayout.LayoutParams;
+                    notificationHeaderIconParam.LeftMargin = 0;
+                }
+            });
+        }
         public void RestartHomeMenu()
         {
             try
@@ -2222,6 +2304,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (searchEditText.Visibility == ViewStates.Visible)
             {
                 ShowSearchAction(false);
+            }
+        }
+
+        public void SoftKillApplication(string place)
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).SoftKillApps();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

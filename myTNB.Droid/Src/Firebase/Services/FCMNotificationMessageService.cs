@@ -8,6 +8,7 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -121,21 +122,18 @@ namespace myTNB_Android.Src.Firebase.Services
 
                         if (UserEntity.IsCurrentlyActive())
                         {
-                            UserEntity loggedUser = UserEntity.GetActive();
-                            var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                            NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                            if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                             {
-                                ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                Email = loggedUser.Email,
-                                DeviceId = this.DeviceId()
-
-                            }, cts.Token);
-
-                            if (!userNotificationResponse.Data.IsError)
-                            {
-                                foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                                    response.Data.ResponseData.UserNotificationList.Count > 0)
                                 {
-                                    // tODO : SAVE ALL NOTIFICATIONs
-                                    UserNotificationEntity.InsertOrReplaceAsync(userNotification);
+                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                    {
+                                        // tODO : SAVE ALL NOTIFICATIONs
+                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                    }
                                 }
 
                                 SendNotification(title, message);

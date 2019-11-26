@@ -26,9 +26,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 {
     public class FeedbackMenuFragment : BaseFragment, FeedbackMenuContract.IView
     {
-        [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
-
+        [BindView(Resource.Id.feedbackContent)]
+        CoordinatorLayout feedbackContent;
 
         [BindView(Resource.Id.txtFeedbackBillingAndPayment)]
         TextView txtFeedbackBillingAndPayment;

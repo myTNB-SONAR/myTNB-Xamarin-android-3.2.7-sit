@@ -301,7 +301,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						}
 
 					}
-					break;
+
+                    OnUpdateRewardUnRead(false);
+                    break;
 				case Resource.Id.menu_bill:
                     OnUpdatePromoUnRead();
                     if (accountList.Count > 0)
@@ -352,8 +354,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
-
-					break;
+                    OnUpdateRewardUnRead(false);
+                    break;
 				case Resource.Id.menu_promotion:
                     WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
 					if (weblinkEntity != null)
@@ -370,27 +372,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
 						if (PromotionsEntityV2.HasUnread())
 						{
-							this.mView.ShowUnreadPromotions();
+							this.mView.ShowUnreadPromotions(true);
 
 						}
 						else
 						{
-							this.mView.HideUnreadPromotions();
+							this.mView.HideUnreadPromotions(true);
 
 						}
 					}
-					break;
+                    OnUpdateRewardUnRead(false);
+                    break;
 				case Resource.Id.menu_reward:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    OnUpdateRewardUnRead(true);
                     this.mView.ShowToBeAddedToast();
 					break;
 				case Resource.Id.menu_more:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
-                    //this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
-					this.mView.ShowMoreMenu();
+                    this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
+                    OnUpdateRewardUnRead(false);
+                    this.mView.ShowMoreMenu();
 					break;
 			}
 		}
@@ -546,13 +551,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private void OnUpdatePromoUnRead()
         {
+            if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            {
+                UserSessions.DoWhatNewShown(mSharedPref);
+            }
+
             if (PromotionsEntityV2.HasUnread())
             {
-                if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
-                {
-                    UserSessions.DoWhatNewShown(mSharedPref);
-                }
+                this.mView.ShowUnreadPromotions(false);
 
+            }
+            else
+            {
+                this.mView.HideUnreadPromotions(false);
+
+            }
+
+            isPromoClicked = false;
+        }
+
+        private void OnResumeUpdatePromotionUnRead()
+        {
+            if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            {
+                UserSessions.DoWhatNewShown(mSharedPref);
+            }
+
+            if (PromotionsEntityV2.HasUnread())
+            {
                 this.mView.ShowUnreadPromotions();
 
             }
@@ -565,9 +591,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             isPromoClicked = false;
         }
 
-		public void OnValidateData()
+        private void OnUpdateRewardUnRead(bool flag)
+        {
+            this.mView.ShowUnreadRewards(flag);
+        }
+
+        private void OnResumeUpdateRewardUnRead()
+        {
+            this.mView.ShowUnreadRewards();
+        }
+
+        public void OnValidateData()
 		{
-            OnUpdatePromoUnRead();
+            OnResumeUpdatePromotionUnRead();
+            OnResumeUpdateRewardUnRead();
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
             if(accountList.Count == 0)

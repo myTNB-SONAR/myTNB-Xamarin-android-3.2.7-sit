@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using myTNB_Android.Src.Base.Request;
 using Refit;
 
@@ -8,18 +9,18 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetUserNotifications")]
-        Task<T> GetUserNotifications<T>([Body] APIBaseRequest request);
+        Task<T> GetUserNotifications<T>([Body] APIBaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetNotificationDetailedInfo")]
-        Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request);
+        Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/DeleteUserNotification")]
-        Task<T> DeleteUserNotification<T>([Body] APIBaseRequest request);
+        Task<T> DeleteUserNotification<T>([Body] APIBaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/ReadUserNotification")]
-        Task<T> ReadUserNotification<T>([Body] APIBaseRequest request);
+        Task<T> ReadUserNotification<T>([Body] APIBaseRequest request, CancellationToken token);
     }
 }

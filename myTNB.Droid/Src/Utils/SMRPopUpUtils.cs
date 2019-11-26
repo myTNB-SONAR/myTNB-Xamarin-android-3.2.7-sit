@@ -47,6 +47,28 @@ namespace myTNB_Android.Src.Utils
             return isOCRDown;
         }
 
+        public static bool IsOCRDisabled()
+        {
+            bool isOCRDisabled = false;
+            if (smrResponse != null && smrResponse.Response != null)
+            {
+                isOCRDisabled = smrResponse.Response.IsOCRDisabled;
+            }
+
+            return isOCRDisabled;
+        }
+
+        public static bool IsOCRDown()
+        {
+            bool IsOCRDown = false;
+            if (smrResponse != null && smrResponse.Response != null)
+            {
+                IsOCRDown = smrResponse.Response.IsOCRDown;
+            }
+
+            return IsOCRDown;
+        }
+
         public static void SetFromUsageFlag(bool flag)
         {
             fromUsage = flag;
