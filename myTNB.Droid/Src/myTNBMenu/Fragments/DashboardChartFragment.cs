@@ -580,6 +580,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool isMDMSPlannedDownTime = false;
 
+
+        private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00");
+        private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0");
+
         ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
@@ -5157,7 +5161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             if (isSMR)
                             {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
                                 {
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
                                 }
@@ -5172,11 +5176,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else if (isSMAccount)
                             {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
                                 {
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                                 }
-                                else if (newTariffList.Count >= 2 && newTariffList.Count < 4)
+                                else if (newTariffList.Count >= 1 && newTariffList.Count < 4)
                                 {
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
                                 }
@@ -5259,11 +5263,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             if (isSMAccount)
                             {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
                                 {
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                                 }
-                                else if (newTariffList.Count >= 2 && newTariffList.Count < 4)
+                                else if (newTariffList.Count >= 1 && newTariffList.Count < 4)
                                 {
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
                                 }
@@ -8258,7 +8262,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value));
                                     smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
                                     if (isMDMSDown)
                                     {
@@ -8270,7 +8274,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value));
                                     smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
                                     if (isMDMSDown)
                                     {
@@ -8315,7 +8319,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smKwhFormat.Format(double.Parse(costValue.Value));
                                     smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
                                     if (isMDMSDown)
                                     {
