@@ -240,15 +240,8 @@ namespace myTNB
         {
             if (isSmartMeterAccount)
             {
-                if (!_viewSmartMeter.Hidden)
-                {
-                    _footerBGImage.Hidden = false;
-                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
-                }
-                else
-                {
-                    _footerBGImage.Hidden = true;
-                }
+                _footerBGImage.Hidden = _viewSmartMeter.Hidden;
+                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
             }
             else if (isREAccount)
             {
@@ -257,15 +250,8 @@ namespace myTNB
             }
             else if (accountIsSSMR)
             {
-                if (!_viewSSMR.Hidden)
-                {
-                    _footerBGImage.Hidden = false;
-                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSSMR));
-                }
-                else
-                {
-                    _footerBGImage.Hidden = true;
-                }
+                _footerBGImage.Hidden = _viewSSMR.Hidden;
+                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSSMR));
             }
             else
             {
