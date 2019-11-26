@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -138,20 +138,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return true;
         }
 
-        public override bool CameraPermissionRequired()
-        {
-            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
-            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         [OnClick(Resource.Id.btnSubmitReading)]
         internal void OnSubmitMeterReading(object sender, EventArgs eventArgs)
         {
@@ -250,6 +236,46 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
+            btnTakePhoto.Enabled = true;
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+            if (!currentMasterData.IsOCRDown && !smrAccountOCRDown)
+            {
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
+                }
+            }
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            try
+            {
+                if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
+                {
+                    if (Utility.IsPermissionHasCount(grantResults))
+                    {
+                        if (grantResults[0] == Permission.Granted)
+                        {
+                            btnTakePhoto.Enabled = true;
+                        }
+                        else
+                        {
+                            btnTakePhoto.Enabled = false;
+                        }
+                    }
+                    else
+                    {
+                        btnTakePhoto.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
