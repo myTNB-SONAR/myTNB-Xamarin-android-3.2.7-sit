@@ -83,8 +83,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             {
                 CustomerBillingAccount.InsertOrReplace(newAccount, false);
             }
-            CustomerBillingAccount.RemoveSelected();
-            CustomerBillingAccount.MakeFirstAsSelected();
+            if (CustomerBillingAccount.HasItems())
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.MakeFirstAsSelected();
+            }
             this.mView.ShowDashboard();
         }
 

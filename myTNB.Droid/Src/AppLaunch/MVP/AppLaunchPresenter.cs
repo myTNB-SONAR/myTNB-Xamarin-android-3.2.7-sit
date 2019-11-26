@@ -268,8 +268,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                         HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
-                                        CustomerBillingAccount.RemoveSelected();
-                                        CustomerBillingAccount.MakeFirstAsSelected();
+                                        if (CustomerBillingAccount.HasItems())
+                                        {
+                                            CustomerBillingAccount.RemoveSelected();
+                                            CustomerBillingAccount.MakeFirstAsSelected();
+                                        }
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
 

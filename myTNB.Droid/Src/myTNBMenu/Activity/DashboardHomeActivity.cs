@@ -18,6 +18,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB.SitecoreCM.Models;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -186,15 +187,26 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 alreadyStarted = true;
             }
 
-            if (!alreadyStarted)
-            {
-                EvaluateBCRMDowntime();
-                alreadyStarted = true;
-            }
-
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
 
             ShowUnreadRewards();
+            
+            try
+            {
+                if (!alreadyStarted)
+                {
+                    EvaluateBCRMDowntime();
+                    alreadyStarted = true;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Intent LaunchViewIntent = new Intent(this, typeof(LaunchViewActivity));
+                LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(LaunchViewIntent);
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void EvaluateBCRMDowntime()
@@ -1015,19 +1027,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             catch (System.Exception e)
             {
-                SoftKillApps();
                 Utility.LoggingNonFatalError(e);
             }
             return false;
-        }
-
-        public void SoftKillApps()
-        {
-            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-            HomeMenuUtils.ResetAll();
-            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(DashboardIntent);
         }
 
         private bool IsViewInBounds(View view, int x, int y)

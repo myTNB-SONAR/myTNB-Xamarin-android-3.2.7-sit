@@ -103,6 +103,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     }
                     else
                     {
+                        mView.PopulateAccountCharge(accountChargeModelList);
+                        mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         if (billingHistoryList != null)
                         {
                             mainBillingHistoryList = billingHistoryList;
@@ -120,8 +122,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                             mainAccountChargeModelList = new List<AccountChargeModel>();
                         }
                         OnCheckToCallItemizedTutorial();
-                        mView.PopulateAccountCharge(accountChargeModelList);
-                        mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         OnGetBillTooltipContent();
                     }
                 //}
@@ -298,9 +298,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
         public void OnCheckToCallItemizedTutorial()
         {
-            // Lin Siong TODO: To implement once iOS implement
-            //if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
-            if (!UserSessions.HasItemizedBillingTutorialShown(this.mPref))
+            if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
             {
                 this.mView.OnShowItemizedFragmentTutorialDialog();
             }
