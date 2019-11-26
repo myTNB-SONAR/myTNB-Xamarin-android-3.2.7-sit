@@ -202,9 +202,6 @@ namespace myTNB
                 ButtonHeight = _btnViewBill.Frame.Height
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
-
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, BillConstants.Pref_BillDetailsTutorialOverlay);
         }
 
         private void HideTutorialOverlay()
@@ -217,6 +214,9 @@ namespace myTNB
                 {
                     _tutorialContainer.Alpha = 0F;
                 }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, BillConstants.Pref_BillDetailsTutorialOverlay);
             }
         }
         #endregion
