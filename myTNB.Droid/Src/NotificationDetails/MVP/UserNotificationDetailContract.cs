@@ -16,7 +16,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void ViewUsage(AccountData mSelectedAccountData);
             void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel);
             void SubmitMeterReading(AccountData mSelectedAccountData, SMRActivityInfoResponse SMRAccountActivityInfoResponse);
-            void EnableSelfMeterReading(AccountData mSelectedAccountData, CAContactDetailsModel contactDetailsModel);
+            void EnableSelfMeterReading(AccountData mSelectedAccountData);
             void ShowLoadingScreen();
             void HideLoadingScreen();
 
