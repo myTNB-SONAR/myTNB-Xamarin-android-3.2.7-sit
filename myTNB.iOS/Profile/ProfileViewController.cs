@@ -1,3 +1,4 @@
+using CoreGraphics;
 using Foundation;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Profile;
@@ -17,10 +18,12 @@ namespace myTNB
         private bool _isSitecoreDone, _isMasterDataDone;
         private GenericSelectorViewController languageViewController;
 
+        private UITableView _profileTableview;
+
         public override void ViewDidLoad()
         {
             PageName = ProfileConstants.Pagename_Profile;
-            NavigationController.NavigationBarHidden = true;
+            // NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             _isSitecoreDone = false;
             _isMasterDataDone = false;
@@ -92,34 +95,32 @@ namespace myTNB
 
         private void SetSubviews()
         {
-            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
-            UIView headerView = gradientViewComponent.GetUI();
-            _titleBarComponent = new TitleBarComponent(headerView);
-            UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
-            _titleBarComponent.SetPrimaryVisibility(true);
-            headerView.AddSubview(titleBarView);
-            View.AddSubview(headerView);
+            Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
+            // ViewHeight = View.Frame.Height - NavigationController.NavigationBar.Frame.GetMaxY() - (View.Frame.Height - TabBarController.TabBar.Frame.GetMinY());
+            _profileTableview = new UITableView(new CGRect(0, NavigationController.NavigationBar.Frame.GetMaxY(), View.Frame.Width, ViewHeight));
+            _profileTableview.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
-            /*  moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
-                  , View.Frame.Width, View.Frame.Height - 64 - 49);
-              moreTableView.RowHeight = 50f;
-              moreTableView.SectionHeaderHeight = 48f;
-              moreTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            _profileTableview.Layer.BorderColor = UIColor.Red.CGColor;
+            _profileTableview.Layer.BorderWidth = 1;
 
-              _lblAppVersion = new UILabel(new CGRect(18, 16, moreTableView.Frame.Width - 36, 14))
-              {
-                  TextColor = MyTNBColor.SilverChalice,
-                  Font = MyTNBFont.MuseoSans9_300,
-                  Text = string.Format("{0} {1}", GetI18NValue(ProfileConstants.I18N_AppVersion), AppVersionHelper.GetAppShortVersion())
-              };
+            _profileTableview.RegisterClassForCellReuse(typeof(UITableViewCell), "genericViewCell");
 
-              if (!TNBGlobal.IsProduction)
-              {
-                  _lblAppVersion.Text += string.Format("({0})", AppVersionHelper.GetBuildVersion());
-              }
 
-              moreTableView.TableFooterView = _lblAppVersion;*/
+            View.AddSubview(_profileTableview);
+
+            _lblAppVersion = new UILabel(new CGRect(18, 16, _profileTableview.Frame.Width - 36, 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9_300,
+                Text = string.Format("{0} {1}", GetI18NValue(ProfileConstants.I18N_AppVersion), AppVersionHelper.GetAppShortVersion())
+            };
+
+            if (!TNBGlobal.IsProduction)
+            {
+                _lblAppVersion.Text += string.Format("({0})", AppVersionHelper.GetBuildVersion());
+            }
+
+            _profileTableview.TableFooterView = _lblAppVersion;
         }
     }
 }
