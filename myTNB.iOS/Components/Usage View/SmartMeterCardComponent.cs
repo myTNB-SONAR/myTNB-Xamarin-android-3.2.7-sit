@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model.Usage;
@@ -119,24 +120,44 @@ namespace myTNB
                 TextColor = MyTNBColor.GreyishBrownTwo,
                 TextAlignment = UITextAlignment.Right
             };
-            if (isAverageUsage)
+            if (model != null)
             {
-                amount.Text = (model != null) ? model.Value : "--";
-                CGSize size = amount.SizeThatFits(new CGSize(width, 1000f));
-                ViewHelper.AdjustFrameSetWidth(amount, size.Width);
-                ViewHelper.AdjustFrameSetX(amount, width - size.Width - BaseMarginWidth16);
-                AddTrendIcon(ref itemView, amount, model);
-            }
-            else
-            {
-                string amountStr = (model != null) ? model.Value : "--";
-                string valueUnitStr = (model != null) ? model.ValueUnit : "RM";
-                amount.AttributedText = TextHelper.CreateValuePairString(amountStr + " "
-                        , valueUnitStr + " ", !isCurrentUsage, TNBFont.MuseoSans_16_300
-                        , MyTNBColor.GreyishBrownTwo, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrownTwo);
-                CGSize size = amount.SizeThatFits(new CGSize(width, 1000f));
-                ViewHelper.AdjustFrameSetWidth(amount, size.Width);
-                ViewHelper.AdjustFrameSetX(amount, width - size.Width - BaseMarginWidth16);
+                if (model.Value.IsValid())
+                {
+                    amount.Text = "--";
+                    if (isAverageUsage)
+                    {
+                        amount.Text = model.Value;
+                        CGSize size = amount.SizeThatFits(new CGSize(width, 1000f));
+                        ViewHelper.AdjustFrameSetWidth(amount, size.Width);
+                        ViewHelper.AdjustFrameSetX(amount, width - size.Width - BaseMarginWidth16);
+                        AddTrendIcon(ref itemView, amount, model);
+                    }
+                    else
+                    {
+                        string amountStr;
+                        string valueUnitStr;
+                        if (isCurrentUsage)
+                        {
+                            double.TryParse(model.Value, out double currentUsage);
+                            valueUnitStr = model.ValueUnit.IsValid() ? model.ValueUnit : "kWh";
+                            amountStr = string.Format("{0:n0}", currentUsage);
+                        }
+                        else
+                        {
+                            valueUnitStr = model.ValueUnit.IsValid() ? model.ValueUnit : "RM";
+                            double.TryParse(model.Value, out double currentAmount);
+                            amountStr = currentAmount.ToString("N2", CultureInfo.InvariantCulture);
+                        }
+                        amount.AttributedText = TextHelper.CreateValuePairString(amountStr + " "
+                            , valueUnitStr + " ", !isCurrentUsage, TNBFont.MuseoSans_16_300
+                            , MyTNBColor.GreyishBrownTwo, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrownTwo);
+
+                        CGSize size = amount.SizeThatFits(new CGSize(width, 1000f));
+                        ViewHelper.AdjustFrameSetWidth(amount, size.Width);
+                        ViewHelper.AdjustFrameSetX(amount, width - size.Width - BaseMarginWidth16);
+                    }
+                }
             }
             itemView.AddSubviews(new UIView { icon, title, dateRange, amount });
             return itemView;

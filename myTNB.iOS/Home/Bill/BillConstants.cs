@@ -99,7 +99,8 @@
         public static string Event_MandatoryDetails = "ExpandCollapseMandatoryList";
 
         //Preference Key
-        public static string Pref_BillTutorialOverlay = "BillTutorialOverlayV2.0.0";
+        public static string Pref_BillTutorialNormalOverlay = "BillTutorialNormalOverlayV2.0.0";
+        public static string Pref_BillTutorialRElOverlay = "BillTutorialRElOverlayV2.0.0";
         public static string Pref_BillDetailsTutorialOverlay = "BillDetailsTutorialOverlayV2.0.0";
 
         //Regex Constants
