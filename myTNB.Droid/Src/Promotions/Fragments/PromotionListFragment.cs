@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
                 loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
                 loadingOverlay.Show();
+
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (System.Exception ex)
             {

@@ -562,7 +562,7 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="bill_menu_activity_title">Bills</string>
   <string name="promotion_menu_activity_title">What\'s New</string>
   <string name="feedback_menu_activity_title">Feedback</string>
-  <string name="more_menu_activity_title">More</string>
+  <string name="more_menu_activity_title">Profile</string>
   <string name="dashboard_menu_activity_title"></string>
   <string name="bill_menu_btn_bills">Bills</string>
   <string name="bill_menu_btn_payment">Payment</string>
