@@ -289,7 +289,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             bool isOCRDisabled = SMRPopUpUtils.IsOCRDisabled();
             bool smrAccountOCRDown = SMRPopUpUtils.IsOCRDown();
 
-            if (false)//isOCRDisabled)
+            if (isOCRDisabled)
             {
                 captureReadingLayout.Visibility = ViewStates.Gone;
                 meterReadingManualTitle.Visibility = ViewStates.Visible;
@@ -297,7 +297,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                if (false)//currentMasterData.IsOCRDown || smrAccountOCRDown)
+                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
                 {
                     captureReadingLayout.Visibility = ViewStates.Gone;
                     meterReadingManualTitle.Visibility = ViewStates.Visible;

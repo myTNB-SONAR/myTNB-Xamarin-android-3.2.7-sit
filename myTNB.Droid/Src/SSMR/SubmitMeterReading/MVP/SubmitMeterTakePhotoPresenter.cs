@@ -14,7 +14,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         SubmitMeterReadingApi api;
         List<MeterImageModel> meterImageList;
 
-        const int OCR_IMAGE_QUALITY = 60;
+        const int OCR_IMAGE_QUALITY = 75;
 
         public SubmitMeterTakePhotoPresenter(SubmitMeterTakePhotoContract.IView view)
         {
