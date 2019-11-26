@@ -8,6 +8,9 @@
         public static string Pagename_FAQ = "FAQ";
         public static string Pagename_TnC = "TnC";
 
+        //Cell
+        public static string Cell_Profile = "profileViewCell";
+
         //I18N
         public static string I18N_NavTitle = "title";
         public static string I18N_AppVersion = "appVersion";

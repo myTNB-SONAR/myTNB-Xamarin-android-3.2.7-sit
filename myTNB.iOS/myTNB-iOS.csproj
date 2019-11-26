@@ -2539,8 +2539,8 @@
       <DependentUpon>ProfileViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Profile\ProfileConstants.cs" />
-    <Compile Include="Profile\MyTNBAccountCell.cs" />
-    <Compile Include="Profile\ProfileViewCell.cs" />
+    <Compile Include="Profile\ProfileDataSource.cs" />
+    <Compile Include="Profile\ProfileCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
