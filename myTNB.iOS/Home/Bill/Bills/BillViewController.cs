@@ -109,8 +109,10 @@ namespace myTNB
         #region Tutorial Overlay Methods
         private void CheckTutorialOverlay()
         {
+            bool isRE = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+            string keyString = isRE ? BillConstants.Pref_BillTutorialRElOverlay : BillConstants.Pref_BillTutorialNormalOverlay;
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_BillTutorialOverlay);
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(keyString);
 
             if (tutorialOverlayHasShown)
                 return;
@@ -169,9 +171,6 @@ namespace myTNB
                 if (topVc is BillViewController)
                 {
                     _tutorialContainer.AddSubview(tutorialView.GetView());
-
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    sharedPreference.SetBool(true, BillConstants.Pref_BillTutorialOverlay);
                 }
             }
         }
@@ -187,6 +186,12 @@ namespace myTNB
                 {
                     _tutorialContainer.Alpha = 0F;
                 }, _tutorialContainer.RemoveFromSuperview);
+                _tutorialContainer = null;
+
+                bool isRE = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+                string keyString = isRE ? BillConstants.Pref_BillTutorialRElOverlay : BillConstants.Pref_BillTutorialNormalOverlay;
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, keyString);
             }
         }
 
