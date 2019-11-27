@@ -2,18 +2,22 @@ using CoreGraphics;
 using Foundation;
 using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UIKit;
 
 namespace myTNB
 {
     public partial class RewardsViewController : CustomUIViewController
     {
-        internal UIScrollView _loadingScrollView, _topBarScrollView;
+        internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
+        private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
+        private int _selectedCategoryIndex;
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 
@@ -21,8 +25,13 @@ namespace myTNB
         {
             PageName = RewardsConstants.PageName;
             base.ViewDidLoad();
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                ViewHeight += 20;
+            }
             View.BackgroundColor = MyTNBColor.SectionGrey;
             SetNavigationBar();
+            CreateLoadingCategoryTopBar();
         }
 
         private void SetNavigationBar()
@@ -45,45 +54,32 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
-                    InvokeOnMainThread(() =>
+                    InvokeInBackground(async () =>
                     {
-                        CreateLoadingCategoryTopBar();
-                        InvokeInBackground(async () =>
+                        await SitecoreServices.Instance.LoadRewards();
+                        InvokeOnMainThread(() =>
                         {
-                            await SitecoreServices.Instance.LoadRewards();
-                            InvokeOnMainThread(() =>
+                            RewardsEntity rewardsEntity = new RewardsEntity();
+                            _rewardsList = rewardsEntity.GetAllItems();
+
+                            if (_rewardsList != null && _rewardsList.Count > 0)
                             {
-                                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
-                                var rewardsData = userDefaults.StringForKey("SiteCoreRewardsData");
-                                if (rewardsData.IsValid())
+                                _categoryList = new List<RewardsModel>();
+                                RewardsModel viewAllModel = new RewardsModel()
                                 {
-                                    try
-                                    {
-                                        _rewardsList = JsonConvert.DeserializeObject<List<RewardsModel>>(rewardsData);
-                                        if (_rewardsList != null && _rewardsList.Count > 0)
-                                        {
-                                            CreateCategoryTopBar();
-                                            foreach (var obj in _rewardsList)
-                                            {
-                                                Debug.WriteLine(obj.CategoryName);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // Empty rewards handling here....
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Debug.WriteLine("Rewards data load Error: " + e.Message);
-                                        // Error on rewards handling here....
-                                    }
-                                }
-                                else
-                                {
-                                    // Empty rewards handling here....
-                                }
-                            });
+                                    CategoryID = "1001",
+                                    CategoryName = "View All"
+                                };
+                                _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
+                                _categoryList.Insert(0, viewAllModel);
+                                _selectedCategoryIndex = 0;
+                                CreateCategoryTopBar();
+                                AddRewardsScrollView();
+                            }
+                            else
+                            {
+                                // Empty rewards handling here....
+                            }
                         });
                     });
                 }
@@ -94,11 +90,99 @@ namespace myTNB
             });
         }
 
+        #region REWARDS SCROLL VIEW
+        private void AddRewardsScrollView()
+        {
+            if (_rewardsScrollView != null)
+            {
+                _rewardsScrollView.RemoveFromSuperview();
+                _rewardsScrollView = null;
+            }
+            _rewardsScrollView = new UIScrollView(new CGRect(0, _loadingScrollView.Frame.GetMaxY()
+                , ViewWidth, ViewHeight - _loadingScrollView.Frame.Height))
+            {
+                Delegate = new ScrollViewDelegate(this),
+                PagingEnabled = true,
+                ShowsHorizontalScrollIndicator = false,
+                ShowsVerticalScrollIndicator = false,
+                ClipsToBounds = true,
+                BackgroundColor = UIColor.Clear,
+                Hidden = false,
+                Bounces = false
+            };
+
+            View.AddSubview(_rewardsScrollView);
+            SetRewardTableViewForCategory();
+        }
+
+        private void SetRewardTableViewForCategory()
+        {
+            nfloat width = _rewardsScrollView.Frame.Width;
+            for (int i = 0; i < _categoryList.Count; i++)
+            {
+                UIView viewContainer = new UIView(_rewardsScrollView.Bounds);
+                viewContainer.BackgroundColor = UIColor.Clear;
+
+                UITableView rewardsTableView = new UITableView(viewContainer.Bounds)
+                { BackgroundColor = UIColor.Clear };
+                rewardsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+                rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
+                viewContainer.AddSubview(rewardsTableView);
+
+                _rewardsScrollView.AddSubview(viewContainer);
+
+                ViewHelper.AdjustFrameSetX(viewContainer, i * width);
+
+                var filteredList = i == 0 ? _rewardsList : FilteredRewards(i);
+                rewardsTableView.Source = new RewardsDataSource(
+                    filteredList,
+                    GetI18NValue,
+                    OnRewardSelection,
+                    false);
+                rewardsTableView.ReloadData();
+            }
+            _rewardsScrollView.ContentSize = new CGSize(_rewardsScrollView.Frame.Width * _categoryList.Count, _rewardsScrollView.Frame.Height);
+        }
+
+        private List<RewardsModel> FilteredRewards(int index)
+        {
+            List<RewardsModel> filteredRewards = new List<RewardsModel>();
+            var activeCatId = _categoryList[index].CategoryID;
+            filteredRewards = _rewardsList.FindAll(x => x.CategoryID.Equals(activeCatId)).ToList();
+            return filteredRewards;
+        }
+
+        private void ScrollViewHasPaginated()
+        {
+            CategorySelectionUpdate(_selectedCategoryIndex);
+        }
+
+        private class ScrollViewDelegate : UIScrollViewDelegate
+        {
+            RewardsViewController _controller;
+            public ScrollViewDelegate(RewardsViewController controller)
+            {
+                _controller = controller;
+            }
+            public override void Scrolled(UIScrollView scrollView)
+            {
+                int newPageIndex = (int)Math.Round(_controller._rewardsScrollView.ContentOffset.X / _controller._rewardsScrollView.Frame.Width);
+                if (newPageIndex == _controller._selectedCategoryIndex)
+                    return;
+
+                _controller._selectedCategoryIndex = newPageIndex;
+                _controller.ScrollViewHasPaginated();
+            }
+        }
+        #endregion
+
+        #region CATEGORY TOP BAR MENU
         private void CreateLoadingCategoryTopBar()
         {
             if (_loadingScrollView != null)
             {
                 _loadingScrollView.RemoveFromSuperview();
+                _loadingScrollView = null;
             }
             _loadingScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, GetScaledHeight(44F)))
             {
@@ -141,11 +225,11 @@ namespace myTNB
 
             _loadingScrollView.AddSubview(viewShimmerParent);
 
-            UIView lineView = new UIView(new CGRect(padding, _loadingScrollView.Frame.Height - GetScaledHeight(2F), GetScaledWidth(52F), GetScaledHeight(2)))
+            UIView lineView = new UIView(new CGRect(padding, _loadingScrollView.Frame.Height - GetScaledHeight(2F), GetScaledWidth(52F), GetScaledHeight(2F)))
             {
                 BackgroundColor = MyTNBColor.WaterBlue
             };
-            lineView.Layer.CornerRadius = GetScaledHeight(5F);
+            lineView.Layer.CornerRadius = GetScaledHeight(1F);
             _loadingScrollView.AddSubview(lineView);
         }
 
@@ -173,17 +257,25 @@ namespace myTNB
             nfloat xPos = 0;
             nfloat labelHeight = GetScaledHeight(14F);
             nfloat padding = GetScaledWidth(10F);
-            for (int i = 0; i < _rewardsList.Count; i++)
-            {
-                CustomUIView categoryView = new CustomUIView(_topBarScrollView.Bounds);
-                categoryView.BackgroundColor = UIColor.White;
 
+            for (int i = 0; i < _categoryList.Count; i++)
+            {
+                CustomUIView categoryView = new CustomUIView(_topBarScrollView.Bounds)
+                {
+                    BackgroundColor = UIColor.White,
+                    Tag = i
+                };
+                categoryView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnSelectCategoryAction((int)categoryView.Tag);
+                }));
                 UILabel categoryLabel = new UILabel(new CGRect(padding, GetYLocationToCenterObject(labelHeight, categoryView), 0, labelHeight))
                 {
                     Font = TNBFont.MuseoSans_14_500,
-                    TextColor = MyTNBColor.WaterBlue,
+                    TextColor = i == 0 ? MyTNBColor.WaterBlue : MyTNBColor.WarmGrey,
                     TextAlignment = UITextAlignment.Center,
-                    Text = _rewardsList[i].CategoryName
+                    Text = _categoryList[i].CategoryName,
+                    Tag = RewardsConstants.Tag_CategoryLabel
                 };
 
                 CGSize labelNewSize = categoryLabel.SizeThatFits(new CGSize(500F, labelHeight));
@@ -191,11 +283,58 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetWidth(categoryView, categoryLabel.Frame.Width + (padding * 2));
                 ViewHelper.AdjustFrameSetX(categoryView, xPos);
 
+                UIView lineView = new UIView(new CGRect(padding, _loadingScrollView.Frame.Height - GetScaledHeight(2F), labelNewSize.Width, GetScaledHeight(2)))
+                {
+                    BackgroundColor = MyTNBColor.WaterBlue,
+                    Tag = RewardsConstants.Tag_SelectedCategory,
+                    Hidden = i != 0
+                };
+                lineView.Layer.CornerRadius = GetScaledHeight(1F);
+                categoryView.AddSubview(lineView);
+
                 xPos = categoryView.Frame.GetMaxX();
                 categoryView.AddSubview(categoryLabel);
                 _topBarScrollView.AddSubview(categoryView);
             }
             _topBarScrollView.ContentSize = new CGSize(xPos, _topBarScrollView.Frame.Height);
         }
+
+        private void OnSelectCategoryAction(int index)
+        {
+            _selectedCategoryIndex = index;
+            _rewardsScrollView.SetContentOffset(new CGPoint(_rewardsScrollView.Frame.Width * _selectedCategoryIndex, 0), true);
+        }
+
+        private void CategorySelectionUpdate(int index)
+        {
+            foreach (UIView catView in _topBarScrollView.Subviews)
+            {
+                if (catView != null)
+                {
+                    UILabel label = catView.ViewWithTag(RewardsConstants.Tag_CategoryLabel) as UILabel;
+                    if (label != null)
+                    {
+                        label.TextColor = catView.Tag == index ? MyTNBColor.WaterBlue : MyTNBColor.WarmGrey;
+                    }
+                    UIView line = catView.ViewWithTag(RewardsConstants.Tag_SelectedCategory) as UIView;
+                    if (line != null)
+                    {
+                        line.Hidden = catView.Tag != index;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region ACTIONS
+        private void OnRewardSelection(RewardsModel reward)
+        {
+            if (reward != null)
+            {
+                Debug.WriteLine(reward.ID);
+                Debug.WriteLine(reward.RewardName);
+            }
+        }
+        #endregion
     }
 }

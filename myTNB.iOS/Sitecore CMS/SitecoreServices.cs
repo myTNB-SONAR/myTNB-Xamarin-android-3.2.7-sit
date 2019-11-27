@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Foundation;
@@ -475,7 +476,7 @@ namespace myTNB.SitecoreCMS
                     timeStamp.Data = new List<RewardsTimestamp> { new RewardsTimestamp { Timestamp = string.Empty } };
                 }
 
-                //UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp", ref needsUpdate);
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp", ref needsUpdate);
 
                 if (needsUpdate)
                 {
@@ -484,10 +485,27 @@ namespace myTNB.SitecoreCMS
                         rewardsResponse.Status.Equals("Success") &&
                         rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                     {
-                        string acctListData = JsonConvert.SerializeObject(rewardsResponse.Data);
-                        NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
-                        userDefaults.SetString(acctListData, "SiteCoreRewardsData");
-                        userDefaults.Synchronize();
+                        List<RewardsModel> rewardsData = new List<RewardsModel>();
+                        List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
+                        foreach (var category in categoryList)
+                        {
+                            List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
+                            if (rewardsList.Count > 0)
+                            {
+                                foreach (var reward in rewardsList)
+                                {
+                                    reward.CategoryID = category.ID;
+                                    reward.CategoryName = category.CategoryName;
+                                    rewardsData.Add(reward);
+                                }
+                            }
+                        }
+
+                        RewardsEntity rewardsEntity = new RewardsEntity();
+                        rewardsEntity.DeleteTable();
+                        rewardsEntity.CreateTable();
+                        rewardsEntity.InsertListOfItems(rewardsData);
+                        UpdateSharedPreference("SiteCoreRewardsTimeStamp", timeStamp.Data[0].Timestamp);
                         Debug.WriteLine("LoadRewards Done");
                     }
                 }

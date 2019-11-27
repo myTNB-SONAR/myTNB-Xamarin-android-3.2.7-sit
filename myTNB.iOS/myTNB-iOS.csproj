@@ -2544,6 +2544,7 @@
     <Compile Include="Rewards\RewardsConstants.cs" />
     <Compile Include="Rewards\RewardsDataSource.cs" />
     <Compile Include="Rewards\RewardsCell.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\RewardsEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

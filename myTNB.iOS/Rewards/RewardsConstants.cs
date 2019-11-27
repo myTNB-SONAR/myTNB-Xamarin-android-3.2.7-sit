@@ -6,6 +6,10 @@ namespace myTNB
         //PageName
         public static string PageName = "Rewards";
 
+        //Tags
+        public static int Tag_SelectedCategory = 100;
+        public static int Tag_CategoryLabel = 101;
+
         //nfloat
         public static nfloat RewardsCellHeight = ScaleUtility.GetScaledHeight(177F);
 

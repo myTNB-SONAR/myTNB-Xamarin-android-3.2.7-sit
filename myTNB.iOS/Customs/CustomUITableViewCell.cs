@@ -9,6 +9,7 @@ namespace myTNB
         public Func<string, string> GetI18NValue;
         public nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         public nfloat _cellHeight = UIApplication.SharedApplication.KeyWindow.Frame.Height;
+        public int CellIndex = -1;
 
         public CustomUITableViewCell(IntPtr handle) : base(handle)
         { BackgroundColor = UIColor.Clear; }

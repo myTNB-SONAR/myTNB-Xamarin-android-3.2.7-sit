@@ -58,7 +58,7 @@ namespace myTNB.SitecoreCMS.Service
             return new RewardsTimestamp();
         }
 
-        internal List<RewardsModel> GetCategoryItems()
+        internal List<RewardsCategoryModel> GetCategoryItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
@@ -69,7 +69,7 @@ namespace myTNB.SitecoreCMS.Service
             return itemList.ToList();
         }
 
-        internal List<RewardsChildModel> GetChildItems(ISitecoreItem categoryItem)
+        internal List<RewardsModel> GetChildItems(ISitecoreItem categoryItem)
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(categoryItem.Path
@@ -80,9 +80,9 @@ namespace myTNB.SitecoreCMS.Service
             return itemList.ToList();
         }
 
-        private async Task<IEnumerable<RewardsModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
+        private async Task<IEnumerable<RewardsCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
         {
-            List<RewardsModel> list = new List<RewardsModel>();
+            List<RewardsCategoryModel> list = new List<RewardsCategoryModel>();
             try
             {
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
@@ -92,7 +92,7 @@ namespace myTNB.SitecoreCMS.Service
                     {
                         continue;
                     }
-                    list.Add(new RewardsModel
+                    list.Add(new RewardsCategoryModel
                     {
                         ID = item.Id,
                         CategoryName = item.DisplayName,
@@ -107,9 +107,9 @@ namespace myTNB.SitecoreCMS.Service
             return list;
         }
 
-        private async Task<IEnumerable<RewardsChildModel>> GenerateRewardsChildren(ScItemsResponse itemsResponse)
+        private async Task<IEnumerable<RewardsModel>> GenerateRewardsChildren(ScItemsResponse itemsResponse)
         {
-            List<RewardsChildModel> list = new List<RewardsChildModel>();
+            List<RewardsModel> list = new List<RewardsModel>();
 
             try
             {
@@ -120,7 +120,7 @@ namespace myTNB.SitecoreCMS.Service
                     if (item == null)
                         continue;
 
-                    RewardsChildModel listlItem = new RewardsChildModel
+                    RewardsModel listlItem = new RewardsModel
                     {
                         ID = item.Id,
                         RewardName = item.DisplayName,

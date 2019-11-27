@@ -6,18 +6,20 @@ namespace myTNB.SitecoreCMS.Model
     public class RewardsResponseModel
     {
         public string Status { set; get; }
-        public List<RewardsModel> Data { set; get; }
+        public List<RewardsCategoryModel> Data { set; get; }
+    }
+
+    public class RewardsCategoryModel
+    {
+        public string ID { set; get; }
+        public string CategoryName { set; get; }
+        public List<RewardsModel> Rewards { set; get; }
     }
 
     public class RewardsModel
     {
-        public string ID { set; get; }
+        public string CategoryID { set; get; }
         public string CategoryName { set; get; }
-        public List<RewardsChildModel> Rewards { set; get; }
-    }
-
-    public class RewardsChildModel
-    {
         public string ID { set; get; }
         public string RewardName { set; get; }
         public string Title { set; get; }
