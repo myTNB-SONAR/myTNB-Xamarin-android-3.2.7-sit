@@ -28,7 +28,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             UnderstandTooltipModel model = mTooltipModelList[position];
             if (model.TooltipImage == null)
             {
-                vh.imageToolTip.SetImageResource(Resource.Drawable.understand_bill_tooltip_1);
+                if (position == 0)
+                {
+                    vh.imageToolTip.SetImageResource(Resource.Drawable.understand_bill_tooltip_1);
+                }
+                else
+                {
+                    vh.imageToolTip.SetImageResource(Resource.Drawable.understand_bill_tooltip_2);
+                }
             }
             else
             {
