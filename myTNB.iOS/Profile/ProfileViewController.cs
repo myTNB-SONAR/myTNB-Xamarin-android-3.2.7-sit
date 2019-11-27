@@ -34,6 +34,7 @@ namespace myTNB
             _isMasterDataDone = false;
             SetTableView();
             SetFooterView();
+            OnGetRegisteredCards();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -60,6 +61,36 @@ namespace myTNB
             base.LanguageDidChange(notification);
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _lblAppVersion.Text = Version;
+        }
+
+        private void OnGetRegisteredCards()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        InvokeInBackground(() =>
+                        {
+                            ServiceCall.GetRegisteredCards().ContinueWith(task =>
+                            {
+                                InvokeOnMainThread(() =>
+                                {
+                                    _profileTableview.BeginUpdates();
+                                    NSIndexPath indexPath = NSIndexPath.Create(0, 5);
+                                    _profileTableview.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+                                    _profileTableview.EndUpdates();
+                                });
+                            });
+                        });
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         private Dictionary<string, List<string>> ProfileList
@@ -161,6 +192,20 @@ namespace myTNB
             btnLogout.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("Logout");
+                UIAlertController alert = UIAlertController.Create(GetI18NValue(ProfileConstants.I18N_Logout)
+                   , GetI18NValue(ProfileConstants.I18N_LogoutMessage), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Ok), UIAlertActionStyle.Default, (obj) =>
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
+                    LogoutViewController viewController =
+                        storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }));
+                alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null));
+                alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(alert, animated: true, completionHandler: null);
             }));
             logoutView.AddSubview(btnLogout);
             footerView.AddSubviews(new UIView[] { _lblAppVersion, logoutView });
@@ -212,6 +257,7 @@ namespace myTNB
                                             }
                                         case 6:
                                             {
+                                                GoToMyAccount();
                                                 break;
                                             }
                                         default:
@@ -464,20 +510,20 @@ namespace myTNB
 
         private void GoToMyAccount()
         {
-            ActivityIndicator.Show();
-            ServiceCall.GetRegisteredCards().ContinueWith(task =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("MyAccount", null);
-                    MyAccountViewController viewController =
-                        storyBoard.InstantiateViewController("MyAccountViewController") as MyAccountViewController;
-                    UINavigationController navController = new UINavigationController(viewController);
-                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    PresentViewController(navController, true, null);
-                    ActivityIndicator.Hide();
-                });
-            });
+            //ActivityIndicator.Show();
+            /* ServiceCall.GetRegisteredCards().ContinueWith(task =>
+             {
+                 InvokeOnMainThread(() =>
+                 {*/
+            UIStoryboard storyBoard = UIStoryboard.FromName("MyAccount", null);
+            MyAccountViewController viewController =
+                storyBoard.InstantiateViewController("MyAccountViewController") as MyAccountViewController;
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(navController, true, null);
+            //ActivityIndicator.Hide();
+            /*});
+        });*/
         }
 
         private void GoToTermsAndCondition()

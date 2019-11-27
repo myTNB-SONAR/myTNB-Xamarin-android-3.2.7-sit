@@ -29,6 +29,8 @@
         public static string I18N_FindUs = "findUs";
         public static string I18N_SetAppLanguage = "setAppLanguage";
         public static string I18N_MyTNBAccount = "myTNBAccount";
+        public static string I18N_Logout = "logout";
+        public static string I18N_LogoutMessage = "logoutMessage";
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";

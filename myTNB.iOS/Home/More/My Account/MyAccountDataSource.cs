@@ -31,8 +31,8 @@ namespace myTNB.Home.More.MyAccount
                 _registeredCards.d.data = new List<RegisteredCardsDataModel>();
             }
             SectionTitle = new List<string>{
-                GetI18NValue(MyAccountConstants.I18N_DetailSectionTitle)
-                , GetI18NValue(MyAccountConstants.I18N_AccountSectionTitle)
+                /*GetI18NValue(MyAccountConstants.I18N_DetailSectionTitle)
+                ,*/ GetI18NValue(MyAccountConstants.I18N_AccountSectionTitle)
             };
             DetailContent = new List<string>{
                 GetCommonI18NValue(Constants.Common_Name).ToUpper(),
@@ -46,12 +46,14 @@ namespace myTNB.Home.More.MyAccount
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return SectionTitle.Count;
+            return 1;//SectionTitle.Count;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            if (section == 0)
+            return DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                    ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count : 0;
+            /*if (section == 0)
             {
                 return 6;
             }
@@ -63,7 +65,7 @@ namespace myTNB.Home.More.MyAccount
             else
             {
                 return 0;
-            }
+            }*/
         }
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
@@ -84,7 +86,7 @@ namespace myTNB.Home.More.MyAccount
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            if (indexPath.Section == 0)
+           /* if (indexPath.Section == 0)
             {
                 AccountDetailsViewCell cell = tableView.DequeueReusableCell("AccountDetailsViewCell", indexPath) as AccountDetailsViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 64);
@@ -160,7 +162,7 @@ namespace myTNB.Home.More.MyAccount
                 return cell;
             }
             else if (indexPath.Section == 1)
-            {
+            {*/
                 SupplyAccountViewCell cell = tableView.DequeueReusableCell("SupplyAccountViewCell", indexPath) as SupplyAccountViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 80);
                 cell.lblName.Text = GetAccountModel(indexPath.Row).accDesc;
@@ -183,8 +185,8 @@ namespace myTNB.Home.More.MyAccount
                     _controller.ManageSupplyAccount(indexPath.Row);
                 }));
                 return cell;
-            }
-            return new UITableViewCell();
+           /* }
+            return new UITableViewCell();*/
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)

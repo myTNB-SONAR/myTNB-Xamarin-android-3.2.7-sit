@@ -71,14 +71,9 @@ namespace myTNB.SitecoreCMS
             {
                 needsUpdate = false;
             }
-            else
-            {
-                sharedPreference.SetString(sitecoreTS, key);
-                sharedPreference.Synchronize();
-            }
         }
 
-        private void UpdateSharedPreference(string key, string value)
+        private void UpdateSharedPreference(string value, string key)
         {
             try
             {
@@ -439,15 +434,25 @@ namespace myTNB.SitecoreCMS
                 }
                 else
                 {
-                    string content = string.Empty;// LanguageUtility.LanguageContent;
+                    string content = LanguageUtility.LanguageContent;
                     if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
                     {
-                        LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        content = sharedPreference.StringForKey("LanguageJSON");
+                        if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
+                        {
+                            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
                             , TNBGlobal.APP_LANGUAGE == "EN" ? LanguageManager.Language.EN : LanguageManager.Language.MS);
+                        }
+                        else
+                        {
+                            LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                        }
                     }
                     else
                     {
                         LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "LanguageJSON");
                     }
                     LanguageUtility.SetLanguageGlobals();
                 }

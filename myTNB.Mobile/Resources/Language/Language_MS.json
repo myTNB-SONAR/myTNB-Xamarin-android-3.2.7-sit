@@ -1,26 +1,4 @@
 ﻿{
-  //Sample
-  "page": {
-    "title": "Title",
-    "submit": "Submit"
-  },
-  //Sample
-  "page_selector": {
-    "date": [
-      {
-        "id": "0",
-        "key": "hour",
-        "value": "Hourly",
-        "description": "Hourly Description"
-      },
-      {
-        "id": "1",
-        "key": "week",
-        "value": "Weekly",
-        "description": "Weekly Description"
-      }
-    ]
-  },
   "Common": {
     "account": "Akaun",
     "emailAddress": "Alamat Emel",
@@ -565,7 +543,9 @@
     "tnc": "Terma & Syarat",
     "findUs": "Temui Kami",
     "setAppLanguage": "Tetapkan Bahasa Aplikasi",
-    "myTNBAccount": "Akaun myTNB"
+    "myTNBAccount": "Akaun myTNB",
+    "logout": "Log Keluar",
+    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",

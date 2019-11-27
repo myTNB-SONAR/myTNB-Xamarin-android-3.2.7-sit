@@ -1,26 +1,4 @@
 ﻿{
-  //Sample
-  "page": {
-    "title": "Title",
-    "submit": "Submit"
-  },
-  //Sample
-  "page_selector": {
-    "date": [
-      {
-        "id": "0",
-        "key": "hour",
-        "value": "Hourly",
-        "description": "Hourly Description"
-      },
-      {
-        "id": "1",
-        "key": "week",
-        "value": "Weekly",
-        "description": "Weekly Description"
-      }
-    ]
-  },
   "Common": {
     "account": "Account",
     "emailAddress": "Email Address",
@@ -565,7 +543,9 @@
     "tnc": "Terms & Conditions",
     "findUs": "Find Us",
     "setAppLanguage": "Set App Language",
-    "myTNBAccount": "myTNB Account"
+    "myTNBAccount": "myTNB Account",
+    "logout": "Log Out",
+    "logoutMessage": "Are you sure you want to log out from the myTNB app?"
   },
   "NotificationSettings": {
     "title": "Notification Settings",

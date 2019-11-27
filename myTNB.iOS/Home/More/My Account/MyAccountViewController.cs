@@ -28,10 +28,10 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            ActivityIndicator.Show();
+            //ActivityIndicator.Show();
             myAccountTableView.Source = new MyAccountDataSource(this);
             myAccountTableView.ReloadData();
-            SetFooterView();
+            //SetFooterView();
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsMobileNumberUpdated)
             {
@@ -51,7 +51,7 @@ namespace myTNB
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
-            ActivityIndicator.Hide();
+           // ActivityIndicator.Hide();
         }
 
         private void SetFooterView()
