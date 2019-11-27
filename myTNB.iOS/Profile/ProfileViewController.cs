@@ -1,11 +1,15 @@
 using CoreGraphics;
 using Foundation;
 using myTNB.Dashboard.DashboardComponents;
+using myTNB.DataManager;
 using myTNB.MyAccount;
 using myTNB.Profile;
+using myTNB.Registration;
+using myTNB.SitecoreCMS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -35,11 +39,12 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            //moreTableView.Source = new MoreDataSource(this, GetMoreList());
-            //moreTableView.ReloadData();
-
-            ProfileDataSource dataSource = new ProfileDataSource();
-            dataSource.ProfileList = GetProfileList();
+            ProfileDataSource dataSource = new ProfileDataSource()
+            {
+                ProfileList = ProfileList,
+                ProfileLabels = ProfileLabels,
+                OnRowSelect = OnRowSelect
+            };
             _profileTableview.Source = dataSource;
             _profileTableview.ReloadData();
         }
@@ -57,42 +62,33 @@ namespace myTNB
             _lblAppVersion.Text = Version;
         }
 
-        private Dictionary<string, List<string>> GetProfileList()
+        private Dictionary<string, List<string>> ProfileList
         {
-            Dictionary<string, List<string>> profileList = new Dictionary<string, List<string>>();
-            profileList.Add(GetI18NValue(MyAccountConstants.I18N_DetailSectionTitle), new List<string>());
-            profileList.Add(GetI18NValue(ProfileConstants.I18N_Settings), new List<string> {
-                GetI18NValue(ProfileConstants.I18N_Notifications)
-                , GetI18NValue(ProfileConstants.I18N_SetAppLanguage)
-            });
-            profileList.Add(GetI18NValue(ProfileConstants.I18N_HelpAndSupport), new List<string>{
-                GetI18NValue(ProfileConstants.I18N_FindUs)
-                , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
-                , GetI18NValue(ProfileConstants.I18N_CallUsBilling)
-                , GetI18NValue(ProfileConstants.I18N_FAQ)
-                , GetI18NValue(ProfileConstants.I18N_TNC)});
-            profileList.Add(GetI18NValue(ProfileConstants.I18N_Share), new List<string>{
-                GetI18NValue(ProfileConstants.I18N_ShareDescription)
-                , GetI18NValue(ProfileConstants.I18N_Rate)});
-
-            return profileList;
+            get
+            {
+                Dictionary<string, List<string>> profileList = new Dictionary<string, List<string>>();
+                profileList.Add(GetI18NValue(ProfileConstants.I18N_MyTNBAccount), new List<string>());
+                profileList.Add(GetI18NValue(ProfileConstants.I18N_Settings), new List<string> {
+                    GetI18NValue(ProfileConstants.I18N_Notifications)
+                    , GetI18NValue(ProfileConstants.I18N_SetAppLanguage)
+                });
+                profileList.Add(GetI18NValue(ProfileConstants.I18N_HelpAndSupport), new List<string>{
+                    GetI18NValue(ProfileConstants.I18N_FindUs)
+                    , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
+                    , GetI18NValue(ProfileConstants.I18N_CallUsBilling)
+                    , GetI18NValue(ProfileConstants.I18N_FAQ)
+                    , GetI18NValue(ProfileConstants.I18N_TNC)});
+                profileList.Add(GetI18NValue(ProfileConstants.I18N_Share), new List<string>{
+                    GetI18NValue(ProfileConstants.I18N_ShareDescription)
+                    , GetI18NValue(ProfileConstants.I18N_Rate)});
+                EvaluateHelpAndSupportList(ref profileList);
+                return profileList;
+            }
         }
 
-        private Dictionary<string, List<string>> GetMoreList()
+        private void EvaluateHelpAndSupportList(ref Dictionary<string, List<string>> profileList)
         {
-            Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
-                {GetI18NValue(ProfileConstants.I18N_Settings), new List<string>{ GetI18NValue(ProfileConstants.I18N_MyAccount)
-                    , GetI18NValue(ProfileConstants.I18N_Notifications)
-                    , GetI18NValue(ProfileConstants.I18N_SetAppLanguage)}}
-                , {GetI18NValue(ProfileConstants.I18N_HelpAndSupport), new List<string>{ GetI18NValue(ProfileConstants.I18N_FindUs)
-                    , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
-                    ,GetI18NValue(ProfileConstants.I18N_CallUsBilling)
-                    ,GetI18NValue(ProfileConstants.I18N_FAQ)
-                    , GetI18NValue(ProfileConstants.I18N_TNC)}}
-                , {GetI18NValue(ProfileConstants.I18N_Share), new List<string>{ GetI18NValue(ProfileConstants.I18N_ShareDescription)
-                    , GetI18NValue(ProfileConstants.I18N_Rate)}}
-            };
-            if (_itemsDictionary.ContainsKey(GetI18NValue(ProfileConstants.I18N_HelpAndSupport)) && IsValidWeblinks())
+            if (profileList.ContainsKey(GetI18NValue(ProfileConstants.I18N_HelpAndSupport)) && IsValidWeblinks)
             {
                 int cloIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbclo"));
                 int cleIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
@@ -106,15 +102,33 @@ namespace myTNB
                         , GetI18NValue(ProfileConstants.I18N_FAQ)
                         , GetI18NValue(ProfileConstants.I18N_TNC)
                     };
-                    _itemsDictionary[GetI18NValue(ProfileConstants.I18N_HelpAndSupport)] = helpAndSupportList;
+                    profileList[GetI18NValue(ProfileConstants.I18N_HelpAndSupport)] = helpAndSupportList;
                 }
             }
-            return _itemsDictionary;
         }
 
-        private bool IsValidWeblinks()
+        private bool IsValidWeblinks
         {
-            return DataManager.DataManager.SharedInstance.WebLinks != null;
+            get
+            {
+                return DataManager.DataManager.SharedInstance.WebLinks != null;
+            }
+        }
+
+        private List<string> ProfileLabels
+        {
+            get
+            {
+                return new List<string> {
+                    GetCommonI18NValue(Constants.Common_Name).ToUpper()
+                    , GetCommonI18NValue(Constants.Common_IDNumber).ToUpper()
+                    , GetCommonI18NValue(Constants.Common_Email).ToUpper()
+                    , GetCommonI18NValue(Constants.Common_MobileNo).ToUpper()
+                    , GetCommonI18NValue(Constants.Common_Password).ToUpper()
+                    , GetCommonI18NValue(Constants.Common_Cards).ToUpper()
+                    , "Electricity Accounts"
+                };
+            }
         }
 
         private void SetTableView()
@@ -165,6 +179,439 @@ namespace myTNB
                 }
                 return appVersion;
             }
+        }
+
+        private void OnRowSelect(int section, int row)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        switch (section)
+                        {
+                            case 0:
+                                {
+                                    switch (row)
+                                    {
+                                        case 3:
+                                            {
+                                                UpdateMobileNumber();
+                                                break;
+                                            }
+                                        case 4:
+                                            {
+                                                UpdatePassword();
+                                                break;
+                                            }
+                                        case 5:
+                                            {
+                                                ManageRegisteredCards();
+                                                break;
+                                            }
+                                        case 6:
+                                            {
+                                                break;
+                                            }
+                                        default:
+                                            {
+                                                break;
+                                            }
+                                    }
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    switch (row)
+                                    {
+                                        case 0:
+                                            GetNotificationPreferences();
+                                            break;
+                                        case 1:
+                                            GoToLanguageSettings();
+                                            break;
+                                    }
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    switch (row)
+                                    {
+                                        case 0:
+                                            GoToFindUs();
+                                            break;
+                                        case 1:
+                                            CallCustomerService("tnbclo");
+                                            break;
+                                        case 2:
+                                            CallCustomerService("tnbcle");
+                                            break;
+                                        case 3:
+                                            GoToFAQ();
+                                            break;
+                                        case 4:
+                                            GoToTermsAndCondition();
+                                            break;
+                                    }
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    switch (row)
+                                    {
+                                        case 0:
+                                            Share();
+                                            break;
+                                        case 1:
+                                            OpenAppStore();
+                                            break;
+                                    }
+                                    break;
+                                }
+                            default: { break; }
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void GoToFindUs()
+        {
+            DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex = 0;
+            DataManager.DataManager.SharedInstance.PreviousStoreTypeIndex = 0;
+            DataManager.DataManager.SharedInstance.IsSameStoreType = false;
+            DataManager.DataManager.SharedInstance.SelectedLocationTypeID = "all";
+            UIStoryboard storyBoard = UIStoryboard.FromName("FindUs", null);
+            FindUsViewController viewController =
+                storyBoard.InstantiateViewController("FindUsViewController") as FindUsViewController;
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(navController, true, null);
+        }
+
+        private void GetNotificationPreferences()
+        {
+            ActivityIndicator.Show();
+            PushNotificationHelper.GetUserNotificationPreferences();
+            if (DataManager.DataManager.SharedInstance.NotificationTypeResponse != null
+                && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d != null
+                && DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.IsSuccess
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse != null
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d != null
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.IsSuccess)
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("NotificationSettings", null);
+                NotificationSettingsViewController viewController = storyBoard.InstantiateViewController("NotificationSettingsViewController") as NotificationSettingsViewController;
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+                ActivityIndicator.Hide();
+            }
+            else
+            {
+                string errorMessage = GetErrorI18NValue(Constants.Error_DefaultErrorMessage);
+                if (DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == false
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.ErrorMessage))
+                {
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.ErrorMessage;
+                }
+                else if (DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.didSucceed == false
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.ErrorMessage))
+                {
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.ErrorMessage;
+                }
+                DisplayServiceError(errorMessage);
+                ActivityIndicator.Hide();
+            }
+        }
+
+        #region Language
+        private void GoToLanguageSettings()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+            languageViewController = (GenericSelectorViewController)storyBoard
+                .InstantiateViewController("GenericSelectorViewController");
+            if (languageViewController != null)
+            {
+                languageViewController.Title = LanguageSettings.Title;
+                languageViewController.Items = LanguageSettings.SupportedLanguage;
+                languageViewController.HasSectionTitle = true;
+                languageViewController.SectionTitle = LanguageSettings.SectionTitle;
+                languageViewController.HasCTA = true;
+                languageViewController.CTATitle = LanguageSettings.CTATitle;
+                languageViewController.OnSelect = OnSelectLanguage;
+                languageViewController.OnBack = OnLanguageBack;
+                languageViewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
+                UINavigationController navController = new UINavigationController(languageViewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
+        }
+
+        private void OnLanguageBack(int index)
+        {
+            DisplayCustomAlert(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle)
+                  , GetCommonI18NValue(Constants.Common_SaveLanguageMessage)
+                  , new Dictionary<string, Action> {
+                        { GetFormattedLangKey(Constants.Common_ChangeLanguageNo)
+                            , ()=>{ DismissViewController(true, null);} }
+                        ,{ GetFormattedLangKey(Constants.Common_ChangeLanguageYes)
+                            , ()=>{ OnChangeLanguage(index); } } }
+                  , UITextAlignment.Center
+                  , UITextAlignment.Center);
+        }
+
+        private void OnSelectLanguage(int index)
+        {
+            DisplayCustomAlert(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle)
+                  , GetFormattedLangKey(Constants.Common_ChangeLanguageMessage)
+                  , new Dictionary<string, Action> {
+                        { GetFormattedLangKey(Constants.Common_ChangeLanguageNo), null}
+                        ,{ GetFormattedLangKey(Constants.Common_ChangeLanguageYes)
+                            , ()=>{ OnChangeLanguage(index); } } }
+                  , UITextAlignment.Center
+                  , UITextAlignment.Center);
+        }
+
+        private string GetFormattedLangKey(string key)
+        {
+            return GetCommonI18NValue(string.Format("{0}_{1}", key, TNBGlobal.APP_LANGUAGE));
+        }
+
+        /*Todo: Do service calls and set lang
+         * 1. Call site core
+         * 2. Call Applaunch master data
+         * 3. Clear Usage cache for service call content
+        */
+        private void OnChangeLanguage(int index)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        LanguageUtility.SetAppLanguageByIndex(index);
+                        InvokeOnMainThread(async () =>
+                        {
+                            List<Task> taskList = new List<Task>{
+                                OnGetAppLaunchMasterData(),
+                                OnExecuteSiteCore()
+                           };
+                            await Task.WhenAll(taskList.ToArray());
+                        });
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void ChangeLanguageCallback()
+        {
+            if (_isMasterDataDone && _isSitecoreDone)
+            {
+                LanguageUtility.SaveLanguagePreference().ContinueWith(langTask =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        //Todo: Check success and fail States
+                        ClearCache();
+                        languageViewController.DismissViewController(true, null);
+                        Debug.WriteLine("Change Language Done");
+                        NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                        ActivityIndicator.Hide();
+                    });
+                });
+            }
+        }
+
+        private void ClearCache()
+        {
+            AccountUsageCache.ClearCache();
+            AccountUsageSmartCache.ClearCache();
+        }
+
+        private Task OnGetAppLaunchMasterData()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                AppLaunchResponseModel response = ServiceCall.GetAppLaunchMasterData().Result;
+                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                _isMasterDataDone = true;
+                ChangeLanguageCallback();
+            });
+        }
+
+        private Task OnExecuteSiteCore()
+        {
+            return Task.Factory.StartNew(async () =>
+            {
+                await SitecoreServices.Instance.OnExecuteSitecoreCall(true);
+                _isSitecoreDone = true;
+                ChangeLanguageCallback();
+            });
+        }
+        #endregion
+
+        private void GoToMyAccount()
+        {
+            ActivityIndicator.Show();
+            ServiceCall.GetRegisteredCards().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("MyAccount", null);
+                    MyAccountViewController viewController =
+                        storyBoard.InstantiateViewController("MyAccountViewController") as MyAccountViewController;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                    ActivityIndicator.Hide();
+                });
+            });
+        }
+
+        private void GoToTermsAndCondition()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+            TermsAndConditionViewController viewController =
+                storyBoard.InstantiateViewController("TermsAndConditionViewController") as TermsAndConditionViewController;
+            if (viewController != null)
+            {
+                viewController.isPresentedVC = true;
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
+        }
+
+        private void GoToFAQ()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("FAQ", null);
+            FAQViewController viewController =
+                storyBoard.InstantiateViewController("FAQViewController") as FAQViewController;
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(navController, true, null);
+        }
+
+        private void CallCustomerService(string code)
+        {
+            if (IsValidWeblinks)
+            {
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals(code.ToLower()));
+                if (index > -1)
+                {
+                    string number = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
+                    if (!string.IsNullOrEmpty(number) && !string.IsNullOrWhiteSpace(number))
+                    {
+                        NSUrl url = new NSUrl(new Uri("tel:" + number).AbsoluteUri);
+                        UIApplication.SharedApplication.OpenUrl(url);
+                        return;
+                    }
+                }
+            }
+            DisplayServiceError(GetErrorI18NValue(Constants.Error_NumberNotAvailable));
+        }
+
+        private void OpenAppStore()
+        {
+            if (IsValidWeblinks)
+            {
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("ios"));
+                if (index > -1)
+                {
+                    string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
+                    if (!string.IsNullOrEmpty(url) && !string.IsNullOrWhiteSpace(url))
+                    {
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(url)));
+                        return;
+                    }
+                }
+            }
+            DisplayServiceError(GetErrorI18NValue(Constants.Error_RatingNotAvailable));
+        }
+
+        private void Share()
+        {
+            if (IsValidWeblinks)
+            {
+                int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
+                if (index > -1)
+                {
+                    NSObject message = NSObject.FromObject(GetI18NValue(ProfileConstants.I18N_ShareMessage));
+                    string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
+                    NSObject item = NSObject.FromObject(url);
+                    NSObject[] activityItems = { message, item };
+                    UIActivity[] applicationActivities = null;
+                    UIActivityViewController activityController = new UIActivityViewController(activityItems, applicationActivities);
+                    UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                    activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(activityController, true, null);
+                    return;
+                }
+            }
+            DisplayServiceError(GetErrorI18NValue(Constants.Error_ShareNotAvailable));
+        }
+
+        private void UpdateMobileNumber()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
+            UpdateMobileNumberViewController viewController =
+                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
+            PresentViewController(navController, true, null);
+        }
+
+        private void UpdatePassword()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("UpdatePassword", null);
+            UpdatePasswordViewController viewController =
+                storyBoard.InstantiateViewController("UpdatePasswordViewController") as UpdatePasswordViewController;
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
+            PresentViewController(navController, true, null);
+        }
+
+        private void ManageRegisteredCards()
+        {
+            ActivityIndicator.Show();
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ManageCards", null);
+                        ManageCardViewController viewController =
+                            storyBoard.InstantiateViewController("ManageCardViewController") as ManageCardViewController;
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
+                        PresentViewController(navController, true, null);
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                    ActivityIndicator.Hide();
+                });
+            });
         }
     }
 }

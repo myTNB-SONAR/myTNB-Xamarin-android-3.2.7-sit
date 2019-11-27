@@ -109,7 +109,8 @@
     "changeLanguageNo_EN": "No",
     "new": "New",
     "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss.",
-    "wellBeBack": "We’ll be back shortly!"
+    "wellBeBack": "We’ll be back shortly!",
+    "electricityAccounts": "Electricity Accounts"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -563,7 +564,8 @@
     "shareDescription": "Share this app",
     "tnc": "Terms & Conditions",
     "findUs": "Find Us",
-    "setAppLanguage": "Set App Language"
+    "setAppLanguage": "Set App Language",
+    "myTNBAccount": "myTNB Account"
   },
   "NotificationSettings": {
     "title": "Notification Settings",

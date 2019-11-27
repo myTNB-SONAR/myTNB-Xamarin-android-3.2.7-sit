@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.Profile
@@ -11,6 +12,8 @@ namespace myTNB.Profile
     public class ProfileDataSource : UITableViewSource
     {
         public Dictionary<string, List<string>> ProfileList { set; private get; } = new Dictionary<string, List<string>>();
+        public Action<int, int> OnRowSelect { set; private get; }
+        public List<string> ProfileLabels { set; private get; }
         public ProfileDataSource()
         {
 
@@ -25,14 +28,9 @@ namespace myTNB.Profile
         {
             switch (section)
             {
-                case 1:
-                case 3:
-                    { return 2; }
+                case 0: { return 7; }
                 case 2: { return 5; }
-                default: { return 0; }
-                    /* case 0: { return 7; }
-                     case 2: { return 5; }
-                     default: { return 2; }*/
+                default: { return 2; }
             }
         }
 
@@ -84,7 +82,81 @@ namespace myTNB.Profile
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
-            return new UITableViewCell();
+            else
+            {
+                ProfileCell cell = tableView.DequeueReusableCell(ProfileConstants.Cell_Profile, indexPath) as ProfileCell;
+                cell.Title = ProfileLabels[indexPath.Row];
+                cell.IsLineHidden = indexPath.Row == 6;
+
+                ProfileConfig(ref cell, indexPath.Row);
+                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                return cell;
+            }
+        }
+
+        private void ProfileConfig(ref ProfileCell cell, int row)
+        {
+            UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                   ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
+            string value = string.Empty;
+            string action = string.Empty;
+            bool isActionEnabled = true;
+            switch (row)
+            {
+                case 0:
+                    {
+                        value = userInfo?.displayName ?? string.Empty;
+                        break;
+                    }
+                case 1:
+                    {
+                        string icNo = userInfo?.identificationNo;
+                        if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
+                        {
+                            string lastDigit = icNo.Substring(icNo.Length - 4);
+                            icNo = "•••••• •• " + lastDigit;
+                        }
+                        string maskedICNo = icNo;
+                        value = maskedICNo;
+                        break;
+                    }
+                case 2:
+                    {
+                        value = userInfo?.email ?? string.Empty;
+                        break;
+                    }
+                case 3:
+                    {
+                        value = userInfo?.mobileNo ?? string.Empty;
+                        action = LanguageUtility.GetCommonI18NValue(Constants.Common_Update);
+                        break;
+                    }
+                case 4:
+                    {
+                        value = "••••••••••••••";
+                        action = LanguageUtility.GetCommonI18NValue(Constants.Common_Update);
+                        break;
+                    }
+                case 5:
+                    {
+                        int cardCount = DataManager.DataManager.SharedInstance.RegisteredCards?.d?.data?.Count ?? 0;
+                        value = cardCount.ToString();
+                        action = LanguageUtility.GetCommonI18NValue(Constants.Common_Manage);
+                        isActionEnabled = cardCount > 0;
+                        break;
+                    }
+                case 6:
+                    {
+                        int accountCount = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count ?? 0;
+                        value = accountCount.ToString();
+                        action = LanguageUtility.GetCommonI18NValue(Constants.Common_Manage);
+                        isActionEnabled = accountCount > 0;
+                        break;
+                    }
+            }
+            cell.Value = value;
+            cell.Action = action;
+            cell.IsActionEnabled = isActionEnabled;
         }
 
         public override nfloat EstimatedHeightForHeader(UITableView tableView, nint section)
@@ -104,6 +176,16 @@ namespace myTNB.Profile
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             Debug.WriteLine("RowSelected: " + indexPath.Section + " " + indexPath.Row);
+            bool isActionEnabled = true;
+            if (indexPath.Section == 0 && indexPath.Row > 4)
+            {
+                ProfileCell cell = tableView.CellAt(indexPath) as ProfileCell;
+                isActionEnabled = cell.IsActionEnabled;
+            }
+            if (OnRowSelect != null && isActionEnabled)
+            {
+                OnRowSelect.Invoke(indexPath.Section, indexPath.Row);
+            }
         }
     }
 }

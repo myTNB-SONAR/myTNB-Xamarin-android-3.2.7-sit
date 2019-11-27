@@ -71,11 +71,11 @@ namespace myTNB.SitecoreCMS
             {
                 needsUpdate = false;
             }
-            /*else
+            else
             {
                 sharedPreference.SetString(sitecoreTS, key);
                 sharedPreference.Synchronize();
-            }*/
+            }
         }
 
         private void UpdateSharedPreference(string key, string value)
@@ -439,7 +439,7 @@ namespace myTNB.SitecoreCMS
                 }
                 else
                 {
-                    string content = LanguageUtility.LanguageContent;
+                    string content = string.Empty;// LanguageUtility.LanguageContent;
                     if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
                     {
                         LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE

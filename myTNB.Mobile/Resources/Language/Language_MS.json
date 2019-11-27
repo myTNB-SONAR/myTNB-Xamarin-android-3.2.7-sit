@@ -109,7 +109,8 @@
     "changeLanguageNo_EN": "No",
     "new": "Baru",
     "tutorialSwipeText": "Leret untuk melihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
-    "wellBeBack": "We’ll be back shortly!"
+    "wellBeBack": "We’ll be back shortly!",
+    "electricityAccounts": "Electricity Accounts"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -563,7 +564,8 @@
     "shareDescription": "Kongsi aplikasi ini",
     "tnc": "Terma & Syarat",
     "findUs": "Temui Kami",
-    "setAppLanguage": "Tetapkan Bahasa Aplikasi"
+    "setAppLanguage": "Tetapkan Bahasa Aplikasi",
+    "myTNBAccount": "Akaun myTNB"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",

@@ -97,6 +97,10 @@ namespace myTNB
             {
                 ViewHeight -= (View.Frame.Height - TabBarController.TabBar.Frame.GetMinY());
             }
+            else
+            {
+                ViewHeight -= DeviceHelper.GetStatusBarHeight();
+            }
             BaseMargin = GetScaledWidth(16);
             BaseMarginedWidth = ViewWidth - (BaseMargin * 2);
         }
