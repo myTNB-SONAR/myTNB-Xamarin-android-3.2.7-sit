@@ -111,10 +111,6 @@ namespace myTNB_Android.Src.Promotions.Fragments
             {
                 try
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
                     if (success)
                     {
                         noPromotionLayout.Visibility = ViewStates.Gone;
@@ -137,6 +133,27 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     {
                         noPromotionLayout.Visibility = ViewStates.Visible;
                         mPromotionRecyclerView.Visibility = ViewStates.Gone;
+                    }
+
+                    try
+                    {
+                        if (PromotionsEntityV2.HasUnread())
+                        {
+                            ((DashboardHomeActivity)this.Activity).ShowUnreadPromotions(true);
+                        }
+                        else
+                        {
+                            ((DashboardHomeActivity)this.Activity).HideUnreadPromotions(true);
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
                     }
                 }
                 catch (System.Exception ex)
