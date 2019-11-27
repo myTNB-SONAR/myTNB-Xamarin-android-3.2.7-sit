@@ -186,6 +186,13 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                                 isSMR = true;
                                 isTutorialShown = true;
                             }
+
+                            if (extras.ContainsKey("fromNotificationDetails"))
+                            {
+                                UpdateUIForNonSMR();
+                                isSMR = false;
+                                isTutorialShown = true;
+                            }
                         }
                         else
                         {

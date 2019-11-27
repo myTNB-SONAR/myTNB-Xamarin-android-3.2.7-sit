@@ -98,7 +98,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckSearchEditAction();
 
-            void SoftKillApplication(string place);
             void RestartHomeMenu();
 
         }

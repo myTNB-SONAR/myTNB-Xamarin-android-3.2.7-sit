@@ -135,6 +135,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 {
                     txt_app_version.Text = GetString(Resource.String.text_app_version) + " " + name;
                 }
+
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (System.Exception e)
             {
@@ -166,7 +169,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
                 }
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "More");
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Profile");
             }
             catch (ClassCastException e)
             {

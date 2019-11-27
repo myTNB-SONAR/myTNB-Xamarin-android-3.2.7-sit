@@ -382,13 +382,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(ssmr_submit_meter_activity);
         }
 
-        public void EnableSelfMeterReading(AccountData mSelectedAccountData, CAContactDetailsModel contactDetailsModel)
+        public void EnableSelfMeterReading(AccountData mSelectedAccountData)
         {
-            Intent SSMRTerminateActivity = new Intent(this, typeof(myTNB_Android.Src.SSMRTerminate.MVP.SSMRTerminateActivity));
-            SSMRTerminateActivity.PutExtra("SMR_ACTION", Constants.SMR_ENABLE_FLAG);
-            SSMRTerminateActivity.PutExtra("SMR_CONTACT_DETAILS", JsonConvert.SerializeObject(contactDetailsModel));
-            SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
-            StartActivity(SSMRTerminateActivity);
+            Intent ssmr_history_activity = new Intent(this, typeof(SSMRMeterHistoryActivity));
+            ssmr_history_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            ssmr_history_activity.PutExtra("fromNotificationDetails", true);
+            StartActivity(ssmr_history_activity);
         }
 
         class ClickSpan : ClickableSpan

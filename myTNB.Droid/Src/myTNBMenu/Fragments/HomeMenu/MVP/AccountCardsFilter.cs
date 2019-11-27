@@ -58,7 +58,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
-                this.mViewListerner.SoftKillApplication("PerformFiltering");
                 Utility.LoggingNonFatalError(e);
             }
             return filterResults;
@@ -86,7 +85,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
-                this.mViewListerner.SoftKillApplication("PublishResults");
                 Utility.LoggingNonFatalError(e);
             }
         }

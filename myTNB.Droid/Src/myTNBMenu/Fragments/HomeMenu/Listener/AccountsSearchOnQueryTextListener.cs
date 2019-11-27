@@ -25,7 +25,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
             }
             catch (Exception e)
             {
-                this.mViewListerner.SoftKillApplication("QueryTextChange");
                 Utility.LoggingNonFatalError(e);
             }
             return true;
@@ -39,7 +38,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
             }
             catch (Exception e)
             {
-                this.mViewListerner.SoftKillApplication("QueryTextSubmit");
                 Utility.LoggingNonFatalError(e);
             }
             return false;
