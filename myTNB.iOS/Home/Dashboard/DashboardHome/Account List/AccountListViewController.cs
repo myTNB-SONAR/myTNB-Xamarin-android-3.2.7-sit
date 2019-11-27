@@ -323,8 +323,11 @@ namespace myTNB
         private void SetFooterView(bool allAcctsAreVisible = false)
         {
             if (!_dashboardHomeHelper.HasMoreThanThreeAccts)
+            {
+                _footerView.RemoveFromSuperview();
+                _accountListTableView.TableFooterView = null;
                 return;
-
+            }
             if (_accountListTableView.TableFooterView != null)
             {
                 return;
