@@ -30,7 +30,11 @@ namespace myTNB.SitecoreCMS.Model
         public string DisplayName { set; get; }
         public string Description { set; get; }
         public string Image { set; get; }
+        public string ImageB64 { set; get; }
+        public string CategoryID { set; get; }
         public Bitmap ImageBitmap { set; get; }
+        public bool Read { set; get; }
+        public bool IsUsed { set; get; }
 
         public string ID { set; get; }
     }

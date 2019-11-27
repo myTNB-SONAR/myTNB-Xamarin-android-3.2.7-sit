@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerTabTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="@color/shimmer_color"
+            android:background="@color/shimmer_color"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:text="                "/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+    <TextView
+        android:id="@+id/tabTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/new_grey"
+        android:visibility="gone"
+        android:textSize="14dp" />
+</LinearLayout> 

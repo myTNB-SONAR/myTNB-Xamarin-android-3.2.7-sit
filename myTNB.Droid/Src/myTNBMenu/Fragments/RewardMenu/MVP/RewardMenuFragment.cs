@@ -5,15 +5,28 @@ using System.Linq;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V4.View;
 using Android.Support.V7.App;
 using Android.Views;
+using CheeseBind;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class RewardMenuFragment : BaseFragment
     {
+
+        private bool isSiteCoreComplete = false;
+
+        [BindView(Resource.Id.rewardsSlidingTabs)]
+        TabLayout rewardsSlidingTabs;
+
+        [BindView(Resource.Id.rewardViewPager)]
+        ViewPager rewardViewPager;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -42,6 +55,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (System.Exception e)
             {
@@ -86,7 +109,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public override int ResourceId()
         {
-            return Resource.Layout.HomeMenuFragmentView;
+            return Resource.Layout.RewardListView;
         }
 
         public void ShowBackButton(bool flag)

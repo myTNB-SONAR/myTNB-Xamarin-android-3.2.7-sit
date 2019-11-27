@@ -3719,6 +3719,19 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Database\Model\RewardsEntity.cs" />
+    <Compile Include="Src\Database\Model\RewardsParentEntity.cs" />
+    <Compile Include="Src\Database\Model\RewardsCategoryEntity.cs" />
+    <AndroidResource Include="Resources\layout\CustomTabLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\RewardIListtemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardItemFragment.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Adapter\RewardsTabAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4083,6 +4096,7 @@
     <Folder Include="Src\RearrangeAccount\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

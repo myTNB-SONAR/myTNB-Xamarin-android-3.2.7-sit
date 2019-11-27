@@ -173,6 +173,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowUnreadRewards(bool flag);
 
             void ShowUnreadRewards();
+
+            void HideUnreadRewards(bool flag);
+
+            void HideUnreadRewards();
+
+            void ShowRewardsMenu();
         }
 
         public interface IUserActionsListener : IBasePresenter

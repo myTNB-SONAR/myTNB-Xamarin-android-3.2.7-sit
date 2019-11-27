@@ -302,7 +302,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 					}
 
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_bill:
                     OnUpdatePromoUnRead();
@@ -354,7 +354,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
                     WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
@@ -381,20 +381,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						}
 					}
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_reward:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
-                    OnUpdateRewardUnRead(true);
-                    this.mView.ShowToBeAddedToast();
-					break;
+                    this.mView.HideAccountName();
+                    this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
+                    this.mView.ShowRewardsMenu();
+                    if (this.mView.IsActive())
+                    {
+                        if (RewardsEntity.HasUnread())
+                        {
+                            this.mView.ShowUnreadRewards(true);
+
+                        }
+                        else
+                        {
+                            this.mView.HideUnreadRewards(true);
+
+                        }
+                    }
+                    break;
 				case Resource.Id.menu_more:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     this.mView.ShowMoreMenu();
 					break;
 			}
@@ -591,14 +605,31 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             isPromoClicked = false;
         }
 
-        private void OnUpdateRewardUnRead(bool flag)
+        private void OnUpdateRewardUnRead()
         {
-            this.mView.ShowUnreadRewards(flag);
+            if (RewardsEntity.HasUnread())
+            {
+                this.mView.ShowUnreadRewards(false);
+
+            }
+            else
+            {
+                this.mView.HideUnreadRewards(false);
+
+            }
         }
 
         private void OnResumeUpdateRewardUnRead()
         {
-            this.mView.ShowUnreadRewards();
+            if (RewardsEntity.HasUnread())
+            {
+                this.mView.ShowUnreadRewards();
+
+            }
+            else
+            {
+                this.mView.HideUnreadRewards();
+            }
         }
 
         public void OnValidateData()
