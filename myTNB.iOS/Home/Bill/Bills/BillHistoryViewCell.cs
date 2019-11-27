@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using CoreGraphics;
 using UIKit;
 
@@ -116,7 +117,9 @@ namespace myTNB.Home.Bill
                 {
                     value = string.Empty;
                 }
-                _lblAmount.Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, value);
+                double.TryParse(value, out double parsedValue);
+                string amt = parsedValue.ToString("N2", CultureInfo.InvariantCulture);
+                _lblAmount.Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, amt);
                 nfloat width = _lblAmount.GetLabelWidth(_cellWidth - ScaleUtility.GetScaledWidth(48));
                 _lblAmount.Frame = new CGRect(_cellWidth - width - ScaleUtility.GetScaledWidth(48)
                     , ScaleUtility.GetScaledHeight(26), width, _baseVMargin);

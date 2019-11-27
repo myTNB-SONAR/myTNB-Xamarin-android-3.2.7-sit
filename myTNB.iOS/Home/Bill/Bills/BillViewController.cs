@@ -756,7 +756,7 @@ namespace myTNB
             }
             else
             {
-                _lblPaymentStatus.Text = isRe ? GetI18NValue(BillConstants.I18N_BeenPaidExtra)
+                _lblPaymentStatus.Text = isRe ? GetI18NValue(data.AmountDue == 0 ? BillConstants.I18N_MyEarnings : BillConstants.I18N_BeenPaidExtra)
                     : GetI18NValue(data.AmountDue == 0 ? BillConstants.I18N_ClearedBills : BillConstants.I18N_PaidExtra);
                 _lblDate.Hidden = true;
                 ctaFrame.Y = GetYLocationFromFrame(_viewAmount.Frame, 24);
