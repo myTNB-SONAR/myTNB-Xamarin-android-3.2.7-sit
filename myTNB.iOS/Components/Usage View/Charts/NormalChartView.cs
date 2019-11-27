@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -99,10 +100,11 @@ namespace myTNB
                     Hidden = IsTariffView
                 };
                 viewBar.AddSubview(viewCover);
-                if (!item.DPCIndicator)
-                {
-                    AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isSelected);
-                }
+                /*if (!item.DPCIndicator)
+                {*/
+                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1
+                    , viewCover.Frame.Size, isSelected, item.DPCIndicator);
+                //}
 
                 nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
@@ -175,7 +177,7 @@ namespace myTNB
         }
 
         protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
-            , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
+            , double baseValue, bool isSelected, CGSize size, bool isLatestBar, bool isDPC)
         {
             //if (viewBar == null || tariffList == null || tariffList.Count == 0 || baseValue == 0) { return; }
             if (viewBar == null || baseValue == 0) { return; }
@@ -196,10 +198,10 @@ namespace myTNB
                 Tag = 2002,
                 Hidden = !IsTariffView,
                 ClipsToBounds = true,
-                BackgroundColor = tariffCount > 0 ? UIColor.Clear : UIColor.White
+                BackgroundColor = tariffCount > 0 && !isDPC ? UIColor.Clear : UIColor.White
             };
             viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;
-            if (tariffCount > 0)
+            if (tariffCount > 0 && !isDPC)
             {
                 for (int i = 0; i < tariffList.Count; i++)
                 {
@@ -380,7 +382,7 @@ namespace myTNB
 
         private void UpdateDPCIndicator(CustomUIView segmentView)
         {
-            bool isSelected = segmentView.Tag == SelectedIndex;
+            bool isSelected = false;// segmentView.Tag == SelectedIndex;
             CustomUIView viewBar = segmentView.ViewWithTag(1001) as CustomUIView;
             UIImageView dpcIcon = segmentView.ViewWithTag(1005) as UIImageView;
             UILabel lblAmount = segmentView.ViewWithTag(1002) as UILabel;

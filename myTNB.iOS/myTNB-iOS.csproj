@@ -1168,8 +1168,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x.png" />
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%402x.png" />
     <ImageAsset Include="Assets.xcassets\Dpc-Indicator.imageset\Dpc-Indicator%403x.png" />
@@ -1201,6 +1199,8 @@
     <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
