@@ -1,18 +1,7 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Android.Content;
-using Android.Graphics;
+﻿using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.App;
-using Android.Support.V4.View;
-using Android.Support.V7.App;
 using Android.Views;
-using CheeseBind;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using Android.Widget;
 
