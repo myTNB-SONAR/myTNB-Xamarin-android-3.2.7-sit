@@ -100,6 +100,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
                             try
                             {
+                                if (vh.shimmerRewardImageLayout.IsShimmerStarted)
+                                {
+                                    vh.shimmerRewardImageLayout.StopShimmer();
+                                }
                                 var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
                                 if (shimmerBuilder != null)
                                 {
@@ -120,6 +124,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
                             try
                             {
+                                if (vh.shimmerRewardImageLayout.IsShimmerStarted)
+                                {
+                                    vh.shimmerRewardImageLayout.StopShimmer();
+                                }
                                 var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
                                 if (shimmerBuilder != null)
                                 {
@@ -153,7 +161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
                 try
                 {
-                    if (string.IsNullOrEmpty(rewardsList[position].DisplayName))
+                    if (string.IsNullOrEmpty(rewardsList[position].RewardName))
                     {
                         // Text Shimmer Start
                         vh.rewardBottomView.Visibility = ViewStates.Gone;
@@ -183,7 +191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                         }
 
                         vh.rewardBottomView.Visibility = ViewStates.Visible;
-                        vh.txtTitle.Text = rewardsList[position].DisplayName;
+                        vh.txtTitle.Text = rewardsList[position].RewardName;
                         // update vh.txtTitle, set rewardUnreadImg and margin
                     }
                 }

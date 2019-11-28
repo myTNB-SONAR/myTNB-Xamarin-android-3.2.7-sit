@@ -13,8 +13,8 @@ namespace myTNB_Android.Src.Database.Model
         [Unique, Column("ID")]
         public string ID { get; set; }
 
-        [Column("DisplayName")]
-        public string DisplayName { set; get; }
+        [Column("CategoryName")]
+        public string CategoryName { set; get; }
 
         public void CreateTable()
         {
@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     RewardsCategoryEntity item = new RewardsCategoryEntity();
                     item.ID = obj.ID;
-                    item.DisplayName = obj.DisplayName;
+                    item.CategoryName = obj.CategoryName;
                     InsertItem(item);
                 }
             }
@@ -75,6 +75,19 @@ namespace myTNB_Android.Src.Database.Model
                 Utility.LoggingNonFatalError(e);
             }
             return itemList;
+        }
+
+        public void RemoveItem(string categoryId)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Delete from RewardsCategoryEntity WHERE CategoryID = ?", categoryId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
         }
 
         public void DeleteTable()

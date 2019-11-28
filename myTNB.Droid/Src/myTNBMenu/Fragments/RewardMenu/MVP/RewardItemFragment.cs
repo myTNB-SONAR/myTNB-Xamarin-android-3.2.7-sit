@@ -54,7 +54,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 }
                 else
                 {
-
+                    mRewardList = this.presenter.GetActiveRewardList();
                 }
             }
         }

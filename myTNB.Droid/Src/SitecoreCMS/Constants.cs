@@ -153,9 +153,15 @@
                 public struct Rewards
                 {
                     public const string Title = "Title";
+                    public const string TitleOnListing = "TitleOnListing";
                     public const string DisplayName = "DisplayName";
                     public const string Description = "Description";
                     public const string Image = "Image";
+                    public const string PeriodLabel = "RewardPeriodText";
+                    public const string LocationLabel = "LocationsText";
+                    public const string TandCLabel = "TermsAndConditions";
+                    public const string StartDate = "StartDateTime";
+                    public const string EndDate = "EndDateTime";
                 }
             }
 

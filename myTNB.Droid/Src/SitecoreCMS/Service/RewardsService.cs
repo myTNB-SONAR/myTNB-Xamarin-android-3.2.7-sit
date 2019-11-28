@@ -33,7 +33,7 @@ namespace myTNB.SitecoreCMS.Services
             return itemList.ToList();
         }
 
-        internal List<RewardsModel> GetChildrenItems(string path)
+        internal List<RewardsModel> GetChildrenItems(string path, RewardsCategoryModel rewardCategory)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace myTNB.SitecoreCMS.Services
                 var req = sitecoreService.GetItemByPath(path
                     , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
                 var item = req.Result;
-                var list = ParseToChildrenItems(item);
+                var list = ParseToChildrenItems(item, rewardCategory);
                 var itemList = list.Result;
                 return itemList.ToList();
             }
@@ -71,18 +71,23 @@ namespace myTNB.SitecoreCMS.Services
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
-                    if (item == null)
+                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.Path) || string.IsNullOrEmpty(item.DisplayName))
                     {
                         continue;
                     }
-                    list.Add(new RewardsCategoryModel
+
+                    RewardsCategoryModel rewardCategory = new RewardsCategoryModel()
                     {
-                        Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
-                        DisplayName = item.DisplayName,
-                        Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
-                        RewardList = string.IsNullOrEmpty(item.Path) ? new List<RewardsModel>() : GetChildrenItems(item.Path),
+                        CategoryName = item.DisplayName,
                         ID = item.Id
-                    });
+                    };
+                    List<RewardsModel> rewardList = GetChildrenItems(item.Path, rewardCategory);
+
+                    if (rewardList != null && rewardList.Count > 0)
+                    {
+                        rewardCategory.RewardList = rewardList;
+                        list.Add(rewardCategory);
+                    }
                 }
             }
             catch (Exception e)
@@ -92,7 +97,7 @@ namespace myTNB.SitecoreCMS.Services
             return list;
         }
 
-        private async Task<IEnumerable<RewardsModel>> ParseToChildrenItems(ScItemsResponse itemsResponse)
+        private async Task<IEnumerable<RewardsModel>> ParseToChildrenItems(ScItemsResponse itemsResponse, RewardsCategoryModel rewardCategory)
         {
             List<RewardsModel> list = new List<RewardsModel>();
             try
@@ -100,17 +105,24 @@ namespace myTNB.SitecoreCMS.Services
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
-                    if (item == null)
+                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.DisplayName))
                     {
                         continue;
                     }
-                         // Image = item.GetImageUrlFromMediaField(_imgSize, _websiteURL),
                     list.Add(new RewardsModel
                     {
+                        CategoryName = rewardCategory.CategoryName,
+                        CategoryID = rewardCategory.ID,
+                        TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TitleOnListing),
+                        PeriodLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.PeriodLabel),
+                        LocationLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.LocationLabel),
+                        TandCLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TandCLabel),
+                        StartDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.StartDate),
+                        EndDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.EndDate),
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
-                        DisplayName = item.DisplayName,
+                        RewardName = item.DisplayName,
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
-                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Rewards.Image, _os, _imgSize, _websiteURL, _language),
+                        Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Rewards.Image, _websiteURL, false),
                         ID = item.Id
                     });
                 }

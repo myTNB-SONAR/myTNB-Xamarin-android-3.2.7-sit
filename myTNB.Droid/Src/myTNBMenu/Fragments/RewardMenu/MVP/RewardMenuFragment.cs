@@ -10,6 +10,7 @@ using Android.Support.V7.App;
 using Android.Views;
 using CheeseBind;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
@@ -33,6 +34,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         RewardMenuContract.IRewardMenuPresenter presenter;
 
         private List<RewardMenuModel> mTabList = new List<RewardMenuModel>();
+
+        private string savedTimeStamp = "0000000";
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -69,7 +72,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 HighLightCurrentTab(0);
                 rewardViewPager.AddOnPageChangeListener(this);
 
-                // TODO: Sitecore Load
+                this.presenter.GetRewardsTimeStamp();
             }
             catch (System.Exception e)
             {
@@ -224,6 +227,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         public override void OnDestroy()
         {
             base.OnDestroy();
+            this.presenter.OnCancelTask();
             mAdapter.ClearAll();
         }
 
@@ -258,6 +262,85 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             rewardViewPager.Adapter = mAdapter;
             rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
+        }
+
+        public void OnSavedRewardsTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetRewardsTimeStamp();
+        }
+
+        public void OnSetResultTabView(List<RewardMenuModel> list)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    mAdapter.ClearAll();
+
+                    mTabList = list;
+
+                    for (int i = 0; i < mTabList.Count; i++)
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.PutInt(Constants.REWARDS_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
+                        bundle.PutString(Constants.REWARDS_ITEM_LIST_SEARCH_STRING_KEY, mTabList[i].FragmentSearchString);
+
+                        mTabList[i].Fragment.Arguments = bundle;
+                        mAdapter.AddFragment(mTabList[i].Fragment, mTabList[i].TabTitle);
+                    }
+
+                    rewardViewPager.Adapter = mAdapter;
+                    rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
+
+                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f));
+                    HighLightCurrentTab(0);
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckRewardsTimeStamp()
+        {
+            try
+            {
+                RewardsParentEntity wtManager = new RewardsParentEntity();
+                List<RewardsParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    RewardsParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedTimeStamp))
+                        {
+                            this.presenter.OnGetRewards();
+                        }
+                        else
+                        {
+                            this.presenter.CheckRewardsCache();
+                        }
+                    }
+                    else
+                    {
+                        this.presenter.CheckRewardsCache();
+                    }
+                }
+                else
+                {
+                    this.presenter.CheckRewardsCache();
+                }
+            }
+            catch (System.Exception e)
+            {
+                this.presenter.CheckRewardsCache();
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

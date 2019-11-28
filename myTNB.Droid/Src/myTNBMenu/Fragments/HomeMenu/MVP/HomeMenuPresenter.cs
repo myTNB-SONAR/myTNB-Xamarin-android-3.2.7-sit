@@ -1975,35 +1975,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
-        public Task OnGetRewards()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    RewardsResponseModel responseModel = getItemsService.GetRewardsItems();
-                    /*if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingScreensManager == null)
-                        {
-                            SSMRMeterReadingScreensManager = new SSMRMeterReadingScreensEntity();
-                        }
-                        SSMRMeterReadingScreensManager.DeleteTable();
-                        SSMRMeterReadingScreensManager.CreateTable();
-                        SSMRMeterReadingScreensManager.InsertListOfItems(responseModel.Data);
-                    }*/
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
-
         public void GetSmartMeterReadingWalkthroughtTimeStamp()
         {
             try

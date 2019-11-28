@@ -180,8 +180,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void RestoreQueryAccounts();
 
             void OnCheckMyServiceState();
-
-            Task OnGetRewards();
         }
 
         public interface IHomeMenuService

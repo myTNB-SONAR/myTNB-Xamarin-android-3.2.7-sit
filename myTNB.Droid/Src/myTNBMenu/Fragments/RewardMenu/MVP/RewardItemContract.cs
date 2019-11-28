@@ -13,6 +13,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         public interface IRewardItemPresenter
         {
             List<RewardsModel> InitializeRewardList();
+
+            List<RewardsModel> GetActiveRewardList();
         }
     }
 }
