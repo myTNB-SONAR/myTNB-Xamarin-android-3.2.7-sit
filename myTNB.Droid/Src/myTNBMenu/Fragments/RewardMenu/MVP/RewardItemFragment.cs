@@ -4,21 +4,58 @@ using Android.App;
 using Android.Views;
 using myTNB_Android.Src.Utils;
 using Android.Widget;
+using Android.Support.V7.Widget;
+using static myTNB_Android.Src.Utils.Constants;
+using myTNB.SitecoreCMS.Model;
+using System.Collections.Generic;
+using Android.Preferences;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
+namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
-    public class RewardItemFragment : Fragment
+    public class RewardItemFragment : Fragment, RewardItemContract.IRewardItemView
     {
-        TextView txtTest;
-
-        string testTitle = "Test 123";
+        RecyclerView mRewardsRecyclerView;
+        RewardsRecyclerAdapter mRewardsRecyclerAdapter;
+        List<RewardsModel> mRewardList = new List<RewardsModel>();
+        REWARDSITEMLISTMODE mListMode;
+        RewardItemContract.IRewardItemPresenter presenter;
+        string mRewardSearchKey = "";
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            if (Arguments.ContainsKey("Title"))
+            presenter = new RewardItemPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            if (Arguments != null && Arguments.ContainsKey(Constants.REWARDS_ITEM_LIST_MODE))
             {
-                testTitle = Arguments.GetString("Title");
+                mListMode = (REWARDSITEMLISTMODE) Arguments.GetInt(Constants.REWARDS_ITEM_LIST_MODE);
+            }
+            else
+            {
+                mListMode = REWARDSITEMLISTMODE.INITIATE;
+            }
+
+            mRewardList = new List<RewardsModel>();
+
+            if (mListMode == REWARDSITEMLISTMODE.INITIATE)
+            {
+                mRewardList = this.presenter.InitializeRewardList();
+            }
+            else
+            {
+                if (Arguments != null && Arguments.ContainsKey(Constants.REWARDS_ITEM_LIST_SEARCH_STRING_KEY))
+                {
+                    mRewardSearchKey = Arguments.GetString(Constants.REWARDS_ITEM_LIST_SEARCH_STRING_KEY);
+                }
+
+                if (mRewardSearchKey != "")
+                {
+
+                }
+                else
+                {
+
+                }
             }
         }
 
@@ -59,8 +96,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             View rootView = inflater.Inflate(Resource.Layout.RewardIListtemLayout, container, false);
 
-            txtTest = rootView.FindViewById<TextView>(Resource.Id.txtTest);
-            txtTest.Text = testTitle;
+            mRewardsRecyclerView = rootView.FindViewById<RecyclerView>(Resource.Id.rewardRecyclerView);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
+            mRewardsRecyclerView.SetLayoutManager(linearLayoutManager);
+
+            mRewardsRecyclerAdapter = new RewardsRecyclerAdapter(mRewardList, this.Activity);
+            mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
 
             return rootView;
         }

@@ -7,17 +7,17 @@
     android:orientation="horizontal">
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerTabTextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible">
         <TextView
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textColor="@color/shimmer_color"
             android:background="@color/shimmer_color"
             android:gravity="center"
             android:textSize="14dp"
-            android:text="                "/>
+            android:text="                    "/>
     </com.facebook.shimmer.ShimmerFrameLayout>
     <TextView
         android:id="@+id/tabTextView"

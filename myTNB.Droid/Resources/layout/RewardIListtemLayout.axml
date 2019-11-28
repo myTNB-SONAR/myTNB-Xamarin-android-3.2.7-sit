@@ -6,15 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootView">
-    <TextView
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="8dp"
-    android:textSize="16dp"
-    android:textColor="@color/water_blue"
-    android:textStyle="bold"
-    android:gravity="center_horizontal"
-    android:text="@string/prelogin_welcome"
-    android:id="@+id/txtTest" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rewardRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollIndicators="none" />
 </LinearLayout>

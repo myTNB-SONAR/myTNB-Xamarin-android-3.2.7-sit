@@ -7,11 +7,13 @@ using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
 using Java.Lang;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 {
     public class RewardsTabAdapter : FragmentStatePagerAdapter
     {
+        private FragmentManager mManager;
         private List<Fragment> mFragmentList = new List<Fragment>();
         private List<string> mFragmentTitleList = new List<string>();
         private Context context;
@@ -21,6 +23,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             this.context = context;
             mFragmentList = new List<Fragment>();
             mFragmentTitleList = new List<string>();
+            mManager = fm;
         }
 
         public override int Count => mFragmentList.Count;
@@ -41,28 +44,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             mFragmentTitleList.Add(title);
         }
 
+        public void ClearAll()
+        {
+            mManager.PopBackStack();
+            mFragmentList = new List<Fragment>();
+            mFragmentTitleList = new List<string>();
+        }
+
         public View GetTabView(int position)
         {
             View view = LayoutInflater.From(context).Inflate(Resource.Layout.CustomTabLayout, null);
             TextView tabTextView = view.FindViewById<TextView>(Resource.Id.tabTextView);
             ShimmerFrameLayout tabTextShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerTabTextView);
-            TextViewUtil.
+            TextViewUtils.SetMuseoSans500Typeface(tabTextView);
+            tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.new_grey));
 
             if (string.IsNullOrEmpty(mFragmentTitleList[position]))
             {
                 tabTextView.Visibility = ViewStates.Gone;
+                tabTextShimmer.Visibility = ViewStates.Visible;
                 try
                 {
                     var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
                     if (shimmerBuilder != null)
                     {
-                        vh.myServiceShimmerImg.SetShimmer(shimmerBuilder?.Build());
-                        vh.myServiceShimmerText.SetShimmer(shimmerBuilder?.Build());
-                        vh.myServiceShimmerTextTwo.SetShimmer(shimmerBuilder?.Build());
+                        tabTextShimmer.SetShimmer(shimmerBuilder?.Build());
                     }
-                    vh.myServiceShimmerImg.StartShimmer();
-                    vh.myServiceShimmerText.StartShimmer();
-                    vh.myServiceShimmerTextTwo.StartShimmer();
+                    tabTextShimmer.StartShimmer();
                 }
                 catch (Exception e)
                 {
@@ -72,18 +80,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             else
             {
                 tabTextView.Visibility = ViewStates.Visible;
+                tabTextShimmer.Visibility = ViewStates.Gone;
+                if (tabTextShimmer.IsShimmerStarted)
+                {
+                    tabTextShimmer.StopShimmer();
+                }
+                tabTextView.Text = mFragmentTitleList[position];
             }
             return view;
         }
         public View GetSelectedTabView(int position)
         {
-            View view = LayoutInflater.from(context).inflate(R.layout.custom_tab, null);
-            TextView tabTextView = view.findViewById(R.id.tabTextView);
-            tabTextView.setText(mFragmentTitleList.get(position));
-            tabTextView.setTextColor(ContextCompat.getColor(context, R.color.yellow));
-            ImageView tabImageView = view.findViewById(R.id.tabImageView);
-            tabImageView.setImageResource(mFragmentIconList.get(position));
-            tabImageView.setColorFilter(ContextCompat.getColor(context, R.color.yellow), PorterDuff.Mode.SRC_ATOP);
+            View view = LayoutInflater.From(context).Inflate(Resource.Layout.CustomTabLayout, null);
+            TextView tabTextView = view.FindViewById<TextView>(Resource.Id.tabTextView);
+            ShimmerFrameLayout tabTextShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerTabTextView);
+            TextViewUtils.SetMuseoSans500Typeface(tabTextView);
+            tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.powerBlue));
+
+            if (string.IsNullOrEmpty(mFragmentTitleList[position]))
+            {
+                tabTextView.Visibility = ViewStates.Gone;
+                tabTextShimmer.Visibility = ViewStates.Visible;
+                try
+                {
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        tabTextShimmer.SetShimmer(shimmerBuilder?.Build());
+                    }
+                    tabTextShimmer.StartShimmer();
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                tabTextView.Visibility = ViewStates.Visible;
+                tabTextShimmer.Visibility = ViewStates.Gone;
+                if (tabTextShimmer.IsShimmerStarted)
+                {
+                    tabTextShimmer.StopShimmer();
+                }
+                tabTextView.Text = mFragmentTitleList[position];
+            }
             return view;
         }
 
