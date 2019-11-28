@@ -206,14 +206,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
-            //if (validatedMeterList.Count > 0 && validatedMeterList.Count < validationStateList.Count)
-            //{
-            //    UpdateTakePhotoFormattedNote();
-            //}
-            //else
-            //{
-            //    UpdateTakePhotoNote();
-            //}
+            if (meterReadingModelList.Count == requiredMeterReadingModelList.Count)
+            {
+                UpdateTakePhotoNote();
+            }
+            else
+            {
+                UpdateTakePhotoFormattedNote();
+            }
         }
 
         private void ShowOCRLoadingScreen()
@@ -395,15 +395,23 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
 
                 SetPhotoBoxClickable();
-                if(meterReadingModelList.Count == requiredMeterReadingModelList.Count)
+
+                List<PhotoContainerBox> photoBoxes = photoContainerBoxes.FindAll(box => { return !box.mHasPhoto; });
+                if (photoBoxes.Count == photoContainerBoxes.Count)
                 {
-                    UpdateTakePhotoNote();
+                    if (meterReadingModelList.Count == requiredMeterReadingModelList.Count)
+                    {
+                        UpdateTakePhotoNote();
+                    }
+                    else
+                    {
+                        UpdateTakePhotoFormattedNote();
+                    }
                 }
                 else
                 {
-                    UpdateTakePhotoFormattedNote();
+                    takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
                 }
-
             }
             else
             {
@@ -550,46 +558,45 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void UpdateTakePhotoFormattedNote()
         {
-            string doneMeter = "You're done with ";
-            string onTo = "! On to the ";
-            string twoMoreUnits = "next two units ";
-            string finalUnit = "final unit ";
+            string singleDone = "You're done with {0}! ";
+            string pluralDone = "You're done with {0} and {1}! ";
+            string singleOnto = "On to the final unit {0} now.";
+            string pluralOnto = "On to the next units {0} and {1}.";
+            string finalString = "";
 
             List<string> doneUnitList = new List<string>();
             List<string> notDoneUnitList = new List<string>();
 
-            for (int i=0; i < requiredMeterReadingModelList.Count; i++)
+            for (int i=0; i < meterReadingModelList.Count; i++)
             {
-                if (requiredMeterReadingModelList[i].isValidated)
+                if (meterReadingModelList[i].isValidated)
                 {
-                    doneUnitList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
+                    doneUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
                 }
                 else
                 {
-                    notDoneUnitList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
+                    notDoneUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
                 }
             }
 
-            string finalString;
-            if (requiredMeterReadingModelList.Count == 3)
+            //Construct done meter reading message
+            if (doneUnitList.Count > 1)
             {
-                if (doneUnitList.Count == 2)
-                {
-                    finalString = doneMeter + "<font color='#20bd4c'>" + doneUnitList[0]
-                        + "</font> and <font color='#20bd4c'>" + doneUnitList[1] + "</font> "
-                        + onTo + finalUnit + "<font color='#fecd39'>" + notDoneUnitList[0] + "</font>" + " now.";
-                }
-                else
-                {
-                    finalString = doneMeter + "<font color='#20bd4c'>" + doneUnitList[0] + "</font>"
-                        + onTo + twoMoreUnits + "<font color='#fecd39'>" + notDoneUnitList[0] + "</font> and <font color='#fecd39'>"
-                        + notDoneUnitList[1] + "</font> now.";
-                }
+                finalString = string.Format(pluralDone, "<font color='#20bd4c'>" + doneUnitList[0] + "</font>","<font color = '#20bd4c'>" + doneUnitList[1] + "</font>");
             }
             else
             {
-                finalString = doneMeter + "<font color='#20bd4c'>" + doneUnitList[0] + "</font> "
-                        + onTo + finalUnit + "<font color='#fecd39'>" + notDoneUnitList[0] + "</font>" + " now.";
+                finalString = string.Format(singleDone, "<font color='#20bd4c'>" + doneUnitList[0] + "</font>");
+            }
+
+            //Construct not done meter reading message
+            if (notDoneUnitList.Count > 1)
+            {
+                finalString += string.Format(pluralOnto, "<font color='#fecd39'>" + notDoneUnitList[0] + "</font>", "<font color = '#fecd39'>" + notDoneUnitList[1] + "</font>");
+            }
+            else
+            {
+                finalString += string.Format(singleOnto, "<font color='#fecd39'>" + notDoneUnitList[0] + "</font>");
             }
 
             takePhotoFragment.UpdateTakePhotoFormattedNote(GetFormattedText(finalString));
