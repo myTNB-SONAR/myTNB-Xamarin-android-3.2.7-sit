@@ -87,9 +87,10 @@ namespace myTNB
             };
             selectorView.AddSubview(_typeValueLabel);
 
-            nfloat iconWidth = GetScaledWidth(24F);
-            nfloat iconHeight = GetScaledWidth(24F);
-            UIImageView dropdownImg = new UIImageView(new CGRect(selectorView.Frame.Width - (iconWidth + GetScaledWidth(6F)), GetScaledHeight(12F), iconWidth, iconHeight))
+            nfloat iconWidth = GetScaledWidth(16F);
+            nfloat iconHeight = GetScaledWidth(16F);
+            UIImageView dropdownImg = new UIImageView(new CGRect(selectorView.Frame.Width - (iconWidth + GetScaledWidth(4F))
+                , GetScaledHeight(12F), iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(BillConstants.IMG_DropdownIcon)
             };

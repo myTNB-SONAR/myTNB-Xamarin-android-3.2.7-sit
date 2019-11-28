@@ -251,7 +251,7 @@ namespace myTNB
             View.AddSubview(_bgImageView);
             View.SendSubviewToBack(_bgImageView);
 
-            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(12)
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(4)
                 , _navbarView.Frame.Width, GetScaledHeight(24)));
             _lblNavTitle = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)))
             {
