@@ -31,7 +31,7 @@ namespace myTNB
             //ActivityIndicator.Show();
             myAccountTableView.Source = new MyAccountDataSource(this);
             myAccountTableView.ReloadData();
-            //SetFooterView();
+            SetFooterView();
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsMobileNumberUpdated)
             {
@@ -51,11 +51,12 @@ namespace myTNB
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
-           // ActivityIndicator.Hide();
+            // ActivityIndicator.Hide();
         }
 
         private void SetFooterView()
         {
+            /*
             UIButton btnLogout = new UIButton(UIButtonType.Custom)
             {
                 Frame = new CGRect(18, 16, View.Frame.Width - 36, 48),
@@ -91,8 +92,8 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.SectionGrey
             };
             viewLogout.AddSubview(btnLogout);
-
-            UIView viewFooter = new UIView();
+            */
+            //UIView viewFooter = new UIView();
             UIButton btnAddAccount = new UIButton(UIButtonType.Custom)
             {
                 Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48),
@@ -130,11 +131,13 @@ namespace myTNB
                     });
                 });
             };
+            UIView viewFooter = new UIView(new CGRect(0, 0, ViewWidth, 80)) { BackgroundColor = UIColor.White };
+            /*
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
-                viewLogout.Frame = new CGRect(0, 80, View.Frame.Width, 88);
+                //viewLogout.Frame = new CGRect(0, 80, View.Frame.Width, 88);
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 168);
-                viewFooter.AddSubviews(new UIView[] { btnAddAccount, viewLogout });
+                viewFooter.AddSubviews(new UIView[] { btnAddAccount });//, viewLogout });
             }
             else
             {
@@ -160,9 +163,10 @@ namespace myTNB
 
                 btnAddAccount.Frame = new CGRect(18, 76, myAccountTableView.Frame.Width - 36, 48);
                 btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
-                viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
-                viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount, viewLogout });
-            }
+                //viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
+                viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount });//, viewLogout });
+            }*/
+            viewFooter.AddSubview(btnAddAccount);
             myAccountTableView.TableFooterView = viewFooter;
         }
 

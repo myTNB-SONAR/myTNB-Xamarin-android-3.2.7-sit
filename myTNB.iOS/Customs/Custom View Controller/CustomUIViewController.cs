@@ -93,13 +93,25 @@ namespace myTNB
                     , new CGSize(NavigationController.NavigationBar.Frame.Width, navBarHeight));// GetScaledHeight(navBarHeight)));
                 ViewHeight -= NavigationController.NavigationBar.Frame.GetMaxY();
             }
+            else
+            {
+                ViewHeight -= DeviceHelper.GetStatusBarHeight();
+            }
             if (TabBarController != null && TabBarController.TabBar != null && !TabBarController.TabBar.Hidden)
             {
                 ViewHeight -= (View.Frame.Height - TabBarController.TabBar.Frame.GetMinY());
             }
             else
             {
-                ViewHeight -= DeviceHelper.GetStatusBarHeight();
+                try
+                {
+                    ViewHeight -= DeviceHelper.BottomSafeAreaInset;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in Bottom Safe Area Inset: " + e.Message);
+                    ViewHeight -= 20;
+                }
             }
             BaseMargin = GetScaledWidth(16);
             BaseMarginedWidth = ViewWidth - (BaseMargin * 2);
