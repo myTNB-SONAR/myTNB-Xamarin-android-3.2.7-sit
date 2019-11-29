@@ -217,7 +217,7 @@ namespace myTNB
 
             if (tutorialOverlayHasShown) { return; }
 
-            if (!_accountListIsShimmering && !_servicesIsShimmering && !_helpIsShimmering)
+            if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && !_helpIsShimmering)
             {
                 InvokeOnMainThread(() =>
                 {
