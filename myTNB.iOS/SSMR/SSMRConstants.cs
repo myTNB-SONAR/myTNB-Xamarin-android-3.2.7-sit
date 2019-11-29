@@ -126,6 +126,7 @@ namespace myTNB.SSMR
 
         //Meter Read
         public static string I18N_HeaderDesc = "headerDescription";
+        public static string I18N_SingleHeaderDesc = "singleHeaderDescription";
         public static string I18N_DontShowAgain = "dontShow";
         public static string I18N_ToolTip1 = "tooltipTitle1";
         public static string I18N_ToolTip2 = "tooltipTitle2";

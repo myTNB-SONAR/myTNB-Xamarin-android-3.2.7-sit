@@ -268,6 +268,7 @@
     "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
     "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
     "headerDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
+    "singleHeaderDescription": "<b>Take or upload a photo</b>, or <b>manually enter</b> your meter reading for each respective unit.",
     "imReady": "Saya Bersedia!",
     "note": "Nota: Sila genapkan nombor sekiranya bacaan pada meter anda memiliki titik perpuluhan.",
     "previousMeterReading": "Bacaan Meter Sebelum",

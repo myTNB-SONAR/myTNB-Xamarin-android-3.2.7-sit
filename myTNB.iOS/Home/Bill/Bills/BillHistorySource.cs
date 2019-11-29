@@ -120,7 +120,7 @@ namespace myTNB.Home.Bill
                     {
                         cell.IsGroupedDateHidden = true;
                     }
-                    cell.IsLineHidden = indexPath.Row == _historyList.Count;
+                    cell.IsLineHidden = index == 0;
                     cell.ClipsToBounds = false;
                     cell.Layer.ZPosition = 10 + indexPath.Section + indexPath.Row;
                     return cell;

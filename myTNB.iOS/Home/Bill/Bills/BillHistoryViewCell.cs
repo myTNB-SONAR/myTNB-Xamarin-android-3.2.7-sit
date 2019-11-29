@@ -60,8 +60,7 @@ namespace myTNB.Home.Bill
                 Image = UIImage.FromBundle(BillConstants.IMG_ArrowExpand)
             };
 
-            _viewLine = new UIView(new CGRect(_baseHMargin, _view.Frame.Height - ScaleUtility.GetScaledHeight(1)
-               , _cellWidth - (_baseHMargin * 2), ScaleUtility.GetScaledHeight(1)))
+            _viewLine = new UIView(new CGRect(_baseHMargin, 0, _cellWidth - (_baseHMargin * 2), ScaleUtility.GetScaledHeight(1)))
             { BackgroundColor = MyTNBColor.VeryLightPinkThree };
 
             _view.AddSubviews(new UIView[] { _lblDate, _lblSource, _lblAmount, _imgArrow, _viewLine });
@@ -162,21 +161,15 @@ namespace myTNB.Home.Bill
                 _view.Frame = new CGRect(_view.Frame.Location, new CGSize(_view.Frame.Width, ScaleUtility.GetScaledHeight(isTop && isBottom ? 92 : 80)));
                 nfloat dateYloc = _baseVMargin;
                 nfloat amtYloc = ScaleUtility.GetScaledHeight(26);
-                nfloat lineXloc = 0;
-                nfloat lineWidth = _cellWidth;
                 if (isTop && isBottom)
                 {
                     dateYloc = ScaleUtility.GetScaledHeight(28);
                     amtYloc = ScaleUtility.GetScaledHeight((92 - 16) / 2);
-                    lineXloc = 0;
-                    lineWidth = _cellWidth;
                 }
                 else if (isTop)
                 {
                     dateYloc = ScaleUtility.GetScaledHeight(28);
                     amtYloc = ScaleUtility.GetScaledHeight(33);
-                    lineXloc = _baseHMargin;
-                    lineWidth = _cellWidth - (_baseHMargin * 2);
                 }
                 else
                 {
@@ -188,9 +181,6 @@ namespace myTNB.Home.Bill
                     , _lblSource.Frame.Size);
                 _lblAmount.Frame = new CGRect(new CGPoint(_lblAmount.Frame.X, amtYloc), _lblAmount.Frame.Size);
                 _imgArrow.Frame = new CGRect(new CGPoint(_imgArrow.Frame.X, amtYloc), _imgArrow.Frame.Size);
-
-                _viewLine.Frame = new CGRect(lineXloc, _view.Frame.Height - ScaleUtility.GetScaledHeight(1)
-                       , lineWidth, ScaleUtility.GetScaledHeight(1));
             }
         }
         public bool IsLineHidden
@@ -205,6 +195,9 @@ namespace myTNB.Home.Bill
             set
             {
                 _viewGroupedDate.Hidden = value;
+                nfloat lineXloc = value ? _baseHMargin : 0;
+                nfloat lineWidth = value ? _cellWidth - (_baseHMargin * 2) : _cellWidth;
+                _viewLine.Frame = new CGRect(lineXloc, 0, lineWidth, ScaleUtility.GetScaledHeight(1));
             }
         }
     }

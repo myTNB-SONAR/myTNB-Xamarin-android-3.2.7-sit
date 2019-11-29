@@ -324,7 +324,10 @@ namespace myTNB
         {
             if (!_dashboardHomeHelper.HasMoreThanThreeAccts)
             {
-                _footerView.RemoveFromSuperview();
+                if (_footerView != null)
+                {
+                    _footerView.RemoveFromSuperview();
+                }
                 _accountListTableView.TableFooterView = null;
                 return;
             }

@@ -196,7 +196,7 @@ namespace myTNB
         {
             if (_dashboardHomeHeader != null)
             {
-                _dashboardHomeHeader.SetGreetingText(greeting);
+                _dashboardHomeHeader.UpdateGreetingText(greeting);
             }
         }
 
@@ -216,7 +216,7 @@ namespace myTNB
 
             if (tutorialOverlayHasShown) { return; }
 
-            if (!_accountListIsShimmering && !_servicesIsShimmering && !_helpIsShimmering)
+            if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && !_helpIsShimmering)
             {
                 InvokeOnMainThread(() =>
                 {
@@ -398,6 +398,7 @@ namespace myTNB
                         {
                             if (topVc is DashboardHomeViewController)
                             {
+                                UpdateGreeting(GetGreeting());
                                 OnChangeStatusBarFrame(null);
                                 if (_accountListViewController != null)
                                 {

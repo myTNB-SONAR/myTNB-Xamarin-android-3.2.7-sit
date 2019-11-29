@@ -84,6 +84,8 @@ namespace myTNB
             var deleteAt = sourceIndexPath.Row;
             var insertAt = destinationIndexPath.Row;
 
+            if (destinationIndexPath.Row == sourceIndexPath.Row) { return; }
+
             if (destinationIndexPath.Row < sourceIndexPath.Row)
             {
                 deleteAt += 1;
