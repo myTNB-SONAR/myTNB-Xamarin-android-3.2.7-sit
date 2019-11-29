@@ -7,10 +7,15 @@ using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 {
@@ -139,19 +144,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                             {
                                 Utility.LoggingNonFatalError(e);
                             }
+
+                            _ = GetImageAsync(vh, rewardsList[position]);
                         }
                     }
                     else
                     {
-                        // Image Shimmer Stop
-                        vh.rewardMainShimmerImgLayout.Visibility = ViewStates.Gone;
-                        if (vh.shimmerRewardImageLayout.IsShimmerStarted)
-                        {
-                            vh.shimmerRewardImageLayout.StopShimmer();
-                        }
-
-                        vh.rewardMainImgLayout.Visibility = ViewStates.Visible;
-                        // update vh.rewardImg, set btnRewardSaveImg
+                        SetRewardImg(vh, rewardsList[position]);
                     }
                 }
 				catch (Exception e)
@@ -251,6 +250,124 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             canvas.DrawBitmap(srcImage, 0, 0, paint);
 
             return bmpGrayscale;
+        }
+
+        public async Task GetImageAsync(RewardViewHolder viewHolder, RewardsModel item)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            Bitmap imageBitmap = null;
+            await Task.Run(() =>
+            {
+                imageBitmap = GetImageBitmapFromUrl(item.Image);
+            }, cts.Token);
+
+            if (imageBitmap != null)
+            {
+                item.ImageBitmap = imageBitmap;
+                item.ImageB64 = BitmapToBase64(imageBitmap);
+                RewardsEntity wtManager = new RewardsEntity();
+                wtManager.UpdateCacheImage(item.ID, item.ImageB64);
+                SetRewardImg(viewHolder, item);
+            }
+            else
+            {
+                // icon.SetImageResource(Resource.Drawable.promotions_default_image);
+            }
+        }
+
+        public void SetRewardImg(RewardViewHolder viewHolder, RewardsModel item)
+        {
+            try
+            {
+                if (item.ImageBitmap != null)
+                {
+                    viewHolder.rewardImg.SetImageBitmap(item.ImageBitmap);
+                }
+                else if (!string.IsNullOrEmpty(item.ImageB64))
+                {
+                    item.ImageBitmap = Base64ToBitmap(item.ImageB64);
+                    viewHolder.rewardImg.SetImageBitmap(item.ImageBitmap);
+                }
+
+                if (item.IsSaved)
+                {
+                    viewHolder.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
+                }
+                else
+                {
+                    viewHolder.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
+                }
+
+                viewHolder.rewardMainShimmerImgLayout.Visibility = ViewStates.Gone;
+                if (viewHolder.shimmerRewardImageLayout.IsShimmerStarted)
+                {
+                    viewHolder.shimmerRewardImageLayout.StopShimmer();
+                }
+
+                viewHolder.rewardMainImgLayout.Visibility = ViewStates.Visible;
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Android.Graphics.Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap image = null;
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return image;
+        }
+
+        public string BitmapToBase64(Bitmap bitmap)
+        {
+            string B64Output = "";
+            try
+            {
+                MemoryStream byteArrayOutputStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.ToArray();
+                B64Output = Base64.EncodeToString(byteArray, Base64Flags.Default);
+            }
+            catch (Exception e)
+            {
+                B64Output = "";
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return B64Output;
+        }
+
+        public Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
         }
 
         public class RewardViewHolder : RecyclerView.ViewHolder

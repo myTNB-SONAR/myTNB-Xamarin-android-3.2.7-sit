@@ -82,5 +82,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             return list;
         }
+
+        public List<RewardsModel> GetActiveRewardList(string categoryID)
+        {
+            List<RewardsModel> list = new List<RewardsModel>();
+
+            if (mRewardsEntity == null)
+            {
+                mRewardsEntity = new RewardsEntity();
+            }
+
+            List<RewardsEntity> mList = mRewardsEntity.GetActiveItemsByCategory(categoryID);
+
+            if (mList != null && mList.Count > 0)
+            {
+                foreach (RewardsEntity obj in mList)
+                {
+                    RewardsModel item = new RewardsModel();
+                    item.ID = obj.ID;
+                    item.RewardName = obj.RewardName;
+                    item.Image = obj.Image;
+                    item.ImageB64 = obj.ImageB64;
+                    item.CategoryID = obj.CategoryID;
+                    item.Description = obj.Description;
+                    item.Read = obj.Read;
+                    item.IsUsed = obj.IsUsed;
+                    item.TitleOnListing = obj.TitleOnListing;
+                    item.PeriodLabel = obj.PeriodLabel;
+                    item.LocationLabel = obj.LocationLabel;
+                    item.TandCLabel = obj.TandCLabel;
+                    item.StartDate = obj.StartDate;
+                    item.EndDate = obj.EndDate;
+                    item.IsSaved = obj.IsSaved;
+                    list.Add(item);
+                }
+            }
+
+            return list;
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 if (mRewardSearchKey != "")
                 {
-
+                    mRewardList = this.presenter.GetActiveRewardList(mRewardSearchKey);
                 }
                 else
                 {
