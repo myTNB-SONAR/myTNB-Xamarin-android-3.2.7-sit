@@ -207,6 +207,8 @@ namespace myTNB
                 UserInteractionEnabled = true,
                 Text = GetI18NValue(OnboardingConstants.I18N_Skip)
             };
+            CGSize size = _skipLabel.SizeThatFits(new CGSize(_skipLabel.Frame.Width, GetScaledHeight(16F)));
+            ViewHelper.AdjustFrameSetHeight(_skipLabel, size.Height);
             _skipLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DismissAction?.Invoke();
