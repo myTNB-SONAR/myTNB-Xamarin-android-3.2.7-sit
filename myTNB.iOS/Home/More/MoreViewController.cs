@@ -35,8 +35,8 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            moreTableView.Source = new MoreDataSource(this, GetMoreList());
-            moreTableView.ReloadData();
+            //moreTableView.Source = new MoreDataSource(this, GetMoreList());
+            //ReloadData();
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -101,7 +101,7 @@ namespace myTNB
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
 
-            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
+          /*  moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
                 , View.Frame.Width, View.Frame.Height - 64 - 49);
             moreTableView.RowHeight = 50f;
             moreTableView.SectionHeaderHeight = 48f;
@@ -119,7 +119,7 @@ namespace myTNB
                 _lblAppVersion.Text += string.Format("({0})", AppVersionHelper.GetBuildVersion());
             }
 
-            moreTableView.TableFooterView = _lblAppVersion;
+            moreTableView.TableFooterView = _lblAppVersion;*/
         }
 
         internal void RenderSettingsScreen(int section, int row)
