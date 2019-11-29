@@ -109,6 +109,14 @@ namespace myTNB
             _strGreeting = text ?? string.Empty;
         }
 
+        public void UpdateGreetingText(string text)
+        {
+            if (_greetingLabel != null)
+            {
+                _greetingLabel.Text = text;
+            }
+        }
+
         public void SetNameText(string text)
         {
             _strName = text ?? string.Empty;

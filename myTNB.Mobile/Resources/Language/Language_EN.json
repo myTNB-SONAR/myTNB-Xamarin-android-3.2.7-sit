@@ -109,7 +109,8 @@
         "changeLanguageNo_EN": "No",
         "new": "New",
         "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss.",
-        "wellBeBack": "We’ll be back shortly!"
+        "wellBeBack": "We’ll be back shortly!",
+        "electricityAccounts": "Electricity Accounts"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -289,6 +290,7 @@
         "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
         "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
         "headerDescription": "<b>Take or upload photos</b>, or <b>manually enter</b> your meter reading for each respective unit.",
+        "singleHeaderDescription": "<b>Take or upload a photo</b>, or <b>manually enter</b> your meter reading for each respective unit.",
         "imReady": "I'm Ready!",
         "note": "Note: Please <b>round up</b> the numbers if the reading values are showing decimal points on your meter.",
         "previousMeterReading": "Previous Meter Reading",
@@ -563,7 +565,10 @@
         "shareDescription": "Share this app",
         "tnc": "Terms & Conditions",
         "findUs": "Find Us",
-        "setAppLanguage": "Set App Language"
+        "setAppLanguage": "Set App Language",
+        "myTNBAccount": "myTNB Account",
+        "logout": "Log Out",
+        "logoutMessage": "Are you sure you want to log out from the myTNB app?"
     },
     "NotificationSettings": {
         "title": "Notification Settings",

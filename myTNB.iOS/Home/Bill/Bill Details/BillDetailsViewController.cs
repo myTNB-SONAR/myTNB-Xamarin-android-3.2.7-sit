@@ -431,9 +431,9 @@ namespace myTNB
 
         private UIView GetPaymentDetails(nfloat yLoc)
         {
-            bool isOverPaid = _charges.AmountDue <= 0;
+            bool isOverPaid = _charges.AmountDue < 0;
             UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(32)));
-            nfloat statusYLoc = isOverPaid ? GetScaledHeight(6) : GetScaledHeight(-4);
+            nfloat statusYLoc = _charges.AmountDue <= 0 ? GetScaledHeight(6) : GetScaledHeight(-4);
             string statusString;
             if (_charges.AmountDue == 0)
             {
@@ -472,7 +472,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.GreyishBrown,
                 Text = string.Format(BillConstants.Format_Default, GetI18NValue(BillConstants.I18N_By), result),
-                Hidden = isOverPaid
+                Hidden = _charges.AmountDue <= 0
             };
             nfloat dueWidth = lblDue.GetLabelWidth(ViewWidth);
             lblDue.Frame = new CGRect(lblDue.Frame.Location, new CGSize(dueWidth, lblDue.Frame.Height));

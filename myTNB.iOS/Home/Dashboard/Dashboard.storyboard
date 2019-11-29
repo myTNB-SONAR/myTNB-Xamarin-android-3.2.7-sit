@@ -244,7 +244,7 @@
         <!--Title-->
         <scene sceneID="3102">
             <objects>
-                <viewController storyboardIdentifier="MoreViewController" id="3103" customClass="MoreViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="3103" customClass="ProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3100"/>
                         <viewControllerLayoutGuide type="bottom" id="3101"/>
@@ -252,30 +252,10 @@
                     <view key="view" contentMode="scaleToFill" id="3104">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="16511">
-                                <rect key="frame" x="0.0" y="63" width="373" height="220"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCell" rowHeight="136" id="16512">
-                                        <rect key="frame" x="0.0" y="28" width="373" height="136"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="16512" id="16513">
-                                            <rect key="frame" x="0.0" y="0.0" width="373" height="136"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="31613"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="moreTableView" destination="16511" id="name-outlet-16511"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3105" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

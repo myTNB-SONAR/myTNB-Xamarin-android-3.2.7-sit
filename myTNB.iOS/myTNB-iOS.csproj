@@ -1711,6 +1711,7 @@
     <Folder Include="Assets.xcassets\Reward-Location-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Reward-TC-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Reward_Default-Banner.imageset\" />
+    <Folder Include="Profile\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2452,7 +2453,6 @@
     <Compile Include="Model\GetIsSmrApplyAllowed\GetIsSmrApplyAllowedResponse.cs" />
     <Compile Include="Sitecore CMS\SitecoreServices.cs" />
     <Compile Include="Helpers\NSDataHelper.cs" />
-    <Compile Include="Home\More\ProfileConstants.cs" />
     <Compile Include="Home\More\Find Us\FindUsConstants.cs" />
     <Compile Include="Home\More\My Account\MyAccountConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListViewController.cs" />
@@ -2578,6 +2578,13 @@
     <Compile Include="Rewards\RewardDetailsViewController.designer.cs">
       <DependentUpon>RewardDetailsViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Profile\ProfileViewController.cs" />
+    <Compile Include="Profile\ProfileViewController.designer.cs">
+      <DependentUpon>ProfileViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile\ProfileConstants.cs" />
+    <Compile Include="Profile\ProfileDataSource.cs" />
+    <Compile Include="Profile\ProfileCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

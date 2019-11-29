@@ -11,11 +11,8 @@ using UIKit;
 
 namespace myTNB
 {
-    [Register ("MoreViewController")]
-    partial class MoreViewController
+    [Register ("ProfileViewController")]
+    partial class ProfileViewController
     {
-        void ReleaseDesignerOutlets ()
-        {
-        }
     }
 }

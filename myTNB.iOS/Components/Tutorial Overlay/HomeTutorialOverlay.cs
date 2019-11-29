@@ -346,9 +346,12 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
-                UserInteractionEnabled = false
+                UserInteractionEnabled = false,
+                TextAlignment = UITextAlignment.Left
             };
+            desc.TextContainer.LineFragmentPadding = 0F;
             CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(500F)));
+            ViewHelper.AdjustFrameSetWidth(desc, cGSize.Width);
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
 
             bottomView.AddSubviews(new UIView { title, desc });
@@ -429,6 +432,7 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
+            desc.TextContainer.LineFragmentPadding = 0F;
             CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(270F)));
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
             bottomView.AddSubviews(new UIView { title, desc });
@@ -504,6 +508,7 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
+            desc.TextContainer.LineFragmentPadding = 0F;
             CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(90F)));
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
             topView.AddSubviews(new UIView { title, desc });
@@ -596,6 +601,7 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
+            desc.TextContainer.LineFragmentPadding = 0F;
             CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(70F)));
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
             UIButton btnGotIt = new UIButton(UIButtonType.Custom)
@@ -606,7 +612,7 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle(GetI18NValue(DashboardHomeConstants.I18N_GotIt), UIControlState.Normal);
+            btnGotIt.SetTitle(GetCommonI18NValue(Constants.Common_GotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>
@@ -679,7 +685,8 @@ namespace myTNB
                 TintColor = UIColor.White,
                 PageIndicatorTintColor = UIColor.FromWhiteAlpha(1, 0.5F),
                 CurrentPageIndicatorTintColor = UIColor.White,
-                UserInteractionEnabled = false
+                UserInteractionEnabled = false,
+                Transform = CGAffineTransform.MakeScale(1.25F, 1.25F)
             };
             _footerView.AddSubview(_pageControl);
         }

@@ -91,17 +91,28 @@ namespace myTNB
                 nfloat navBarHeight = NavigationController.NavigationBar.GetFrame().Height;
                 NavigationController.NavigationBar.Frame = new CGRect(NavigationController.NavigationBar.Frame.Location
                     , new CGSize(NavigationController.NavigationBar.Frame.Width, navBarHeight));// GetScaledHeight(navBarHeight)));
-                ViewHeight -= NavigationController.NavigationBar.Frame.Height;
+                ViewHeight -= NavigationController.NavigationBar.Frame.GetMaxY();
+            }
+            else
+            {
+                ViewHeight -= DeviceHelper.GetStatusBarHeight();
             }
             if (TabBarController != null && TabBarController.TabBar != null && !TabBarController.TabBar.Hidden)
             {
-                ViewHeight -= TabBarController.TabBar.Frame.Height;
+                ViewHeight -= (View.Frame.Height - TabBarController.TabBar.Frame.GetMinY());
             }
-            if (DeviceHelper.IsIphoneXUpResolution())
+            else
             {
-                ViewHeight -= 20;
+                try
+                {
+                    ViewHeight -= DeviceHelper.BottomSafeAreaInset;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in Bottom Safe Area Inset: " + e.Message);
+                    ViewHeight -= 20;
+                }
             }
-            ViewHeight -= DeviceHelper.GetStatusBarHeight();
             BaseMargin = GetScaledWidth(16);
             BaseMarginedWidth = ViewWidth - (BaseMargin * 2);
         }

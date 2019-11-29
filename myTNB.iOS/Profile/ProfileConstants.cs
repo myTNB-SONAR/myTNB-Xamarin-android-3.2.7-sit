@@ -8,6 +8,9 @@
         public static string Pagename_FAQ = "FAQ";
         public static string Pagename_TnC = "TnC";
 
+        //Cell
+        public static string Cell_Profile = "profileViewCell";
+
         //I18N
         public static string I18N_NavTitle = "title";
         public static string I18N_AppVersion = "appVersion";
@@ -25,6 +28,9 @@
         public static string I18N_TNC = "tnc";
         public static string I18N_FindUs = "findUs";
         public static string I18N_SetAppLanguage = "setAppLanguage";
+        public static string I18N_MyTNBAccount = "myTNBAccount";
+        public static string I18N_Logout = "logout";
+        public static string I18N_LogoutMessage = "logoutMessage";
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";

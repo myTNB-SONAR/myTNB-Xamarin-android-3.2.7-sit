@@ -81,8 +81,7 @@ namespace myTNB
             {
                 _btnCTA = new CustomUIButtonV2
                 {
-                    Frame = new CGRect(BaseMarginWidth16
-                       , genericTableView.Frame.GetMaxY() + GetScaledWidth(16)
+                    Frame = new CGRect(BaseMarginWidth16, genericTableView.Frame.GetMaxY() + GetScaledWidth(16)
                        , BaseMarginedWidth, GetScaledHeight(48)),
                     BackgroundColor = MyTNBColor.SilverChalice,
                     Enabled = false

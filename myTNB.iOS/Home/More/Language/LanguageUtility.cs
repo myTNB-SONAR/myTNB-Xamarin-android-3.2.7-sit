@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Foundation;
-using myTNB.Model;
 using myTNB.Model.Language;
 
 namespace myTNB
@@ -84,6 +82,17 @@ namespace myTNB
         public static void InitializeLanguage()
         {
             SetAppLanguage(IsLanguageSet ? CurrentSavedLanguage : CurrentDeviceLanguage);
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+            string content = sharedPreference.StringForKey("LanguageJSON");
+            if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
+            {
+                LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
+                , TNBGlobal.APP_LANGUAGE == "EN" ? LanguageManager.Language.EN : LanguageManager.Language.MS);
+            }
+            else
+            {
+                LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+            }
         }
 
         public static int CurrentLanguageIndex

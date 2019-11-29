@@ -210,7 +210,7 @@ namespace myTNB
             if (!string.IsNullOrEmpty(type) && !string.IsNullOrWhiteSpace(type))
             {
                 PopupSelectorModel fallback = GetFallbackPopupValue(type);
-                if (PopupDetailsList != null)
+                if (PopupDetailsList != null && PopupDetailsList.Count > 0)
                 {
                     int index = PopupDetailsList.FindIndex(x => x.Type.ToLower() == type.ToLower());
                     if (index > -1)

@@ -126,6 +126,7 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
+            description.TextContainer.LineFragmentPadding = 0F;
             CGSize cGSize = description.SizeThatFits(new CGSize(textWidth, GetScaledHeight(80F)));
             ViewHelper.AdjustFrameSetHeight(description, cGSize.Height);
             UIButton btnGotIt = new UIButton(UIButtonType.Custom)
@@ -136,7 +137,7 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle(GetI18NValue(UsageConstants.I18N_GotIt), UIControlState.Normal);
+            btnGotIt.SetTitle(GetCommonI18NValue(Constants.Common_GotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>
