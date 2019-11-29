@@ -12,17 +12,20 @@ namespace myTNB
     {
         private List<RewardsModel> _rewardsList = new List<RewardsModel>();
         private readonly Action<RewardsModel> OnRowSelected;
+        private readonly Action<RewardsModel> OnSaveUnsaveAction;
         private readonly bool _isLoading;
         public Func<string, string> GetI18NValue;
 
         public RewardsDataSource(List<RewardsModel> rewardsList,
             Func<string, string> getI18NValue,
             Action<RewardsModel> onRowSelected,
+            Action<RewardsModel> onSaveUnsaveAction,
             bool isLoading = false)
         {
             _rewardsList = rewardsList;
             GetI18NValue = getI18NValue;
             OnRowSelected = onRowSelected;
+            OnSaveUnsaveAction = onSaveUnsaveAction;
             _isLoading = isLoading;
         }
 
@@ -54,61 +57,79 @@ namespace myTNB
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             RewardsCell cell = tableView.DequeueReusableCell(RewardsConstants.Cell_Rewards) as RewardsCell;
-            var index = indexPath.Row;
-            if (index > -1 && index < _rewardsList.Count)
+            cell.Tag = indexPath.Row;
+            if (cell.Tag > -1 && cell.Tag < _rewardsList.Count)
             {
-                RewardsModel reward = _rewardsList[index];
-                cell.CellIndex = index;
+                RewardsModel reward = _rewardsList[(int)cell.Tag];
+                cell.CellIndex = (int)cell.Tag;
                 cell.GetI18NValue = GetI18NValue;
                 cell.SetAccountCell(reward);
                 if (reward.Image.IsValid())
                 {
-                    try
+                    if (cell.Tag == indexPath.Row)
                     {
-                        ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(cell.ViewImage);
-                        _activityIndicator.Show();
-                        NSUrl url = new NSUrl(reward.Image);
-                        NSUrlSession session = NSUrlSession
-                            .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-                        NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+                        try
                         {
-                            if (error == null && response != null && data != null)
+                            if ((bool)cell.ActivityIndicator?.GetView?.IsDescendantOfView(cell.RewardImageVIew))
+                            {
+                                cell.ActivityIndicator.GetView.RemoveFromSuperview();
+                                cell.ActivityIndicator.GetView = null;
+                                cell.ActivityIndicator = null;
+                                cell.ActivityIndicator = new ActivityIndicatorComponent(cell.RewardImageVIew);
+                            }
+                            cell.ActivityIndicator.Show();
+                            NSUrl url = new NSUrl(reward.Image);
+                            NSUrlSession session = NSUrlSession
+                                .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
                             {
                                 InvokeOnMainThread(() =>
                                 {
-                                    if (cell.CellIndex == indexPath.Row)
+                                    if (error == null && response != null && data != null)
                                     {
-                                        cell.RewardImageVIew.Image = UIImage.LoadFromData(data);
-                                        _activityIndicator.Hide();
+                                        if (cell.Tag == indexPath.Row)
+                                        {
+                                            cell.RewardImageVIew.Image = UIImage.LoadFromData(data);
+                                        }
                                     }
+                                    else
+                                    {
+                                        cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                    }
+                                    cell.ActivityIndicator.Hide();
                                 });
-                            }
-                            else
-                            {
-                                // Default image goes here...
-                                //InvokeOnMainThread(() =>
-                                //{
-                                //    if (cell.CellIndex == indexPath.Row)
-                                //    {
-                                //        cell.RewardImageVIew.Image = UIImage.LoadFromData(data);
-                                //        _activityIndicator.Hide();
-                                //    }
-                                //});
-                            }
-                        });
-                        dataTask.Resume();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("Image load Error: " + e.Message);
-                        // Default image goes here...
+                            });
+                            dataTask.Resume();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Image load Error: " + e.Message);
+                            cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                        }
                     }
                 }
                 else
                 {
-                    // Default image goes here...
+                    cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
                 }
             }
+            cell.SaveIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                var indx = indexPath.Row;
+                if (indx > -1 && indx < _rewardsList.Count)
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (cell.Tag == indx)
+                        {
+                            RewardsModel reward = _rewardsList[indx];
+                            reward.IsSaved = !reward.IsSaved;
+                            cell.SaveIcon.Image = UIImage.FromBundle(reward.IsSaved ? RewardsConstants.Img_HeartSaveIcon : RewardsConstants.Img_HeartUnsaveIcon);
+                            OnSaveUnsaveAction?.Invoke(reward);
+                        }
+                    });
+                }
+            }));
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }

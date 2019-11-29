@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -8,16 +9,18 @@ namespace myTNB
     public class RewardsCell : CustomUITableViewCell
     {
         private UIView _viewContainer;
-        public UIView ViewImage;
         public UIImageView RewardImageVIew;
-        private UILabel Title;
+        private UILabel _title;
+        public UIImageView SaveIcon;
+        public ActivityIndicatorComponent ActivityIndicator;
 
         public RewardsCell(IntPtr handle) : base(handle)
         {
             nfloat topPadding = GetScaledHeight(17F);
             _viewContainer = new UIView(new CGRect(BaseMarginWidth16, topPadding, _cellWidth - (BaseMarginWidth16 * 2), GetScaledHeight(160F)))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
             };
             _viewContainer.Layer.CornerRadius = GetScaledHeight(5F);
             _viewContainer.Layer.MasksToBounds = false;
@@ -26,22 +29,41 @@ namespace myTNB
             _viewContainer.Layer.ShadowOffset = new CGSize(-4, 8);
             _viewContainer.Layer.ShadowRadius = 8;
             _viewContainer.Layer.ShadowPath = UIBezierPath.FromRect(_viewContainer.Bounds).CGPath;
-            ViewImage = new UIView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
+
+            UIView rewardImgView = new UIImageView(_viewContainer.Bounds)
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                ClipsToBounds = true
             };
-            RewardImageVIew = new UIImageView(ViewImage.Bounds)
+            rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
+
+            RewardImageVIew = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
             {
+                ClipsToBounds = true,
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
-            Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F), _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+            ActivityIndicator = new ActivityIndicatorComponent(RewardImageVIew);
+            rewardImgView.AddSubview(RewardImageVIew);
+            _viewContainer.AddSubview(rewardImgView);
+            _title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F), _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 LineBreakMode = UILineBreakMode.TailTruncation
             };
-            _viewContainer.AddSubviews(new UIView { ViewImage, RewardImageVIew, Title });
+            _viewContainer.AddSubview(_title);
+            nfloat iconWidth = GetScaledWidth(24F);
+            nfloat iconHeight = GetScaledHeight(21F);
+            nfloat iconWidthPadding = GetScaledWidth(8F);
+            nfloat iconHeightPadding = GetScaledHeight(8F);
+            SaveIcon = new UIImageView(new CGRect(RewardImageVIew.Frame.Width - iconWidth - iconWidthPadding, RewardImageVIew.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
+            {
+                Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsaveIcon),
+                UserInteractionEnabled = true
+            };
+
+            _viewContainer.AddSubview(SaveIcon);
             AddSubview(_viewContainer);
         }
 
@@ -49,12 +71,8 @@ namespace myTNB
         {
             if (model != null)
             {
-                Title.Text = model.RewardName;
+                _title.Text = model.TitleOnListing;
             }
-            //if (CellIndex > -1 && CellIndex == 0)
-            //{
-            //    ViewHelper.AdjustFrameSetY(_viewContainer, GetScaledHeight(17F));
-            //}
         }
     }
 }

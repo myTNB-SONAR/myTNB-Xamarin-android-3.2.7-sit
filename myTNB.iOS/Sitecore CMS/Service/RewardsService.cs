@@ -35,27 +35,28 @@ namespace myTNB.SitecoreCMS.Service
 
         private async Task<RewardsTimestamp> ParseToTimestamp(ScItemsResponse itemsResponse)
         {
-            try
+            RewardsTimestamp rewardsTimestamp = new RewardsTimestamp();
+            await Task.Run(() =>
             {
-                for (int i = 0; i < itemsResponse.ResultCount; i++)
+                try
                 {
-                    ISitecoreItem item = itemsResponse[i];
-                    if (item == null)
+                    for (int i = 0; i < itemsResponse.ResultCount; i++)
                     {
-                        continue;
+                        ISitecoreItem item = itemsResponse[i];
+                        if (item == null)
+                        {
+                            continue;
+                        }
+                        rewardsTimestamp.Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField);
+                        rewardsTimestamp.ID = item.Id;
                     }
-                    return new RewardsTimestamp
-                    {
-                        Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField),
-                        ID = item.Id
-                    };
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception in LanguageService/GenerateTimestamp: " + e.Message);
-            }
-            return new RewardsTimestamp();
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in LanguageService/GenerateTimestamp: " + e.Message);
+                }
+            });
+            return rewardsTimestamp;
         }
 
         internal List<RewardsCategoryModel> GetCategoryItems()
@@ -83,61 +84,91 @@ namespace myTNB.SitecoreCMS.Service
         private async Task<IEnumerable<RewardsCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
         {
             List<RewardsCategoryModel> list = new List<RewardsCategoryModel>();
-            try
+            await Task.Run(() =>
             {
-                for (int i = 0; i < itemsResponse.ResultCount; i++)
+                try
                 {
-                    ISitecoreItem item = itemsResponse[i];
-                    if (item == null)
+                    for (int i = 0; i < itemsResponse.ResultCount; i++)
                     {
-                        continue;
+                        ISitecoreItem item = itemsResponse[i];
+                        if (item == null)
+                        {
+                            continue;
+                        }
+                        list.Add(new RewardsCategoryModel
+                        {
+                            ID = GetValidID(item.Id),
+                            CategoryName = item.DisplayName,
+                            Rewards = GetChildItems(item)
+                        });
                     }
-                    list.Add(new RewardsCategoryModel
-                    {
-                        ID = item.Id,
-                        CategoryName = item.DisplayName,
-                        Rewards = GetChildItems(item)
-                    });
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception in RewardsService/ParseToCategoryItems: " + e.Message);
-            }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in RewardsService/ParseToCategoryItems: " + e.Message);
+                }
+            });
             return list;
         }
 
         private async Task<IEnumerable<RewardsModel>> GenerateRewardsChildren(ScItemsResponse itemsResponse)
         {
             List<RewardsModel> list = new List<RewardsModel>();
+            await Task.Run(() =>
+            {
+                try
+                {
+                    for (int i = 0; i < itemsResponse.ResultCount; i++)
+                    {
+                        ISitecoreItem item = itemsResponse[i];
+
+                        if (item == null)
+                            continue;
+
+                        RewardsModel listlItem = new RewardsModel
+                        {
+                            ID = GetValidID(item.Id),
+                            RewardName = item.DisplayName,
+                            Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
+                            TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TitleOnListing),
+                            Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
+                            Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Rewards.Image, _websiteURL, false),
+                            PeriodLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardPeriodText),
+                            LocationLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.LocationsText),
+                            TandCLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TermsAndConditions),
+                            StartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Rewards.StartDateTime),
+                            EndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Rewards.EndDateTime)
+                        };
+
+                        list.Add(listlItem);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in RewardsService/GenerateRewardsChildren: " + e.Message);
+                }
+            });
+            return list;
+        }
+
+        private string GetValidID(string str)
+        {
+            string rewardId = str;
 
             try
             {
-                for (int i = 0; i < itemsResponse.ResultCount; i++)
+                var startStr = str.Substring(str.IndexOf('{') + 1);
+                if (startStr.IsValid())
                 {
-                    ISitecoreItem item = itemsResponse[i];
-
-                    if (item == null)
-                        continue;
-
-                    RewardsModel listlItem = new RewardsModel
-                    {
-                        ID = item.Id,
-                        RewardName = item.DisplayName,
-                        Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
-                        Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
-                        Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Rewards.Image, _websiteURL, false)
-                    };
-
-                    list.Add(listlItem);
+                    rewardId = startStr?.Split('}')[0];
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in RewardsService/GenerateRewardsChildren: " + e.Message);
+                Debug.WriteLine("Exception in GetValidID: " + e.Message);
             }
 
-            return list;
+            return rewardId;
         }
     }
 }

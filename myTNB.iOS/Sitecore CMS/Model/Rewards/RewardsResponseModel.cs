@@ -23,8 +23,15 @@ namespace myTNB.SitecoreCMS.Model
         public string ID { set; get; }
         public string RewardName { set; get; }
         public string Title { set; get; }
+        public string TitleOnListing { set; get; }
         public string Description { set; get; }
         public string Image { set; get; }
+        public string PeriodLabel { set; get; }
+        public string LocationLabel { set; get; }
+        public string TandCLabel { set; get; }
+        public string StartDate { set; get; }
+        public string EndDate { set; get; }
+        public bool IsSaved { set; get; }
     }
 
     public class RewardsTimestampResponseModel

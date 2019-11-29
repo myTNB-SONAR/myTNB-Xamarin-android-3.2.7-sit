@@ -61,8 +61,15 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.ID = obj.ID;
                     item.RewardName = obj.RewardName;
                     item.Title = obj.Title;
+                    item.TitleOnListing = obj.TitleOnListing;
                     item.Description = obj.Description;
                     item.Image = obj.Image;
+                    item.PeriodLabel = obj.PeriodLabel;
+                    item.LocationLabel = obj.LocationLabel;
+                    item.TandCLabel = obj.TandCLabel;
+                    item.StartDate = obj.StartDate;
+                    item.EndDate = obj.EndDate;
+                    item.IsSaved = obj.IsSaved;
                     InsertItem(item);
                 }
             }
@@ -101,8 +108,15 @@ namespace myTNB.SQLite.SQLiteDataManager
                 rewardModel.ID = item.ID;
                 rewardModel.RewardName = item.RewardName;
                 rewardModel.Title = item.Title;
+                rewardModel.TitleOnListing = item.TitleOnListing;
                 rewardModel.Description = item.Description;
                 rewardModel.Image = item.Image;
+                rewardModel.PeriodLabel = item.PeriodLabel;
+                rewardModel.LocationLabel = item.LocationLabel;
+                rewardModel.TandCLabel = item.TandCLabel;
+                rewardModel.StartDate = item.StartDate;
+                rewardModel.EndDate = item.EndDate;
+                rewardModel.IsSaved = item.IsSaved;
                 itemList.Add(rewardModel);
             }
             return itemList;

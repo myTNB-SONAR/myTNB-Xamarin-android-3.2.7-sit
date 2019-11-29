@@ -21,5 +21,13 @@ namespace myTNB
 
         //Img
         public static string Img_HeartIcon = "Heart-Icon";
+        public static string Img_ShareIcon = "IC-Header-Share";
+        public static string Img_HeartGreenIcon = "Heart-Green-Icon";
+        public static string Img_HeartSaveIcon = "Heart-Save-Icon";
+        public static string Img_HeartUnsaveIcon = "Heart-Unsave-Icon";
+        public static string Img_RewardPeriodIcon = "Reward-Period-Icon";
+        public static string Img_RewardLocationIconn = "Reward-Location-Icon";
+        public static string Img_RewardTCIcon = "Reward-TC-Icon";
+        public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
     }
 }

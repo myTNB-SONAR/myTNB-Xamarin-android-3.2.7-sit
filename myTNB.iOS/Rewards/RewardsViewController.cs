@@ -32,24 +32,11 @@ namespace myTNB
             View.BackgroundColor = MyTNBColor.SectionGrey;
             SetNavigationBar();
             CreateLoadingCategoryTopBar();
+            FetchRewards();
         }
 
-        private void SetNavigationBar()
+        private void FetchRewards()
         {
-            NavigationItem.HidesBackButton = true;
-            //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
-            NavigationItem.Title = "Rewards";
-
-            UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                Debug.WriteLine("btnSavedRewards");
-            });
-            NavigationItem.RightBarButtonItem = btnSavedRewards;
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 if (NetworkUtility.isReachable)
@@ -88,6 +75,24 @@ namespace myTNB
                     AlertHandler.DisplayNoDataAlert(this);
                 }
             });
+        }
+
+        private void SetNavigationBar()
+        {
+            NavigationItem.HidesBackButton = true;
+            //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
+            NavigationItem.Title = "Rewards";
+
+            UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
+            {
+                Debug.WriteLine("btnSavedRewards");
+            });
+            NavigationItem.RightBarButtonItem = btnSavedRewards;
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
         }
 
         #region REWARDS SCROLL VIEW
@@ -138,6 +143,7 @@ namespace myTNB
                     filteredList,
                     GetI18NValue,
                     OnRewardSelection,
+                    OnSaveUnsaveAction,
                     false);
                 rewardsTableView.ReloadData();
             }
@@ -331,6 +337,22 @@ namespace myTNB
         {
             if (reward != null)
             {
+                Debug.WriteLine("OnRewardSelection");
+                Debug.WriteLine(reward.ID);
+                Debug.WriteLine(reward.RewardName);
+                RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
+                rewardDetailView.RewardModel = reward;
+                UINavigationController navController = new UINavigationController(rewardDetailView);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
+        }
+
+        private void OnSaveUnsaveAction(RewardsModel reward)
+        {
+            if (reward != null)
+            {
+                Debug.WriteLine("OnSaveUnsaveAction");
                 Debug.WriteLine(reward.ID);
                 Debug.WriteLine(reward.RewardName);
             }
