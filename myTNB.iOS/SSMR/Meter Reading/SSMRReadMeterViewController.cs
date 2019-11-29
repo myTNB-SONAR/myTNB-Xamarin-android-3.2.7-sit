@@ -407,7 +407,8 @@ namespace myTNB
             };
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(SSMRConstants.I18N_HeaderDesc)
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(_previousMeterList != null
+                && _previousMeterList.Count > 1 ? SSMRConstants.I18N_HeaderDesc : SSMRConstants.I18N_SingleHeaderDesc)
                 , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -419,8 +420,7 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
-                UserInteractionEnabled = false,
-                ContentInset = new UIEdgeInsets(0, -5, 0, -5)
+                UserInteractionEnabled = false
             };
             description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
             CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, 1000F));
