@@ -197,7 +197,7 @@ namespace myTNB
         {
             if (_dashboardHomeHeader != null)
             {
-                _dashboardHomeHeader.SetGreetingText(greeting);
+                _dashboardHomeHeader.UpdateGreetingText(greeting);
             }
         }
 
@@ -382,6 +382,7 @@ namespace myTNB
                         {
                             if (topVc is DashboardHomeViewController)
                             {
+                                UpdateGreeting(GetGreeting());
                                 OnChangeStatusBarFrame(null);
                                 if (_accountListViewController != null)
                                 {
