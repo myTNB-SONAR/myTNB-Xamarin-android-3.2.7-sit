@@ -43,6 +43,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
                                 UINavigationController navController = new UINavigationController(viewController);
                                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 _controller.PresentViewController(navController, true, null);
+                                _controller.OnUpdateTable();
                             }
                         }
                         else
@@ -63,6 +64,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
                     ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                 };
                 _controller.PresentViewController(navController, true, null);
+                _controller.OnUpdateTable();
             }
         }
 
@@ -99,6 +101,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
                             UINavigationController navController = new UINavigationController(selectBillsVC);
                             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             _controller.PresentViewController(navController, true, null);
+                            _controller.OnUpdateTable();
                         }
                     }
                     else
@@ -119,6 +122,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
             UINavigationController navController = new UINavigationController(viewController);
             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             _controller.PresentViewController(navController, true, null);
+            _controller.OnUpdateTable();
         }
     }
 }

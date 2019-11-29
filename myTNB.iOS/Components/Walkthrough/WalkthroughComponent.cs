@@ -145,7 +145,8 @@ namespace myTNB
                     AttributedText = mutableHTMLBody,
                     TextAlignment = UITextAlignment.Center,
                     UserInteractionEnabled = false,
-                    ContentInset = new UIEdgeInsets(0, -5, 0, -5)
+                    TextContainerInset = UIEdgeInsets.Zero,
+                    ContentInset = UIEdgeInsets.Zero
                 };
                 description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
                 CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, GetScaledHeight(86F)));
@@ -206,6 +207,8 @@ namespace myTNB
                 UserInteractionEnabled = true,
                 Text = GetI18NValue(OnboardingConstants.I18N_Skip)
             };
+            CGSize size = _skipLabel.SizeThatFits(new CGSize(_skipLabel.Frame.Width, GetScaledHeight(16F)));
+            ViewHelper.AdjustFrameSetHeight(_skipLabel, size.Height);
             _skipLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DismissAction?.Invoke();
@@ -225,7 +228,8 @@ namespace myTNB
                 TintColor = MyTNBColor.WaterBlue,
                 PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo,
                 CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue,
-                UserInteractionEnabled = false
+                UserInteractionEnabled = false,
+                Transform = CGAffineTransform.MakeScale(1.25F, 1.25F)
             };
             _toolTipFooterView.AddSubview(_pageControl);
         }
