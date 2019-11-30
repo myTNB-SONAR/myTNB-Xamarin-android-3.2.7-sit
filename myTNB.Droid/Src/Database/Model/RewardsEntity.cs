@@ -246,6 +246,54 @@ namespace myTNB_Android.Src.Database.Model
             return new List<RewardsEntity>();
         }
 
+        public List<RewardsEntity> GetActiveSavedItems()
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity WHERE IsSaved = ?", true);
+
+                if (existingRecord != null && existingRecord.Count > 0)
+                {
+                    List<RewardsEntity> matchList = existingRecord.FindAll(x =>
+                    {
+                        int startResult = -1;
+                        int endResult = 1;
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(x.StartDate) && !string.IsNullOrEmpty(x.EndDate))
+                            {
+                                DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime stopDateTime = DateTime.ParseExact(x.EndDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime nowDateTime = DateTime.Now;
+                                startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                            }
+                        }
+                        catch (Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
+                        return (startResult >= 0 && endResult <= 0);
+                    });
+
+                    if (matchList != null && matchList.Count > 0)
+                    {
+                        return matchList;
+                    }
+
+                    return new List<RewardsEntity>();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+            return new List<RewardsEntity>();
+        }
+
         public List<RewardsEntity> GetActiveItemsByCategory(string categoryId)
         {
             try
@@ -372,6 +420,19 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE RewardsEntity SET IsUsed = ? WHERE ID = ?", flag, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateIsSavedItem(string itemID, bool flag)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE RewardsEntity SET IsSaved = ? WHERE ID = ?", flag, itemID);
             }
             catch (Exception e)
             {

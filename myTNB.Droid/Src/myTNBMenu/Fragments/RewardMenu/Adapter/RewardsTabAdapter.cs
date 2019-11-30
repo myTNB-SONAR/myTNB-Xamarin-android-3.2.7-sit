@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
 using Java.Lang;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
@@ -14,14 +15,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
     public class RewardsTabAdapter : FragmentStatePagerAdapter
     {
         private FragmentManager mManager;
-        private List<Fragment> mFragmentList = new List<Fragment>();
+        private List<RewardItemFragment> mFragmentList = new List<RewardItemFragment>();
         private List<string> mFragmentTitleList = new List<string>();
         private Context context;
 
         public RewardsTabAdapter(FragmentManager fm, Context context) : base(fm)
         {
             this.context = context;
-            mFragmentList = new List<Fragment>();
+            mFragmentList = new List<RewardItemFragment>();
             mFragmentTitleList = new List<string>();
             mManager = fm;
         }
@@ -38,7 +39,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             return null;
         }
 
-        public void AddFragment(Fragment fragment, string title)
+        public void AddFragment(RewardItemFragment fragment, string title)
         {
             mFragmentList.Add(fragment);
             mFragmentTitleList.Add(title);
@@ -47,7 +48,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
         public void ClearAll()
         {
             mManager.PopBackStack();
-            mFragmentList = new List<Fragment>();
+            mFragmentList = new List<RewardItemFragment>();
             mFragmentTitleList = new List<string>();
         }
 

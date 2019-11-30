@@ -3806,6 +3806,14 @@
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Model\RewardMenuModel.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardMenuPresenter.cs" />
+    <Compile Include="Src\SavedRewards\MVP\SavedRewardsActivity.cs" />
+    <AndroidResource Include="Resources\layout\SavedRewardsLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SavedRewards\Adapter\SavedRewardsRecyclerAdapter.cs" />
+    <Compile Include="Src\SavedRewards\MVP\SavedRewardsContract.cs" />
+    <Compile Include="Src\SavedRewards\MVP\SavedRewardsPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4172,6 +4180,9 @@
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Model\" />
+    <Folder Include="Src\SavedRewards\" />
+    <Folder Include="Src\SavedRewards\MVP\" />
+    <Folder Include="Src\SavedRewards\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

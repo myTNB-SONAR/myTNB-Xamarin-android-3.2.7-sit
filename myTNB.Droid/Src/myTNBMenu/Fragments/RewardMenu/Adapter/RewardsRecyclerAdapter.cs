@@ -42,7 +42,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 			this.mActivity = Activity;
 		}
 
-		public override int ItemCount => rewardsList.Count;
+        public void RefreshList(List<RewardsModel> data)
+        {
+            if (data == null)
+            {
+                this.rewardsList.Clear();
+            }
+            else
+            {
+                this.rewardsList = data;
+            }
+            NotifyDataSetChanged();
+        }
+
+        public override int ItemCount => rewardsList.Count;
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
@@ -63,6 +76,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                     int currentImgHeight = (int) (currentImgWidth * currentImgRatio);
                     currentShimmerImg.Height = currentImgHeight;
                     currentMainImgLayout.Height = currentImgHeight;
+
+                    RelativeLayout.LayoutParams currentSaveRewardLayout = vh.btnRewardSaveImg.LayoutParameters as RelativeLayout.LayoutParams;
+                    int currentSaveRewardWidth = (int) ((18f/288f) * currentImgWidth);
+                    int currentSaveRewardHeight = (int)((15f / 112f) * currentImgHeight);
+                    currentSaveRewardLayout.Height = currentSaveRewardHeight;
+                    currentSaveRewardLayout.Width = currentSaveRewardWidth;
+
+                    RelativeLayout.LayoutParams currentRewardLayout = vh.rewardImg.LayoutParameters as RelativeLayout.LayoutParams;
+                    int currentRewardWidth = this.mActivity.Resources.DisplayMetrics.WidthPixels;
+                    float currentImgContainerRatio = 180f / 320f;
+                    int currentRewardHeight = (int)((currentImgContainerRatio) * currentRewardWidth);
+                    int currentRewardLeftMargin = -((currentRewardWidth - currentImgWidth) / 2);
+                    int currentRewardTopMargin = -((currentRewardHeight - currentImgHeight) / 2);
+                    currentRewardLayout.Height = currentRewardHeight;
+                    currentRewardLayout.Width = currentRewardWidth;
+                    currentRewardLayout.LeftMargin = currentRewardLeftMargin;
+                    currentRewardLayout.TopMargin = currentRewardTopMargin;
 
 
                     ViewGroup.LayoutParams currentCard = vh.rewardCardView.LayoutParameters;
@@ -191,7 +221,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
                         vh.rewardBottomView.Visibility = ViewStates.Visible;
                         vh.txtTitle.Text = rewardsList[position].RewardName;
-                        // update vh.txtTitle, set rewardUnreadImg and margin
+                        if (rewardsList[position].Read)
+                        {
+                            vh.rewardUnreadImg.Visibility = ViewStates.Gone;
+                            RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                            txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                        }
+                        else
+                        {
+                            vh.rewardUnreadImg.Visibility = ViewStates.Visible;
+                            RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                            txtTitleParam.RightMargin = (int) DPUtils.ConvertDPToPx(34f);
+                        }
+
                     }
                 }
                 catch (Exception e)
@@ -228,7 +270,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
         {
             try
             {
-                SavedClickChanged(this, position);
+                // SavedClickChanged(this, position);
+                RewardsModel targetItem = rewardsList[position];
+                if (targetItem != null)
+                {
+                    if (targetItem.IsSaved)
+                    {
+                        targetItem.IsSaved = false;
+                        RewardsEntity wtManager = new RewardsEntity();
+                        wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
+                    }
+                    else
+                    {
+                        // Do save
+                        targetItem.IsSaved = true;
+                        RewardsEntity wtManager = new RewardsEntity();
+                        wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
+                    }
+                    if (targetItem.IsSaved)
+                    {
+                        sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
+                    }
+                    else
+                    {
+                        sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
+                    }
+                }
             }
             catch (System.Exception e)
             {
@@ -271,7 +338,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             }
             else
             {
-                // icon.SetImageResource(Resource.Drawable.promotions_default_image);
+                viewHolder.rewardImg.SetImageResource(0);
             }
         }
 
@@ -287,6 +354,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                 {
                     item.ImageBitmap = Base64ToBitmap(item.ImageB64);
                     viewHolder.rewardImg.SetImageBitmap(item.ImageBitmap);
+                }
+                else if (!string.IsNullOrEmpty(item.Image))
+                {
+                    _ = GetImageAsync(viewHolder, item);
+                    return;
+                }
+                else
+                {
+                    viewHolder.rewardImg.SetImageResource(0);
                 }
 
                 if (item.IsSaved)

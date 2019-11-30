@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         REWARDSITEMLISTMODE mListMode;
         RewardItemContract.IRewardItemPresenter presenter;
         string mRewardSearchKey = "";
+        bool initializeComplete = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -102,8 +103,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             mRewardsRecyclerAdapter = new RewardsRecyclerAdapter(mRewardList, this.Activity);
             mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
-
+            initializeComplete = true;
             return rootView;
+        }
+
+        public void Refresh()
+        {
+            if (initializeComplete)
+            {
+                if (mListMode == REWARDSITEMLISTMODE.LOADED)
+                {
+                    if (mRewardSearchKey != "")
+                    {
+                        mRewardList = this.presenter.GetActiveRewardList(mRewardSearchKey);
+                    }
+                    else
+                    {
+                        mRewardList = this.presenter.GetActiveRewardList();
+                    }
+
+                    mRewardsRecyclerAdapter.RefreshList(mRewardList);
+                }
+            }
         }
     }
 }

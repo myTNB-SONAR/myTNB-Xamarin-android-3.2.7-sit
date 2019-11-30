@@ -14,6 +14,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.SavedRewards.MVP;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
@@ -41,6 +42,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         {
             base.OnCreate(savedInstanceState);
 
+            SetHasOptionsMenu(true);
             presenter = new RewardMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
         }
 
@@ -144,6 +146,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             return this.DeviceId();
         }
 
+        private IMenu menu;
+        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+        {
+            inflater.Inflate(Resource.Menu.RewardsToolBarMenu, menu);
+            this.menu = menu;
+            base.OnCreateOptionsMenu(menu, inflater);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_menu_reward:
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
+                        Intent activityIntent = new Intent(this.Activity, typeof(SavedRewardsActivity));
+                        this.StartActivity(activityIntent);
+                    }
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
         private void HighLightCurrentTab(int position)
         {
             try
@@ -244,6 +270,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         void ViewPager.IOnPageChangeListener.OnPageSelected(int position)
         {
             HighLightCurrentTab(position);
+            RewardMenuModel currentModel = mTabList[position];
+            currentModel.Fragment.Refresh();
         }
 
         private void InitializeView()
