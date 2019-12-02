@@ -100,7 +100,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
-        
+
         public void EvaluateOCRReadingResponse(string jsonResponseList)
         {
             List<GetMeterReadingOCRResponse> ocrResponseList = JsonConvert.DeserializeObject<List<GetMeterReadingOCRResponse>>(jsonResponseList);
@@ -147,9 +147,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 this.mView.ShowProgressDialog();
                 bool isOCRDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
                 bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
-                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
+                if (MyTNBAccountManagement.GetInstance().IsOCRDown() || smrAccountOCRDown)
                 {
                     isOCRDisabled = true;
                 }
@@ -208,7 +207,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     else
                     {
                         this.mView.HideProgressDialog();
-                    }   
+                    }
                 }
             }
             catch (Exception e)
@@ -224,9 +223,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 this.mView.ShowProgressDialog();
                 bool isOCRDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
                 bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
-                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
+                if (MyTNBAccountManagement.GetInstance().IsOCRDown() || smrAccountOCRDown)
                 {
                     isOCRDisabled = true;
                 }
@@ -377,9 +375,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             bool isOCRDown = false;
 
-            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
             bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
-            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
+            if (MyTNBAccountManagement.GetInstance().IsOCRDown() || smrAccountOCRDown)
             {
                 isOCRDown = true;
             }

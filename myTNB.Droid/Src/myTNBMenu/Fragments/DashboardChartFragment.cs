@@ -1148,8 +1148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             bool isGetEnergyTipsDisabled = false;
-                            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                            if (currentMasterData.IsEnergyTipsDisabled)
+                            if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
                             {
                                 isGetEnergyTipsDisabled = true;
                             }

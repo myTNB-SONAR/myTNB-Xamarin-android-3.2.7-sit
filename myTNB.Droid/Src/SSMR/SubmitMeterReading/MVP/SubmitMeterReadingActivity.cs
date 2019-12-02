@@ -107,7 +107,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.meterReadingScrollLayout)]
         ScrollView meterReadingScrollLayout;
-        
+
 
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_OCR_SUBMIT_CODE = 8797;
@@ -237,9 +237,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             base.OnStart();
             btnTakePhoto.Enabled = true;
-            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
             bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
-            if (!currentMasterData.IsOCRDown && !smrAccountOCRDown)
+            if (!MyTNBAccountManagement.GetInstance().IsOCRDown() && !smrAccountOCRDown)
             {
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
                 {
@@ -311,7 +310,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
             bool isOCRDisabled = SMRPopUpUtils.IsOCRDisabled();
             bool smrAccountOCRDown = SMRPopUpUtils.IsOCRDown();
 
@@ -323,7 +321,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
+                if (MyTNBAccountManagement.GetInstance().IsOCRDown() || smrAccountOCRDown)
                 {
                     captureReadingLayout.Visibility = ViewStates.Gone;
                     meterReadingManualTitle.Visibility = ViewStates.Visible;
@@ -527,7 +525,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             LinearLayout linearLayoutContainer;
             TextView meterType;
             MeterReadingInputLayout meterReadingInputLayout;
-            
+
             switch (type)
             {
                 case METER_READING_TYPE.KWH:

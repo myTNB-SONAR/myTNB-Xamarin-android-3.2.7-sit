@@ -3751,8 +3751,7 @@
     <Compile Include="Src\MyTNBService\ServiceImpl\ServiceApiImpl.cs" />
     <Compile Include="Src\MyTNBService\Request\CustomerAccountListRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponse.cs" />
-    <Compile Include="Src\MyTNBService\Model\CustomerAccountData.cs" />
-    <Compile Include="Src\MyTNBService\Model\AppLaunchMasterDataModel.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataBaseResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

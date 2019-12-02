@@ -16,6 +16,18 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "data")]
             public T Data { get; set; }
 
+            [JsonProperty(PropertyName = "IsSMRApplyDisabled")]
+            public bool IsSMRApplyDisabled { get; set; }
+
+            [JsonProperty(PropertyName = "IsEnergyTipsDisabled")]
+            public bool IsEnergyTipsDisabled { get; set; }
+
+            [JsonProperty(PropertyName = "IsOCRDown")]
+            public bool IsOCRDown { get; set; }
+
+            [JsonProperty(PropertyName = "IsSMRFeatureDisabled")]
+            public bool IsSMRFeatureDisabled { get; set; }
+
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
 

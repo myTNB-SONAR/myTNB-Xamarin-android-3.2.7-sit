@@ -427,8 +427,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
 
                 bool isGetEnergyTipsDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsEnergyTipsDisabled)
+                if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
                 {
                     isGetEnergyTipsDisabled = true;
                 }
@@ -2140,7 +2139,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return PAGE_ID;
           }
-          
+
         public void OnShowHomeMenuFragmentTutorialDialog()
         {
             Handler h = new Handler();

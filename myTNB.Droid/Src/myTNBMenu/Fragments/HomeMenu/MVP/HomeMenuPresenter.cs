@@ -1528,8 +1528,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isSMRApplyAllowFlag = false;
 
                 bool IsSMRFeatureDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsSMRFeatureDisabled)
+                if (MyTNBAccountManagement.GetInstance().IsSMRFeatureDisabled())
                 {
                     IsSMRFeatureDisabled = true;
                 }

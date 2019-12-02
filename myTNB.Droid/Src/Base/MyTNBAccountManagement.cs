@@ -220,5 +220,20 @@ namespace myTNB_Android.Src.Base
             }
             return notificationAccountName;
         }
+
+        public bool IsEnergyTipsDisabled()
+        {
+            return appMasterDataResponse.Response.IsEnergyTipsDisabled;
+        }
+
+        public bool IsSMRFeatureDisabled()
+        {
+            return appMasterDataResponse.Response.IsSMRFeatureDisabled;
+        }
+
+        public bool IsOCRDown()
+        {
+            return appMasterDataResponse.Response.IsOCRDown;
+        }
     }
 }

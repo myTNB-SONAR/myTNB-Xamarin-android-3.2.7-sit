@@ -30,8 +30,8 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Model;
 using System.Net.Http;
+using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
