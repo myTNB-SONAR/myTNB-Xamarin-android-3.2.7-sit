@@ -191,14 +191,14 @@ namespace myTNB_Android.Src.Base
             {
                 tooltipModel = new UnderstandTooltipModel();
                 tooltipModel.TooltipImage = null;
-                tooltipModel.Title = "Title 1";
-                List<string> itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
+                tooltipModel.Title = "Items from your paper/PDF bill";
+                List<string> itemList = "I need to pay|My outstanding changes|My latest bill (electricity usage only)".Split('|').ToList();
                 tooltipModel.ItemList = itemList;
                 tooltipModelDataList.Add(tooltipModel);
 
                 tooltipModel = new UnderstandTooltipModel();
                 tooltipModel.TooltipImage = null;
-                tooltipModel.Title = "Title 2";
+                tooltipModel.Title = "Items from your demand letter";
                 itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
                 tooltipModel.ItemList = itemList;
                 tooltipModelDataList.Add(tooltipModel);

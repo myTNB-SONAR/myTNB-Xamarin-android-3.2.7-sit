@@ -811,7 +811,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             try
             {
-                LinearLayout linearLayoutContainer;
+                LinearLayout linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                 TextView inlineValidationMessage;
                 if (mType == METER_READING_TYPE.KWH)
                 {
@@ -820,7 +820,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     if (inlineValidationMessage.Visibility == ViewStates.Visible)
                     {
                         inlineValidationMessage.Visibility = ViewStates.Gone;
-                        ResetCurrentReadingValuesColor(linearLayoutContainer);
                     }
                 }
                 else if (mType == METER_READING_TYPE.KW)
@@ -830,7 +829,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     if (inlineValidationMessage.Visibility == ViewStates.Visible)
                     {
                         inlineValidationMessage.Visibility = ViewStates.Gone;
-                        ResetCurrentReadingValuesColor(linearLayoutContainer);
                     }
                 }
                 else if (mType == METER_READING_TYPE.KVARH)
@@ -840,9 +838,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     if (inlineValidationMessage.Visibility == ViewStates.Visible)
                     {
                         inlineValidationMessage.Visibility = ViewStates.Gone;
-                        ResetCurrentReadingValuesColor(linearLayoutContainer);
                     }
                 }
+                ResetCurrentReadingValuesColor(linearLayoutContainer);
             }
             catch (Exception e)
             {
@@ -985,15 +983,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 return model.isValidated;
             }).Count == meterReadingModelList.Count);
 
-            meterReadingModelList.ForEach(model =>
+            meterReadingInputLayoutList.ForEach(inputLayout =>
             {
-                if (meterReadingInputLayoutList.Count > 0)
+                if (!inputLayout.HasReadingInput())
                 {
-                    MeterReadingInputLayout inputLayout = meterReadingInputLayoutList.Find(input => { return input.GetMeterId().ToUpper() == model.meterReadingUnit.ToUpper(); });
-                    if (inputLayout != null)
-                    {
-                        model.isValidated = inputLayout.HasReadingInput();
-                    }
+                    ClearMeterCardValidationError(inputLayout.mMeterType);
                 }
             });
 

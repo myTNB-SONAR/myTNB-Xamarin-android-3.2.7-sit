@@ -66,14 +66,6 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetPromotionsItem()
-        {
-            PromotionsService service = new PromotionsService();
-            var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-
         public string GetPromotionsV2Item()
         {
             PromotionsV2Service service = new PromotionsV2Service();
@@ -82,9 +74,9 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetPromotionsTimestampItem()
+        public string GetPromotionsV2TimestampItem()
         {
-            PromotionsService service = new PromotionsService();
+            PromotionsV2Service service = new PromotionsV2Service();
             var data = service.GetTimestamp(WebsiteUrl, Language);
             var listData = AddDataToList(data);
             var resp = CheckData(listData);
