@@ -907,7 +907,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             try
             {
                 int ctr = 0;
-                bool hasAlreadyExistingSelected = CustomerBillingAccount.HasSelected();
 
                 List<NewAccount> finalAccountList = new List<NewAccount>();
                 foreach (Models.AddAccount item in response.Data)

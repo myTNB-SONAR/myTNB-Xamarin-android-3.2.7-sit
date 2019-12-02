@@ -1,7 +1,10 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Runtime;
 using Firebase;
 using Firebase.Analytics;
+using Java.Lang;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Database.Model;
 using System;
 using Xamarin.Facebook;
@@ -65,6 +68,38 @@ namespace myTNB_Android.Src
             MyServiceEntity.CreateTable();
             SitecoreCmsEntity.CreateTable();
             AccountSortingEntity.CreateTable();
+
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            Thread.DefaultUncaughtExceptionHandler = new CustomExceptionHandler();
+
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Intent LaunchViewIntent = new Intent(Context, typeof(LaunchViewActivity));
+            LaunchViewActivity.MAKE_INITIAL_CALL = true;
+            LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(LaunchViewIntent);
+        }
+
+        private void AndroidEnvironment_UnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
+        {
+            Intent LaunchViewIntent = new Intent(Context, typeof(LaunchViewActivity));
+            LaunchViewActivity.MAKE_INITIAL_CALL = true;
+            LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(LaunchViewIntent);
+        }
+
+        public class CustomExceptionHandler : Java.Lang.Object, Thread.IUncaughtExceptionHandler
+        {
+            public void UncaughtException(Thread t, Throwable e)
+            {
+                Intent LaunchViewIntent = new Intent(Context, typeof(LaunchViewActivity));
+                LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                Context.StartActivity(LaunchViewIntent);
+            }
         }
     }
 }

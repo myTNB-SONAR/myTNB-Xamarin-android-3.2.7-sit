@@ -426,69 +426,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
         public async void EnableSelfMeterReading(Models.NotificationDetails notificationDetails)
         {
-            try
-            {
-                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
-                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = "",
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                CARegisteredContactInfoResponse response = await this.terminationApi.GetCARegisteredContactInfo(new GetRegisteredContactInfoRequest()
-                {
-                    AccountNumber = notificationDetails.AccountNum,
-                    IsOwnedAccount = account.isOwned ? "true" : "false",
-                    ICNumber = UserEntity.GetActive().IdentificationNo,
-                    usrInf = currentUsrInf
-                });
-
-                if (response.Data.ErrorCode == "7200")
-                {
-                    CAContactDetailsModel contactDetailsModel = new CAContactDetailsModel();
-                    contactDetailsModel.email = response.Data.AccountDetailsData.Email;
-                    contactDetailsModel.mobile = response.Data.AccountDetailsData.Mobile;
-                    contactDetailsModel.isAllowEdit = response.Data.AccountDetailsData.isAllowEdit;
-
-                    AccountData accountData = new AccountData();
-                    accountData.AccountNum = notificationDetails.AccountNum;
-                    accountData.AddStreet = account.AccountStAddress;
-                    accountData.AccountNickName = account.AccDesc;
-
-                    this.mView.EnableSelfMeterReading(accountData, contactDetailsModel);
-                }
-                else
-                {
-                    this.mView.ShowRetryOptionsApiException(null);
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
-            }
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            AccountData accountData = new AccountData();
+            accountData.AccountNum = notificationDetails.AccountNum;
+            accountData.AddStreet = account.AccountStAddress;
+            accountData.AccountNickName = account.AccDesc;
+            this.mView.EnableSelfMeterReading(accountData);
         }
 
         private async Task GetSMRAccountStatus(string accountContractNumber)

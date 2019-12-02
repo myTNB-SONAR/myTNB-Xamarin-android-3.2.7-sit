@@ -83,8 +83,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             {
                 CustomerBillingAccount.InsertOrReplace(newAccount, false);
             }
-            CustomerBillingAccount.RemoveSelected();
-            CustomerBillingAccount.MakeFirstAsSelected();
+            if (CustomerBillingAccount.HasItems())
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.MakeFirstAsSelected();
+            }
             this.mView.ShowDashboard();
         }
 
@@ -149,8 +152,20 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccount> accounts)
         {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            AddMultipleAccountsAsync(apiKeyId, sspUserId, email, accounts);
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                AddMultipleAccountsAsync(apiKeyId, sspUserId, email, accounts);
+            }
+            catch (Exception unknownException)
+            {
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
+                this.mView.ShowErrorMessage();
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
 
         private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccount> accounts)
@@ -194,7 +209,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountFail(result.response.Message);
                     mView.ShowAddAccountSuccess(result.response);
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();

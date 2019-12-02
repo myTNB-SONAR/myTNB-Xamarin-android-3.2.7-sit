@@ -359,7 +359,7 @@ namespace myTNB_Android.Src.Login.MVP
                                         {
                                             string density = DPUtils.GetDeviceDensity(Application.Context);
                                             GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                                            string json = getItemsService.GetPromotionsTimestampItem();
+                                            string json = getItemsService.GetPromotionsV2TimestampItem();
                                             PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
                                             if (responseModel.Status.Equals("Success"))
                                             {
