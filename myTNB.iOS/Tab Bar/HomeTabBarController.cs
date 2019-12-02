@@ -75,13 +75,6 @@ namespace myTNB
             {
                 return;
             }
-            UITextAttributes normalSelected = new UITextAttributes();
-            normalSelected.Font = TNBFont.MuseoSans_10_300;
-            normalSelected.TextColor = MyTNBColor.GreyishBrown;
-
-            UITextAttributes attrSelected = new UITextAttributes();
-            attrSelected.Font = TNBFont.MuseoSans_10_500;
-            attrSelected.TextColor = MyTNBColor.WaterBlue;
 
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
@@ -90,33 +83,37 @@ namespace myTNB
             tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
             tabbarItem[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
 
-            tabbarItem[0].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
-            tabbarItem[1].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
-            tabbarItem[2].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
-            tabbarItem[3].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
-            tabbarItem[4].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
-
-            tabbarItem[0].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            tabbarItem[1].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            tabbarItem[2].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            tabbarItem[3].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            tabbarItem[4].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-
-            tabbarItem[0].Tag = 0;
-            tabbarItem[1].Tag = 1;
-            tabbarItem[2].Tag = 2;
-            tabbarItem[3].Tag = 3;
-            tabbarItem[4].Tag = 4;
+            UpdateTabBar(tabbarItem);
 
             tabbarItem[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             tabbarItem[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+        }
 
-            foreach (UITabBarItem item in tabbarItem)
+        private void UpdateTabBar(UITabBarItem[] tabbarItems)
+        {
+            if (tabbarItems == null || tabbarItems.Length < 1)
             {
-                UIImage imgUnselected = item.Image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-                item.Image = imgUnselected;
-                UIImage imgSelected = item.SelectedImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-                item.SelectedImage = imgSelected;
+                return;
+            }
+            UITextAttributes normalSelected = new UITextAttributes();
+            normalSelected.Font = TNBFont.MuseoSans_10_300;
+            normalSelected.TextColor = MyTNBColor.GreyishBrown;
+
+            UITextAttributes attrSelected = new UITextAttributes();
+            attrSelected.Font = TNBFont.MuseoSans_10_500;
+            attrSelected.TextColor = MyTNBColor.WaterBlue;
+
+            for (int i = 0; i < tabbarItems.Length; i++)
+            {
+                UITabBarItem tab = tabbarItems[i];
+                tab.Tag = i;
+                tab.SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+                tab.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+
+                UIImage imgUnselected = tab.Image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                tab.Image = imgUnselected;
+                UIImage imgSelected = tab.SelectedImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                tab.SelectedImage = imgSelected;
             }
         }
 
@@ -500,6 +497,10 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
+                    InvokeInBackground(async () =>
+                    {
+                        GetUserRewardsResponseModel userRewardsResponse = await RewardsViewController.GetUserRewards();
+                    });
                     InvokeInBackground(async () =>
                     {
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;

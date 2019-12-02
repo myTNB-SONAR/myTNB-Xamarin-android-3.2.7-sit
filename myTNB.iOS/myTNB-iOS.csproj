@@ -1712,6 +1712,7 @@
     <Folder Include="Assets.xcassets\Reward-TC-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Reward_Default-Banner.imageset\" />
     <Folder Include="Profile\" />
+    <Folder Include="Model\Rewards\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2585,6 +2586,7 @@
     <Compile Include="Profile\ProfileConstants.cs" />
     <Compile Include="Profile\ProfileDataSource.cs" />
     <Compile Include="Profile\ProfileCell.cs" />
+    <Compile Include="Model\Rewards\GetUserRewardsResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

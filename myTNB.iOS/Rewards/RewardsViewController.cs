@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -372,6 +373,34 @@ namespace myTNB
                     tableView.ReloadData();
                 }
             }
+        }
+        #endregion
+
+        #region Service
+        public static async Task<GetUserRewardsResponseModel> GetUserRewards()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                // serviceManager.usrInf,
+                usrInf = new
+                {
+                    eid = "khanwh@gmail.com",
+                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                    did = DataManager.DataManager.SharedInstance.UDID,
+                    ft = "token",
+                    lang = TNBGlobal.APP_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                }
+            };
+            GetUserRewardsResponseModel response = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<GetUserRewardsResponseModel>("GetUserRewards", requestParameter);
+            });
+            return response;
         }
         #endregion
     }
