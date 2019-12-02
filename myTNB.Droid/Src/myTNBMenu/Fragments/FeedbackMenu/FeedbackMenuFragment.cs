@@ -332,7 +332,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(feedbackContent, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -353,7 +353,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(feedbackContent, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -374,7 +374,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(feedbackContent, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
@@ -481,7 +481,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
                 }
 
-                mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                mErrorMessageSnackBar = Snackbar.Make(feedbackContent, message, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
                 );
                 View v = mErrorMessageSnackBar.View;

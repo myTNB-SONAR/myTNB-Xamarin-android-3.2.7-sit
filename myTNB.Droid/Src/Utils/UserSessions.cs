@@ -526,5 +526,19 @@ namespace myTNB_Android.Src.Utils
             ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
             return sharedPreferences.GetBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, false);
         }
+
+        public static void SaveDeviceId(string deviceId)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString(Constants.SHARED_PREF_DEVICE_ID_KEY, deviceId);
+            editor.Apply();
+        }
+
+        public static string GetDeviceId()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_DEVICE_ID_KEY, null);
+        }
     }
 }

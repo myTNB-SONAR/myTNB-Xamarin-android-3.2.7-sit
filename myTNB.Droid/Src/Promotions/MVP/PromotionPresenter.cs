@@ -117,6 +117,10 @@ namespace myTNB_Android.Src.Promotions.MVP
                     {
                         mView.OnSavedTimeStamp(entity.Timestamp);
                     }
+                    else
+                    {
+                        mView.OnSavedTimeStamp(null);
+                    }
                 }
                 else
                 {

@@ -38,6 +38,7 @@ using System.Globalization;
 using Android.Graphics.Drawables;
 using myTNB_Android.Src.NewWalkthrough.MVP;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -71,6 +72,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchDone = false;
 
         private MasterDataResponse cacheResponse = null;
+
+        private AppLaunchMasterDataResponse cacheResponseData = null;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
 
@@ -774,6 +777,26 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
                     maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.DisplayTitle);
                     maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.DisplayMessage);
+                    StartActivity(maintenanceScreen);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse)
+        {
+            try
+            {
+                cacheResponseData = masterDataResponse;
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
+                {
+                    isAppLaunchDone = true;
+                    Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Response.DisplayTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Response.DisplayMessage);
                     StartActivity(maintenanceScreen);
                 }
             }

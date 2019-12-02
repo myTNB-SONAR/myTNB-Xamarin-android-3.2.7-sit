@@ -3743,6 +3743,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\maintenance_bcrm.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_bcrm.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm.png" />
+    <Compile Include="Src\MyTNBService\InterfaceAPI\IServiceV6.cs" />
+    <Compile Include="Src\MyTNBService\Request\AppLaunchMasterDataRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\BaseResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\BaseRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataResponse.cs" />
+    <Compile Include="Src\MyTNBService\ServiceImpl\ServiceApiImpl.cs" />
+    <Compile Include="Src\MyTNBService\Request\CustomerAccountListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponse.cs" />
+    <Compile Include="Src\MyTNBService\Model\CustomerAccountData.cs" />
+    <Compile Include="Src\MyTNBService\Model\AppLaunchMasterDataModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

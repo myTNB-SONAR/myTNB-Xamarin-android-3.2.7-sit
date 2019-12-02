@@ -3,6 +3,7 @@ using Android.OS;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using System;
 using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
@@ -12,10 +13,10 @@ namespace myTNB_Android.Src.AppLaunch.Async
     public class MasterApiDBOperation : AsyncTask
     {
 
-        private MasterDataResponse masterDataResponse = null;
+        private AppLaunchMasterDataResponse masterDataResponse = null;
         private ISharedPreferences preferences = null;
 
-        public MasterApiDBOperation(MasterDataResponse masterDataResponse, ISharedPreferences preferences)
+        public MasterApiDBOperation(AppLaunchMasterDataResponse masterDataResponse, ISharedPreferences preferences)
         {
             this.preferences = preferences;
             this.masterDataResponse = masterDataResponse;
@@ -25,31 +26,31 @@ namespace myTNB_Android.Src.AppLaunch.Async
         {
 
             Console.WriteLine("========= 0000 MasterApiDBOperation started");
-            if (masterDataResponse != null && masterDataResponse.Data != null)
+            if (masterDataResponse != null && masterDataResponse.Response != null)
             {
-                if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")
+                if (masterDataResponse.Response.ErrorCode == "7200" && masterDataResponse.Response.ErrorCode != "7000")
                 {
-                    MyTNBAccountManagement.GetInstance().SetCurentMasterData(masterDataResponse);
+                    MyTNBAccountManagement.GetInstance().SetMasterDataResponse(masterDataResponse);
 
-                    if (masterDataResponse.Data.MasterData.WebLinks != null)
+                    if (masterDataResponse.GetData().WebLinks != null)
                     {
-                        foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
+                        foreach (Weblink web in masterDataResponse.GetData().WebLinks)
                         {
                             int newRecord = WeblinkEntity.InsertOrReplace(web);
                         }
                     }
 
                     FeedbackCategoryEntity.RemoveActive();
-                    if (masterDataResponse.Data.MasterData.FeedbackCategorysV2 != null && masterDataResponse.Data.MasterData.FeedbackCategorysV2.Count > 0)
+                    if (masterDataResponse.GetData().FeedbackCategorysV2 != null && masterDataResponse.GetData().FeedbackCategorysV2.Count > 0)
                     {
-                        foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorysV2)
+                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorysV2)
                         {
                             int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
                         }
                     }
                     else
                     {
-                        foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorys)
+                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorys)
                         {
                             int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
                         }
@@ -57,7 +58,7 @@ namespace myTNB_Android.Src.AppLaunch.Async
 
                     int ctr = 0;
                     FeedbackStateEntity.RemoveActive();
-                    foreach (FeedbackState state in masterDataResponse.Data.MasterData.States)
+                    foreach (FeedbackState state in masterDataResponse.GetData().States)
                     {
                         bool isSelected = ctr == 0 ? true : false;
                         int newRecord = FeedbackStateEntity.InsertOrReplace(state, isSelected);
@@ -67,7 +68,7 @@ namespace myTNB_Android.Src.AppLaunch.Async
 
                     FeedbackTypeEntity.RemoveActive();
                     ctr = 0;
-                    foreach (FeedbackType type in masterDataResponse.Data.MasterData.FeedbackTypes)
+                    foreach (FeedbackType type in masterDataResponse.GetData().FeedbackTypes)
                     {
                         bool isSelected = ctr == 0 ? true : false;
                         int newRecord = FeedbackTypeEntity.InsertOrReplace(type, isSelected);
@@ -76,24 +77,24 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     }
 
 
-                    foreach (NotificationChannels notificationChannel in masterDataResponse.Data.MasterData.NotificationTypeChannels)
+                    foreach (NotificationChannels notificationChannel in masterDataResponse.GetData().NotificationTypeChannels)
                     {
                         int newRecord = NotificationChannelEntity.InsertOrReplace(notificationChannel);
                     }
 
-                    foreach (NotificationTypes notificationTypes in masterDataResponse.Data.MasterData.NotificationTypes)
+                    foreach (NotificationTypes notificationTypes in masterDataResponse.GetData().NotificationTypes)
                     {
                         int newRecord = NotificationTypesEntity.InsertOrReplace(notificationTypes);
                     }
 
                     LocationTypesEntity.InsertFristRecord();
-                    foreach (LocationType loc in masterDataResponse.Data.MasterData.LocationTypes)
+                    foreach (LocationType loc in masterDataResponse.GetData().LocationTypes)
                     {
                         int newRecord = LocationTypesEntity.InsertOrReplace(loc);
                     }
 
                     DownTimeEntity.RemoveActive();
-                    foreach (DownTime cat in masterDataResponse.Data.MasterData.Downtimes)
+                    foreach (DownTime cat in masterDataResponse.GetData().Downtimes)
                     {
                         int newRecord = DownTimeEntity.InsertOrReplace(cat);
                     }

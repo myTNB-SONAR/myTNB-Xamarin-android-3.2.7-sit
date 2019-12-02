@@ -15,7 +15,6 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
@@ -25,12 +24,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB_Android.Src.AppLaunch.Api;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataRequest;
-using myTNB;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Model;
+using System.Net.Http;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -55,7 +56,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             this.mView = mView;
             this.mSharedPref = sharedPreferences;
-            this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
+            appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
             this.mView.SetPresenter(this);
         }
 
@@ -92,7 +93,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                     LanguageUtil.SetInitialAppLanguage();
-                    LoadAccounts();
+                    if (UserSessions.GetDeviceId() == null)
+                    {
+                        UserSessions.SaveDeviceId(this.mView.GetDeviceId());
+                    }
+                    LoadAppMasterData();
                     GetSSMRWalkThrough();
                 }
             }
@@ -102,13 +107,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
-        private bool IsAppNeedsUpdate(MasterData masterData)
+        private bool IsAppNeedsUpdate(ForceUpdateInfoData forceUpdateInfoData)
         {
-            MasterData.ForceUpdateInfoData forceUpdatedData = (MasterData.ForceUpdateInfoData)masterData.ForceUpdateInfo;
-            if (forceUpdatedData != null && forceUpdatedData.isAndroidForceUpdateOn)
+            if (forceUpdateInfoData != null && forceUpdateInfoData.isAndroidForceUpdateOn)
             {
-                Log.Debug("TEST", "= " + DeviceIdUtils.GetAppVersionCode());
-                if (int.Parse(forceUpdatedData.AndroidLatestVersion) > DeviceIdUtils.GetAppVersionCode())
+                if (int.Parse(forceUpdateInfoData.AndroidLatestVersion) > DeviceIdUtils.GetAppVersionCode())
                 {
                     return true;
                 }
@@ -116,94 +119,47 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             return false;
         }
 
-        private async void LoadAccounts()
+        private async void LoadAppMasterData()
         {
             this.mView.SetAppLaunchSuccessfulFlag(false, AppLaunchNavigation.Nothing);
             cts = new CancellationTokenSource();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-
-            var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
-
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
-
             var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(httpClient);
 #else
-			var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-
-            var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
-
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
-
-			var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
-
+            var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
 #endif
 			try
             {
-                Context mContext = MyTNBApplication.Context;
+                AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
+                    (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
 
-                UserInterface currentUsrInf = new UserInterface()
+                if (masterDataResponse != null && masterDataResponse.Response != null)
                 {
-                    eid = "",
-                    sspuid = "",
-                    did = this.mView.GetDeviceId(),
-                    ft = "",
-                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                if (UserEntity.IsCurrentlyActive())
-                {
-                    currentUsrInf.eid = UserEntity.GetActive().Email;
-                    currentUsrInf.sspuid = UserEntity.GetActive().UserID;
-                }
-
-                DeviceInterface currentDeviceInf = new DeviceInterface()
-                {
-                    DeviceId = this.mView.GetDeviceId(),
-                    AppVersion = DeviceIdUtils.GetAppVersionName(),
-                    OsType = int.Parse(Constants.DEVICE_PLATFORM),
-                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
-                    DeviceDesc = Constants.DEFAULT_LANG
-
-                };
-
-                var masterDataResponse = await masterDataApi.GetAppLaunchMasterData(new MasterDataRequest()
-                {
-                    deviceInf = currentDeviceInf,
-                    usrInf = currentUsrInf
-                }, CancellationTokenSourceWrapper.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
-                if (masterDataResponse != null && masterDataResponse.Data != null)
-                {
-                    if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")
+                    if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
-                        if (masterDataResponse.Data.MasterData.AppVersionList != null && masterDataResponse.Data.MasterData.AppVersionList.Count > 0)
+                        AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
+                        if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
-                            appUpdateAvailable = IsAppNeedsUpdate(masterDataResponse.Data.MasterData);
+                            appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
                             if (appUpdateAvailable)
                             {
-                                string modalTitle = masterDataResponse.Data.MasterData.ForceUpdateInfo.ModalTitle;
-                                string modalMessage = masterDataResponse.Data.MasterData.ForceUpdateInfo.ModalBody;
-                                string modalBtnLabel = masterDataResponse.Data.MasterData.ForceUpdateInfo.ModalBtnText;
+                                string modalTitle = responseData.ForceUpdateInfo.ModalTitle;
+                                string modalMessage = responseData.ForceUpdateInfo.ModalBody;
+                                string modalBtnLabel = responseData.ForceUpdateInfo.ModalBtnText;
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
                             }
                             else
                             {
-
                                 if (UserEntity.IsCurrentlyActive())
                                 {
-
-
                                     try
                                     {
                                         UserEntity entity = UserEntity.GetActive();
@@ -236,7 +192,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                         }
                                                         UserSessions.SavePhoneVerified(mSharedPref, true);
                                                     }
-                                                    catch (System.Exception e)
+                                                    catch (Exception e)
                                                     {
                                                         Utility.LoggingNonFatalError(e);
                                                     }
@@ -246,8 +202,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             {
                                                 proceed = true;
                                             }
-
-
                                         }
                                         else
                                         {
@@ -259,8 +213,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         Log.Debug("Package Manager", e.StackTrace);
                                         Utility.LoggingNonFatalError(e);
                                     }
-
-
 
                                     if (proceed)
                                     {
@@ -306,9 +258,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowDashboard();
                                         }
-
                                     }
-
                                 }
                                 else if (UserSessions.HasSkipped(mSharedPref))
                                 {
@@ -337,9 +287,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             EvaluateServiceRetry();
                         }
                     }
-                    else if (masterDataResponse.Data.ErrorCode == "7000")
+                    else if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_MAINTENANCE)
                     {
-                        if (masterDataResponse.Data.DisplayMessage != null && masterDataResponse.Data.DisplayTitle != null)
+                        if (masterDataResponse.Response.DisplayMessage != null && masterDataResponse.Response.DisplayTitle != null)
                         {
                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Maintenance);
                             this.mView.ShowMaintenance(masterDataResponse);
@@ -364,7 +314,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 Utility.LoggingNonFatalError(apiException);
                 EvaluateServiceRetry();
             }
-            catch (Newtonsoft.Json.JsonReaderException e)
+            catch (JsonReaderException e)
             {
                 Utility.LoggingNonFatalError(e);
                 EvaluateServiceRetry();
@@ -382,16 +332,16 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private void EvaluateServiceRetry()
         {
             serviceCallCounter++;
-            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} ", this.appLaunchMasterDataTimeout, serviceCallCounter));
+            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} ", appLaunchMasterDataTimeout, serviceCallCounter));
             if (serviceCallCounter == 1)//If first failed, do auto-retry.
             {
-                this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
-                LoadAccounts();
+                appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
+                LoadAppMasterData();
             }
             if (serviceCallCounter == 2)//If still failed, do auto-retry.
             {
-                this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
-                LoadAccounts();
+                appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
+                LoadAppMasterData();
             }
             if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
             {
@@ -415,7 +365,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        LoadAccounts();
+                        LoadAppMasterData();
                     }
                 }
             }
