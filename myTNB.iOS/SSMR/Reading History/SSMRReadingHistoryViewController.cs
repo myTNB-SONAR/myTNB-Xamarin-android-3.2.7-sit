@@ -119,6 +119,7 @@ namespace myTNB
                 else
                 {
                     _currAcc = DataManager.DataManager.SharedInstance.SelectedAccount;
+                    _currentIndex = SSMRAccounts.GetEligibleAccountList().FindIndex(x => x.accNum == _currAcc.accNum);
                     _ssmrHeaderComponent.AccountName = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
                     UpdateTable();
                     IsLoading = false;
