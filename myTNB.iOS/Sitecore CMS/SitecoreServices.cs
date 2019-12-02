@@ -490,6 +490,8 @@ namespace myTNB.SitecoreCMS
                         rewardsResponse.Status.Equals("Success") &&
                         rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                     {
+                        RewardsEntity rewardsEntity = new RewardsEntity();
+                        List<RewardsModel> existingRewardsList = rewardsEntity.GetAllItems();
                         List<RewardsModel> rewardsData = new List<RewardsModel>();
                         List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
                         foreach (var category in categoryList)
@@ -501,17 +503,23 @@ namespace myTNB.SitecoreCMS
                                 {
                                     reward.CategoryID = category.ID;
                                     reward.CategoryName = category.CategoryName;
+
+                                    if (existingRewardsList != null && existingRewardsList.Count > 0)
+                                    {
+                                        var existingReward = existingRewardsList.Find(x => x.ID.Equals(reward.ID));
+                                        if (existingReward != null)
+                                        {
+                                            reward.IsRead = existingReward.IsRead;
+                                        }
+                                    }
                                     rewardsData.Add(reward);
                                 }
                             }
                         }
-
-                        RewardsEntity rewardsEntity = new RewardsEntity();
                         rewardsEntity.DeleteTable();
                         rewardsEntity.CreateTable();
                         rewardsEntity.InsertListOfItems(rewardsData);
-                        UpdateSharedPreference("SiteCoreRewardsTimeStamp", timeStamp.Data[0].Timestamp);
-                        Debug.WriteLine("LoadRewards Done");
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
                     }
                 }
             });

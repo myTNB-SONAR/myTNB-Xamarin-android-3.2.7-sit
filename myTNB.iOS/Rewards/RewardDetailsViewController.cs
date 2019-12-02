@@ -63,12 +63,7 @@ namespace myTNB
                 _scrollView.RemoveFromSuperview();
                 _scrollView = null;
             }
-            nfloat addtlHeight = 0;
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                addtlHeight = 20;
-            }
-            _scrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight - _footerView.Frame.Height + addtlHeight))
+            _scrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight - GetScaledHeight(80F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Bounces = true
@@ -291,14 +286,9 @@ namespace myTNB
 
         private void AddFooterView()
         {
-            nfloat addtlHeight = 0;
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                addtlHeight = 20;
-            }
             nfloat height = GetScaledHeight(80F);
             nfloat width = ViewWidth;
-            _footerView = new UIView(new CGRect(0, ViewHeight - height, width, height + addtlHeight))
+            _footerView = new UIView(new CGRect(0, ViewHeight - height, width, height + GetBottomPadding))
             {
                 BackgroundColor = UIColor.White
             };

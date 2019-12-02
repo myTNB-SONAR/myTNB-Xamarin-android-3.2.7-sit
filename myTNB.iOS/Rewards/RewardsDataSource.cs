@@ -10,22 +10,19 @@ namespace myTNB
 {
     public class RewardsDataSource : UITableViewSource
     {
+        private readonly RewardsViewController _controller;
         private List<RewardsModel> _rewardsList = new List<RewardsModel>();
-        private readonly Action<RewardsModel> OnRowSelected;
-        private readonly Action<RewardsModel> OnSaveUnsaveAction;
         private readonly bool _isLoading;
         public Func<string, string> GetI18NValue;
 
-        public RewardsDataSource(List<RewardsModel> rewardsList,
+        public RewardsDataSource(RewardsViewController controller,
+            List<RewardsModel> rewardsList,
             Func<string, string> getI18NValue,
-            Action<RewardsModel> onRowSelected,
-            Action<RewardsModel> onSaveUnsaveAction,
             bool isLoading = false)
         {
+            _controller = controller;
             _rewardsList = rewardsList;
             GetI18NValue = getI18NValue;
-            OnRowSelected = onRowSelected;
-            OnSaveUnsaveAction = onSaveUnsaveAction;
             _isLoading = isLoading;
         }
 
@@ -125,7 +122,10 @@ namespace myTNB
                             RewardsModel reward = _rewardsList[indx];
                             reward.IsSaved = !reward.IsSaved;
                             cell.SaveIcon.Image = UIImage.FromBundle(reward.IsSaved ? RewardsConstants.Img_HeartSaveIcon : RewardsConstants.Img_HeartUnsaveIcon);
-                            OnSaveUnsaveAction?.Invoke(reward);
+                            if (_controller != null)
+                            {
+                                _controller.OnSaveUnsaveAction(reward);
+                            }
                         }
                     });
                 }
@@ -141,8 +141,13 @@ namespace myTNB
                 var index = indexPath.Row;
                 if (index > -1 && index < _rewardsList.Count)
                 {
-                    RewardsModel reward = _rewardsList[index];
-                    OnRowSelected?.Invoke(reward);
+                    if (_controller != null)
+                    {
+                        _rewardsList[index].IsRead = true;
+                        _controller.OnUpdateReadRewards(_rewardsList[index]);
+                        _controller.OnRewardSelection(_rewardsList[index]);
+                        _controller.OnReloadTableAction(_rewardsList, tableView);
+                    }
                 }
             }
         }

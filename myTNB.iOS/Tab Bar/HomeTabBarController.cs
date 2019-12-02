@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using myTNB.TabBar;
 using System.Linq;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -38,6 +39,7 @@ namespace myTNB
                 UpdatePromotions();
                 DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
             }
+            FetchRewards();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -53,6 +55,7 @@ namespace myTNB
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[1].Enabled = ServiceCall.HasAccountList();
             UpdatePromotionTabBarIcon();
+            UpdateRewardsTabBarIcon();
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             PushNotificationHelper.HandlePushNotification();
         }
@@ -134,8 +137,7 @@ namespace myTNB
             }
             if (!ShowNewIndicator("3"))
             {
-                TabBar.Items[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-                TabBar.Items[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                UpdateRewardsTabBarIcon();
             }
 
             if (tabbar.SelectedItem.Tag == 1)
@@ -440,8 +442,6 @@ namespace myTNB
                     }
                     else
                     {
-                        PromotionsEntity wsManager = new PromotionsEntity();
-                        List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
                         imageStr = isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
                     }
                     break;
@@ -492,6 +492,48 @@ namespace myTNB
             WHATSNEW,
             REWARDS,
             PROFILE
+        }
+
+        private void FetchRewards()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                if (NetworkUtility.isReachable)
+                {
+                    InvokeInBackground(async () =>
+                    {
+                        DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                        await SitecoreServices.Instance.LoadRewards();
+                        InvokeOnMainThread(() =>
+                        {
+                            UpdateRewardsTabBarIcon();
+                            DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                            NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
+                        });
+                    });
+                }
+            });
+        }
+
+        private void UpdateRewardsTabBarIcon()
+        {
+            TabBar.Items[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            TabBar.Items[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+
+            RewardsEntity rewardsEntity = new RewardsEntity();
+            List<RewardsModel> rewardsList = rewardsEntity.GetAllItems();
+
+            if (!ShowNewIndicator("3") && rewardsList != null && rewardsList.Count > 0)
+            {
+                int unreadCount = rewardsList.Where(x => !x.IsRead).Count();
+                TabBar.Items[3].BadgeColor = _badgeColor;
+                TabBar.Items[3].BadgeValue = unreadCount > 0 ? unreadCount.ToString() : null;
+                TabBar.Items[3].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);
+            }
+            else
+            {
+                TabBar.Items[3].BadgeValue = null;
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB.SQLite.SQLiteDataManager;
+using SQLite;
 
 namespace myTNB.SitecoreCMS.Model
 {
@@ -18,9 +20,10 @@ namespace myTNB.SitecoreCMS.Model
 
     public class RewardsModel
     {
+        [PrimaryKey]
+        public string ID { set; get; }
         public string CategoryID { set; get; }
         public string CategoryName { set; get; }
-        public string ID { set; get; }
         public string RewardName { set; get; }
         public string Title { set; get; }
         public string TitleOnListing { set; get; }
@@ -32,6 +35,33 @@ namespace myTNB.SitecoreCMS.Model
         public string StartDate { set; get; }
         public string EndDate { set; get; }
         public bool IsSaved { set; get; }
+        public bool IsRead { set; get; }
+        public bool IsUsed { set; get; }
+
+        public RewardsEntity ToEntity()
+        {
+            var entity = new RewardsEntity
+            {
+                CategoryID = CategoryID,
+                CategoryName = CategoryName,
+                ID = ID,
+                RewardName = RewardName,
+                Title = Title,
+                TitleOnListing = TitleOnListing,
+                Description = Description,
+                Image = Image,
+                PeriodLabel = PeriodLabel,
+                LocationLabel = LocationLabel,
+                TandCLabel = TandCLabel,
+                StartDate = StartDate,
+                EndDate = EndDate,
+                IsSaved = IsSaved,
+                IsRead = IsRead,
+                IsUsed = IsUsed
+            };
+
+            return entity;
+        }
     }
 
     public class RewardsTimestampResponseModel

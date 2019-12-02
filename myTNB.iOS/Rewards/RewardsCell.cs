@@ -8,7 +8,7 @@ namespace myTNB
 {
     public class RewardsCell : CustomUITableViewCell
     {
-        private UIView _viewContainer;
+        private UIView _viewContainer, _readIndicator;
         public UIImageView RewardImageVIew;
         private UILabel _title;
         public UIImageView SaveIcon;
@@ -62,6 +62,14 @@ namespace myTNB
                 Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsaveIcon),
                 UserInteractionEnabled = true
             };
+            nfloat dotWidth = GetScaledWidth(8F);
+            nfloat dotHeight = GetScaledHeight(8F);
+            _readIndicator = new UIView(new CGRect(_viewContainer.Frame.Width - dotWidth - GetScaledWidth(12F), GetScaledHeight(133F), dotWidth, dotHeight))
+            {
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            _readIndicator.Layer.CornerRadius = GetScaledHeight(4F);
+            _viewContainer.AddSubview(_readIndicator);
 
             _viewContainer.AddSubview(SaveIcon);
             AddSubview(_viewContainer);
@@ -72,6 +80,11 @@ namespace myTNB
             if (model != null)
             {
                 _title.Text = model.TitleOnListing;
+                _readIndicator.Hidden = model.IsRead;
+                if (!model.IsRead)
+                {
+                    ViewHelper.AdjustFrameSetWidth(_title, _viewContainer.Frame.Width - BaseMarginWidth16 - _readIndicator.Frame.Width - GetScaledWidth(18F) - GetScaledWidth(12F));
+                }
             }
         }
     }

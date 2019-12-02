@@ -123,6 +123,9 @@ namespace myTNB.DataManager
         //Promotion
         public bool IsPromotionFirstLoad = false;
 
+        //Rewards
+        public bool IsRewardsLoading = true;
+
         //Payment
         private List<string> AccountNumbersForPaymentList;
 
@@ -167,9 +170,12 @@ namespace myTNB.DataManager
             DueEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
             PromotionsEntity.DeleteTable();
+            RewardsEntity rewardsEntity = new RewardsEntity();
+            rewardsEntity.DeleteTable();
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.LoginState);
             sharedPreference.SetString("", "SiteCorePromotionTimeStamp");
+            sharedPreference.SetString("", "SiteCoreRewardsTimeStamp");
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.PhoneVerification);
             sharedPreference.Synchronize();
 
@@ -235,6 +241,7 @@ namespace myTNB.DataManager
             isLocationSearch = false;
 
             IsPromotionFirstLoad = false;
+            IsRewardsLoading = true;
 
             //Account Related
             InstallationDetails = new InstallationDetailDataModel();

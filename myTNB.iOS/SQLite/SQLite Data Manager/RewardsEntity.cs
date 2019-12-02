@@ -70,6 +70,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
                     item.IsSaved = obj.IsSaved;
+                    item.IsRead = obj.IsRead;
+                    item.IsUsed = obj.IsUsed;
                     InsertItem(item);
                 }
             }
@@ -117,6 +119,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                 rewardModel.StartDate = item.StartDate;
                 rewardModel.EndDate = item.EndDate;
                 rewardModel.IsSaved = item.IsSaved;
+                rewardModel.IsRead = item.IsRead;
+                rewardModel.IsUsed = item.IsUsed;
                 itemList.Add(rewardModel);
             }
             return itemList;
@@ -134,6 +138,45 @@ namespace myTNB.SQLite.SQLiteDataManager
             {
                 Debug.WriteLine("Error in Delete Table : {0}", e.Message);
             }
+        }
+        /// <summary>
+        /// Inserts the item.
+        /// </summary>
+        /// <param name="item">Item.</param>
+        public void UpdateItem(RewardsEntity item)
+        {
+            try
+            {
+                int newRecord = SQLiteHelper._db.Update(item);
+#if DEBUG
+                Debug.WriteLine("Update Record: {0}", newRecord);
+#endif
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in Update Item in Table : {0}", e.Message);
+            }
+        }
+        /// <summary>
+        /// Gets the item.
+        /// </summary>
+        /// <returns>The item.</returns>
+        /// <param name="key">Key.</param>
+        public static RewardsEntity GetItem(string key)
+        {
+            RewardsEntity item = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(key))
+                {
+                    item = SQLiteHelper._db.Get<RewardsEntity>(key);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in Reading from Table : {0}", e.Message);
+            }
+            return item;
         }
     }
 }
