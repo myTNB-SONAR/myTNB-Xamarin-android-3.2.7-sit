@@ -1,26 +1,4 @@
 ﻿{
-  //Sample
-  "page": {
-    "title": "Title",
-    "submit": "Submit"
-  },
-  //Sample
-  "page_selector": {
-    "date": [
-      {
-        "id": "0",
-        "key": "hour",
-        "value": "Hourly",
-        "description": "Hourly Description"
-      },
-      {
-        "id": "1",
-        "key": "week",
-        "value": "Weekly",
-        "description": "Weekly Description"
-      }
-    ]
-  },
   "Common": {
     "account": "Akaun",
     "emailAddress": "Alamat Emel",
@@ -35,7 +13,7 @@
     "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
     "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
     "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
-    "delete": "Delete",
+    "delete": "Padam",
     "refreshDescription": "Nampaknya sambungan bagi skrin ini telah terputus. Refresh untuk sambung semula!",
     "refreshNow": "Refresh Sekarang",
     "bcrmMessage": "BRCM will be down for maintenance purpose",
@@ -61,7 +39,7 @@
     "totalAmount": "Jumlah Keseluruhan",
     "totalAmountRM": "Jumlah Keseluruhan (RM)",
     "amountRM": "Amaun (RM)",
-    "back": "Back",
+    "back": "Kembali",
     "cards": "Kad Kredit / Debit",
     "abort": "Batal",
     "manage": "Uruskan",
@@ -81,10 +59,10 @@
     "login": "Log masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
-    "retry": "Retry", //missing
+    "retry": "Cuba lagi",
     "save": "Simpan",
     "fullname": "Nama Penuh",
-    "confirmPassword": "Sahkan Kata Laluan",
+    "confirmPassword": "Sahkan Kata Laluan Baharu",
     "accountNo": "Nombor Akaun",
     "accountType": "Jenis Akaun",
     "allNotifications": "Semua Pemberitahuan",
@@ -108,7 +86,9 @@
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
     "new": "Baru",
-    "tutorialSwipeText": "Leret untuk melihat lebih lagi,<br>tekan dua kali untuk mengabaikannya."
+    "tutorialSwipeText": "Leret untuk melihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
+    "wellBeBack": "We’ll be back shortly!",
+    "electricityAccounts": "Electricity Accounts"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -132,10 +112,10 @@
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "PIN tidak sah",
     "invalid_password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka).",
-    "invalid_mismatchedPassword": "Kata laluan baru anda tidak sepadan.",
+    "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
     "invalid_fullname": "Nama Penuh Tidak Sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport Tidak Sah",
-    "invalid_mismatchedEmail": "E-mel yang anda masukkan tidak sepadan.",
+    "invalid_mismatchedEmail": "Kedua-dua emel tidak padan",
     "error_duplicateAccountMessage": "Nombor akaun ini telah ditambah ke senarai.",
     "error_duplicateAccountTitle": "Akaun Yang Sama",
     "invalid_icNumber": "Nombor IC Tidak Sah",
@@ -192,7 +172,8 @@
     "tutorialQuickAccessDesc": "Tekan <b>\"Tambah\"</b> untuk menambah akaun ke myTNB. <b>\"Cari\"</b> akaun yang telah ditambah dengan menaip nama ringkas atau nombor akaun.",
     "tutorialQuickActionDesc": "Ciri baru diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
-    "gotIt": "Faham!"
+    "gotIt": "Faham!",
+    "serviceRefreshMessage": "Alamak! Rasanya seksyen Akses Mudah terputus sambungan. Refresh untuk kekalkan sambungan!"
   },
   "Tabbar": {
     "home": "Utama",
@@ -287,12 +268,14 @@
     "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
     "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
     "headerDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
+    "singleHeaderDescription": "<b>Take or upload a photo</b>, or <b>manually enter</b> your meter reading for each respective unit.",
     "imReady": "Saya Bersedia!",
     "note": "Nota: Sila genapkan nombor sekiranya bacaan pada meter anda memiliki titik perpuluhan.",
     "previousMeterReading": "Bacaan Meter Sebelum",
     "submitReading": "Hantar Bacaan",
     "takeOrUploadPhoto": "Tangkap / Muat Naik Gambar",
     "manualInputTitle": "Sila masukkan bacaan meter anda untuk unit berkenaan di bawah.",
+    "ocrDownMessage": "Servis menghantar foto tidak tersedia pada masa in. Sila <b>masukkan bacaan anda secara manual</b> di bawah.",
     "tutorialReadMeterTitle": "Masukkan bacaan meter anda di sini.",
     "tutorialReadMeterDesc": "Masukkan mengikut unit. Anda akan dapat melihat bacaan bulan sebelumnya sebagai rujukan.",
     "tutorialReadMeterGotIt": "Faham!"
@@ -383,11 +366,11 @@
     "mdmsUnavailable": "Currently Unavailable",
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
     "beenPaidExtra": "Saya telah dibayar lebih",
-    "tutorialSMRTitle": "Your reading status at a glance.",
-    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
-    "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
-    "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
-    "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you."
+    "tutorialSMRTitle": "Status Bacaan Anda Sepintas Lalu.",
+    "tutorialSMRDesc": "Dapatkan status bacaan anda di sini. Kami juga akan memaklumkan apabila tiba masanya untuk menghantar bacaan.",
+    "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
+    "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. ",
+    "prevReadingEmptyMsg": "Sila cuba lagi kemudian. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda."
   },
   "Bills": {
     "title": "Bil",
@@ -409,12 +392,12 @@
     "tutorialViewDetailsTitle": "Fahami bil anda.",
     "tutorialHistoryNormalTitle": "Keep track of payments.",
     "tutorialHistoryTitle": "Pantau rekod bil dan pembayaran anda.",
-    "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillREAcctDesc": "Klik pada butang \"#dropdown#\" untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan",
     "tutorialBillNormalAcctDesc": "Tekan “ #dropdown# ” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
     "tutorialViewDetailsDesc": "\"Lihat Butiran\" untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
-    "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
+    "tutorialHistoryREAcctDesc": "Akses dan lihat makluman pembayaran dan resit pembayaran anda untuk tempoh enam bulan yang lalu. Gunakan fungsi penapis untuk memilih paparan makluman atau resit pembayaran.",
     "gotIt": "Faham!"
   },
   "Bills_selector": {
@@ -449,8 +432,8 @@
     "tooltipdesc1": "Jumlah perlu dibayar|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
     "pay": "Bayar",
-    "tutorialTitle": "View your e-bill",
-    "tutorialDesc": "Tap here to acess the PDF version of your bill.",
+    "tutorialTitle": "Lihat Bil anda.",
+    "tutorialDesc": "Tekan sini untuk mengakses bil versi PDF anda.",
     "gotIt": "Faham!"
   },
   "BillFilter": {
@@ -560,7 +543,10 @@
     "shareDescription": "Kongsi aplikasi ini",
     "tnc": "Terma & Syarat",
     "findUs": "Temui Kami",
-    "setAppLanguage": "Tetapkan Bahasa Aplikasi"
+    "setAppLanguage": "Tetapkan Bahasa Aplikasi",
+    "myTNBAccount": "Akaun myTNB",
+    "logout": "Log Keluar",
+    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -686,14 +672,14 @@
     "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   },
   "Onboarding": {
-    "letsStart": "Let's get started!",
+    "letsStart": "Jom Mulakan!",
     "skip": "Langkau",
     "title1": "Selamat datang ke myTNB!",
     "title2": "Ketahui penggunaan terkini anda",
     "title3": "Bil di hujung jari anda",
     "title4": "Bayar bil anda bila-bila masa, di mana sahaja",
     "title5": "Nikmati Pelbagai Ganjaran Melalui myTNB!",
-    "title6": "What’s New with myTNB?",
+    "title6": "Apa yang baru dengan myTNB?",
     "description1": "Banyak yang anda boleh manfaatkan dengan aplikasi ini. Sila pilih bahasa anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Kesan, pantau dan ketahui penggunaan terkini elektrik anda!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan dengan mudah, di satu lokasi!",
@@ -815,7 +801,11 @@
     "noPromotions": "Tiada promosi buat masa ini. Cuba semak kemudian!"
   },
   "RearrangeAccount": {
-    "title": "Rearrange Accounts",
-    "btnTitle": "Save Changes"
+    "title": "Susun Semula Akaun",
+    "btnTitle": "Simpan Perubahan",
+    "rearrangeTitle": "Perubahan yang anda buat masih belum disimpan. Teruskan?",
+    "rearrangeMsg": "Adakah anda ingin menyimpan perubahan yang telah dibuat untuk susunan akaun anda?",
+    "rearrangeToastFailMsg": "Alamak, perubahan yang anda telah buat tidak berjaya disimpan. Sila cuba lagi.",
+    "rearrangeToastSuccessMsg": "Perubahan untuk susunan akaun anda berjaya!"
   }
 }
