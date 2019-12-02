@@ -24,7 +24,7 @@
                 android:id="@+id/rewardImg"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/feedback_banner"/>
             <ImageView
                 android:id="@+id/btnRewardSaveImg"

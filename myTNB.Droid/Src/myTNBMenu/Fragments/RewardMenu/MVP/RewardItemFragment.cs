@@ -103,8 +103,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             mRewardsRecyclerAdapter = new RewardsRecyclerAdapter(mRewardList, this.Activity);
             mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
+            mRewardsRecyclerView.OverScrollMode = OverScrollMode.Never;
+            mRewardsRecyclerAdapter.SavedClickChanged += MRewardsRecyclerAdapter_SavedClickChanged;
             initializeComplete = true;
             return rootView;
+        }
+
+        private void MRewardsRecyclerAdapter_SavedClickChanged(object sender, int e)
+        {
+            if (mListMode == REWARDSITEMLISTMODE.LOADED)
+            {
+                if (e != -1)
+                {
+                    RewardsMenuUtils.OnSetUpdateList(mRewardSearchKey);
+                }
+            }
         }
 
         public void Refresh()
@@ -123,6 +136,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
 
                     mRewardsRecyclerAdapter.RefreshList(mRewardList);
+                    mRewardsRecyclerAdapter.SavedClickChanged += MRewardsRecyclerAdapter_SavedClickChanged;
                 }
             }
         }

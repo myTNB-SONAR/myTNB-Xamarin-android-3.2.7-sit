@@ -81,19 +81,11 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 					currentSaveRewardLayout.Height = currentSaveRewardHeight;
 					currentSaveRewardLayout.Width = currentSaveRewardWidth;
 
-					RelativeLayout.LayoutParams currentRewardLayout = vh.rewardImg.LayoutParameters as RelativeLayout.LayoutParams;
-					int currentRewardWidth = this.mActivity.Resources.DisplayMetrics.WidthPixels;
-					float currentImgContainerRatio = 180f / 320f;
-					int currentRewardHeight = (int)((currentImgContainerRatio) * currentRewardWidth);
-					int currentRewardLeftMargin = -((currentRewardWidth - currentImgWidth) / 2);
-					int currentRewardTopMargin = -((currentRewardHeight - currentImgHeight) / 2);
-					currentRewardLayout.Height = currentRewardHeight;
-					currentRewardLayout.Width = currentRewardWidth;
-					currentRewardLayout.LeftMargin = currentRewardLeftMargin;
-					currentRewardLayout.TopMargin = currentRewardTopMargin;
+                    RelativeLayout.LayoutParams currentRewardLayout = vh.rewardImg.LayoutParameters as RelativeLayout.LayoutParams;
+                    currentRewardLayout.Height = currentImgHeight;
 
 
-					ViewGroup.LayoutParams currentCard = vh.rewardCardView.LayoutParameters;
+                    ViewGroup.LayoutParams currentCard = vh.rewardCardView.LayoutParameters;
 					LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(currentCard.Width,
 					currentCard.Height);
 					layoutParams.LeftMargin = (int)DPUtils.ConvertDPToPx(13f);
@@ -219,9 +211,18 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 
 						vh.rewardBottomView.Visibility = ViewStates.Visible;
 						vh.txtTitle.Text = rewardsList[position].RewardName;
-                        vh.rewardUnreadImg.Visibility = ViewStates.Gone;
-                        RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
-                        txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                        if (rewardsList[position].Read)
+                        {
+                            vh.rewardUnreadImg.Visibility = ViewStates.Gone;
+                            RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                            txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                        }
+                        else
+                        {
+                            vh.rewardUnreadImg.Visibility = ViewStates.Visible;
+                            RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                            txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(34f);
+                        }
 
                     }
 				}

@@ -221,13 +221,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 List<RewardMenuModel> list = new List<RewardMenuModel>();
 
-                list.Add(new RewardMenuModel()
+                if (mDisplayCategoryList.Count > 1)
                 {
-                    TabTitle = "View All",
-                    Fragment = new RewardItemFragment(),
-                    FragmentListMode = REWARDSITEMLISTMODE.LOADED,
-                    FragmentSearchString = ""
-                });
+                    list.Add(new RewardMenuModel()
+                    {
+                        TabTitle = "View All",
+                        Fragment = new RewardItemFragment(),
+                        FragmentListMode = REWARDSITEMLISTMODE.LOADED,
+                        FragmentSearchString = ""
+                    });
+                }
 
                 for (int j = 0; j < mDisplayCategoryList.Count; j++)
                 {
@@ -302,6 +305,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                     {
                                         mModel.IsSaved = searchItem.IsSaved;
                                         mModel.IsUsed = searchItem.IsUsed;
+                                        mModel.Read = searchItem.Read;
                                     }
                                     localList.Add(mModel);
                                 }

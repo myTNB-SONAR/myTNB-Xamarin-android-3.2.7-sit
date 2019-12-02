@@ -84,15 +84,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                     currentSaveRewardLayout.Width = currentSaveRewardWidth;
 
                     RelativeLayout.LayoutParams currentRewardLayout = vh.rewardImg.LayoutParameters as RelativeLayout.LayoutParams;
-                    int currentRewardWidth = this.mActivity.Resources.DisplayMetrics.WidthPixels;
-                    float currentImgContainerRatio = 180f / 320f;
-                    int currentRewardHeight = (int)((currentImgContainerRatio) * currentRewardWidth);
-                    int currentRewardLeftMargin = -((currentRewardWidth - currentImgWidth) / 2);
-                    int currentRewardTopMargin = -((currentRewardHeight - currentImgHeight) / 2);
-                    currentRewardLayout.Height = currentRewardHeight;
-                    currentRewardLayout.Width = currentRewardWidth;
-                    currentRewardLayout.LeftMargin = currentRewardLeftMargin;
-                    currentRewardLayout.TopMargin = currentRewardTopMargin;
+                    currentRewardLayout.Height = currentImgHeight;
 
 
                     ViewGroup.LayoutParams currentCard = vh.rewardCardView.LayoutParameters;
@@ -270,31 +262,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
         {
             try
             {
-                // SavedClickChanged(this, position);
-                RewardsModel targetItem = rewardsList[position];
-                if (targetItem != null)
+                if (position != -1)
                 {
-                    if (targetItem.IsSaved)
+                    RewardsModel targetItem = rewardsList[position];
+                    if (targetItem != null)
                     {
-                        targetItem.IsSaved = false;
-                        RewardsEntity wtManager = new RewardsEntity();
-                        wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
+                        if (targetItem.IsSaved)
+                        {
+                            targetItem.IsSaved = false;
+                            RewardsEntity wtManager = new RewardsEntity();
+                            wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
+                        }
+                        else
+                        {
+                            // Do save
+                            targetItem.IsSaved = true;
+                            RewardsEntity wtManager = new RewardsEntity();
+                            wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
+                        }
+                        if (targetItem.IsSaved)
+                        {
+                            sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
+                        }
+                        else
+                        {
+                            sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
+                        }
                     }
-                    else
-                    {
-                        // Do save
-                        targetItem.IsSaved = true;
-                        RewardsEntity wtManager = new RewardsEntity();
-                        wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
-                    }
-                    if (targetItem.IsSaved)
-                    {
-                        sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
-                    }
-                    else
-                    {
-                        sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
-                    }
+                    SavedClickChanged(this, position);
                 }
             }
             catch (System.Exception e)

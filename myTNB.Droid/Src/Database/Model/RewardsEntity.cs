@@ -374,7 +374,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 List<RewardsEntity> itemList = new List<RewardsEntity>();
-                itemList = db.Query<RewardsEntity>("Select from RewardsEntity WHERE ID = ?", itemID);
+                itemList = db.Query<RewardsEntity>("Select * FROM RewardsEntity WHERE ID = ?", itemID);
                 if (itemList != null && itemList.Count > 0)
                 {
                     return itemList[0];

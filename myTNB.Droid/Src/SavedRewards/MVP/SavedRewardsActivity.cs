@@ -59,8 +59,19 @@ namespace myTNB_Android.Src.SavedRewards.MVP
             {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 mRewardsRecyclerView.SetLayoutManager(linearLayoutManager);
+                mRewardsRecyclerView.OverScrollMode = OverScrollMode.Never;
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

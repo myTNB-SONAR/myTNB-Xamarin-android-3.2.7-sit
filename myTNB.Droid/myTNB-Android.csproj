@@ -3814,6 +3814,7 @@
     <Compile Include="Src\SavedRewards\Adapter\SavedRewardsRecyclerAdapter.cs" />
     <Compile Include="Src\SavedRewards\MVP\SavedRewardsContract.cs" />
     <Compile Include="Src\SavedRewards\MVP\SavedRewardsPresenter.cs" />
+    <Compile Include="Src\Utils\RewardsMenuUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
