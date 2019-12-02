@@ -1196,8 +1196,32 @@
     <ImageAsset Include="Assets.xcassets\Services-Refresh.imageset\grey%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Green-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Green-Icon.imageset\Heart-Green-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Green-Icon.imageset\Heart-Green-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Save-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Save-Icon.imageset\Heart-Save-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Save-Icon.imageset\Heart-Save-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Unsave-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Unsave-Icon.imageset\Heart-Unsave-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Unsave-Icon.imageset\Heart-Unsave-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Period-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward-Period-Icon.imageset\Reward-Period-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Period-Icon.imageset\Reward-Period-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Location-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward-Location-Icon.imageset\Reward-Location-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Location-Icon.imageset\Reward-Location-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-TC-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward-TC-Icon.imageset\Reward-TC-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-TC-Icon.imageset\Reward-TC-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1678,6 +1702,15 @@
     <Folder Include="Assets.xcassets\MDMS-Down-Planned.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Popup.imageset\" />
     <Folder Include="Assets.xcassets\Services-Refresh.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Rewards\" />
+    <Folder Include="Assets.xcassets\Heart-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Heart-Green-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Heart-Save-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Heart-Unsave-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Reward-Period-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Reward-Location-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Reward-TC-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Reward_Default-Banner.imageset\" />
     <Folder Include="Profile\" />
   </ItemGroup>
   <ItemGroup>
@@ -1718,6 +1751,7 @@
     <InterfaceDefinition Include="Feedback\Feedback Details\FeedbackDetails.storyboard" />
     <InterfaceDefinition Include="Feedback\Feedback.storyboard" />
     <InterfaceDefinition Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeAccountViewController.xib" />
+    <InterfaceDefinition Include="Rewards\RewardDetailsViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2534,6 +2568,16 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeDataSource.cs" />
+    <Compile Include="Sitecore CMS\Service\RewardsService.cs" />
+    <Compile Include="Sitecore CMS\Model\Rewards\RewardsResponseModel.cs" />
+    <Compile Include="Rewards\RewardsConstants.cs" />
+    <Compile Include="Rewards\RewardsDataSource.cs" />
+    <Compile Include="Rewards\RewardsCell.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\RewardsEntity.cs" />
+    <Compile Include="Rewards\RewardDetailsViewController.cs" />
+    <Compile Include="Rewards\RewardDetailsViewController.designer.cs">
+      <DependentUpon>RewardDetailsViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Profile\ProfileViewController.cs" />
     <Compile Include="Profile\ProfileViewController.designer.cs">
       <DependentUpon>ProfileViewController.cs</DependentUpon>

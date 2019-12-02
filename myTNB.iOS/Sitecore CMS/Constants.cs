@@ -131,6 +131,19 @@
                 {
                     public const string LanguageFile = "Language File";
                 }
+
+                public struct Rewards
+                {
+                    public const string Title = "Title";
+                    public const string TitleOnListing = "TitleOnListing";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                    public const string RewardPeriodText = "RewardPeriodText";
+                    public const string LocationsText = "LocationsText";
+                    public const string TermsAndConditions = "TermsAndConditions";
+                    public const string StartDateTime = "StartDateTime";
+                    public const string EndDateTime = "EndDateTime";
+                }
             }
 
             public struct ItemID
@@ -163,6 +176,7 @@
                 public const string EnergyTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
+                public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
 
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }

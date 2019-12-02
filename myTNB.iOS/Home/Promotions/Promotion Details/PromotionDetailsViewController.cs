@@ -94,6 +94,7 @@ namespace myTNB
                 catch (Exception e)
                 {
                     Debug.WriteLine("Image load Error: " + e.Message);
+                    imgBanner.Image = UIImage.FromBundle(PromotionConstants.Img_DefaultImage);
                 }
             }
             else

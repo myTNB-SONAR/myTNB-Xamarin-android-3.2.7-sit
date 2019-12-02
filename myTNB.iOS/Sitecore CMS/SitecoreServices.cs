@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS
 {
@@ -455,6 +457,70 @@ namespace myTNB.SitecoreCMS
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "LanguageJSON");
                     }
                     LanguageUtility.SetLanguageGlobals();
+                }
+            });
+        }
+
+        public Task LoadRewards()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                RewardsTimestampResponseModel timeStamp = iService.GetRewardsTimestampItem();
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new RewardsTimestampResponseModel();
+                    timeStamp.Data = new List<RewardsTimestamp> { new RewardsTimestamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
+                    if (rewardsResponse != null && rewardsResponse.Status != null &&
+                        rewardsResponse.Status.Equals("Success") &&
+                        rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
+                    {
+                        RewardsEntity rewardsEntity = new RewardsEntity();
+                        List<RewardsModel> existingRewardsList = rewardsEntity.GetAllItems();
+                        List<RewardsModel> rewardsData = new List<RewardsModel>();
+                        List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
+                        foreach (var category in categoryList)
+                        {
+                            List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
+                            if (rewardsList.Count > 0)
+                            {
+                                foreach (var reward in rewardsList)
+                                {
+                                    reward.CategoryID = category.ID;
+                                    reward.CategoryName = category.CategoryName;
+
+                                    if (existingRewardsList != null && existingRewardsList.Count > 0)
+                                    {
+                                        var existingReward = existingRewardsList.Find(x => x.ID.Equals(reward.ID));
+                                        if (existingReward != null)
+                                        {
+                                            reward.IsRead = existingReward.IsRead;
+                                        }
+                                    }
+                                    rewardsData.Add(reward);
+                                }
+                            }
+                        }
+                        rewardsEntity.DeleteTable();
+                        rewardsEntity.CreateTable();
+                        rewardsEntity.InsertListOfItems(rewardsData);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
+                    }
                 }
             });
         }

@@ -411,5 +411,42 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public RewardsTimestampResponseModel GetRewardsTimestampItem()
+        {
+            RewardsTimestampResponseModel respModel = new RewardsTimestampResponseModel();
+            try
+            {
+                RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<RewardsTimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetRewardsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public RewardsResponseModel GetRewardsItems()
+        {
+            RewardsResponseModel respModel = new RewardsResponseModel();
+            try
+            {
+                RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetCategoryItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetRewardsItems: " + e.Message);
+            }
+            return respModel;
+        }
     }
 }

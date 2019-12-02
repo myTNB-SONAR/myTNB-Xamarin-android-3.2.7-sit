@@ -84,5 +84,17 @@ namespace myTNB.Home.Components
         {
             _viewActivityIndicator.Hidden = true;
         }
+
+        public UIView GetView
+        {
+            get
+            {
+                return _viewActivityIndicator;
+            }
+            set
+            {
+                _viewActivityIndicator = value;
+            }
+        }
     }
 }
