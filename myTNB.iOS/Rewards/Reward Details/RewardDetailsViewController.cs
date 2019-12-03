@@ -325,7 +325,7 @@ namespace myTNB
             nfloat imgHeight = GetScaledHeight(15F);
             UIImageView imgView = new UIImageView(new CGRect(0, 0, imgWidth, imgHeight))
             {
-                Image = UIImage.FromBundle(RewardsConstants.Img_HeartGreenIcon)
+                Image = UIImage.FromBundle(RewardModel.IsSaved ? RewardsConstants.Img_HeartGreenSolidIcon : RewardsConstants.Img_HeartGreenIcon)
             };
             saveBtnView.AddSubview(imgView);
 
@@ -337,7 +337,7 @@ namespace myTNB
                 TextColor = MyTNBColor.FreshGreen,
                 Lines = 0,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Save"
+                Text = RewardModel.IsSaved ? "Unsave" : "Save"
             };
             saveBtnView.AddSubview(saveLbl);
 

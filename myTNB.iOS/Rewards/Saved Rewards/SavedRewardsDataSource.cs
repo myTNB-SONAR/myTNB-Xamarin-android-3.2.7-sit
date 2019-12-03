@@ -8,18 +8,18 @@ using UIKit;
 
 namespace myTNB
 {
-    public class RewardsDataSource : UITableViewSource
+    public class SavedRewardsDataSource : UITableViewSource
     {
-        private readonly RewardsViewController _controller;
-        private List<RewardsModel> _rewardsList = new List<RewardsModel>();
+        private readonly SavedRewardsViewController _controller;
+        private List<RewardsModel> _savedRewardsList = new List<RewardsModel>();
         public Func<string, string> GetI18NValue;
 
-        public RewardsDataSource(RewardsViewController controller,
-            List<RewardsModel> rewardsList,
+        public SavedRewardsDataSource(SavedRewardsViewController controller,
+            List<RewardsModel> savedRewardsList,
             Func<string, string> getI18NValue)
         {
             _controller = controller;
-            _rewardsList = rewardsList;
+            _savedRewardsList = savedRewardsList;
             GetI18NValue = getI18NValue;
         }
 
@@ -30,7 +30,7 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _rewardsList.Count;
+            return _savedRewardsList.Count;
         }
 
         public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
@@ -41,7 +41,7 @@ namespace myTNB
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             nfloat addtl = 0;
-            if (indexPath.Row == _rewardsList.Count - 1)
+            if (indexPath.Row == _savedRewardsList.Count - 1)
             {
                 addtl = ScaleUtility.GetScaledHeight(17F);
             }
@@ -50,11 +50,11 @@ namespace myTNB
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            RewardsCell cell = tableView.DequeueReusableCell(RewardsConstants.Cell_Rewards) as RewardsCell;
+            SavedRewardCell cell = tableView.DequeueReusableCell(RewardsConstants.Cell_SavedRewards) as SavedRewardCell;
             cell.Tag = indexPath.Row;
-            if (cell.Tag > -1 && cell.Tag < _rewardsList.Count)
+            if (cell.Tag > -1 && cell.Tag < _savedRewardsList.Count)
             {
-                RewardsModel reward = _rewardsList[(int)cell.Tag];
+                RewardsModel reward = _savedRewardsList[(int)cell.Tag];
                 cell.CellIndex = (int)cell.Tag;
                 cell.GetI18NValue = GetI18NValue;
                 cell.SetAccountCell(reward);
@@ -106,27 +106,8 @@ namespace myTNB
                 {
                     cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
                 }
+                cell.UsedView.Hidden = !reward.IsUsed;
             }
-            cell.SaveIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                var indx = indexPath.Row;
-                if (indx > -1 && indx < _rewardsList.Count)
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (cell.Tag == indx)
-                        {
-                            RewardsModel reward = _rewardsList[indx];
-                            reward.IsSaved = !reward.IsSaved;
-                            cell.SaveIcon.Image = UIImage.FromBundle(reward.IsSaved ? RewardsConstants.Img_HeartSaveIcon : RewardsConstants.Img_HeartUnsaveIcon);
-                            if (_controller != null)
-                            {
-                                _controller.OnSaveUnsaveAction(reward);
-                            }
-                        }
-                    });
-                }
-            }));
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }
@@ -134,14 +115,11 @@ namespace myTNB
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             var index = indexPath.Row;
-            if (index > -1 && index < _rewardsList.Count)
+            if (index > -1 && index < _savedRewardsList.Count)
             {
                 if (_controller != null)
                 {
-                    _rewardsList[index].IsRead = true;
-                    _controller.OnUpdateReadRewards(_rewardsList[index]);
-                    _controller.OnRewardSelection(_rewardsList[index]);
-                    _controller.OnReloadTableAction(_rewardsList, indexPath.Row);
+                    _controller.OnRewardSelection(_savedRewardsList[index]);
                 }
             }
         }
