@@ -13,10 +13,12 @@ using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SavedRewards.Adapter;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -26,7 +28,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
     [Activity(Label = "My Saved Rewards"
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.Rearrange")]
+      , Theme = "@style/Theme.Dashboard")]
     public class SavedRewardsActivity : BaseToolbarAppCompatActivity, SavedRewardsContract.ISavedRewardsView
     {
         [BindView(Resource.Id.rewardRecyclerView)]
@@ -59,6 +61,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
             {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 mRewardsRecyclerView.SetLayoutManager(linearLayoutManager);
+                ((SimpleItemAnimator)mRewardsRecyclerView.GetItemAnimator()).SupportsChangeAnimations = false;
                 mRewardsRecyclerView.OverScrollMode = OverScrollMode.Never;
             }
             catch (Exception e)
@@ -112,6 +115,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
                 {
                     mRewardsRecyclerAdapter = new SavedRewardsRecyclerAdapter(items, this);
                     mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
+                    mRewardsRecyclerAdapter.ClickChanged += MRewardsRecyclerAdapter_ClickChanged;
                 }
                 else
                 {
@@ -123,6 +127,30 @@ namespace myTNB_Android.Src.SavedRewards.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        private void MRewardsRecyclerAdapter_ClickChanged(object sender, int e)
+        {
+            if (!this.GetIsClicked() && e != -1)
+            {
+                this.SetIsClicked(true);
+
+                if (!items[e].Read)
+                {
+                    items[e].Read = true;
+                    mRewardsRecyclerAdapter.NotifyItemChanged(e);
+                    RewardsEntity wtManager = new RewardsEntity();
+                    wtManager.UpdateReadItem(items[e].ID, items[e].Read);
+                }
+
+                RewardsMenuUtils.OnSetRefreshAll(true);
+
+                Intent activity = new Intent(this, typeof(RewardDetailActivity));
+                activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, items[e].ID);
+                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "My Saved Rewards");
+                StartActivity(activity);
+            }
+        }
+
 
         protected override void OnPause()
         {

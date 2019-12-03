@@ -10,6 +10,9 @@ using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 using Android.Preferences;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
+using myTNB_Android.Src.RewardDetail.MVP;
+using Newtonsoft.Json;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
@@ -22,6 +25,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         RewardItemContract.IRewardItemPresenter presenter;
         string mRewardSearchKey = "";
         bool initializeComplete = false;
+
+        private bool isClicked = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -86,11 +91,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         public override void OnPause()
         {
             base.OnPause();
+            this.isClicked = true;
         }
 
         public override void OnResume()
         {
             base.OnResume();
+            this.isClicked = false;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -100,13 +107,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             mRewardsRecyclerView = rootView.FindViewById<RecyclerView>(Resource.Id.rewardRecyclerView);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
             mRewardsRecyclerView.SetLayoutManager(linearLayoutManager);
+            ((SimpleItemAnimator)mRewardsRecyclerView.GetItemAnimator()).SupportsChangeAnimations = false;
 
             mRewardsRecyclerAdapter = new RewardsRecyclerAdapter(mRewardList, this.Activity);
             mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
             mRewardsRecyclerView.OverScrollMode = OverScrollMode.Never;
             mRewardsRecyclerAdapter.SavedClickChanged += MRewardsRecyclerAdapter_SavedClickChanged;
+            mRewardsRecyclerAdapter.ClickChanged += MRewardsRecyclerAdapter_ClickChanged;
             initializeComplete = true;
             return rootView;
+        }
+
+        private void MRewardsRecyclerAdapter_ClickChanged(object sender, int e)
+        {
+            if (!isClicked && e != -1)
+            {
+                isClicked = true;
+
+                if (!mRewardList[e].Read)
+                {
+                    mRewardList[e].Read = true;
+                    mRewardsRecyclerAdapter.NotifyItemChanged(e);
+                    RewardsEntity wtManager = new RewardsEntity();
+                    wtManager.UpdateReadItem(mRewardList[e].ID, mRewardList[e].Read);
+                }
+
+                RewardsMenuUtils.OnSetRefreshAll(true);
+
+                Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
+                activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, mRewardList[e].ID);
+                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "Rewards");
+                StartActivity(activity);
+            }
         }
 
         private void MRewardsRecyclerAdapter_SavedClickChanged(object sender, int e)
@@ -116,6 +148,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 if (e != -1)
                 {
                     RewardsMenuUtils.OnSetUpdateList(mRewardSearchKey);
+                    if (mRewardList[e].IsSaved)
+                    {
+                        mRewardList[e].IsSaved = false;
+                    }
+                    else
+                    {
+                        mRewardList[e].IsSaved = true;
+                    }
+
+                    RewardsEntity wtManager = new RewardsEntity();
+                    wtManager.UpdateIsSavedItem(mRewardList[e].ID, mRewardList[e].IsSaved);
+
+                    mRewardsRecyclerAdapter.NotifyItemChanged(e);
                 }
             }
         }
@@ -136,7 +181,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
 
                     mRewardsRecyclerAdapter.RefreshList(mRewardList);
-                    mRewardsRecyclerAdapter.SavedClickChanged += MRewardsRecyclerAdapter_SavedClickChanged;
                 }
             }
         }

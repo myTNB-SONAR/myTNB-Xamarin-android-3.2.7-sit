@@ -26,19 +26,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             list.Add(new RewardsModel()
             {
-                RewardName = "",
+                TitleOnListing = "",
                 Image = ""
             });
 
             list.Add(new RewardsModel()
             {
-                RewardName = "",
+                TitleOnListing = "",
                 Image = ""
             });
 
             list.Add(new RewardsModel()
             {
-                RewardName = "",
+                TitleOnListing = "",
                 Image = ""
             });
 
@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     RewardsModel item = new RewardsModel();
                     item.ID = obj.ID;
-                    item.RewardName = obj.RewardName;
+                    item.Title = obj.Title;
                     item.Image = obj.Image;
                     item.ImageB64 = obj.ImageB64;
                     item.CategoryID = obj.CategoryID;
@@ -100,7 +100,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     RewardsModel item = new RewardsModel();
                     item.ID = obj.ID;
-                    item.RewardName = obj.RewardName;
+                    item.Title = obj.Title;
                     item.Image = obj.Image;
                     item.ImageB64 = obj.ImageB64;
                     item.CategoryID = obj.CategoryID;

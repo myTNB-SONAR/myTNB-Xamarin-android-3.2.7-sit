@@ -134,6 +134,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            try
+            {
+                if (RewardsMenuUtils.GetRefreshAll())
+                {
+                    RewardsMenuUtils.OnResetUpdateList();
+                    if (mTabList != null && mTabList.Count > 0)
+                    {
+                        for (int i = 0; i < mTabList.Count; i++)
+                        {
+                            if (mTabList[i].Fragment.IsActive())
+                            {
+                                mTabList[i].Fragment.Refresh();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

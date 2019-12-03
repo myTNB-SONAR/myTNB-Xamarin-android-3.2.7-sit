@@ -36,6 +36,30 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_card_reward_unsaved"/>
+            <LinearLayout 
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:id="@+id/rewardUsedLayout"
+                android:visibility="gone"
+                android:background="@drawable/rewardusedrect">
+                <TextView
+                    android:id="@+id/txtRewardUsed"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:text="Used"
+                    android:textSize="12dp"
+                    android:lineSpacingExtra="2dp"/>
+            </LinearLayout>
         </RelativeLayout>
         <LinearLayout 
           android:orientation="vertical"

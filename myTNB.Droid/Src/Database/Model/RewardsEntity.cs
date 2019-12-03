@@ -17,8 +17,8 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CategoryID")]
         public string CategoryID { set; get; }
 
-        [Column("RewardName")]
-        public string RewardName { set; get; }
+        [Column("Title")]
+        public string Title { set; get; }
 
         [Column("Description")]
         public string Description { set; get; }
@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     RewardsEntity item = new RewardsEntity();
                     item.ID = obj.ID;
-                    item.RewardName = obj.RewardName;
+                    item.Title = obj.Title;
                     item.Image = obj.Image.Replace(" ", "%20");
                     item.ImageB64 = string.IsNullOrEmpty(obj.ImageB64) ? "" : obj.ImageB64;
                     item.CategoryID = obj.CategoryID;

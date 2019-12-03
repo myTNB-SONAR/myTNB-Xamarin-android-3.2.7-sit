@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
                 {
                     RewardsModel item = new RewardsModel();
                     item.ID = obj.ID;
-                    item.RewardName = obj.RewardName;
+                    item.Title = obj.Title;
                     item.Image = obj.Image;
                     item.ImageB64 = obj.ImageB64;
                     item.CategoryID = obj.CategoryID;

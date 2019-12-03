@@ -7,6 +7,7 @@ namespace myTNB_Android.Src.Utils
         private static bool isUpdateNeeded = false;
         private static string UpdateExclude = "";
         private static List<string> updatedList = new List<string>();
+        private static bool refreshAll = false;
 
         public static void OnSetUpdateList(string mUpdateExclude)
         {
@@ -31,6 +32,17 @@ namespace myTNB_Android.Src.Utils
             isUpdateNeeded = false;
             UpdateExclude = "";
             updatedList = new List<string>();
+            refreshAll = false; 
+        }
+
+        public static void OnSetRefreshAll(bool flag)
+        {
+            refreshAll = flag;
+        }
+
+        public static bool GetRefreshAll()
+        {
+            return refreshAll;
         }
 
     }

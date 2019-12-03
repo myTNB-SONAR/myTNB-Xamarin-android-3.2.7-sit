@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
 				try
 				{
-                    TextViewUtils.SetMuseoSans500Typeface(vh.txtTitle);
+                    TextViewUtils.SetMuseoSans500Typeface(vh.txtTitle, vh.txtRewardUsed);
 
                     LinearLayout.LayoutParams currentShimmerImg = vh.rewardMainShimmerImgLayout.LayoutParameters as LinearLayout.LayoutParams;
                     LinearLayout.LayoutParams currentMainImgLayout = vh.rewardMainImgLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -182,7 +182,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
                 try
                 {
-                    if (string.IsNullOrEmpty(rewardsList[position].RewardName))
+                    if (string.IsNullOrEmpty(rewardsList[position].TitleOnListing))
                     {
                         // Text Shimmer Start
                         vh.rewardBottomView.Visibility = ViewStates.Gone;
@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                         }
 
                         vh.rewardBottomView.Visibility = ViewStates.Visible;
-                        vh.txtTitle.Text = rewardsList[position].RewardName;
+                        vh.txtTitle.Text = rewardsList[position].TitleOnListing;
                         if (rewardsList[position].Read)
                         {
                             vh.rewardUnreadImg.Visibility = ViewStates.Gone;
@@ -250,7 +250,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 		{
 			try
 			{
-				ClickChanged(this, position);
+                if (position != -1)
+                {
+                    RewardsModel targetItem = rewardsList[position];
+                    if (targetItem != null)
+                    {
+                        if (!targetItem.Read)
+                        {
+                            sender.rewardUnreadImg.Visibility = ViewStates.Gone;
+                            RelativeLayout.LayoutParams txtTitleParam = sender.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                            txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                        }
+                    }
+                    ClickChanged(this, position);
+                }
 			}
 			catch (System.Exception e)
 			{
@@ -269,24 +282,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                     {
                         if (targetItem.IsSaved)
                         {
-                            targetItem.IsSaved = false;
-                            RewardsEntity wtManager = new RewardsEntity();
-                            wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
+                            sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
                         }
                         else
-                        {
-                            // Do save
-                            targetItem.IsSaved = true;
-                            RewardsEntity wtManager = new RewardsEntity();
-                            wtManager.UpdateIsSavedItem(targetItem.ID, targetItem.IsSaved);
-                        }
-                        if (targetItem.IsSaved)
                         {
                             sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
-                        }
-                        else
-                        {
-                            sender.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
                         }
                     }
                     SavedClickChanged(this, position);
@@ -341,13 +341,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
         {
             try
             {
+                viewHolder.rewardUsedLayout.Visibility = ViewStates.Gone;
                 if (item.ImageBitmap != null)
                 {
+                    if (item.IsUsed)
+                    {
+                        item.ImageBitmap = ToGrayscale(item.ImageBitmap);
+                        viewHolder.rewardUsedLayout.Visibility = ViewStates.Visible;
+                    }
                     viewHolder.rewardImg.SetImageBitmap(item.ImageBitmap);
                 }
                 else if (!string.IsNullOrEmpty(item.ImageB64))
                 {
                     item.ImageBitmap = Base64ToBitmap(item.ImageB64);
+                    if (item.IsUsed)
+                    {
+                        item.ImageBitmap = ToGrayscale(item.ImageBitmap);
+                        viewHolder.rewardUsedLayout.Visibility = ViewStates.Visible;
+                    }
                     viewHolder.rewardImg.SetImageBitmap(item.ImageBitmap);
                 }
                 else if (!string.IsNullOrEmpty(item.Image))
@@ -476,10 +487,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             // Start Shimmer if need shimmer on Image, Stop otherview
             public ShimmerFrameLayout shimmerRewardTxtLayout { get; private set; }
 
+            // Used Layout, show when is used
+            public LinearLayout rewardUsedLayout { get; private set; }
+
+            // 500
+            public TextView txtRewardUsed { get; private set; }
 
 
 
-			public RewardViewHolder(View itemView, Action<RewardViewHolder, int> listener, Action<RewardViewHolder, int> saveListener) : base(itemView)
+            public RewardViewHolder(View itemView, Action<RewardViewHolder, int> listener, Action<RewardViewHolder, int> saveListener) : base(itemView)
 			{
                 rewardCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
 
@@ -496,6 +512,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
                 rewardMainShimmerTxtLayout = itemView.FindViewById<LinearLayout>(Resource.Id.rewardMainShimmerTxtLayout);
                 shimmerRewardTxtLayout = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerRewardTxtLayout);
+
+                rewardUsedLayout = itemView.FindViewById<LinearLayout>(Resource.Id.rewardUsedLayout);
+                txtRewardUsed = itemView.FindViewById<TextView>(Resource.Id.txtRewardUsed);
 
                 rewardCardView.Click += (s, e) => listener((this), base.LayoutPosition);
                 btnRewardSaveImg.Click += (s, e) => saveListener((this), base.LayoutPosition);
