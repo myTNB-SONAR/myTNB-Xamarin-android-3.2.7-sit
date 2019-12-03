@@ -434,5 +434,12 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
 
         }
+
+        [OnClick(Resource.Id.btnRewardUse)]
+        void OnRewardUse(object sender, EventArgs eventArgs)
+        {
+            
+
+        }
     }
 }
