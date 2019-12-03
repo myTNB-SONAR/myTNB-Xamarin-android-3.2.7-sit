@@ -1,5 +1,4 @@
 Sprint 2 SIT Build
 
-[Bug] Smart Meter UI misalignment issues
-[Bug] Fix crashing issue on photo permission
-[Enhancement] Decrease compression factor for SSMR OCR photos. Set capture high resolution to true.
+[Bug] 3429 Regression_iOS: User could not be able to see which account is user on from the drop down list on Submit Meter Reading Page
+[Bug] 3434 Regression_Sprint2 : App is showing payment advice instead of bill when clicked on view bill from mandatory charges pop up
