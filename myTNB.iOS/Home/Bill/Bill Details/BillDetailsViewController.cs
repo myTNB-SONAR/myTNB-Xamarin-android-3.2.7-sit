@@ -30,6 +30,7 @@ namespace myTNB
         public bool IsFreshCall;
         public bool IsRoot { set; private get; } = false;
         public string AccountNumber { set; private get; } = string.Empty;
+        public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public bool IsFromBillSelection { set; private get; }
         private UIView _tutorialContainer;
         private bool IsLoading = true;
@@ -737,6 +738,8 @@ namespace myTNB
                             if (viewController != null)
                             {
                                 viewController.IsFromUsage = true;
+                                viewController.IsFromBillSelection = IsFromBillSelection;
+                                viewController.SelectedAccount = SelectedAccount;
                                 UINavigationController navController = new UINavigationController(viewController);
                                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);

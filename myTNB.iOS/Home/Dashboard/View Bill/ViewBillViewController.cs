@@ -25,6 +25,8 @@ namespace myTNB
         private string _formattedDate = string.Empty;
         public bool IsFromUsage { set; private get; }
         public bool IsFromHome { set; private get; }
+        public bool IsFromBillSelection { set; private get; }
+        public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public string BillingNumber { set; private get; } = string.Empty;
         public Action OnDone;
 
@@ -33,8 +35,17 @@ namespace myTNB
             base.ViewDidLoad();
             NavigationItem.HidesBackButton = true;
 
-            _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
+            if (IsFromBillSelection)
+            {
+                _titleSuffix = SelectedAccount.accountCategoryId.Equals("2")
                 ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
+            }
+            else
+            {
+                _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
+                ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
+            }
+
             SetNavigationItems();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -148,7 +159,7 @@ namespace myTNB
                     };
                 if (IsFromUsage || IsFromHome)
                 {
-                    requestParams.Add("contractAccount", DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                    requestParams.Add("contractAccount", IsFromBillSelection ? SelectedAccount.accNum : DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _url = serviceManager.GetPDFServiceURL("GetBillPDF", requestParams);
                 }
                 else
@@ -170,7 +181,7 @@ namespace myTNB
             {
                 billingNo = BillingNumber;
             }
-            string pdfFileName = string.Format("{0}_{1}{2}.pdf", DataManager.DataManager.SharedInstance.SelectedAccount.accNum, billingNo, _formattedDate);
+            string pdfFileName = string.Format("{0}_{1}{2}.pdf", IsFromBillSelection ? SelectedAccount.accNum : DataManager.DataManager.SharedInstance.SelectedAccount.accNum, billingNo, _formattedDate);
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
@@ -227,8 +238,8 @@ namespace myTNB
                 object requestParameter = new
                 {
                     serviceManager.usrInf,
-                    contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
-                    isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
+                    contractAccount = IsFromBillSelection ? SelectedAccount.accNum : DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                    isOwnedAccount = IsFromBillSelection ? SelectedAccount.isOwned : DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
                 };
                 _billHistory = serviceManager.OnExecuteAPIV6<BillHistoryResponseModel>("GetBillHistory", requestParameter);
             });

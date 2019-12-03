@@ -50,8 +50,7 @@ namespace myTNB.Dashboard.SelectAccounts
                 : indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex;
 
             if (isSameRow && item.accNum == _accountList[_controller.IsFromSSMR
-                ? _controller.CurrentSelectedIndex : DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex].accNum
-                && !_controller.IsFromHome)
+                ? _controller.CurrentSelectedIndex : DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex].accNum)
             {
                 nfloat iconWidth = ScaleUtility.GetScaledWidth(24);
                 cell.Accessory = UITableViewCellAccessory.None;
