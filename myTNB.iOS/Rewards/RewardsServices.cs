@@ -77,6 +77,7 @@ namespace myTNB
                 return serviceManager.OnExecuteAPIV6<GetUserRewardsResponseModel>("GetUserRewards", requestParameter);
             });
             _userRewards = response;
+            UpdateRewardsCache();
             return response;
         }
 

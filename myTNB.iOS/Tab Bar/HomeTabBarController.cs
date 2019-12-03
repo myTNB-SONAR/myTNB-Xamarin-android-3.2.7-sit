@@ -501,14 +501,14 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                         await SitecoreServices.Instance.LoadRewards();
-                        RewardsServices.UpdateRewardsCache();
+                        GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
+                        //RewardsServices.UpdateRewardsCache();
                         InvokeOnMainThread(() =>
                         {
                             UpdateRewardsTabBarIcon();
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                             NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
                         });
-                        GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
                     });
                 }
             });

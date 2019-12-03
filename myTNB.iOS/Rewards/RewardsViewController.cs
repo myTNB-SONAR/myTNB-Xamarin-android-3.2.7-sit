@@ -62,26 +62,31 @@ namespace myTNB
 
         private void ValidateRewards()
         {
-            RewardsEntity rewardsEntity = new RewardsEntity();
-            _rewardsList = rewardsEntity.GetAllItems();
-            if (_rewardsList != null && _rewardsList.Count > 0)
+            InvokeOnMainThread(async () =>
             {
-                _categoryList = new List<RewardsModel>();
-                RewardsModel viewAllModel = new RewardsModel()
+                GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
+                //RewardsServices.UpdateRewardsCache();
+                RewardsEntity rewardsEntity = new RewardsEntity();
+                _rewardsList = rewardsEntity.GetAllItems();
+                if (_rewardsList != null && _rewardsList.Count > 0)
                 {
-                    CategoryID = "1001",
-                    CategoryName = "View All"
-                };
-                _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
-                _categoryList.Insert(0, viewAllModel);
-                _selectedCategoryIndex = 0;
-                CreateCategoryTopBar();
-                AddRewardsScrollView();
-            }
-            else
-            {
-                // Empty rewards handling here....
-            }
+                    _categoryList = new List<RewardsModel>();
+                    RewardsModel viewAllModel = new RewardsModel()
+                    {
+                        CategoryID = "1001",
+                        CategoryName = "View All"
+                    };
+                    _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
+                    _categoryList.Insert(0, viewAllModel);
+                    _selectedCategoryIndex = 0;
+                    CreateCategoryTopBar();
+                    AddRewardsScrollView();
+                }
+                else
+                {
+                    // Empty rewards handling here....
+                }
+            });
         }
 
         private void SetNavigationBar()
