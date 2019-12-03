@@ -279,6 +279,7 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.AccountRecordsList.d[accIndex].accountNickName))
                 {
                     nickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accIndex].accountNickName;
+                    _selectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accIndex];
                 }
             }
             string description = string.Format(popupData.Description, amount, nickname);
@@ -306,6 +307,7 @@ namespace myTNB
                 viewController.IsRoot = true;
                 viewController.IsFromBillSelection = true;
                 viewController.AccountNumber = _selectedAccountNumber;
+                viewController.SelectedAccount = _selectedAccount;
                 NavigationController.PushViewController(viewController, true);
             }
         }
