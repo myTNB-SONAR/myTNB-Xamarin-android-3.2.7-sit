@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private void EvaluateBCRMDowntime()
         {
             DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            if (bcrmEntity != null && bcrmEntity.IsDown)
+            if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
             {
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
@@ -226,6 +226,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 })
                 .Build()
                 .Show();
+                MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
             }
             else
             {
