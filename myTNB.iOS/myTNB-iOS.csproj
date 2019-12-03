@@ -2586,7 +2586,8 @@
     <Compile Include="Profile\ProfileConstants.cs" />
     <Compile Include="Profile\ProfileDataSource.cs" />
     <Compile Include="Profile\ProfileCell.cs" />
-    <Compile Include="Model\Rewards\GetUserRewardsResponseModel.cs" />
+    <Compile Include="Model\Rewards\RewardsModel.cs" />
+    <Compile Include="Rewards\RewardsServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

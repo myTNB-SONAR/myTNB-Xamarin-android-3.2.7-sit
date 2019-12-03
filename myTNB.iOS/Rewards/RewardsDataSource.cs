@@ -144,9 +144,9 @@ namespace myTNB
                     if (_controller != null)
                     {
                         _rewardsList[index].IsRead = true;
-                        _controller.OnUpdateReadRewards(_rewardsList[index]);
+                        //_controller.OnUpdateReadRewards(_rewardsList[index]);
                         _controller.OnRewardSelection(_rewardsList[index]);
-                        _controller.OnReloadTableAction(_rewardsList, tableView);
+                        //_controller.OnReloadTableAction(_rewardsList, tableView);
                     }
                 }
             }

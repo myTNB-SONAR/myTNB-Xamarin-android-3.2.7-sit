@@ -178,5 +178,33 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             return item;
         }
+
+        public void UpdateEntity(RewardsModel reward)
+        {
+            if (reward != null)
+            {
+                RewardsEntity item = new RewardsEntity
+                {
+                    CategoryID = reward.CategoryID,
+                    CategoryName = reward.CategoryName,
+                    ID = reward.ID,
+                    RewardName = reward.RewardName,
+                    Title = reward.Title,
+                    TitleOnListing = reward.TitleOnListing,
+                    Description = reward.Description,
+                    Image = reward.Image,
+                    PeriodLabel = reward.PeriodLabel,
+                    LocationLabel = reward.LocationLabel,
+                    TandCLabel = reward.TandCLabel,
+                    StartDate = reward.StartDate,
+                    EndDate = reward.EndDate,
+                    IsSaved = reward.IsSaved,
+                    IsRead = reward.IsRead,
+                    IsUsed = reward.IsUsed
+                };
+
+                UpdateItem(item);
+            }
+        }
     }
 }

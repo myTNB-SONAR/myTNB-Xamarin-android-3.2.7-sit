@@ -499,10 +499,9 @@ namespace myTNB
                 {
                     InvokeInBackground(async () =>
                     {
-                        GetUserRewardsResponseModel userRewardsResponse = await RewardsViewController.GetUserRewards();
-                    });
+                   /* });
                     InvokeInBackground(async () =>
-                    {
+                    {*/
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                         await SitecoreServices.Instance.LoadRewards();
                         InvokeOnMainThread(() =>
@@ -511,6 +510,8 @@ namespace myTNB
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                             NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
                         });
+                        GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
+                        RewardsServices.UpdateRewardsCache();
                     });
                 }
             });

@@ -4,6 +4,7 @@ using myTNB.Model;
 
 namespace myTNB
 {
+    #region GetUserRewards
     public class GetUserRewardsResponseModel
     {
         public GetUserRewardsDataModel d { set; get; }
@@ -21,7 +22,7 @@ namespace myTNB
 
     public class RewardsItemModel
     {
-        public int Id { set; get; }
+        //public int Id { set; get; }
         public string Email { set; get; }
         public string RewardId { set; get; }
         public bool Read { set; get; }
@@ -31,4 +32,14 @@ namespace myTNB
         public bool Redeemed { set; get; }
         public DateTime? RedeemedDate { set; get; } = null;
     }
+    #endregion
+
+    #region AddUpdateRewards
+    public class UpdateRewardsResponseModel
+    {
+        public UpdateRewardsDataModel d { set; get; }
+    }
+
+    public class UpdateRewardsDataModel : BaseModelV2 { }
+    #endregion
 }

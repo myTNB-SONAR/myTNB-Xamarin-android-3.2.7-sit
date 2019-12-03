@@ -482,7 +482,7 @@ namespace myTNB.SitecoreCMS
                 }
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp", ref needsUpdate);
-
+                //needsUpdate = true;
                 if (needsUpdate)
                 {
                     RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
@@ -491,7 +491,7 @@ namespace myTNB.SitecoreCMS
                         rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                     {
                         RewardsEntity rewardsEntity = new RewardsEntity();
-                        List<RewardsModel> existingRewardsList = rewardsEntity.GetAllItems();
+                        //List<RewardsModel> existingRewardsList = rewardsEntity.GetAllItems();
                         List<RewardsModel> rewardsData = new List<RewardsModel>();
                         List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
                         foreach (var category in categoryList)
@@ -504,14 +504,14 @@ namespace myTNB.SitecoreCMS
                                     reward.CategoryID = category.ID;
                                     reward.CategoryName = category.CategoryName;
 
-                                    if (existingRewardsList != null && existingRewardsList.Count > 0)
+                                    /*if (existingRewardsList != null && existingRewardsList.Count > 0)
                                     {
                                         var existingReward = existingRewardsList.Find(x => x.ID.Equals(reward.ID));
                                         if (existingReward != null)
                                         {
                                             reward.IsRead = existingReward.IsRead;
                                         }
-                                    }
+                                    }*/
                                     rewardsData.Add(reward);
                                 }
                             }
