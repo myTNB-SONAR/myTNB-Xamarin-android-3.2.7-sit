@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + savedLanguage))
-                        .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + savedLanguage))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "saveLanguageMessage"))
                         .SetContentGravity(GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + savedLanguage))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + savedLanguage))

@@ -88,11 +88,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml("Swipe to see more,<br/>double tap to dismiss.", FromHtmlOptions.ModeLegacy);
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml("Swipe to see more,<br/>double tap to dismiss.");
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss);

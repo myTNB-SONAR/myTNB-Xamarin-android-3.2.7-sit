@@ -80,6 +80,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
             TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt);
 
+            btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+            btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
             NewAppModel model = list[position];
 
             if (model.ContentShowPosition == ContentType.BottomLeft || model.ContentShowPosition == ContentType.BottomRight)
