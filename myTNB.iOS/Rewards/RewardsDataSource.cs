@@ -147,6 +147,7 @@ namespace myTNB
                         //_controller.OnUpdateReadRewards(_rewardsList[index]);
                         _controller.OnRewardSelection(_rewardsList[index]);
                         //_controller.OnReloadTableAction(_rewardsList, tableView);
+                        _controller.SetReloadProperties(tableView, index);
                     }
                 }
             }

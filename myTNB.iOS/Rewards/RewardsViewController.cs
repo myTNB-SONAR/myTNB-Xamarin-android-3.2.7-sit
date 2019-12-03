@@ -15,7 +15,9 @@ namespace myTNB
         internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
-        private int _selectedCategoryIndex;
+        private int _selectedCategoryIndex, props_index;
+        private bool props_needsUpdate;
+        private UITableView props_tableView;
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 
@@ -31,6 +33,24 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
             {
                 ValidateRewards();
+            }
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            if (props_needsUpdate && props_tableView != null)
+            {
+                props_tableView.BeginUpdates();
+                NSIndexPath indexPath = NSIndexPath.Create(0, props_index);
+                props_tableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+                props_tableView.EndUpdates();
+                props_needsUpdate = false;
             }
         }
 
@@ -75,11 +95,6 @@ namespace myTNB
                 Debug.WriteLine("btnSavedRewards");
             });
             NavigationItem.RightBarButtonItem = btnSavedRewards;
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
         }
 
         #region REWARDS SCROLL VIEW
@@ -354,6 +369,13 @@ namespace myTNB
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 rewardsEntity.UpdateItem(entityModel);
             }
+        }
+
+        internal void SetReloadProperties(UITableView tableView, int index)
+        {
+            props_needsUpdate = true;
+            props_tableView = tableView;
+            props_index = index;
         }
 
         public void OnReloadTableAction(List<RewardsModel> rewardsList, UITableView tableView)
