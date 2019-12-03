@@ -745,10 +745,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         else
                         {
                             int EndIndex = (INDEX_COUNTER + TOTAL_NUMBER_OF_ITEMS_TO_GET) - 1;
-                            if (EndIndex > registerdAccounts.Count)
+                            if (EndIndex >= registerdAccounts.Count)
                             {
                                 int ExpectedItemCount = TOTAL_NUMBER_OF_ITEMS_TO_GET - (EndIndex - (registerdAccounts.Count - 1));
                                 accountsToReturn.AddRange(registerdAccounts.GetRange(INDEX_COUNTER, ExpectedItemCount));
+                                REMAINING_ITEM_COUNT = 0;
                             }
                             else
                             {
