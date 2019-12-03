@@ -141,10 +141,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         mRewardsParentEntity.InsertListOfItems(responseModel.Data);
                         this.mView.CheckRewardsTimeStamp();
                     }
+                    else
+                    {
+                        CheckRewardsCache();
+                    }
                 }
                 catch (Exception e)
                 {
-                    this.mView.CheckRewardsTimeStamp();
+                    CheckRewardsCache();
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -182,6 +186,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public void CheckRewardsCache()
         {
+            // api calling
+
             if (mRewardsCategoryEntity == null)
             {
                 mRewardsCategoryEntity = new RewardsCategoryEntity();
@@ -304,7 +310,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                     if (searchItem != null)
                                     {
                                         mModel.IsSaved = searchItem.IsSaved;
+                                        mModel.IsSavedDateTime = searchItem.IsSavedDateTime;
                                         mModel.IsUsed = searchItem.IsUsed;
+                                        mModel.IsUsedDateTime = searchItem.IsUsedDateTime;
                                         mModel.Read = searchItem.Read;
                                     }
                                     localList.Add(mModel);

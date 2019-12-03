@@ -157,8 +157,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         mRewardList[e].IsSaved = true;
                     }
 
-                    RewardsEntity wtManager = new RewardsEntity();
-                    wtManager.UpdateIsSavedItem(mRewardList[e].ID, mRewardList[e].IsSaved);
+                    this.presenter.UpdateRewardSave(mRewardList[e].ID, mRewardList[e].IsSaved);
 
                     mRewardsRecyclerAdapter.NotifyItemChanged(e);
                 }

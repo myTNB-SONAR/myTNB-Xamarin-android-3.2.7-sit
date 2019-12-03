@@ -7,6 +7,7 @@ using Android.Preferences;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
@@ -93,6 +94,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private string Title = "Rewards";
 
+        private ClickSpan clickableSpan;
+
+        private ClickSpan seClickableSpan;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -101,9 +106,18 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 TextViewUtils.SetMuseoSans500Typeface(txtRewardUsed, txtTitle, txtRewardPeriodTitle, txtRewardLocationTitle,
                     txtRewardConditionTitle, txtBtnRewardSave, btnRewardUse);
                 TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent);
-                txtRewardLocationContent.SetLinkTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                txtRewardConditionContent.SetLinkTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 btnRewardSave.Clickable = true;
+                clickableSpan = new ClickSpan()
+                {
+                    textColor = Resources.GetColor(Resource.Color.powerBlue),
+                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                };
+
+                seClickableSpan = new ClickSpan()
+                {
+                    textColor = Resources.GetColor(Resource.Color.powerBlue),
+                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                };
             }
             catch (Exception e)
             {
@@ -231,11 +245,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 if (item.LocationLabel != null && (item.LocationLabel.Contains("http") || item.LocationLabel.Contains("www.")))
                 {
                     SpannableString s = new SpannableString(txtRewardLocationContent.TextFormatted);
-                    var clickableSpan = new ClickSpan()
-                    {
-                        textColor = Resources.GetColor(Resource.Color.powerBlue),
-                        typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                    };
                     clickableSpan.Click += v =>
                     {
                         OnClickSpan(item.LocationLabel);
@@ -246,16 +255,12 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     s.RemoveSpan(urlSpans[0]);
                     s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
                     txtRewardLocationContent.TextFormatted = s;
+                    txtRewardLocationContent.MovementMethod = new LinkMovementMethod();
                 }
 
                 if (item.TandCLabel != null && (item.TandCLabel.Contains("http") || item.TandCLabel.Contains("www.")))
                 {
                     SpannableString se = new SpannableString(txtRewardConditionContent.TextFormatted);
-                    var seClickableSpan = new ClickSpan()
-                    {
-                        textColor = Resources.GetColor(Resource.Color.powerBlue),
-                        typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                    };
                     seClickableSpan.Click += v =>
                     {
                         OnClickSpan(item.TandCLabel);
@@ -266,6 +271,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     se.RemoveSpan(seUrlSpans[0]);
                     se.SetSpan(seClickableSpan, seStartFAQLink, seEndFAQLink, SpanTypes.ExclusiveExclusive);
                     txtRewardConditionContent.TextFormatted = se;
+                    txtRewardConditionContent.MovementMethod = new LinkMovementMethod();
                 }
 
                 if (item.IsSaved)
@@ -390,6 +396,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     string url = textMessage.Substring(startIndex, lengthOfId);
                     if (!string.IsNullOrEmpty(url))
                     {
+                        if (!url.Contains("http"))
+                        {
+                            url = "http://" + url;
+                        }
                         Intent intent = new Intent(Intent.ActionView);
                         intent.SetData(Android.Net.Uri.Parse(url));
                         StartActivity(intent);

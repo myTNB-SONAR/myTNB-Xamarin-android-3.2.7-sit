@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Android.Content;
+using Android.Icu.Text;
+using Java.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 
@@ -119,6 +121,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
 
             return list;
+        }
+
+        public void UpdateRewardSave(string itemID, bool flag)
+        {
+            RewardsEntity wtManager = new RewardsEntity();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+            string formattedDate = sdf.Format(new Date());
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateIsSavedItem(itemID, flag, formattedDate);
+            // Update api calling
         }
     }
 }

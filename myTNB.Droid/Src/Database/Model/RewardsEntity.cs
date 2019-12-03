@@ -1,5 +1,4 @@
 ﻿using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Database;
 using myTNB_Android.Src.Utils;
 using SQLite;
 using System;
@@ -53,8 +52,14 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsUsed")]
         public bool IsUsed { set; get; }
 
+        [Column("IsUsedDateTime")]
+        public string IsUsedDateTime { set; get; }
+
         [Column("IsSaved")]
         public bool IsSaved { set; get; }
+
+        [Column("IsSavedDateTime")]
+        public string IsSavedDateTime { set; get; }
 
         public void CreateTable()
         {
@@ -99,6 +104,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.Description = obj.Description;
                     item.Read = obj.Read;
                     item.IsUsed = obj.IsUsed;
+                    item.IsUsedDateTime = string.IsNullOrEmpty(obj.IsUsedDateTime) ? "" : obj.IsUsedDateTime;
                     item.TitleOnListing = obj.TitleOnListing;
                     item.PeriodLabel = obj.PeriodLabel;
                     item.LocationLabel = obj.LocationLabel;
@@ -106,6 +112,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
                     item.IsSaved = obj.IsSaved;
+                    item.IsSavedDateTime = string.IsNullOrEmpty(obj.IsSavedDateTime) ? "" : obj.IsSavedDateTime;
                     InsertItem(item);
                 }
             }
@@ -427,17 +434,33 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public void UpdateIsSavedItem(string itemID, bool flag)
+        public void UpdateIsSavedItem(string itemID, bool flag, string formattedDate)
         {
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE RewardsEntity SET IsSaved = ? WHERE ID = ?", flag, itemID);
+
+                UpdateIsSavedDateTimeItem(itemID, formattedDate);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
             }
         }
+
+        private void UpdateIsSavedDateTimeItem(string itemID, string datetime)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE RewardsEntity SET IsSavedDateTime = ? WHERE ID = ?", datetime, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
     }
 }

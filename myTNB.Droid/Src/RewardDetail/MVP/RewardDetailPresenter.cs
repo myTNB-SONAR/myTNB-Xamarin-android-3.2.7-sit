@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
+using Android.Icu.Text;
 using Android.Util;
+using Java.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
@@ -183,7 +185,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 MemoryStream byteArrayOutputStream = new MemoryStream();
                 bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
                 byte[] byteArray = byteArrayOutputStream.ToArray();
-                B64Output = Base64.EncodeToString(byteArray, Base64Flags.Default);
+                B64Output = Android.Util.Base64.EncodeToString(byteArray, Base64Flags.Default);
             }
             catch (Exception e)
             {
@@ -199,7 +201,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             Bitmap convertedBitmap = null;
             try
             {
-                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                byte[] imageAsBytes = Android.Util.Base64.Decode(base64String, Base64Flags.Default);
                 convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
             }
             catch (Exception e)
@@ -214,7 +216,14 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         public void UpdateRewardSave(string itemID , bool flag)
         {
             RewardsEntity wtManager = new RewardsEntity();
-            wtManager.UpdateIsSavedItem(itemID, flag);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+            string formattedDate = sdf.Format(new Date());
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateIsSavedItem(itemID, flag, formattedDate);
             // Update api calling
         }
     }

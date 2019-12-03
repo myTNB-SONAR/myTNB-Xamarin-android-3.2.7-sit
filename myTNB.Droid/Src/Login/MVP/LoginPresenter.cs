@@ -246,6 +246,21 @@ namespace myTNB_Android.Src.Login.MVP
                         SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
                         EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
                         EnergySavingTipsParentManager.DeleteTable();
+
+                        try
+                        {
+                            RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                            mRewardParentEntity.DeleteTable();
+                            RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                            mRewardCategoryEntity.DeleteTable();
+                            RewardsEntity mRewardEntity = new RewardsEntity();
+                            mRewardEntity.DeleteTable();
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
                         try
                         {
                             UserEntity.UpdatePhoneNumber(userResponse.Data.User.MobileNo);

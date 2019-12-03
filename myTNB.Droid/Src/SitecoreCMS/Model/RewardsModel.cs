@@ -40,8 +40,10 @@ namespace myTNB.SitecoreCMS.Model
         public string StartDate { set; get; }
         public string EndDate { set; get; }
         public bool IsSaved { set; get; }
+        public string IsSavedDateTime { set; get; }
         public bool Read { set; get; }
         public bool IsUsed { set; get; }
+        public string IsUsedDateTime { set; get; }
 
     }
 
