@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -34,7 +33,7 @@ namespace myTNB
                 for (int i = 0; i < _userRewards.d.data.UserRewards.Count; i++)
                 {
                     RewardsItemModel userReward = _userRewards.d.data.UserRewards[i];
-                    int index = rewardsList.FindIndex(x => /*x.CategoryID == userReward.Id.ToString() &&*/ x.ID == userReward.RewardId);
+                    int index = rewardsList.FindIndex(x => x.ID == userReward.RewardId);
                     if (index > -1 && index < rewardsList.Count && rewardsList[index] != null)
                     {
                         RewardsModel reward = rewardsList[index];

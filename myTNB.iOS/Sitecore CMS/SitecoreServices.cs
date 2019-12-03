@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS
 {
