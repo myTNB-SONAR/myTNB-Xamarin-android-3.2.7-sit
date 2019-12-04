@@ -226,5 +226,19 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             wtManager.UpdateIsSavedItem(itemID, flag, formattedDate);
             // Update api calling
         }
+
+        public void UpdateRewardUsed(string itemID, bool flag)
+        {
+            RewardsEntity wtManager = new RewardsEntity();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+            string formattedDate = sdf.Format(new Date());
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateIsUsedItem(itemID, flag, formattedDate);
+            // Update api calling
+        }
     }
 }

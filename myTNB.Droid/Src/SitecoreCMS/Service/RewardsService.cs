@@ -123,6 +123,9 @@ namespace myTNB.SitecoreCMS.Services
                         RewardName = item.DisplayName,
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
                         Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Rewards.Image, _websiteURL, false),
+                        RewardUseWithinTime = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseWithinTime),
+                        RewardUseTitle = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseTitle),
+                        RewardUseDescription = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseDescription),
                         ID = item.Id
                     });
                 }

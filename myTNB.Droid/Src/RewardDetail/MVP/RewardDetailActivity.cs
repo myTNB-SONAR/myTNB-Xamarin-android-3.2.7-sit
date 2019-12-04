@@ -23,6 +23,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
+using System.Timers;
 
 namespace myTNB_Android.Src.RewardDetail.MVP
 {
@@ -86,6 +87,24 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         [BindView(Resource.Id.shimmerRewardImageLayout)]
         ShimmerFrameLayout shimmerRewardImageLayout;
 
+        [BindView(Resource.Id.btnUseSaveLayout)]
+        LinearLayout btnUseSaveLayout;
+
+        [BindView(Resource.Id.rewardRedeemedLayout)]
+        LinearLayout rewardRedeemedLayout;
+
+        [BindView(Resource.Id.btnRewardRedeemed)]
+        Button btnRewardRedeemed;
+
+        [BindView(Resource.Id.rewardCountDownLayout)]
+        LinearLayout rewardCountDownLayout;
+
+        [BindView(Resource.Id.txtTimeCounter)]
+        TextView txtTimeCounter;
+
+        [BindView(Resource.Id.txtRewardRedeemedWord)]
+        TextView txtRewardRedeemedWord;
+
         RewardDetailContract.IRewardDetailPresenter presenter;
 
         private RewardsModel LocalItem = new RewardsModel();
@@ -98,14 +117,23 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private ClickSpan seClickableSpan;
 
+        private int CountDownTimerMinutes = 5;
+
+        private int CountDownTimerSecond;
+
+        private System.Timers.Timer _timer;
+
+        private IMenu menu;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtRewardUsed, txtTitle, txtRewardPeriodTitle, txtRewardLocationTitle,
-                    txtRewardConditionTitle, txtBtnRewardSave, btnRewardUse);
-                TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent);
+                    txtRewardConditionTitle, txtBtnRewardSave, btnRewardUse, btnRewardRedeemed, txtRewardRedeemedWord);
+                TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent,
+                    txtTimeCounter);
                 btnRewardSave.Clickable = true;
                 clickableSpan = new ClickSpan()
                 {
@@ -182,6 +210,12 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
         }
 
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+            // Check if isPendingRewardClaim then update the flag isUsed
+        }
+
         public override Boolean ShowCustomToolbarTitle()
         {
             return true;
@@ -232,6 +266,24 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
         }
 
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.PromotionDetailMenu, menu);
+            this.menu = menu;
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_share_promotion:
+                    
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
         public void SetRewardDetail(RewardsModel item)
         {
             try
@@ -274,15 +326,27 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     txtRewardConditionContent.MovementMethod = new LinkMovementMethod();
                 }
 
-                if (item.IsSaved)
+                if (!item.IsUsed)
                 {
-                    imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_save);
-                    txtBtnRewardSave.Text = "Unsave";
+                    btnUseSaveLayout.Visibility = ViewStates.Visible;
+                    rewardRedeemedLayout.Visibility = ViewStates.Gone;
+                    rewardCountDownLayout.Visibility = ViewStates.Gone;
+                    if (item.IsSaved)
+                    {
+                        imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_save);
+                        txtBtnRewardSave.Text = "Unsave";
+                    }
+                    else
+                    {
+                        imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_unsave);
+                        txtBtnRewardSave.Text = "Save";
+                    }
                 }
                 else
                 {
-                    imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_unsave);
-                    txtBtnRewardSave.Text = "Save";
+                    btnUseSaveLayout.Visibility = ViewStates.Gone;
+                    rewardRedeemedLayout.Visibility = ViewStates.Visible;
+                    rewardCountDownLayout.Visibility = ViewStates.Gone;
                 }
             }
             catch (Exception e)
@@ -452,10 +516,104 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
+                        IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
+                        if (item != null)
+                        {
+                            item.SetVisible(false);
+                        }
+                        OnCountDownReward();
                     })
                     .SetSecondaryCTALabel("Confirm")
                     .Build().Show();
             }
+        }
+
+        private void OnCountDownReward()
+        {
+            try
+            {
+                LocalItem.IsUsed = true;
+                this.presenter.UpdateRewardUsed(LocalItem.ID, true);
+                if (!string.IsNullOrEmpty(LocalItem.RewardUseWithinTime))
+                {
+                    try
+                    {
+                        CountDownTimerMinutes = int.Parse(LocalItem.RewardUseWithinTime);
+                    }
+                    catch (Exception ne)
+                    {
+                        CountDownTimerMinutes = 5;
+                        Utility.LoggingNonFatalError(ne);
+                    }
+                }
+                else
+                {
+                    CountDownTimerMinutes = 5;
+                }
+
+                CountDownTimerSecond = CountDownTimerMinutes * 60;
+
+                RunOnUiThread(() =>
+                {
+                    btnUseSaveLayout.Visibility = ViewStates.Gone;
+                    rewardRedeemedLayout.Visibility = ViewStates.Gone;
+                    rewardCountDownLayout.Visibility = ViewStates.Visible;
+                    txtRewardRedeemedWord.Text = "Reward redeemed. Please show the merchant this screen before the timer runs out.";
+                });
+
+                OnUpdateCountDownView();
+
+                _timer = new System.Timers.Timer();
+                _timer.Interval = 1000;
+                _timer.Elapsed += OnTimedEvent;
+
+                _timer.Enabled = true;
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            CountDownTimerSecond--;
+
+            OnUpdateCountDownView();
+
+            if (CountDownTimerSecond == 0)
+            {
+                _timer.Stop();
+                _timer.Enabled = false;
+                RunOnUiThread(() =>
+                {
+                    btnUseSaveLayout.Visibility = ViewStates.Gone;
+                    rewardRedeemedLayout.Visibility = ViewStates.Visible;
+                    rewardCountDownLayout.Visibility = ViewStates.Gone;
+                    IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
+                    if (item != null)
+                    {
+                        item.SetVisible(true);
+                    }
+                    this.presenter.GetActiveReward(ItemID);
+                });
+            }
+        }
+
+        private void OnUpdateCountDownView()
+        {
+            RunOnUiThread(() =>
+            {
+                TimeSpan time = TimeSpan.FromSeconds(CountDownTimerSecond);
+
+                //here backslash is must to tell that colon is
+                //not the part of format, it just a character that we want in output
+                string str = time.ToString(@"mm\:ss");
+
+                txtTimeCounter.Text = str;
+            });
         }
     }
 }

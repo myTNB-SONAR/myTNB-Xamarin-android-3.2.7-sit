@@ -24,6 +24,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
             void UpdateRewardSave(string itemID, bool flag);
 
+            void UpdateRewardUsed(string itemID, bool flag);
+
         }
 	}
 }

@@ -61,6 +61,16 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsSavedDateTime")]
         public string IsSavedDateTime { set; get; }
 
+        [Column("RewardUseWithinTime")]
+        public string RewardUseWithinTime { set; get; }
+
+        [Column("RewardUseTitle")]
+        public string RewardUseTitle { set; get; }
+
+        [Column("RewardUseDescription")]
+        public string RewardUseDescription { set; get; }
+        
+
         public void CreateTable()
         {
 
@@ -113,6 +123,9 @@ namespace myTNB_Android.Src.Database.Model
                     item.EndDate = obj.EndDate;
                     item.IsSaved = obj.IsSaved;
                     item.IsSavedDateTime = string.IsNullOrEmpty(obj.IsSavedDateTime) ? "" : obj.IsSavedDateTime;
+                    item.RewardUseWithinTime = obj.RewardUseWithinTime;
+                    item.RewardUseTitle = obj.RewardUseTitle;
+                    item.RewardUseDescription = obj.RewardUseDescription;
                     InsertItem(item);
                 }
             }
@@ -421,12 +434,14 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public void UpdateIsUsedItem(string itemID, bool flag)
+        public void UpdateIsUsedItem(string itemID, bool flag, string formattedDate)
         {
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE RewardsEntity SET IsUsed = ? WHERE ID = ?", flag, itemID);
+
+                UpdateIsUsedDateTimeItem(itemID, formattedDate);
             }
             catch (Exception e)
             {
@@ -455,6 +470,19 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE RewardsEntity SET IsSavedDateTime = ? WHERE ID = ?", datetime, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        private void UpdateIsUsedDateTimeItem(string itemID, string datetime)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE RewardsEntity SET IsUsedDateTime = ? WHERE ID = ?", datetime, itemID);
             }
             catch (Exception e)
             {

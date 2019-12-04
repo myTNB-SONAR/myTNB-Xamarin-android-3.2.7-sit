@@ -162,6 +162,9 @@
                     public const string TandCLabel = "TermsAndConditions";
                     public const string StartDate = "StartDateTime";
                     public const string EndDate = "EndDateTime";
+                    public const string RewardUseWithinTime = "RewardUseWithinTime";
+                    public const string RewardUseTitle = "RewardUseTitle";
+                    public const string RewardUseDescription = "RewardUseDescription";
                 }
             }
 

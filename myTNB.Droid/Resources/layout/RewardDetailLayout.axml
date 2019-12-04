@@ -232,7 +232,7 @@
                 android:id="@+id/rewardCountDownLayout"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:visibility="visible">
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/txtTimeCounter"
                     android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
                     android:text="04:59"
                     android:textSize="36dp"/>
                 <TextView
-                    android:id="@+id/txtTimeCounter"
+                    android:id="@+id/txtRewardRedeemedWord"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_gravity="center"
@@ -251,6 +251,28 @@
                     android:text="Reward redeemed. Please show the merchant this screen before the timer runs out."
                     android:textSize="12dp"
                     android:lineSpacingExtra="2dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/rewardRedeemedLayout"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:visibility="gone">
+                <Button
+                    android:id="@+id/btnRewardRedeemed"
+                    android:text="Reward Used"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/silverChalice"
+                    style="@style/DarkButton"
+                    android:textSize="16sp"
+                    android:enabled="false"
+                    android:background="@drawable/silver_chalice_button_outline"
+                    android:textAllCaps="false" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
