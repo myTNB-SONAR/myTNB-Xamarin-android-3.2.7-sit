@@ -208,9 +208,11 @@ namespace myTNB.SQLite.SQLiteDataManager
                     EndDate = reward.EndDate,
                     IsSaved = reward.IsSaved,
                     IsRead = reward.IsRead,
-                    IsUsed = reward.IsUsed
+                    IsUsed = reward.IsUsed,
+                    RewardUseWithinTime = reward.RewardUseWithinTime,
+                    RewardUseTitle = reward.RewardUseTitle,
+                    RewardUseDescription=reward.RewardUseDescription
                 };
-
                 UpdateItem(item);
             }
         }

@@ -16,8 +16,10 @@ namespace myTNB
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
         private int _selectedCategoryIndex, props_index;
+
         private bool props_needsUpdate;
-        private UITableView props_tableView;
+        private bool _isViewDidLoad;
+        private List<RewardsModel> props_rewardsList;
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 
@@ -25,33 +27,33 @@ namespace myTNB
         {
             PageName = RewardsConstants.PageName_Rewards;
             base.ViewDidLoad();
+            _isViewDidLoad = true;
             NotifCenterUtility.AddObserver((NSString)"OnReceiveRewardsNotification", OnReceiveRewards);
             ViewHeight += GetBottomPadding;
             View.BackgroundColor = MyTNBColor.SectionGrey;
             SetNavigationBar();
             CreateLoadingCategoryTopBar();
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
             if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
             {
                 ValidateRewards();
             }
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            if (!_isViewDidLoad)
+            {
+                props_needsUpdate = true;
+                OnTableReload();
+            }
+            _isViewDidLoad = false;
+        }
+
         public override void ViewDidDisappear(bool animated)
         {
             base.ViewDidDisappear(animated);
-            if (props_needsUpdate && props_tableView != null)
-            {
-                props_tableView.BeginUpdates();
-                NSIndexPath indexPath = NSIndexPath.Create(0, props_index);
-                props_tableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
-                props_tableView.EndUpdates();
-                props_needsUpdate = false;
-            }
+            OnTableReload();
         }
 
         protected override void LanguageDidChange(NSNotification notification)
@@ -71,7 +73,7 @@ namespace myTNB
         {
             InvokeOnMainThread(async () =>
             {
-                GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
+                //GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
                 //RewardsServices.UpdateRewardsCache();
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
@@ -151,8 +153,11 @@ namespace myTNB
                 };
 
                 UITableView rewardsTableView = new UITableView(viewContainer.Bounds)
-                { BackgroundColor = UIColor.Clear, Tag = RewardsConstants.Tag_TableView };
-                rewardsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Tag = RewardsConstants.Tag_TableView,
+                    SeparatorStyle = UITableViewCellSeparatorStyle.None
+                };
                 rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
                 viewContainer.AddSubview(rewardsTableView);
 
@@ -391,11 +396,39 @@ namespace myTNB
             }
         }
 
-        internal void SetReloadProperties(UITableView tableView, int index)
+        internal void SetReloadProperties(List<RewardsModel> rewardsList, int index)
         {
             props_needsUpdate = true;
-            props_tableView = tableView;
+            props_rewardsList = rewardsList;
             props_index = index;
+        }
+
+        private void OnTableReload()
+        {
+            InvokeOnMainThread(async () =>
+            {
+                GetUserRewardsResponseModel _userRewards = await RewardsServices.GetUserRewards();
+                if (props_needsUpdate && props_rewardsList != null)
+                {
+                    if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess
+                        && _userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
+                    {
+                        foreach (RewardsItemModel item in _userRewards.d.data.UserRewards)
+                        {
+                            int index = props_rewardsList.FindIndex(x => x.ID == item.RewardId);
+                            if (index > -1)
+                            {
+                                props_rewardsList[index].IsRead = item.Read;
+                                props_rewardsList[index].IsSaved = item.Favourite;
+                                props_rewardsList[index].IsUsed = item.Redeemed;
+                            }
+                        }
+                    }
+                    OnReloadTableAction(props_rewardsList, props_index);
+                    props_needsUpdate = false;
+                }
+
+            });
         }
 
         public void OnReloadTableAction(List<RewardsModel> rewardsList, int index)
@@ -415,10 +448,7 @@ namespace myTNB
                         {
                             var filteredList = catIndx == 0 ? _rewardsList : FilteredRewards(catIndx);
                             table.ClearsContextBeforeDrawing = true;
-                            table.Source = new RewardsDataSource(
-                            this,
-                            filteredList,
-                            GetI18NValue);
+                            table.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
                             table.ReloadData();
                         }
                     }
@@ -430,15 +460,13 @@ namespace myTNB
                     if (viewAllView.Subviews[0] is UITableView table)
                     {
                         table.ClearsContextBeforeDrawing = true;
-                        table.Source = new RewardsDataSource(
-                        this,
-                        _rewardsList,
-                        GetI18NValue);
+                        table.Source = new RewardsDataSource(this, _rewardsList, GetI18NValue);
                         table.ReloadData();
                     }
                 }
             }
         }
+
         #endregion
     }
 }

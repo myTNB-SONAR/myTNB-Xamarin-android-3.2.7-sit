@@ -10,13 +10,13 @@ namespace myTNB
 {
     public class RewardsDataSource : UITableViewSource
     {
-        private readonly RewardsViewController _controller;
+        private RewardsViewController _controller;
         private List<RewardsModel> _rewardsList = new List<RewardsModel>();
-        public Func<string, string> GetI18NValue;
+        private Func<string, string> GetI18NValue;
 
-        public RewardsDataSource(RewardsViewController controller,
-            List<RewardsModel> rewardsList,
-            Func<string, string> getI18NValue)
+        public RewardsDataSource() { }
+
+        public RewardsDataSource(RewardsViewController controller, List<RewardsModel> rewardsList, Func<string, string> getI18NValue)
         {
             _controller = controller;
             _rewardsList = rewardsList;
@@ -128,7 +128,6 @@ namespace myTNB
                     });
                 }
             }));
-            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }
 
@@ -140,10 +139,8 @@ namespace myTNB
                 if (_controller != null)
                 {
                     _rewardsList[index].IsRead = true;
-                    //_controller.OnUpdateReadRewards(_rewardsList[index]);
                     _controller.OnRewardSelection(_rewardsList[index]);
-                    //_controller.OnReloadTableAction(_rewardsList, tableView);
-                    _controller.SetReloadProperties(tableView, index);
+                    _controller.SetReloadProperties(_rewardsList, index);
                 }
             }
         }

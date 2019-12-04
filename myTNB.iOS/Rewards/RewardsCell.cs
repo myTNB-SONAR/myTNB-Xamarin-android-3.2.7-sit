@@ -76,6 +76,7 @@ namespace myTNB
 
             _viewContainer.AddSubview(SaveIcon);
             AddSubview(_viewContainer);
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
         public void SetAccountCell(RewardsModel model)
