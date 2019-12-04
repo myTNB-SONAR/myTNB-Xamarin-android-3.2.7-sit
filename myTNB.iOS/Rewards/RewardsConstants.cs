@@ -4,7 +4,8 @@ namespace myTNB
     public static class RewardsConstants
     {
         //PageName
-        public static string PageName = "Rewards";
+        public static string PageName_Rewards = "Rewards";
+        public static string PageName_RewardDetails = "RewardDetails";
 
         //Tags
         public static int Tag_SelectedCategory = 100;
@@ -20,13 +21,25 @@ namespace myTNB
         public static string Cell_SavedRewards = "savedRewardsTableViewCell";
 
         //I18N Keys
-        public static string I18N_Rewards = "title";
+        public static string I18N_Title = "title";
+        public static string I18N_RewardPeriod = "rewardPeriod";
+        public static string I18N_Location = "location";
+        public static string I18N_TNC = "tnc";
+        public static string I18N_Save = "save";
+        public static string I18N_Unsave = "unsave";
+        public static string I18N_UseNow = "useNow";
+        public static string I18N_UseNowPopupTitle = "useNowPopupTitle";
+        public static string I18N_UseNowPopupMessage = "useNowPopupMessage";
+        public static string I18N_UseLater = "useLater";
+        public static string I18N_Confirm = "confirm";
 
         //Img
         public static string Img_HeartIcon = "Heart-Icon";
         public static string Img_ShareIcon = "IC-Header-Share";
-        public static string Img_HeartGreenIcon = "Heart-Green-Icon";
-        public static string Img_HeartGreenSolidIcon = "Heart-Green-Solid-Icon";
+
+        public static string Img_HeartUnsavedGreenIcon = "Heart-Unsaved-Green-Icon";
+        public static string Img_HeartSavedGreenIcon = "Heart-Saved-Green-Icon";
+
         public static string Img_HeartSaveIcon = "Heart-Save-Icon";
         public static string Img_HeartUnsaveIcon = "Heart-Unsave-Icon";
         public static string Img_RewardPeriodIcon = "Reward-Period-Icon";

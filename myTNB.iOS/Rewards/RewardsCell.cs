@@ -45,7 +45,8 @@ namespace myTNB
             ActivityIndicator = new ActivityIndicatorComponent(RewardImageVIew);
             rewardImgView.AddSubview(RewardImageVIew);
             _viewContainer.AddSubview(rewardImgView);
-            _title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F), _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+            _title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F)
+                , _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
@@ -57,14 +58,16 @@ namespace myTNB
             nfloat iconHeight = GetScaledHeight(21F);
             nfloat iconWidthPadding = GetScaledWidth(8F);
             nfloat iconHeightPadding = GetScaledHeight(8F);
-            SaveIcon = new UIImageView(new CGRect(RewardImageVIew.Frame.Width - iconWidth - iconWidthPadding, RewardImageVIew.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
+            SaveIcon = new UIImageView(new CGRect(RewardImageVIew.Frame.Width - iconWidth - iconWidthPadding
+                , RewardImageVIew.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsaveIcon),
                 UserInteractionEnabled = true
             };
             nfloat dotWidth = GetScaledWidth(8F);
             nfloat dotHeight = GetScaledHeight(8F);
-            _readIndicator = new UIView(new CGRect(_viewContainer.Frame.Width - dotWidth - GetScaledWidth(12F), GetScaledHeight(133F), dotWidth, dotHeight))
+            _readIndicator = new UIView(new CGRect(_viewContainer.Frame.Width - dotWidth - GetScaledWidth(12F)
+                , GetScaledHeight(133F), dotWidth, dotHeight))
             {
                 BackgroundColor = MyTNBColor.FreshGreen
             };
@@ -73,6 +76,7 @@ namespace myTNB
 
             _viewContainer.AddSubview(SaveIcon);
             AddSubview(_viewContainer);
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
         public void SetAccountCell(RewardsModel model)

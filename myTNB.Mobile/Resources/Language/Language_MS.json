@@ -546,7 +546,8 @@
     "setAppLanguage": "Tetapkan Bahasa Aplikasi",
     "myTNBAccount": "Akaun myTNB",
     "logout": "Log Keluar",
-    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?"
+    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
+    "electricityAccount": "Akaun Elektrik"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -807,5 +808,21 @@
     "rearrangeMsg": "Adakah anda ingin menyimpan perubahan yang telah dibuat untuk susunan akaun anda?",
     "rearrangeToastFailMsg": "Alamak, perubahan yang anda telah buat tidak berjaya disimpan. Sila cuba lagi.",
     "rearrangeToastSuccessMsg": "Perubahan untuk susunan akaun anda berjaya!"
+  },
+  "Rewards": {
+    "title": "Ganjaran"
+  },
+  "RewardDetails": {
+    "title": "Ganjaran",
+    "rewardPeriod": "Reward Period",
+    "location": "Lokasi",
+    "tnc": "Terma dan Syarat",
+    "save": "Simpan",
+    "unsave": "Unsave",
+    "useNow": "Use Now",
+    "useNowPopupTitle": "Please make sure you’re at the shop.",
+    "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
+    "useLater": "Use Later",
+    "confirm": "Sahkan"
   }
 }

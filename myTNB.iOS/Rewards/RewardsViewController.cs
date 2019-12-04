@@ -15,14 +15,19 @@ namespace myTNB
         internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
-        private int _selectedCategoryIndex;
+        private int _selectedCategoryIndex, props_index;
+
+        private bool props_needsUpdate;
+        private bool _isViewDidLoad;
+        private List<RewardsModel> props_rewardsList;
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
-            PageName = RewardsConstants.PageName;
+            PageName = RewardsConstants.PageName_Rewards;
             base.ViewDidLoad();
+            _isViewDidLoad = true;
             NotifCenterUtility.AddObserver((NSString)"OnReceiveRewardsNotification", OnReceiveRewards);
             ViewHeight += GetBottomPadding;
             View.BackgroundColor = MyTNBColor.SectionGrey;
@@ -34,6 +39,30 @@ namespace myTNB
             }
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            if (!_isViewDidLoad)
+            {
+                props_needsUpdate = true;
+                OnTableReload();
+            }
+            _isViewDidLoad = false;
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            OnTableReload();
+        }
+
+        protected override void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> Rewards LanguageDidChange");
+            base.LanguageDidChange(notification);
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
+        }
+
         private void OnReceiveRewards(NSNotification notification)
         {
             Debug.WriteLine("OnReceiveRewardsNotification");
@@ -42,34 +71,37 @@ namespace myTNB
 
         private void ValidateRewards()
         {
-            RewardsEntity rewardsEntity = new RewardsEntity();
-            _rewardsList = rewardsEntity.GetAllItems();
-            if (_rewardsList != null && _rewardsList.Count > 0)
+            InvokeOnMainThread(async () =>
             {
-                _categoryList = new List<RewardsModel>();
-                RewardsModel viewAllModel = new RewardsModel()
+                //GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
+                //RewardsServices.UpdateRewardsCache();
+                RewardsEntity rewardsEntity = new RewardsEntity();
+                _rewardsList = rewardsEntity.GetAllItems();
+                if (_rewardsList != null && _rewardsList.Count > 0)
                 {
-                    CategoryID = "1001",
-                    CategoryName = "View All"
-                };
-                _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
-                _categoryList.Insert(0, viewAllModel);
-                _selectedCategoryIndex = 0;
-                CreateCategoryTopBar();
-                AddRewardsScrollView();
-            }
-            else
-            {
-                // Empty rewards handling here....
-            }
+                    _categoryList = new List<RewardsModel>();
+                    RewardsModel viewAllModel = new RewardsModel()
+                    {
+                        CategoryID = "1001",
+                        CategoryName = "View All"
+                    };
+                    _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
+                    _categoryList.Insert(0, viewAllModel);
+                    _selectedCategoryIndex = 0;
+                    CreateCategoryTopBar();
+                    AddRewardsScrollView();
+                }
+                else
+                {
+                    // Empty rewards handling here....
+                }
+            });
         }
 
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
-            NavigationItem.Title = "Rewards";
-
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 Debug.WriteLine("btnSavedRewards");
@@ -82,11 +114,6 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             });
             NavigationItem.RightBarButtonItem = btnSavedRewards;
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
         }
 
         #region REWARDS SCROLL VIEW
@@ -126,8 +153,11 @@ namespace myTNB
                 };
 
                 UITableView rewardsTableView = new UITableView(viewContainer.Bounds)
-                { BackgroundColor = UIColor.Clear, Tag = RewardsConstants.Tag_TableView };
-                rewardsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Tag = RewardsConstants.Tag_TableView,
+                    SeparatorStyle = UITableViewCellSeparatorStyle.None
+                };
                 rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
                 viewContainer.AddSubview(rewardsTableView);
 
@@ -136,10 +166,7 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetX(viewContainer, i * width);
 
                 var filteredList = i == 0 ? _rewardsList : FilteredRewards(i);
-                rewardsTableView.Source = new RewardsDataSource(
-                    this,
-                    filteredList,
-                    GetI18NValue);
+                rewardsTableView.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
                 rewardsTableView.ReloadData();
             }
             _rewardsScrollView.ContentSize = new CGSize(_rewardsScrollView.Frame.Width * _categoryList.Count, _rewardsScrollView.Frame.Height);
@@ -348,6 +375,10 @@ namespace myTNB
                 Debug.WriteLine("OnSaveUnsaveAction");
                 Debug.WriteLine(reward.ID);
                 Debug.WriteLine(reward.RewardName);
+                InvokeInBackground(async () =>
+                {
+                    await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
+                });
             }
         }
 
@@ -363,6 +394,41 @@ namespace myTNB
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 rewardsEntity.UpdateItem(entityModel);
             }
+        }
+
+        internal void SetReloadProperties(List<RewardsModel> rewardsList, int index)
+        {
+            props_needsUpdate = true;
+            props_rewardsList = rewardsList;
+            props_index = index;
+        }
+
+        private void OnTableReload()
+        {
+            InvokeOnMainThread(async () =>
+            {
+                GetUserRewardsResponseModel _userRewards = await RewardsServices.GetUserRewards();
+                if (props_needsUpdate && props_rewardsList != null)
+                {
+                    if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess
+                        && _userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
+                    {
+                        foreach (RewardsItemModel item in _userRewards.d.data.UserRewards)
+                        {
+                            int index = props_rewardsList.FindIndex(x => x.ID == item.RewardId);
+                            if (index > -1)
+                            {
+                                props_rewardsList[index].IsRead = item.Read;
+                                props_rewardsList[index].IsSaved = item.Favourite;
+                                props_rewardsList[index].IsUsed = item.Redeemed;
+                            }
+                        }
+                    }
+                    OnReloadTableAction(props_rewardsList, props_index);
+                    props_needsUpdate = false;
+                }
+
+            });
         }
 
         public void OnReloadTableAction(List<RewardsModel> rewardsList, int index)
@@ -382,10 +448,7 @@ namespace myTNB
                         {
                             var filteredList = catIndx == 0 ? _rewardsList : FilteredRewards(catIndx);
                             table.ClearsContextBeforeDrawing = true;
-                            table.Source = new RewardsDataSource(
-                            this,
-                            filteredList,
-                            GetI18NValue);
+                            table.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
                             table.ReloadData();
                         }
                     }
@@ -397,15 +460,13 @@ namespace myTNB
                     if (viewAllView.Subviews[0] is UITableView table)
                     {
                         table.ClearsContextBeforeDrawing = true;
-                        table.Source = new RewardsDataSource(
-                        this,
-                        _rewardsList,
-                        GetI18NValue);
+                        table.Source = new RewardsDataSource(this, _rewardsList, GetI18NValue);
                         table.ReloadData();
                     }
                 }
             }
         }
+
         #endregion
     }
 }
