@@ -69,6 +69,9 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.TandCLabel = obj.TandCLabel;
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
+                    item.RewardUseWithinTime = obj.RewardUseWithinTime;
+                    item.RewardUseTitle = obj.RewardUseTitle;
+                    item.RewardUseDescription = obj.RewardUseDescription;
                     item.IsSaved = obj.IsSaved;
                     item.IsRead = obj.IsRead;
                     item.IsUsed = obj.IsUsed;
@@ -104,23 +107,28 @@ namespace myTNB.SQLite.SQLiteDataManager
             RewardsModel rewardModel;
             foreach (var item in entityItems)
             {
-                rewardModel = new RewardsModel();
-                rewardModel.CategoryID = item.CategoryID;
-                rewardModel.CategoryName = item.CategoryName;
-                rewardModel.ID = item.ID;
-                rewardModel.RewardName = item.RewardName;
-                rewardModel.Title = item.Title;
-                rewardModel.TitleOnListing = item.TitleOnListing;
-                rewardModel.Description = item.Description;
-                rewardModel.Image = item.Image;
-                rewardModel.PeriodLabel = item.PeriodLabel;
-                rewardModel.LocationLabel = item.LocationLabel;
-                rewardModel.TandCLabel = item.TandCLabel;
-                rewardModel.StartDate = item.StartDate;
-                rewardModel.EndDate = item.EndDate;
-                rewardModel.IsSaved = item.IsSaved;
-                rewardModel.IsRead = item.IsRead;
-                rewardModel.IsUsed = item.IsUsed;
+                rewardModel = new RewardsModel
+                {
+                    CategoryID = item.CategoryID,
+                    CategoryName = item.CategoryName,
+                    ID = item.ID,
+                    RewardName = item.RewardName,
+                    Title = item.Title,
+                    TitleOnListing = item.TitleOnListing,
+                    Description = item.Description,
+                    Image = item.Image,
+                    PeriodLabel = item.PeriodLabel,
+                    LocationLabel = item.LocationLabel,
+                    TandCLabel = item.TandCLabel,
+                    StartDate = item.StartDate,
+                    EndDate = item.EndDate,
+                    RewardUseWithinTime = item.RewardUseWithinTime,
+                    RewardUseTitle = item.RewardUseTitle,
+                    RewardUseDescription = item.RewardUseDescription,
+                    IsSaved = item.IsSaved,
+                    IsRead = item.IsRead,
+                    IsUsed = item.IsUsed
+                };
                 itemList.Add(rewardModel);
             }
             return itemList;

@@ -143,6 +143,9 @@
                     public const string TermsAndConditions = "TermsAndConditions";
                     public const string StartDateTime = "StartDateTime";
                     public const string EndDateTime = "EndDateTime";
+                    public const string RewardUseWithinTime = "RewardUseWithinTime";
+                    public const string RewardUseTitle = "RewardUseTitle";
+                    public const string RewardUseDescription = "RewardUseDescription";
                 }
             }
 
