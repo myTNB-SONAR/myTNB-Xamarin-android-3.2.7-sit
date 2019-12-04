@@ -17,6 +17,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = RewardsConstants.PageName_RewardDetails;
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
@@ -32,6 +33,15 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (!RewardModel.IsRead)
+            {
+                InvokeInBackground(async () =>
+                {
+                    await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Read, true);
+                    RewardModel.IsRead = true;
+                    RewardsServices.UpdateRewardItem(RewardModel);
+                });
+            }
         }
 
         public override void DidReceiveMemoryWarning()
@@ -42,8 +52,7 @@ namespace myTNB
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
-            NavigationItem.Title = "Rewards";
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
 
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
@@ -158,7 +167,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "Reward Period"
+                Text = GetI18NValue(RewardsConstants.I18N_RewardPeriod)
             };
 
             UITextView rpTextView = CreateHTMLContent(RewardModel.PeriodLabel);
@@ -193,7 +202,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "Location(s)"
+                Text = GetI18NValue(RewardsConstants.I18N_Location)
             };
 
             UITextView locationTextView = CreateHTMLContent(RewardModel.LocationLabel);
@@ -228,7 +237,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "Terms and Conditions"
+                Text = GetI18NValue(RewardsConstants.I18N_TNC)
             };
 
             UITextView tandCTextView = CreateHTMLContent(RewardModel.TandCLabel);
@@ -306,7 +315,7 @@ namespace myTNB
             _footerView.Layer.ShadowPath = UIBezierPath.FromRect(_footerView.Bounds).CGPath;
             View.AddSubview(_footerView);
 
-            UIView saveBtnContainer = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F)))
+            CustomUIView saveBtnContainer = new CustomUIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -317,13 +326,23 @@ namespace myTNB
             saveBtnContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("saveBtnContainer on tap");
+                RewardModel.IsSaved = !RewardModel.IsSaved;
+                InvokeInBackground(async () =>
+                {
+                    await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Favourite, RewardModel.IsSaved);
+                });
+                InvokeOnMainThread(() =>
+                {
+                    UpdateSaveButton(saveBtnContainer);
+                });
             }));
 
             _footerView.AddSubview(saveBtnContainer);
 
             UIView saveBtnView = new UIView(new CGRect(0, 0, 0, GetScaledHeight(24F)))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = 3000
             };
             saveBtnContainer.AddSubview(saveBtnView);
 
@@ -331,7 +350,8 @@ namespace myTNB
             nfloat imgHeight = GetScaledHeight(15F);
             UIImageView imgView = new UIImageView(new CGRect(0, 0, imgWidth, imgHeight))
             {
-                Image = UIImage.FromBundle(RewardModel.IsSaved ? RewardsConstants.Img_HeartGreenSolidIcon : RewardsConstants.Img_HeartGreenIcon)
+                Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsavedGreenIcon),
+                Tag = 3001
             };
             saveBtnView.AddSubview(imgView);
 
@@ -343,22 +363,10 @@ namespace myTNB
                 TextColor = MyTNBColor.FreshGreen,
                 Lines = 0,
                 TextAlignment = UITextAlignment.Left,
-                Text = RewardModel.IsSaved ? "Unsave" : "Save"
+                Tag = 3002
             };
             saveBtnView.AddSubview(saveLbl);
-
-            CGSize cGSizeLbl = saveLbl.SizeThatFits(new CGSize(saveLblWidth, GetScaledHeight(24F)));
-
-            ViewHelper.AdjustFrameSetHeight(saveLbl, cGSizeLbl.Height);
-            ViewHelper.AdjustFrameSetWidth(saveLbl, cGSizeLbl.Width);
-            ViewHelper.AdjustFrameSetY(saveLbl, GetYLocationToCenterObject(saveLbl.Frame.Height, saveBtnView));
-
-            ViewHelper.AdjustFrameSetY(imgView, GetYLocationToCenterObject(imgView.Frame.Height, saveBtnView));
-
-            ViewHelper.AdjustFrameSetWidth(saveBtnView, saveLbl.Frame.GetMaxX());
-            ViewHelper.AdjustFrameSetY(saveBtnView, GetYLocationToCenterObject(saveBtnView.Frame.Height, saveBtnContainer));
-            ViewHelper.AdjustFrameSetX(saveBtnView, GetXLocationToCenterObject(saveBtnView.Frame.Width, saveBtnContainer));
-
+            UpdateSaveButton(saveBtnContainer);
             UIButton btnUseNow = new UIButton(UIButtonType.Custom)
             {
                 Frame = new CGRect(saveBtnContainer.Frame.GetMaxX() + GetScaledWidth(4F), GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F))
@@ -367,24 +375,48 @@ namespace myTNB
             btnUseNow.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
             btnUseNow.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnUseNow.Layer.BorderWidth = GetScaledHeight(1F);
-            btnUseNow.SetTitle("Use Now", UIControlState.Normal);
+            btnUseNow.SetTitle(GetI18NValue(RewardsConstants.I18N_UseNow), UIControlState.Normal);
             btnUseNow.Font = TNBFont.MuseoSans_16_500;
             btnUseNow.TouchUpInside += (sender, e) =>
             {
                 Debug.WriteLine("btnUseNow on tap");
-                var title = "Please make sure you’re at the shop.";
+                var title = GetI18NValue(RewardsConstants.I18N_UseNowPopupTitle);
                 if (RewardModel.RewardUseTitle.IsValid())
                 {
                     title = RewardModel.RewardUseTitle;
                 }
-                var desc = "This reward can only be used once, please confirm you’re at the shop / merchant.";
+                var desc = GetI18NValue(RewardsConstants.I18N_UseNowPopupMessage);
                 if (RewardModel.RewardUseDescription.IsValid())
                 {
                     desc = RewardModel.RewardUseDescription;
                 }
-                DisplayCustomAlert(title, desc, new Dictionary<string, Action> { { "Use Later", null }, { "Confirm", OnUseNowAction } }, UIImage.FromBundle(RewardsConstants.Img_UseRewardBanner));
+                DisplayCustomAlert(title, desc, new Dictionary<string, Action> {
+                    { GetI18NValue(RewardsConstants.I18N_UseLater), null }
+                    , { GetI18NValue(RewardsConstants.I18N_Confirm), OnUseNowAction } }
+                , UIImage.FromBundle(RewardsConstants.Img_UseRewardBanner));
             };
             _footerView.AddSubview(btnUseNow);
+        }
+
+        private void UpdateSaveButton(CustomUIView viewRef)
+        {
+            UIView saveBtnView = viewRef.ViewWithTag(3000) as UIView;
+            UIImageView imgView = viewRef.ViewWithTag(3001) as UIImageView;
+            UILabel saveLbl = viewRef.ViewWithTag(3002) as UILabel;
+
+            imgView.Image = UIImage.FromBundle(RewardModel.IsSaved ? RewardsConstants.Img_HeartSavedGreenIcon : RewardsConstants.Img_HeartUnsavedGreenIcon);
+            saveLbl.Text = GetI18NValue(RewardModel.IsSaved ? RewardsConstants.I18N_Unsave : RewardsConstants.I18N_Save);
+
+            nfloat saveLblWidth = viewRef.Frame.Width - imgView.Frame.Width - GetScaledWidth(2F);
+            CGSize cGSizeLbl = saveLbl.SizeThatFits(new CGSize(saveLblWidth, GetScaledHeight(24F)));
+
+            ViewHelper.AdjustFrameSetHeight(saveLbl, cGSizeLbl.Height);
+            ViewHelper.AdjustFrameSetWidth(saveLbl, cGSizeLbl.Width);
+            ViewHelper.AdjustFrameSetY(saveLbl, GetYLocationToCenterObject(saveLbl.Frame.Height, saveBtnView));
+            ViewHelper.AdjustFrameSetY(imgView, GetYLocationToCenterObject(imgView.Frame.Height, saveBtnView));
+            ViewHelper.AdjustFrameSetWidth(saveBtnView, saveLbl.Frame.GetMaxX());
+            ViewHelper.AdjustFrameSetY(saveBtnView, GetYLocationToCenterObject(saveBtnView.Frame.Height, viewRef));
+            ViewHelper.AdjustFrameSetX(saveBtnView, GetXLocationToCenterObject(saveBtnView.Frame.Width, viewRef));
         }
 
         #region Action Methods
@@ -428,4 +460,3 @@ namespace myTNB
         #endregion
     }
 }
-

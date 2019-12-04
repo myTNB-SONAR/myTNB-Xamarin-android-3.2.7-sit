@@ -18,7 +18,6 @@ namespace myTNB
     {
         public ProfileViewController(IntPtr handle) : base(handle) { }
 
-        private TitleBarComponent _titleBarComponent;
         private UILabel _lblAppVersion;
         private bool _isSitecoreDone, _isMasterDataDone;
         private GenericSelectorViewController languageViewController;
@@ -157,7 +156,7 @@ namespace myTNB
                     , GetCommonI18NValue(Constants.Common_MobileNo).ToUpper()
                     , GetCommonI18NValue(Constants.Common_Password).ToUpper()
                     , GetCommonI18NValue(Constants.Common_Cards).ToUpper()
-                    , "Electricity Accounts"
+                    , GetI18NValue(ProfileConstants.I18N_ElectricityAccount).ToUpper()
                 };
             }
         }
@@ -165,8 +164,11 @@ namespace myTNB
         private void SetTableView()
         {
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
-            _profileTableview = new UITableView(new CGRect(0, NavigationController.NavigationBar.Frame.GetMaxY(), View.Frame.Width, ViewHeight));
-            _profileTableview.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            _profileTableview = new UITableView(new CGRect(0, NavigationController.NavigationBar.Frame.GetMaxY(), View.Frame.Width
+                , ViewHeight + DeviceHelper.GetStatusBarHeight()))
+            {
+                SeparatorStyle = UITableViewCellSeparatorStyle.None
+            };
             _profileTableview.RegisterClassForCellReuse(typeof(ProfileCell), ProfileConstants.Cell_Profile);
             View.AddSubview(_profileTableview);
         }
