@@ -30,15 +30,19 @@ namespace myTNB
             View.BackgroundColor = MyTNBColor.SectionGrey;
             SetNavigationBar();
             CreateLoadingCategoryTopBar();
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            /*if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
             {
                 ValidateRewards();
-            }
+            }*/
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            {
+                ValidateRewards();
+            }
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -359,6 +363,10 @@ namespace myTNB
                 Debug.WriteLine("OnSaveUnsaveAction");
                 Debug.WriteLine(reward.ID);
                 Debug.WriteLine(reward.RewardName);
+                InvokeInBackground(async () =>
+                {
+                    await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
+                });
             }
         }
 

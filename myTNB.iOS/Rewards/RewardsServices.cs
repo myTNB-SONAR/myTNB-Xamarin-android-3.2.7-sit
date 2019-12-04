@@ -61,7 +61,7 @@ namespace myTNB
                 // serviceManager.usrInf,
                 usrInf = new
                 {
-                    eid = "khanwh1@gmail.com",
+                    eid = "khanwh2@gmail.com",
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                     did = DataManager.DataManager.SharedInstance.UDID,
                     ft = "token",
@@ -86,7 +86,7 @@ namespace myTNB
             DateTime date = DateTime.Now;
             RewardsItemModel reward = new RewardsItemModel
             {
-                Email = "khanwh1@gmail.com",
+                Email = "khanwh2@gmail.com",
                 RewardId = sitecoreReward.ID
             };
             try
@@ -105,7 +105,7 @@ namespace myTNB
                 // serviceManager.usrInf,
                 usrInf = new
                 {
-                    eid = "khanwh1@gmail.com",
+                    eid = "khanwh2@gmail.com",
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                     did = DataManager.DataManager.SharedInstance.UDID,
                     ft = "token",

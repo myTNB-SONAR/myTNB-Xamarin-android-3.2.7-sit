@@ -61,6 +61,7 @@ namespace myTNB
                 cell.CellIndex = (int)cell.Tag;
                 cell.GetI18NValue = GetI18NValue;
                 cell.SetAccountCell(reward);
+                cell.SaveIcon.Image = UIImage.FromBundle(reward.IsSaved ? RewardsConstants.Img_HeartSaveIcon : RewardsConstants.Img_HeartUnsaveIcon);
                 if (reward.Image.IsValid())
                 {
                     if (cell.Tag == indexPath.Row)
