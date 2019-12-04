@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,11 +80,18 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void Remove()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM SubmittedFeedbackEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SubmittedFeedbackEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 

@@ -305,13 +305,13 @@ namespace myTNB_Android.Src.Login.MVP
                                         NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
                                     }
                                 }
-
+                                UserNotificationEntity.RemoveAll();
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                                 NotificationApiImpl notificationAPI = new NotificationApiImpl();
                                 MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                                if(response != null && response.Data != null && response.Data.ErrorCode == "7200")
                                 {
-                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                                        response.Data.ResponseData.UserNotificationList.Count > 0)
+                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                                     {
                                         foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                                         {
@@ -321,15 +321,12 @@ namespace myTNB_Android.Src.Login.MVP
                                     }
                                     else
                                     {
-                                        try
-                                        {
-                                            UserNotificationEntity.RemoveAll();
-                                        }
-                                        catch (System.Exception ne)
-                                        {
-                                            Utility.LoggingNonFatalError(ne);
-                                        }
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
+                                }
+                                else
+                                {
+                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                 }
 
                                 // Save promotions

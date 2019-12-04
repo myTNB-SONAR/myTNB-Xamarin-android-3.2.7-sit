@@ -429,7 +429,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
-				new UserNotificationAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 				new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 				LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
@@ -528,11 +527,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
         }
-
-		public void OnNotificationCount()
-		{
-			this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-		}
 
         private void PreNavigateBllMenu(CustomerBillingAccount selectedAccount)
         {

@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using SQLite;
 using System;
@@ -152,20 +153,34 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM SummaryDashBoardDetailsEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SummaryDashBoardDetailsEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static void RemoveAccountData(string accNo)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 
