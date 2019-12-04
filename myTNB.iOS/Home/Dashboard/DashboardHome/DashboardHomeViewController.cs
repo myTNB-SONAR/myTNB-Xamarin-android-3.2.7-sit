@@ -953,7 +953,7 @@ namespace myTNB
             UpdateFooterBG();
         }
 
-        private void OnReload()
+        internal void OnReload()
         {
             _homeTableView.ReloadData();
             UpdateFooterBG();
