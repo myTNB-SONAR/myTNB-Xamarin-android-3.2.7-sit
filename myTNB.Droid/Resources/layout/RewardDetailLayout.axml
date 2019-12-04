@@ -223,43 +223,76 @@
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
             android:padding="16dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:background="@color/white">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:layout_marginRight="2dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/rewardCountDownLayout"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:id="@+id/btnRewardSave"
-                style="@style/LightButton">
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="15dp"
-                    android:id="@+id/imgBtnRewardSave"
-                    android:src="@drawable/ic_button_reward_unsave"
-                    android:layout_gravity="center"/>
+                android:visibility="visible">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtTimeCounter"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textSize="16dp"
-                    android:textColor="@color/freshGreen"
-                    android:gravity="center"
-                    android:id="@+id/txtBtnRewardSave"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/powerBlue"
+                    android:text="04:59"
+                    android:textSize="36dp"/>
+                <TextView
+                    android:id="@+id/txtTimeCounter"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_gravity="center"
-                    android:text="Save"/>
+                    android:gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/charcoalGrey"
+                    android:text="Reward redeemed. Please show the merchant this screen before the timer runs out."
+                    android:textSize="12dp"
+                    android:lineSpacingExtra="2dp"/>
             </LinearLayout>
-            <Button
-                android:id="@+id/btnRewardUse"
-                android:text="Use Now"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="0.5"
-                android:layout_marginLeft="2dp"
-                android:layout_height="wrap_content"
-                style="@style/DarkButton"
-                android:textAllCaps="false" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/btnUseSaveLayout">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginRight="2dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/btnRewardSave"
+                    style="@style/LightButton">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/imgBtnRewardSave"
+                        android:src="@drawable/ic_button_reward_unsave"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="16dp"
+                        android:textColor="@color/freshGreen"
+                        android:gravity="center"
+                        android:id="@+id/txtBtnRewardSave"
+                        android:layout_gravity="center"
+                        android:text="Save"/>
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btnRewardUse"
+                    android:text="Use Now"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="2dp"
+                    android:layout_height="wrap_content"
+                    style="@style/DarkButton"
+                    android:textAllCaps="false" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
