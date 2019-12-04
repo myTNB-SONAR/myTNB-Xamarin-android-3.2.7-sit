@@ -314,10 +314,7 @@ namespace myTNB_Android.Src.Notifications.MVP
         {
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowQueryProgress();
-            }
+            this.mView.ShowQueryProgress();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
@@ -383,76 +380,52 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
                                 }
 
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
+                                this.mView.HideQueryProgress();
                             }
                             catch (ApiException apiException)
                             {
 
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
+                                this.mView.HideQueryProgress();
                                 this.mView.ShowRefreshView(null, null);
                                 Utility.LoggingNonFatalError(apiException);
                             }
                             catch (Exception e)
                             {
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
+                                this.mView.HideQueryProgress();
                                 this.mView.ShowRefreshView(null, null);
                                 Utility.LoggingNonFatalError(e);
                             }
                         }
                         else
                         {
-                            if (mView.IsActive())
-                            {
-                                this.mView.HideQueryProgress();
-                            }
+                            this.mView.HideQueryProgress();
                         }
 
                     }
                     else
                     {
-                        if (mView.IsActive())
-                        {
-                            this.mView.HideQueryProgress();
-                        }
+                        this.mView.HideQueryProgress();
                         this.mView.ShowRefreshView(null, null);
                     }
 
                 }
                 else
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideQueryProgress();
-                    }
+                    this.mView.HideQueryProgress();
                     this.mView.ShowRefreshView(null, null);
                 }
             }
             catch (ApiException apiException)
             {
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
+                this.mView.HideQueryProgress();
                 this.mView.ShowRefreshView(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
+                this.mView.HideQueryProgress();
                 this.mView.ShowRefreshView(null, null);
                 Utility.LoggingNonFatalError(e);
             }

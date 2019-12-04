@@ -2576,33 +2576,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                UserNotificationEntity.RemoveAll();
-                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+				MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
                 if (response.Data != null && response.Data.ErrorCode == "7200")
                 {
                     if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                     {
-                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+						foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                         {
                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                         }
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
                     }
                     else
                     {
-                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+						MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     }
                 }
                 else
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+					MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                 }
                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
             }
             catch (System.Exception ne)
             {
-                Utility.LoggingNonFatalError(ne);
+				MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+				Utility.LoggingNonFatalError(ne);
             }
         }
 
