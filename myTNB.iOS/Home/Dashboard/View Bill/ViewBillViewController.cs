@@ -26,6 +26,7 @@ namespace myTNB
         public bool IsFromUsage { set; private get; }
         public bool IsFromHome { set; private get; }
         public bool IsFromBillSelection { set; private get; }
+        public bool IsFromHomeForSingleAcct { set; private get; }
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public string BillingNumber { set; private get; } = string.Empty;
         public Action OnDone;
@@ -71,7 +72,7 @@ namespace myTNB
             {
                 OnDone?.Invoke();
 
-                if (IsFromHome)
+                if (IsFromHome && !IsFromHomeForSingleAcct)
                 {
                     NavigationController.PopViewController(true);
                 }
@@ -210,7 +211,7 @@ namespace myTNB
                     {
                         AlertHandler.DisplayServiceError(this, _billHistory.d.ErrorMessage, (obj) =>
                         {
-                            if (IsFromHome)
+                            if (IsFromHome && !IsFromHomeForSingleAcct)
                             {
                                 NavigationController.PopViewController(true);
                             }
