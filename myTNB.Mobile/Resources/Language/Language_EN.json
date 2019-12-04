@@ -89,7 +89,7 @@
         "accountType": "Account Type",
         "allNotifications": "All Notifications",
         "unitEmission": "kg",
-        "unitEnergy": "kWH",
+        "unitEnergy": "kWh",
         "selectElectricityAccount": "Select Electricity Account",
         "close": "Close",
         "characterLeft": "{0} character left",
