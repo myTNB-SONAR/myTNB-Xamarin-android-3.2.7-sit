@@ -546,7 +546,8 @@
     "setAppLanguage": "Set App Language",
     "myTNBAccount": "myTNB Account",
     "logout": "Log Out",
-    "logoutMessage": "Are you sure you want to log out from the myTNB app?"
+    "logoutMessage": "Are you sure you want to log out from the myTNB app?",
+    "electricityAccount": "Electricity Accounts"
   },
   "NotificationSettings": {
     "title": "Notification Settings",

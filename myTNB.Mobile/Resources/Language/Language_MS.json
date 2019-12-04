@@ -546,7 +546,8 @@
     "setAppLanguage": "Tetapkan Bahasa Aplikasi",
     "myTNBAccount": "Akaun myTNB",
     "logout": "Log Keluar",
-    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?"
+    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
+    "electricityAccount": "Akaun Elektrik"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
