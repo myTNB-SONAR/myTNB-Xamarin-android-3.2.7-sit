@@ -32,12 +32,15 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            InvokeInBackground(async () =>
+            if (!RewardModel.IsRead)
             {
-                await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Read, true);
-                RewardModel.IsRead = true;
-                RewardsServices.UpdateRewardItem(RewardModel);
-            });
+                InvokeInBackground(async () =>
+                {
+                    await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Read, true);
+                    RewardModel.IsRead = true;
+                    RewardsServices.UpdateRewardItem(RewardModel);
+                });
+            }
         }
 
         public override void DidReceiveMemoryWarning()

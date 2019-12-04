@@ -30,10 +30,6 @@ namespace myTNB
             View.BackgroundColor = MyTNBColor.SectionGrey;
             SetNavigationBar();
             CreateLoadingCategoryTopBar();
-            /*if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
-            {
-                ValidateRewards();
-            }*/
         }
 
         public override void ViewWillAppear(bool animated)
@@ -103,9 +99,7 @@ namespace myTNB
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
             Title = GetI18NValue(RewardsConstants.I18N_Title);
-
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 Debug.WriteLine("btnSavedRewards");
