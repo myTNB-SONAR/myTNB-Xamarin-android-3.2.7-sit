@@ -331,10 +331,6 @@ namespace myTNB
                 _accountListTableView.TableFooterView = null;
                 return;
             }
-            if (_accountListTableView.TableFooterView != null)
-            {
-                return;
-            }
 
             if (_footerView != null)
             {
