@@ -1225,6 +1225,9 @@
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\path%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\path%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1717,6 +1720,10 @@
     <Folder Include="Model\Rewards\" />
     <Folder Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\" />
+    <Folder Include="Rewards\Reward Details\" />
+    <Folder Include="Rewards\Saved Rewards\" />
+    <Folder Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Use-Reward-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1756,7 +1763,8 @@
     <InterfaceDefinition Include="Feedback\Feedback Details\FeedbackDetails.storyboard" />
     <InterfaceDefinition Include="Feedback\Feedback.storyboard" />
     <InterfaceDefinition Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeAccountViewController.xib" />
-    <InterfaceDefinition Include="Rewards\RewardDetailsViewController.xib" />
+    <InterfaceDefinition Include="Rewards\Reward Details\RewardDetailsViewController.xib" />
+    <InterfaceDefinition Include="Rewards\Saved Rewards\SavedRewardsViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2579,10 +2587,6 @@
     <Compile Include="Rewards\RewardsDataSource.cs" />
     <Compile Include="Rewards\RewardsCell.cs" />
     <Compile Include="SQLite\SQLite Data Manager\RewardsEntity.cs" />
-    <Compile Include="Rewards\RewardDetailsViewController.cs" />
-    <Compile Include="Rewards\RewardDetailsViewController.designer.cs">
-      <DependentUpon>RewardDetailsViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Profile\ProfileViewController.cs" />
     <Compile Include="Profile\ProfileViewController.designer.cs">
       <DependentUpon>ProfileViewController.cs</DependentUpon>
@@ -2592,6 +2596,16 @@
     <Compile Include="Profile\ProfileCell.cs" />
     <Compile Include="Model\Rewards\RewardsModel.cs" />
     <Compile Include="Rewards\RewardsServices.cs" />
+    <Compile Include="Rewards\Reward Details\RewardDetailsViewController.cs" />
+    <Compile Include="Rewards\Reward Details\RewardDetailsViewController.designer.cs">
+      <DependentUpon>RewardDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rewards\Saved Rewards\SavedRewardsViewController.cs" />
+    <Compile Include="Rewards\Saved Rewards\SavedRewardsViewController.designer.cs">
+      <DependentUpon>SavedRewardsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rewards\Saved Rewards\SavedRewardCell.cs" />
+    <Compile Include="Rewards\Saved Rewards\SavedRewardsDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

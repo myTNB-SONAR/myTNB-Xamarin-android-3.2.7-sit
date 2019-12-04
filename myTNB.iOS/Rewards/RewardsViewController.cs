@@ -103,6 +103,13 @@ namespace myTNB
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 Debug.WriteLine("btnSavedRewards");
+                SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
+                {
+                    SavedRewardsList = _rewardsList
+                };
+                UINavigationController navController = new UINavigationController(savedRewardsView);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
             });
             NavigationItem.RightBarButtonItem = btnSavedRewards;
         }
@@ -137,11 +144,14 @@ namespace myTNB
             nfloat width = _rewardsScrollView.Frame.Width;
             for (int i = 0; i < _categoryList.Count; i++)
             {
-                UIView viewContainer = new UIView(_rewardsScrollView.Bounds);
-                viewContainer.BackgroundColor = UIColor.Clear;
+                UIView viewContainer = new UIView(_rewardsScrollView.Bounds)
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Tag = RewardsConstants.Tag_ViewContainer * (i + 1)
+                };
 
                 UITableView rewardsTableView = new UITableView(viewContainer.Bounds)
-                { BackgroundColor = UIColor.Clear };
+                { BackgroundColor = UIColor.Clear, Tag = RewardsConstants.Tag_TableView };
                 rewardsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
                 rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
                 viewContainer.AddSubview(rewardsTableView);
@@ -151,11 +161,7 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetX(viewContainer, i * width);
 
                 var filteredList = i == 0 ? _rewardsList : FilteredRewards(i);
-                rewardsTableView.Source = new RewardsDataSource(
-                    this,
-                    filteredList,
-                    GetI18NValue,
-                    false);
+                rewardsTableView.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
                 rewardsTableView.ReloadData();
             }
             _rewardsScrollView.ContentSize = new CGSize(_rewardsScrollView.Frame.Width * _categoryList.Count, _rewardsScrollView.Frame.Height);
@@ -392,20 +398,44 @@ namespace myTNB
             props_index = index;
         }
 
-        public void OnReloadTableAction(List<RewardsModel> rewardsList, UITableView tableView)
+        public void OnReloadTableAction(List<RewardsModel> rewardsList, int index)
         {
-            if (rewardsList != null && rewardsList.Count > 0)
+            if (rewardsList != null && rewardsList.Count > 0
+                && index > -1 && index < rewardsList.Count)
             {
-                _rewardsList = rewardsList;
-                if (tableView != null)
+                RewardsModel reward = rewardsList[index];
+                var catIndx = _categoryList.FindIndex(x => x.CategoryID.Equals(reward.CategoryID));
+
+                if (catIndx > -1 && catIndx < _rewardsScrollView.Subviews.Count())
                 {
-                    tableView.ClearsContextBeforeDrawing = true;
-                    tableView.Source = new RewardsDataSource(
-                    this,
-                    _rewardsList,
-                    GetI18NValue,
-                    false);
-                    tableView.ReloadData();
+                    UIView viewContainer = _rewardsScrollView.Subviews[catIndx];
+                    if (viewContainer != null && viewContainer.Subviews.Count() > 0)
+                    {
+                        if (viewContainer.Subviews[0] is UITableView table)
+                        {
+                            var filteredList = catIndx == 0 ? _rewardsList : FilteredRewards(catIndx);
+                            table.ClearsContextBeforeDrawing = true;
+                            table.Source = new RewardsDataSource(
+                            this,
+                            filteredList,
+                            GetI18NValue);
+                            table.ReloadData();
+                        }
+                    }
+                }
+
+                UIView viewAllView = _rewardsScrollView.Subviews[0];
+                if (viewAllView != null && viewAllView.Subviews.Count() > 0)
+                {
+                    if (viewAllView.Subviews[0] is UITableView table)
+                    {
+                        table.ClearsContextBeforeDrawing = true;
+                        table.Source = new RewardsDataSource(
+                        this,
+                        _rewardsList,
+                        GetI18NValue);
+                        table.ReloadData();
+                    }
                 }
             }
         }

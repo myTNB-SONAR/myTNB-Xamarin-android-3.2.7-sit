@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
@@ -374,6 +375,20 @@ namespace myTNB
             btnUseNow.TouchUpInside += (sender, e) =>
             {
                 Debug.WriteLine("btnUseNow on tap");
+                var title = GetI18NValue(RewardsConstants.I18N_UseNowPopupTitle);
+                if (RewardModel.RewardUseTitle.IsValid())
+                {
+                    title = RewardModel.RewardUseTitle;
+                }
+                var desc = GetI18NValue(RewardsConstants.I18N_UseNowPopupMessage);
+                if (RewardModel.RewardUseDescription.IsValid())
+                {
+                    desc = RewardModel.RewardUseDescription;
+                }
+                DisplayCustomAlert(title, desc, new Dictionary<string, Action> {
+                    { GetI18NValue(RewardsConstants.I18N_UseLater), null }
+                    , { GetI18NValue(RewardsConstants.I18N_Confirm), OnUseNowAction } }
+                , UIImage.FromBundle(RewardsConstants.Img_UseRewardBanner));
             };
             _footerView.AddSubview(btnUseNow);
         }
@@ -398,5 +413,12 @@ namespace myTNB
             ViewHelper.AdjustFrameSetY(saveBtnView, GetYLocationToCenterObject(saveBtnView.Frame.Height, viewRef));
             ViewHelper.AdjustFrameSetX(saveBtnView, GetXLocationToCenterObject(saveBtnView.Frame.Width, viewRef));
         }
+
+        #region Action Methods
+        private void OnUseNowAction()
+        {
+            Debug.WriteLine("OnUseNowAction()");
+        }
+        #endregion
     }
 }

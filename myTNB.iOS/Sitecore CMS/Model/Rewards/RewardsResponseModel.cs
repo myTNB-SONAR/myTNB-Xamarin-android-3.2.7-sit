@@ -33,6 +33,9 @@ namespace myTNB.SitecoreCMS.Model
         public string TandCLabel { set; get; }
         public string StartDate { set; get; }
         public string EndDate { set; get; }
+        public int RewardUseWithinTime { set; get; }
+        public string RewardUseTitle { set; get; }
+        public string RewardUseDescription { set; get; }
         public bool IsSaved { set; get; }
         public bool IsRead { set; get; }
         public bool IsUsed { set; get; }
@@ -54,6 +57,9 @@ namespace myTNB.SitecoreCMS.Model
                 TandCLabel = TandCLabel,
                 StartDate = StartDate,
                 EndDate = EndDate,
+                RewardUseWithinTime = RewardUseWithinTime,
+                RewardUseTitle = RewardUseTitle,
+                RewardUseDescription = RewardUseDescription,
                 IsSaved = IsSaved,
                 IsRead = IsRead,
                 IsUsed = IsUsed
