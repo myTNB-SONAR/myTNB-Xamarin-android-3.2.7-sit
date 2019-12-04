@@ -146,5 +146,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             EndMoveCell = indexTwo;
             NotifyDataSetChanged();
         }
+
+        public void NotifyChanged()
+        {
+            NotifyDataSetChanged();
+        }
     }
 }
