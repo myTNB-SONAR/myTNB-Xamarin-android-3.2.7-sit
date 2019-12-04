@@ -73,10 +73,12 @@ namespace myTNB
             , bool shouldDismissAlert = true, float marginPercentage = 0.056F, bool isDefaultURLAction = true
             , UIImage image = null)
         {
+            nfloat sidePadding = ScaleUtility.GetScaledWidth(16F);
+            nfloat topPadding = ScaleUtility.GetScaledHeight(16F);
             nfloat margin = UIScreen.MainScreen.Bounds.Width * marginPercentage;
             nfloat width = UIScreen.MainScreen.Bounds.Width - (margin * 2);
-            nfloat height = UIScreen.MainScreen.Bounds.Height - (18 + (UIScreen.MainScreen.Bounds.Height * 0.202F));
-            nfloat maxDescriptionHeight = height - 51 - 10;
+            nfloat height = UIScreen.MainScreen.Bounds.Height - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+            nfloat maxDescriptionHeight = height - ScaleUtility.GetScaledHeight(53F) - ScaleUtility.GetScaledHeight(16F);
             nfloat ctaItemX = 0;
             NSError htmlBodyError = null;
 
@@ -103,14 +105,14 @@ namespace myTNB
                 ForegroundColor = MyTNBColor.CharcoalGrey
             }, new NSRange(0, htmlBody.Length));
 
-            UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : ScaleUtility.GetScaledHeight(155)));//width / 1.33F));
+            UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : ScaleUtility.GetScaledHeight(155F)));//width / 1.33F));
             if (image != null)
             {
                 imgView.Image = image;
             }
 
             //Title
-            UILabel lblTitle = new UILabel(new CGRect(16, 0, width - 32, 0))
+            UILabel lblTitle = new UILabel(new CGRect(sidePadding, 0, width - (sidePadding * 2), 0))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
@@ -119,13 +121,13 @@ namespace myTNB
                 Lines = 0
             };
 
-            nfloat txtViewY = 10;
+            nfloat txtViewY = ScaleUtility.GetScaledHeight(12F);
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title))
             {
-                CGSize titleSize = LabelHelper.GetLabelSize(lblTitle, width - 32, 60);
-                lblTitle.Frame = new CGRect(16, imgView.Frame.GetMaxY() + 16, width - 32, titleSize.Height);
+                CGSize titleSize = LabelHelper.GetLabelSize(lblTitle, width - (sidePadding * 2), ScaleUtility.GetScaledHeight(60F));
+                lblTitle.Frame = new CGRect(sidePadding, imgView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(24F), width - (sidePadding * 2), titleSize.Height);
                 txtViewY += lblTitle.Frame.GetMaxY();
-                maxDescriptionHeight -= (16 + titleSize.Height);
+                maxDescriptionHeight -= (topPadding + titleSize.Height);
             }
 
             // Body
@@ -138,28 +140,25 @@ namespace myTNB
                 ContentInset = new UIEdgeInsets(-5, 0, -5, 0)
             };
             txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            txtViewDetails.TextContainer.LineFragmentPadding = 0F;
 
             //Resize
-            CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 24, maxDescriptionHeight));
+            CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - (sidePadding * 2), maxDescriptionHeight));
             nfloat txtViewHeight = size.Height > maxDescriptionHeight ? maxDescriptionHeight : size.Height;
-            txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight);
+            txtViewDetails.Frame = new CGRect(sidePadding, txtViewY, width - (sidePadding * 2), txtViewHeight);
             txtViewDetails.TextAlignment = descriptionAlignment;
 
-            UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.GetMaxY(), width, 1))
-            {
-                BackgroundColor = MyTNBColor.LightGrayBG
-            };
-            nfloat containerY = txtViewDetails.Frame.GetMaxY() + 10;
+            nfloat containerY = txtViewDetails.Frame.GetMaxY() + topPadding;
 
-            UIView ctaContainer = new UIView(new CGRect(0, containerY, width, 51))
+            UIView ctaContainer = new UIView(new CGRect(0, containerY, width, ScaleUtility.GetScaledHeight(53F)))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG,
                 ClipsToBounds = true
             };
-            nfloat ctaItemWidth = (ctaContainer.Frame.Width / ctaButtons.Count) - 0.5F;
+            nfloat ctaItemWidth = (ctaContainer.Frame.Width / ctaButtons.Count) - ScaleUtility.GetScaledWidth(0.5F);
             foreach (KeyValuePair<string, Action> item in ctaButtons)
             {
-                UIView ctaBtn = new UIView(new CGRect(ctaItemX, 1, ctaItemWidth, 50))
+                UIView ctaBtn = new UIView(new CGRect(ctaItemX, ScaleUtility.GetScaledHeight(1F), ctaItemWidth, ScaleUtility.GetScaledHeight(52F)))
                 {
                     BackgroundColor = UIColor.White,
                     ClipsToBounds = true
@@ -185,7 +184,7 @@ namespace myTNB
                 };
                 ctaBtn.AddSubview(ctaLbl);
                 ctaContainer.AddSubview(ctaBtn);
-                ctaItemX += ctaItemWidth + 1;
+                ctaItemX += ctaItemWidth + ScaleUtility.GetScaledWidth(1F);
             }
 
             nfloat viewHeight = ctaContainer.Frame.GetMaxY();

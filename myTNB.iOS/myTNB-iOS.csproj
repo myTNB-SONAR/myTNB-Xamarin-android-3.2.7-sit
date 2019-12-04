@@ -1225,6 +1225,9 @@
     <ImageAsset Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\Heart-Green-Solid-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\Heart-Green-Solid-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1718,6 +1721,7 @@
     <Folder Include="Rewards\Reward Details\" />
     <Folder Include="Rewards\Saved Rewards\" />
     <Folder Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Use-Reward-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
@@ -366,9 +367,27 @@ namespace myTNB
             btnUseNow.TouchUpInside += (sender, e) =>
             {
                 Debug.WriteLine("btnUseNow on tap");
+                var title = "Please make sure you’re at the shop.";
+                if (RewardModel.RewardUseTitle.IsValid())
+                {
+                    title = RewardModel.RewardUseTitle;
+                }
+                var desc = "This reward can only be used once, please confirm you’re at the shop / merchant.";
+                if (RewardModel.RewardUseDescription.IsValid())
+                {
+                    desc = RewardModel.RewardUseDescription;
+                }
+                DisplayCustomAlert(title, desc, new Dictionary<string, Action> { { "Use Later", null }, { "Confirm", OnUseNowAction } }, UIImage.FromBundle(RewardsConstants.Img_UseRewardBanner));
             };
             _footerView.AddSubview(btnUseNow);
         }
+
+        #region Action Methods
+        private void OnUseNowAction()
+        {
+            Debug.WriteLine("OnUseNowAction()");
+        }
+        #endregion
     }
 }
 

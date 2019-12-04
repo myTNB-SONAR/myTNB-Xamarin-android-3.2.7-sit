@@ -11,7 +11,16 @@ namespace myTNB.SitecoreCMS.Extensions
 {
     public static class SitecoreItemExtensions
     {
-        private static string[] SizeList = { "main", "2x", "3x", "hdpi", "mdpi", "xhdpi", "xxhdpi", "xxxhdpi" };
+        private static readonly string[] SizeList = { "main", "2x", "3x", "hdpi", "mdpi", "xhdpi", "xxhdpi", "xxxhdpi" };
+
+        public static int GetIntValueFromField(this ISitecoreItem item, string fieldName)
+        {
+            if (item == null)
+                return 0;
+
+            int.TryParse(item[fieldName].RawValue, out int parsedValue);
+            return parsedValue;
+        }
 
         public static string GetValueFromField(this ISitecoreItem item, string fieldName)
         {
