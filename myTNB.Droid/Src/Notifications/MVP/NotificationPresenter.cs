@@ -312,6 +312,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public async void QueryOnLoad(string deviceId)
         {
+            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
             cts = new CancellationTokenSource();
             if (mView.IsActive())
             {
@@ -359,19 +360,26 @@ namespace myTNB_Android.Src.Notifications.MVP
                             try
                             {
                                 MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                                if (response.Data.ErrorCode == "7200")
+                                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                                 {
-                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                                     {
-                                        // tODO : SAVE ALL NOTIFICATIONs
-                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                        {
+                                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                        }
+                                        this.mView.ShowView();
+                                        this.mView.ClearAdapter();
+                                        this.ShowFilteredList();
                                     }
-                                    this.mView.ShowView();
-                                    this.mView.ClearAdapter();
-                                    this.ShowFilteredList();
+                                    else
+                                    {
+                                        this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                    }
                                 }
                                 else
                                 {
+                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
                                 }
 
