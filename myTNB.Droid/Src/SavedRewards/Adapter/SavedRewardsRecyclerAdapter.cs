@@ -304,8 +304,8 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 			}
 			else
 			{
-				viewHolder.rewardImg.SetImageResource(0);
-			}
+                viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+            }
 		}
 
 		public void SetRewardImg(RewardViewHolder viewHolder, RewardsModel item)
@@ -339,8 +339,8 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 				}
 				else
 				{
-					viewHolder.rewardImg.SetImageResource(0);
-				}
+                    viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+                }
 
                 viewHolder.btnRewardSaveImg.Visibility = ViewStates.Gone;
 

@@ -19,7 +19,8 @@ namespace myTNB_Android.Src.SSMR.Util
             IMAGE_HEADER,
             NORMAL_WITH_HEADER,
             NORMAL_WITH_HEADER_TWO_BUTTON,
-            LISTVIEW_WITH_INDICATOR_AND_HEADER
+            LISTVIEW_WITH_INDICATOR_AND_HEADER,
+            IMAGE_HEADER_TWO_BUTTON,
         }
 
         private ToolTipType toolTipType;
@@ -57,6 +58,10 @@ namespace myTNB_Android.Src.SSMR.Util
             }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
             {
                 layoutResource = Resource.Layout.CustomToolTipWithHeaderTwoButtonLayout;
+            }
+            else if (mToolTipType == ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+            {
+                layoutResource = Resource.Layout.CustomDialogWithImageHeaderTwoButton;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
@@ -287,6 +292,51 @@ namespace myTNB_Android.Src.SSMR.Util
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+            }
+            else if (this.toolTipType == ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+            {
+                ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.imgToolTipHeader);
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+
+                tooltipImageHeader.SetImageResource(this.imageResource);
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
+
+                tooltipSecondaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (secondaryCTAAction != null)
+                    {
+                        this.secondaryCTAAction();
+                    }
+                };
+
+                tooltipTitle.Text = this.title;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+
+
             }
             return this;
         }

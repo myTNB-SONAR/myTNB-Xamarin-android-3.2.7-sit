@@ -297,7 +297,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 if (imgSrc == null)
                 {
-                    rewardImg.SetImageResource(0);
+                    rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
                 }
                 else if (imgSrc != null)
                 {
@@ -438,8 +438,24 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         [OnClick(Resource.Id.btnRewardUse)]
         void OnRewardUse(object sender, EventArgs eventArgs)
         {
-            
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                    .SetTitle("Please make sure you’re at the shop.")
+                    .SetMessage("This reward can only be used once, please confirm you’re at the shop / merchant.")
+                    .SetHeaderImage(Resource.Drawable.img_tooltip_reward_confirm)
+                    .SetCTALabel("Use Later")
+                    .SetCTAaction(() => {
+                        this.SetIsClicked(false);
+                    })
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                    })
+                    .SetSecondaryCTALabel("Confirm")
+                    .Build().Show();
+            }
         }
     }
 }

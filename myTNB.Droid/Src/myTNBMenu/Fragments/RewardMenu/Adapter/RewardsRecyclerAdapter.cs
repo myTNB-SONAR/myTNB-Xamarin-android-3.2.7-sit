@@ -333,7 +333,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             }
             else
             {
-                viewHolder.rewardImg.SetImageResource(0);
+                viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
             }
         }
 
@@ -368,7 +368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                 }
                 else
                 {
-                    viewHolder.rewardImg.SetImageResource(0);
+                    viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
                 }
 
                 if (item.IsSaved)
