@@ -1220,14 +1220,17 @@
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon.imageset\Reward-TC-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon.imageset\Reward-TC-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\Heart-Green-Solid-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\Heart-Green-Solid-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%402x.png" />
     <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Reward-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Reward-Icon.imageset\Empty-Reward-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Reward-Icon.imageset\Empty-Reward-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1722,6 +1725,7 @@
     <Folder Include="Rewards\Saved Rewards\" />
     <Folder Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Use-Reward-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Reward-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

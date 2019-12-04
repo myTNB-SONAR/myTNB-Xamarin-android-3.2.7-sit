@@ -87,8 +87,8 @@ namespace myTNB
             {
                 try
                 {
-                    ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(imageContainer);
-                    _activityIndicator.Show();
+                    ActivityIndicatorComponent activityIndicator = new ActivityIndicatorComponent(imageContainer);
+                    activityIndicator.Show();
                     NSUrl url = new NSUrl(RewardModel.Image);
                     NSUrlSession session = NSUrlSession
                         .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
@@ -99,17 +99,16 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 imageView.Image = UIImage.LoadFromData(data);
-                                _activityIndicator.Hide();
+                                activityIndicator.Hide();
                             });
                         }
                         else
                         {
-                            // Default image goes here...
-                            //InvokeOnMainThread(() =>
-                            //{
-                            //    imageView.Image = UIImage.LoadFromData(data);
-                            //    _activityIndicator.Hide();
-                            //});
+                            InvokeOnMainThread(() =>
+                            {
+                                imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                activityIndicator.Hide();
+                            });
                         }
                     });
                     dataTask.Resume();
@@ -117,12 +116,18 @@ namespace myTNB
                 catch (Exception e)
                 {
                     Debug.WriteLine("Image load Error: " + e.Message);
-                    // Default image goes here...
+                    InvokeOnMainThread(() =>
+                    {
+                        imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                    });
                 }
             }
             else
             {
-                // Default image goes here...
+                InvokeOnMainThread(() =>
+                {
+                    imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                });
             }
 
             nfloat viewWidth = ViewWidth - (BaseMarginWidth16 * 2);
@@ -385,7 +390,40 @@ namespace myTNB
         #region Action Methods
         private void OnUseNowAction()
         {
-            Debug.WriteLine("OnUseNowAction()");
+            nfloat height = GetScaledHeight(122F);
+            UIView timerContainerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
+            {
+                BackgroundColor = UIColor.White
+            };
+            timerContainerView.Layer.MasksToBounds = false;
+            timerContainerView.Layer.ShadowColor = MyTNBColor.BrownGrey60.CGColor;
+            timerContainerView.Layer.ShadowOpacity = 1F;
+            timerContainerView.Layer.ShadowOffset = new CGSize(0, -4);
+            timerContainerView.Layer.ShadowRadius = 8;
+            timerContainerView.Layer.ShadowPath = UIBezierPath.FromRect(timerContainerView.Bounds).CGPath;
+
+            UILabel timerLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(36F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = TNBFont.MuseoSans_36_300,
+                TextColor = MyTNBColor.WaterBlue,
+                TextAlignment = UITextAlignment.Center,
+                Text = "04:59"
+            };
+
+            UILabel timerDesc = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(timerLabel.Frame, 12F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(32F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                Text = "Reward redeemed. Please show the merchant this screen before the timer runs out."
+            };
+            timerContainerView.AddSubviews(new UIView { timerLabel, timerDesc });
+            View.AddSubview(timerContainerView);
+
+            ViewHelper.AdjustFrameSetHeight(_scrollView, timerContainerView.Frame.GetMinY());
         }
         #endregion
     }
