@@ -499,7 +499,7 @@ namespace myTNB
                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
                     if (_homeViewController != null)
                     {
-                        _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
+                        _homeViewController.OnReload();//.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                     }
                     PrepareAccountList();
                 }
@@ -721,6 +721,7 @@ namespace myTNB
                     _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                 }
             }
+
             ViewHelper.AdjustFrameSetHeight(_parentView, _dashboardHomeHelper.GetHeightForAccountList() - GetScaledHeight(24F));
             ViewHelper.AdjustFrameSetHeight(_accountListTableView, _parentView.Frame.Height - _headerView.Frame.Height);
 
