@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.Utils;
 using SQLite;
 
 namespace myTNB_Android.Src.Database.Model
@@ -53,8 +54,15 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM MyServiceEntity");
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM MyServiceEntity");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static int Count()

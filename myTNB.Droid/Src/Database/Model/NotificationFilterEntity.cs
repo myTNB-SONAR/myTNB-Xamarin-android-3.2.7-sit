@@ -63,9 +63,16 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            try
             {
-                db.Execute("DELETE FROM NotificationFilterEntity");
+                using (var db = new SQLiteConnection(Constants.DB_PATH))
+                {
+                    db.Execute("DELETE FROM NotificationFilterEntity");
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
             }
         }
 

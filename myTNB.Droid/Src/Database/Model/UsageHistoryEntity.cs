@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using myTNB_Android.Src.Utils;
+using SQLite;
 using System;
 using System.Collections.Generic;
 
@@ -150,11 +151,18 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM UsageHistoryEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UsageHistoryEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static void RemoveAccountData(string accNo)
