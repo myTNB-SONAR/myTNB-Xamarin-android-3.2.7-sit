@@ -1,5 +1,6 @@
 ﻿using myTNB.SitecoreCM.Models;
 using myTNB_Android.Src.Database;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -102,11 +103,18 @@ namespace myTNB.SQLite.SQLiteDataManager
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM PromotionsParentEntityV2");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM PromotionsParentEntityV2");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
     }
 }

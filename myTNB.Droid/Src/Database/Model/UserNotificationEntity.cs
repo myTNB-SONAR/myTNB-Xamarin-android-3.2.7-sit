@@ -1,5 +1,6 @@
 ﻿using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -232,13 +233,20 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM UserNotificationEntity");
-            //db.Close();
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+                //using (var db = DBHelper.GetSQLiteConnection())
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UserNotificationEntity");
+                //db.Close();
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static bool HasNotifications()

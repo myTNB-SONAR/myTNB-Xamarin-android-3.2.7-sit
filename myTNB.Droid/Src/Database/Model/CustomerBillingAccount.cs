@@ -397,25 +397,32 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static int RemoveActive()
+        public static void RemoveActive()
         {
-            var db = DBHelper.GetSQLiteConnection();
-
-            UserEntity activeUser = UserEntity.GetActive();
-
             try
             {
-                if (activeUser != null)
-                {
-                    AccountSortingEntity.RemoveSpecificAccountSorting(activeUser.Email, Constants.APP_CONFIG.ENV);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+                var db = DBHelper.GetSQLiteConnection();
 
-            return db.Execute("Delete from CustomerBillingAccountEntity ");
+                UserEntity activeUser = UserEntity.GetActive();
+
+                try
+                {
+                    if (activeUser != null)
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(activeUser.Email, Constants.APP_CONFIG.ENV);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                db.Execute("Delete from CustomerBillingAccountEntity ");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static void Remove(string AccountNum)

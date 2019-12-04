@@ -140,13 +140,17 @@ namespace myTNB_Android.Src.Database.Model
 
 
 
-        public static int RemoveActive()
+        public static void RemoveActive()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
-            //}
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 

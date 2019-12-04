@@ -2560,7 +2560,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 try
                 {
-                    tokenSource.Token.ThrowIfCancellationRequested();
                     _ = InvokeGetUserNotifications();
                 }
                 catch (System.Exception ne)
@@ -2569,7 +2568,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, tokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
 

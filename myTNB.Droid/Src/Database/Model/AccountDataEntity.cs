@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using SQLite;
 using System;
@@ -137,28 +138,49 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM AccountDataEntity");
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM AccountDataEntity");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static void RemoveAccountData(string accNo)
         {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM AccountDataEntity where AccountNo = ?", accNo);
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM AccountDataEntity where AccountNo = ?", accNo);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 
         public static bool UpdateNickName(string nickName, string accNo)
         {
-            AccountDataEntity accountDataEntity = GetItemByAccountNo(accNo);
-
-            if (accountDataEntity != null)
+            try
             {
-                AccountDetailsResponse customerBillingDetails = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountDataEntity.JsonResponse);
-                customerBillingDetails.Data.AccountData.AccountName = nickName;
-                accountDataEntity.JsonResponse = JsonConvert.SerializeObject(customerBillingDetails);
-                InsertItem(accountDataEntity);
-                return true;
+                AccountDataEntity accountDataEntity = GetItemByAccountNo(accNo);
+
+                if (accountDataEntity != null)
+                {
+                    AccountDetailsResponse customerBillingDetails = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountDataEntity.JsonResponse);
+                    customerBillingDetails.Data.AccountData.AccountName = nickName;
+                    accountDataEntity.JsonResponse = JsonConvert.SerializeObject(customerBillingDetails);
+                    InsertItem(accountDataEntity);
+                    return true;
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
             }
             return false;
         }
