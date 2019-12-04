@@ -1201,9 +1201,6 @@
     <ImageAsset Include="Assets.xcassets\Heart-Icon.imageset\Heart-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Heart-Green-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Heart-Green-Icon.imageset\Heart-Green-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Heart-Green-Icon.imageset\Heart-Green-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Save-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Save-Icon.imageset\Heart-Save-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Save-Icon.imageset\Heart-Save-Icon%403x.png" />
@@ -1222,6 +1219,12 @@
     <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%402x.png" />
     <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\Heart-Green-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\Heart-Green-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\path%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\path%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1704,7 +1707,6 @@
     <Folder Include="Assets.xcassets\Services-Refresh.imageset\" />
     <Folder Include="Sitecore CMS\Model\Rewards\" />
     <Folder Include="Assets.xcassets\Heart-Icon.imageset\" />
-    <Folder Include="Assets.xcassets\Heart-Green-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Heart-Save-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Heart-Unsave-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Reward-Period-Icon.imageset\" />
@@ -1713,6 +1715,8 @@
     <Folder Include="Assets.xcassets\Reward_Default-Banner.imageset\" />
     <Folder Include="Profile\" />
     <Folder Include="Model\Rewards\" />
+    <Folder Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

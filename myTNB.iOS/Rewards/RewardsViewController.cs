@@ -23,7 +23,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = RewardsConstants.PageName;
+            PageName = RewardsConstants.PageName_Rewards;
             base.ViewDidLoad();
             NotifCenterUtility.AddObserver((NSString)"OnReceiveRewardsNotification", OnReceiveRewards);
             ViewHeight += GetBottomPadding;
@@ -56,6 +56,13 @@ namespace myTNB
                 props_tableView.EndUpdates();
                 props_needsUpdate = false;
             }
+        }
+
+        protected override void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> Rewards LanguageDidChange");
+            base.LanguageDidChange(notification);
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
         }
 
         private void OnReceiveRewards(NSNotification notification)
@@ -97,7 +104,7 @@ namespace myTNB
         {
             NavigationItem.HidesBackButton = true;
             //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
-            NavigationItem.Title = "Rewards";
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
 
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {

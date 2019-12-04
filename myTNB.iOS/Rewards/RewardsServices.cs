@@ -83,16 +83,38 @@ namespace myTNB
 
         public static async Task<UpdateRewardsResponseModel> UpdateRewards(RewardsModel sitecoreReward, RewardProperties prop, bool value)
         {
-            DateTime date = DateTime.Now;
-            RewardsItemModel reward = new RewardsItemModel
+            DateTime date = DateTime.UtcNow;
+            RewardsItemModel reward = null;
+
+            if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess
+                && _userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
             {
-                Email = "khanwh2@gmail.com",
-                RewardId = sitecoreReward.ID
-            };
+                int index = _userRewards.d.data.UserRewards.FindIndex(x => x.RewardId == sitecoreReward.ID);
+                if (index > -1)
+                {
+                    reward = _userRewards.d.data.UserRewards[index];
+                }
+            }
+
+            if (reward == null)
+            {
+                reward = new RewardsItemModel
+                {
+                    Email = "khanwh2@gmail.com",
+                    RewardId = sitecoreReward.ID,
+                    Read = sitecoreReward.IsRead,
+                    Favourite = sitecoreReward.IsSaved,
+                    Redeemed = sitecoreReward.IsUsed
+                };
+            }
+
             try
             {
                 typeof(RewardsItemModel).GetProperty(prop.ToString()).SetValue(reward, value);
-                typeof(RewardsItemModel).GetProperty(RewardsDictionary[prop.ToString()]).SetValue(reward, date);
+                if (value)
+                {
+                    typeof(RewardsItemModel).GetProperty(RewardsDictionary[prop.ToString()]).SetValue(reward, date);
+                }
             }
             catch (Exception e)
             {

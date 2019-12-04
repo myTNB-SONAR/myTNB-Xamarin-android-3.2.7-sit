@@ -807,5 +807,17 @@
     "rearrangeMsg": "Adakah anda ingin menyimpan perubahan yang telah dibuat untuk susunan akaun anda?",
     "rearrangeToastFailMsg": "Alamak, perubahan yang anda telah buat tidak berjaya disimpan. Sila cuba lagi.",
     "rearrangeToastSuccessMsg": "Perubahan untuk susunan akaun anda berjaya!"
+  },
+  "Rewards": {
+    "title": "Ganjaran"
+  },
+  "RewardDetails": {
+    "title": "Ganjaran",
+    "rewardPeriod": "Reward Period",
+    "location": "Lokasi",
+    "tnc": "Terma dan Syarat",
+    "save": "Simpan",
+    "unsave": "Unsave",
+    "useNow": "Use Now"
   }
 }
