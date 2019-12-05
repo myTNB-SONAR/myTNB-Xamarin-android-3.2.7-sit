@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Icu.Text;
 using Android.OS;
 using Android.Preferences;
@@ -139,6 +140,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private IMenu menu;
 
+        private bool isPendingRewardConfirm = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -149,6 +152,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent,
                     txtTimeCounter, txtRewardUsedDateTime);
                 btnRewardSave.Clickable = true;
+                isPendingRewardConfirm = false;
                 clickableSpan = new ClickSpan()
                 {
                     textColor = Resources.GetColor(Resource.Color.powerBlue),
@@ -207,18 +211,31 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    if (string.IsNullOrEmpty(ItemID))
+                    if (!isPendingRewardConfirm)
                     {
-                        this.Finish();
-                    }
-                    else
-                    {
-                        SetupImageParam();
-                        this.presenter.GetActiveReward(ItemID);
+                        if (string.IsNullOrEmpty(ItemID))
+                        {
+                            this.Finish();
+                        }
+                        else
+                        {
+                            SetupImageParam();
+                            this.presenter.GetActiveReward(ItemID);
+                        }
                     }
                 });
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -311,6 +328,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 if (item.LocationLabel != null && (item.LocationLabel.Contains("http") || item.LocationLabel.Contains("www.")))
                 {
                     SpannableString s = new SpannableString(txtRewardLocationContent.TextFormatted);
+
                     clickableSpan.Click += v =>
                     {
                         OnClickSpan(item.LocationLabel);
@@ -327,6 +345,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 if (item.TandCLabel != null && (item.TandCLabel.Contains("http") || item.TandCLabel.Contains("www.")))
                 {
                     SpannableString se = new SpannableString(txtRewardConditionContent.TextFormatted);
+
                     seClickableSpan.Click += v =>
                     {
                         OnClickSpan(item.TandCLabel);
@@ -362,25 +381,34 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     rewardRedeemedLayout.Visibility = ViewStates.Visible;
                     rewardCountDownLayout.Visibility = ViewStates.Gone;
 
-                    string dateTime = "<i>Reward used ";
+                    string dateTime = "Reward used ";
 
                     try
                     {
-                        DateTime dateTimeParse = DateTime.ParseExact(item.IsUsedDateTime, "yyyyMMddTHHmmss",
+                        DateTime dateTimeParse = DateTime.ParseExact(item.IsUsedDateTime, "yyyy-MM-dd HH:mm:ss.fff",
                                 CultureInfo.InvariantCulture, DateTimeStyles.None);
-                        dateTime += dateTimeParse.ToString("dd MMM yyyy, h:mm tt");
+                        TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                        DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                        dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
                     }
                     catch (Exception ex)
                     {
                         Utility.LoggingNonFatalError(ex);
                     }
-                    dateTime += ".</i>";
+                    dateTime += ".";
+
+                    dateTime = "<i>" + dateTime + "</i>";
+
                     txtRewardUsedDateTime.TextFormatted = GetFormattedText(dateTime);
 
                     txtTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                     txtRewardPeriodTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                     txtRewardLocationTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                     txtRewardConditionTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+
+                    imgRewardPeriod.SetImageResource(Resource.Drawable.ic_reward_time_used);
+                    imgRewardLocation.SetImageResource(Resource.Drawable.ic_reward_locate_used);
+                    imgRewardCondition.SetImageResource(Resource.Drawable.ic_reward_t_c_used);
                 }
             }
             catch (Exception e)
@@ -498,9 +526,11 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                         {
                             url = "http://" + url;
                         }
-                        Intent intent = new Intent(Intent.ActionView);
-                        intent.SetData(Android.Net.Uri.Parse(url));
-                        StartActivity(intent);
+
+                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                        webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                        webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+                        StartActivity(webIntent);
                     }
                 }
             }
@@ -595,6 +625,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     txtRewardRedeemedWord.Text = "Reward redeemed. Please show the merchant this screen before the timer runs out.";
                 });
 
+                isPendingRewardConfirm = true;
+
                 OnUpdateCountDownView();
 
                 _timer = new System.Timers.Timer();
@@ -631,6 +663,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     {
                         item.SetVisible(true);
                     }
+                    isPendingRewardConfirm = false;
                     this.presenter.GetActiveReward(ItemID);
                 });
             }

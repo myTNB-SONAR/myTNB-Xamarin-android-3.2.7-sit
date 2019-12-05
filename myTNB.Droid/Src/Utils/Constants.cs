@@ -293,7 +293,9 @@ namespace myTNB_Android.Src.Utils
 
         public const string REWARD_DETAIL_TITLE_KEY = ".rewardDetailTitle";
         public const string REWARD_DETAIL_ITEM_KEY = ".rewardDetailItem";
-        
+
+        public const string IN_APP_LINK = ".inAppLink";
+        public const string IN_APP_TITLE = ".inAppTitle";
 
         public enum REWARDSITEMLISTMODE
         {
