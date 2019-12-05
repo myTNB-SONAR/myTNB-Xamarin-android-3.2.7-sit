@@ -47,5 +47,6 @@ namespace myTNB
         public static string Img_RewardTCIcon = "Reward-TC-Icon";
         public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
         public static string Img_UseRewardBanner = "Use-Reward-Banner";
+        public static string Img_EmptyRewardIcon = "Empty-Reward-Icon";
     }
 }

@@ -12,7 +12,8 @@ namespace myTNB
 {
     public partial class RewardsViewController : CustomUIViewController
     {
-        internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
+        internal UIScrollView _topBarScrollView, _rewardsScrollView;
+        internal UIView _skeletonLoadingView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
         private int _selectedCategoryIndex, props_index;
@@ -30,9 +31,9 @@ namespace myTNB
             _isViewDidLoad = true;
             NotifCenterUtility.AddObserver((NSString)"OnReceiveRewardsNotification", OnReceiveRewards);
             ViewHeight += GetBottomPadding;
-            View.BackgroundColor = MyTNBColor.SectionGrey;
+            View.BackgroundColor = MyTNBColor.VeryLightPinkEight;
             SetNavigationBar();
-            CreateLoadingCategoryTopBar();
+            SetSkeletonLoading();
             if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
             {
                 ValidateRewards();
@@ -73,8 +74,11 @@ namespace myTNB
         {
             InvokeOnMainThread(async () =>
             {
-                //GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
-                //RewardsServices.UpdateRewardsCache();
+                if (_skeletonLoadingView != null)
+                {
+                    _skeletonLoadingView.RemoveFromSuperview();
+                    _skeletonLoadingView = null;
+                }
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
                 if (_rewardsList != null && _rewardsList.Count > 0)
@@ -93,9 +97,153 @@ namespace myTNB
                 }
                 else
                 {
-                    // Empty rewards handling here....
+                    SetEmptyRewardView();
                 }
             });
+        }
+
+        private void SetSkeletonLoading()
+        {
+            if (_skeletonLoadingView != null)
+            {
+                _skeletonLoadingView.RemoveFromSuperview();
+                _skeletonLoadingView = null;
+            }
+            _skeletonLoadingView = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, ViewHeight))
+            {
+                BackgroundColor = UIColor.White
+            };
+            View.AddSubview(_skeletonLoadingView);
+
+            UIScrollView scrollViewCategories = new UIScrollView(new CGRect(0, 0, ViewWidth, GetScaledHeight(44F)))
+            {
+                BackgroundColor = UIColor.White
+            };
+            scrollViewCategories.Layer.CornerRadius = GetScaledHeight(5F);
+            scrollViewCategories.Layer.MasksToBounds = false;
+            scrollViewCategories.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+            scrollViewCategories.Layer.ShadowOpacity = 0.5F;
+            scrollViewCategories.Layer.ShadowOffset = new CGSize(-4, 8);
+            scrollViewCategories.Layer.ShadowRadius = 8;
+            scrollViewCategories.Layer.ShadowPath = UIBezierPath.FromRect(scrollViewCategories.Bounds).CGPath;
+            scrollViewCategories.ShowsHorizontalScrollIndicator = false;
+            _skeletonLoadingView.AddSubview(scrollViewCategories);
+
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            UIView viewShimmerParent = new UIView(new CGRect(0, 0, ViewWidth, _skeletonLoadingView.Frame.Height))
+            { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(0, 0, ViewWidth, _skeletonLoadingView.Frame.Height))
+            { BackgroundColor = UIColor.Clear };
+
+            nfloat xPos = 0;
+            nfloat labelHeight = GetScaledHeight(14F);
+            nfloat padding = GetScaledWidth(10F);
+            for (int i = 0; i < 5; i++)
+            {
+                UIView categoryView = new UIView(scrollViewCategories.Bounds);
+                categoryView.BackgroundColor = UIColor.White;
+
+                UIView catItemView = new UIView(new CGRect(padding, GetYLocationToCenterObject(labelHeight, categoryView), GetScaledWidth(52F), labelHeight))
+                {
+                    BackgroundColor = MyTNBColor.PaleGreyThree
+                };
+                catItemView.Layer.CornerRadius = GetScaledHeight(2F);
+                ViewHelper.AdjustFrameSetWidth(categoryView, catItemView.Frame.Width + (padding * 2));
+                ViewHelper.AdjustFrameSetX(categoryView, xPos);
+                xPos = categoryView.Frame.GetMaxX();
+                categoryView.AddSubview(catItemView);
+                scrollViewCategories.AddSubview(categoryView);
+
+                viewShimmerContent.AddSubview(categoryView);
+            }
+            scrollViewCategories.AddSubview(viewShimmerParent);
+
+            UIView lineView = new UIView(new CGRect(padding, scrollViewCategories.Frame.Height - GetScaledHeight(2F), GetScaledWidth(52F), GetScaledHeight(2F)))
+            {
+                BackgroundColor = MyTNBColor.WaterBlue
+            };
+            lineView.Layer.CornerRadius = GetScaledHeight(1F);
+            scrollViewCategories.AddSubview(lineView);
+
+            nfloat topPadding = GetScaledWidth(17F);
+            nfloat yPos = scrollViewCategories.Frame.GetMaxY() + topPadding;
+            for (int i = 0; i < 5; i++)
+            {
+                UIView itemView = new UIView(new CGRect(BaseMarginWidth16, yPos, ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(160F)))
+                {
+                    BackgroundColor = UIColor.White,
+                    ClipsToBounds = true
+                };
+                itemView.Layer.CornerRadius = GetScaledHeight(5F);
+                itemView.Layer.MasksToBounds = false;
+                itemView.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+                itemView.Layer.ShadowOpacity = 0.5F;
+                itemView.Layer.ShadowOffset = new CGSize(-4, 8);
+                itemView.Layer.ShadowRadius = 8;
+                itemView.Layer.ShadowPath = UIBezierPath.FromRect(itemView.Bounds).CGPath;
+
+                UIView rewardImgView = new UIImageView(new CGRect(0, 0, itemView.Frame.Width, GetScaledHeight(112F)))
+                {
+                    BackgroundColor = MyTNBColor.PaleGreyThree,
+                    ClipsToBounds = false
+                };
+                itemView.AddSubview(rewardImgView);
+
+                UIView titleView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(rewardImgView.Frame, 16F), itemView.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+                {
+                    BackgroundColor = MyTNBColor.PaleGreyThree
+                };
+                titleView.Layer.CornerRadius = GetScaledHeight(2F);
+                itemView.AddSubview(titleView);
+
+                yPos = itemView.Frame.GetMaxY() + topPadding;
+                _skeletonLoadingView.AddSubview(itemView);
+
+                viewShimmerContent.AddSubview(itemView);
+            }
+
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+        }
+
+        private void SetEmptyRewardView()
+        {
+            if (_skeletonLoadingView != null)
+            {
+                _skeletonLoadingView.RemoveFromSuperview();
+                _skeletonLoadingView = null;
+            }
+            if (_topBarScrollView != null)
+            {
+                _topBarScrollView.RemoveFromSuperview();
+                _topBarScrollView = null;
+            }
+            if (_rewardsScrollView != null)
+            {
+                _rewardsScrollView.RemoveFromSuperview();
+                _rewardsScrollView = null;
+            }
+            nfloat iconWidth = GetScaledWidth(102F);
+            nfloat iconHeight = GetScaledHeight(94F);
+            UIImageView emptyIcon = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth), DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(88F), iconWidth, iconHeight))
+            {
+                Image = UIImage.FromBundle(RewardsConstants.Img_EmptyRewardIcon)
+            };
+            UITextView emptyDesc = new UITextView(new CGRect(GetScaledWidth(32F), GetYLocationFromFrame(emptyIcon.Frame, 24F), ViewWidth - (GetScaledWidth(32F) * 2), GetScaledHeight(70F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.Grey,
+                TextAlignment = UITextAlignment.Center,
+                Text = "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+            };
+            emptyDesc.TextContainer.LineFragmentPadding = 0F;
+
+            View.AddSubviews(new UIView { emptyIcon, emptyDesc });
         }
 
         private void SetNavigationBar()
@@ -205,68 +353,8 @@ namespace myTNB
         #endregion
 
         #region CATEGORY TOP BAR MENU
-        private void CreateLoadingCategoryTopBar()
-        {
-            if (_loadingScrollView != null)
-            {
-                _loadingScrollView.RemoveFromSuperview();
-                _loadingScrollView = null;
-            }
-            _loadingScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, GetScaledHeight(44F)))
-            {
-                BackgroundColor = UIColor.White
-            };
-            _loadingScrollView.ShowsHorizontalScrollIndicator = false;
-            View.AddSubview(_loadingScrollView);
-
-            CustomShimmerView shimmeringView = new CustomShimmerView();
-            UIView viewShimmerParent = new UIView(new CGRect(0, 0, ViewWidth, _loadingScrollView.Frame.Height))
-            { BackgroundColor = UIColor.Clear };
-            UIView viewShimmerContent = new UIView(new CGRect(0, 0, ViewWidth, _loadingScrollView.Frame.Height))
-            { BackgroundColor = UIColor.Clear };
-
-            nfloat xPos = 0;
-            nfloat labelHeight = GetScaledHeight(14F);
-            nfloat padding = GetScaledWidth(10F);
-            for (int i = 0; i < 5; i++)
-            {
-                UIView categoryView = new UIView(_loadingScrollView.Bounds);
-                categoryView.BackgroundColor = UIColor.White;
-
-                UIView itemView = new UIView(new CGRect(padding, GetYLocationToCenterObject(labelHeight, categoryView), GetScaledWidth(52F), labelHeight))
-                {
-                    BackgroundColor = MyTNBColor.PaleGrey25
-                };
-                ViewHelper.AdjustFrameSetWidth(categoryView, itemView.Frame.Width + (padding * 2));
-                ViewHelper.AdjustFrameSetX(categoryView, xPos);
-                xPos = categoryView.Frame.GetMaxX();
-                categoryView.AddSubview(itemView);
-                _loadingScrollView.AddSubview(categoryView);
-
-                viewShimmerContent.AddSubview(categoryView);
-            }
-
-            viewShimmerParent.AddSubview(shimmeringView);
-            shimmeringView.ContentView = viewShimmerContent;
-            shimmeringView.Shimmering = true;
-            shimmeringView.SetValues();
-
-            _loadingScrollView.AddSubview(viewShimmerParent);
-
-            UIView lineView = new UIView(new CGRect(padding, _loadingScrollView.Frame.Height - GetScaledHeight(2F), GetScaledWidth(52F), GetScaledHeight(2F)))
-            {
-                BackgroundColor = MyTNBColor.WaterBlue
-            };
-            lineView.Layer.CornerRadius = GetScaledHeight(1F);
-            _loadingScrollView.AddSubview(lineView);
-        }
-
         private void CreateCategoryTopBar()
         {
-            if (_loadingScrollView != null)
-            {
-                _loadingScrollView.RemoveFromSuperview();
-            }
             if (_topBarScrollView != null)
             {
                 _topBarScrollView.RemoveFromSuperview();
@@ -311,7 +399,7 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetWidth(categoryView, categoryLabel.Frame.Width + (padding * 2));
                 ViewHelper.AdjustFrameSetX(categoryView, xPos);
 
-                UIView lineView = new UIView(new CGRect(padding, _loadingScrollView.Frame.Height - GetScaledHeight(2F), labelNewSize.Width, GetScaledHeight(2)))
+                UIView lineView = new UIView(new CGRect(padding, _topBarScrollView.Frame.Height - GetScaledHeight(2F), labelNewSize.Width, GetScaledHeight(2)))
                 {
                     BackgroundColor = MyTNBColor.WaterBlue,
                     Tag = RewardsConstants.Tag_SelectedCategory,

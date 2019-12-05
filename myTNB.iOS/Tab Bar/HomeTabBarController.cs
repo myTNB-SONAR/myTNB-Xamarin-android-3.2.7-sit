@@ -507,7 +507,6 @@ namespace myTNB
                         {
                             UpdateRewardsTabBarIcon();
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                            NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
                         });
                     });
                 }
