@@ -323,7 +323,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialAccountTitle)
+                Text = GetI18NValue(DataManager.DataManager.SharedInstance.ActiveAccountList?.Count == 1 ? DashboardHomeConstants.I18N_TutorialSingleAcctTitle : DashboardHomeConstants.I18N_TutorialAccountTitle)
             };
 
             NSError htmlBodyError = null;

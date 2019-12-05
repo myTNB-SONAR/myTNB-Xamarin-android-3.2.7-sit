@@ -45,6 +45,7 @@ namespace myTNB
         public static string I18N_MoreAccts = "moreAccts";
         public static string I18N_RearrangeAccts = "rearrangeAccts";
         public static string I18N_TutorialAccountTitle = "tutorialAccountTitle";
+        public static string I18N_TutorialSingleAcctTitle = "tutorialSingleAcctTitle";
         public static string I18N_TutorialQuickAccessTitle = "tutorialQuickAccessTitle";
         public static string I18N_TutorialQuickActionTitle = "tutorialQuickActionTitle";
         public static string I18N_TutorialNeedHelpTitle = "tutorialNeedHelpTitle";
