@@ -687,6 +687,13 @@ namespace myTNB_Android.Src.Database.Model
             return sortedList;
         }
 
+        public static bool HasOneItemOnly()
+        {
+            List<CustomerBillingAccount> sortedList = GetSortedCustomerBillingAccounts();
+
+            return sortedList != null && sortedList.Count == 1;
+        }
+
         public static List<CustomerBillingAccount> GetDefaultSortedCustomerBillingAccounts()
         {
             List<CustomerBillingAccount> sortedList = new List<CustomerBillingAccount>();
