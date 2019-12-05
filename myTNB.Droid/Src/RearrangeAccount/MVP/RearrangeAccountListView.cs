@@ -173,7 +173,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mHoverCell = null;
             Enabled = true;
             Invalidate();
-            RequestLayout();
 
             mobileView.Visibility = ViewStates.Visible;
 
@@ -182,6 +181,11 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             ((IRearrangeAccountListAdapter)Adapter).NotifyChanged();
 
             needToStop = false;
+
+            if (((IRearrangeAccountListAdapter)Adapter).GetIsChange())
+            {
+                ((RearrangeAccountActivity)mContext).EnableSaveButton();
+            }
         }
 
         #endregion
@@ -471,11 +475,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                 hoverViewAnimator.AnimationStart += HandleHoverAnimationStart;
                 hoverViewAnimator.AnimationEnd += HandleHoverAnimationEnd;
                 hoverViewAnimator.Start();
-
-                if (((IRearrangeAccountListAdapter)Adapter).GetIsChange())
-                {
-                    ((RearrangeAccountActivity)mContext).EnableSaveButton();
-                }
             }
             else
             {
