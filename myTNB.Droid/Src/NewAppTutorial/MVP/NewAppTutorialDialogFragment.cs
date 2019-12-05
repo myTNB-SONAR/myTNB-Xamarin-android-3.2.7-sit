@@ -266,6 +266,29 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                         }
                     }
+                    else if (this.mFragment != null && this.mFragment is HomeMenuFragment)
+                    {
+                        if (NewAppTutorialList.Count == 4)
+                        {
+                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                            {
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                int halfScroll = topHeight / 2;
+
+                                if (diffHeight < halfScroll)
+                                {
+                                    int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                    int checkPoint = (int)DPUtils.ConvertDPToPx(230f);
+
+                                    if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                    {
+                                        txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
 
                     if (NewAppTutorialList.Count > 1)
@@ -349,6 +372,17 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     if (diffHeight < halfScroll)
                                                     {
                                                         ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+
+                                                        if (NewAppTutorialList.Count == 4 && e.Position == 0)
+                                                        {
+                                                            int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                                            int checkPoint = (int)DPUtils.ConvertDPToPx(230f);
+
+                                                            if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                                            {
+                                                                txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                                            }
+                                                        }
                                                     }
                                                     else
                                                     {

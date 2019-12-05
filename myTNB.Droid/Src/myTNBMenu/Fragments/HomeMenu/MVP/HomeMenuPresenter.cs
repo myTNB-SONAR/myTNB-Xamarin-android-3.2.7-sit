@@ -2672,7 +2672,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage.Tap “Add” to link another<br/>account to myTNB.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage.Tap <strong>“Add”</strong> to link another<br/>account to myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
@@ -2683,7 +2683,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Welcome to your new Home view!",
-                    ContentMessage = "This is a summary of your linked<br/>electricity account.Tap on the<br/>account to view your Usage. Tap<br/>“Add” to link another account to<br/>myTNB.",
+                    ContentMessage = "This is a summary of your linked<br/>electricity account.Tap on the<br/>account to view your Usage. Tap<br/><strong>“Add”</strong> to link another account to<br/>myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
