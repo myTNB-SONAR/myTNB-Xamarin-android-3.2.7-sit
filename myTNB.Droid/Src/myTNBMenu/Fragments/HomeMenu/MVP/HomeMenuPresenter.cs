@@ -2672,7 +2672,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage.Tap <strong>“Add”</strong> to link another<br/>account to myTNB.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage. Tap <strong>“Add”</strong> to link another<br/>account to myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
