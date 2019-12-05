@@ -427,7 +427,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -598,7 +598,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -769,7 +769,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -918,7 +918,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -1067,7 +1067,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
