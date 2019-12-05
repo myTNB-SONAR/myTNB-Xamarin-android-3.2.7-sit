@@ -1391,6 +1391,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
                                         int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
@@ -1402,6 +1406,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
                                         int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
