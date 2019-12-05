@@ -124,8 +124,11 @@ namespace myTNB
                 _rewardsScrollView.RemoveFromSuperview();
                 _rewardsScrollView = null;
             }
-            _rewardsScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
-                , ViewWidth, ViewHeight - GetScaledHeight(44F)))
+
+            nfloat yDelta = DeviceHelper.IsIphoneXUpResolution() ? 0 : DeviceHelper.GetStatusBarHeight();
+            _rewardsScrollView = new UIScrollView(new CGRect(0
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
+                , ViewWidth, ViewHeight - GetScaledHeight(44F) + yDelta))
             {
                 Delegate = new ScrollViewDelegate(this),
                 PagingEnabled = true,
@@ -158,6 +161,10 @@ namespace myTNB
                     Tag = RewardsConstants.Tag_TableView,
                     SeparatorStyle = UITableViewCellSeparatorStyle.None
                 };
+
+                View.Layer.BorderColor = UIColor.Red.CGColor;
+                View.Layer.BorderWidth = 1;
+
                 rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
                 viewContainer.AddSubview(rewardsTableView);
 
@@ -212,7 +219,8 @@ namespace myTNB
                 _loadingScrollView.RemoveFromSuperview();
                 _loadingScrollView = null;
             }
-            _loadingScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, GetScaledHeight(44F)))
+            _loadingScrollView = new UIScrollView(new CGRect(0
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, GetScaledHeight(44F)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -271,7 +279,9 @@ namespace myTNB
             {
                 _topBarScrollView.RemoveFromSuperview();
             }
-            _topBarScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, GetScaledHeight(44F)))
+            _topBarScrollView = new UIScrollView(new CGRect(0
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height
+                , ViewWidth, GetScaledHeight(44F)))
             {
                 BackgroundColor = UIColor.White
             };

@@ -158,7 +158,7 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
-            if (acctList.Count <= 0)
+            if (acctList == null || acctList.Count <= 0)
                 return accounts;
 
             foreach (var acct in acctList)
