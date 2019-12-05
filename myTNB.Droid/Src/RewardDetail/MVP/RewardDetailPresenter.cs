@@ -58,6 +58,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     fetchItem.Description = item.Description;
                     fetchItem.Read = item.Read;
                     fetchItem.IsUsed = item.IsUsed;
+                    fetchItem.IsUsedDateTime = item.IsUsedDateTime;
                     fetchItem.TitleOnListing = item.TitleOnListing;
                     fetchItem.PeriodLabel = item.PeriodLabel;
                     fetchItem.LocationLabel = item.LocationLabel;
@@ -65,6 +66,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     fetchItem.StartDate = item.StartDate;
                     fetchItem.EndDate = item.EndDate;
                     fetchItem.IsSaved = item.IsSaved;
+                    fetchItem.IsSavedDateTime = item.IsSavedDateTime;
+                    fetchItem.RewardUseWithinTime = item.RewardUseWithinTime;
+                    fetchItem.RewardUseTitle = item.RewardUseTitle;
+                    fetchItem.RewardUseDescription = item.RewardUseDescription;
 
                     this.mView.SetRewardDetail(fetchItem);
                     if (fetchItem.ImageBitmap != null)
@@ -112,7 +117,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
         }
 
-        private Bitmap ToGrayscale(Bitmap srcImage)
+        public Bitmap ToGrayscale(Bitmap srcImage)
         {
 
             Bitmap bmpGrayscale = Bitmap.CreateBitmap(srcImage.Width, srcImage.Height, Bitmap.Config.Argb8888);
@@ -215,9 +220,9 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         public void UpdateRewardSave(string itemID , bool flag)
         {
+            DateTime currentDate = DateTime.Now.ToUniversalTime();
             RewardsEntity wtManager = new RewardsEntity();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-            string formattedDate = sdf.Format(new Date());
+            string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             if (!flag)
             {
                 formattedDate = "";
@@ -229,9 +234,9 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         public void UpdateRewardUsed(string itemID, bool flag)
         {
+            DateTime currentDate = DateTime.Now.ToUniversalTime();
             RewardsEntity wtManager = new RewardsEntity();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-            string formattedDate = sdf.Format(new Date());
+            string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             if (!flag)
             {
                 formattedDate = "";

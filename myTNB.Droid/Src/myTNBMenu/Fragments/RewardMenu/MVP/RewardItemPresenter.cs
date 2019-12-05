@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Android.Content;
 using Android.Icu.Text;
 using Java.Util;
@@ -125,9 +126,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public void UpdateRewardSave(string itemID, bool flag)
         {
+            DateTime currentDate = DateTime.Now.ToUniversalTime();
             RewardsEntity wtManager = new RewardsEntity();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-            string formattedDate = sdf.Format(new Date());
+            string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             if (!flag)
             {
                 formattedDate = "";

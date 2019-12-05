@@ -102,7 +102,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center">
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -117,7 +119,6 @@
                             android:textColor="@color/tunaGrey"
                             android:text="Reward Period"
                             android:textSize="14dp"
-                            android:layout_marginTop="2.5dp"
                             android:lineSpacingExtra="3dp"/>
                     </LinearLayout>
                     <TextView
@@ -146,7 +147,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center">
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -161,7 +164,6 @@
                             android:textColor="@color/tunaGrey"
                             android:text="Location(s)"
                             android:textSize="14dp"
-                            android:layout_marginTop="2.5dp"
                             android:lineSpacingExtra="3dp"/>
                     </LinearLayout>
                     <TextView
@@ -188,7 +190,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center">
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -203,7 +207,6 @@
                             android:textColor="@color/tunaGrey"
                             android:text="Terms and Conditions"
                             android:textSize="14dp"
-                            android:layout_marginTop="2.5dp"
                             android:lineSpacingExtra="3dp"/>
                     </LinearLayout>
                     <TextView
@@ -223,12 +226,12 @@
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
             android:orientation="vertical"
-            android:background="@android:color/transparent">
+            android:background="@color/white">
             <ImageView
-                android:layout_height="10dp"
+                android:layout_height="3dp"
                 android:layout_width="match_parent"
                 android:scaleType="fitXY"
-                android:background="@drawable/rewarddetailshadowbg"/>
+                android:background="@drawable/RewardDetailShadowBG"/>
             <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -270,12 +273,20 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:visibility="gone">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/tunaGrey"
+                    android:id="@+id/txtRewardUsedDateTime"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="16dp"
+                    android:text="Reward used 13 Sep 2019, 2:35 PM."/>
                 <Button
                     android:id="@+id/btnRewardRedeemed"
                     android:text="Reward Used"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginLeft="2dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/silverChalice"
                     style="@style/DarkButton"

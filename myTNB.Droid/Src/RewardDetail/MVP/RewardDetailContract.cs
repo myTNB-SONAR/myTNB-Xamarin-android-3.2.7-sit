@@ -26,6 +26,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
             void UpdateRewardUsed(string itemID, bool flag);
 
+            Bitmap ToGrayscale(Bitmap srcImage);
+
         }
 	}
 }

@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Icu.Text;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
@@ -22,6 +23,7 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime;
 using System.Timers;
 
@@ -105,6 +107,18 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         [BindView(Resource.Id.txtRewardRedeemedWord)]
         TextView txtRewardRedeemedWord;
 
+        [BindView(Resource.Id.txtRewardUsedDateTime)]
+        TextView txtRewardUsedDateTime;
+
+        [BindView(Resource.Id.imgRewardPeriod)]
+        ImageView imgRewardPeriod;
+
+        [BindView(Resource.Id.imgRewardLocation)]
+        ImageView imgRewardLocation;
+
+        [BindView(Resource.Id.imgRewardCondition)]
+        ImageView imgRewardCondition;
+
         RewardDetailContract.IRewardDetailPresenter presenter;
 
         private RewardsModel LocalItem = new RewardsModel();
@@ -133,7 +147,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 TextViewUtils.SetMuseoSans500Typeface(txtRewardUsed, txtTitle, txtRewardPeriodTitle, txtRewardLocationTitle,
                     txtRewardConditionTitle, txtBtnRewardSave, btnRewardUse, btnRewardRedeemed, txtRewardRedeemedWord);
                 TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent,
-                    txtTimeCounter);
+                    txtTimeCounter, txtRewardUsedDateTime);
                 btnRewardSave.Clickable = true;
                 clickableSpan = new ClickSpan()
                 {
@@ -347,6 +361,26 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     btnUseSaveLayout.Visibility = ViewStates.Gone;
                     rewardRedeemedLayout.Visibility = ViewStates.Visible;
                     rewardCountDownLayout.Visibility = ViewStates.Gone;
+
+                    string dateTime = "<i>Reward used ";
+
+                    try
+                    {
+                        DateTime dateTimeParse = DateTime.ParseExact(item.IsUsedDateTime, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        dateTime += dateTimeParse.ToString("dd MMM yyyy, h:mm tt");
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                    dateTime += ".</i>";
+                    txtRewardUsedDateTime.TextFormatted = GetFormattedText(dateTime);
+
+                    txtTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                    txtRewardPeriodTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                    txtRewardLocationTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                    txtRewardConditionTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                 }
             }
             catch (Exception e)
