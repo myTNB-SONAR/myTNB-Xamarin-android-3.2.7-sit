@@ -254,7 +254,7 @@
 
 /*Global*/
 "Global_UnitEmission"="kg";
-"Global_UnitEnergy"="kWH";
+"Global_UnitEnergy"="kWh";
 
 /*Hint*/
 "Hint_BusinessNickname"="e.g. Bangsar Shopping Centre Branch";

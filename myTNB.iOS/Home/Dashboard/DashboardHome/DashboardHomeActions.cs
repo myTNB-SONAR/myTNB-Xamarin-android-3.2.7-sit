@@ -115,15 +115,51 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1005_Action()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-            SelectAccountTableViewController viewController =
-                storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-            viewController.IsRoot = false;
-            viewController.IsFromHome = true;
-            UINavigationController navController = new UINavigationController(viewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            _controller.PresentViewController(navController, true, null);
-            _controller.OnUpdateTable();
+            if (_controller._dashboardHomeHelper.HasAccounts)
+            {
+                if (DataManager.DataManager.SharedInstance.CurrentAccountList.Count == 1)
+                {
+                    var account = DataManager.DataManager.SharedInstance.CurrentAccountList[0];
+                    DataManager.DataManager.SharedInstance.SelectAccount(account.accNum);
+
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                    {
+                        _controller.InvokeOnMainThread(() =>
+                        {
+                            if (NetworkUtility.isReachable)
+                            {
+                                UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                                ViewBillViewController viewController =
+                                    storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                                if (viewController != null)
+                                {
+                                    viewController.IsFromHome = true;
+                                    viewController.IsFromHomeForSingleAcct = true;
+                                    UINavigationController navController = new UINavigationController(viewController);
+                                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                    _controller.PresentViewController(navController, true, null);
+                                }
+                            }
+                            else
+                            {
+                                _controller.DisplayNoDataAlert();
+                            }
+                        });
+                    });
+                }
+                else
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                    SelectAccountTableViewController viewController =
+                        storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                    viewController.IsRoot = false;
+                    viewController.IsFromHome = true;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    _controller.PresentViewController(navController, true, null);
+                    _controller.OnUpdateTable();
+                }
+            }
         }
     }
 }

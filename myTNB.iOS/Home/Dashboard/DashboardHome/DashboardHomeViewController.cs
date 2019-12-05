@@ -23,7 +23,7 @@ namespace myTNB
     {
         public DashboardHomeViewController(IntPtr handle) : base(handle) { }
 
-        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+        public DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
 
         public UITableView _homeTableView;
         private AccountListViewController _accountListViewController;
@@ -969,7 +969,7 @@ namespace myTNB
             UpdateFooterBG();
         }
 
-        private void OnReload()
+        internal void OnReload()
         {
             _homeTableView.ReloadData();
             UpdateFooterBG();
