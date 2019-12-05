@@ -560,18 +560,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetEnabled(false);
         }
 
-        public void ShowNotificationCount(int count)
-        {
-            if (count <= 0)
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
-        }
-
         public void ShowREAccount(Boolean enable)
         {
             Drawable leafIcon = ContextCompat.GetDrawable(this, Resource.Drawable.ic_display_RE_Dashboard);

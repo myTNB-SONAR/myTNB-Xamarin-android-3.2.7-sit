@@ -12,6 +12,7 @@ namespace myTNB_Android.Src.Base
         private static MyTNBAccountManagement Instance = null;
         private bool IsNeeUpdate = false;
         private bool IsMaintenanceShown = false;
+        private bool IsNotificationFailed = false;
         private static MasterDataResponse currentMasterDataRes = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private MyTNBAccountManagement()
@@ -218,6 +219,16 @@ namespace myTNB_Android.Src.Base
         public void SetIsMaintenanceDialogShown(bool isShown)
         {
             IsMaintenanceShown = isShown;
+        }
+
+        public bool IsNotificationServiceFailed()
+        {
+            return IsNotificationFailed;
+        }
+
+        public void SetIsNotificationServiceFailed(bool isShown)
+        {
+            IsNotificationFailed = isShown;
         }
     }
 }

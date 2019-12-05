@@ -37,5 +37,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         void SwapItems(int from, int to);
 
         bool GetIsChange();
+
+        void NotifyChanged();
     }
 }

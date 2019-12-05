@@ -141,6 +141,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 			try
             {
                 Context mContext = MyTNBApplication.Context;
+                UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
 
                 UserInterface currentUsrInf = new UserInterface()
                 {

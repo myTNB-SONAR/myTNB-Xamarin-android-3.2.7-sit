@@ -74,6 +74,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         private int mCurrentFirstVisibleItem;
         private int mCurrentVisibleItemCount;
         private int mCurrentScrollState;
+        private bool needToStop = false;
 
         ///
         /// Constructors
@@ -101,6 +102,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             ItemLongClick += HandleItemLongClick;
             SetOnScrollListener(this);
             mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / DPUtils.GetDensity());
+            needToStop = false;
         }
 
 
@@ -148,6 +150,16 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         void HandleHoverAnimationStart(object sender, EventArgs e)
         {
             Enabled = false;
+            needToStop = true;
+        }
+
+        public override bool OnInterceptTouchEvent(MotionEvent ev)
+        {
+            if (needToStop)
+            {
+                return false;
+            }
+            return base.OnInterceptTouchEvent(ev);
         }
 
         /// <summary>
@@ -161,8 +173,15 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mHoverCell = null;
             Enabled = true;
             Invalidate();
+            RequestLayout();
 
             mobileView.Visibility = ViewStates.Visible;
+
+            ((IRearrangeAccountListAdapter)Adapter).mMobileCellPosition = int.MinValue;
+
+            ((IRearrangeAccountListAdapter)Adapter).NotifyChanged();
+
+            needToStop = false;
         }
 
         #endregion
@@ -395,7 +414,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                     // Lets animate the view sliding into its new position. Remember: the listview cell corresponding the mobile item is invisible so it looks like 
                     // the switch view is just sliding into position
                     ObjectAnimator anim = ObjectAnimator.OfFloat(switchView, "TranslationY", switchView.TranslationY, switchView.TranslationY + diff);
-                    anim.SetDuration(100);
+                    anim.SetDuration(30);
                     anim.Start();
 
 
@@ -438,7 +457,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                 mActivePointerId = INVALID_POINTER_ID;
                 ((IRearrangeAccountListAdapter)Adapter).mMobileCellPosition = int.MinValue;
 
-                if (mScrollState != (int) ScrollState.Idle)
+                if (mScrollState != (int)ScrollState.Idle)
                 {
                     mIsWaitingForScrollFinish = true;
                     mCellIsMobile = true;
@@ -511,6 +530,10 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             mCellIsMobile = false;
             mIsMobileScrolling = false;
             mActivePointerId = INVALID_POINTER_ID;
+
+            ((IRearrangeAccountListAdapter)Adapter).mMobileCellPosition = int.MinValue;
+
+            ((IRearrangeAccountListAdapter)Adapter).NotifyChanged();
         }
 
         private void HandleMobileCellScroll()
