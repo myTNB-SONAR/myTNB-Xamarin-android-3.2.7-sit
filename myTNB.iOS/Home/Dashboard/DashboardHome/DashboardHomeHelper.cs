@@ -26,6 +26,7 @@ namespace myTNB
 
         public List<DueAmountDataModel> GetAccountListForDashboard(List<CustomerAccountRecordModel> acctsList)
         {
+            if (acctsList == null) { return new List<DueAmountDataModel>(); }
             List<CustomerAccountRecordModel> sortedAccounts = acctsList;
             List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
             if (sortedAccounts != null &&
@@ -106,7 +107,7 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
-            if (acctNoList.Count <= 0 || acctList.Count <= 0)
+            if (acctNoList == null || acctNoList.Count <= 0 || acctList == null || acctList.Count <= 0)
                 return accounts;
 
             foreach (var acct in acctList)
@@ -135,7 +136,7 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
-            if (acctNoList.Count <= 0 || acctList.Count <= 0)
+            if (acctNoList == null || acctNoList.Count <= 0 || acctList == null || acctList.Count <= 0)
                 return accounts;
 
             foreach (var acct in acctList)
