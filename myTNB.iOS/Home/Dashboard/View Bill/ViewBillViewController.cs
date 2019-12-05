@@ -24,6 +24,7 @@ namespace myTNB
         public bool IsFromUsage { set; private get; }
         public bool IsFromHome { set; private get; }
         public bool IsFromBillSelection { set; private get; }
+        public bool IsFromHomeForSingleAcct { set; private get; }
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public string BillingNumber { set; private get; } = string.Empty;
         public Action OnDone;
@@ -43,13 +44,13 @@ namespace myTNB
 
             if (IsFromBillSelection)
             {
-                _titleSuffix = SelectedAccount.accountCategoryId.Equals("2")
-                ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
+                _titleSuffix = GetI18NValue(SelectedAccount.accountCategoryId.Equals("2")
+                    ? ViewBillConstants.I18N_TitleAdvice : ViewBillConstants.I18N_TitleBill);
             }
             else
             {
-                _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
-                ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
+                _titleSuffix = GetI18NValue(DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
+                    ? ViewBillConstants.I18N_TitleAdvice : ViewBillConstants.I18N_TitleBill);
             }
 
             SetNavigationItems();
@@ -77,7 +78,7 @@ namespace myTNB
             {
                 OnDone?.Invoke();
 
-                if (IsFromHome)
+                if (IsFromHome && !IsFromHomeForSingleAcct)
                 {
                     NavigationController.PopViewController(true);
                 }
@@ -216,7 +217,7 @@ namespace myTNB
                     {
                         DisplayServiceError(_billHistory.d.ErrorMessage, (obj) =>
                        {
-                           if (IsFromHome)
+                           if (IsFromHome && !IsFromHomeForSingleAcct)
                            {
                                NavigationController.PopViewController(true);
                            }
