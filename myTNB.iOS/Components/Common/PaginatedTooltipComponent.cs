@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SSMR;
@@ -84,12 +85,26 @@ namespace myTNB
                 UIView viewContainer = new UIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
+                string imgStr;
+                switch (i)
+                {
+                    case 0:
+                        imgStr = BillConstants.IMG_BGToolTip1;
+                        break;
+                    case 1:
+                        imgStr = BillConstants.IMG_BGToolTip2;
+                        break;
+                    default:
+                        imgStr = string.Empty;
+                        break;
+                }
+
                 UIImage displayImage;
                 if (_billsTooltipData[i].IsSitecoreData)
                 {
                     if (string.IsNullOrEmpty(_billsTooltipData[i].Image) || string.IsNullOrWhiteSpace(_billsTooltipData[i].Image))
                     {
-                        displayImage = UIImage.FromBundle(string.Empty);
+                        displayImage = UIImage.FromBundle(imgStr);
                     }
                     else
                     {
@@ -100,7 +115,7 @@ namespace myTNB
                         catch (Exception e)
                         {
                             Debug.WriteLine("Image load Error: " + e.Message);
-                            displayImage = UIImage.FromBundle(string.Empty);
+                            displayImage = UIImage.FromBundle(imgStr);
                         }
                     }
                 }
@@ -108,7 +123,7 @@ namespace myTNB
                 {
                     if (string.IsNullOrEmpty(_billsTooltipData[i].Image) || string.IsNullOrWhiteSpace(_billsTooltipData[i].Image))
                     {
-                        displayImage = UIImage.FromBundle(string.Empty);
+                        displayImage = UIImage.FromBundle(imgStr);
                     }
                     else
                     {
