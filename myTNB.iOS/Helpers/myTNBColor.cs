@@ -38,6 +38,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _veryLightPinkFive = new UIColor(red: 0.83f, green: 0.83f, blue: 0.83f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkSix = new UIColor(red: 0.93f, green: 0.93f, blue: 0.93f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkSeven = new UIColor(red: 0.82f, green: 0.82f, blue: 0.82f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkEight = new UIColor(red: 0.98f, green: 0.97f, blue: 0.97f, alpha: 1.0f);
         readonly static UIColor _black60 = new UIColor(red: 0.00f, green: 0.00f, blue: 0.00f, alpha: 0.6f);
         readonly static UIColor _black75 = new UIColor(red: 0.00f, green: 0.00f, blue: 0.00f, alpha: 0.75f);
         readonly static UIColor _veryLightPink = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
@@ -47,6 +48,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _butterScotch = new UIColor(red: 0.996f, green: 0.8f, blue: 0.22f, alpha: 1.0f);
         readonly static UIColor _babyBlue60 = new UIColor(red: 0.61f, green: 0.82f, blue: 1.00f, alpha: 0.6f);
         readonly static UIColor _brownGrey10 = new UIColor(red: 0.65f, green: 0.65f, blue: 0.65f, alpha: 0.1f);
+        readonly static UIColor _brownGrey60 = new UIColor(red: 0.65f, green: 0.65f, blue: 0.65f, alpha: 0.6f);
         readonly static UIColor _iceBlue = new UIColor(red: 0.89f, green: 0.95f, blue: 1f, alpha: 1.0f);
         readonly static UIColor _babyBlue35 = new UIColor(red: 0.61f, green: 0.82f, blue: 1.00f, alpha: 0.35f);
         readonly static UIColor _paleGrey = new UIColor(red: 0.95f, green: 0.96f, blue: 0.98f, alpha: 1.0f);
@@ -403,6 +405,11 @@ using UIKit;  namespace myTNB {
             get { return _brownGrey10; }
         }
 
+        public static UIColor BrownGrey60
+        {
+            get { return _brownGrey60; }
+        }
+
         public static UIColor IceBlue
         {
             get { return _iceBlue; }
@@ -476,5 +483,10 @@ using UIKit;  namespace myTNB {
         public static UIColor VeryLightPinkSeven
         {
             get { return _veryLightPinkSeven; }
+        }
+
+        public static UIColor VeryLightPinkEight
+        {
+            get { return _veryLightPinkEight; }
         }
     } }

@@ -1222,12 +1222,17 @@
     <ImageAsset Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\Heart-Green-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Unsaved-Green-Icon.imageset\Heart-Green-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\path%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\path%403x.png" />
     <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%402x.png" />
     <ImageAsset Include="Assets.xcassets\Use-Reward-Banner.imageset\Use-Reward-Banner%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Reward-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Reward-Icon.imageset\Empty-Reward-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Reward-Icon.imageset\Empty-Reward-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Heart-Saved-Green-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Heart-Saved-Green-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1724,6 +1729,8 @@
     <Folder Include="Rewards\Saved Rewards\" />
     <Folder Include="Assets.xcassets\Heart-Green-Solid-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Use-Reward-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Reward-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

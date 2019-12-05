@@ -812,7 +812,8 @@
   },
   "Rewards": {
     "title": "Ganjaran",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
   },
   "RewardDetails": {
     "title": "Ganjaran",

@@ -34,6 +34,7 @@ namespace myTNB
         public static string I18N_UseNowPopupMessage = "useNowPopupMessage";
         public static string I18N_UseLater = "useLater";
         public static string I18N_Confirm = "confirm";
+        public static string I18N_NoRewards = "noRewards";
 
         //Img
         public static string Img_HeartIcon = "Heart-Icon";
@@ -49,5 +50,6 @@ namespace myTNB
         public static string Img_RewardTCIcon = "Reward-TC-Icon";
         public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
         public static string Img_UseRewardBanner = "Use-Reward-Banner";
+        public static string Img_EmptyRewardIcon = "Empty-Reward-Icon";
     }
 }
