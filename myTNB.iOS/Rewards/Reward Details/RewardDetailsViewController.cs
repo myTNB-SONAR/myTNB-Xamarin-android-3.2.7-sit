@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Timers;
 using CoreGraphics;
 using Foundation;
 using myTNB.Home.Components;
@@ -14,6 +16,11 @@ namespace myTNB
         public RewardsModel RewardModel;
         private UIView _footerView;
         private UIScrollView _scrollView;
+        private Timer _useTimer;
+        private UIView _timerContainerView;
+        private UILabel _timerLabel;
+        private int _currentSeconds;
+        private UIView _lastView;
 
         public override void ViewDidLoad()
         {
@@ -81,7 +88,7 @@ namespace myTNB
             View.AddSubview(_scrollView);
         }
 
-        private void PrepareDetailView()
+        private void PrepareDetailView(bool isRewardUsed = false)
         {
             UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(180F)))
             {
@@ -252,6 +259,7 @@ namespace myTNB
             ViewHelper.AdjustFrameSetHeight(tandCView, tandCTextView.Frame.GetMaxY());
 
             _scrollView.AddSubviews(new UIView { imageContainer, imageView, titleTextView, rewardPeriodView, locationView, tandCView });
+            _lastView = tandCView;
             UpdateScrollViewContentSize(tandCView);
         }
 
@@ -299,9 +307,14 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(ViewWidth, lastView.Frame.GetMaxY());
         }
 
-        private void AddFooterView()
+        private void AddFooterView(bool isUsedReward = false)
         {
-            nfloat height = GetScaledHeight(80F);
+            if (_footerView != null)
+            {
+                _footerView.RemoveFromSuperview();
+                _footerView = null;
+            }
+            nfloat height = isUsedReward ? GetScaledHeight(116F) : GetScaledHeight(80F);
             nfloat width = ViewWidth;
             _footerView = new UIView(new CGRect(0, ViewHeight - height, width, height + GetBottomPadding))
             {
@@ -315,87 +328,136 @@ namespace myTNB
             _footerView.Layer.ShadowPath = UIBezierPath.FromRect(_footerView.Bounds).CGPath;
             View.AddSubview(_footerView);
 
-            CustomUIView saveBtnContainer = new CustomUIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F)))
+            if (isUsedReward)
             {
-                BackgroundColor = UIColor.White
-            };
-            saveBtnContainer.Layer.CornerRadius = 4f;
-            saveBtnContainer.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            saveBtnContainer.Layer.BorderWidth = 1f;
-
-            saveBtnContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                Debug.WriteLine("saveBtnContainer on tap");
-                RewardModel.IsSaved = !RewardModel.IsSaved;
-                InvokeInBackground(async () =>
+                NSError htmlBodyError = null;
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("<i>Reward used 13 Sep 2019, 2:35 PM.</i>"
+                    , ref htmlBodyError, TNBFont.FONTNAME_300
+                    , (float)GetScaledHeight(14F));
+                NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+                mutableHTMLBody.AddAttributes(new UIStringAttributes
                 {
-                    await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Favourite, RewardModel.IsSaved);
-                });
-                InvokeOnMainThread(() =>
+                    ForegroundColor = MyTNBColor.CharcoalGrey,
+                    ParagraphStyle = new NSMutableParagraphStyle
+                    {
+                        Alignment = UITextAlignment.Left,
+                        LineSpacing = 3.0f
+                    }
+                }, new NSRange(0, htmlBody.Length));
+
+                UILabel usedLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(20F)))
                 {
-                    UpdateSaveButton(saveBtnContainer);
-                });
-            }));
+                    BackgroundColor = UIColor.Clear,
+                    Font = TNBFont.MuseoSans_14_300I,
+                    TextColor = MyTNBColor.CharcoalGrey,
+                    TextAlignment = UITextAlignment.Left,
+                    Text = "Reward used 13 Sep 2019, 2:35 PM."
+                    //AttributedText = mutableHTMLBody
+                };
 
-            _footerView.AddSubview(saveBtnContainer);
-
-            UIView saveBtnView = new UIView(new CGRect(0, 0, 0, GetScaledHeight(24F)))
-            {
-                BackgroundColor = UIColor.Clear,
-                Tag = 3000
-            };
-            saveBtnContainer.AddSubview(saveBtnView);
-
-            nfloat imgWidth = GetScaledWidth(18F);
-            nfloat imgHeight = GetScaledHeight(15F);
-            UIImageView imgView = new UIImageView(new CGRect(0, 0, imgWidth, imgHeight))
-            {
-                Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsavedGreenIcon),
-                Tag = 3001
-            };
-            saveBtnView.AddSubview(imgView);
-
-            nfloat saveLblWidth = saveBtnContainer.Frame.Width - imgView.Frame.Width - GetScaledWidth(2F);
-            UILabel saveLbl = new UILabel(new CGRect(imgView.Frame.GetMaxX() + GetScaledWidth(8F), GetScaledHeight(12F), saveLblWidth, GetScaledHeight(24F)))
-            {
-                BackgroundColor = UIColor.Clear,
-                Font = TNBFont.MuseoSans_16_500,
-                TextColor = MyTNBColor.FreshGreen,
-                Lines = 0,
-                TextAlignment = UITextAlignment.Left,
-                Tag = 3002
-            };
-            saveBtnView.AddSubview(saveLbl);
-            UpdateSaveButton(saveBtnContainer);
-            UIButton btnUseNow = new UIButton(UIButtonType.Custom)
-            {
-                Frame = new CGRect(saveBtnContainer.Frame.GetMaxX() + GetScaledWidth(4F), GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F))
-            };
-            btnUseNow.Layer.CornerRadius = GetScaledHeight(4F);
-            btnUseNow.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
-            btnUseNow.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnUseNow.Layer.BorderWidth = GetScaledHeight(1F);
-            btnUseNow.SetTitle(GetI18NValue(RewardsConstants.I18N_UseNow), UIControlState.Normal);
-            btnUseNow.Font = TNBFont.MuseoSans_16_500;
-            btnUseNow.TouchUpInside += (sender, e) =>
-            {
-                Debug.WriteLine("btnUseNow on tap");
-                var title = GetI18NValue(RewardsConstants.I18N_UseNowPopupTitle);
-                if (RewardModel.RewardUseTitle.IsValid())
+                UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(usedLabel.Frame, 16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))
                 {
-                    title = RewardModel.RewardUseTitle;
-                }
-                var desc = GetI18NValue(RewardsConstants.I18N_UseNowPopupMessage);
-                if (RewardModel.RewardUseDescription.IsValid())
+                    BackgroundColor = UIColor.White
+                };
+                rewardUsedBtn.Layer.CornerRadius = 4f;
+                rewardUsedBtn.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+                rewardUsedBtn.Layer.BorderWidth = 1f;
+
+                UILabel rewardUsedLbl = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationToCenterObject(GetScaledHeight(24F), rewardUsedBtn), rewardUsedBtn.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(24F)))
                 {
-                    desc = RewardModel.RewardUseDescription;
-                }
-                DisplayCustomAlert(title, desc, new Dictionary<string, Action> {
+                    BackgroundColor = UIColor.Clear,
+                    Font = TNBFont.MuseoSans_16_500,
+                    TextColor = MyTNBColor.SilverChalice,
+                    TextAlignment = UITextAlignment.Center,
+                    Text = "Reward Used"
+                };
+
+                rewardUsedBtn.AddSubview(rewardUsedLbl);
+                _footerView.AddSubviews(new UIView { usedLabel, rewardUsedBtn });
+            }
+            else
+            {
+                CustomUIView saveBtnContainer = new CustomUIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F)))
+                {
+                    BackgroundColor = UIColor.White
+                };
+                saveBtnContainer.Layer.CornerRadius = 4f;
+                saveBtnContainer.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                saveBtnContainer.Layer.BorderWidth = 1f;
+
+                saveBtnContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    RewardModel.IsSaved = !RewardModel.IsSaved;
+                    InvokeInBackground(async () =>
+                    {
+                        await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Favourite, RewardModel.IsSaved);
+                    });
+                    InvokeOnMainThread(() =>
+                    {
+                        UpdateSaveButton(saveBtnContainer);
+                    });
+                }));
+
+                _footerView.AddSubview(saveBtnContainer);
+
+                UIView saveBtnView = new UIView(new CGRect(0, 0, 0, GetScaledHeight(24F)))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Tag = 3000
+                };
+                saveBtnContainer.AddSubview(saveBtnView);
+
+                nfloat imgWidth = GetScaledWidth(18F);
+                nfloat imgHeight = GetScaledHeight(15F);
+                UIImageView imgView = new UIImageView(new CGRect(0, 0, imgWidth, imgHeight))
+                {
+                    Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsavedGreenIcon),
+                    Tag = 3001
+                };
+                saveBtnView.AddSubview(imgView);
+
+                nfloat saveLblWidth = saveBtnContainer.Frame.Width - imgView.Frame.Width - GetScaledWidth(2F);
+                UILabel saveLbl = new UILabel(new CGRect(imgView.Frame.GetMaxX() + GetScaledWidth(8F), GetScaledHeight(12F), saveLblWidth, GetScaledHeight(24F)))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Font = TNBFont.MuseoSans_16_500,
+                    TextColor = MyTNBColor.FreshGreen,
+                    Lines = 0,
+                    TextAlignment = UITextAlignment.Left,
+                    Tag = 3002
+                };
+                saveBtnView.AddSubview(saveLbl);
+                UpdateSaveButton(saveBtnContainer);
+                UIButton btnUseNow = new UIButton(UIButtonType.Custom)
+                {
+                    Frame = new CGRect(saveBtnContainer.Frame.GetMaxX() + GetScaledWidth(4F), GetScaledHeight(16F), (width / 2) - GetScaledWidth(18F), GetScaledHeight(48F))
+                };
+                btnUseNow.Layer.CornerRadius = GetScaledHeight(4F);
+                btnUseNow.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
+                btnUseNow.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                btnUseNow.Layer.BorderWidth = GetScaledHeight(1F);
+                btnUseNow.SetTitle(GetI18NValue(RewardsConstants.I18N_UseNow), UIControlState.Normal);
+                btnUseNow.Font = TNBFont.MuseoSans_16_500;
+                btnUseNow.TouchUpInside += (sender, e) =>
+                {
+                    Debug.WriteLine("btnUseNow on tap");
+                    var title = GetI18NValue(RewardsConstants.I18N_UseNowPopupTitle);
+                    if (RewardModel.RewardUseTitle.IsValid())
+                    {
+                        title = RewardModel.RewardUseTitle;
+                    }
+                    var desc = GetI18NValue(RewardsConstants.I18N_UseNowPopupMessage);
+                    if (RewardModel.RewardUseDescription.IsValid())
+                    {
+                        desc = RewardModel.RewardUseDescription;
+                    }
+                    DisplayCustomAlert(title, desc, new Dictionary<string, Action> {
                     { GetI18NValue(RewardsConstants.I18N_UseLater), null }
                     , { GetI18NValue(RewardsConstants.I18N_Confirm), OnUseNowAction } }
-                , UIImage.FromBundle(RewardsConstants.Img_UseRewardBanner));
-            };
-            _footerView.AddSubview(btnUseNow);
+                    , UIImage.FromBundle(RewardsConstants.Img_UseRewardBanner));
+                };
+                _footerView.AddSubview(btnUseNow);
+            }
         }
 
         private void UpdateSaveButton(CustomUIView viewRef)
@@ -423,27 +485,26 @@ namespace myTNB
         private void OnUseNowAction()
         {
             nfloat height = GetScaledHeight(122F);
-            UIView timerContainerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
+            _timerContainerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
             {
                 BackgroundColor = UIColor.White
             };
-            timerContainerView.Layer.MasksToBounds = false;
-            timerContainerView.Layer.ShadowColor = MyTNBColor.BrownGrey60.CGColor;
-            timerContainerView.Layer.ShadowOpacity = 1F;
-            timerContainerView.Layer.ShadowOffset = new CGSize(0, -4);
-            timerContainerView.Layer.ShadowRadius = 8;
-            timerContainerView.Layer.ShadowPath = UIBezierPath.FromRect(timerContainerView.Bounds).CGPath;
+            _timerContainerView.Layer.MasksToBounds = false;
+            _timerContainerView.Layer.ShadowColor = MyTNBColor.BrownGrey60.CGColor;
+            _timerContainerView.Layer.ShadowOpacity = 1F;
+            _timerContainerView.Layer.ShadowOffset = new CGSize(0, -4);
+            _timerContainerView.Layer.ShadowRadius = 8;
+            _timerContainerView.Layer.ShadowPath = UIBezierPath.FromRect(_timerContainerView.Bounds).CGPath;
 
-            UILabel timerLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(36F)))
+            _timerLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(36F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_36_300,
                 TextColor = MyTNBColor.WaterBlue,
-                TextAlignment = UITextAlignment.Center,
-                Text = "04:59"
+                TextAlignment = UITextAlignment.Center
             };
 
-            UILabel timerDesc = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(timerLabel.Frame, 12F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(32F)))
+            UILabel timerDesc = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(_timerLabel.Frame, 12F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(32F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
@@ -452,10 +513,57 @@ namespace myTNB
                 Lines = 0,
                 Text = "Reward redeemed. Please show the merchant this screen before the timer runs out."
             };
-            timerContainerView.AddSubviews(new UIView { timerLabel, timerDesc });
-            View.AddSubview(timerContainerView);
+            _timerContainerView.AddSubviews(new UIView { _timerLabel, timerDesc });
+            View.AddSubview(_timerContainerView);
 
-            ViewHelper.AdjustFrameSetHeight(_scrollView, timerContainerView.Frame.GetMinY());
+            ViewHelper.AdjustFrameSetHeight(_scrollView, _timerContainerView.Frame.GetMinY());
+
+            StartTimer();
+        }
+
+        private void StartTimer()
+        {
+            _currentSeconds = RewardModel.RewardUseWithinTime * 60;
+            _currentSeconds = 5;
+            TimeSpan time = TimeSpan.FromSeconds(_currentSeconds);
+            _timerLabel.Text = time.ToString(@"mm\:ss");
+            _useTimer = new Timer
+            {
+                Interval = 1000F,
+                AutoReset = true,
+                Enabled = true
+            };
+            _useTimer.Elapsed += TimerElapsed;
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            _currentSeconds--;
+            InvokeOnMainThread(() =>
+            {
+                if (_currentSeconds > 0)
+                {
+                    TimeSpan time = TimeSpan.FromSeconds(_currentSeconds);
+                    if (_timerLabel != null)
+                    {
+                        _timerLabel.Text = time.ToString(@"mm\:ss");
+                        CGSize size = _timerLabel.SizeThatFits(new CGSize(ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(36F)));
+                        ViewHelper.AdjustFrameSetWidth(_timerLabel, size.Width);
+                        ViewHelper.AdjustFrameSetX(_timerLabel, GetXLocationToCenterObject(size.Width, _timerContainerView));
+                    }
+                }
+                else
+                {
+                    _useTimer.Enabled = false;
+                    ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - GetScaledHeight(116F));
+                    if (_timerContainerView != null)
+                    {
+                        _timerContainerView.RemoveFromSuperview();
+                        _timerContainerView = null;
+                    }
+                    AddFooterView(true);
+                }
+            });
         }
         #endregion
     }
