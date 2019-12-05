@@ -222,6 +222,16 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:background="@android:color/transparent">
+            <ImageView
+                android:layout_height="10dp"
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                android:background="@drawable/rewarddetailshadowbg"/>
+            <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:padding="16dp"
             android:orientation="vertical"
             android:background="@color/white">
@@ -315,6 +325,7 @@
                     style="@style/DarkButton"
                     android:textAllCaps="false" />
             </LinearLayout>
+        </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

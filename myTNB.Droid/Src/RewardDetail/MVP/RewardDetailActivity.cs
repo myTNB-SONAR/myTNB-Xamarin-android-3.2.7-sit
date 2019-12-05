@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
     [Activity(Label = "Rewards"
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RewardDetail")]
+      , Theme = "@style/Theme.Dashboard")]
     public class RewardDetailActivity : BaseToolbarAppCompatActivity, RewardDetailContract.IRewardDetailView
     {
         [BindView(Resource.Id.rootView)]
@@ -506,8 +506,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 this.SetIsClicked(true);
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                    .SetTitle("Please make sure you’re at the shop.")
-                    .SetMessage("This reward can only be used once, please confirm you’re at the shop / merchant.")
+                    .SetTitle(!string.IsNullOrEmpty(LocalItem.RewardUseTitle) ? LocalItem.RewardUseTitle : "Please make sure you’re at the shop.")
+                    .SetMessage(!string.IsNullOrEmpty(LocalItem.RewardUseDescription) ? LocalItem.RewardUseDescription : "This reward can only be used once, please confirm you’re at the shop / merchant.")
                     .SetHeaderImage(Resource.Drawable.img_tooltip_reward_confirm)
                     .SetCTALabel("Use Later")
                     .SetCTAaction(() => {

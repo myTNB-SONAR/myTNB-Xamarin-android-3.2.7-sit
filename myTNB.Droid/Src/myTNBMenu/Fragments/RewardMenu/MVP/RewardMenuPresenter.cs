@@ -100,6 +100,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     {
                         this.mView.OnSavedRewardsTimeStamp(entity?.Timestamp);
                     }
+                    else
+                    {
+                        this.mView.OnSavedRewardsTimeStamp(null);
+                    }
                 }
                 else
                 {
@@ -143,12 +147,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
                     else
                     {
-                        CheckRewardsCache();
+                        this.mView.CheckRewardsTimeStamp();
                     }
                 }
                 catch (Exception e)
                 {
-                    CheckRewardsCache();
+                    this.mView.CheckRewardsTimeStamp();
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
