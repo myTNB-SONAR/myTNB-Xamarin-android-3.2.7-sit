@@ -1,4 +1,4 @@
 Sprint 2 SIT Build
 
-[Bug] 3429 Regression_iOS: User could not be able to see which account is user on from the drop down list on Submit Meter Reading Page
-[Bug] 3434 Regression_Sprint2 : App is showing payment advice instead of bill when clicked on view bill from mandatory charges pop up
+[Task] 3Upon tapping View My Bill, to remove the Select Account dropdown screen for single account users, and link directly to the account’s PDF Bill
+[Task] To update the tutorial overlay copy with the approved new copy for single CA, 3 CAs and multiple CAs.

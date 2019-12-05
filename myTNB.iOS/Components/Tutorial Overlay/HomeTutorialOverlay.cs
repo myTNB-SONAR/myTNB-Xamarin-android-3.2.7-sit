@@ -12,6 +12,7 @@ namespace myTNB
         UIPageControl _pageControl;
         int _currentPageIndex = 1;
         int _totalViews;
+        nfloat _descMaxYPos;
         UITextView _swipeText;
         public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
@@ -356,9 +357,11 @@ namespace myTNB
 
             bottomView.AddSubviews(new UIView { title, desc });
             parentView.AddSubviews(new UIView { topView, bottomView });
+
+            _descMaxYPos = bottomView.Frame.GetMinY() + desc.Frame.GetMaxY();
             if (_swipeText != null)
             {
-                _swipeText.Hidden = false;
+                _swipeText.Hidden = _descMaxYPos > _footerView.Frame.GetMinY();
             }
             return parentView;
         }
@@ -675,6 +678,8 @@ namespace myTNB
 
             AddPageControl(_swipeText.Frame.GetMaxY());
             UpdatePageControl(_pageControl, _currentPageIndex, _totalViews);
+
+            _swipeText.Hidden = _descMaxYPos > _footerView.Frame.GetMinY();
         }
 
         private void AddPageControl(nfloat yPos)
