@@ -427,7 +427,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -598,7 +598,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -769,7 +769,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -918,7 +918,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -1067,7 +1067,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -1515,8 +1515,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             else if (this.mContext is SSMRMeterHistoryActivity)
             {
                 int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
-                int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                int middleHeight = (int)DPUtils.ConvertDPToPx(255f);
+                int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
                 if (model.DisplayMode == "NONSMR")
                 {
                     middleHeight = (int)DPUtils.ConvertDPToPx(235f);
@@ -1525,7 +1525,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                 if (model.ItemCount == 1)
                 {
-                    middleHeight = (int)DPUtils.ConvertDPToPx(190f);
+                    middleHeight = (int)DPUtils.ConvertDPToPx(200f);
                     checkPoint = 0;
                 }
 

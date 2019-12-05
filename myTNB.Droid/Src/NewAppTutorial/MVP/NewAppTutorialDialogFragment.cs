@@ -187,8 +187,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             string DisplayMode = NewAppTutorialList[0].DisplayMode;
                             int ItemCount = NewAppTutorialList[0].ItemCount;
                             int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
-                            int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(255f);
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
                             if (DisplayMode == "NONSMR")
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(235f);
@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (ItemCount == 1)
                             {
-                                middleHeight = (int)DPUtils.ConvertDPToPx(190f);
+                                middleHeight = (int)DPUtils.ConvertDPToPx(200f);
                                 checkPoint = 0;
                             }
 
