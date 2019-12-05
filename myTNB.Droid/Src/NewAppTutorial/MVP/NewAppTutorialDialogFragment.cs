@@ -187,8 +187,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             string DisplayMode = NewAppTutorialList[0].DisplayMode;
                             int ItemCount = NewAppTutorialList[0].ItemCount;
                             int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
-                            int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(255f);
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
                             if (DisplayMode == "NONSMR")
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(235f);
@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (ItemCount == 1)
                             {
-                                middleHeight = (int)DPUtils.ConvertDPToPx(190f);
+                                middleHeight = (int)DPUtils.ConvertDPToPx(200f);
                                 checkPoint = 0;
                             }
 
@@ -264,6 +264,29 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         else
                         {
                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                        }
+                    }
+                    else if (this.mFragment != null && this.mFragment is HomeMenuFragment)
+                    {
+                        if (NewAppTutorialList.Count == 4)
+                        {
+                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                            {
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                int halfScroll = topHeight / 2;
+
+                                if (diffHeight < halfScroll)
+                                {
+                                    int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                    int checkPoint = (int)DPUtils.ConvertDPToPx(230f);
+
+                                    if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                    {
+                                        txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -349,6 +372,17 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     if (diffHeight < halfScroll)
                                                     {
                                                         ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+
+                                                        if (NewAppTutorialList.Count == 4 && e.Position == 0)
+                                                        {
+                                                            int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                                            int checkPoint = (int)DPUtils.ConvertDPToPx(230f);
+
+                                                            if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                                            {
+                                                                txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                                            }
+                                                        }
                                                     }
                                                     else
                                                     {

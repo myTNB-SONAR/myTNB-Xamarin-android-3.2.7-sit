@@ -2654,7 +2654,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your<br/>linked electricity accounts here.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
@@ -2674,7 +2674,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap “Add”<br/>to link an account to myTNB.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage. Tap <strong>“Add”</strong> to link another<br/>account to myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
@@ -2684,8 +2684,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.BottomLeft,
-                    ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here.",
+                    ContentTitle = "Welcome to your new Home view!",
+                    ContentMessage = "This is a summary of your linked<br/>electricity account.Tap on the<br/>account to view your Usage. Tap<br/><strong>“Add”</strong> to link another account to<br/>myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
