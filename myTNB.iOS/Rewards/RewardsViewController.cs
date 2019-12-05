@@ -61,6 +61,11 @@ namespace myTNB
             Debug.WriteLine("DEBUG >>> Rewards LanguageDidChange");
             base.LanguageDidChange(notification);
             Title = GetI18NValue(RewardsConstants.I18N_Title);
+            CreateLoadingCategoryTopBar();
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            {
+                ValidateRewards();
+            }
         }
 
         private void OnReceiveRewards(NSNotification notification)
@@ -73,8 +78,6 @@ namespace myTNB
         {
             InvokeOnMainThread(async () =>
             {
-                //GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
-                //RewardsServices.UpdateRewardsCache();
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
                 if (_rewardsList != null && _rewardsList.Count > 0)
@@ -83,7 +86,7 @@ namespace myTNB
                     RewardsModel viewAllModel = new RewardsModel()
                     {
                         CategoryID = "1001",
-                        CategoryName = "View All"
+                        CategoryName = "View All"//GetI18NValue(RewardsConstants.I18N_ViewAll)
                     };
                     _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
                     _categoryList.Insert(0, viewAllModel);
@@ -107,7 +110,7 @@ namespace myTNB
                 Debug.WriteLine("btnSavedRewards");
                 SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
                 {
-                    SavedRewardsList = _rewardsList
+                    SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
                 };
                 UINavigationController navController = new UINavigationController(savedRewardsView);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
@@ -161,9 +164,6 @@ namespace myTNB
                     Tag = RewardsConstants.Tag_TableView,
                     SeparatorStyle = UITableViewCellSeparatorStyle.None
                 };
-
-                View.Layer.BorderColor = UIColor.Red.CGColor;
-                View.Layer.BorderWidth = 1;
 
                 rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
                 viewContainer.AddSubview(rewardsTableView);
@@ -377,7 +377,7 @@ namespace myTNB
             }
         }
 
-        public void OnSaveUnsaveAction(RewardsModel reward)
+        public void OnSaveUnsaveAction(List<RewardsModel> rewardsList, RewardsModel reward, int index)
         {
             if (reward != null)
             {
@@ -388,6 +388,10 @@ namespace myTNB
                 InvokeInBackground(async () =>
                 {
                     await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
+                    InvokeOnMainThread(() =>
+                    {
+                        OnReloadTableAction(rewardsList, index);
+                    });
                 });
             }
         }
@@ -443,8 +447,7 @@ namespace myTNB
 
         public void OnReloadTableAction(List<RewardsModel> rewardsList, int index)
         {
-            if (rewardsList != null && rewardsList.Count > 0
-                && index > -1 && index < rewardsList.Count)
+            if (rewardsList != null && rewardsList.Count > 0 && index > -1 && index < rewardsList.Count)
             {
                 RewardsModel reward = rewardsList[index];
                 var catIndx = _categoryList.FindIndex(x => x.CategoryID.Equals(reward.CategoryID));
@@ -459,7 +462,12 @@ namespace myTNB
                             var filteredList = catIndx == 0 ? _rewardsList : FilteredRewards(catIndx);
                             table.ClearsContextBeforeDrawing = true;
                             table.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
-                            table.ReloadData();
+                            UIView.PerformWithoutAnimation(() =>
+                            {
+                                table.BeginUpdates();
+                                table.ReloadData();
+                                table.EndUpdates();
+                            });
                         }
                     }
                 }
@@ -471,7 +479,12 @@ namespace myTNB
                     {
                         table.ClearsContextBeforeDrawing = true;
                         table.Source = new RewardsDataSource(this, _rewardsList, GetI18NValue);
-                        table.ReloadData();
+                        UIView.PerformWithoutAnimation(() =>
+                        {
+                            table.BeginUpdates();
+                            table.ReloadData();
+                            table.EndUpdates();
+                        });
                     }
                 }
             }

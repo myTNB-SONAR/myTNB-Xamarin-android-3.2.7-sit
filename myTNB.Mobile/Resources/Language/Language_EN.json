@@ -810,7 +810,8 @@
     "rearrangeToastSuccessMsg": "Your new account arrangement has successfully been saved!"
   },
   "Rewards": {
-    "title": "Rewards"
+    "title": "Rewards",
+    "viewAll": "View All"
   },
   "RewardDetails": {
     "title": "Rewards",
@@ -824,5 +825,8 @@
     "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
     "useLater": "Use Later",
     "confirm": "Confirm"
+  },
+  "SavedRewards": {
+    "title": "My Saved Rewards"
   }
 }

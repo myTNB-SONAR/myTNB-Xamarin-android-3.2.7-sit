@@ -253,6 +253,7 @@ namespace myTNB.DataManager
             //Reset SSMR Onboarding
             SSMRAccounts.IsHideOnboarding = false;
             SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
+            RewardsCache.Clear();
         }
 
         public void RemoveAccountFromArrangedList(string accountNo)
