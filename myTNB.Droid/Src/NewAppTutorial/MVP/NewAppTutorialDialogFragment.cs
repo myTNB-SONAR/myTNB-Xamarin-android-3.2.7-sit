@@ -187,8 +187,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             string DisplayMode = NewAppTutorialList[0].DisplayMode;
                             int ItemCount = NewAppTutorialList[0].ItemCount;
                             int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
-                            int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(255f);
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
                             if (DisplayMode == "NONSMR")
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(235f);
@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (ItemCount == 1)
                             {
-                                middleHeight = (int)DPUtils.ConvertDPToPx(190f);
+                                middleHeight = (int)DPUtils.ConvertDPToPx(200f);
                                 checkPoint = 0;
                             }
 
@@ -266,6 +266,29 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                         }
                     }
+                    else if (this.mFragment != null && this.mFragment is HomeMenuFragment)
+                    {
+                        if (NewAppTutorialList.Count == 4)
+                        {
+                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                            {
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                int halfScroll = topHeight / 2;
+
+                                if (diffHeight < halfScroll)
+                                {
+                                    int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                    int checkPoint = (int)DPUtils.ConvertDPToPx(230f);
+
+                                    if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                    {
+                                        txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
 
                     if (NewAppTutorialList.Count > 1)
@@ -275,8 +298,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             ImageView image = new ImageView(mContext);
                             image.Id = i;
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                            layoutParams.RightMargin = 8;
-                            layoutParams.LeftMargin = 8;
+                            layoutParams.RightMargin = 12;
+                            layoutParams.LeftMargin = 12;
                             image.LayoutParameters = layoutParams;
                             if (i == 0)
                             {
@@ -349,6 +372,17 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     if (diffHeight < halfScroll)
                                                     {
                                                         ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+
+                                                        if (NewAppTutorialList.Count == 4 && e.Position == 0)
+                                                        {
+                                                            int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                                            int checkPoint = (int)DPUtils.ConvertDPToPx(230f);
+
+                                                            if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                                            {
+                                                                txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                                            }
+                                                        }
                                                     }
                                                     else
                                                     {
@@ -380,11 +414,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                                 {
                                                     int topHeight = (int)DPUtils.ConvertDPToPx(375f);
-                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(210f);
+                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
 
                                                     if (ItemCount == 0)
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                         }
@@ -395,7 +429,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     }
                                                     else if (ItemCount == 1)
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        middleHeight = (int)DPUtils.ConvertDPToPx(130f);
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                         }
@@ -406,7 +441,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     }
                                                     else if (ItemCount == 2)
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                         }
@@ -417,9 +452,9 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     }
                                                     else
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
-                                                            int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                                            int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(20f);
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(diff);
                                                         }
                                                         else
@@ -469,7 +504,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                                 {
                                                     int topHeight = (int)DPUtils.ConvertDPToPx(430f);
-                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(210f);
+                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
 
                                                     if (DisplayMode == "Extra")
                                                     {
@@ -478,7 +513,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                                                     if (ItemCount == 0)
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                         }
@@ -489,7 +524,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     }
                                                     else if (ItemCount == 1)
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        middleHeight = (int)DPUtils.ConvertDPToPx(130f);
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                         }
@@ -500,7 +536,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     }
                                                     else if (ItemCount == 2)
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                         }
@@ -511,9 +547,9 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     }
                                                     else
                                                     {
-                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                                         {
-                                                            int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                                            int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(20f);
                                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(diff);
                                                         }
                                                         else

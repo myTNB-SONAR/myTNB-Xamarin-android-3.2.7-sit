@@ -103,12 +103,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			void ShowAccountName();
 
-			/// <summary>
-			/// Show notification count
-			/// </summary>
-			/// <param name="count">integer</param>
-			void ShowNotificationCount(int count);
-
             /// <summary>
             /// Shows unread promotions
             /// </summary>
@@ -181,11 +175,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// Action to logout NOT USED
 			/// </summary>
 			void Logout();
-
-			/// <summary>
-			/// Action to navigate to notification list
-			/// </summary>
-			void OnNotificationCount();
 
 			/// <summary>
 			/// Action to navigate to select accuont

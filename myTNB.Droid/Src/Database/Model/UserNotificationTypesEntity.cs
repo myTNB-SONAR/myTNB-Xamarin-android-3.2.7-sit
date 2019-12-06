@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,13 +88,20 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
-        public static int RemoveActive()
+        public static void RemoveActive()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("Delete from UserNotificationTypesEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Delete from UserNotificationTypesEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static void UpdateIsOpted(string Code, bool isOpted)

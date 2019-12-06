@@ -1,4 +1,5 @@
 ﻿using AFollestad.MaterialDialogs;
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -524,13 +525,17 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                var intent = new Intent(MediaStore.ActionImageCapture);
-                Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
-                Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                ApplicationContext.PackageName + ".provider", file);
-                intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
-                StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+                Permission cameraPermission = ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
+                if (cameraPermission == (int)Permission.Granted)
+                {
+                    this.SetIsClicked(true);
+                    var intent = new Intent(MediaStore.ActionImageCapture);
+                    Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
+                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                    ApplicationContext.PackageName + ".provider", file);
+                    intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
+                    StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+                }
             }
         }
 

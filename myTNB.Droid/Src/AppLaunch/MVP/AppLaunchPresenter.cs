@@ -133,9 +133,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 #endif
 			try
             {
-                AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
+              UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
+              AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                     (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
-
                 if (masterDataResponse != null && masterDataResponse.Response != null)
                 {
                     if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)

@@ -27,6 +27,7 @@ using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
 using static Android.Widget.CompoundButton;
 using Android.Graphics;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -142,7 +143,22 @@ namespace myTNB_Android.Src.Notifications.Activity
                 ShowNotificationBadge();
                 SetNotificationRecyclerView();
                 SetInitialNotificationState();
-                this.userActionsListener.Start();
+                if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
+                {
+                    ShowRefreshView(null,null);
+                }
+                else
+                {
+                    if (MyTNBAccountManagement.GetInstance().IsNotificationServiceCompleted())
+                    {
+                        this.userActionsListener.Start();
+                    }
+                    else
+                    {
+                        this.userActionsListener.QueryOnLoad(this.DeviceId());
+                    }
+                }
+                
                 Bundle extras = Intent.Extras;
                 if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
                 {

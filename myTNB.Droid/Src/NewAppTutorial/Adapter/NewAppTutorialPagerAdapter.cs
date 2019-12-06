@@ -430,6 +430,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                {
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                }
+
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
                             }
 
@@ -595,6 +600,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
+
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                {
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                }
 
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
                             }
@@ -762,7 +772,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -911,7 +921,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -1060,7 +1070,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
 
-                                if (this.mContext.Resources.DisplayMetrics.HeightPixels <= (int)DPUtils.ConvertDPToPx(800f))
+                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(115);
                                 }
@@ -1156,11 +1166,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (model.ItemCount == 0)
                             {
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(80f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(90f);
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
@@ -1169,33 +1179,33 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(130f);
 
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
                             }
                             else if (model.ItemCount == 2)
                             {
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
                             }
                             else
                             {
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(20f);
                                         topHeight = topHeight - diff;
                                     }
                                 }
@@ -1366,11 +1376,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (model.ItemCount == 0)
                             {
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(80f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(90f);
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
@@ -1379,33 +1389,41 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(130f);
 
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
                             }
                             else if (model.ItemCount == 2)
                             {
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
                             }
                             else
                             {
-                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(20f);
                                         topHeight = topHeight - diff;
                                     }
                                 }
@@ -1472,7 +1490,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             }
             else if (this.mContext is BillingDetailsActivity)
             {
-                int middleHeight = ((BillingDetailsActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
+                int middleHeight = ((BillingDetailsActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(10f);
                 int topHeight = ((BillingDetailsActivity)this.mContext).GetTopHeight();
 
                 int leftWidth = (int)DPUtils.ConvertDPToPx(14f);
@@ -1508,8 +1526,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             else if (this.mContext is SSMRMeterHistoryActivity)
             {
                 int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
-                int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                int middleHeight = (int)DPUtils.ConvertDPToPx(255f);
+                int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
                 if (model.DisplayMode == "NONSMR")
                 {
                     middleHeight = (int)DPUtils.ConvertDPToPx(235f);
@@ -1518,7 +1536,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                 if (model.ItemCount == 1)
                 {
-                    middleHeight = (int)DPUtils.ConvertDPToPx(190f);
+                    middleHeight = (int)DPUtils.ConvertDPToPx(200f);
                     checkPoint = 0;
                 }
 

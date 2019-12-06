@@ -312,11 +312,9 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public async void QueryOnLoad(string deviceId)
         {
+            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowQueryProgress();
-            }
+            this.mView.ShowQueryProgress();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
@@ -359,92 +357,75 @@ namespace myTNB_Android.Src.Notifications.MVP
                             try
                             {
                                 MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                                if (response.Data.ErrorCode == "7200")
+                                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                                 {
-                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                                     {
-                                        // tODO : SAVE ALL NOTIFICATIONs
-                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                        {
+                                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                        }
+                                        this.mView.ShowView();
+                                        this.mView.ClearAdapter();
+                                        this.ShowFilteredList();
                                     }
-                                    this.mView.ShowView();
-                                    this.mView.ClearAdapter();
-                                    this.ShowFilteredList();
+                                    else
+                                    {
+                                        this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                    }
                                 }
                                 else
                                 {
+                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
                                 }
 
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
+                                this.mView.HideQueryProgress();
                             }
                             catch (ApiException apiException)
                             {
 
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
+                                this.mView.HideQueryProgress();
                                 this.mView.ShowRefreshView(null, null);
                                 Utility.LoggingNonFatalError(apiException);
                             }
                             catch (Exception e)
                             {
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
+                                this.mView.HideQueryProgress();
                                 this.mView.ShowRefreshView(null, null);
                                 Utility.LoggingNonFatalError(e);
                             }
                         }
                         else
                         {
-                            if (mView.IsActive())
-                            {
-                                this.mView.HideQueryProgress();
-                            }
+                            this.mView.HideQueryProgress();
                         }
 
                     }
                     else
                     {
-                        if (mView.IsActive())
-                        {
-                            this.mView.HideQueryProgress();
-                        }
+                        this.mView.HideQueryProgress();
                         this.mView.ShowRefreshView(null, null);
                     }
 
                 }
                 else
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideQueryProgress();
-                    }
+                    this.mView.HideQueryProgress();
                     this.mView.ShowRefreshView(null, null);
                 }
             }
             catch (ApiException apiException)
             {
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
+                this.mView.HideQueryProgress();
                 this.mView.ShowRefreshView(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
+                this.mView.HideQueryProgress();
                 this.mView.ShowRefreshView(null, null);
                 Utility.LoggingNonFatalError(e);
             }

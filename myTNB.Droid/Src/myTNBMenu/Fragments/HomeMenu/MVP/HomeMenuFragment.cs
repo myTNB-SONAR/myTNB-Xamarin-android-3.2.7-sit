@@ -905,10 +905,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 UserSessions.DoViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
-                            CustomerBillingAccount.RemoveSelected();
-                            Intent supplyAccount = new Intent(this.Activity, typeof(SelectSupplyAccountActivity));
-                            supplyAccount.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
-                            StartActivity(supplyAccount);
+                            if (CustomerBillingAccount.HasOneItemOnly())
+                            {
+                                CustomerBillingAccount.RemoveSelected();
+                                CustomerBillingAccount.MakeFirstAsSelected();
+                                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+
+                                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
+
+                                Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
+                                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                                viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+                                StartActivity(viewBill);
+                            }
+                            else
+                            {
+                                CustomerBillingAccount.RemoveSelected();
+                                Intent supplyAccount = new Intent(this.Activity, typeof(SelectSupplyAccountActivity));
+                                supplyAccount.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+                                StartActivity(supplyAccount);
+                            }
                         }
                         else
                         {

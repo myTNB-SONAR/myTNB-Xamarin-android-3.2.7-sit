@@ -242,7 +242,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private void EvaluateBCRMDowntime()
         {
             DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            if (bcrmEntity != null && bcrmEntity.IsDown)
+            if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
             {
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
@@ -256,6 +256,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 })
                 .Build()
                 .Show();
+                MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
             }
             else
             {
@@ -584,18 +585,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void DisableBillMenu()
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetEnabled(false);
-        }
-
-        public void ShowNotificationCount(int count)
-        {
-            if (count <= 0)
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
         }
 
         public void ShowREAccount(Boolean enable)

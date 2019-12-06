@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
             this.platform = platform;
             this.registeredCardId = registeredCardId;
             this.paymentMode = paymentMode;
-            this.totalAmount = totalAmount;
+            this.totalAmount = totalAmount.Replace(",", "");
             this.paymentItems = paymentItems;
         }
 
