@@ -12,7 +12,7 @@ namespace myTNB
 {
     public partial class RewardsViewController : CustomUIViewController
     {
-        internal UIScrollView _topBarScrollView, _rewardsScrollView;
+        internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
         internal UIView _skeletonLoadingView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
@@ -87,7 +87,7 @@ namespace myTNB
                     RewardsModel viewAllModel = new RewardsModel()
                     {
                         CategoryID = "1001",
-                        CategoryName = "View All"
+                        CategoryName = GetI18NValue(RewardsConstants.I18N_ViewAll)
                     };
                     _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
                     _categoryList.Insert(0, viewAllModel);
@@ -100,6 +100,24 @@ namespace myTNB
                     SetEmptyRewardView();
                 }
             });
+        }
+
+        private void SetNavigationBar()
+        {
+            NavigationItem.HidesBackButton = true;
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
+            UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
+            {
+                Debug.WriteLine("btnSavedRewards");
+                SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
+                {
+                    SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
+                };
+                UINavigationController navController = new UINavigationController(savedRewardsView);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            });
+            NavigationItem.RightBarButtonItem = btnSavedRewards;
         }
 
         private void SetSkeletonLoading()
@@ -239,29 +257,11 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Center,
-                Text = "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+                Text = GetI18NValue(RewardsConstants.I18N_NoRewards)
             };
             emptyDesc.TextContainer.LineFragmentPadding = 0F;
 
             View.AddSubviews(new UIView { emptyIcon, emptyDesc });
-        }
-
-        private void SetNavigationBar()
-        {
-            NavigationItem.HidesBackButton = true;
-            Title = GetI18NValue(RewardsConstants.I18N_Title);
-            UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                Debug.WriteLine("btnSavedRewards");
-                SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
-                {
-                    SavedRewardsList = _rewardsList
-                };
-                UINavigationController navController = new UINavigationController(savedRewardsView);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
-            });
-            NavigationItem.RightBarButtonItem = btnSavedRewards;
         }
 
         #region REWARDS SCROLL VIEW
@@ -272,8 +272,11 @@ namespace myTNB
                 _rewardsScrollView.RemoveFromSuperview();
                 _rewardsScrollView = null;
             }
-            _rewardsScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
-                , ViewWidth, ViewHeight - GetScaledHeight(44F)))
+
+            nfloat yDelta = DeviceHelper.IsIphoneXUpResolution() ? 0 : DeviceHelper.GetStatusBarHeight();
+            _rewardsScrollView = new UIScrollView(new CGRect(0
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
+                , ViewWidth, ViewHeight - GetScaledHeight(44F) + yDelta))
             {
                 Delegate = new ScrollViewDelegate(this),
                 PagingEnabled = true,
@@ -306,6 +309,7 @@ namespace myTNB
                     Tag = RewardsConstants.Tag_TableView,
                     SeparatorStyle = UITableViewCellSeparatorStyle.None
                 };
+
                 rewardsTableView.RegisterClassForCellReuse(typeof(RewardsCell), RewardsConstants.Cell_Rewards);
                 viewContainer.AddSubview(rewardsTableView);
 
@@ -359,7 +363,9 @@ namespace myTNB
             {
                 _topBarScrollView.RemoveFromSuperview();
             }
-            _topBarScrollView = new UIScrollView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, GetScaledHeight(44F)))
+            _topBarScrollView = new UIScrollView(new CGRect(0
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height
+                , ViewWidth, GetScaledHeight(44F)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -399,7 +405,8 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetWidth(categoryView, categoryLabel.Frame.Width + (padding * 2));
                 ViewHelper.AdjustFrameSetX(categoryView, xPos);
 
-                UIView lineView = new UIView(new CGRect(padding, _topBarScrollView.Frame.Height - GetScaledHeight(2F), labelNewSize.Width, GetScaledHeight(2)))
+                UIView lineView = new UIView(new CGRect(padding
+                    , _topBarScrollView.Frame.Height - GetScaledHeight(2F), labelNewSize.Width, GetScaledHeight(2)))
                 {
                     BackgroundColor = MyTNBColor.WaterBlue,
                     Tag = RewardsConstants.Tag_SelectedCategory,
@@ -455,7 +462,7 @@ namespace myTNB
             }
         }
 
-        public void OnSaveUnsaveAction(RewardsModel reward)
+        public void OnSaveUnsaveAction(List<RewardsModel> rewardsList, RewardsModel reward, int index)
         {
             if (reward != null)
             {
@@ -466,6 +473,10 @@ namespace myTNB
                 InvokeInBackground(async () =>
                 {
                     await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
+                    InvokeOnMainThread(() =>
+                    {
+                        OnReloadTableAction(rewardsList, index);
+                    });
                 });
             }
         }
@@ -521,8 +532,7 @@ namespace myTNB
 
         public void OnReloadTableAction(List<RewardsModel> rewardsList, int index)
         {
-            if (rewardsList != null && rewardsList.Count > 0
-                && index > -1 && index < rewardsList.Count)
+            if (rewardsList != null && rewardsList.Count > 0 && index > -1 && index < rewardsList.Count)
             {
                 RewardsModel reward = rewardsList[index];
                 var catIndx = _categoryList.FindIndex(x => x.CategoryID.Equals(reward.CategoryID));
@@ -537,7 +547,12 @@ namespace myTNB
                             var filteredList = catIndx == 0 ? _rewardsList : FilteredRewards(catIndx);
                             table.ClearsContextBeforeDrawing = true;
                             table.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
-                            table.ReloadData();
+                            UIView.PerformWithoutAnimation(() =>
+                            {
+                                table.BeginUpdates();
+                                table.ReloadData();
+                                table.EndUpdates();
+                            });
                         }
                     }
                 }
@@ -549,7 +564,12 @@ namespace myTNB
                     {
                         table.ClearsContextBeforeDrawing = true;
                         table.Source = new RewardsDataSource(this, _rewardsList, GetI18NValue);
-                        table.ReloadData();
+                        UIView.PerformWithoutAnimation(() =>
+                        {
+                            table.BeginUpdates();
+                            table.ReloadData();
+                            table.EndUpdates();
+                        });
                     }
                 }
             }

@@ -339,7 +339,13 @@ namespace myTNB
             _statusBarView = new UIView(new CGRect(0, 0, View.Frame.Width, DeviceHelper.GetStatusBarHeight()));
             View.AddSubview(_statusBarView);
         }
-        public virtual void ConfigureNavigationBar() { }
+        public virtual void ConfigureNavigationBar()
+        {
+            if (NavigationItem != null)
+            {
+                NavigationItem.HidesBackButton = true;
+            }
+        }
         public virtual void AddCustomNavBar(Action backAction = null)
         {
             if (NavigationController != null) { NavigationController.SetNavigationBarHidden(true, true); }

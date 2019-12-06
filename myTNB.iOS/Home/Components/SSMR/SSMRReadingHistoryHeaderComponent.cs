@@ -48,7 +48,8 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
                 TextAlignment = UITextAlignment.Left,
-                LineBreakMode = UILineBreakMode.TailTruncation
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                Lines = 0
             };
             #region Dropdown
             _viewDropDownContainer = new CustomUIView(new CGRect(_padding, _labelTitle.Frame.GetMaxY() + _padding, baseWidth
@@ -91,7 +92,8 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.GreyishBrownTwo,
                 TextAlignment = UITextAlignment.Left,
-                LineBreakMode = UILineBreakMode.TailTruncation
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                Lines = 0
             };
 
             _txtDesc = new UITextView(new CGRect(_padding, ScaleUtility.GetYLocationFromFrame(_lblAction.Frame, 8)
@@ -179,6 +181,11 @@ namespace myTNB
                     value = string.Empty;
                 }
                 _lblAction.Text = value;
+                CGSize labelNewSize = CustomUILabel.GetLabelSize(_lblAction, _parentView.Frame.Width - (_padding * 2), 1000f);
+                CGRect frame = _lblAction.Frame;
+                frame.Height = labelNewSize.Height;
+                _lblAction.Frame = frame;
+                AdjustViewFrames();
             }
         }
 

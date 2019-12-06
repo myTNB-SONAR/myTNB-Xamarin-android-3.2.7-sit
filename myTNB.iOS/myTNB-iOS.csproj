@@ -2613,6 +2613,7 @@
     </Compile>
     <Compile Include="Rewards\Saved Rewards\SavedRewardCell.cs" />
     <Compile Include="Rewards\Saved Rewards\SavedRewardsDataSource.cs" />
+    <Compile Include="Session Cache\RewardsCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

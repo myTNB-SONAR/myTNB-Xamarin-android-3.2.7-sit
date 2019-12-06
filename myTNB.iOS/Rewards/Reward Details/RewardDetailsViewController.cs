@@ -43,6 +43,7 @@ namespace myTNB
             base.ViewWillAppear(animated);
             if (!RewardModel.IsRead)
             {
+                RewardModel.IsRead = true;
                 InvokeInBackground(async () =>
                 {
                     await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Read, true);
@@ -61,7 +62,6 @@ namespace myTNB
         {
             NavigationItem.HidesBackButton = true;
             Title = GetI18NValue(RewardsConstants.I18N_Title);
-
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);

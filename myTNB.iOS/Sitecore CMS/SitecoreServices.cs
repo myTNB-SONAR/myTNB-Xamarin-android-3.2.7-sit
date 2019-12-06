@@ -518,7 +518,7 @@ namespace myTNB.SitecoreCMS
                         rewardsEntity.CreateTable();
                         rewardsEntity.InsertListOfItems(rewardsData);
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
-                        NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
+                        //NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
                     }
                 }
             });

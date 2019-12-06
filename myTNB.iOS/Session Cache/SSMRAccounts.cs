@@ -167,6 +167,7 @@ namespace myTNB
         {
             set
             {
+                value = true;
                 NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetBool(value, "SSMROnboarding");
                 sharedPreference.Synchronize();

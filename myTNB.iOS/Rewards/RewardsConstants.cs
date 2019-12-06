@@ -6,6 +6,7 @@ namespace myTNB
         //PageName
         public static string PageName_Rewards = "Rewards";
         public static string PageName_RewardDetails = "RewardDetails";
+        public static string PageName_SavedRewards = "SavedRewards";
 
         //Tags
         public static int Tag_SelectedCategory = 100;
@@ -25,6 +26,7 @@ namespace myTNB
 
         //I18N Keys
         public static string I18N_Title = "title";
+        public static string I18N_ViewAll = "viewAll";
         public static string I18N_RewardPeriod = "rewardPeriod";
         public static string I18N_Location = "location";
         public static string I18N_TNC = "tnc";
@@ -35,6 +37,7 @@ namespace myTNB
         public static string I18N_UseNowPopupMessage = "useNowPopupMessage";
         public static string I18N_UseLater = "useLater";
         public static string I18N_Confirm = "confirm";
+        public static string I18N_NoRewards = "noRewards";
 
         //Img
         public static string Img_HeartIcon = "Heart-Icon";
