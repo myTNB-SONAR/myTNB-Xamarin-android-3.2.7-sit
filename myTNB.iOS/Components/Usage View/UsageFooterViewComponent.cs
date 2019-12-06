@@ -215,6 +215,8 @@ namespace myTNB
                     _lblDate.Hidden = true;
                     _lblCommon.Hidden = false;
                     _lblCommon.Text = amount < 0 ? GetI18NValue(UsageConstants.I18N_PaidExtra) : GetI18NValue(UsageConstants.I18N_ClearedAllBills);
+                    nfloat width = _lblCommon.GetLabelWidth(_width * .8F);
+                    _lblCommon.Frame = new CGRect(_lblCommon.Frame.Location, new CGSize(width, _lblCommon.Frame.Height));
                 }
             }
         }
