@@ -3753,6 +3753,10 @@
     <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataBaseResponse.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ProfileMenu\ProfileMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\ProfileMenuFragmentLayout.axml" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemLayout.axml" />
+    <Compile Include="Src\CompoundView\ProfileMenuItemComponent.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemContentLayout.axml" />
+    <Compile Include="Src\CompoundView\ProfileMenuItemContentComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightGrey"
     android:gravity="center|bottom"
     android:id="@+id/rootView">
     <ScrollView
@@ -11,8 +12,14 @@
         android:layout_width="match_parent"
         android:overScrollMode="never"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView1"
-        android:fillViewport="true"
-        android:background="@color/white">
+        android:id="@+id/profileContentScrollView"
+        android:fillViewport="true">
+        <LinearLayout
+            android:id="@+id/profileMenuItemsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="25px"
+            android:minWidth="25px"
+            android:orientation="vertical"/>
     </ScrollView>
 </LinearLayout>

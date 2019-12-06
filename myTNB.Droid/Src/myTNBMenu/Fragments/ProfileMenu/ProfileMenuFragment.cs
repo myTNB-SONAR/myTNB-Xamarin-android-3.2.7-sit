@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -12,8 +7,10 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using CheeseBind;
 using Java.Lang;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 
@@ -21,6 +18,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 {
     public class ProfileMenuFragment : BaseFragmentCustom
 	{
+        [BindView(Resource.Id.profileMenuItemsContainer)]
+        LinearLayout profileMenuItemsContainer;
+
         const string PAGE_ID = "Profile";
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -80,6 +80,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+
+                ProfileMenuItemComponent myTNBAccountItem = GetMyTNBAccountItems();
+                myTNBAccountItem.SetHeaderTitle("myTNB Account");
+                profileMenuItemsContainer.AddView(myTNBAccountItem);
+
+                ProfileMenuItemComponent item2 = new ProfileMenuItemComponent(Context);
+                item2.SetHeaderTitle("Settings");
+                profileMenuItemsContainer.AddView(item2);
+
+                ProfileMenuItemComponent item3 = new ProfileMenuItemComponent(Context);
+                item3.SetHeaderTitle("Help & Support");
+                profileMenuItemsContainer.AddView(item3);
+
+                ProfileMenuItemComponent item4 = new ProfileMenuItemComponent(Context);
+                item4.SetHeaderTitle("Share");
+                profileMenuItemsContainer.AddView(item4);
             }
             catch (System.Exception e)
             {
@@ -112,6 +128,70 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        private ProfileMenuItemComponent GetMyTNBAccountItems()
+        {
+            ProfileMenuItemComponent myTNBAccountItem = new ProfileMenuItemComponent(Context);
+
+            List<View> myTNBAccountItems = new List<View>();
+
+            ProfileMenuItemContentComponent fullName = new ProfileMenuItemContentComponent(Context);
+            fullName.SetTitle("FULL NAME");
+            fullName.SetValue("Alia Izzah Bte Abdul Rahman");
+            //fullName.SetItemActionVisibility(false);
+            //myTNBAccountItem.AddComponentView(fullName);
+            //myTNBAccountItem.AddSeparator();
+            myTNBAccountItems.Add(fullName);
+
+            ProfileMenuItemContentComponent referenceNumber = new ProfileMenuItemContentComponent(Context);
+            referenceNumber.SetTitle("IC / ROC / PASSPORT NUMBER.");
+            referenceNumber.SetValue("•••••• ••  5214");
+            referenceNumber.SetItemActionVisibility(false);
+            //myTNBAccountItem.AddComponentView(referenceNumber);
+            myTNBAccountItems.Add(referenceNumber);
+
+            ProfileMenuItemContentComponent email = new ProfileMenuItemContentComponent(Context);
+            email.SetTitle("EMAIL");
+            email.SetValue("alia.izzah@email.com");
+            email.SetItemActionVisibility(false);
+            //myTNBAccountItem.AddComponentView(email);
+            myTNBAccountItems.Add(email);
+
+            ProfileMenuItemContentComponent mobileNumber = new ProfileMenuItemContentComponent(Context);
+            mobileNumber.SetTitle("MOBILE NUMBER");
+            mobileNumber.SetValue("+60 12-345 6789");
+            mobileNumber.SetItemActionVisibility(true);
+            mobileNumber.SetItemActionTitle("Update");
+            //myTNBAccountItem.AddComponentView(mobileNumber);
+            myTNBAccountItems.Add(mobileNumber);
+
+            ProfileMenuItemContentComponent password = new ProfileMenuItemContentComponent(Context);
+            password.SetTitle("PASSWORD");
+            password.SetValue("••••••••••••••••");
+            password.SetItemActionVisibility(true);
+            password.SetItemActionTitle("Update");
+            //myTNBAccountItem.AddComponentView(password);
+            myTNBAccountItems.Add(password);
+
+            ProfileMenuItemContentComponent cards = new ProfileMenuItemContentComponent(Context);
+            cards.SetTitle("CREDIT / DEBIT CARDS");
+            cards.SetValue("3");
+            cards.SetItemActionVisibility(true);
+            cards.SetItemActionTitle("Manage");
+            //myTNBAccountItem.AddComponentView(cards);
+            myTNBAccountItems.Add(cards);
+
+            ProfileMenuItemContentComponent electricityAccount = new ProfileMenuItemContentComponent(Context);
+            electricityAccount.SetTitle("ELECTRICITY ACCOUNTS");
+            electricityAccount.SetValue("3");
+            electricityAccount.SetItemActionVisibility(true);
+            electricityAccount.SetItemActionTitle("Manage");
+            //myTNBAccountItem.AddComponentView(electricityAccount);
+            myTNBAccountItems.Add(electricityAccount);
+
+            myTNBAccountItem.AddComponentView(myTNBAccountItems);
+            return myTNBAccountItem;
         }
     }
 }
