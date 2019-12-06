@@ -330,7 +330,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                             s.RemoveSpan(urlSpans[i]);
                             ClickSpan clickableSpan = new ClickSpan()
                             {
-                                textColor = Resources.GetColor(Resource.Color.powerBlue),
+                                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
                                 typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
                             };
                             string url = extractedUrls[i];
@@ -362,7 +362,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                             se.RemoveSpan(seUrlSpans[i]);
                             ClickSpan clickableSpan = new ClickSpan()
                             {
-                                textColor = Resources.GetColor(Resource.Color.powerBlue),
+                                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
                                 typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
                             };
                             string url = extractedUrls[i];
@@ -420,10 +420,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                     txtRewardUsedDateTime.TextFormatted = GetFormattedText(dateTime);
 
-                    txtTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                    txtRewardPeriodTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                    txtRewardLocationTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                    txtRewardConditionTitle.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                    txtTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                    txtRewardPeriodTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                    txtRewardLocationTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                    txtRewardConditionTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
 
                     imgRewardPeriod.SetImageResource(Resource.Drawable.ic_reward_time_used);
                     imgRewardLocation.SetImageResource(Resource.Drawable.ic_reward_locate_used);

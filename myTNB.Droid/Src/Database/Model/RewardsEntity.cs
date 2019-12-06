@@ -227,7 +227,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity ORDER BY TitleOnListing ASC");
+                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity");
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -323,7 +323,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity WHERE CategoryID = ? ORDER BY TitleOnListing ASC", categoryId);
+                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity WHERE CategoryID = ?", categoryId);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {

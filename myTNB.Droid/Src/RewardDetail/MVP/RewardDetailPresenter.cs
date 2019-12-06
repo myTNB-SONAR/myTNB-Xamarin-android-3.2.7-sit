@@ -135,8 +135,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             Canvas canvas = new Canvas(bmpGrayscale);
             Paint paint = new Paint();
 
-            ColorMatrix cm = new ColorMatrix();
-            cm.SetSaturation(0);
+            float[] colorMatrixElements = { 0.33f, 0.33f, 0.33f, 0, 0, 0.33f, 0.33f, 0.33f, 0, 0, 0.33f, 0.33f, 0.33f, 0, 0, 0, 0, 0, 1, 0 };
+            ColorMatrix cm = new ColorMatrix(colorMatrixElements);
             paint.SetColorFilter(new ColorMatrixColorFilter(cm));
             canvas.DrawBitmap(srcImage, 0, 0, paint);
 

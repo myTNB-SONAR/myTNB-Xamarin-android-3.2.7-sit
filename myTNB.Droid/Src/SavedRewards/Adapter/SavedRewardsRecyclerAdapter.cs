@@ -1,5 +1,6 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
@@ -224,6 +225,15 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
                             txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(34f);
                         }
 
+                        if (rewardsList[position].IsUsed)
+                        {
+                            vh.txtTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.charcoalGrey)));
+                        }
+                        else
+                        {
+                            vh.txtTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
+                        }
+
                     }
 				}
 				catch (Exception e)
@@ -273,11 +283,11 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 		{
             Bitmap bmpGrayscale = Bitmap.CreateBitmap(srcImage.Width, srcImage.Height, Bitmap.Config.Argb8888);
 
-			Canvas canvas = new Canvas(bmpGrayscale);
+            Canvas canvas = new Canvas(bmpGrayscale);
 			Paint paint = new Paint();
 
-			ColorMatrix cm = new ColorMatrix();
-			cm.SetSaturation(0);
+            float[] colorMatrixElements = { 0.33f, 0.33f, 0.33f, 0, 0, 0.33f, 0.33f, 0.33f, 0, 0, 0.33f, 0.33f, 0.33f, 0, 0, 0, 0, 0, 1, 0 };
+            ColorMatrix cm = new ColorMatrix(colorMatrixElements);
 			paint.SetColorFilter(new ColorMatrixColorFilter(cm));
 			canvas.DrawBitmap(srcImage, 0, 0, paint);
 
