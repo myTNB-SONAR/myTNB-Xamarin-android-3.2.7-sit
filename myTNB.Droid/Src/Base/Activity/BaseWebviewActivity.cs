@@ -98,6 +98,19 @@ namespace myTNB_Android.Src.Base.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "In-App Browser");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public class MyTNBWebViewClient : WebViewClient
         {
 
@@ -105,19 +118,36 @@ namespace myTNB_Android.Src.Base.Activity
             public ProgressBar progressBar;
             private bool isRedirected = false;
             private string webLink;
+            private string baseUrl;
 
             public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, string mWebLink)
             {
                 this.mActivity = mActivity;
                 this.progressBar = progress;
                 this.webLink = mWebLink;
+                string[] countStr = mWebLink.Split("/");
+                if (countStr != null && countStr.Length > 3)
+                {
+                    baseUrl = countStr[0] + "/" + countStr[1] + "/" + countStr[2];
+                }
+                else
+                {
+                    this.baseUrl = mWebLink;
+                }
             }
 
             public override bool ShouldOverrideUrlLoading(WebView view, string url)
             {
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
-                    view.LoadUrl(url);
+                    if (url.Contains(baseUrl))
+                    {
+                        view.LoadUrl(url);
+                    }
+                    else
+                    {
+                        view.LoadUrl(webLink);
+                    }
                 }
                 else
                 {

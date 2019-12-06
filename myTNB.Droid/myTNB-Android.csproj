@@ -800,7 +800,6 @@
     <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
-    <Compile Include="Src\PreLogin\Activity\PromotionWebActivity.cs" />
     <Compile Include="Src\Promotions\Activity\PromotionsActivity.cs" />
     <Compile Include="Src\Promotions\Adapter\PromotionListAdapter.cs" />
     <Compile Include="Src\Promotions\Adapter\PromotionPagerAdapter.cs" />

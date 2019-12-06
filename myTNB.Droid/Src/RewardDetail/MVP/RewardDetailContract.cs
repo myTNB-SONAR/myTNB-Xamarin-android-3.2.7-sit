@@ -28,6 +28,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
             Bitmap ToGrayscale(Bitmap srcImage);
 
+            List<string> ExtractUrls(string text);
+
         }
 	}
 }

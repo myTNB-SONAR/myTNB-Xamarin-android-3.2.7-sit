@@ -11,6 +11,7 @@ using Android.Support.V4.Content;
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -128,10 +129,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private string Title = "Rewards";
 
-        private ClickSpan clickableSpan;
-
-        private ClickSpan seClickableSpan;
-
         private int CountDownTimerMinutes = 5;
 
         private int CountDownTimerSecond;
@@ -153,17 +150,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     txtTimeCounter, txtRewardUsedDateTime);
                 btnRewardSave.Clickable = true;
                 isPendingRewardConfirm = false;
-                clickableSpan = new ClickSpan()
-                {
-                    textColor = Resources.GetColor(Resource.Color.powerBlue),
-                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                };
-
-                seClickableSpan = new ClickSpan()
-                {
-                    textColor = Resources.GetColor(Resource.Color.powerBlue),
-                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                };
             }
             catch (Exception e)
             {
@@ -329,15 +315,30 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 {
                     SpannableString s = new SpannableString(txtRewardLocationContent.TextFormatted);
 
-                    clickableSpan.Click += v =>
-                    {
-                        OnClickSpan(item.LocationLabel);
-                    };
                     var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                    int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                    int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                    s.RemoveSpan(urlSpans[0]);
-                    s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+
+                    List<string> extractedUrls = this.presenter.ExtractUrls(item.LocationLabel);
+
+                    if (urlSpans.Length == extractedUrls.Count)
+                    {
+                        for (int i = 0; i < urlSpans.Length; i++)
+                        {
+                            int startIndex = s.GetSpanStart(urlSpans[i]);
+                            int endIndex = s.GetSpanEnd(urlSpans[i]);
+                            s.RemoveSpan(urlSpans[i]);
+                            ClickSpan clickableSpan = new ClickSpan()
+                            {
+                                textColor = Resources.GetColor(Resource.Color.powerBlue),
+                                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                            };
+                            string url = extractedUrls[i];
+                            clickableSpan.Click += v =>
+                            {
+                                OnClickSpan(url);
+                            };
+                            s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                        }
+                    }
                     txtRewardLocationContent.TextFormatted = s;
                     txtRewardLocationContent.MovementMethod = new LinkMovementMethod();
                 }
@@ -346,15 +347,31 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 {
                     SpannableString se = new SpannableString(txtRewardConditionContent.TextFormatted);
 
-                    seClickableSpan.Click += v =>
-                    {
-                        OnClickSpan(item.TandCLabel);
-                    };
                     var seUrlSpans = se.GetSpans(0, se.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                    int seStartFAQLink = se.GetSpanStart(seUrlSpans[0]);
-                    int seEndFAQLink = se.GetSpanEnd(seUrlSpans[0]);
-                    se.RemoveSpan(seUrlSpans[0]);
-                    se.SetSpan(seClickableSpan, seStartFAQLink, seEndFAQLink, SpanTypes.ExclusiveExclusive);
+
+                    List<string> extractedUrls = this.presenter.ExtractUrls(item.TandCLabel);
+
+                    if (seUrlSpans.Length == extractedUrls.Count)
+                    {
+                        for (int i = 0; i < seUrlSpans.Length; i++)
+                        {
+                            int startIndex = se.GetSpanStart(seUrlSpans[i]);
+                            int endIndex = se.GetSpanEnd(seUrlSpans[i]);
+                            se.RemoveSpan(seUrlSpans[i]);
+                            ClickSpan clickableSpan = new ClickSpan()
+                            {
+                                textColor = Resources.GetColor(Resource.Color.powerBlue),
+                                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                            };
+                            string url = extractedUrls[i];
+                            clickableSpan.Click += v =>
+                            {
+                                OnClickSpan(url);
+                            };
+                            se.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                        }
+                    }
+
                     txtRewardConditionContent.TextFormatted = se;
                     txtRewardConditionContent.MovementMethod = new LinkMovementMethod();
                 }
@@ -509,29 +526,23 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
         }
 
-        public void OnClickSpan(string textMessage)
+        public void OnClickSpan(string url)
         {
-            if (textMessage != null && (textMessage.Contains("http") || textMessage.Contains("www.")))
+            if (!string.IsNullOrEmpty(url) && (url.Contains("http") || url.Contains("www.")))
             {
-                //Launch webview
-                int startIndex = textMessage.LastIndexOf("=") + 2;
-                int lastIndex = textMessage.LastIndexOf("\"");
-                int lengthOfId = (lastIndex - startIndex);
-                if (lengthOfId < textMessage.Length)
+                if (!this.GetIsClicked())
                 {
-                    string url = textMessage.Substring(startIndex, lengthOfId);
-                    if (!string.IsNullOrEmpty(url))
-                    {
-                        if (!url.Contains("http"))
-                        {
-                            url = "http://" + url;
-                        }
+                    this.SetIsClicked(true);
 
-                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-                        webIntent.PutExtra(Constants.IN_APP_LINK, url);
-                        webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-                        StartActivity(webIntent);
+                    if (!url.Contains("http"))
+                    {
+                        url = "http://" + url;
                     }
+
+                    Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                    webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                    webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+                    StartActivity(webIntent);
                 }
             }
         }

@@ -9,6 +9,7 @@ using Android.Graphics;
 using Android.Icu.Text;
 using Android.Util;
 using Java.Util;
+using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
@@ -220,7 +221,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         public void UpdateRewardSave(string itemID , bool flag)
         {
-            DateTime currentDate = DateTime.Now.ToUniversalTime();
+            DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
             string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             if (!flag)
@@ -234,7 +235,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         public void UpdateRewardUsed(string itemID, bool flag)
         {
-            DateTime currentDate = DateTime.Now.ToUniversalTime();
+            DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
             string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             if (!flag)
@@ -244,6 +245,37 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
             wtManager.UpdateIsUsedItem(itemID, flag, formattedDate);
             // Update api calling
+        }
+
+        public List<string> ExtractUrls(string text)
+        {
+            List<string> containedUrls = new List<string>();
+            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            Pattern pattern = Pattern.Compile(urlRegex);
+            Matcher urlMatcher = pattern.Matcher(text);
+
+            try
+            {
+                while (urlMatcher.Find())
+                {
+                    string urlStr = urlMatcher.Group();
+                    if (urlStr.StartsWith("(") && urlStr.EndsWith(")"))
+                    {
+                        urlStr = urlStr.Substring(1, urlStr.Length - 1);
+                    }
+
+                    if (!containedUrls.Contains(urlStr))
+                    {
+                        containedUrls.Add(urlStr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return containedUrls;
         }
     }
 }

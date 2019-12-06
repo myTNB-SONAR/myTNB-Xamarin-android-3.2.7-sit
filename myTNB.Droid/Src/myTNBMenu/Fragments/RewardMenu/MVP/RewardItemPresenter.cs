@@ -126,7 +126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public void UpdateRewardSave(string itemID, bool flag)
         {
-            DateTime currentDate = DateTime.Now.ToUniversalTime();
+            DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
             string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             if (!flag)

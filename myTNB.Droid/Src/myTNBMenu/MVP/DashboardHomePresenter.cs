@@ -60,7 +60,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private static bool isPromoClicked = false;
 
-		public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
+        private static bool isRewardClicked = false;
+
+        public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
 			this.mView = mView;
 			this.mSharedPref = preferences;
@@ -389,6 +391,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
                     this.mView.ShowRewardsMenu();
+
+                    isRewardClicked = true;
+
                     if (this.mView.IsActive())
                     {
                         if (RewardsEntity.HasUnread())
@@ -601,6 +606,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private void OnUpdateRewardUnRead()
         {
+            if (isRewardClicked && !UserSessions.HasRewardsShown(mSharedPref))
+            {
+                UserSessions.DoRewardsShown(mSharedPref);
+            }
+
             if (RewardsEntity.HasUnread())
             {
                 this.mView.ShowUnreadRewards(false);
@@ -611,10 +621,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 this.mView.HideUnreadRewards(false);
 
             }
+
+            isRewardClicked = false;
         }
 
         private void OnResumeUpdateRewardUnRead()
         {
+            if (isRewardClicked && !UserSessions.HasRewardsShown(mSharedPref))
+            {
+                UserSessions.DoRewardsShown(mSharedPref);
+            }
+
             if (RewardsEntity.HasUnread())
             {
                 this.mView.ShowUnreadRewards();
@@ -624,6 +641,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 this.mView.HideUnreadRewards();
             }
+
+            isRewardClicked = false;
         }
 
         public void OnValidateData()
