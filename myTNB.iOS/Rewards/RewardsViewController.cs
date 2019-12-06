@@ -62,11 +62,6 @@ namespace myTNB
             Debug.WriteLine("DEBUG >>> Rewards LanguageDidChange");
             base.LanguageDidChange(notification);
             Title = GetI18NValue(RewardsConstants.I18N_Title);
-            SetSkeletonLoading();
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
-            {
-                ValidateRewards();
-            }
         }
 
         private void OnReceiveRewards(NSNotification notification)
