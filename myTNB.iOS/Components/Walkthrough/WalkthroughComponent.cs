@@ -279,8 +279,8 @@ namespace myTNB
 
                 UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
                     , 0, toggleWidth, toggleHeight));
-                _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeByIndex(0), 0, false);
-                _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeByIndex(1), 1, false);
+                _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeForDisplayByIndex(0), 0, false);
+                _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeForDisplayByIndex(1), 1, false);
                 _toggleBar.TintColor = MyTNBColor.WaterBlue;
                 _toggleBar.SetTitleTextAttributes(new UITextAttributes
                 {
