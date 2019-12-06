@@ -26,6 +26,7 @@ namespace myTNB
 
         public List<DueAmountDataModel> GetAccountListForDashboard(List<CustomerAccountRecordModel> acctsList)
         {
+            if (acctsList == null) { return new List<DueAmountDataModel>(); }
             List<CustomerAccountRecordModel> sortedAccounts = acctsList;
             List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
             if (sortedAccounts != null &&
@@ -106,7 +107,7 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
-            if (acctNoList.Count <= 0 || acctList.Count <= 0)
+            if (acctNoList == null || acctNoList.Count <= 0 || acctList == null || acctList.Count <= 0)
                 return accounts;
 
             foreach (var acct in acctList)
@@ -135,7 +136,7 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
-            if (acctNoList.Count <= 0 || acctList.Count <= 0)
+            if (acctNoList == null || acctNoList.Count <= 0 || acctList == null || acctList.Count <= 0)
                 return accounts;
 
             foreach (var acct in acctList)
@@ -158,7 +159,7 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
-            if (acctList.Count <= 0)
+            if (acctList == null || acctList.Count <= 0)
                 return accounts;
 
             foreach (var acct in acctList)
@@ -293,7 +294,8 @@ namespace myTNB
             else
             {
                 var serviceList = DataManager.DataManager.SharedInstance.ActiveServicesList;
-                bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
+                bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList != null &&
+                    DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
                 if (serviceList != null &&
                     serviceList.Count > 0)
                 {
