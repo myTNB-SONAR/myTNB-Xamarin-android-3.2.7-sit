@@ -402,7 +402,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                     try
                     {
-                        DateTime dateTimeParse = DateTime.ParseExact(item.IsUsedDateTime, "yyyy-MM-dd HH:mm:ss.fff",
+                        DateTime dateTimeParse = DateTime.ParseExact(item.IsUsedDateTime, "MM/d/yyyy H:mm:ss tt",
                                 CultureInfo.InvariantCulture, DateTimeStyles.None);
                         TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
                         DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);

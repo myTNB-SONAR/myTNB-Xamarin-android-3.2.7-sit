@@ -13,6 +13,8 @@ namespace myTNB_Android.Src.SavedRewards.MVP
         public interface ISavedRewardsPresenter
         {
             List<RewardsModel> GetActiveSavedRewardList();
+
+            void UpdateRewardRead(string itemID, bool flag);
         }
     }
 }

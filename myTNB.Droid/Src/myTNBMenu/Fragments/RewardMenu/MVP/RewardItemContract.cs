@@ -19,6 +19,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             List<RewardsModel> GetActiveRewardList(string categoryID);
 
             void UpdateRewardSave(string itemID, bool flag);
+
+            void UpdateRewardRead(string itemID, bool flag);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Android.App;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
 
@@ -10,7 +11,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             void SetRewardDetail(RewardsModel item);
             void SetRewardImage(Bitmap imgSrc);
-		}
+
+        }
 
 		public interface IRewardDetailPresenter
         {
@@ -25,8 +27,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             void UpdateRewardSave(string itemID, bool flag);
 
             void UpdateRewardUsed(string itemID, bool flag);
-
-            Bitmap ToGrayscale(Bitmap srcImage);
 
             List<string> ExtractUrls(string text);
 

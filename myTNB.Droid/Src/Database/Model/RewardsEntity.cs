@@ -49,6 +49,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Read")]
         public bool Read { set; get; }
 
+        [Column("ReadDateTime")]
+        public string ReadDateTime { set; get; }
+
         [Column("IsUsed")]
         public bool IsUsed { set; get; }
 
@@ -113,6 +116,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.CategoryID = obj.CategoryID;
                     item.Description = obj.Description;
                     item.Read = obj.Read;
+                    item.ReadDateTime = string.IsNullOrEmpty(obj.ReadDateTime) ? "" : obj.ReadDateTime;
                     item.IsUsed = obj.IsUsed;
                     item.IsUsedDateTime = string.IsNullOrEmpty(obj.IsUsedDateTime) ? "" : obj.IsUsedDateTime;
                     item.TitleOnListing = obj.TitleOnListing;
@@ -223,7 +227,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity");
+                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity ORDER BY TitleOnListing ASC");
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -319,7 +323,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity WHERE CategoryID = ?", categoryId);
+                var existingRecord = db.Query<RewardsEntity>("SELECT * FROM RewardsEntity WHERE CategoryID = ? ORDER BY TitleOnListing ASC", categoryId);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -408,12 +412,14 @@ namespace myTNB_Android.Src.Database.Model
             return null;
         }
 
-        public void UpdateReadItem(string itemID, bool flag)
+        public void UpdateReadItem(string itemID, bool flag, string formattedDate)
         {
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE RewardsEntity SET Read = ? WHERE ID = ?", flag, itemID);
+
+                UpdateReadDateTimeItem(itemID, formattedDate);
             }
             catch (Exception e)
             {
@@ -483,6 +489,19 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE RewardsEntity SET IsUsedDateTime = ? WHERE ID = ?", datetime, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        private void UpdateReadDateTimeItem(string itemID, string datetime)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE RewardsEntity SET ReadDateTime = ? WHERE ID = ?", datetime, itemID);
             }
             catch (Exception e)
             {

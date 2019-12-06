@@ -11,7 +11,12 @@ using Android.Util;
 using Java.Util;
 using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.RewardDetail.MVP
@@ -24,10 +29,13 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private RewardsEntity mRewardsEntity;
 
+        private RewardServiceImpl mApi;
+
         public RewardDetailPresenter(RewardDetailContract.IRewardDetailView view, ISharedPreferences pref)
         {
             this.mView = view;
             this.mPref = pref;
+            this.mApi = new RewardServiceImpl();
         }
 
         public void FetchRewardImage(RewardsModel item)
@@ -58,6 +66,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     fetchItem.CategoryID = item.CategoryID;
                     fetchItem.Description = item.Description;
                     fetchItem.Read = item.Read;
+                    fetchItem.ReadDateTime = item.ReadDateTime;
                     fetchItem.IsUsed = item.IsUsed;
                     fetchItem.IsUsedDateTime = item.IsUsedDateTime;
                     fetchItem.TitleOnListing = item.TitleOnListing;
@@ -118,9 +127,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
         }
 
-        public Bitmap ToGrayscale(Bitmap srcImage)
+        private Bitmap ToGrayscale(Bitmap srcImage)
         {
-
             Bitmap bmpGrayscale = Bitmap.CreateBitmap(srcImage.Width, srcImage.Height, Bitmap.Config.Argb8888);
 
             Canvas canvas = new Canvas(bmpGrayscale);
@@ -223,28 +231,30 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
-            string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            string formattedDate = currentDate.ToString();
             if (!flag)
             {
                 formattedDate = "";
 
             }
             wtManager.UpdateIsSavedItem(itemID, flag, formattedDate);
-            // Update api calling
+
+            _ = OnUpdateReward(itemID);
         }
 
         public void UpdateRewardUsed(string itemID, bool flag)
         {
             DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
-            string formattedDate = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            string formattedDate = currentDate.ToString();
             if (!flag)
             {
                 formattedDate = "";
 
             }
             wtManager.UpdateIsUsedItem(itemID, flag, formattedDate);
-            // Update api calling
+
+            _ = OnUpdateReward(itemID);
         }
 
         public List<string> ExtractUrls(string text)
@@ -276,6 +286,58 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
 
             return containedUrls;
+        }
+
+        private async Task OnUpdateReward(string itemID)
+        {
+            try
+            {
+                // Update api calling
+                RewardsEntity wtManager = new RewardsEntity();
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = currentItem.ReadDateTime,
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = currentItem.IsSavedDateTime,
+                    Redeemed = currentItem.IsUsed,
+                    RedeemedDate = currentItem.IsUsedDateTime
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

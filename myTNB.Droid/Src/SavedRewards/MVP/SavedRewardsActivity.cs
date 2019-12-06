@@ -138,8 +138,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
                 {
                     items[e].Read = true;
                     mRewardsRecyclerAdapter.NotifyItemChanged(e);
-                    RewardsEntity wtManager = new RewardsEntity();
-                    wtManager.UpdateReadItem(items[e].ID, items[e].Read);
+                    this.presenter.UpdateRewardRead(items[e].ID, items[e].Read);
                 }
 
                 RewardsMenuUtils.OnSetRefreshAll(true);

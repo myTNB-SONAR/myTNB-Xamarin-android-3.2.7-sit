@@ -1,7 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.Content;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SavedRewards.MVP
 {
@@ -13,10 +21,13 @@ namespace myTNB_Android.Src.SavedRewards.MVP
 
         private RewardsEntity mRewardsEntity;
 
+        private RewardServiceImpl mApi;
+
         public SavedRewardsPresenter(SavedRewardsContract.ISavedRewardsView view, ISharedPreferences pref)
         {
             this.mView = view;
             this.mPref = pref;
+            this.mApi = new RewardServiceImpl();
         }
 
         public List<RewardsModel> GetActiveSavedRewardList()
@@ -55,6 +66,74 @@ namespace myTNB_Android.Src.SavedRewards.MVP
             }
 
             return list;
+        }
+
+
+        public void UpdateRewardRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            RewardsEntity wtManager = new RewardsEntity();
+            string formattedDate = currentDate.ToString();
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+
+            _ = OnUpdateReward(itemID);
+        }
+
+        private async Task OnUpdateReward(string itemID)
+        {
+            try
+            {
+                // Update api calling
+                RewardsEntity wtManager = new RewardsEntity();
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = currentItem.ReadDateTime,
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = currentItem.IsSavedDateTime,
+                    Redeemed = currentItem.IsUsed,
+                    RedeemedDate = currentItem.IsUsedDateTime
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
     }

@@ -4077,6 +4077,14 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Base\Activity\BaseWebviewActivity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Request\AddUpdateRewardRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Model\AddUpdateRewardModel.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Response\AddUpdateRewardResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\IAddUpdateRewardApi.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\RewardServiceImpl.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\IGetUserRewardsApi.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Request\GetUserRewardsRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Response\GetUserRewardsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4448,6 +4456,9 @@
     <Folder Include="Src\SavedRewards\Adapter\" />
     <Folder Include="Src\RewardDetail\" />
     <Folder Include="Src\RewardDetail\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Api\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Request\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Response\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

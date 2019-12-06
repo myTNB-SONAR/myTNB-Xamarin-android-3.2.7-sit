@@ -442,22 +442,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         }
                         else
                         {
-                            this.presenter.CheckRewardsCache();
+                            _ = this.presenter.OnGetUserRewardList();
                         }
                     }
                     else
                     {
-                        this.presenter.CheckRewardsCache();
+                        _ = this.presenter.OnGetUserRewardList();
                     }
                 }
                 else
                 {
-                    this.presenter.CheckRewardsCache();
+                    _ = this.presenter.OnGetUserRewardList();
                 }
             }
             catch (System.Exception e)
             {
-                this.presenter.CheckRewardsCache();
+                _ = this.presenter.OnGetUserRewardList();
                 Utility.LoggingNonFatalError(e);
             }
         }

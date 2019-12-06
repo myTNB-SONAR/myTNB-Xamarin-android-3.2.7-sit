@@ -42,6 +42,7 @@ namespace myTNB.SitecoreCMS.Model
         public bool IsSaved { set; get; }
         public string IsSavedDateTime { set; get; }
         public bool Read { set; get; }
+        public string ReadDateTime { set; get; }
         public bool IsUsed { set; get; }
         public string IsUsedDateTime { set; get; }
         public string RewardUseWithinTime { set; get; }

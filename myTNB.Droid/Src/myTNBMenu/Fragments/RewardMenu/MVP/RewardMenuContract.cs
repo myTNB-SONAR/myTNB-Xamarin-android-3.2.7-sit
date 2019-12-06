@@ -29,6 +29,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             Task OnGetRewardsTimeStamp();
 
             void CheckRewardsCache();
+
+            Task OnGetUserRewardList();
         }
 	}
 }

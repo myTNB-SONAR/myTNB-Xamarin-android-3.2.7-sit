@@ -300,7 +300,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
         private Bitmap ToGrayscale(Bitmap srcImage)
         {
-
             Bitmap bmpGrayscale = Bitmap.CreateBitmap(srcImage.Width, srcImage.Height, Bitmap.Config.Argb8888);
 
             Canvas canvas = new Canvas(bmpGrayscale);
