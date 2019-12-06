@@ -31,6 +31,7 @@
 	<array>
 		<string>Fonts/MuseoSans_500.otf</string>
 		<string>Fonts/MuseoSans-300.otf</string>
+		<string>Fonts/MuseoSans-300Italic.otf</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.</string>

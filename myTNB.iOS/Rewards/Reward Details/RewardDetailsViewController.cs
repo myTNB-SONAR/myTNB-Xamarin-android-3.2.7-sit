@@ -90,6 +90,13 @@ namespace myTNB
 
         private void PrepareDetailView(bool isRewardUsed = false)
         {
+            foreach (var view in _scrollView.Subviews)
+            {
+                if (view != null)
+                {
+                    view.RemoveFromSuperview();
+                }
+            }
             UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(180F)))
             {
                 BackgroundColor = UIColor.Clear,
@@ -148,7 +155,7 @@ namespace myTNB
 
             nfloat viewWidth = ViewWidth - (BaseMarginWidth16 * 2);
 
-            UITextView titleTextView = CreateHTMLContent(RewardModel.Title, true);
+            UITextView titleTextView = CreateHTMLContent(RewardModel.Title, true, isRewardUsed);
             CGSize titleTextViewSize = titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(titleTextView, titleTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(titleTextView, GetScaledWidth(16F));
@@ -173,7 +180,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.CharcoalGrey,
                 Text = GetI18NValue(RewardsConstants.I18N_RewardPeriod)
             };
 
@@ -208,7 +215,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.CharcoalGrey,
                 Text = GetI18NValue(RewardsConstants.I18N_Location)
             };
 
@@ -243,7 +250,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.CharcoalGrey,
                 Text = GetI18NValue(RewardsConstants.I18N_TNC)
             };
 
@@ -263,7 +270,7 @@ namespace myTNB
             UpdateScrollViewContentSize(tandCView);
         }
 
-        private UITextView CreateHTMLContent(string textValue, bool isTitle = false)
+        private UITextView CreateHTMLContent(string textValue, bool isTitle = false, bool isRewardUsed = false)
         {
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(textValue
@@ -272,7 +279,7 @@ namespace myTNB
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = isTitle ? MyTNBColor.WaterBlue : MyTNBColor.CharcoalGrey,
+                ForegroundColor = isTitle ? isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.WaterBlue : MyTNBColor.CharcoalGrey,
                 ParagraphStyle = new NSMutableParagraphStyle
                 {
                     Alignment = UITextAlignment.Left,
@@ -330,21 +337,6 @@ namespace myTNB
 
             if (isUsedReward)
             {
-                NSError htmlBodyError = null;
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("<i>Reward used 13 Sep 2019, 2:35 PM.</i>"
-                    , ref htmlBodyError, TNBFont.FONTNAME_300
-                    , (float)GetScaledHeight(14F));
-                NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
-                mutableHTMLBody.AddAttributes(new UIStringAttributes
-                {
-                    ForegroundColor = MyTNBColor.CharcoalGrey,
-                    ParagraphStyle = new NSMutableParagraphStyle
-                    {
-                        Alignment = UITextAlignment.Left,
-                        LineSpacing = 3.0f
-                    }
-                }, new NSRange(0, htmlBody.Length));
-
                 UILabel usedLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(20F)))
                 {
                     BackgroundColor = UIColor.Clear,
@@ -352,7 +344,6 @@ namespace myTNB
                     TextColor = MyTNBColor.CharcoalGrey,
                     TextAlignment = UITextAlignment.Left,
                     Text = "Reward used 13 Sep 2019, 2:35 PM."
-                    //AttributedText = mutableHTMLBody
                 };
 
                 UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(usedLabel.Frame, 16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))
@@ -561,6 +552,7 @@ namespace myTNB
                         _timerContainerView.RemoveFromSuperview();
                         _timerContainerView = null;
                     }
+                    PrepareDetailView(true);
                     AddFooterView(true);
                 }
             });
