@@ -55,6 +55,7 @@ namespace myTNB
         public static string I18N_SelfMeterReading = "selfMeterReading";
         public static string I18N_ViewEBillAndAdvice = "viewEBillAndAdvice";
         public static string I18N_TutorialAccountTitle = "tutorialAccountTitle";
+        public static string I18N_TutorialSingleAcctTitle = "tutorialSingleAcctTitle";
         public static string I18N_TutorialQuickAccessTitle = "tutorialQuickAccessTitle";
         public static string I18N_TutorialQuickActionTitle = "tutorialQuickActionTitle";
         public static string I18N_TutorialNeedHelpTitle = "tutorialNeedHelpTitle";
