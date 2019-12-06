@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Timers;
 using CoreGraphics;
@@ -88,22 +89,16 @@ namespace myTNB
             View.AddSubview(_scrollView);
         }
 
-        private void PrepareDetailView(bool isRewardUsed = false)
+        private void PrepareDetailView()
         {
-            foreach (var view in _scrollView.Subviews)
-            {
-                if (view != null)
-                {
-                    view.RemoveFromSuperview();
-                }
-            }
             UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(180F)))
             {
                 BackgroundColor = UIColor.Clear,
             };
             UIImageView imageView = new UIImageView(imageContainer.Bounds)
             {
-                ContentMode = UIViewContentMode.ScaleAspectFill
+                ContentMode = UIViewContentMode.ScaleAspectFill,
+                Tag = RewardsConstants.Tag_DetailRewardImage
             };
 
             if (RewardModel.Image.IsValid())
@@ -155,7 +150,8 @@ namespace myTNB
 
             nfloat viewWidth = ViewWidth - (BaseMarginWidth16 * 2);
 
-            UITextView titleTextView = CreateHTMLContent(RewardModel.Title, true, isRewardUsed);
+            UITextView titleTextView = CreateHTMLContent(RewardModel.Title, true);
+            titleTextView.Tag = RewardsConstants.Tag_DetailRewardTitle;
             CGSize titleTextViewSize = titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(titleTextView, titleTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(titleTextView, GetScaledWidth(16F));
@@ -167,21 +163,24 @@ namespace myTNB
 
             UIView rewardPeriodView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(titleTextView.Frame, 18F), viewWidth, 0))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = RewardsConstants.Tag_DetailRewardView
             };
 
             UIImageView rpIcon = new UIImageView(new CGRect(0, 0, iconWidth, iconHeight))
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
-                Image = UIImage.FromBundle(RewardsConstants.Img_RewardPeriodIcon)
+                Image = UIImage.FromBundle(RewardsConstants.Img_RewardPeriodIcon),
+                Tag = RewardsConstants.Tag_DetailRewardImage
             };
 
             UILabel rpTitle = new UILabel(new CGRect(GetXLocationFromFrame(rpIcon.Frame, 4F), 0, viewWidth - (rpIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.CharcoalGrey,
-                Text = GetI18NValue(RewardsConstants.I18N_RewardPeriod)
+                TextColor = MyTNBColor.CharcoalGrey,
+                Text = GetI18NValue(RewardsConstants.I18N_RewardPeriod),
+                Tag = RewardsConstants.Tag_DetailRewardTitle
             };
 
             UITextView rpTextView = CreateHTMLContent(RewardModel.PeriodLabel);
@@ -202,21 +201,24 @@ namespace myTNB
 
             UIView locationView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(rewardPeriodView.Frame, 18F), viewWidth, 0))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = RewardsConstants.Tag_DetailRewardView
             };
 
             UIImageView locationIcon = new UIImageView(new CGRect(0, 0, iconWidth, iconHeight))
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
-                Image = UIImage.FromBundle(RewardsConstants.Img_RewardLocationIconn)
+                Image = UIImage.FromBundle(RewardsConstants.Img_RewardLocationIcon),
+                Tag = RewardsConstants.Tag_DetailRewardImage
             };
 
             UILabel locationTitle = new UILabel(new CGRect(GetXLocationFromFrame(locationIcon.Frame, 4F), 0, viewWidth - (locationIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.CharcoalGrey,
-                Text = GetI18NValue(RewardsConstants.I18N_Location)
+                TextColor = MyTNBColor.CharcoalGrey,
+                Text = GetI18NValue(RewardsConstants.I18N_Location),
+                Tag = RewardsConstants.Tag_DetailRewardTitle
             };
 
             UITextView locationTextView = CreateHTMLContent(RewardModel.LocationLabel);
@@ -237,21 +239,24 @@ namespace myTNB
 
             UIView tandCView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(locationView.Frame, 18F), viewWidth, 0))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = RewardsConstants.Tag_DetailRewardView
             };
 
             UIImageView tandCIcon = new UIImageView(new CGRect(0, 0, iconWidth, iconHeight))
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
-                Image = UIImage.FromBundle(RewardsConstants.Img_RewardTCIcon)
+                Image = UIImage.FromBundle(RewardsConstants.Img_RewardTCIcon),
+                Tag = RewardsConstants.Tag_DetailRewardImage
             };
 
             UILabel tandCTitle = new UILabel(new CGRect(GetXLocationFromFrame(tandCIcon.Frame, 4F), 0, viewWidth - (tandCIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.CharcoalGrey,
-                Text = GetI18NValue(RewardsConstants.I18N_TNC)
+                TextColor = MyTNBColor.CharcoalGrey,
+                Text = GetI18NValue(RewardsConstants.I18N_TNC),
+                Tag = RewardsConstants.Tag_DetailRewardTitle
             };
 
             UITextView tandCTextView = CreateHTMLContent(RewardModel.TandCLabel);
@@ -264,13 +269,17 @@ namespace myTNB
             tandCView.AddSubviews(new UIView { tandCIcon, tandCTitle, tandCTextView });
 
             ViewHelper.AdjustFrameSetHeight(tandCView, tandCTextView.Frame.GetMaxY());
-
-            _scrollView.AddSubviews(new UIView { imageContainer, imageView, titleTextView, rewardPeriodView, locationView, tandCView });
+            _scrollView.AddSubview(imageContainer);
+            _scrollView.AddSubview(imageView);
+            _scrollView.AddSubview(titleTextView);
+            _scrollView.AddSubview(rewardPeriodView);
+            _scrollView.AddSubview(locationView);
+            _scrollView.AddSubview(tandCView);
             _lastView = tandCView;
             UpdateScrollViewContentSize(tandCView);
         }
 
-        private UITextView CreateHTMLContent(string textValue, bool isTitle = false, bool isRewardUsed = false)
+        private UITextView CreateHTMLContent(string textValue, bool isTitle = false)
         {
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(textValue
@@ -279,7 +288,7 @@ namespace myTNB
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = isTitle ? isRewardUsed ? MyTNBColor.GreyishBrown : MyTNBColor.WaterBlue : MyTNBColor.CharcoalGrey,
+                ForegroundColor = isTitle ? MyTNBColor.WaterBlue : MyTNBColor.CharcoalGrey,
                 ParagraphStyle = new NSMutableParagraphStyle
                 {
                     Alignment = UITextAlignment.Left,
@@ -515,7 +524,6 @@ namespace myTNB
         private void StartTimer()
         {
             _currentSeconds = RewardModel.RewardUseWithinTime * 60;
-            _currentSeconds = 5;
             TimeSpan time = TimeSpan.FromSeconds(_currentSeconds);
             _timerLabel.Text = time.ToString(@"mm\:ss");
             _useTimer = new Timer
@@ -552,10 +560,99 @@ namespace myTNB
                         _timerContainerView.RemoveFromSuperview();
                         _timerContainerView = null;
                     }
-                    PrepareDetailView(true);
-                    AddFooterView(true);
+                    UpdateView();
                 }
             });
+        }
+
+        private void UpdateView()
+        {
+            foreach (var view in _scrollView.Subviews)
+            {
+                if (view != null)
+                {
+                    UIImageView rewardImageView = view.ViewWithTag(RewardsConstants.Tag_DetailRewardImage) as UIImageView;
+                    if (rewardImageView != null)
+                    {
+                        rewardImageView.Image = ConvertToGrayScale(rewardImageView.Image);
+                    }
+                    UITextView text = view.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) as UITextView;
+                    if (text != null)
+                    {
+                        text.TextColor = MyTNBColor.GreyishBrown;
+                    }
+                    UIView subView = view.ViewWithTag(RewardsConstants.Tag_DetailRewardView) as UIView;
+                    if (subView != null)
+                    {
+                        foreach (var innerView in subView.Subviews)
+                        {
+                            UIView innerSubView = innerView as UIView;
+                            if (innerSubView != null)
+                            {
+                                foreach (var childView in innerSubView.Subviews)
+                                {
+                                    UILabel lbl = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) as UILabel;
+                                    if (lbl != null)
+                                    {
+                                        lbl.TextColor = MyTNBColor.GreyishBrown;
+                                    }
+                                    UIImageView imageView = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardImage) as UIImageView;
+                                    if (imageView != null)
+                                    {
+                                        imageView.Image = ConvertToGrayScale(imageView.Image);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            AddFooterView(true);
+
+            nfloat usedWidth = GetScaledWidth(52F);
+            nfloat usedHeight = GetScaledHeight(24F);
+            UIView usedView = new UIView(new CGRect(_scrollView.Frame.Width - usedWidth - GetScaledWidth(12F), GetScaledHeight(16F), usedWidth, usedHeight))
+            {
+                BackgroundColor = MyTNBColor.GreyishBrown
+            };
+            usedView.Layer.CornerRadius = GetScaledHeight(5F);
+
+            UILabel usedLbl = new UILabel(new CGRect(0, GetYLocationToCenterObject(GetScaledHeight(16F), usedView), 0, GetScaledHeight(16F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = UIColor.White,
+                Text = "Used"
+            };
+
+            CGSize lblSize = usedLbl.SizeThatFits(new CGSize(_scrollView.Frame.Width - (BaseMarginWidth16 * 2), usedLbl.Frame.Height));
+            ViewHelper.AdjustFrameSetWidth(usedView, lblSize.Width + (GetScaledWidth(12F) * 2));
+            ViewHelper.AdjustFrameSetWidth(usedLbl, lblSize.Width);
+            ViewHelper.AdjustFrameSetX(usedLbl, GetXLocationToCenterObject(lblSize.Width, usedView));
+            usedView.AddSubview(usedLbl);
+            _scrollView.AddSubview(usedView);
+        }
+
+        private UIImage ConvertToGrayScale(UIImage image)
+        {
+            using (image)
+            {
+                RectangleF imageRect = new RectangleF(PointF.Empty, (System.Drawing.SizeF)image.Size);
+                var colorSpace = CGColorSpace.CreateDeviceGray();
+                using (var context = new CGBitmapContext(IntPtr.Zero, (int)imageRect.Width, (int)imageRect.Height, 8, 0, colorSpace, CGImageAlphaInfo.None))
+                {
+                    context.DrawImage(imageRect, image.CGImage);
+                    var grayImage = context.ToImage();
+                    using (var maskContext = new CGBitmapContext(null, (int)imageRect.Width, (int)imageRect.Height, 8, 0, null, CGImageAlphaInfo.Only))
+                    {
+                        maskContext.DrawImage(imageRect, image.CGImage);
+                        using (var mask = maskContext.ToImage())
+                        {
+                            return UIImage.FromImage(grayImage.WithMask(mask), image.CurrentScale, image.Orientation);
+                        }
+                    }
+                }
+            }
         }
         #endregion
     }
