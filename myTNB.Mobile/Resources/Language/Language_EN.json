@@ -162,13 +162,14 @@
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "View My<br>Bills / Advices",
     "tutorialAccountTitle": "Your Accounts at a glance.",
+    "tutorialSingleAcctTitle": "Welcome to your new Home view!",
     "tutorialQuickAccessTitle": "Quick account access.",
     "tutorialQuickActionTitle": "Quick actions.",
     "tutorialNeedHelpTitle": "Need help?",
     "tutorialNoAcctDesc": "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.",
-    "tutorialSingleAcctDesc": "View a summary of all your linked electricity accounts here.",
-    "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB.",
-    "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here.",
+    "tutorialSingleAcctDesc": "This is a summary of your linked electricity account. Tap on the account to view your Usage. Tap <b>“Add”</b> to link another account to myTNB.",
+    "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap on your preferred account to view your Usage. Tap <b>“Add”</b> to link another account to myTNB.",
+    "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here. Tap on your preferred account to view your Usage.",
     "tutorialQuickAccessDesc": "Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number.",
     "tutorialQuickActionDesc": "Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!",
     "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
@@ -810,7 +811,9 @@
     "rearrangeToastSuccessMsg": "Your new account arrangement has successfully been saved!"
   },
   "Rewards": {
-    "title": "Rewards"
+    "title": "Rewards",
+    "viewAll": "View All",
+    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
   },
   "RewardDetails": {
     "title": "Rewards",
@@ -824,5 +827,8 @@
     "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
     "useLater": "Use Later",
     "confirm": "Confirm"
+  },
+  "SavedRewards": {
+    "title": "My Saved Rewards"
   }
 }
