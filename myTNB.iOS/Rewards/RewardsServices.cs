@@ -23,24 +23,42 @@ namespace myTNB
         };
 
         private static GetUserRewardsResponseModel _userRewards;
+        private static UpdateRewardsResponseModel _updateRewards;
 
-        public static void UpdateRewardsCache()
+        public static void UpdateRewardsSitecorCache(RewardsItemModel updatedReward = null)
         {
             List<RewardsModel> rewardsList = new RewardsEntity().GetAllItems();
-            if (rewardsList != null && _userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess
-                && _userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
+            if (rewardsList == null) { return; }
+            if (updatedReward != null && updatedReward.RewardId.IsValid()
+                && _updateRewards != null && _updateRewards.d != null && _updateRewards.d.IsSuccess)
             {
-                for (int i = 0; i < _userRewards.d.data.UserRewards.Count; i++)
+                int index = rewardsList.FindIndex(x => x.ID == updatedReward.RewardId);
+                if (index > -1 && index < rewardsList.Count && rewardsList[index] != null)
                 {
-                    RewardsItemModel userReward = _userRewards.d.data.UserRewards[i];
-                    int index = rewardsList.FindIndex(x => x.ID == userReward.RewardId);
-                    if (index > -1 && index < rewardsList.Count && rewardsList[index] != null)
+                    RewardsModel reward = rewardsList[index];
+                    reward.IsRead = updatedReward.Read;
+                    reward.IsSaved = updatedReward.Favourite;
+                    reward.IsUsed = updatedReward.Redeemed;
+                    UpdateRewardItem(reward);
+                }
+            }
+            else
+            {
+                if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess
+                    && _userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
+                {
+                    for (int i = 0; i < _userRewards.d.data.UserRewards.Count; i++)
                     {
-                        RewardsModel reward = rewardsList[index];
-                        reward.IsRead = userReward.Read;
-                        reward.IsSaved = userReward.Favourite;
-                        reward.IsUsed = userReward.Redeemed;
-                        UpdateRewardItem(reward);
+                        RewardsItemModel userReward = _userRewards.d.data.UserRewards[i];
+                        int index = rewardsList.FindIndex(x => x.ID == userReward.RewardId);
+                        if (index > -1 && index < rewardsList.Count && rewardsList[index] != null)
+                        {
+                            RewardsModel reward = rewardsList[index];
+                            reward.IsRead = userReward.Read;
+                            reward.IsSaved = userReward.Favourite;
+                            reward.IsUsed = userReward.Redeemed;
+                            UpdateRewardItem(reward);
+                        }
                     }
                 }
             }
@@ -58,10 +76,10 @@ namespace myTNB
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
-                serviceManager.usrInf,
+                serviceManager.usrInf
                 /*usrInf = new
                 {
-                    eid = "khanwh2@gmail.com",
+                    eid = "reward001@gmail.com",
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                     did = DataManager.DataManager.SharedInstance.UDID,
                     ft = "token",
@@ -77,7 +95,7 @@ namespace myTNB
                 return serviceManager.OnExecuteAPIV6<GetUserRewardsResponseModel>("GetUserRewards", requestParameter);
             });
             _userRewards = response;
-            UpdateRewardsCache();
+            UpdateRewardsSitecorCache();
             return response;
         }
 
@@ -107,7 +125,7 @@ namespace myTNB
                 }
                 reward = new RewardsItemModel
                 {
-                    Email = email,//"khanwh2@gmail.com",
+                    Email = email,//email,//"reward001@gmail.com",
                     RewardId = sitecoreReward.ID,
                     Read = sitecoreReward.IsRead,
                     Favourite = sitecoreReward.IsSaved,
@@ -134,7 +152,7 @@ namespace myTNB
                 serviceManager.usrInf,
                 /*usrInf = new
                 {
-                    eid = "khanwh2@gmail.com",
+                    eid = "reward001@gmail.com",
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                     did = DataManager.DataManager.SharedInstance.UDID,
                     ft = "token",
@@ -150,6 +168,8 @@ namespace myTNB
             {
                 return serviceManager.OnExecuteAPIV6<UpdateRewardsResponseModel>("AddUpdateRewards", requestParameter);
             });
+            _updateRewards = response;
+            UpdateRewardsSitecorCache(reward);
             return response;
         }
         #endregion

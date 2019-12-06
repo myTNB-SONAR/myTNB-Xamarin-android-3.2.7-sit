@@ -148,7 +148,6 @@ namespace myTNB
             {
                 if (_controller != null)
                 {
-                    //_rewardsList[index].IsRead = true;
                     _controller.OnRewardSelection(_rewardsList[index]);
                     _controller.SetReloadProperties(_rewardsList, index);
                 }
