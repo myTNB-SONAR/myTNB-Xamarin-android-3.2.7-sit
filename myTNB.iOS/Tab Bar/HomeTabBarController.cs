@@ -47,6 +47,7 @@ namespace myTNB
             Debug.WriteLine("DEBUG >>> HOME TAB BAR LanguageDidChange");
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             SetTabbarTitle();
+            FetchRewards();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -502,7 +503,7 @@ namespace myTNB
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                         await SitecoreServices.Instance.LoadRewards();
                         GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
-                        //RewardsServices.UpdateRewardsCache();
+                        NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
                         InvokeOnMainThread(() =>
                         {
                             UpdateRewardsTabBarIcon();

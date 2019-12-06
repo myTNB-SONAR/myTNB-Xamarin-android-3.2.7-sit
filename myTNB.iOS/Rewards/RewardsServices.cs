@@ -58,8 +58,8 @@ namespace myTNB
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
-                // serviceManager.usrInf,
-                usrInf = new
+                serviceManager.usrInf,
+                /*usrInf = new
                 {
                     eid = "khanwh2@gmail.com",
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
@@ -70,7 +70,7 @@ namespace myTNB
                     sec_auth_k2 = string.Empty,
                     ses_param1 = string.Empty,
                     ses_param2 = string.Empty
-                }
+                }*/
             };
             GetUserRewardsResponseModel response = await Task.Run(() =>
             {
@@ -98,9 +98,16 @@ namespace myTNB
 
             if (reward == null)
             {
+                string email = DataManager.DataManager.SharedInstance.User.Email ?? string.Empty;
+                if (string.IsNullOrEmpty(email) && DataManager.DataManager.SharedInstance.UserEntity != null &&
+                    DataManager.DataManager.SharedInstance.UserEntity.Count > 0 &&
+                    DataManager.DataManager.SharedInstance.UserEntity[0] != null)
+                {
+                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email ?? string.Empty;
+                }
                 reward = new RewardsItemModel
                 {
-                    Email = "khanwh2@gmail.com",
+                    Email = email,//"khanwh2@gmail.com",
                     RewardId = sitecoreReward.ID,
                     Read = sitecoreReward.IsRead,
                     Favourite = sitecoreReward.IsSaved,
@@ -124,8 +131,8 @@ namespace myTNB
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
-                // serviceManager.usrInf,
-                usrInf = new
+                serviceManager.usrInf,
+                /*usrInf = new
                 {
                     eid = "khanwh2@gmail.com",
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
@@ -136,7 +143,7 @@ namespace myTNB
                     sec_auth_k2 = string.Empty,
                     ses_param1 = string.Empty,
                     ses_param2 = string.Empty
-                },
+                },*/
                 reward
             };
             UpdateRewardsResponseModel response = await Task.Run(() =>

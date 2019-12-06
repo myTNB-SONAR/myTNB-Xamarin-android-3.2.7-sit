@@ -1,8 +1,6 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.Dashboard.DashboardComponents;
 using myTNB.DataManager;
-using myTNB.MyAccount;
 using myTNB.Profile;
 using myTNB.Registration;
 using myTNB.SitecoreCMS;
@@ -21,13 +19,12 @@ namespace myTNB
         private UILabel _lblAppVersion;
         private bool _isSitecoreDone, _isMasterDataDone;
         private GenericSelectorViewController languageViewController;
-
+        private CustomUIButtonV2 _btnLogout;
         private UITableView _profileTableview;
 
         public override void ViewDidLoad()
         {
             PageName = ProfileConstants.Pagename_Profile;
-            // NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             _isSitecoreDone = false;
             _isMasterDataDone = false;
@@ -60,6 +57,7 @@ namespace myTNB
             base.LanguageDidChange(notification);
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _lblAppVersion.Text = Version;
+            _btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
         }
 
         private void OnGetRegisteredCards()
@@ -185,13 +183,13 @@ namespace myTNB
             };
 
             UIView logoutView = new UIView(new CGRect(0, GetScaledHeight(38), ViewWidth, GetScaledHeight(80))) { BackgroundColor = UIColor.White };
-            CustomUIButtonV2 btnLogout = new CustomUIButtonV2
+            _btnLogout = new CustomUIButtonV2
             {
                 Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen
             };
-            btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
-            btnLogout.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
+            _btnLogout.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("Logout");
                 UIAlertController alert = UIAlertController.Create(GetI18NValue(ProfileConstants.I18N_Logout)
@@ -201,15 +199,17 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
                         storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
-                    UINavigationController navController = new UINavigationController(viewController);
-                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
                     PresentViewController(navController, true, null);
                 }));
                 alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null));
                 alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(alert, animated: true, completionHandler: null);
             }));
-            logoutView.AddSubview(btnLogout);
+            logoutView.AddSubview(_btnLogout);
             footerView.AddSubviews(new UIView[] { _lblAppVersion, logoutView });
             _profileTableview.TableFooterView = footerView;
         }

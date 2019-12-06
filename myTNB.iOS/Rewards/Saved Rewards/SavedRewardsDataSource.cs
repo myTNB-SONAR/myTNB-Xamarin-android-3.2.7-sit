@@ -71,29 +71,37 @@ namespace myTNB
                                 cell.ActivityIndicator = null;
                                 cell.ActivityIndicator = new ActivityIndicatorComponent(cell.RewardImageVIew);
                             }
-                            cell.ActivityIndicator.Show();
-                            NSUrl url = new NSUrl(reward.Image);
-                            NSUrlSession session = NSUrlSession
-                                .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-                            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+                            NSData imgData = RewardsCache.GetImage(reward.ID);
+                            if (imgData != null)
                             {
-                                InvokeOnMainThread(() =>
+                                cell.RewardImageVIew.Image = UIImage.LoadFromData(imgData);
+                            }
+                            else
+                            {
+                                cell.ActivityIndicator.Show();
+                                NSUrl url = new NSUrl(reward.Image);
+                                NSUrlSession session = NSUrlSession
+                                    .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                                NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
                                 {
-                                    if (error == null && response != null && data != null)
+                                    InvokeOnMainThread(() =>
                                     {
-                                        if (cell.Tag == indexPath.Row)
+                                        if (error == null && response != null && data != null)
                                         {
-                                            cell.RewardImageVIew.Image = UIImage.LoadFromData(data);
+                                            if (cell.Tag == indexPath.Row)
+                                            {
+                                                cell.RewardImageVIew.Image = UIImage.LoadFromData(data);
+                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
-                                    }
-                                    cell.ActivityIndicator.Hide();
+                                        else
+                                        {
+                                            cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                        }
+                                        cell.ActivityIndicator.Hide();
+                                    });
                                 });
-                            });
-                            dataTask.Resume();
+                                dataTask.Resume();
+                            }
                         }
                         catch (Exception e)
                         {

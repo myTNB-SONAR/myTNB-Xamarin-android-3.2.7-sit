@@ -13,6 +13,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = RewardsConstants.PageName_SavedRewards;
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
@@ -32,9 +33,7 @@ namespace myTNB
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            //NavigationItem.Title = GetI18NValue(RewardsConstants.I18N_Rewards);
-            NavigationItem.Title = "My Saved Rewards";
-
+            Title = GetI18NValue(RewardsConstants.I18N_Title);
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);

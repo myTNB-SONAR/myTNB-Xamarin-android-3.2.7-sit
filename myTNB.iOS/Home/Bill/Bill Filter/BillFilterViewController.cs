@@ -83,7 +83,8 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
-                Text = FilterTypes[FilterIndex]
+                Text = FilterTypes != null && FilterTypes.Count > 0 && FilterIndex < FilterTypes.Count
+                    ? FilterTypes[FilterIndex] : string.Empty
             };
             selectorView.AddSubview(_typeValueLabel);
 
@@ -104,11 +105,8 @@ namespace myTNB
 
             nfloat footerRatio = 80.0f / 320.0f;
             nfloat footerHeight = ViewWidth * footerRatio;
-            nfloat footerYPos = ViewHeight - footerHeight;
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                footerHeight += 20f;
-            }
+            nfloat footerYPos = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - footerHeight;
+
             UIView footerContainer = new UIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
             {
                 BackgroundColor = UIColor.White

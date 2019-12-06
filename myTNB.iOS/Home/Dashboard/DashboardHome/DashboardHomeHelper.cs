@@ -294,10 +294,9 @@ namespace myTNB
             else
             {
                 var serviceList = DataManager.DataManager.SharedInstance.ActiveServicesList;
-                bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList != null &&
-                    DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
-                if (serviceList != null &&
-                    serviceList.Count > 0)
+                bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList != null
+                    && DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
+                if (serviceList != null && serviceList.Count > 0)
                 {
                     var multiplier = Math.Ceiling((double)serviceList.Count / 3);
                     tableViewCellHeight += cardHeight * (nfloat)multiplier;

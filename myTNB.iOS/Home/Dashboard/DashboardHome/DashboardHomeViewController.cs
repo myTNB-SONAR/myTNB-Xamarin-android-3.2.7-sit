@@ -381,6 +381,8 @@ namespace myTNB
                 AmountDueCache.Reset();
                 _accountListViewController.PrepareAccountList();
             }
+            DataManager.DataManager.SharedInstance.ServicesList = null;
+            DataManager.DataManager.SharedInstance.HelpList = null;
             OnLoadHomeData();
         }
 
