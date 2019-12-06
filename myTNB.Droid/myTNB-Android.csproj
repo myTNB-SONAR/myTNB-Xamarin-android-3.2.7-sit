@@ -4085,6 +4085,7 @@
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\IGetUserRewardsApi.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Request\GetUserRewardsRequest.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Response\GetUserRewardsResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Async\SitecoreRewardAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

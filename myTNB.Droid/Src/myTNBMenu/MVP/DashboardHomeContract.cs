@@ -173,6 +173,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void HideUnreadRewards();
 
             void ShowRewardsMenu();
+
+            void OnCheckRewardTab();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -228,6 +230,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             int CheckCurrentDashboardMenu();
 
             void BillMenuStartRefresh();
+
+            void OnResumeUpdateRewardUnRead();
         }
 	}
 }

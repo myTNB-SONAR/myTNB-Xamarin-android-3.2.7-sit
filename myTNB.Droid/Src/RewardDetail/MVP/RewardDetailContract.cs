@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
@@ -11,6 +12,14 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             void SetRewardDetail(RewardsModel item);
             void SetRewardImage(Bitmap imgSrc);
+
+            void OnCountDownReward();
+
+            void ShowProgressDialog();
+
+            void HideProgressDialog();
+
+            void ShowRetryOptionsApiException();
 
         }
 
@@ -26,7 +35,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
             void UpdateRewardSave(string itemID, bool flag);
 
-            void UpdateRewardUsed(string itemID, bool flag);
+            Task UpdateRewardUsed(string itemID);
 
             List<string> ExtractUrls(string text);
 

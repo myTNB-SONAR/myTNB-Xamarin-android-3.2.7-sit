@@ -1302,5 +1302,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
             }
         }
+
+        public void OnCheckRewardTab()
+        {
+            if (this.mPresenter != null)
+            {
+                this.mPresenter.OnResumeUpdateRewardUnRead();
+            }
+        }
     }
 }

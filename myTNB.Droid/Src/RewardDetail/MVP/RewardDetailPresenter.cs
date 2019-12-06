@@ -18,6 +18,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.Utils;
+using Refit;
 
 namespace myTNB_Android.Src.RewardDetail.MVP
 {
@@ -240,21 +241,92 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             wtManager.UpdateIsSavedItem(itemID, flag, formattedDate);
 
             _ = OnUpdateReward(itemID);
+
         }
 
-        public void UpdateRewardUsed(string itemID, bool flag)
+        public async Task UpdateRewardUsed(string itemID)
         {
-            DateTime currentDate = DateTime.UtcNow;
-            RewardsEntity wtManager = new RewardsEntity();
-            string formattedDate = currentDate.ToString();
-            if (!flag)
+            try
             {
-                formattedDate = "";
+                this.mView.ShowProgressDialog();
 
+                DateTime currentDate = DateTime.UtcNow;
+                RewardsEntity wtManager = new RewardsEntity();
+                string formattedDate = currentDate.ToString();
+
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = currentItem.ReadDateTime,
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = currentItem.IsSavedDateTime,
+                    Redeemed = true,
+                    RedeemedDate = formattedDate
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+                this.mView.HideProgressDialog();
+
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                {
+                    wtManager.UpdateIsUsedItem(itemID, true, formattedDate);
+                    this.mView.OnCountDownReward();
+                }
+                else
+                {
+                    // Show Error Message
+                    this.mView.ShowRetryOptionsApiException();
+                }
             }
-            wtManager.UpdateIsUsedItem(itemID, flag, formattedDate);
-
-            _ = OnUpdateReward(itemID);
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideProgressDialog();
+                // Show Error Message
+                this.mView.ShowRetryOptionsApiException();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                // Show Error Message
+                this.mView.ShowRetryOptionsApiException();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideProgressDialog();
+                // Show Error Message
+                this.mView.ShowRetryOptionsApiException();
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public List<string> ExtractUrls(string text)

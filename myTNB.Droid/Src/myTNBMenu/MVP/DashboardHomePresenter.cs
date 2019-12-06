@@ -449,7 +449,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
 				new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
-				LaunchViewActivity.MAKE_INITIAL_CALL = false;
+                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
 
 			if (currentBottomNavigationMenu == Resource.Id.menu_promotion || currentBottomNavigationMenu == Resource.Id.menu_reward || currentBottomNavigationMenu == Resource.Id.menu_more)
@@ -625,7 +626,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             isRewardClicked = false;
         }
 
-        private void OnResumeUpdateRewardUnRead()
+        public void OnResumeUpdateRewardUnRead()
         {
             if (isRewardClicked && !UserSessions.HasRewardsShown(mSharedPref))
             {

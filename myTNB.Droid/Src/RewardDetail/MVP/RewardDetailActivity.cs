@@ -139,6 +139,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private bool isPendingRewardConfirm = false;
 
+        private LoadingOverlay loadingOverlay;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -596,19 +598,51 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                         {
                             item.SetVisible(false);
                         }
-                        OnCountDownReward();
+                        this.presenter.UpdateRewardUsed(LocalItem.ID);
                     })
                     .SetSecondaryCTALabel("Confirm")
                     .Build().Show();
             }
         }
 
-        private void OnCountDownReward()
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnCountDownReward()
         {
             try
             {
                 LocalItem.IsUsed = true;
-                this.presenter.UpdateRewardUsed(LocalItem.ID, true);
                 if (!string.IsNullOrEmpty(LocalItem.RewardUseWithinTime))
                 {
                     try
@@ -692,6 +726,31 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                 txtTimeCounter.Text = str;
             });
+        }
+
+        private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException()
+        {
+            try
+            {
+                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+                {
+                    mApiExcecptionSnackBar.Dismiss();
+                }
+
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
+                .SetAction("Close", delegate
+                {
+
+                    mApiExcecptionSnackBar.Dismiss();
+                }
+                );
+                mApiExcecptionSnackBar.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
