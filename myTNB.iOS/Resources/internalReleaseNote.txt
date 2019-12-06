@@ -1,14 +1,9 @@
 Sprint 3 SIT Build
 
-[Story] 2752: [Multi language Support (BM) - M1] As a myTNB App user, I can receive in app and push notification in my preferred language.
-[Story] 2753: [Multi language Support (BM) - M2] As a myTNB App user, I can manage my account and navigate through different screens in my preferred language.
-[Story] 2754: [Multi language Support (BM) - M3] As a myTNB App user, I can navigate the app home screen, dashboards, itemised billing and more all in my preferred language.
-[Story] 2756: [Multi language Support (BM) - M4] As a myTNB App user, I can verify phone number and view the SSMR related information in my preferred language.
-[Story] 2757: [Multi language Support (BM) - M5] As a myTNB App user, I can apply for SSMR in my preferred language if I am eligible for it.
-[Story] 2857: [Multi language Support (BM) - M6] As a myTNB App user, I want to view all the updated features in my preferred language.
-[Story] 861 : [Multi language Support (BM)] As a myTNB App user, I can choose my preferred language for ease of navigation
+[Task] Latest build for Multilingual
+[Task] Profile entry point update
 
-Additional UI Fixes.
+Non-testable: Rewards
 
 Note to tester.
 Please test the following.
@@ -22,4 +17,3 @@ Please test the following.
 	ie. Current app is Sprint 3. Going to Sprint 2 build, app should be uninstalled first.
 7. For all defects multilingual defects, please assign to Ron for assessment.
 8. Android and iOS have different release notes. Please check it first before raising a defect.
-9. This app was compiled using iOS 13 SDK to test app compatibility.
