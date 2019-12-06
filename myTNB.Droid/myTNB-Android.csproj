@@ -3751,6 +3751,8 @@
     <Compile Include="Src\MyTNBService\Request\CustomerAccountListRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataBaseResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ProfileMenu\ProfileMenuFragment.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuFragmentLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4120,6 +4122,7 @@
     <Folder Include="Src\MyTNBService\ServiceImpl\" />
     <Folder Include="Src\RearrangeAccount\" />
     <Folder Include="Src\RearrangeAccount\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

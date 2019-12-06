@@ -28,6 +28,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
 using myTNB_Android.Src.MyTNBService.Notification;
@@ -220,7 +221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
 
             ShowUnreadRewards();
-            
+
             try
             {
                 if (!alreadyStarted)
@@ -533,17 +534,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowMoreMenu()
         {
             ShowBackButton(false);
-            MoreMenuFragment moreMenuFragment = new MoreMenuFragment();
-            currentFragment = moreMenuFragment;
+            ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
+            currentFragment = profileMenuFragment;
             if (mobileNoUpdated)
             {
                 Bundle extras = new Bundle();
                 extras.PutBoolean(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
-                moreMenuFragment.Arguments = extras;
+                profileMenuFragment.Arguments = extras;
                 mobileNoUpdated = false;
             }
             FragmentManager.BeginTransaction()
-                     .Replace(Resource.Id.content_layout, moreMenuFragment)
+                     .Replace(Resource.Id.content_layout, profileMenuFragment)
                      .CommitAllowingStateLoss();
         }
 
