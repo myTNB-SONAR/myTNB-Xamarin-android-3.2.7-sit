@@ -47,9 +47,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
         public void ClearAll()
         {
-            mManager.PopBackStack();
-            mFragmentList = new List<RewardItemFragment>();
-            mFragmentTitleList = new List<string>();
+            try
+            {
+                mManager.PopBackStack();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            try
+            {
+                mFragmentList = new List<RewardItemFragment>();
+                mFragmentTitleList = new List<string>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public View GetTabView(int position)

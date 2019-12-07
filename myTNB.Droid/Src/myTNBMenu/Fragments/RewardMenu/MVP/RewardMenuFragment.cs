@@ -390,6 +390,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     {
                         rewardsSlidingTabs.Visibility = ViewStates.Visible;
                     }
+
+                    try
+                    {
+                        if (RewardsEntity.HasUnread())
+                        {
+                            ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                        }
+                        else
+                        {
+                            ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)

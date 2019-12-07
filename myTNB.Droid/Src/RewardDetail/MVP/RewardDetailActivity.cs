@@ -404,8 +404,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                     try
                     {
-                        DateTime dateTimeParse = DateTime.ParseExact(item.IsUsedDateTime, "MM/d/yyyy H:mm:ss tt",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime);
                         TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
                         DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
                         dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
