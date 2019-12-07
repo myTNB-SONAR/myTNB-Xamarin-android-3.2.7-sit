@@ -1117,7 +1117,6 @@
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%403x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%403x.png" />
@@ -1128,10 +1127,6 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-1%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\walkthrough5S3Install%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\walkthrough5S3Install%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\whatSNewNotificationNew%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\whatSNewNotificationNew%403x.png" />
@@ -1233,6 +1228,14 @@
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Heart-Saved-Green-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Heart-Saved-Green-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\img1S3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\img1S3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\walkthrough5S3Install%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\walkthrough5S3Install%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\img5S3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\img5S3%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1683,7 +1686,6 @@
     <Folder Include="Components\Walkthrough\" />
     <Folder Include="Sitecore CMS\Model\Onboarding\" />
     <Folder Include="Resources\JSON\" />
-    <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
     <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
     <Folder Include="Registration\Add Accounts\" />
     <Folder Include="Feedback\" />
@@ -1731,6 +1733,8 @@
     <Folder Include="Assets.xcassets\Use-Reward-Banner.imageset\" />
     <Folder Include="Assets.xcassets\Empty-Reward-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
