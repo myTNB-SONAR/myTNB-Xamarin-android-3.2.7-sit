@@ -10,7 +10,7 @@ namespace myTNB
     {
         private UIView _viewContainer;
         public UIImageView RewardImageVIew;
-        private UILabel _title;
+        public UILabel Title;
         public UIView UsedView;
         public ActivityIndicatorComponent ActivityIndicator;
 
@@ -46,14 +46,14 @@ namespace myTNB
             ActivityIndicator = new ActivityIndicatorComponent(RewardImageVIew);
             rewardImgView.AddSubview(RewardImageVIew);
             _viewContainer.AddSubview(rewardImgView);
-            _title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F), _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+            Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F), _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 LineBreakMode = UILineBreakMode.TailTruncation
             };
-            _viewContainer.AddSubview(_title);
+            _viewContainer.AddSubview(Title);
             nfloat usedWidth = GetScaledWidth(52F);
             nfloat usedHeight = GetScaledHeight(24F);
             UsedView = new UIView(new CGRect(_viewContainer.Frame.Width - usedWidth - GetScaledWidth(12F), GetScaledHeight(12F), usedWidth, usedHeight))
@@ -85,7 +85,7 @@ namespace myTNB
         {
             if (model != null)
             {
-                _title.Text = model.TitleOnListing;
+                Title.Text = model.TitleOnListing;
             }
         }
     }

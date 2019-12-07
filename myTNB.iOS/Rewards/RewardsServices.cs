@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading.Tasks;
+using CoreGraphics;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using UIKit;
 
 namespace myTNB
 {
@@ -50,6 +53,28 @@ namespace myTNB
         {
             RewardsEntity rewardsEntity = new RewardsEntity();
             rewardsEntity.UpdateEntity(reward);
+        }
+
+        public static UIImage ConvertToGrayScale(UIImage image)
+        {
+            using (image)
+            {
+                RectangleF imageRect = new RectangleF(PointF.Empty, (System.Drawing.SizeF)image.Size);
+                var colorSpace = CGColorSpace.CreateDeviceGray();
+                using (var context = new CGBitmapContext(IntPtr.Zero, (int)imageRect.Width, (int)imageRect.Height, 8, 0, colorSpace, CGImageAlphaInfo.None))
+                {
+                    context.DrawImage(imageRect, image.CGImage);
+                    var grayImage = context.ToImage();
+                    using (var maskContext = new CGBitmapContext(null, (int)imageRect.Width, (int)imageRect.Height, 8, 0, null, CGImageAlphaInfo.Only))
+                    {
+                        maskContext.DrawImage(imageRect, image.CGImage);
+                        using (var mask = maskContext.ToImage())
+                        {
+                            return UIImage.FromImage(grayImage.WithMask(mask), image.CurrentScale, image.Orientation);
+                        }
+                    }
+                }
+            }
         }
 
         #region Rewards Services

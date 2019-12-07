@@ -36,6 +36,15 @@ namespace myTNB
             AddFooterView();
             SetScrollView();
             PrepareDetailView();
+
+            if (RewardModel != null)
+            {
+                if (RewardModel.IsUsed)
+                {
+                    ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - GetScaledHeight(116F));
+                    UpdateView();
+                }
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -484,6 +493,28 @@ namespace myTNB
         #region Action Methods
         private void OnUseNowAction()
         {
+            ActivityIndicator.Show();
+            InvokeInBackground(async () =>
+            {
+                UpdateRewardsResponseModel response = await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Redeemed, true);
+                InvokeOnMainThread(() =>
+                {
+                    ActivityIndicator.Hide();
+                    if (response != null && response.d != null &&
+                        response.d.didSucceed)
+                    {
+                        OnUseNowDone();
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayServiceError(this, response?.d?.ErrorMessage);
+                    }
+                });
+            });
+        }
+
+        private void OnUseNowDone()
+        {
             nfloat height = GetScaledHeight(122F);
             _timerContainerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
             {
@@ -574,7 +605,7 @@ namespace myTNB
                     UIImageView rewardImageView = view.ViewWithTag(RewardsConstants.Tag_DetailRewardImage) as UIImageView;
                     if (rewardImageView != null)
                     {
-                        rewardImageView.Image = ConvertToGrayScale(rewardImageView.Image);
+                        rewardImageView.Image = RewardsServices.ConvertToGrayScale(rewardImageView.Image);
                     }
                     UITextView text = view.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) as UITextView;
                     if (text != null)
@@ -599,7 +630,7 @@ namespace myTNB
                                     UIImageView imageView = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardImage) as UIImageView;
                                     if (imageView != null)
                                     {
-                                        imageView.Image = ConvertToGrayScale(imageView.Image);
+                                        imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image);
                                     }
                                 }
                             }
@@ -631,28 +662,6 @@ namespace myTNB
             ViewHelper.AdjustFrameSetX(usedLbl, GetXLocationToCenterObject(lblSize.Width, usedView));
             usedView.AddSubview(usedLbl);
             _scrollView.AddSubview(usedView);
-        }
-
-        private UIImage ConvertToGrayScale(UIImage image)
-        {
-            using (image)
-            {
-                RectangleF imageRect = new RectangleF(PointF.Empty, (System.Drawing.SizeF)image.Size);
-                var colorSpace = CGColorSpace.CreateDeviceGray();
-                using (var context = new CGBitmapContext(IntPtr.Zero, (int)imageRect.Width, (int)imageRect.Height, 8, 0, colorSpace, CGImageAlphaInfo.None))
-                {
-                    context.DrawImage(imageRect, image.CGImage);
-                    var grayImage = context.ToImage();
-                    using (var maskContext = new CGBitmapContext(null, (int)imageRect.Width, (int)imageRect.Height, 8, 0, null, CGImageAlphaInfo.Only))
-                    {
-                        maskContext.DrawImage(imageRect, image.CGImage);
-                        using (var mask = maskContext.ToImage())
-                        {
-                            return UIImage.FromImage(grayImage.WithMask(mask), image.CurrentScale, image.Orientation);
-                        }
-                    }
-                }
-            }
         }
         #endregion
     }

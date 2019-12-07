@@ -22,7 +22,6 @@ namespace myTNB
             base.ViewDidLoad();
             SetNavigationBar();
             SetTableView();
-            SetTableView();
         }
 
         public override void DidReceiveMemoryWarning()
@@ -62,6 +61,11 @@ namespace myTNB
         }
 
         #region ACTIONS
+        public void UpdateSavedRewardList()
+        {
+
+        }
+
         public void OnRewardSelection(RewardsModel reward)
         {
             if (reward != null)
