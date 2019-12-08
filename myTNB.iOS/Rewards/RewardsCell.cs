@@ -9,7 +9,7 @@ namespace myTNB
     public class RewardsCell : CustomUITableViewCell
     {
         private UIView _viewContainer, _readIndicator;
-        public UIImageView RewardImageVIew;
+        public UIImageView RewardImageView;
         public UILabel Title;
         public UIImageView SaveIcon;
         public UIView UsedView;
@@ -38,15 +38,15 @@ namespace myTNB
             };
             rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
 
-            RewardImageVIew = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
+            RewardImageView = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
             {
                 ClipsToBounds = true,
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
-            ActivityIndicator = new ActivityIndicatorComponent(RewardImageVIew);
-            rewardImgView.AddSubview(RewardImageVIew);
+            ActivityIndicator = new ActivityIndicatorComponent(RewardImageView);
+            rewardImgView.AddSubview(RewardImageView);
             _viewContainer.AddSubview(rewardImgView);
-            Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F)
+            Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageView.Frame, 16F)
                 , _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
@@ -59,8 +59,8 @@ namespace myTNB
             nfloat iconHeight = GetScaledHeight(21F);
             nfloat iconWidthPadding = GetScaledWidth(8F);
             nfloat iconHeightPadding = GetScaledHeight(8F);
-            SaveIcon = new UIImageView(new CGRect(RewardImageVIew.Frame.Width - iconWidth - iconWidthPadding
-                , RewardImageVIew.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
+            SaveIcon = new UIImageView(new CGRect(RewardImageView.Frame.Width - iconWidth - iconWidthPadding
+                , RewardImageView.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsaveIcon),
                 UserInteractionEnabled = true

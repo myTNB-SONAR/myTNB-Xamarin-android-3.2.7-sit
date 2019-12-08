@@ -125,7 +125,11 @@ namespace myTNB
                         {
                             InvokeOnMainThread(() =>
                             {
-                                imageView.Image = UIImage.LoadFromData(data);
+                                imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                using (var image = UIImage.LoadFromData(data))
+                                {
+                                    imageView.Image = image;
+                                }
                                 activityIndicator.Hide();
                             });
                         }
