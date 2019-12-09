@@ -1997,35 +1997,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             myServiceLoadMoreLabel.Text = GetLabelByLanguage("showLess");
                         }
-                        else
-                        {
-                            if (isMyServiceAlreadyRotated)
-                            {
-                                isMyServiceAlreadyRotated = false;
-                                AnimationSet animSet = new AnimationSet(true);
-                                animSet.Interpolator = new DecelerateInterpolator();
-                                animSet.FillAfter = true;
-                                animSet.FillEnabled = true;
-
-                                RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
-                                    Dimension.RelativeToSelf, 0.5f,
-                                    Dimension.RelativeToSelf, 0.5f);
-
-                                animRotate.Duration = 500;
-                                animRotate.FillAfter = true;
-                                animSet.AddAnimation(animRotate);
-
-                                myServiceLoadMoreImg.StartAnimation(animSet);
-
-                                myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
-
-                            }
-                        }
                     }
                     else
                     {
-                        myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
+                        if (isMyServiceAlreadyRotated)
+                        {
+                            isMyServiceAlreadyRotated = false;
+                            AnimationSet animSet = new AnimationSet(true);
+                            animSet.Interpolator = new DecelerateInterpolator();
+                            animSet.FillAfter = true;
+                            animSet.FillEnabled = true;
+
+                            RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
+                                Dimension.RelativeToSelf, 0.5f,
+                                Dimension.RelativeToSelf, 0.5f);
+
+                            animRotate.Duration = 500;
+                            animRotate.FillAfter = true;
+                            animSet.AddAnimation(animRotate);
+
+                            myServiceLoadMoreImg.StartAnimation(animSet);
+
+                            myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
+
+                        }
                     }
+                }
+                else
+                {
+                    myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
                 }
             });
         }
