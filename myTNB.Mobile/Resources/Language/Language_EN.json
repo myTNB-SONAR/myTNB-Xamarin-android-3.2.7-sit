@@ -96,7 +96,7 @@
     "emptyAcctSelector": "---",
     "nickname": "e.g. My House, Parent's House",
     "businessNickname": "e.g. Bangsar Shopping Centre Branch",
-    "password": "Your password must have at least 8 alphanumeric characters."
+    "password": "Password must have at least 8 alphanumeric characters."
   },
   "Error": {
     "invalid_email": "Invalid email address",
@@ -111,8 +111,8 @@
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Invalid PIN",
-    "invalid_password": "Your password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword": "Your password and confirmation do not match.",
+    "invalid_password": "Password must have at least 8 alphanumeric characters.",
+    "invalid_mismatchedPassword": "Your password and confirmation password do not match.",
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport No.",
     "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
@@ -504,7 +504,7 @@
     "noAccountsTitle": "No accounts found!",
     "additionalAccts": "Additional account(s)",
     "removeAcct": "Remove Account",
-    "removeAcctMsg": "You are about to remove {0}, account number {1}.",
+    "removeAcctMsg": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account.",
     "addAcctSuccessMsg": "Add Account(s) Successful",
     "ownerICNumber": "Owner's IC / Passport Number",
     "rocNumber": "ROC No.",

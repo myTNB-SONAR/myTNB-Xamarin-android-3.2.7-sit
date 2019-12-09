@@ -95,7 +95,7 @@ namespace myTNB.Registration.CustomerAccounts
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                             ActivityIndicator.Hide();
                         }
                     });
@@ -172,7 +172,7 @@ namespace myTNB.Registration.CustomerAccounts
                             {
                                 if (IsEmptyNicknameExist())
                                 {
-                                    AlertHandler.DisplayGenericAlert(this, string.Empty, GetErrorI18NValue(AddAccountConstants.I18N_EmptyNickname));
+                                    DisplayGenericAlert(string.Empty, GetErrorI18NValue(AddAccountConstants.I18N_EmptyNickname));
                                 }
                                 else
                                 {
@@ -202,7 +202,7 @@ namespace myTNB.Registration.CustomerAccounts
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                     });
                 });
@@ -296,26 +296,26 @@ namespace myTNB.Registration.CustomerAccounts
                     {
                         if (!isDashboardFlow)
                         {
-                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.DisplayMessage, (obj) =>
-                             {
-                                 if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
-                                    || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
-                                 {
-                                     DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
-                                     DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
-                                 }
-                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                                 UIViewController homeTabBarVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                                 homeTabBarVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                 PresentViewController(homeTabBarVC, true, null);
-                             });
+                            DisplayServiceError(_customerAccountResponseModel?.d?.DisplayMessage, (obj) =>
+                            {
+                                if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
+                                   || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
+                                {
+                                    DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
+                                    DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+                                }
+                                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                                UIViewController homeTabBarVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                homeTabBarVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                PresentViewController(homeTabBarVC, true, null);
+                            });
                         }
                         else
                         {
-                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.DisplayMessage, (obj) =>
-                            {
-                                DismissViewController(true, null);
-                            });
+                            DisplayServiceError(_customerAccountResponseModel?.d?.DisplayMessage, (obj) =>
+                           {
+                               DismissViewController(true, null);
+                           });
                         }
                     }
                     ActivityIndicator.Hide();
@@ -415,14 +415,14 @@ namespace myTNB.Registration.CustomerAccounts
                                 else
                                 {
                                     HideProgressView();
-                                    AlertHandler.DisplayServiceError(this, _addMultipleSupplyAccountsResponseModel?.d?.DisplayMessage);
+                                    DisplayServiceError(_addMultipleSupplyAccountsResponseModel?.d?.DisplayMessage);
                                 }
                             });
                         });
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });

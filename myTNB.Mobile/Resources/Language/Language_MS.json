@@ -96,7 +96,7 @@
     "emptyAcctSelector": "---",
     "nickname": "cth. Rumah Saya, Rumah Ibu",
     "businessNickname": "cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka)."
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka"
   },
   "Error": {
     "invalid_email": "Format emel tidak sah.",
@@ -111,7 +111,7 @@
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Kod tidak sah",
-    "invalid_password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka).",
+    "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka",
     "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
     "invalid_fullname": "Nama Penuh Tidak Sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport Tidak Sah",
@@ -149,7 +149,7 @@
     "add": "Tambah",
     "search": "Cari",
     "showLess": "Kurangkan Paparan",
-    "moreAccts": "Tambah Akaun",
+    "moreAccts": "Akaun Selebihnya",
     "rearrangeAccts": "Susun Semula Akaun",
     "showMore": "Selebihnya",
     "viewAdvice": "Lihat<br>Makluman Saya",
@@ -504,7 +504,7 @@
     "noAccountsTitle": "Tiada Akaun Ditemui!",
     "additionalAccts": "Akaun tambahan",
     "removeAcct": "Keluarkan Akaun",
-    "removeAcctMsg": "Anda sedang mengeluarkan {0}, Nombor Akaun: {1}",
+    "removeAcctMsg": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Layari Self-Service Portal atau kunjungi Kedai Tenaga untuk menutup akaun bekalan elektrik anda.",
     "addAcctSuccessMsg": "Akaun Berjaya Ditambah",
     "ownerICNumber": "Nombor KP / Pasport Pemilik",
     "rocNumber": "ROC Nombor",
@@ -626,7 +626,7 @@
     "resendPinMessage": "Emel mengandungi pin pengaktifan telah dihantar ke alamat emel anda."
   },
   "PasswordResetSuccess": {
-    "title": "Berjaya Set Semula Kata Laluan",
+    "title": "Set Semula Kata Laluan Berjaya",
     "details": "Log masuk dengan kata laluan sementara 8 digit yang telah dihantar ke {0}.\r\n\r\nKata laluan boleh ditukar selepas log masuk.",
     "proceedToLogin": "Teruskan Log Masuk",
     "resetSuccessMessage": "Kata laluan anda telah berjaya ditukar. Anda boleh teruskan log masuk dengan kata laluan baru."
