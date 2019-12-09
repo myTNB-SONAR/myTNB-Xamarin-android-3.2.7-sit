@@ -343,7 +343,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
             else
             {
-                // TODO: Show Empty List
+                this.mView.SetEmptyView();
             }
         }
 

@@ -31,8 +31,20 @@ namespace myTNB_Android.Src.SavedRewards.MVP
       , Theme = "@style/Theme.Dashboard")]
     public class SavedRewardsActivity : BaseToolbarAppCompatActivity, SavedRewardsContract.ISavedRewardsView
     {
+        [BindView(Resource.Id.rewardMainLayout)]
+        LinearLayout rewardMainLayout;
+
         [BindView(Resource.Id.rewardRecyclerView)]
         RecyclerView mRewardsRecyclerView;
+
+        [BindView(Resource.Id.rewardEmptyLayout)]
+        LinearLayout rewardEmptyLayout;
+
+        [BindView(Resource.Id.rewardEmptyImg)]
+        ImageView rewardEmptyImg;
+
+        [BindView(Resource.Id.txtEmptyReward)]
+        TextView txtEmptyReward;
 
         List<RewardsModel> items;
 
@@ -46,6 +58,12 @@ namespace myTNB_Android.Src.SavedRewards.MVP
             try
             {
                 presenter = new SavedRewardsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward);
+
+                rewardMainLayout.Visibility = ViewStates.Visible;
+
+                rewardEmptyLayout.Visibility = ViewStates.Gone;
             }
             catch (Exception e)
             {
@@ -111,19 +129,27 @@ namespace myTNB_Android.Src.SavedRewards.MVP
             {
                 items = this.presenter.GetActiveSavedRewardList();
 
-                if (mRewardsRecyclerAdapter == null)
+                if (items != null && items.Count > 0)
                 {
-                    mRewardsRecyclerAdapter = new SavedRewardsRecyclerAdapter(items, this);
-                    mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
-                    mRewardsRecyclerAdapter.ClickChanged += MRewardsRecyclerAdapter_ClickChanged;
+                    if (mRewardsRecyclerAdapter == null)
+                    {
+                        mRewardsRecyclerAdapter = new SavedRewardsRecyclerAdapter(items, this);
+                        mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
+                        mRewardsRecyclerAdapter.ClickChanged += MRewardsRecyclerAdapter_ClickChanged;
+                    }
+                    else
+                    {
+                        mRewardsRecyclerAdapter.RefreshList(items);
+                    }
                 }
                 else
                 {
-                    mRewardsRecyclerAdapter.RefreshList(items);
+                    SetEmptyView();
                 }
             }
             catch (Exception e)
             {
+                SetEmptyView();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -171,6 +197,29 @@ namespace myTNB_Android.Src.SavedRewards.MVP
                     GC.Collect();
                     break;
             }
+        }
+
+        public void SetEmptyView()
+        {
+            RunOnUiThread(() =>
+            {
+                try
+                {
+                    rewardMainLayout.Visibility = ViewStates.Gone;
+
+                    rewardEmptyLayout.Visibility = ViewStates.Visible;
+
+                    LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
+                    rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
+                    rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
+                    rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
+                    rewardEmptyImg.RequestLayout();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
 
     }

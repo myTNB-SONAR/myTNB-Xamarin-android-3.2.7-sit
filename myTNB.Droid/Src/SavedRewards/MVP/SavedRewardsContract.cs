@@ -7,7 +7,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
     {
         public interface ISavedRewardsView
         {
-
+            void SetEmptyView();
         }
 
         public interface ISavedRewardsPresenter

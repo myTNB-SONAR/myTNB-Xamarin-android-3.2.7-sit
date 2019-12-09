@@ -14,6 +14,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             void CheckRewardsTimeStamp();
 
             void OnSetResultTabView(List<RewardMenuModel> list);
+
+            void SetEmptyView();
         }
 
 		public interface IRewardMenuPresenter

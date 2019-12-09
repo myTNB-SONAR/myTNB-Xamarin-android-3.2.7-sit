@@ -10,6 +10,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/rewardMainLayout"
+        android:visibility="visible"
         android:background="@color/reward_background">
         <LinearLayout
             android:orientation="vertical"
@@ -32,5 +34,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </android.support.v4.view.ViewPager>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rewardEmptyLayout"
+        android:visibility="gone"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/rewardEmptyImg"
+            android:layout_height="94dp"
+            android:layout_width="102dp"
+            android:layout_marginTop="88dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_reward_empty"/>
+        <TextView
+            android:id="@+id/txtEmptyReward"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="#8b8b8b"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
     </LinearLayout>
 </LinearLayout>

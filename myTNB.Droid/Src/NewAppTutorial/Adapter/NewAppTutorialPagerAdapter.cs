@@ -151,8 +151,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     SpannableString firstPageString = new SpannableString(txtBottomContent.TextFormatted);
                     string searchText = model.ContentMessage;
 
-                    int start = searchText.LastIndexOf("\" #") + 1;
-                    int end = searchText.LastIndexOf("# \"") + 2;
+                    int start = searchText.LastIndexOf("“ #") + 1;
+                    int end = searchText.LastIndexOf("# ”") + 2;
                     firstPageString.SetSpan(imageSpan, start, end, SpanTypes.ExclusiveExclusive);
                     txtBottomContent.TextFormatted = firstPageString;
                 }

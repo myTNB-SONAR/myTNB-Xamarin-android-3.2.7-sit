@@ -25,11 +25,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         private bool isSiteCoreComplete = false;
 
+        [BindView(Resource.Id.rewardMainLayout)]
+        LinearLayout rewardMainLayout;
+
         [BindView(Resource.Id.rewardsSlidingTabs)]
         TabLayout rewardsSlidingTabs;
 
         [BindView(Resource.Id.rewardViewPager)]
         ViewPager rewardViewPager;
+
+        [BindView(Resource.Id.rewardEmptyLayout)]
+        LinearLayout rewardEmptyLayout;
+
+        [BindView(Resource.Id.rewardEmptyImg)]
+        ImageView rewardEmptyImg;
+
+        [BindView(Resource.Id.txtEmptyReward)]
+        TextView txtEmptyReward;
 
         private RewardsTabAdapter mAdapter;
 
@@ -81,6 +93,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 rewardViewPager.OverScrollMode = OverScrollMode.Never;
 
                 this.presenter.GetRewardsTimeStamp();
+
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward);
+
+                rewardMainLayout.Visibility = ViewStates.Visible;
+
+                rewardEmptyLayout.Visibility = ViewStates.Gone;
             }
             catch (System.Exception e)
             {
@@ -476,6 +494,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 _ = this.presenter.OnGetUserRewardList();
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void SetEmptyView()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    rewardMainLayout.Visibility = ViewStates.Gone;
+
+                    rewardEmptyLayout.Visibility = ViewStates.Visible;
+
+                    LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
+                    rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
+                    rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
+                    rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
+                    rewardEmptyImg.RequestLayout();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
     }
 }
