@@ -40,48 +40,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
-        [BindView(Resource.Id.txtMyAccountTitle)]
-        TextView txtMyAccountTitle;
-
-        [BindView(Resource.Id.textInputLayoutFullName)]
-        TextInputLayout textInputLayoutFullName;
-        [BindView(Resource.Id.txtFullName)]
-        TextView txtFullName;
-
-        [BindView(Resource.Id.textInputLayoutIcNo)]
-        TextInputLayout textInputLayoutIcNo;
-        [BindView(Resource.Id.txtIcNo)]
-        TextView txtIcNo;
-
-        [BindView(Resource.Id.txtInputLayoutEmail)]
-        TextInputLayout txtInputLayoutEmail;
-        [BindView(Resource.Id.txtEmail)]
-        TextView txtEmail;
-
-        [BindView(Resource.Id.txtInputLayoutMobileNo)]
-        TextInputLayout txtInputLayoutMobileNo;
-        [BindView(Resource.Id.txtMobileNo)]
-        TextView txtMobileNo;
-        [BindView(Resource.Id.btnTextUpdateMobileNo)]
-        TextView btnTextUpdateMobileNo;
-
-        [BindView(Resource.Id.txtInputLayoutPassword)]
-        TextInputLayout txtInputLayoutPassword;
-        [BindView(Resource.Id.txtPassword)]
-        TextView txtPassword;
-        [BindView(Resource.Id.btnTextUpdatePassword)]
-        TextView btnTextUpdatePassword;
-
-        [BindView(Resource.Id.txtInputLayoutCards)]
-        TextInputLayout txtInputLayoutCards;
-        [BindView(Resource.Id.txtCards)]
-        TextView txtCards;
-        [BindView(Resource.Id.btnTextUpdateCards)]
-        TextView btnTextUpdateCards;
-
         [BindView(Resource.Id.txtTnBSupplyAccountTitle)]
         TextView txtTnBSupplyAccountTitle;
-
 
         [BindView(Resource.Id.listView)]
         ListView listView;
@@ -109,7 +69,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         MyAccountContract.IUserActionsListener userActionsListener;
         MyAccountPresenter mPresenter;
 
-        MaterialDialog accountRetrieverDialog, logoutProgressDialog;
+        MaterialDialog accountRetrieverDialog;
         private LoadingOverlay loadingOverlay;
         const string PAGE_ID = "MyAccount";
 
@@ -129,64 +89,19 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             try
             {
-                accountRetrieverDialog = new MaterialDialog.Builder(this)
-                    .Title(GetString(Resource.String.my_account_account_retrieval_progress_title))
-                    .Content(GetString(Resource.String.my_account_account_retrieval_progress_content))
-                    .Progress(true, 0)
-                    .Cancelable(false)
-                    .Build();
-
-                logoutProgressDialog = new MaterialDialog.Builder(this)
-                    .Title(GetLabelByLanguage("logout"))
-                    .Content(GetLabelByLanguage("logoutMessage"))
-                    .PositiveText(GetLabelCommonByLanguage("ok"))
-                    .NeutralText(GetLabelCommonByLanguage("cancel"))
-                    .OnPositive((dialog, which) => this.userActionsListener.OnLogout(this.DeviceId()))
-                    .OnNeutral((dialog, which) => dialog.Dismiss())
-                    .Build();
-
-
                 // Create your application here
-                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutFullName,
-                    textInputLayoutIcNo,
-                    txtInputLayoutEmail,
-                    txtInputLayoutMobileNo,
-                    txtInputLayoutCards,
-                    txtInputLayoutPassword);
-                TextViewUtils.SetMuseoSans300Typeface(txtFullName,
-                    txtIcNo,
-                    txtEmail,
-                    txtMobileNo,
-                    txtCards,
-                    txtMyAccountNoAccountContent,
-                    txtPassword);
-                TextViewUtils.SetMuseoSans500Typeface(txtMyAccountTitle,
-                    btnAddAnotherAccount,
+                TextViewUtils.SetMuseoSans300Typeface(
+                    txtMyAccountNoAccountContent);
+                TextViewUtils.SetMuseoSans500Typeface(btnAddAnotherAccount,
                     btnLogout,
-                    btnAddAccount,
-                    txtMyAccountNoAccountTitle,
-                    btnTextUpdatePassword,
-                    btnTextUpdateMobileNo,
-                    btnTextUpdateCards,
-                    txtTnBSupplyAccountTitle);
+                    btnAddAccount);
 
-                txtMyAccountTitle.Text = GetLabelByLanguage("detailSectionTitle");
                 txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
                 btnLogout.Text = GetLabelByLanguage("logout");
-                btnTextUpdateMobileNo.Text = GetLabelCommonByLanguage("update");
-                btnTextUpdateCards.Text = GetLabelCommonByLanguage("manage");
-                btnTextUpdatePassword.Text = GetLabelCommonByLanguage("update");
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
                 btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
-
-                textInputLayoutFullName.Hint = GetLabelCommonByLanguage("name");
-                textInputLayoutIcNo.Hint = GetLabelCommonByLanguage("idNumber");
-                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
-                txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
-                txtInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
-                txtInputLayoutCards.Hint = GetLabelCommonByLanguage("password");
 
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
@@ -195,16 +110,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
                 mPresenter = new MyAccountPresenter(this);
                 this.userActionsListener.Start();
-
-                Bundle extras = Intent.Extras;
-                if (extras != null && extras.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
-                {
-                    if (extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO))
-                    {
-                        UserEntity entity = UserEntity.GetActive();
-                        ShowMobileUpdateSuccess(entity.MobileNo);
-                    }
-                }
             }
             catch (Exception e)
             {
@@ -218,7 +123,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             {
                 this.SetIsClicked(true);
                 CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-                this.userActionsListener.OnManageSupplyAccount(customerBillingAccount, e.Position);
+                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);
             }
         }
 
@@ -304,43 +209,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
-        [OnClick(Resource.Id.btnTextUpdateMobileNo)]
-        void OnClickMobile(object sender, EventArgs eventArgs)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                this.userActionsListener.OnUpdateMobileNo();
-            }
-        }
-
-        [OnClick(Resource.Id.btnTextUpdatePassword)]
-        void OnClickPassword(object sender, EventArgs eventArgs)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                this.userActionsListener.OnUpdatePassword();
-            }
-        }
-
-        [OnClick(Resource.Id.btnTextUpdateCards)]
-        void OnClickUpdateCards(object sender, EventArgs eventArgs)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                this.userActionsListener.OnManageCards();
-            }
-        }
-
         [OnClick(Resource.Id.btnAddAccount)]
         void OnClickAddAccount(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnAddAccount();
+                ShowAddAccount();
             }
         }
 
@@ -350,64 +225,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnAddAccount();
-            }
-        }
-
-        [OnClick(Resource.Id.btnLogout)]
-        void OnClickLogout(object sender, EventArgs eventArgs)
-        {
-            try
-            {
-                //this.userActionsListener.OnLogout(this.DeviceId());
-                if (IsActive())
-                {
-                    logoutProgressDialog.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowUpdateMobileNo()
-        {
-            try
-            {
-                Intent updateMobileNo = new Intent(this, typeof(UpdateMobileActivity));
-                StartActivityForResult(updateMobileNo, Constants.UPDATE_MOBILE_NO_REQUEST);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowUpdatePassword()
-        {
-            try
-            {
-                Intent updateMobileNo = new Intent(this, typeof(UpdatePasswordActivity));
-                StartActivityForResult(updateMobileNo, Constants.UPDATE_PASSWORD_REQUEST);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowManageCards(List<CreditCardData> cardList)
-        {
-            try
-            {
-                Intent manageCard = new Intent(this, typeof(ManageCardsActivity));
-                manageCard.PutExtra(Constants.CREDIT_CARD_LIST, JsonConvert.SerializeObject(cardList));
-                StartActivityForResult(manageCard, Constants.MANAGE_CARDS_REQUEST);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
+                ShowAddAccount();
             }
         }
 
@@ -430,22 +248,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Intent updateMobileNo = new Intent(this, typeof(LinkAccountActivity));
-                StartActivity(updateMobileNo);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowLogout()
-        {
-            try
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-                Intent logout = new Intent(this, typeof(LogoutEndActivity));
-                StartActivity(logout);
+                Intent addAccountIntent = new Intent(this, typeof(LinkAccountActivity));
+                StartActivity(addAccountIntent);
             }
             catch (Exception e)
             {
@@ -455,11 +259,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowProgressDialog()
         {
-            //if (accountRetrieverDialog != null && accountRetrieverDialog.IsShowing)
-            //{
-            //    accountRetrieverDialog.Dismiss();
-            //}
-            //accountRetrieverDialog.Show();
             try
             {
                 if (IsActive())
@@ -499,10 +298,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void HideShowProgressDialog()
         {
-            //if (accountRetrieverDialog != null && accountRetrieverDialog.IsShowing)
-            //{
-            //    accountRetrieverDialog.Dismiss();
-            //}
             try
             {
                 if (IsActive())
@@ -557,35 +352,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
-        public void ShowUserData(UserEntity user, int numOfCards)
-        {
-            txtFullName.Text = user.DisplayName;
-
-            try
-            {
-
-                if (user.IdentificationNo.Count() >= 4)
-                {
-                    string lastDigit = user.IdentificationNo.Substring(user.IdentificationNo.Length - 4);
-
-                    txtIcNo.Text = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
-                }
-                else
-                {
-                    txtIcNo.Text = GetString(Resource.String.my_account_ic_no_mask);
-                }
-
-                txtEmail.Text = user.Email;
-                txtMobileNo.Text = user.MobileNo;
-                txtPassword.Text = GetString(Resource.String.my_account_dummy_password);
-                txtCards.Text = string.Format("{0}", numOfCards);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             try
@@ -595,80 +361,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowMobileUpdateSuccess(string newPhone)
-        {
-            try
-            {
-                txtMobileNo.Text = newPhone;
-                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("mobileNumberVerified"), Snackbar.LengthIndefinite)
-                            .SetAction(GetLabelCommonByLanguage("close"),
-                             (view) =>
-                             {
-
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
-                            );
-                View v = updatePhoneSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                updatePhoneSnackBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowPasswordUpdateSuccess()
-        {
-            try
-            {
-                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_password), Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
-                             (view) =>
-                             {
-
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
-                            );
-                View v = updatePassWordBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                updatePassWordBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowRemovedCardSuccess(CreditCardData creditCard, int numOfCards)
-        {
-            try
-            {
-                string lastDigits = creditCard.LastDigits.Substring(creditCard.LastDigits.Length - 4);
-                txtCards.Text = string.Format("{0}", numOfCards);
-                Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
-                           .SetAction(GetString(Resource.String.manage_cards_btn_close),
-                            (view) =>
-                            {
-
-                            // EMPTY WILL CLOSE SNACKBAR
-                        }
-                           ).Show();
-                this.SetIsClicked(false);
-            }
-            catch (Exception e)
-            {
-                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -708,100 +400,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
         public void ClearAccountsAdapter()
         {
             adapter.Clear();
-        }
-
-        public void EnableManageCards()
-        {
-            try
-            {
-                btnTextUpdateCards.Enabled = true;
-                btnTextUpdateCards.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void DisableManageCards()
-        {
-            try
-            {
-                btnTextUpdateCards.Enabled = false;
-                btnTextUpdateCards.SetTextColor(Resources.GetColor(Resource.Color.silverChalice));
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowLogoutErrorMessage(string message)
-        {
-            try
-            {
-                Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.logout_rate_btn_close),
-                             (view) =>
-                             {
-
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
-                            ).Show();
-                this.SetIsClicked(false);
-            }
-            catch (Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowLogoutProgressDialog()
-        {
-            //if (logoutProgressDialog != null && !logoutProgressDialog.IsShowing)
-            //{
-            //    logoutProgressDialog.Show();
-            //}
-            try
-            {
-                if (IsActive())
-                {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
-
-                    loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                    loadingOverlay.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideLogoutProgressDialog()
-        {
-            //if (logoutProgressDialog != null && logoutProgressDialog.IsShowing)
-            //{
-            //    logoutProgressDialog.Dismiss();
-            //}
-            try
-            {
-                if (IsActive())
-                {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowAccountRemovedSuccess()

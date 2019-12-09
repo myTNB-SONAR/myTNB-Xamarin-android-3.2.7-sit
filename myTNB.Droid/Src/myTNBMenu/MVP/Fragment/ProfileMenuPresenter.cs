@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using Android.Util;
+using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.MakePayment.Api;
 using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.ManageCards.Models;
@@ -30,6 +33,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public void OnNotification(string deviceId)
         {
             LoadAllUserPrefNotifications(deviceId);
+        }
+
+        public void OnManageCards()
+        {
+            this.mView.ShowManageCards(cardList);
         }
 
         public void Start()
@@ -72,19 +80,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         cardList.Add(CreditCardData.Copy(card));
                     }
 
-                    this.mView.ShowUserData(userEntity, cardsApiResponse.Data.creditCard.Count);
+                    this.mView.ShowUserData(userEntity, cardList.Count);
 
                     if (cardList.Count > 0)
                     {
-                        //this.mView.EnableManageCards();
+                        this.mView.EnableManageCards();
                     }
                     else
                     {
-                        //this.mView.DisableManageCards();
+                        this.mView.DisableManageCards();
                     }
                 }
                 else
                 {
+                    this.mView.DisableManageCards();
                     this.mView.ShowUserData(userEntity, 0);
                 }
 
@@ -96,6 +105,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
+                this.mView.DisableManageCards();
+                this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowRetryOptionsCancelledException(e);
                 Utility.LoggingNonFatalError(e);
             }
@@ -106,6 +117,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.DisableManageCards();
+                this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -116,6 +129,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
+                this.mView.DisableManageCards();
+                this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
@@ -229,6 +244,122 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             }
 
 
+        }
+
+        public async void OnLogout(string deviceId)
+        {
+            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+            cts = new CancellationTokenSource();
+
+
+            if (mView.IsActive())
+            {
+                this.mView.ShowNotificationsProgressDialog();
+            }
+
+
+
+#if DEBUG || STUB
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+
+            var logoutApi = RestService.For<ILogoutApi>(httpClient);
+#else
+            var logoutApi = RestService.For<ILogoutApi>(Constants.SERVER_URL.END_POINT);
+#endif
+            UserEntity userEntity = UserEntity.GetActive();
+            try
+            {
+                if (userEntity != null)
+                {
+                    var logoutResponse = await logoutApi.LogoutUserV2(new myTNB_Android.Src.LogoutRate.Request.LogoutRequestV2()
+                    {
+                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                        Email = userEntity.Email,
+                        DeviceId = deviceId,
+                        AppVersion = DeviceIdUtils.GetAppVersionName(),
+                        OsType = Constants.DEVICE_PLATFORM,
+                        OsVersion = DeviceIdUtils.GetAndroidVersion()
+                    }, cts.Token);
+
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideNotificationsProgressDialog();
+                    }
+
+                    if (!logoutResponse.Data.IsError)
+                    {
+                        UserEntity.RemoveActive();
+                        UserRegister.RemoveActive();
+                        CustomerBillingAccount.RemoveActive();
+                        NotificationFilterEntity.RemoveAll();
+                        UserNotificationEntity.RemoveAll();
+                        SubmittedFeedbackEntity.Remove();
+                        SMUsageHistoryEntity.RemoveAll();
+                        UsageHistoryEntity.RemoveAll();
+                        PromotionsEntityV2 promotionTable = new PromotionsEntityV2();
+                        promotionTable.DeleteTable();
+                        PromotionsParentEntityV2 promotionEntityTable = new PromotionsParentEntityV2();
+                        promotionEntityTable.DeleteTable();
+                        BillHistoryEntity.RemoveAll();
+                        PaymentHistoryEntity.RemoveAll();
+                        REPaymentHistoryEntity.RemoveAll();
+                        AccountDataEntity.RemoveAll();
+                        SummaryDashBoardAccountEntity.RemoveAll();
+                        SelectBillsEntity.RemoveAll();
+                        LanguageUtil.SetIsLanguageChanged(false);
+                        this.mView.ShowLogout();
+                    }
+                    else
+                    {
+                        this.mView.ShowLogoutErrorMessage(logoutResponse.Data.Message);
+                    }
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideNotificationsProgressDialog();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideNotificationsProgressDialog();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideNotificationsProgressDialog();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        public void UpdateCardList(CreditCardData creditCard)
+        {
+            cardList.Remove(cardList.Single(item => item.Id.Equals(creditCard.Id)));
+            this.mView.ShowRemovedCardSuccess(creditCard, cardList.Count);
+            if (cardList.Count > 0)
+            {
+                this.mView.EnableManageCards();
+            }
+            else
+            {
+                this.mView.DisableManageCards();
+            }
         }
     }
 }

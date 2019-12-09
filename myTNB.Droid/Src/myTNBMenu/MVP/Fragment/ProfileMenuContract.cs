@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.ManageCards.Models;
 using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
@@ -50,6 +52,38 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <param name="numOfCards">integer</param>
             void ShowUserData(UserEntity user, int numOfCards);
 
+            /// <summary>
+            /// Shows manage credit cards / debit cards screen
+            /// </summary>
+            void ShowManageCards(List<CreditCardData> cardsList);
+
+            /// <summary>
+            /// Shows Logout Screen
+            /// </summary>
+            void ShowLogout();
+
+            /// <summary>
+            /// Show logout error message from api response
+            /// </summary>
+            /// <param name="message">string</param>
+            void ShowLogoutErrorMessage(string message);
+
+            /// <summary>
+            /// Enable manage cards button
+            /// </summary>
+            void EnableManageCards();
+
+            /// <summary>
+            /// Disable manage cards button
+            /// </summary>
+            void DisableManageCards();
+
+            /// <summary>
+            /// Show removed card success
+            /// </summary>
+            /// <param name="creditCard">CreditCardData</param>
+            /// <param name="numOfCards">integer</param>
+            void ShowRemovedCardSuccess(CreditCardData creditCard, int numOfCards);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -60,6 +94,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <param name="deviceId">string</param>
             void OnNotification(string deviceId);
 
+            /// <summary>
+            /// Action to logout
+            /// </summary>
+            /// <param name="deviceId">string</param>
+            void OnLogout(string deviceId);
         }
     }
 }

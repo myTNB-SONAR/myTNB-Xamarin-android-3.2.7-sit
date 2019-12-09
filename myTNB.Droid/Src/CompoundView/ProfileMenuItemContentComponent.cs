@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.Content;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Util;
 using Android.Widget;
 using myTNB_Android.Src.Utils;
@@ -66,10 +67,23 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetItemActionCall(Action action)
         {
-            itemAction.Click += delegate
+            itemActionContainer.Click += delegate
             {
                 action();
             };
+        }
+
+        public void EnableActionCall(bool isEnable)
+        {
+            itemActionContainer.Enabled = isEnable;
+            if (isEnable)
+            {
+                itemAction.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(Context, Resource.Color.powerBlue)));
+            }
+            else
+            {
+                itemAction.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(Context, Resource.Color.silverChalice)));
+            }
         }
     }
 }

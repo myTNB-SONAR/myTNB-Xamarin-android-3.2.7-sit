@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:background="@color/white">
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical">
@@ -190,7 +190,7 @@
                             android:textSize="14sp" />
                     </FrameLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
             <TextView
                 android:id="@+id/txtTnBSupplyAccountTitle"
                 android:layout_height="wrap_content"
@@ -281,6 +281,7 @@
                 android:paddingRight="32dp"
                 android:paddingBottom="12dp"
                 android:paddingTop="8dp"
+                android:visibility="gone"
                 android:background="@color/lightGrey">
                 <Button
                     android:id="@+id/btnLogout"

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -17,20 +18,27 @@ using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.FindUs.Activity;
+using myTNB_Android.Src.LogoutEnd.Activity;
+using myTNB_Android.Src.ManageCards.Activity;
+using myTNB_Android.Src.ManageCards.Models;
+using myTNB_Android.Src.MyAccount.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.Profile.Activity;
+using myTNB_Android.Src.UpdateMobileNo.Activity;
+using myTNB_Android.Src.UpdatePassword.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 {
     public class ProfileMenuFragment : BaseFragmentCustom, ProfileMenuContract.IView
 	{
-        [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
+        [BindView(Resource.Id.profileMenuRootContent)]
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.profileMenuItemsContent)]
         LinearLayout profileMenuItemsContent;
@@ -44,6 +52,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         ProfileMenuPresenter mPresenter;
         private LoadingOverlay loadingOverlay;
         private ProfileMenuItemContentComponent fullName, referenceNumber, email, mobileNumber, password, cards, electricityAccount;
+        private bool mobileNoUpdated = false;
+        MaterialDialog logoutProgressDialog;
 
         const string PAGE_ID = "Profile";
 
@@ -55,9 +65,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
@@ -98,6 +105,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
+                Bundle extras = Arguments;
+                if (extras != null && extras.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
+                {
+                    mobileNoUpdated = extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO);
+                    if (mobileNoUpdated)
+                    {
+                        ShowManageAccount();
+                    }
+                }
+
+                logoutProgressDialog = new MaterialDialog.Builder(this.Activity)
+                    .Title(GetLabelByLanguage("logout"))
+                    .Content(GetLabelByLanguage("logoutMessage"))
+                    .PositiveText(GetLabelCommonByLanguage("ok"))
+                    .NeutralText(GetLabelCommonByLanguage("cancel"))
+                    .OnPositive((dialog, which) => mPresenter.OnLogout(this.DeviceId()))
+                    .OnNeutral((dialog, which) => dialog.Dismiss())
+                    .Build();
+
                 ProfileMenuItemComponent myTNBAccountItem = GetMyTNBAccountItems();
                 myTNBAccountItem.SetHeaderTitle(GetLabelByLanguage("myTNBAccount"));
                 profileMenuItemsContent.AddView(myTNBAccountItem);
@@ -119,13 +145,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 appVersion.Text = Utility.GetAppVersionName(context);
                 btnLogout.Text = GetLabelByLanguage("logout");
-
+                PopulateActiveAccountDetails();
                 mPresenter.Start();
             }
             catch (System.Exception e)
             {
                 Log.Debug("Package Manager", e.StackTrace);
-                //txt_app_version.Visibility = ViewStates.Gone;
+                appVersion.Visibility = ViewStates.Gone;
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -142,7 +168,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            ((DashboardHomeActivity)Activity).ReloadProfileMenu();
+            try
+            {
+                ((DashboardHomeActivity)Activity).ReloadProfileMenu();
+
+                if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        UserEntity userEntity = UserEntity.GetActive();
+                        ShowMobileUpdateSuccess(userEntity.MobileNo);
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        ShowPasswordUpdateSuccess();
+                    }
+                }
+                else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
+                        mPresenter.UpdateCardList(creditCard);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override int ResourceId()
@@ -183,6 +240,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             mobileNumber.SetValue("");
             mobileNumber.SetItemActionVisibility(true);
             mobileNumber.SetItemActionTitle(GetLabelCommonByLanguage("update"));
+            mobileNumber.SetItemActionCall(UpdateMobileNumber);
             myTNBAccountItems.Add(mobileNumber);
 
             password = new ProfileMenuItemContentComponent(Context);
@@ -190,6 +248,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             password.SetValue("");
             password.SetItemActionVisibility(true);
             password.SetItemActionTitle(GetLabelCommonByLanguage("update"));
+            password.SetItemActionCall(UpdatePassword);
             myTNBAccountItems.Add(password);
 
             cards = new ProfileMenuItemContentComponent(Context);
@@ -197,14 +256,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             cards.SetValue("");
             cards.SetItemActionVisibility(true);
             cards.SetItemActionTitle(GetLabelCommonByLanguage("manage"));
+            cards.SetItemActionCall(ManageCards);
             myTNBAccountItems.Add(cards);
 
             electricityAccount = new ProfileMenuItemContentComponent(Context);
             electricityAccount.SetTitle(GetLabelCommonByLanguage("electricityAccounts").ToUpper());
-            electricityAccount.SetValue("3");
+            List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+            electricityAccount.SetValue(customerAccountList.Count().ToString());
             electricityAccount.SetItemActionVisibility(true);
             electricityAccount.SetItemActionTitle(GetLabelCommonByLanguage("manage"));
+            electricityAccount.SetItemActionCall(ShowManageAccount);
             myTNBAccountItems.Add(electricityAccount);
+            if (customerAccountList.Count > 0)
+            {
+                electricityAccount.EnableActionCall(true);
+            }
+            else
+            {
+                electricityAccount.EnableActionCall(false);
+            }
 
             myTNBAccountItem.AddComponentView(myTNBAccountItems);
             return myTNBAccountItem;
@@ -282,11 +352,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public void ShowUserData(UserEntity user, int numOfCards)
         {
-            fullName.SetValue(user.DisplayName);
+            cards.SetValue(string.Format("{0}", numOfCards));
+        }
 
+        private void PopulateActiveAccountDetails()
+        {
+            UserEntity user = UserEntity.GetActive();
+            fullName.SetValue(user.DisplayName);
             try
             {
-
                 if (user.IdentificationNo.Count() >= 4)
                 {
                     string lastDigit = user.IdentificationNo.Substring(user.IdentificationNo.Length - 4);
@@ -301,11 +375,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 email.SetValue(user.Email);
                 mobileNumber.SetValue(user.MobileNo);
                 password.SetValue(GetString(Resource.String.my_account_dummy_password));
-                cards.SetValue(string.Format("{0}", numOfCards));
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void UpdateMobileNumber()
+        {
+            if (!this.GetIsClicked())
+            {
+                try
+                {
+                    Intent updateMobileNo = new Intent(this.Activity, typeof(UpdateMobileActivity));
+                    StartActivityForResult(updateMobileNo, Constants.UPDATE_MOBILE_NO_REQUEST);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void UpdatePassword()
+        {
+            if (!this.GetIsClicked())
+            {
+                try
+                {
+                    Intent updateMobileNo = new Intent(this.Activity, typeof(UpdatePasswordActivity));
+                    StartActivityForResult(updateMobileNo, Constants.UPDATE_PASSWORD_REQUEST);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void ManageCards()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                mPresenter.OnManageCards();
             }
         }
 
@@ -432,7 +546,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public void ShowNotifications()
         {
-            StartActivity(new Intent(this.Activity, typeof(NotificationSettingsActivity)));
+            try
+            {
+                StartActivity(new Intent(this.Activity, typeof(NotificationSettingsActivity)));
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowManageCards(List<CreditCardData> cardList)
+        {
+            try
+            {
+                Intent manageCard = new Intent(this.Activity, typeof(ManageCardsActivity));
+                manageCard.PutExtra(Constants.CREDIT_CARD_LIST, JsonConvert.SerializeObject(cardList));
+                StartActivityForResult(manageCard, Constants.MANAGE_CARDS_REQUEST);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowManageAccount()
+        {
+            Intent nextIntent = new Intent(this.Activity, typeof(MyAccountActivity));
+            nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
+            StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+        }
+
+        public void ShowLogout()
+        {
+            try
+            {
+                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.Activity.ApplicationContext);
+                Intent logout = new Intent(this.Activity, typeof(LogoutEndActivity));
+                StartActivity(logout);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowNotificationsProgressDialog()
@@ -552,9 +708,141 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             }
         }
 
+        public void ShowLogoutErrorMessage(string message)
+        {
+            try
+            {
+                Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                            .SetAction(GetString(Resource.String.logout_rate_btn_close),
+                             (view) =>
+                             {
+
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            ).Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void SetPresenter(ProfileMenuContract.IUserActionsListener userActionListener)
         {
             //No Impl
+        }
+
+        [OnClick(Resource.Id.btnLogout)]
+        void OnClickLogout(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (IsActive())
+                {
+                    logoutProgressDialog.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void EnableManageCards()
+        {
+            try
+            {
+                cards.EnableActionCall(true);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void DisableManageCards()
+        {
+            try
+            {
+                cards.EnableActionCall(false);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowMobileUpdateSuccess(string newPhone)
+        {
+            try
+            {
+                mobileNumber.SetValue(newPhone);
+                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("mobileNumberVerified"), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updatePhoneSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updatePhoneSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowPasswordUpdateSuccess()
+        {
+            try
+            {
+                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_password), Snackbar.LengthIndefinite)
+                            .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updatePassWordBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updatePassWordBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowRemovedCardSuccess(CreditCardData creditCard, int numOfCards)
+        {
+            try
+            {
+                string lastDigits = creditCard.LastDigits.Substring(creditCard.LastDigits.Length - 4);
+                cards.SetValue(string.Format("{0}", numOfCards));
+                Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
+                           .SetAction(GetString(Resource.String.manage_cards_btn_close),
+                            (view) =>
+                            {
+                                // EMPTY WILL CLOSE SNACKBAR
+                            }
+                           ).Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
