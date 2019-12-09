@@ -3757,6 +3757,10 @@
     <Compile Include="Src\CompoundView\ProfileMenuItemComponent.cs" />
     <AndroidResource Include="Resources\layout\ProfileMenuItemContentLayout.axml" />
     <Compile Include="Src\CompoundView\ProfileMenuItemContentComponent.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemContentNoActionLayout.axml" />
+    <Compile Include="Src\CompoundView\ProfileMenuItemSingleContentComponent.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuContract.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -10,7 +10,8 @@ namespace myTNB_Android.Src.CompoundView
     public class ProfileMenuItemContentComponent : RelativeLayout
     {
         private TextView itemTitle, itemValue, itemAction;
-        private LinearLayout itemActionContainer, itemContentSeparator;
+        private LinearLayout itemActionContainer;
+
         public ProfileMenuItemContentComponent(Context context) : base(context)
         {
             InitializeViews(context);
@@ -38,7 +39,6 @@ namespace myTNB_Android.Src.CompoundView
             itemValue = FindViewById<TextView>(Resource.Id.itemValue);
             itemAction = FindViewById<TextView>(Resource.Id.itemAction);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
-            itemContentSeparator = FindViewById<LinearLayout>(Resource.Id.itemContentSeparator);
 
             TextViewUtils.SetMuseoSans300Typeface(itemTitle, itemValue);
             TextViewUtils.SetMuseoSans500Typeface(itemAction);
@@ -70,11 +70,6 @@ namespace myTNB_Android.Src.CompoundView
             {
                 action();
             };
-        }
-
-        public void SetItemSeparatorVisible(bool isVisible)
-        {
-            itemContentSeparator.Visibility = isVisible ? Android.Views.ViewStates.Visible : Android.Views.ViewStates.Gone;
         }
     }
 }

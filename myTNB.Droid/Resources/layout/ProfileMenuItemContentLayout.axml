@@ -11,17 +11,19 @@
         <TextView
             android:id="@+id/itemTitle"
             android:text="Item Title"
+            android:gravity="center"
             android:textSize="10dp"
             android:textColor="#a6a6a6"
             android:layout_width="wrap_content" 
-            android:layout_height="wrap_content"/>
+            android:layout_height="14dp"/>
         <TextView
             android:id="@+id/itemValue"
+            android:gravity="center"
             android:text="Item Value"
             android:textSize="14dp"
             android:textColor="#49494a"
             android:layout_width="wrap_content" 
-            android:layout_height="wrap_content"/>
+            android:layout_height="20dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/itemActionContainer"
@@ -39,11 +41,4 @@
             android:layout_width="wrap_content" 
             android:layout_height="wrap_content"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/itemContentSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"
-        android:background="@color/platinumGrey"/>
 </RelativeLayout>
