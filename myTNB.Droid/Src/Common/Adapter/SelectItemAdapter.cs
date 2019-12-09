@@ -7,7 +7,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
+namespace myTNB_Android.Src.Common
 {
     public class SelectItemAdapter : BaseCustomAdapter<Item>
     {

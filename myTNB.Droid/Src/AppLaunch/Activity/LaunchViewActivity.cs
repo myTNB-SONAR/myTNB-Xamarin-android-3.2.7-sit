@@ -38,6 +38,7 @@ using System.Globalization;
 using Android.Graphics.Drawables;
 using myTNB_Android.Src.NewWalkthrough.MVP;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -71,6 +72,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchDone = false;
 
         private MasterDataResponse cacheResponse = null;
+
+        private AppLaunchMasterDataResponse cacheResponseData = null;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
 
@@ -166,8 +169,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 }
                 else
                 {
-                    mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_http_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_http_exception_btn_retry), delegate
+                    mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
                         mApiExcecptionSnackBar.Dismiss();
@@ -198,8 +201,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 }
                 else
                 {
-                    mUnknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_unknown_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_unknown_exception_btn_retry), delegate
+                    mUnknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
                         mUnknownExceptionSnackBar.Dismiss();
@@ -783,6 +786,26 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        public void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse)
+        {
+            try
+            {
+                cacheResponseData = masterDataResponse;
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
+                {
+                    isAppLaunchDone = true;
+                    Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Response.DisplayTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Response.DisplayMessage);
+                    StartActivity(maintenanceScreen);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -894,7 +917,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     int secondMilli = 0;
                                     try
                                     {
-                                        secondMilli = (int) (float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000); 
+                                        secondMilli = (int) (float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
                                     }
                                     catch (Exception nea)
                                     {
@@ -960,10 +983,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             }
 
-            string msg = "Sorry, something went wrong. Please try again later.";
+            string msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
 
             mSomethingWrongExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
-            .SetAction("Ok", delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate
             {
                 mSomethingWrongExceptionSnackBar.Dismiss();
             }

@@ -7,6 +7,8 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Text.Method;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -28,13 +30,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.RegisterForm")]
-    public class RegistrationFormActivity : BaseToolbarAppCompatActivity, RegisterFormContract.IView
+    public class RegistrationFormActivity : BaseActivityCustom, RegisterFormContract.IView
     {
         private RegisterFormPresenter mPresenter;
         private RegisterFormContract.IUserActionsListener userActionsListener;
 
         private AlertDialog mVerificationProgressDialog;
         private AlertDialog mRegistrationProgressDialog;
+        const string PAGE_ID = "Register";
 
         Snackbar mRegistrationSnackBar;
 
@@ -133,6 +136,28 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
+                textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
+                textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumber");
+                textInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
+                textInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                textInputLayoutConfirmEmail.Hint = GetLabelByLanguage("confirmEmail");
+                textInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
+                textInputLayoutConfirmPassword.Hint = Utility.GetLocalizedLabel("ResetPassword", "confirmNewPassword");
+
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
+                ClickSpan clickableSpan = new ClickSpan();
+                clickableSpan.Click += delegate
+                {
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.NavigateToTermsAndConditions();
+                    }
+                };
+                txtTermsConditions.TextFormatted = Utility.GetFormattedURLString(clickableSpan, txtTermsConditions.TextFormatted);
+                txtTermsConditions.MovementMethod = new LinkMovementMethod();
+                btnRegister.Text = GetLabelByLanguage("ctaTitle");
+
                 //var inputFilter = new InputFilterPhoneNumber();
                 //txtMobileNumber.AddTextChangedListener(inputFilter);
                 //txtMobileNumber.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
@@ -165,7 +190,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtConfirmEmail.AddTextChangedListener(new InputFilterFormField(txtConfirmEmail, textInputLayoutConfirmEmail));
                 txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, textInputLayoutPassword));
                 txtConfirmPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmPassword, textInputLayoutConfirmPassword));
-
 
                 this.userActionsListener.Start();
 
@@ -322,7 +346,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
-            textInputLayoutPassword.Error = GetString(Resource.String.registration_form_errors_password_must_have_atleas8_chars);
+            textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
         }
 
@@ -333,7 +357,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowInvalidEmailError()
         {
-            textInputLayoutEmail.Error = GetString(Resource.String.registration_form_errors_invalid_email);
+            textInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
         public void ShowInvalidICNoError()
@@ -343,7 +367,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowNotEqualConfirmEmailError()
         {
-            textInputLayoutConfirmEmail.Error = GetString(Resource.String.registration_form_errors_not_equal_confirm_email);
+            textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedEmail");
         }
 
         public void ShowNotEqualConfirmPasswordError()
@@ -503,8 +527,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -532,8 +556,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -561,8 +585,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -720,5 +744,36 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
         }
 
+        public void OnClickSpan(string textMessage)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToTermsAndConditions();
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+    }
+
+    class ClickSpan : ClickableSpan
+    {
+        public Action<View> Click;
+        public override void OnClick(View widget)
+        {
+            if (Click != null)
+            {
+                Click(widget);
+            }
+        }
+
+        public override void UpdateDrawState(TextPaint ds)
+        {
+            base.UpdateDrawState(ds);
+            ds.UnderlineText = false;
+        }
     }
 }

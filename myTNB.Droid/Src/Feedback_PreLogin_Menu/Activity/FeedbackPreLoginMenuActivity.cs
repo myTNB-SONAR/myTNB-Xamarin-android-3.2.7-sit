@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
     [Activity(Label = "@string/menu_feedback"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Feedback")]
-    public class FeedbackPreLoginMenuActivity : BaseToolbarAppCompatActivity, FeedbackPreLoginMenuContract.IView
+    public class FeedbackPreLoginMenuActivity : BaseActivityCustom, FeedbackPreLoginMenuContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -90,6 +90,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         string feedbackStreetLampTitle = "";
         string feedbackOthersTitle = "";
         string submittedFeedbackTitle = "";
+
+        const string PAGE_ID = "FeedbackList";
 
         public override int ResourceId()
         {
@@ -287,8 +289,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -308,8 +310,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -329,8 +331,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -445,7 +447,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 }
                 else
                 {
-                    message = GetString(Resource.String.app_launch_http_exception_error);
+                    message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                 }
             }
 
@@ -479,5 +481,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

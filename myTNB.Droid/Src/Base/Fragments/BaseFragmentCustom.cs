@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -419,24 +420,24 @@ namespace myTNB_Android.Src.Base.Fragments
             return scaledInPixel;
         }
 
-        public abstract ViewGroup GetRootView();
+        //public abstract ViewGroup GetRootView();
 
-        private Snackbar mGenericExceptionSnackbar;
-        public void ShowGenericExceptionSnackBar()
-        {
-            if (mGenericExceptionSnackbar != null && mGenericExceptionSnackbar.IsShown)
-            {
-                mGenericExceptionSnackbar.Dismiss();
-            }
+        //private Snackbar mGenericExceptionSnackbar;
+        //public void ShowGenericExceptionSnackBar()
+        //{
+        //    if (mGenericExceptionSnackbar != null && mGenericExceptionSnackbar.IsShown)
+        //    {
+        //        mGenericExceptionSnackbar.Dismiss();
+        //    }
 
-            mGenericExceptionSnackbar = Snackbar.Make(GetRootView(), "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate
-            {
-                mGenericExceptionSnackbar.Dismiss();
-            }
-            );
-            mGenericExceptionSnackbar.Show();
-        }
+        //    mGenericExceptionSnackbar = Snackbar.Make(GetRootView(), "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
+        //    .SetAction("Close", delegate
+        //    {
+        //        mGenericExceptionSnackbar.Dismiss();
+        //    }
+        //    );
+        //    mGenericExceptionSnackbar.Show();
+        //}
 
         public ISpanned GetFormattedText(string stringValue)
         {
@@ -453,6 +454,32 @@ namespace myTNB_Android.Src.Base.Fragments
         public bool IsActive()
         {
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
+        }
+
+        /// <summary>
+        /// Gets the Page Id. To be implemented by child activity.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetPageId();
+
+        /// <summary>
+        /// Gets the label based on selected language.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelByLanguage(string key)
+        {
+            return Utility.GetLocalizedLabel(GetPageId(), key);
+        }
+
+        /// <summary>
+        /// Gets the common labels
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelCommonByLanguage(string key)
+        {
+            return Utility.GetLocalizedLabel("Common", key);
         }
     }
 }

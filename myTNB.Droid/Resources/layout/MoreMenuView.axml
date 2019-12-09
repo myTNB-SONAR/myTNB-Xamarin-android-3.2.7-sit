@@ -70,6 +70,24 @@
                     android:text="@string/more_fragment_settings_notifications"
                     android:textColor="@color/tunaGrey"
                     android:textSize="14sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lightGrey" />
+                <TextView
+                    android:id="@+id/txt_more_fragment_settings_app_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="18dp"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:paddingStart="18dp"
+                    android:paddingTop="15dp"
+                    android:text="Set App Language"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="14sp" />
                 <TextView
                     android:id="@+id/txt_more_fragment_help_support_title"
                     android:layout_width="match_parent"

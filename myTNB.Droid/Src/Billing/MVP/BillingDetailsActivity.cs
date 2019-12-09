@@ -37,7 +37,7 @@ using static myTNB_Android.Src.MyTNBService.Model.AccountBillPayHistoryModel;
 namespace myTNB_Android.Src.Billing.MVP
 {
     [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class BillingDetailsActivity : BaseToolbarAppCompatActivity, BillingDetailsContract.IView
+    public class BillingDetailsActivity : BaseActivityCustom, BillingDetailsContract.IView
     {
         [BindView(Resource.Id.accountName)]
         TextView accountName;
@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.Billing.MVP
         TextView accountPayAmountCurrency;
 
         [BindView(Resource.Id.accountPayAmountValue)]
-        TextView accountPayAmountValue; 
+        TextView accountPayAmountValue;
 
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
@@ -105,9 +105,9 @@ namespace myTNB_Android.Src.Billing.MVP
         BillingDetailsContract.IPresenter billingDetailsPresenter;
         private LoadingOverlay loadingOverlay;
 		private bool fromSelectAccountPage;
+        private const string PAGE_ID = "BillDetails";
         ISharedPreferences mPref;
         private bool isTutorialShown = false;
-
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -144,7 +144,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     payment_activity.PutExtra(Constants.FROM_BILL_DETAILS_PAGE, true);
                     StartActivity(payment_activity);
                 }
-                
+
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
@@ -174,6 +174,11 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
                 accountMinChargeLabel, btnPayBill, btnViewBill);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
+            myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
+            accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
+            accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
+            btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
+            btnPayBill.Text = GetLabelByLanguage("pay");
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
@@ -218,13 +223,13 @@ namespace myTNB_Android.Src.Billing.MVP
                 btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             }
         }
-
         private void PopulateCharges()
         {
             if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
+                otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
                 otherChargesExpandableView.RequestLayout();
             }
@@ -237,12 +242,12 @@ namespace myTNB_Android.Src.Billing.MVP
             accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00");
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
-                accountChargeLabel.Text = "I've paid extra";
+                accountChargeLabel.Text = GetLabelByLanguage("paidExtra");
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
             }
             else
             {
-                accountChargeLabel.Text = "My outstanding charges";
+                accountChargeLabel.Text = GetLabelByLanguage("outstandingCharges");// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
             accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00");
@@ -250,9 +255,9 @@ namespace myTNB_Android.Src.Billing.MVP
             if (selectedAccountChargeModel.IsNeedPay)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
-                accountPayAmountLabel.Text = "I need to pay";
+                accountPayAmountLabel.Text = GetLabelByLanguage("needToPay");
                 accountPayAmountDate.Visibility = ViewStates.Visible;
-                accountPayAmountDate.Text = "by " + dateFormatter.Format(dateParser.Parse(selectedAccountChargeModel.DueDate));
+                accountPayAmountDate.Text = GetLabelByLanguage("by") + " " + dateFormatter.Format(dateParser.Parse(selectedAccountChargeModel.DueDate));
 
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
@@ -262,7 +267,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
 
-                accountPayAmountLabel.Text = "I've paid extra";
+                accountPayAmountLabel.Text = GetLabelByLanguage("paidExtra");
                 accountPayAmountValue.Text = (Math.Abs(selectedAccountChargeModel.AmountDue)).ToString("#,##0.00");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
@@ -272,7 +277,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
 
-                accountPayAmountLabel.Text = "I've cleared all bills";
+                accountPayAmountLabel.Text = GetLabelByLanguage("clearedBills");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
@@ -286,11 +291,12 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void ShowUnderstandBillTooltip()
         {
-            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData();
+            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
             UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                 .SetAdapter(adapter)
                 .SetContext(this)
+                .SetCTALabel(Utility.GetLocalizedLabel("Common","gotIt"))
                 .Build()
                 .Show();
         }
@@ -334,12 +340,15 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowAccountHasMinCharge()
         {
-            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData();
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryCharges");
+            if (mandatoryTooltipModel != null)
+            {
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(mandatoryTooltipModel.Title)
                 .SetMessage(mandatoryTooltipModel.Description)
                 .SetCTALabel(mandatoryTooltipModel.CTA)
                 .Build().Show();
+            }
         }
 
         public void ShowBillPDF(BillHistoryV5 selectedBill)
@@ -398,7 +407,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
@@ -412,6 +421,11 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
 
         public void OnShowItemizedBillingTutorialDialog()

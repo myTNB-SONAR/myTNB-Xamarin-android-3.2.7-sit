@@ -1,4 +1,4 @@
-﻿using AFollestad.MaterialDialogs;
+using AFollestad.MaterialDialogs;
 using Android.Animation;
 using Android.App;
 using Android.Content;
@@ -629,12 +629,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                                txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
                             }
                         }
                         catch (System.Exception e)
                         {
-                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
                             Utility.LoggingNonFatalError(e);
                         }
                         try
@@ -645,12 +645,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                txtBtnRefreshTitle = "Refresh Now";
+                                txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
                             }
                         }
                         catch (System.Exception e)
                         {
-                            txtBtnRefreshTitle = "Refresh Now";
+                            txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
                             Utility.LoggingNonFatalError(e);
                         }
                     }
@@ -658,8 +658,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         isUsageLoadedNeeded = true;
                         selectedHistoryData = null;
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
-                        txtBtnRefreshTitle = "Refresh Now";
+                        txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
+                        txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
                     }
                 }
                 else
@@ -688,12 +688,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                                txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
                             }
                         }
                         catch (System.Exception e)
                         {
-                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
+                            txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
                             Utility.LoggingNonFatalError(e);
                         }
                         try
@@ -704,12 +704,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                txtBtnRefreshTitle = "Refresh Now";
+                                txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
                             }
                         }
                         catch (System.Exception e)
                         {
-                            txtBtnRefreshTitle = "Refresh Now";
+                            txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
                             Utility.LoggingNonFatalError(e);
                         }
                     }
@@ -717,8 +717,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         isUsageLoadedNeeded = true;
                         selectedSMHistoryData = null;
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
-                        txtBtnRefreshTitle = "Refresh Now";
+                        txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
+                        txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
                     }
                 }
             }
@@ -735,8 +735,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isUsageLoadedNeeded = true;
                 selectedHistoryData = null;
                 selectedSMHistoryData = null;
-                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
-                txtBtnRefreshTitle = "Refresh Now";
+                txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
+                txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
             }
 
             errorMSG = "";
@@ -1148,8 +1148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             bool isGetEnergyTipsDisabled = false;
-                            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                            if (currentMasterData.IsEnergyTipsDisabled)
+                            if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
                             {
                                 isGetEnergyTipsDisabled = true;
                             }
@@ -4916,7 +4915,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 currentSelectedBar = index;
                 bool isHighlightNeed = false;
 
-                string message = "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.";
+                string message = Utility.GetLocalizedLabel("Usage", "tariffLegendNote");
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
@@ -5686,8 +5685,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtMessage.MovementMethod = new ScrollingMovementMethod();
 
                 txtMessage.Text = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
-                txtTitle.Text = "Your full usage for this particular day has not been retrieved yet. Check back in a while.";
-                btnGotIt.Text = "Got It!";
+                txtTitle.Text = Utility.GetLocalizedLabel("Usage", "missedReadMsg");
+                btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
 
 
                 foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
@@ -6330,8 +6329,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         else
                                         {
-                                            txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                            reDueDate.Text = "I will get by " + dateString;
+                                            txtDueDate.Text = Utility.GetLocalizedLabel("Usage", "iWillGetBy") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                            reDueDate.Text = Utility.GetLocalizedLabel("Usage", "iWillGetBy") + " " + dateString;
                                         }
                                     }
                                     else
@@ -6355,13 +6354,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
-                                                txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                                txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
                                                 txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                                 txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             }
                                             else
                                             {
-                                                txtNoPayableTitle.Text = "I’ve paid extra";
+                                                txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
                                                 txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                                 txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                             }
@@ -6372,7 +6371,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             totalPayableLayout.Visibility = ViewStates.Visible;
                                             noPayableLayout.Visibility = ViewStates.Gone;
-                                            txtDueDate.Text = "by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                                            txtDueDate.Text = Utility.GetLocalizedLabel("Usage", "by") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                                         }
                                     }
                                 }
@@ -6455,7 +6454,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             totalPayableLayout.Visibility = ViewStates.Gone;
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                                            txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                            txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
                                             txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
@@ -6655,10 +6654,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!string.IsNullOrEmpty(accountStatusData.DisconnectionStatus) && accountStatusData.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                 {
                     energyDisconnectionButton.Visibility = ViewStates.Visible;
-                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
-                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? "What does this mean?";
-                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? "<strong>What does this mean?</strong><br/><br/>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br/><br/>If you’ve made a payment, please give us some time for this to be reflected.";
-                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? "Got It!";
+                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? Utility.GetLocalizedCommonLabel("disconnectionMsg");
+                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Utility.GetLocalizedLabel("Usage", "missedReadTitle");
+                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Utility.GetLocalizedLabel("Usage", "disconnectionMsg");
+                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Utility.GetLocalizedCommonLabel("gotIt");
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                     {
                         txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
@@ -8253,7 +8252,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticPredictTitle.Text = "My bill may reach";
                         smStatisticPredictSubTitle.Text = "- -";
                         smStatisticPredict.Text = "- -";
-                        txtSmStatisticTooltip.Text = "What are these?";
+                        txtSmStatisticTooltip.Text = Utility.GetLocalizedLabel("Usage", "projectedCostTitle");
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
@@ -8291,7 +8290,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (costValue.Type == Constants.PROJECTED_COST_KEY)
                                 {
-                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink;
+                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? Utility.GetLocalizedLabel("Usage", "projectedCostTitle") : costValue.SMLink;
                                 }
                             }
                         }

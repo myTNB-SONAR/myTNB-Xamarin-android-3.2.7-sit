@@ -56,6 +56,11 @@ namespace myTNB_Android.Src.CompoundView
             expandableContainer.RemoveAllViews();
         }
 
+        public void SetApplicationChargesLabel(string label)
+        {
+            myApplicationChargesLabel.Text = label;
+        }
+
         public void OnClickExpand(bool isExpand)
         {
             if (isExpand)

@@ -131,7 +131,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     sspuid = UserEntity.GetActive().UserID,
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -247,7 +247,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     sspuid = UserEntity.GetActive().UserID,
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -260,7 +260,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
 #else
             var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
-#endif 
+#endif
 
                 SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new Requests.SMRAccountActivityInfoRequest()
                 {
@@ -372,7 +372,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     sspuid = UserEntity.GetActive().UserID,
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -437,7 +437,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     sspuid = UserEntity.GetActive().UserID,
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -532,7 +532,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     sspuid = UserEntity.GetActive().UserID,
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -796,8 +796,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public async Task<bool> IsOwnedSMR(string accountNumber)
         {
             bool IsSMRFeatureDisabled = false;
-            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-            if (currentMasterData.IsSMRFeatureDisabled)
+            if (MyTNBAccountManagement.GetInstance().IsSMRFeatureDisabled())
             {
                 IsSMRFeatureDisabled = true;
             }

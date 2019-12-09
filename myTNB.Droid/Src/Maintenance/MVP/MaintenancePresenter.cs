@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     sspuid = "",
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",

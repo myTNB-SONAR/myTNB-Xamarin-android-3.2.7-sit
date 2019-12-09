@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.UpdateMobile")]
-    public class UpdateNicknameActivity : BaseToolbarAppCompatActivity, UpdateNicknameContract.IView
+    public class UpdateNicknameActivity : BaseActivityCustom, UpdateNicknameContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -45,6 +45,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         MaterialDialog progress;
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "UpdateNickname";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -75,6 +76,9 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNickname);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountNickname);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
+
+                txtInputLayoutAccountNickname.Hint = GetLabelCommonByLanguage("acctNickname");
+                btnSave.Text = GetLabelCommonByLanguage("save");
 
                 txtAccountNickname.AddTextChangedListener(new InputFilterFormField(txtAccountNickname, txtInputLayoutAccountNickname));
 
@@ -216,8 +220,8 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -236,8 +240,8 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -256,8 +260,8 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -340,6 +344,11 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Android.App;
 using Android.Content;
 using Java.Lang;
 using Java.Text;
@@ -25,6 +26,11 @@ namespace myTNB_Android.Src.Utils
         //    editor.PutBoolean("hasSkipped", true);
         //    editor.Apply();
         //}
+
+        private UserSessions()
+        {
+
+        }
 
         private static ISharedPreferences mPreferences;
 
@@ -491,6 +497,48 @@ namespace myTNB_Android.Src.Utils
                 selectAccountList = JsonConvert.DeserializeObject<List<SMRAccountActivityInfo>>(accountInfoListString);
             }
             return selectAccountList;
+        }
+
+        public static void SaveAppLanguage(string language)
+        {
+            ISharedPreferences sharedPreferences =  Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString(Constants.SHARED_PREF_LANGUAGE_KEY, language);
+            editor.Apply();
+        }
+
+        public static string GetAppLanguage()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY,null);
+        }
+
+        public static void SaveIsAppLanguageChanged(bool isChanged)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, isChanged);
+            editor.Apply();
+        }
+
+        public static bool GetIsAppLanguageChanged()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, false);
+        }
+
+        public static void SaveDeviceId(string deviceId)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString(Constants.SHARED_PREF_DEVICE_ID_KEY, deviceId);
+            editor.Apply();
+        }
+
+        public static string GetDeviceId()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_DEVICE_ID_KEY, null);
         }
     }
 }

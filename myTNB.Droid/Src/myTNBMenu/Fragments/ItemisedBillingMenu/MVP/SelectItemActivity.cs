@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 

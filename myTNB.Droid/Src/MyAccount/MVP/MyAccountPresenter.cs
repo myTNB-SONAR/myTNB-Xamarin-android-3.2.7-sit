@@ -166,6 +166,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
                         AccountDataEntity.RemoveAll();
                         SummaryDashBoardAccountEntity.RemoveAll();
                         SelectBillsEntity.RemoveAll();
+                        LanguageUtil.SetIsLanguageChanged(false);
                         this.mView.ShowLogout();
                     }
                     else

@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.Notifications.Activity
               ,Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationActivity : BaseToolbarAppCompatActivity, NotificationContract.IView, IOnCheckedChangeListener
+    public class NotificationActivity : BaseActivityCustom, NotificationContract.IView, IOnCheckedChangeListener
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -104,8 +104,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         private MaterialDialog markReadAllDialog;
         private int selectedNotification;
         private static EnableNotificationState enableNotificationState = EnableNotificationState.DISABLED;
-
         private bool hasNotification = false;
+        const string PAGE_ID = "PushNotificationList";
 
         //========================================== FORM LIFECYCLE ==================================================================================
 
@@ -131,12 +131,16 @@ namespace myTNB_Android.Src.Notifications.Activity
                     .Build();
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel);
-                TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
+                TextViewUtils.SetMuseoSans300Typeface(btnNewRefresh, txtNewRefreshMessage, txtNotificationsContent);
+
+                selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
+                txtNotificationsContent.Text = GetLabelByLanguage("noNotification");
 
                 selectAllCheckboxButton.SetOnCheckedChangeListener(this);
                 SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 this.mPresenter = new NotificationPresenter(this);
+                ShowNotificationBadge();
                 SetNotificationRecyclerView();
                 SetInitialNotificationState();
                 if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
@@ -198,7 +202,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                         editState = EditNotificationStates.SHOW;
                         itemTouchHelper.AttachToRecyclerView(null);
                         notificationRecyclerAdapter.SetClickable(false);
-                        SetToolBarTitle(GetString(Resource.String.Notification_Select));
+                        SetToolBarTitle(GetLabelByLanguage("select"));
                     }
                     else
                     {
@@ -215,7 +219,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                                 ShowSelectAllOption(ViewStates.Gone);
                                 notificationRecyclerAdapter.ShowSelectButtons(false);
                                 editState = EditNotificationStates.HIDE;
-                                SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+                                SetToolBarTitle(GetLabelByLanguage("title"));
                                 notificationRecyclerAdapter.SetClickable(true);
                             }
                         }
@@ -239,7 +243,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                             ShowSelectAllOption(ViewStates.Gone);
                             notificationRecyclerAdapter.ShowSelectButtons(false);
-                            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+                            SetToolBarTitle(GetLabelByLanguage("title"));
                             notificationRecyclerAdapter.SetClickable(true);
                             notificationRecyclerAdapter.SelectAllNotifications(false);
                             selectAllCheckboxButton.SetOnCheckedChangeListener(null);
@@ -379,13 +383,13 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 if (GetSelectedNotificationCount() == notificationRecyclerAdapter.GetAllNotifications().Count)
                 {
-                    dialogTitle = GetString(Resource.String.Notification_Delete_All_Dialog_Title);
-                    dialogContent = GetString(Resource.String.Notification_Delete_All_Dialog_Content);
+                    dialogTitle = GetLabelByLanguage("deleteAllTitle");
+                    dialogContent = GetLabelByLanguage("deleteAllMessage");
                 }
                 else
                 {
-                    dialogTitle = GetString(Resource.String.Notification_Delete_Dialog_Title);
-                    dialogContent = GetString(Resource.String.Notification_Delete_Dialog_Content);
+                    dialogTitle = GetLabelByLanguage("deleteTitleMultiple");
+                    dialogContent = GetLabelByLanguage("deleteMessageMultiple");
                 }
 
                 if (deleteAllDialog != null)
@@ -399,9 +403,9 @@ namespace myTNB_Android.Src.Notifications.Activity
                     deleteAllDialog = new MaterialDialog.Builder(this)
                         .Title(dialogTitle)
                         .Content(dialogContent)
-                        .PositiveText(GetString(Resource.String.Common_Dialog_Yes))
+                        .PositiveText(GetLabelCommonByLanguage("yes"))
                         .PositiveColor(Resource.Color.blue)
-                        .NegativeText(GetString(Resource.String.Common_Dialog_No))
+                        .NegativeText(GetLabelCommonByLanguage("no"))
                         .NegativeColor(Resource.Color.blue)
                         .OnPositive((dialog, which) =>
                         {
@@ -439,22 +443,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
         }
 
-        private void SetNotificationRecyclerView()
+        private void ShowNotificationBadge()
         {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            notificationRecyclerView.SetLayoutManager(layoutManager);
-            TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
-            TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
-            TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage);
-            TextViewUtils.SetMuseoSans500Typeface(btnNewRefresh);
-
-            DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(notificationRecyclerView.Context,
-            DividerItemDecoration.Vertical);
-            notificationRecyclerView.AddItemDecoration(mDividerItemDecoration);
-
-            notificationRecyclerView.Visibility = ViewStates.Visible;
-            refreshLayout.Visibility = ViewStates.Gone;
-
             int count = UserNotificationEntity.Count();
             if (count == 0)
             {
@@ -464,6 +454,19 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
             }
+        }
+
+        private void SetNotificationRecyclerView()
+        {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            notificationRecyclerView.SetLayoutManager(layoutManager);
+
+            DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(notificationRecyclerView.Context,
+            DividerItemDecoration.Vertical);
+            notificationRecyclerView.AddItemDecoration(mDividerItemDecoration);
+
+            notificationRecyclerView.Visibility = ViewStates.Visible;
+            refreshLayout.Visibility = ViewStates.Gone;
 
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
@@ -475,16 +478,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         private void SetInitialNotificationState()
         {
-            int count = UserNotificationEntity.Count();
-            if (count == 0)
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
-
             ShowSelectAllOption(ViewStates.Gone);
             editState = EditNotificationStates.HIDE;
             selectNotificationState = SelectNotificationStates.UNSELECTED;
@@ -530,17 +523,17 @@ namespace myTNB_Android.Src.Notifications.Activity
                 FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Gone;
                 notificationRecyclerView.Visibility = ViewStates.Gone;
                 refreshLayout.Visibility = ViewStates.Visible;
-                btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetString(Resource.String.text_new_refresh) : btnTxt;
+                btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetLabelCommonByLanguage("refreshNow") : btnTxt;
                 ShowSelectAllOption(ViewStates.Gone);
                 notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
                 notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage")) : Html.FromHtml(contentTxt);
                 }
             }
             catch (Exception e)
@@ -586,7 +579,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
             notificationRecyclerAdapter.ShowSelectButtons(false);
-            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+            SetToolBarTitle(GetLabelByLanguage("title"));
             notificationRecyclerAdapter.SetClickable(true);
             notificationRecyclerAdapter.SelectAllNotifications(false);
             selectAllCheckboxButton.SetOnCheckedChangeListener(null);
@@ -607,7 +600,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
             notificationRecyclerAdapter.ShowSelectButtons(false);
-            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+            SetToolBarTitle(GetLabelByLanguage("title"));
             notificationRecyclerAdapter.SetClickable(true);
             notificationRecyclerAdapter.SelectAllNotifications(false);
             if (notificationRecyclerAdapter.GetAllNotifications().Count == 0)
@@ -649,7 +642,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.notification_activity_cancelled_exception_btn_close), delegate
             {
 
@@ -671,7 +664,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.notification_activity_api_exception_btn_close), delegate
             {
 
@@ -691,7 +684,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.notification_activity_unknown_exception_btn_close), delegate
             {
 
@@ -737,7 +730,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true).SetEnabled(true);
             notificationRecyclerAdapter.ClearAll();
-            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+            SetToolBarTitle(GetLabelByLanguage("title"));
         }
 
         public void ShowNotificationFilterName(string filterName)
@@ -809,12 +802,12 @@ namespace myTNB_Android.Src.Notifications.Activity
             if (isSelected)
             {
                 selectNotificationState = SelectNotificationStates.SELECTED;
-                selectAllNotificationLabel.Text = GetString(Resource.String.Notification_Unselect_All);
+                selectAllNotificationLabel.Text = GetLabelCommonByLanguage("unselectAll");
             }
             else
             {
                 selectNotificationState = SelectNotificationStates.UNSELECTED;
-                selectAllNotificationLabel.Text = GetString(Resource.String.Notification_Select_All);
+                selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
             }
         }
 
@@ -869,11 +862,11 @@ namespace myTNB_Android.Src.Notifications.Activity
             int selectedCount = GetSelectedNotificationCount();
             if (selectedCount == 0)
             {
-                return GetString(Resource.String.Notification_Select);
+                return GetLabelByLanguage("select");
             }
             else
             {
-                return GetString(Resource.String.Notification_Selected) + "(" + selectedCount + ")";
+                return string.Format(GetLabelByLanguage("selected"), selectedCount);
             }
         }
 
@@ -920,7 +913,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                     {
                         ShowReadAndDeleteOption(true);
                     }
-                    selectAllNotificationLabel.Text = GetString(Resource.String.Notification_Select_All);
+                    selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
                     selectAllCheckboxButton.SetOnCheckedChangeListener(null);
                     selectAllCheckboxButton.Checked = false;
                     selectAllCheckboxButton.SetOnCheckedChangeListener(this);
@@ -928,7 +921,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 else
                 {
                     ShowReadAndDeleteOption(true);
-                    selectAllNotificationLabel.Text = GetString(Resource.String.Notification_Unselect_All);
+                    selectAllNotificationLabel.Text = GetLabelCommonByLanguage("unselectAll");
                     selectAllCheckboxButton.SetOnCheckedChangeListener(null);
                     selectAllCheckboxButton.Checked = true;
                     selectAllCheckboxButton.SetOnCheckedChangeListener(this);
@@ -969,12 +962,17 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter.ShowSelectButtons(true);
             editState = EditNotificationStates.SHOW;
             notificationRecyclerAdapter.SetClickable(false);
-            SetToolBarTitle(GetString(Resource.String.Notification_Select));
+            SetToolBarTitle(GetLabelByLanguage("select"));
         }
 
         public void SetNotificationItemClickable(bool isClickable)
         {
             notificationRecyclerAdapter.SetClickable(isClickable);
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

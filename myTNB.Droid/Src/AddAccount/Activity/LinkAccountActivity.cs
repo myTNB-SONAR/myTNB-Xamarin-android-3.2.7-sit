@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 {
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.LinkAccount")]
-    public class LinkAccountActivity : BaseToolbarAppCompatActivity, LinkAccountContract.IView
+    public class LinkAccountActivity : BaseActivityCustom, LinkAccountContract.IView
     {
 
         RecyclerView.LayoutManager layoutManager;
@@ -78,11 +78,17 @@ namespace myTNB_Android.Src.AddAccount.Activity
         [BindView(Resource.Id.no_account_layout)]
         LinearLayout NoAccountLayout;
 
+        [BindView(Resource.Id.btnAddAnotherAccount)]
+        Button btnAddAnotherAccount;
+
+        [BindView(Resource.Id.btnConfirm)]
+        Button btnConfirm;
+
         private LinkAccountPresenter mPresenter;
         private LinkAccountContract.IUserActionsListener userActionsListener;
-        private Button done;
 
         private bool fromDashboard = false;
+        const string PAGE_ID = "AddAccount";
 
         public bool IsActive()
         {
@@ -183,7 +189,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 else
                 {
-                    textNoOfAcoount.Text = "No accounts found!";
+                    textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                     labelAccountLabel.Visibility = ViewStates.Gone;
                     mNoAccountFoundDialog = new AlertDialog.Builder(this)
                     .SetTitle("Sorry")
@@ -224,7 +230,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
                       if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
                       {
-                          done.Visibility = ViewStates.Visible;
+                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
                       }
                       mDeleteDialog.Dismiss();
                   })
@@ -268,7 +274,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
                       if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
                       {
-                          done.Visibility = ViewStates.Visible;
+                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
                       }
                       mDeleteDialog.Dismiss();
                   })
@@ -314,8 +320,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
                 }
 
-                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount);
+                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm);
                 TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
+
+                textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
+                btnAddAnotherAccount.Text = GetLabelByLanguage("addAnotherAcct");
+                btnConfirm.Text = GetLabelCommonByLanguage("confirm");
 
                 adapter = new AccountListAdapter(this, accountList);
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
@@ -346,8 +357,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
 
-                done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-                done.Click += delegate
+                btnAddAnotherAccount.Click += delegate
                 {
                     if (!this.GetIsClicked())
                     {
@@ -357,8 +367,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                 };
 
-                Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
-                confirm.Click += delegate
+                btnConfirm.Click += delegate
                 {
                     if (!this.GetIsClicked())
                     {
@@ -379,8 +388,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         }
                     }
                 };
-
-                TextViewUtils.SetMuseoSans500Typeface(done, confirm);
 
                 AddAccountUtils.ClearList();
             }
@@ -433,7 +440,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override string ToolbarTitle()
         {
-            return GetString(Resource.String.add_electricity_account_title);
+            return Utility.GetLocalizedLabel("AddAccount", "title");
         }
 
         public void ClearAdapter()
@@ -457,14 +464,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ACCOUNT_COUNT = CustomerBillingAccount.List().Count() + 1;
                     if (response.Count > 0)
                     {
-                        if (response.Count == 1)
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply account found!";
-                        }
-                        else
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply accounts found!";
-                        }
+                        textNoOfAcoount.Text = response.Count + GetLabelByLanguage("supplyAcctCount");
 
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
@@ -499,13 +499,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     else
                     {
-                        textNoOfAcoount.Text = "No accounts found!";
+                        textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                         ShowAddAnotherAccountScreen();
                     }
                 }
                 else
                 {
-                    textNoOfAcoount.Text = "No accounts found!";
+                    textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                     ShowAddAnotherAccountScreen();
                 }
             }
@@ -611,7 +611,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (vh != null)
                                 {
                                     vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                    vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                    vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
                             break;
@@ -628,7 +628,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     if (vh != null)
                                     {
                                         vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                        vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
                                 break;
@@ -654,7 +654,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (vh != null)
                                 {
                                     vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                    vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                    vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
                             break;
@@ -671,7 +671,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     if (vh != null)
                                     {
                                         vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                        vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
                                 break;
@@ -717,7 +717,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (vh != null)
                                 {
                                     vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                    vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                    vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
                             break;
@@ -734,7 +734,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     if (vh != null)
                                     {
                                         vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                        vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
                                 break;
@@ -759,7 +759,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (vh != null)
                                 {
                                     vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                    vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                    vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
                             break;
@@ -776,7 +776,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     if (vh != null)
                                     {
                                         vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                        vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
                                 break;
@@ -890,7 +890,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
                         if (accountList != null && totalAccountAdded >= Constants.ADD_ACCOUNT_LIMIT)
                         {
-                            done.Visibility = ViewStates.Gone;
+                            btnAddAnotherAccount.Visibility = ViewStates.Gone;
                         }
                     }
                 }
@@ -993,8 +993,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     View view = mAddAccountProgressDialog.View;
                     if (view != null)
                     {
-                        string title = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ? "Adding 1 Account" : string.Format("Adding {0} Accounts", TOTAL_NO_OF_ACCOUNTS_TO_ADD);
-                        string message = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ? "This may take a while as we add your TNB account." : "This may take a while as we add your TNB accounts.";
+                        string title = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ?
+                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccount"), TOTAL_NO_OF_ACCOUNTS_TO_ADD) :
+                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccounts"), TOTAL_NO_OF_ACCOUNTS_TO_ADD);
+                        string message = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ?
+                            Utility.GetLocalizedLabel("AddAccount", "addAccountMsg") :
+                            Utility.GetLocalizedLabel("AddAccount", "addAccountsMsg");
                         TextView titleText = view.FindViewById<TextView>(Resource.Id.txtTitle);
                         TextView infoText = view.FindViewById<TextView>(Resource.Id.txtMessage);
                         titleText.Text = title;
@@ -1045,8 +1049,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -1070,8 +1074,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -1096,8 +1100,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -1137,7 +1141,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             bcrmDownDialog = new MaterialDialog.Builder(this)
                 .Title("Error")
                 .Content(msg)
-                .PositiveText(GetString(Resource.String.manage_cards_btn_ok))
+                .PositiveText(Utility.GetLocalizedCommonLabel("ok"))
                 .OnPositive((dialog, which) => NavigateToDashboard())
                 .Cancelable(false)
                 .Build();
@@ -1173,6 +1177,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
         public string GetDeviceId()
         {
             return this.DeviceId();
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

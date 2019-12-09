@@ -18,7 +18,10 @@ namespace myTNB_Android.Src.Database.Model
         public enum SITE_CORE_ID
         {
             APPLY_SSMR_WALKTHROUGH,
-            BILL_TOOLTIP
+            BILL_TOOLTIP,
+            LANGUAGE_URL,
+            LANGUAGE_EN,
+            LANGUAGE_MS
         }
 
         public static void CreateTable()
@@ -70,6 +73,24 @@ namespace myTNB_Android.Src.Database.Model
                 if (itemList.Count > 0)
                 {
                     return itemList[0].jsonStringData;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Get All Items : {0}", e.Message);
+            }
+            return null;
+        }
+
+        public static string GetItemTimestampById(SITE_CORE_ID itemId)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                var itemList = db.Query<SitecoreCmsEntity>("SELECT jsonTimeStampData FROM SitecoreCmsEntity WHERE itemId = ?", itemId.ToString());
+                if (itemList.Count > 0)
+                {
+                    return itemList[0].jsonTimeStampData;
                 }
             }
             catch (Exception e)

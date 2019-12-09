@@ -110,10 +110,10 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";
-            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
-            // internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            // internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";
+            //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
@@ -269,6 +269,11 @@ namespace myTNB_Android.Src.Utils
             EVENING
         }
 
+        public enum SUPPORTED_LANGUAGES
+        {
+            EN,MS
+        }
+
         //User Notification BCRM IDs
 		public const string BCRM_NOTIFICATION_NEW_BILL_ID = "01";
 		public const string BCRM_NOTIFICATION_BILL_DUE_ID = "02";
@@ -308,5 +313,15 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int ACCOUNT_LIST_TIMEOUT = 8000;
         internal static readonly int APP_LAUNCH_MASTER_DATA_TIMEOUT = 3000;
         internal static readonly int APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT = 2000;
+
+        //SharedPreference ids
+        public const string ACCOUNT_SHARED_PREF_ID = "myTNB.account.pref";
+        public const string SHARED_PREF_LANGUAGE_KEY = "myTNB.account.pref.language";
+        public const string SHARED_PREF_LANGUAGE_IS_CHANGE_KEY = "myTNB.account.pref.language.is.changed";
+        public const string SHARED_PREF_DEVICE_ID_KEY = "myTNB.account.pref.device.id";
+
+        //Service Error Codes
+        internal static readonly string SERVICE_CODE_SUCCESS = "7200";
+        internal static readonly string SERVICE_CODE_MAINTENANCE = "7000";
     }
 }

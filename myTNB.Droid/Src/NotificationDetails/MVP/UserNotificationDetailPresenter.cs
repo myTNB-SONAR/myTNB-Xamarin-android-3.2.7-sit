@@ -65,10 +65,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_NEW_BILL_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
+                            //pageTitle = "New Bill";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBill"),
+                                delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"), delegate () { PayNow(notificationDetails); });
                             secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
@@ -76,10 +78,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_BILL_DUE_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_bill_due_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
+                            //pageTitle = "Bill Due";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBill"),
+                                delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"),
+                                delegate () { PayNow(notificationDetails); });
                             secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
@@ -87,10 +92,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnect_notice_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
+                            //pageTitle = "Disconnection Notice";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBill"),
+                                delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
-
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"),
+                                delegate () { PayNow(notificationDetails); });
                             secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
@@ -98,10 +105,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnected_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
+                            //pageTitle = "Disconnection";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"),
+                                delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "payNow"),
+                                delegate () { PayNow(notificationDetails); });
                             secondaryCTA.SetEnabled(Utility.IsEnablePayment());
                             ctaList.Add(secondaryCTA);
                             break;
@@ -109,7 +119,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_reconnected_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { ViewMyUsage(notificationDetails); });
+                            //pageTitle = "Reconnection";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                                delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -121,7 +133,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            //pageTitle = "Smart Meter Reading";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitMeterReading"),
+                                delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
@@ -130,7 +144,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitMeterReading"),
+                                delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
@@ -139,7 +154,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitMeterReading"),
+                                delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
@@ -148,14 +164,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { ViewMyUsage(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                                delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"),
+                                delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
                             break;
@@ -164,7 +182,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             Task.Run(async () => await GetSMRAccountStatus(notificationDetails.AccountNum)).Wait();
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-start Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            //pageTitle = "Smart Meter Reading";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reenableSSMR"), delegate () { EnableSelfMeterReading(notificationDetails); });
                             primaryCTA.SetEnabled(!isTaggedSMR);
                             ctaList.Add(primaryCTA);
                             break;
@@ -172,7 +191,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
+                            //pageTitle = "Smart Meter Reading";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"), delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -349,7 +369,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     sspuid = UserEntity.GetActive().UserID,
                     did = "",
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -362,7 +382,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
 #else
             var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
-#endif 
+#endif
 
                 SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new myTNB_Android.Src.myTNBMenu.Requests.SMRAccountActivityInfoRequest()
                 {

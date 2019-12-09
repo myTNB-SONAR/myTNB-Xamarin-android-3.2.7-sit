@@ -1,9 +1,21 @@
-﻿using Android.Content.PM;
+﻿using Android.App;
+using Android.Content;
+using Android.Content.PM;
 using Android.Text;
 using Android.Text.Style;
+using Android.Util;
+using myTNB;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.SSMR.Util;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -70,12 +82,158 @@ namespace myTNB_Android.Src.Utils
             Java.Lang.Object[] urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
             if (urlSpans.Length != 0)
             {
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                foreach (Java.Lang.Object obj in urlSpans)
+                {
+                    int startFAQLink = s.GetSpanStart(obj);
+                    int endFAQLink = s.GetSpanEnd(obj);
+                    s.RemoveSpan(obj);
+                    s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                }
             }
             return s;
+        }
+
+        /// <summary>
+        /// Gets the label based on selected language.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedLabel(string pageId, string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetValuesByPage(pageId)[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        /// <summary>
+        /// Gets the Common labels by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedCommonLabel(string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetCommonValuePairs()[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        /// <summary>
+        /// Gets the tooltip selector based on selected language.
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        public static List<PopupSelectorModel> GetTooltipSelectorModel(string pageId, string keyId)
+        {
+            List<PopupSelectorModel> popupSelectorModels = new List<PopupSelectorModel>();
+            try
+            {
+                popupSelectorModels = LanguageManager.Instance.GetPopupSelectorsByPage(pageId)[keyId];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return popupSelectorModels;
+        }
+
+        /// <summary>
+        /// Gets the Error labels by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedErrorLabel(string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetErrorValuePairs()[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        public static void ShowChangeLanguageDialog(Context context, string selectedLanguage, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + selectedLanguage))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + selectedLanguage))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
+                        .SetSecondaryCTAaction(()=>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void UpdateSavedLanguage(string selectedLanguage)
+        {
+            LanguageManager.Language language;
+            if (selectedLanguage == "MS")
+            {
+                language = LanguageManager.Language.MS;
+            }
+            else
+            {
+                language = LanguageManager.Language.EN;
+            }
+
+            //try
+            //{
+            //    string density = DPUtils.GetDeviceDensity(Application.Context);
+            //    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());// LanguageUtil.GetAppLanguage());
+            //    //LanguageResponseModel responseModel = getItemsService.GetLanguageItems();
+            //    var timestamp = getItemsService.GetLanguageTimestampItem();
+            //    //SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_URL, JsonConvert.SerializeObject(responseModel.Data), "");
+            //    string content = string.Empty;
+            //    //WebRequest webRequest = WebRequest.Create(responseModel.Data[0].LanguageFile);
+            //    //using (WebResponse response = webRequest.GetResponse())
+            //    //using (Stream responseStream = response.GetResponseStream())
+            //    //using (StreamReader reader = new StreamReader(responseStream))
+            //    //{
+            //    //    content = reader.ReadToEnd();
+            //    //}
+
+            //    //System.Diagnostics.Debug.WriteLine("Content: " + content);
+            //    //LanguageManager.Instance.SetLanguage(content);
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
+
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
         }
 
         public static bool IsEnablePayment()

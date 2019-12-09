@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.FAQ.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetFAQsItem();
                     FAQsResponseModel responseModel = JsonConvert.DeserializeObject<FAQsResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))
@@ -97,7 +97,7 @@ namespace myTNB_Android.Src.FAQ.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetFAQsTimestampItem();
                     FAQsParentResponseModel responseModel = JsonConvert.DeserializeObject<FAQsParentResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))

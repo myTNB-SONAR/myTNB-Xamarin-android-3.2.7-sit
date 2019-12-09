@@ -2162,8 +2162,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mCancelledExceptionSnackBar.Dismiss();
                 }
 
-                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate {
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate {
 
                     mCancelledExceptionSnackBar.Dismiss();
                     this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
@@ -2187,7 +2187,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
@@ -2211,8 +2211,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mApiExcecptionSnackBar.Dismiss();
                 }
 
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate {
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate {
 
                     mApiExcecptionSnackBar.Dismiss();
                     this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
@@ -2237,8 +2237,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 }
 
-                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate {
+                mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate {
 
                     mUknownExceptionSnackBar.Dismiss();
                     this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);

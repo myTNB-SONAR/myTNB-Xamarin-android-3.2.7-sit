@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using myTNB;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
@@ -15,7 +17,7 @@ namespace myTNB_Android.Src.Base
 {
     public class MyTNBAppToolTipData
     {
-        
+
         static SMRActivityInfo sMRActivityInfo;
         private List<SMREligibiltyPopUpDetails> mSMREligibilityPopupDetailList = new List<SMREligibiltyPopUpDetails>();
         private List<BillMandatoryChargesTooltipModel> mBillMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
@@ -151,26 +153,37 @@ namespace myTNB_Android.Src.Base
 
         public SMREligibiltyPopUpDetailData GetSMREligibiltyPopUpDetails()
         {
-            SMREligibiltyPopUpDetailData eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+            SMREligibiltyPopUpDetailData eligibiltyPopUpDetails = null;
             if (mSMREligibilityPopupDetailList.Count > 0)
             {
                 SMREligibiltyPopUpDetails details = mSMREligibilityPopupDetailList.Find(x => {
                     return x.Type == "Not_SMR_CA";
                 });
-                eligibiltyPopUpDetails.title = details.Title;
-                eligibiltyPopUpDetails.description = details.Description;
-                eligibiltyPopUpDetails.cta = details.CTA;
+                if (details != null)
+                {
+                    eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+                    eligibiltyPopUpDetails.title = details.Title;
+                    eligibiltyPopUpDetails.description = details.Description;
+                    eligibiltyPopUpDetails.cta = details.CTA;
+                }
             }
             else
             {
-                eligibiltyPopUpDetails.title = "Why are some of my accounts not here?";
-                eligibiltyPopUpDetails.description = "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.";
-                eligibiltyPopUpDetails.cta = "Got It!";
+                Utility.GetTooltipSelectorModel("SSMRReadingHistory", "SMREligibiltyPopUpDetails").ForEach(tooltipModel =>
+                {
+                    if (tooltipModel.Type == "Not_SMR_CA")
+                    {
+                        eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+                        eligibiltyPopUpDetails.title = tooltipModel.Title;
+                        eligibiltyPopUpDetails.description = tooltipModel.Description;
+                        eligibiltyPopUpDetails.cta = tooltipModel.CTA;
+                    }
+                });
             }
             return eligibiltyPopUpDetails;
         }
 
-        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData()
+        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData(BaseActivityCustom baseActivity)
         {
             List<UnderstandTooltipModel> tooltipModelDataList = new List<UnderstandTooltipModel>();
             UnderstandTooltipModel tooltipModel;
@@ -191,22 +204,22 @@ namespace myTNB_Android.Src.Base
             {
                 tooltipModel = new UnderstandTooltipModel();
                 tooltipModel.TooltipImage = null;
-                tooltipModel.Title = "Items from your paper/PDF bill";
-                List<string> itemList = "I need to pay|My outstanding changes|My latest bill (electricity usage only)".Split('|').ToList();
+                tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle1");
+                List<string> itemList = baseActivity.GetLabelByLanguage("tooltipdesc1").Split('|').ToList();
                 tooltipModel.ItemList = itemList;
                 tooltipModelDataList.Add(tooltipModel);
 
                 tooltipModel = new UnderstandTooltipModel();
                 tooltipModel.TooltipImage = null;
-                tooltipModel.Title = "Items from your demand letter";
-                itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
+                tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle2");
+                itemList = baseActivity.GetLabelByLanguage("tooltipdesc2").Split('|').ToList();
                 tooltipModel.ItemList = itemList;
                 tooltipModelDataList.Add(tooltipModel);
             }
             return tooltipModelDataList;
         }
 
-        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData()
+        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData(string tooltipType)
         {
             BillMandatoryChargesTooltipModel tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
             {
@@ -239,7 +252,6 @@ namespace myTNB_Android.Src.Base
             }
             return tooltipModel;
         }
-
 
         public class SMREligibiltyPopUpDetailData
         {

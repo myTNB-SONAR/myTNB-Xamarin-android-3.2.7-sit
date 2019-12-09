@@ -32,8 +32,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     [Activity(Label = "Select Electricity Account"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectSMRAccountActivity : BaseToolbarAppCompatActivity, SelectSMRAccountContract.IView
+    public class SelectSMRAccountActivity : BaseActivityCustom, SelectSMRAccountContract.IView
     {
+        List<SMRAccount> accountList = new List<SMRAccount>();
+        private SelectAccountAdapter selectAccountAdapter;
+        const string PAGE_ID = "SelectElectricityAccounts";
+
         [BindView(Resource.Id.account_list_view)]
         ListView accountSMRList; 
 
@@ -43,8 +47,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.eligibleAccountListContainer)]
         LinearLayout eligibleAccountListContainer;
 
-        List<SMRAccount> accountList = new List<SMRAccount>();
-        private SelectAccountAdapter selectAccountAdapter;
+        
         public override int ResourceId()
         {
             return Resource.Layout.SelectSMRAccountLayout;
@@ -159,37 +162,40 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
             {
                 MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
-                var clickableSpan = new ClickSpan();
-                clickableSpan.Click += v =>
+                if (tooltipData != null)
                 {
-                    if (tooltipData.description != null && tooltipData.description.Contains("faq"))
+                    var clickableSpan = new ClickSpan();
+                    clickableSpan.Click += v =>
                     {
-                        //Lauch FAQ
-                        int startIndex = tooltipData.description.LastIndexOf("=") + 1;
-                        int lastIndex = tooltipData.description.LastIndexOf("}");
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < tooltipData.description.Length)
+                        if (tooltipData.description != null && tooltipData.description.Contains("faq"))
                         {
-                            string faqid = tooltipData.description.Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(faqid))
+                            //Lauch FAQ
+                            int startIndex = tooltipData.description.LastIndexOf("=") + 1;
+                            int lastIndex = tooltipData.description.LastIndexOf("}");
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < tooltipData.description.Length)
                             {
-                                if (!this.GetIsClicked())
+                                string faqid = tooltipData.description.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(faqid))
                                 {
-                                    this.SetIsClicked(true);
-                                    Intent faqIntent = new Intent(this, typeof(FAQListActivity));
-                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                    StartActivity(faqIntent);
+                                    if (!this.GetIsClicked())
+                                    {
+                                        this.SetIsClicked(true);
+                                        Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                        StartActivity(faqIntent);
+                                    }
                                 }
                             }
                         }
-                    }
-                };
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                    .SetTitle(tooltipData.title)
-                    .SetClickableSpan(clickableSpan)
-                    .SetMessage(tooltipData.description)
-                    .SetCTALabel(tooltipData.cta)
-                    .Build().Show();
+                    };
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(tooltipData.title)
+                        .SetClickableSpan(clickableSpan)
+                        .SetMessage(tooltipData.description)
+                        .SetCTALabel(tooltipData.cta)
+                        .Build().Show();
+                }
             }
             else
             {
@@ -227,6 +233,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnPause()
         {
             base.OnPause();
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

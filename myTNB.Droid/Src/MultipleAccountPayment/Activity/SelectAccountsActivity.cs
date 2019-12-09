@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
     [Activity(Label = "Select Bill(s)"
        , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.LinkAccount",
         WindowSoftInputMode = SoftInput.AdjustPan)]
-    public class SelectAccountsActivity : BaseToolbarAppCompatActivity, MPSelectAccountsContract.IView
+    public class SelectAccountsActivity : BaseActivityCustom, MPSelectAccountsContract.IView
     {
         private readonly string TAG = "SelectAccountsActivity";
         private MPSelectAccountsPresenter mPresenter;
@@ -58,6 +58,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private bool firstTime = false;
         private string preSelectedAccount = null;
         private bool isMinimumAmountTooltipShown = false;
+        private string PAGE_ID = "SelectBills";
 
         RecyclerView.LayoutManager layoutManager;
         SelectAccountListAdapter adapter;
@@ -197,6 +198,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency);
                 TextViewUtils.SetMuseoSans500Typeface(btnPayBill);
 
+                btnPayBill.Text = GetLabelByLanguage("paySingle");
+                textTotalPayableTitle.Text = GetLabelCommonByLanguage("totalAmount");
+
                 mGetDueAmountDialog = new MaterialDialog.Builder(this)
                    .Title(GetString(Resource.String.getdueamount_progress_title))
                    .Content(GetString(Resource.String.getdueamount_progress_message))
@@ -234,7 +238,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     NavigateToPayment();
                 };
 
-                string html = "<html><u>" + this.GetString(Resource.String.load_more) + "</u></html>";
+                string html = "<html><u>" + GetLabelByLanguage("loadMore") + "</u></html>";
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                 {
                     textLoadMore.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
@@ -244,6 +248,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     textLoadMore.TextFormatted = Html.FromHtml(html);
                 }
                 TextViewUtils.SetMuseoSans300Typeface(textLoadMore);
+                textLoadMore.Visibility = ViewStates.Gone;
                 textLoadMore.Click += delegate
                 {
                     if (IsNetworkAvailable())
@@ -436,12 +441,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 textTotalPayable.Text = total.ToString("#,##0.00");
                 if (selectedAccounts.Count > 0)
                 {
-                    btnPayBill.Text = this.GetString(Resource.String.text_pay_bill) + " (" + selectedAccounts.Count + ")";
+                    btnPayBill.Text = string.Format(GetLabelByLanguage("payMultiple"), selectedAccounts.Count);
                     EnablePayButton();
                 }
                 else
                 {
-                    btnPayBill.Text = this.GetString(Resource.String.text_pay_bill);
+                    btnPayBill.Text = GetLabelByLanguage("paySingle");
                     DisablePayButton();
                 }
             }
@@ -839,7 +844,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
                 {
-                    BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
+                    BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryPayment");
                     List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
                     string accountId = string.IsNullOrEmpty(account.accountLabel) ? account.accountNumber : account.accountLabel;
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
@@ -872,6 +877,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 intent.PutExtra("PEEK_BILL_DETAILS", true);
                 StartActivity(intent);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

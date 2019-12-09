@@ -145,6 +145,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             currentFragment = fragment;
         }
 
+        private void SetBottomNavigationLabels()
+        {
+            try
+            {
+                bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill);
+                IMenu bottomMenu = bottomNavigationView.Menu;
+                IMenuItem item;
+
+                item = bottomMenu.FindItem(Resource.Id.menu_dashboard);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "home"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_bill);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_promotion);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_reward);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_more);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "profile"));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -162,6 +191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 urlSchemaData = data;
             }
 
+            SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
@@ -277,7 +307,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-            }            
+            }
         }
 
         protected override void OnPause()
@@ -375,7 +405,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
-            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
             ShowBillMenu(accountData);
         }
         public void EnableDropDown(bool enable)
@@ -484,6 +514,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowPromotionsMenu(Weblink weblink)
         {
             ShowBackButton(false);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
             PromotionListFragment fragment = new PromotionListFragment();
             currentFragment = fragment;
             FragmentManager.BeginTransaction()
@@ -583,7 +614,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
-            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
@@ -592,7 +623,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
-            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
             ShowBillMenu(selectedAccount);
@@ -1309,6 +1340,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.mPresenter.OnResumeUpdateRewardUnRead();
             }
+        }
+        public void ReloadProfileMenu()
+        {
+            bottomNavigationView.SelectedItemId = Resource.Id.menu_more;
+            SetBottomNavigationLabels();
         }
     }
 }

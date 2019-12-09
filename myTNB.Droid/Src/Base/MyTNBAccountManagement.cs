@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 
@@ -15,6 +16,7 @@ namespace myTNB_Android.Src.Base
         private bool IsNotificationFailed = false;
 		private bool IsNotificationComplete = false;
         private static MasterDataResponse currentMasterDataRes = null;
+        private static AppLaunchMasterDataResponse appMasterDataResponse = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private MyTNBAccountManagement()
         {
@@ -189,6 +191,16 @@ namespace myTNB_Android.Src.Base
             return currentMasterDataRes;
         }
 
+        public void SetMasterDataResponse(AppLaunchMasterDataResponse data)
+        {
+            appMasterDataResponse = data;
+        }
+
+        public AppLaunchMasterDataResponse GetMasterDataResponse()
+        {
+            return appMasterDataResponse;
+        }
+
         public bool IsAccountNumberExist(string accountNumber)
         {
             return (CustomerBillingAccount.FindByAccNum(accountNumber) != null);
@@ -210,6 +222,21 @@ namespace myTNB_Android.Src.Base
                 }
             }
             return notificationAccountName;
+        }
+
+        public bool IsEnergyTipsDisabled()
+        {
+            return appMasterDataResponse.Response.IsEnergyTipsDisabled;
+        }
+
+        public bool IsSMRFeatureDisabled()
+        {
+            return appMasterDataResponse.Response.IsSMRFeatureDisabled;
+        }
+
+        public bool IsOCRDown()
+        {
+            return appMasterDataResponse.Response.IsOCRDown;
         }
 
         public bool IsMaintenanceDialogShown()

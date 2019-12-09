@@ -5,6 +5,7 @@ using Android.Runtime;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MyTNBService.Response;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -147,6 +148,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Show Maintenance Screen
             ///</summary>
             void ShowMaintenance(MasterDataResponse masterDataResponse);
+
+            ///<summary>
+            /// Show Maintenance Screen
+            ///</summary>
+            void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse);
 
             void SetAppLaunchSuccessfulFlag(bool flag, AppLaunchNavigation navigationWay);
 

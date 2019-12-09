@@ -166,6 +166,11 @@
                     public const string RewardUseTitle = "RewardUseTitle";
                     public const string RewardUseDescription = "RewardUseDescription";
                 }
+                
+                public struct Language
+                {
+                    public const string LanguageFile = "Language File";
+                }
             }
 
             public struct ItemID
@@ -206,6 +211,7 @@
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }
     }

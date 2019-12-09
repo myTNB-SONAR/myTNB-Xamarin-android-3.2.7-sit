@@ -66,6 +66,13 @@ namespace myTNB_Android.Src.Utils
             return deviceUuid.ToString();
         }
 
+        internal static string DeviceId(this BaseFragmentCustom baseFragmentCustom)
+        {
+            var androidID = Android.Provider.Settings.Secure.GetString(baseFragmentCustom.Activity.ContentResolver, Android.Provider.Settings.Secure.AndroidId);
+            var deviceUuid = GenerateDeviceIdentifier(baseFragmentCustom.Activity, androidID);//new UUID(androidID.GetHashCode(), ((long)telephonyDeviceID.GetHashCode() << 32) | telephonySIMSerialNumber.GetHashCode());
+            return deviceUuid.ToString();
+        }
+
         internal static string DeviceId(this FirebaseMessagingService service)
         {
 

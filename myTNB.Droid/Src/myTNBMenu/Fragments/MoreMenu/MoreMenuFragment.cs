@@ -20,12 +20,14 @@ using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.Profile.Activity;
 using Refit;
 using System;
+using Android.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 {
-    public class MoreMenuFragment : BaseFragment, MoreFragmentContract.IView
+    public class MoreMenuFragment : BaseFragmentCustom, MoreFragmentContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -49,6 +51,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         [BindView(Resource.Id.txt_more_fragment_settings_my_account)]
         TextView txt_more_fragment_settings_my_account;
+
+        [BindView(Resource.Id.txt_more_fragment_settings_app_language)]
+        TextView txt_more_fragment_settings_app_language;
 
 
         [BindView(Resource.Id.txt_more_fragment_help_support_find_us)]
@@ -94,6 +99,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         private bool mobileNoUpdated = false;
 
+        const string PAGE_ID = "Profile";
+
         public override int ResourceId()
         {
             return Resource.Layout.MoreMenuView;
@@ -114,7 +121,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
 
             TextViewUtils.SetMuseoSans500Typeface(txt_more_fragment_help_support_title, txt_more_fragment_settings_title, txt_more_fragment_share_title);
-            TextViewUtils.SetMuseoSans300Typeface(txt_more_fragment_settings_notifications,
+            TextViewUtils.SetMuseoSans300Typeface(txt_more_fragment_settings_notifications, txt_more_fragment_settings_app_language,
                 txt_more_fragment_settings_my_account,
                 txt_more_fragment_help_support_find_us,
                 txt_more_fragment_help_support_call_us,
@@ -126,6 +133,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 txt_more_fragment_share_rate_this_app,
                 txt_app_version);
 
+            txt_more_fragment_settings_title.Text = GetLabelByLanguage("settings");
+            txt_more_fragment_settings_my_account.Text = GetLabelByLanguage("myAccount");
+            txt_more_fragment_settings_notifications.Text = GetLabelByLanguage("notifications");
+            txt_more_fragment_settings_app_language.Text = GetLabelByLanguage("setAppLanguage");
+            txt_more_fragment_help_support_title.Text = GetLabelByLanguage("helpAndSupport");
+            txt_more_fragment_help_support_find_us.Text = GetLabelByLanguage("findUs");
+            txt_more_fragment_help_support_call_us.Text = GetLabelByLanguage("callUsOutagesAndBreakdown");
+            txt_more_fragment_help_support_call_us_1.Text = GetLabelByLanguage("callUsBilling");
+            txt_more_fragment_help_support_faq.Text = GetLabelByLanguage("faq");
+            txt_more_fragment_help_support_TC.Text = GetLabelByLanguage("tnc");
+            txt_more_fragment_share_title.Text = GetLabelByLanguage("share");
+            txt_more_fragment_share_share_this_app.Text = GetLabelByLanguage("shareDescription");
+            txt_more_fragment_share_rate_this_app.Text = GetLabelByLanguage("rate");
+
             try
             {
                 Context context = Activity.ApplicationContext;
@@ -133,7 +154,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 var code = context.PackageManager.GetPackageInfo(context.PackageName, 0).VersionCode;
                 if (name != null)
                 {
-                    txt_app_version.Text = GetString(Resource.String.text_app_version) + " " + name;
+                    txt_app_version.Text = GetLabelByLanguage("appVersion") + " " + name;
                 }
 
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
@@ -168,6 +189,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
+                    ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
                 }
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Profile");
             }
@@ -205,6 +227,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 this.userActionsListener.OnNotification(this.DeviceId());
             }
         }
+
         [OnClick(Resource.Id.txt_more_fragment_settings_my_account)]
         void OnMyAccountClick(object sender, EventArgs e)
         {
@@ -212,6 +235,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.OnMyAccount();
+            }
+        }
+
+        [OnClick(Resource.Id.txt_more_fragment_settings_app_language)]
+        void OnAppLanguageClick(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
+                StartActivityForResult(nextIntent, 1234908);
             }
         }
 
@@ -342,7 +375,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     mCancelledExceptionSnackBar.Dismiss();
                 }
 
-                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.more_menu_cancelled_exception_btn_close), delegate
                 {
 
@@ -369,7 +402,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     mApiExcecptionSnackBar.Dismiss();
                 }
 
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_api_exception_error), Snackbar.LengthIndefinite)
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.more_menu_api_exception_btn_close), delegate
                 {
 
@@ -398,7 +431,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
                 }
 
-                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_unknown_exception_error), Snackbar.LengthIndefinite)
+                mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.more_menu_unknown_exception_btn_close), delegate
                 {
 
@@ -582,6 +615,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 StartActivity(intent);
                 //}
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            ((DashboardHomeActivity)Activity).ReloadProfileMenu();
         }
     }
 }

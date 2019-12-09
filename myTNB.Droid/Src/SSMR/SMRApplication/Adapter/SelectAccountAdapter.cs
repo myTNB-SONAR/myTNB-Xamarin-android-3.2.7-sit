@@ -22,6 +22,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
             if (position == (itemList.Count - 1))
             {
                 convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSMRAccountInfoLayout, parent, false);
+                TextView textView = convertView.FindViewById<TextView>(Resource.Id.whyAccountsNotHere);
+                TextViewUtils.SetMuseoSans500Typeface(textView);
+                textView.Text = Utility.GetLocalizedLabel("SelectElectricityAccounts", "accountsMissing");
             }
             else
             {

@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.Utils
 
                 if (!string.IsNullOrEmpty(_hint))
                 {
-                    _txtLayout.Hint = "I AM PAYING (RM)";// _hint.ToUpper();
+                    _txtLayout.Hint = Utility.GetLocalizedLabel("SelectBills", "iamPaying");
                 }
             }
             else
@@ -47,7 +47,7 @@ namespace myTNB_Android.Src.Utils
                 if (!string.IsNullOrEmpty(_hint))
                 {
                     _txtLayout.Hint = "";
-                    mEditText.Hint = "Enter Amount";// _hint;
+                    mEditText.Hint = Utility.GetLocalizedLabel("SelectBills", "enterAmount");
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace myTNB_Android.Src.Utils
                 //}
                 if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(mEditText.Text.ToString()))
                 {
-                    _txtLayout.Hint = "I AM PAYING (RM)";// _hint.ToUpper();
+                    _txtLayout.Hint = Utility.GetLocalizedLabel("SelectBills", "iamPaying");
                     mEditText.Hint = "";
                 }
             }
@@ -116,7 +116,7 @@ namespace myTNB_Android.Src.Utils
                 if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(mEditText.Text.ToString()))
                 {
                     _txtLayout.Hint = "";
-                    mEditText.Hint = "Enter Amount";// _hint;
+                    mEditText.Hint = Utility.GetLocalizedLabel("SelectBills", "enterAmount");
                 }
             }
         }

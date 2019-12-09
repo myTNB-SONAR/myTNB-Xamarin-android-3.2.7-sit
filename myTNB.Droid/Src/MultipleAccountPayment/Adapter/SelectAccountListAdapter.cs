@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
                 vh.AccountLabel.Text = item.accountLabel;
-               
+
                 if (item.amount <= 0f)
                 {
                     vh.Amount.Text = "";
@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     double newAmount = double.Parse(vh.Amount.Text);
                     if (newAmount < 1)
                     {
-                        vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                        vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity,Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 }
                 else
                 {
-                    vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                    vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
                     vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     vh.Amount.RequestFocus();
                     item.isValidAmount = false;

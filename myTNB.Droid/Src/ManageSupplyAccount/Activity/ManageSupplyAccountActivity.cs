@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageSupplyAccount")]
-    public class ManageSupplyAccountActivity : BaseToolbarAppCompatActivity, ManageSupplyAccountContract.IView
+    public class ManageSupplyAccountActivity : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -57,6 +57,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         MaterialDialog progress;
 
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "ManageAccount";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -96,6 +97,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 txtNickName.Text = accountData.AccountNickName;
 
+                txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
+                btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
+                btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
+
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -128,14 +133,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 removeDialog = new AlertDialog.Builder(this)
 
-                    .SetTitle(Resource.String.manage_supply_account_remove_dialog_title)
-                    .SetMessage(GetString(Resource.String.manage_supply_account_remove_dialog_content_wildcard, accountData.AccountNickName, accountData.AccountNum))
-                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
+                    .SetMessage(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
+                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
                     delegate
                     {
                         removeDialog.Dismiss();
                     })
-                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
                     delegate
                     {
                         this.userActionsListener.OnRemoveAccount(accountData);
@@ -221,8 +226,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.accountData = accountData;
                 txtNickName.Text = accountData.AccountNickName;
 
-                Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_update_nickname_success), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.manage_supply_account_btn_close),
+                Snackbar.Make(rootView, GetLabelByLanguage("nicknameUpdateSuccess"), Snackbar.LengthIndefinite)
+                .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
 
@@ -286,7 +291,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_cancelled_exception_error), Snackbar.LengthIndefinite)
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.manage_supply_account_cancelled_exception_btn_close), delegate
             {
 
@@ -305,7 +310,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_api_exception_error), Snackbar.LengthIndefinite)
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.manage_supply_account_api_exception_btn_close), delegate
             {
 
@@ -324,7 +329,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_unknown_exception_error), Snackbar.LengthIndefinite)
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.manage_supply_account_unknown_exception_btn_close), delegate
             {
 
@@ -369,6 +374,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

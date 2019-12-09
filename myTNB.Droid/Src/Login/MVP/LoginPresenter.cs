@@ -17,6 +17,9 @@ using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -276,34 +279,36 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             UserEntity.UpdateDeviceId(deviceId);
 
-#if STUB
-                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
+//#if STUB
+//                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 
-#elif DEBUG
-                            var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
-#else
-                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-#endif
-                            var newObject = new
+//#elif DEBUG
+//                            var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+//                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
+//#else
+//                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
+//#endif
+                            //var newObject = new
+                            //{
+                            //    usrInf = new
+                            //    {
+                            //        eid = UserEntity.GetActive().UserName,
+                            //        sspuid = userResponse.Data.User.UserId,
+                            //        lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                            //        sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                            //        sec_auth_k2 = "",
+                            //        ses_param1 = "",
+                            //        ses_param2 = ""
+                            //    }
+                            //};
+                            //var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);
+
+                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new BaseRequest());
+                            if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                             {
-                                usrInf = new
+                                if (customerAccountListResponse.GetData().Count > 0)
                                 {
-                                    eid = UserEntity.GetActive().UserName,
-                                    sspuid = userResponse.Data.User.UserId,
-                                    lang = "EN",
-                                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                                    sec_auth_k2 = "",
-                                    ses_param1 = "",
-                                    ses_param2 = ""
-                                }
-                            };
-                            var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);
-                            if (customerAccountsResponse != null && customerAccountsResponse.D != null && customerAccountsResponse.D.ErrorCode == "7200")
-                            {
-                                if (customerAccountsResponse.D.AccountListData.Count > 0)
-                                {
-                                    ProcessCustomerAccount(customerAccountsResponse.D.AccountListData);
+                                    ProcessCustomerAccount(customerAccountListResponse.GetData());
 
                                 }
                                 else
@@ -463,6 +468,7 @@ namespace myTNB_Android.Src.Login.MVP
                                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                 }
                                 //UserSessions.SavePhoneVerified(mSharedPref, true);
+                                await LanguageUtil.CheckUpdatedLanguage();
                                 this.mView.ShowDashboard();
                             }
                             else
@@ -474,7 +480,6 @@ namespace myTNB_Android.Src.Login.MVP
                                 }
                                 ClearDataCache();
                             }
-
                         }
                         if (this.mView.IsActive())
                         {
@@ -596,7 +601,7 @@ namespace myTNB_Android.Src.Login.MVP
             // NO IMPL
         }
 
-        private void ProcessCustomerAccount(List<Account> list)
+        private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
         {
             try
             {
@@ -611,7 +616,7 @@ namespace myTNB_Android.Src.Login.MVP
                     List<int> newExisitingListArray = new List<int>();
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
 
-                    foreach (Account acc in list)
+                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
                     {
                         int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
 
@@ -652,7 +657,7 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 
-                            Account newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+                            CustomerAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
 
                             var newRecord = new CustomerBillingAccount()
                             {
@@ -707,7 +712,7 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 else
                 {
-                    foreach (Account acc in list)
+                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
                     {
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
                     }

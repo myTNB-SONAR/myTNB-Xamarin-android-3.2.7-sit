@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                                 {
                                     eid = user.UserName,
                                     sspuid = user.UserID,
-                                    lang = "EN",
+                                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                                     sec_auth_k2 = "test",
                                     ses_param1 = "test",
@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     eid = email,
                     sspuid = sspUserID,
-                    lang = "EN",
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = apiKeyId,
                     sec_auth_k2 = "test",
                     ses_param1 = "test",
@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     sspuid = user.UserID,
                     did = this.mView.GetDeviceId(),
                     ft = token.FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",

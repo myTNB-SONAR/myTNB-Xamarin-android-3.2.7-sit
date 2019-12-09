@@ -2469,8 +2469,6 @@
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\SelectItemActivity.cs" />
     <AndroidResource Include="Resources\layout\SelectItemLayout.axml" />
     <AndroidResource Include="Resources\layout\SelectItemListLayout.axml" />
-    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\SelectItemAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\Item.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\FilterBillHistoryActivity.cs" />
     <AndroidResource Include="Resources\layout\FilterBillHistoryLayout.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\BillDetailsTooltipModel.cs" />
@@ -3584,6 +3582,14 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Utils\CancellationTokenSourceWrapper.cs" />
+    <Compile Include="Src\Base\Activity\BaseActivityCustom.cs" />
+    <Compile Include="Src\Profile\Activity\AppLanguageActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppLanguageLayout.axml" />
+    <Compile Include="Src\Common\Adapter\SelectItemAdapter.cs" />
+    <Compile Include="Src\Common\Model\Item.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\LanguageService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\LanguageModel.cs" />
+    <Compile Include="Src\Utils\LanguageUtil.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\filter_filled.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -3619,6 +3625,31 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughZeroBg.xml" />
+    <Compile Include="Src\Base\Fragments\BaseFragmentV4Custom.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughForthBg.xml" />
+    <Compile Include="Src\MyTNBService\InterfaceAPI\IAccountAPI.cs" />
+    <Compile Include="Src\MyTNBService\ServiceImpl\AccountApiImpl.cs" />
+    <Compile Include="Src\MyTNBService\Response\LanguagePreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\LanguagePreferenceRequest.cs" />
     <AndroidResource Include="Resources\drawable\UsageGradientBackground.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -4086,6 +4117,15 @@
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Request\GetUserRewardsRequest.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Response\GetUserRewardsResponse.cs" />
     <Compile Include="Src\myTNBMenu\Async\SitecoreRewardAPI.cs" />
+    <Compile Include="Src\MyTNBService\InterfaceAPI\IServiceV6.cs" />
+    <Compile Include="Src\MyTNBService\Request\AppLaunchMasterDataRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\BaseResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\BaseRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataResponse.cs" />
+    <Compile Include="Src\MyTNBService\ServiceImpl\ServiceApiImpl.cs" />
+    <Compile Include="Src\MyTNBService\Request\CustomerAccountListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataBaseResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4443,9 +4483,16 @@
     <Folder Include="Src\NewWalkthrough\" />
     <Folder Include="Src\NewWalkthrough\MVP\" />
     <Folder Include="Src\MyTNBService\Parser\" />
+    <Folder Include="Src\Profile\" />
+    <Folder Include="Src\Profile\Activity\" />
+    <Folder Include="Src\Common\" />
+    <Folder Include="Src\Common\Adapter\" />
+    <Folder Include="Src\Common\Model\" />
     <Folder Include="Src\NewAppTutorial\" />
     <Folder Include="Src\NewAppTutorial\MVP\" />
     <Folder Include="Src\NewAppTutorial\Adapter\" />
+    <Folder Include="Src\MyTNBService\Account\" />
+    <Folder Include="Src\MyTNBService\ServiceImpl\" />
     <Folder Include="Src\RearrangeAccount\" />
     <Folder Include="Src\RearrangeAccount\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\" />

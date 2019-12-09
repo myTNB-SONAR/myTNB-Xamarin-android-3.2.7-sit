@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationFilterActivity : BaseToolbarAppCompatActivity, NotificationFilterContract.IView
+    public class NotificationFilterActivity : BaseActivityCustom, NotificationFilterContract.IView
     {
 
         [BindView(Resource.Id.notification_listview)]
@@ -30,6 +30,7 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
 
         NotificationFilterContract.IUserActionsListener userActionsListener;
         NotificationFilterPresenter mPresenter;
+        const string PAGE_ID = "";
 
         public bool IsActive()
         {
@@ -91,6 +92,7 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
             base.OnCreate(savedInstanceState);
             try
             {
+                SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationList", "selectNotification"));
                 adapter = new NotificationFilterAdapter(this, true);
                 notificationListView.Adapter = adapter;
                 // Create your application here
@@ -132,6 +134,11 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

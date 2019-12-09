@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
     #else
                 var amountDueApi = RestService.For<IAmountDueApi>(Constants.SERVER_URL.END_POINT);
 
-    #endif 
+    #endif
 
                 var amountDueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
                 {
@@ -286,7 +286,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 #else
             var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(Constants.SERVER_URL.END_POINT);
 
-#endif 
+#endif
 
             try
             {
@@ -296,7 +296,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     sspuid = UserEntity.GetActive().UserID,
                     did = this.mView.GetDeviceId(),
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -437,7 +437,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             this.mView.ShowViewBill();
                         }
-                    }                    
+                    }
                     else
                     {
                         this.mView.ShowViewBill();

@@ -137,6 +137,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
+                txtAccountType.Text = Utility.GetLocalizedLabel("Common", "accountType").ToUpper();
+                textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common","accountNo");
+                textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
+                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
+
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
                     , edtOwnersIC
@@ -178,12 +183,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 };
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
+                btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
                     dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.WhereIsMyAccountView, false)
                     .Cancelable(true)
-                    .PositiveText("Got it!")
+                    .PositiveText(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
                     .PositiveColor(Resource.Color.blue)
                     .Build();
 
@@ -196,6 +202,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         {
                             TextViewUtils.SetMuseoSans500Typeface(titleText);
                             TextViewUtils.SetMuseoSans300Typeface(infoText);
+
+                            titleText.Text = Utility.GetLocalizedLabel("AddAccount","whereIsMyAccountTitle");
+                            infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
                         }
                     }
                     dialogWhereMyAccountNo.Show();
@@ -307,7 +316,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             if (selectedAccountType.Id.Equals("1"))
                             {
                                 edtOwnerMotherName.Visibility = ViewStates.Visible;
-                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_ic_no);
+                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedCommonLabel("idNumber");
                             }
                             else
                             {
@@ -469,8 +478,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -487,8 +496,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -508,11 +517,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             string msg = "Something went wrong, Please try again.";
             if (IsAdded)
             {
-                msg = GetString(Resource.String.add_account_link_unknown_exception_error);
+                msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_unknown_exception_btn_retry), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
                 mUknownExceptionSnackBar.Dismiss();
             }

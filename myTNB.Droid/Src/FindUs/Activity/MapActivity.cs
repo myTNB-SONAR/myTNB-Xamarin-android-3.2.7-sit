@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.FindUs.Activity
     [Activity(Label = "Find Us"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.FindUs")]
-    public class MapActivity : BaseToolbarAppCompatActivity, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener, ILocationListener, FindUsContract.IView
+    public class MapActivity : BaseActivityCustom, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener, ILocationListener, FindUsContract.IView
     {
         private readonly string TAG = "FindUSActivity";
         private readonly int SELECT_LOCATION_TYPE_CODE = 3410;
@@ -94,6 +94,8 @@ namespace myTNB_Android.Src.FindUs.Activity
 
         [BindView(Resource.Id.progressBar)]
         ProgressBar progressBar;
+
+        const string PAGE_ID = "FindUs";
 
         public void OnMapReady(GoogleMap googleMap)
         {
@@ -353,6 +355,8 @@ namespace myTNB_Android.Src.FindUs.Activity
             TextViewUtils.SetMuseoSans300Typeface(selectorLocationType);
             TextViewUtils.SetMuseoSans300Typeface(edtSearch);
             TextViewUtils.SetMuseoSans300Typeface(txtSearch);
+
+            txtSearch.Hint = GetLabelByLanguage("searchPlaceholder");
             if (LocationTypesEntity.HasRecord())
             {
                 locationTypes = LocationTypesEntity.GetLocationTypes();
@@ -793,6 +797,11 @@ namespace myTNB_Android.Src.FindUs.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

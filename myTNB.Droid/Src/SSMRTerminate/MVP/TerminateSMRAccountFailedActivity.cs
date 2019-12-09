@@ -58,8 +58,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError, btnBackToHomeFailed, btnTryAgainFailed);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);
 
-            btnBackToHomeFailed.Text = "Back to Home";
-            btnTryAgainFailed.Text = "Try Again";
+            btnBackToHomeFailed.Text = Utility.GetLocalizedLabel("Common", "backToHome");
+            btnTryAgainFailed.Text = Utility.GetLocalizedLabel("Common", "tryAgain");
 
             Bundle extras = Intent.Extras;
 
@@ -72,7 +72,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
                 else
                 {
-                    txtTitleInfoError.Text = "Please Try Again";
+                    txtTitleInfoError.Text = Utility.GetLocalizedLabel("Status", "ssmrDiscontinueFailTitle");
                 }
                 if (response != null && response.Data != null && response.Data.DisplayMessage != null)
                 {
@@ -80,13 +80,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
                 else
                 {
-                    txtMessageInfoError.Text = "It looks like we can't process your application at the moment.";
+                    txtMessageInfoError.Text = Utility.GetLocalizedLabel("Status", "ssmrDiscontinueFailMessage");
                 }
             }
             else
             {
-                txtTitleInfoError.Text = "Please Try Again";
-                txtMessageInfoError.Text = "It looks like we can't process your application at the moment.";
+                txtTitleInfoError.Text = Utility.GetLocalizedLabel("Status", "ssmrDiscontinueFailTitle");
+                txtMessageInfoError.Text = Utility.GetLocalizedLabel("Status", "ssmrDiscontinueFailMessage");
             }
 
             if (extras != null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -101,13 +101,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 {
                     if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
                     {
-                        btnBackToHomeFailed.Text = "Back to Home";
-                        btnTryAgainFailed.Text = "Try Again";
+                        btnBackToHomeFailed.Text = Utility.GetLocalizedLabel("Common", "backToHome");
+                        btnTryAgainFailed.Text = Utility.GetLocalizedLabel("Common", "tryAgain");
                     }
                     else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
                     {
-                        btnBackToHomeFailed.Text = "Back to Reading History";
-                        btnTryAgainFailed.Text = "Try Again";
+                        btnBackToHomeFailed.Text = Utility.GetLocalizedLabel("Status", "ssmrViewReadHistory");
+                        btnTryAgainFailed.Text = Utility.GetLocalizedLabel("Common", "tryAgain");
                     }
                 }
             }

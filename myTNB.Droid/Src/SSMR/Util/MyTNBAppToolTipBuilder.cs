@@ -35,6 +35,7 @@ namespace myTNB_Android.Src.SSMR.Util
         private MaterialDialog dialog;
         private ClickableSpan clickableSpan;
         private Context mContext;
+        private GravityFlags mGravityFlag;
 
         private MyTNBAppToolTipBuilder()
         {
@@ -45,6 +46,7 @@ namespace myTNB_Android.Src.SSMR.Util
         {
             MyTNBAppToolTipBuilder tooltipBuilder = new MyTNBAppToolTipBuilder();
             tooltipBuilder.toolTipType = mToolTipType;
+            tooltipBuilder.mGravityFlag = GravityFlags.Left;
             int layoutResource = 0;
             if (mToolTipType == ToolTipType.IMAGE_HEADER)
             {
@@ -140,6 +142,17 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetContentGravity(GravityFlags gravityFlags)
+        {
+            this.mGravityFlag = gravityFlags;
+            return this;
+        }
+
+        public void DismissDialog()
+        {
+            this.dialog.Dismiss();
+        }
+
         public MyTNBAppToolTipBuilder Build()
         {
             if (this.toolTipType == ToolTipType.IMAGE_HEADER)
@@ -211,6 +224,7 @@ namespace myTNB_Android.Src.SSMR.Util
             {
                 RecyclerView recyclerView = this.dialog.FindViewById<RecyclerView>(Resource.Id.dialogRecyclerView);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+                tooltipCTA.Text = this.ctaLabel;
                 LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this.mContext, LinearLayoutManager.Horizontal, false);
@@ -259,6 +273,9 @@ namespace myTNB_Android.Src.SSMR.Util
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
 
                 tooltipPrimaryCTA.Click += delegate
                 {

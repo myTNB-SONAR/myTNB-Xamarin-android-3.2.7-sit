@@ -3,12 +3,14 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
@@ -18,6 +20,7 @@ using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -62,6 +65,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.txtFindUs)]
         TextView txtFindUs;
 
+        [BindView(Resource.Id.txtChangeLanguage)]
+        TextView txtChangeLanguage;
+
         [BindView(Resource.Id.cardview_call_us)]
         CardView cardCallUs;
 
@@ -92,6 +98,26 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
 
+        private void UpdateLabels()
+        {
+            txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin", "welcomeTitle");
+            txtManageAccount.Text = Utility.GetLocalizedLabel("Prelogin", "tagline");
+            btnRegister.Text = Utility.GetLocalizedLabel("Prelogin", "register");
+            btnLogin.Text = Utility.GetLocalizedLabel("Prelogin", "login");
+            txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
+            txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
+            txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
+            txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
+            }
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -99,11 +125,10 @@ namespace myTNB_Android.Src.PreLogin.Activity
             try
             {
                 mPresenter = new PreLoginPresenter(this);
-                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs);
-
+                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs, txtChangeLanguage);
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
-
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
+                UpdateLabels();
 
                 GenerateTopLayoutLayout();
                 GenerateFindUsCardLayout();
@@ -266,6 +291,26 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 Utility.LoggingNonFatalError(ex);
             }
+        }
+
+        [OnClick(Resource.Id.txtChangeLanguage)]
+        void OnChangeLanguage(object sender, EventArgs eventArgs)
+        {
+            string selectedLanguage = LanguageUtil.GetAppLanguage();
+            string tooltipLanguage;
+            if (selectedLanguage == "MS")
+            {
+                tooltipLanguage = "EN";
+            }
+            else
+            {
+                tooltipLanguage = "MS";
+            }
+            Utility.ShowChangeLanguageDialog(this, tooltipLanguage, ()=>
+            {
+                LanguageUtil.SaveAppLanguage(tooltipLanguage);
+                UpdateLabels();
+            });
         }
 
         public void ShowPreLoginPromotion(bool success)
@@ -476,15 +521,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
                 currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
-
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                {
-                    txtFeedback.TextFormatted = Html.FromHtml(GetString(Resource.String.prelogin_feedback), FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    txtFeedback.TextFormatted = Html.FromHtml(GetString(Resource.String.prelogin_feedback));
-                }
             }
             catch (Exception ex)
             {

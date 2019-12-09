@@ -46,6 +46,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
 
             viewHolder.txtAccountName.Text = account.AccDesc;
             viewHolder.txtAccountNum.Text = account.AccNum;
+            viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common","manage");
 
             if (account.AccountCategoryId.Equals("2"))
             {

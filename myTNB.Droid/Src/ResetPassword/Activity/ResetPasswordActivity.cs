@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
               , Icon = "@drawable/ic_launcher"
        , ScreenOrientation = ScreenOrientation.Portrait
        , Theme = "@style/Theme.ResetPassword")]
-    public class ResetPasswordActivity : BaseToolbarAppCompatActivity, ResetPasswordContract.IView
+    public class ResetPasswordActivity : BaseActivityCustom, ResetPasswordContract.IView
     {
         [BindView(Resource.Id.txtResetPasswordTitle)]
         TextView txtResetPasswordTitle;
@@ -63,6 +63,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         private ResetPasswordContract.IUserActionsListener userActionsListener;
 
         string enteredPassword, enteredUserName;
+        const string PAGE_ID = "ResetPassword";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -82,6 +83,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword, txtConfirmNewPassword);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword, txtInputLayoutConfirmNewPassword);
+
+                txtResetPasswordTitle.Text = GetLabelByLanguage("subTitle");
+                txtTitleInfo.Text = GetLabelByLanguage("details");
+                txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
+                txtInputLayoutConfirmNewPassword.Hint = GetLabelByLanguage("confirmNewPassword");
+                btnSubmit.Text = GetLabelByLanguage("submit");
 
                 mProgressDialog = new AlertDialog.Builder(this)
                     .SetTitle(GetString(Resource.String.reset_password_alert_dialog_title))
@@ -114,14 +121,14 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
-        
+
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
             try
             {
 
-             
+
 
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
@@ -165,11 +172,11 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
                 this.DisableSubmitButton();
                 this.ClearErrorMessages();
-                
+
                 // validation new password
                 if (!string.IsNullOrEmpty(newPassword))
                 {
-                    
+
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
                     txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
                     txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
@@ -205,7 +212,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                         this.ClearErrorMessages();
                         this.EnableSubmitButton();
                     }
-                    
+
                 }
                 else
                 {
@@ -346,8 +353,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -367,8 +374,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -393,8 +400,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -529,5 +536,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

@@ -121,6 +121,13 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters, txtMobileNo);
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
 
+                txtInputLayoutAccountNo.Hint = Utility.GetLocalizedCommonLabel("accountNo");
+                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackForm", "feedback");
+                txtInputLayoutMobileNo.Hint = Utility.GetLocalizedCommonLabel("mobileNo");
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackForm", "attachPhotoTitle");
+                txtMaxImageContent.Text = Utility.GetLocalizedLabel("FeedbackForm", "maxFile");
+                btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
+
                 adapter = new FeedbackLoginBillRelatedImageRecyclerAdapter(true);
                 adapter.Insert(new Base.Models.AttachedImage()
                 {
@@ -164,7 +171,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 txtFeedback.TextChanged += TextChanged;
                 txtMobileNo.TextChanged += TextChanged;
                 txtFeedback.SetOnTouchListener(this);
-                txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                txtInputLayoutFeedback.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
             }
             catch (Exception e)
             {
@@ -232,11 +239,11 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 if (char_count > 0)
                 {
                     int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                    txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                    txtInputLayoutFeedback.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);
                 }
                 else
                 {
-                    txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                    txtInputLayoutFeedback.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
                 }
             }
             catch (Exception e)
@@ -795,7 +802,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
             if (string.IsNullOrEmpty(message))
             {
-                message = GetString(Resource.String.app_launch_http_exception_error);
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)

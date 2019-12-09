@@ -22,7 +22,7 @@ namespace myTNB_Android.Src.FAQ.Activity
     [Activity(Label = "@string/faq_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.FAQ")]
-    public class FAQListActivity : BaseToolbarAppCompatActivity, FAQContract.IView
+    public class FAQListActivity : BaseActivityCustom, FAQContract.IView
     {
 
         private FAQPresenter mPresenter;
@@ -43,6 +43,8 @@ namespace myTNB_Android.Src.FAQ.Activity
         private string mSavedTimeStamp = "0000000";
 
         private string FAQ_ID = null;
+
+        const string PAGE_ID = "FAQ";
 
         public void HideProgressBar()
         {
@@ -236,6 +238,11 @@ namespace myTNB_Android.Src.FAQ.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

@@ -339,7 +339,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             }
                         }
                         this.mView.ShowHideActionBar(true);
-                        this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                        //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 
                         AccountData accountData = new AccountData();
                         CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
@@ -364,7 +364,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
                         currentBottomNavigationMenu = Resource.Id.menu_promotion;
 						this.mView.HideAccountName();
-						this.mView.SetToolbarTitle(Resource.String.promotion_menu_activity_title);
+						//this.mView.SetToolbarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
 						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
                     }
 
@@ -554,7 +554,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 AccountData accountData = AccountData.Copy(selectedAccount, true);
                 this.mView.SetAccountName(selectedAccount.AccDesc);
-                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
                 currentBottomNavigationMenu = Resource.Id.menu_bill;
             }
             catch (System.Exception e)
@@ -668,7 +668,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				try
 				{
 					string density = DPUtils.GetDeviceDensity(Application.Context);
-					GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+					GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
 					string json = getItemsService.GetPromotionsV2TimestampItem();
 					PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
 					if (responseModel.Status.Equals("Success"))
@@ -702,7 +702,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				try
 				{
 					string density = DPUtils.GetDeviceDensity(Application.Context);
-					GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+					GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
 					string json = getItemsService.GetPromotionsV2Item();
 					PromotionsV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
 					if (responseModel.Status.Equals("Success"))
@@ -974,7 +974,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                 }
                 this.mView.ShowHideActionBar(true);
-                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 
                 AccountData accountData = new AccountData();
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);

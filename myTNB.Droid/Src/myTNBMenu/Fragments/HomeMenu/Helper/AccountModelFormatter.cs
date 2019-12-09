@@ -1,6 +1,7 @@
 ﻿using System;
 using Java.Text;
 using myTNB_Android.Src.Base.Helper;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 {
@@ -36,7 +37,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             string dueAmountNote = "";
             if (accountType == 2)
             {
-                dueAmountNote = "get by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "getBy") + " " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
             }
             else
             {
@@ -46,16 +47,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
                     {
                         if (double.Parse(amountDue) < 0.00)
                         {
-                            dueAmountNote = "paid extra";
+                            dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "paidExtra");
                         }
                         else
                         {
-                            dueAmountNote = "all cleared";
+                            dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "allCleared");
                         }
                     }
                     else
                     {
-                        dueAmountNote = "pay by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                        dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "payBy") + " " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
                     }
                 }
             }
