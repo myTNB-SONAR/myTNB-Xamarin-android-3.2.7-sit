@@ -53,7 +53,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -127,28 +127,29 @@ namespace myTNB
                 if (_paymentMode == "FPX")
                 {
                     string param3 = _paymentTransactionIDResponseModel?.d?.data?.payAccounts == null ? "0" : "1";
-                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>{
                     {"Param1", "3"},
                     {"Param2", _paymentTransactionIDResponseModel?.d?.data?.payMerchant_transID},
-                    {"Param3", param3}};
-                    var tempURL = TNBGlobal.GetPaymentURL;
-                    _url = serviceManager.GetPaymentURL(requestParams, tempURL);
+                    {"Param3", param3} ,
+                    {"lang", TNBGlobal.APP_LANGUAGE}};
+                    _url = serviceManager.GetPaymentURL(requestParams, _paymentTransactionIDResponseModel?.d?.data?.action);
                 }
                 else
                 {
-                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    { "MERCHANTID" , _paymentTransactionIDResponseModel?.d?.data?.payMerchantID},
-                    { "MERCHANT_TRANID" , _paymentTransactionIDResponseModel?.d?.data?.payMerchant_transID},
-                    { "PAYMENT_METHOD" , _paymentTransactionIDResponseModel?.d?.data?.payMethod},
-                    { "CURRENCYCODE" , _paymentTransactionIDResponseModel?.d?.data?.payCurrencyCode},
-                    { "AMOUNT" , _paymentTransactionIDResponseModel?.d?.data?.payAmount},
-                    { "CUSTNAME" , _paymentTransactionIDResponseModel?.d?.data?.payCustName},
-                    { "CUSTEMAIL" , _paymentTransactionIDResponseModel?.d?.data?.payCustEmail},
-                    { "RETURN_URL" , _paymentTransactionIDResponseModel?.d?.data?.payReturnUrl},
-                    { "SIGNATURE" , _paymentTransactionIDResponseModel?.d?.data?.paySign},
-                    { "MPARAM1" , _paymentTransactionIDResponseModel?.d?.data?.payMParam},
-                    { "DESCRIPTION" , _paymentTransactionIDResponseModel?.d?.data?.payProdDesc},
-                    { "TRANSACTIONTYPE", "1"}};
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>{
+                    {"MERCHANTID", _paymentTransactionIDResponseModel?.d?.data?.payMerchantID},
+                    {"MERCHANT_TRANID", _paymentTransactionIDResponseModel?.d?.data?.payMerchant_transID},
+                    {"PAYMENT_METHOD", _paymentTransactionIDResponseModel?.d?.data?.payMethod},
+                    {"CURRENCYCODE", _paymentTransactionIDResponseModel?.d?.data?.payCurrencyCode},
+                    {"AMOUNT", _paymentTransactionIDResponseModel?.d?.data?.payAmount},
+                    {"CUSTNAME", _paymentTransactionIDResponseModel?.d?.data?.payCustName},
+                    {"CUSTEMAIL", _paymentTransactionIDResponseModel?.d?.data?.payCustEmail},
+                    {"RETURN_URL", _paymentTransactionIDResponseModel?.d?.data?.payReturnUrl},
+                    {"SIGNATURE", _paymentTransactionIDResponseModel?.d?.data?.paySign},
+                    {"MPARAM1", _paymentTransactionIDResponseModel?.d?.data?.payMParam},
+                    {"DESCRIPTION", _paymentTransactionIDResponseModel?.d?.data?.payProdDesc},
+                    {"TRANSACTIONTYPE", "1"},
+                    {"lang", TNBGlobal.APP_LANGUAGE}};
                     if (_isNewCard)
                     {
                         requestParams.Add("CARDNO", _card?.CardNo);
