@@ -52,11 +52,13 @@ namespace myTNB.Payment
                     cell.BackgroundColor = MyTNBColor.SectionGrey;
                     cell.Layer.CornerRadius = 4.0f;
 
-                    UIImageView imgAdd = new UIImageView(new CGRect(35, 20, 24, 24));
-                    imgAdd.Image = UIImage.FromBundle("IC-Action-Add-Card");
+                    UIImageView imgAdd = new UIImageView(new CGRect(35, 20, 24, 24))
+                    {
+                        Image = UIImage.FromBundle("IC-Action-Add-Card")
+                    };
                     cell.AddSubview(imgAdd);
 
-                    UILabel lblAddCard = new UILabel(new CGRect(65, 23, 70, 18));
+                    UILabel lblAddCard = new UILabel(new CGRect(65, 23, cell.Frame.Width - 65, 18));
                     lblAddCard.Font = MyTNBFont.MuseoSans14;
                     lblAddCard.Text = _controller.GetI18NValue(PaymentConstants.I18N_AddCard);
                     lblAddCard.TextColor = UIColor.Gray;
@@ -104,7 +106,7 @@ namespace myTNB.Payment
                 fpxCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as fpxCell;
                 cell.BackgroundColor = MyTNBColor.SectionGrey;
 
-                UILabel lblTitle = new UILabel(new CGRect(65, 19, 150, 18));
+                UILabel lblTitle = new UILabel(new CGRect(65, 19, cell.Frame.Width - 65, 18));
                 lblTitle.Font = MyTNBFont.MuseoSans14_300;
                 lblTitle.TextColor = MyTNBColor.TunaGrey();
                 lblTitle.Text = _controller.GetI18NValue(PaymentConstants.I18N_FPXTitle);

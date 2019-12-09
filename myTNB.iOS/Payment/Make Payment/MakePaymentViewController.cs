@@ -21,17 +21,15 @@ namespace myTNB
         public bool _isNewCard = false;
         public int _platform = 2;
         public string _paymentMode = "CC";
-        public string _cardCVV = String.Empty;
+        public string _cardCVV = string.Empty;
 
-        public MakePaymentViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public MakePaymentViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
             PageName = PaymentConstants.Pagename_MakePayment;
             base.ViewDidLoad();
-            var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+            AppDelegate appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             if (appDelegate != null)
             {
                 appDelegate._makePaymentVC = this;
@@ -83,7 +81,7 @@ namespace myTNB
 
                 View.AddSubview(_webView);
 
-                var statusBarHeight = UIApplication.SharedApplication.StatusBarFrame.Size.Height;
+                nfloat statusBarHeight = UIApplication.SharedApplication.StatusBarFrame.Size.Height;
                 _barView = new UIView
                 {
                     Frame = new CGRect(0, 0, View.Frame.Width, statusBarHeight),
@@ -99,10 +97,10 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                var okCancelAlertController = UIAlertController.Create(GetI18NValue(PaymentConstants.I18N_AbortTitle)
+                UIAlertController okCancelAlertController = UIAlertController.Create(GetI18NValue(PaymentConstants.I18N_AbortTitle)
                     , GetI18NValue(PaymentConstants.I18N_AbortMessage)
                     , UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Abort)
+                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Ok)
                     , UIAlertActionStyle.Default, alert => NavigationController?.PopViewController(true)));
                 okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel)
                     , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));

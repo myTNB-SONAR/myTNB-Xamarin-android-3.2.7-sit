@@ -20,7 +20,6 @@ namespace myTNB
         public SelectPaymentMethodViewController(IntPtr handle) : base(handle) { }
 
         private RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        private TitleBarComponent titleBarComponent;
         public double TotalAmount = 0.00;
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public List<CustomerAccountRecordModel> AccountsForPayment = new List<CustomerAccountRecordModel>();
@@ -31,7 +30,6 @@ namespace myTNB
         private UIView viewCVVContainer, viewCVVWrapper, viewCVVBackground;
         private bool _isKeyboardDismissed = false;
 
-        private string _selectedSavedCardType = string.Empty;
         private string _selectedSavedCardID = string.Empty;
         private SecureString _cardCVVStr;
 
@@ -53,20 +51,24 @@ namespace myTNB
 
             //Credit Card Number 
 
-            UILabel lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12));
-            lblAmountTitle.TextColor = MyTNBColor.SilverChalice;
-            lblAmountTitle.Font = MyTNBFont.MuseoSans9_300;
-            lblAmountTitle.TextAlignment = UITextAlignment.Left;
-            lblAmountTitle.Text = GetCommonI18NValue(Constants.Common_TotalAmountRM).ToUpper();
+            UILabel lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9_300,
+                TextAlignment = UITextAlignment.Left,
+                Text = GetCommonI18NValue(Constants.Common_TotalAmountRM).ToUpper()
+            };
             headerView.AddSubview(lblAmountTitle);
 
-            txtFieldAmountValue = new UITextField(new CGRect(18, 40, View.Frame.Width - 36, 24));
-            txtFieldAmountValue.TextColor = MyTNBColor.TunaGrey();
-            txtFieldAmountValue.Font = MyTNBFont.MuseoSans16_300;
-            txtFieldAmountValue.Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture);
-            txtFieldAmountValue.TextAlignment = UITextAlignment.Right;
-            txtFieldAmountValue.KeyboardType = UIKeyboardType.DecimalPad;
-            txtFieldAmountValue.Enabled = false;
+            txtFieldAmountValue = new UITextField(new CGRect(18, 40, View.Frame.Width - 36, 24))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans16_300,
+                Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture),
+                TextAlignment = UITextAlignment.Right,
+                KeyboardType = UIKeyboardType.DecimalPad,
+                Enabled = false
+            };
             TextFieldHelper txtFieldHelper = new TextFieldHelper();
             txtFieldHelper.CreateDoneButton(txtFieldAmountValue);
 
@@ -116,38 +118,7 @@ namespace myTNB
                 DismissViewController(true, null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
-        }
-
-        private void SetNavigationBar()
-        {
-            if (NavigationController != null && NavigationController.NavigationBar != null)
-            {
-                NavigationController.SetNavigationBarHidden(true, false);
-            }
-            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
-            UIView headerView = gradientViewComponent.GetUI();
-            titleBarComponent = new TitleBarComponent(headerView);
-            UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle(GetI18NValue(PaymentConstants.I18N_Title));
-            titleBarComponent.SetPrimaryVisibility(true);
-            titleBarComponent.SetBackVisibility(false);
-            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
-            {
-                if (IsFromNavigation)
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                    NotificationDetailsViewController viewController =
-                        storyBoard.InstantiateViewController("NotificationDetailsViewController") as NotificationDetailsViewController;
-                    viewController.NotificationInfo = NotificationInfo;
-                    NavigationController.PushViewController(viewController, true);
-                }
-                else
-                {
-                    DismissViewController(true, null);
-                }
-            }));
-            headerView.AddSubview(titleBarView);
-            View.AddSubview(headerView);
+            Title = GetI18NValue(PaymentConstants.I18N_Title);
         }
 
         private void ExecuteGetRegisteredCardsCall()
@@ -226,7 +197,7 @@ namespace myTNB
             {
                 errMsg = status?.DowntimeMessage;
             }
-            AlertHandler.DisplayGenericAlert(this, string.Empty, errMsg);
+            DisplayGenericAlert(string.Empty, errMsg);
         }
 
         private void NavigateToVC(GetPaymentTransactionIdResponseModel paymentTransactionIDResponse, int platform, string paymentMode)
@@ -247,7 +218,6 @@ namespace myTNB
 
         internal void ShowCVVField(string cardType, string cardID)
         {
-            _selectedSavedCardType = cardType;
             _selectedSavedCardID = cardID;
             //cardType = "A";
             _isAMEX = cardType.ToLower().Equals("a");
@@ -446,7 +416,7 @@ namespace myTNB
                             }
                             else
                             {
-                                AlertHandler.DisplayNoDataAlert(this);
+                                DisplayNoDataAlert();
                                 ActivityIndicator.Hide();
                             }
                         });
