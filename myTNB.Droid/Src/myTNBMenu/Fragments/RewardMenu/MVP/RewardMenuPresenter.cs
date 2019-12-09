@@ -267,7 +267,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (userList != null && userList.Count > 0)
                             {
-                                AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkList[j].ID));
+                                string checkID = checkList[j].ID;
+                                // checkID = checkID.Replace("{", "");
+                                // checkID = checkID.Replace("}", "");
+
+                                AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkID));
                                 if (found != null)
                                 {
                                     if (found.Read)
