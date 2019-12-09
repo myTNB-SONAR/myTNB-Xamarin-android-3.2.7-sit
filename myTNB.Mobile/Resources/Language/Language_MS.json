@@ -29,7 +29,7 @@
     "customerAccountNumber": "Nombor akaun pelanggan {0}",
     "confirm": "Sahkan",
     "ok": "Ok",
-    "acctNickname": "Nama Ringkas Akaun",
+    "acctNickname": "Nama Akaun",
     "name": "Nama",
     "done": "Selesai",
     "yes": "Ya",
@@ -110,7 +110,7 @@
     "serviceErrorDefaultMessage": "Maaf, berlaku kesilapan teknikal. Sila cuba lagi.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_pin": "PIN tidak sah",
+    "invalid_pin": "Kod tidak sah",
     "invalid_password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka).",
     "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
     "invalid_fullname": "Nama Penuh Tidak Sah",
@@ -137,7 +137,7 @@
     "myAccounts": "Akaun Saya",
     "myServices": "Perkhidmatan Saya",
     "needHelp": "Perlu Bantuan?",
-    "promotions": "Promosi",
+    "promotions": "Terkini",
     "addElectricityAcct": "Tambah Akaun Elektrik",
     "searchPlaceholder": "Cari mengikut nama ringkas atau nombor",
     "refreshMessage": "Nampaknya sambungan bagi skrin ini telah terputus. Refresh untuk sambung semula!",
@@ -420,7 +420,7 @@
   "BillDetails": {
     "title": "Butiran Bil",
     "billDetails": "Butiran Bil Saya",
-    "outstandingCharges": "Tunggakan saya",
+    "outstandingCharges": "Tunggakan",
     "billThisMonth": "Caj Semasa",
     "needToPay": "Jumlah Perlu Dibayar",
     "by": "sebelum",
@@ -668,7 +668,7 @@
   },
   "ManageAccount": {
     "title": "Uruskan Akaun Elektrik",
-    "nicknameUpdateSuccess": "Aksara tidak sah. Gunakan huruf atau nombor sahaja.",
+    "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Keluarkan Akaun Ini",
     "popupremoveAccountTitle": "Keluarkan Akaun",
     "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
@@ -799,7 +799,7 @@
     "backToHome": "Kembali ke Laman Utama"
   },
   "Promotions": {
-    "title": "Terbaru",
+    "title": "Terkini",
     "noPromotions": "Tiada promosi buat masa ini. Cuba semak kemudian!"
   },
   "RearrangeAccount": {
@@ -812,23 +812,23 @@
   },
   "Rewards": {
     "title": "Ganjaran",
-    "viewAll": "View All",
+    "viewAll": "Lihat Semua",
     "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
   },
   "RewardDetails": {
     "title": "Ganjaran",
-    "rewardPeriod": "Reward Period",
+    "rewardPeriod": "Tempoh Ganjaran",
     "location": "Lokasi",
     "tnc": "Terma dan Syarat",
     "save": "Simpan",
-    "unsave": "Unsave",
-    "useNow": "Use Now",
-    "useNowPopupTitle": "Please make sure you’re at the shop.",
-    "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
-    "useLater": "Use Later",
+    "unsave": "Keluarkan",
+    "useNow": "Guna Sekarang",
+    "useNowPopupTitle": "Sila pastikan anda berada di kedai.",
+    "useNowPopupMessage": "Ganjaran ini hanya boleh digunakan sekali sahaja, sila pastikan anda berada di kedai.",
+    "useLater": "Gunakan Kemudian",
     "confirm": "Sahkan"
   },
   "SavedRewards": {
-    "title": "My Saved Rewards"
+    "title": "Ganjaran Yang Disimpan"
   }
 }
