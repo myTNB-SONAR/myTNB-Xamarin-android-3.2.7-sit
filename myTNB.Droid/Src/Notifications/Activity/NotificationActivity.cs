@@ -145,7 +145,14 @@ namespace myTNB_Android.Src.Notifications.Activity
                 }
                 else
                 {
-                    this.userActionsListener.Start();
+                    if (MyTNBAccountManagement.GetInstance().IsNotificationServiceCompleted())
+                    {
+                        this.userActionsListener.Start();
+                    }
+                    else
+                    {
+                        this.userActionsListener.QueryOnLoad(this.DeviceId());
+                    }
                 }
                 
                 Bundle extras = Intent.Extras;

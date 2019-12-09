@@ -2576,33 +2576,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                UserNotificationEntity.RemoveAll();
-                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+				MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
                 if (response.Data != null && response.Data.ErrorCode == "7200")
                 {
                     if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                     {
-                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+						foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                         {
                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                         }
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
                     }
                     else
                     {
-                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+						MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     }
                 }
                 else
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+					MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                 }
                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
             }
             catch (System.Exception ne)
             {
-                Utility.LoggingNonFatalError(ne);
+				MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+				Utility.LoggingNonFatalError(ne);
             }
         }
 
@@ -2652,7 +2654,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your<br/>linked electricity accounts here.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
@@ -2672,7 +2674,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap “Add”<br/>to link an account to myTNB.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap on<br/>your preferred account to view your<br/>Usage. Tap <strong>“Add”</strong> to link another<br/>account to myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
@@ -2682,8 +2684,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.BottomLeft,
-                    ContentTitle = "Your Accounts at a glance.",
-                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here.",
+                    ContentTitle = "Welcome to your new Home view!",
+                    ContentMessage = "This is a summary of your linked<br/>electricity account.Tap on the<br/>account to view your Usage. Tap<br/><strong>“Add”</strong> to link another account to<br/>myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });

@@ -671,7 +671,7 @@ You acknowledge that you have been provided with and have read and understood th
   <!--Notification-->
   <string name="notification_activity_title">Notifications</string>
   <string name="notification_selection_title">All notifications</string>
-  <string name="notification_activity_empty_txt_content">Looks like you have no new notifications today.</string>
+  <string name="notification_activity_empty_txt_content">Looks like you have no notifications at the moment.</string>
 
   <string name="notification_activity_cancelled_exception_error">Something went wrong, Please try again.</string>
   <string name="notification_activity_api_exception_error">Something went wrong, Please try again.</string>
