@@ -166,19 +166,21 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {
-                                            PhoneVerifyStatusResponse phoneVerifyResponse = await getPhoneVerifyApi.GetPhoneVerifyStatus(new GetPhoneVerifyStatusRequest()
-                                            {
-                                                ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                                Email = entity.Email,
-                                                SSPUserID = entity.UserID,
-                                                DeviceID = this.mView.GetDeviceId()
-                                            }, cts.Token);
+                                            //var phoneVerifyResponse = await getPhoneVerifyApi.GetPhoneVerifyStatus(new GetPhoneVerifyStatusRequest()
+                                            //{
+                                            //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                                            //    Email = entity.Email,
+                                            //    SSPUserID = entity.UserID,
+                                            //    DeviceID = this.mView.GetDeviceId()
+                                            //}, cts.Token);
 
-                                            if (!phoneVerifyResponse.verificationData.IsError)
+                                            var phoneVerifyResponse = await ServiceApiImpl.Instance.PhoneVerifyStatus(new BaseRequest());
+
+                                            if (phoneVerifyResponse != null && phoneVerifyResponse.Response != null && phoneVerifyResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                                             {
-                                                if (!phoneVerifyResponse.verificationData.Data.IsPhoneVerified)
+                                                if (!phoneVerifyResponse.GetData().IsPhoneVerified)
                                                 {
-                                                    this.mView.ShowUpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
+                                                    this.mView.ShowUpdatePhoneNumber(phoneVerifyResponse.GetData().PhoneNumber);
                                                     proceed = false;
                                                 }
                                                 else
@@ -188,7 +190,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                     {
                                                         if (UserEntity.IsCurrentlyActive())
                                                         {
-                                                            UserEntity.UpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
+                                                            UserEntity.UpdatePhoneNumber(phoneVerifyResponse.GetData().PhoneNumber);
                                                         }
                                                         UserSessions.SavePhoneVerified(mSharedPref, true);
                                                     }

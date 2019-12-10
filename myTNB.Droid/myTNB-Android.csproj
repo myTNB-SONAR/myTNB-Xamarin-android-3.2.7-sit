@@ -3765,6 +3765,7 @@
     <Compile Include="Src\MyTNBService\Response\AccountToCustomerResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\ValidateManualAccountResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\ValidateManualAccountRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\PhoneVerifyStatusResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

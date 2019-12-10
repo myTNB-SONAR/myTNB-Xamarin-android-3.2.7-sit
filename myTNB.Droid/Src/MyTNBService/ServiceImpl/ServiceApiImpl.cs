@@ -88,5 +88,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 		{
 			return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
 		}
-	}
+
+        /// <summary>
+        /// Call GetPhoneVerifyStatus with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<PhoneVerifyStatusResponse> PhoneVerifyStatus([Body] Request.BaseRequest request)
+        {
+            return api.PhoneVerifyStatus<PhoneVerifyStatusResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+    }
 }
