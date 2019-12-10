@@ -811,7 +811,7 @@ namespace myTNB
         private void OnChangeLanguage(bool isPhoneVerified)
         {
             int index = 0;
-            if (TNBGlobal.APP_LANGUAGE == "EN")
+            if (TNBGlobal.APP_LANGUAGE != "EN")
             {
                 index = 1;
             }
