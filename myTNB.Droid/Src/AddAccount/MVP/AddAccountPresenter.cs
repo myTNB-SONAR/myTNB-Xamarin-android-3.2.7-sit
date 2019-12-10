@@ -222,27 +222,29 @@ namespace myTNB_Android.Src.AddAccount.MVP
             try
             {
 
-                var result = await api.ValidateManualAccount(new ValidateManualAccountRequest(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner));
+                //var result = await api.ValidateManualAccount(new ValidateManualAccountRequest(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner));
+
+                var result = await ServiceApiImpl.Instance.ValidateManualAccount(new MyTNBService.Request.ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString()));
                 if (mView.IsActive())
                 {
                     mView.HideAddingAccountProgressDialog();
                 }
-                if (result.validation.IsError)
+                if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
-                    mView.ShowAddAccountFail(result.validation.Message);
+                    mView.ShowAddAccountFail(result.Response.Message);
                 }
                 else
                 {
                     mView.ClearText();
                     NewAccount account = new NewAccount();
                     account.accountNumber = accountNum;
-                    account.accountAddress = result.validation.Data.accountStAddress;
+                    account.accountAddress = result.GetData().accountStAddress;
                     account.isOwner = isOwner;
                     account.type = accountType;
                     account.isRegistered = false;
                     account.accountLabel = accountLable;
                     account.icNum = userIdentificationNum;
-                    account.accountCategoryId = result.validation.Data.accountCategoryId;
+                    account.accountCategoryId = result.GetData().accountCategoryId;
                     mView.ShowValidateAccountSucess(account);
                 }
 

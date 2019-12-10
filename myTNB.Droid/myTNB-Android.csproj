@@ -3763,6 +3763,8 @@
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
     <Compile Include="Src\MyTNBService\Request\AccountToCustomerRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\AccountToCustomerResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\ValidateManualAccountResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\ValidateManualAccountRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

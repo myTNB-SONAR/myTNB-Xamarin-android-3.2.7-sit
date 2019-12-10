@@ -2,9 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
-using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -80,5 +78,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.AddAccountToCustomer<AccountToCustomerResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
-    }
+
+        /// <summary>
+        /// Call ValidateManualAccount with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ValidateManualAccountResponse> ValidateManualAccount([Body] Request.BaseRequest request)
+		{
+			return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+		}
+	}
 }
