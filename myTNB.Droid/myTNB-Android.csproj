@@ -3780,6 +3780,8 @@
     <Compile Include="Src\MyTNBService\Request\SendRegistrationTokenSMSRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\RegisteredCardsResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\RegisteredCardsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmittedFeedbackDetailsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackDetailsRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

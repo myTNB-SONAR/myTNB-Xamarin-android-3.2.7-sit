@@ -47,40 +47,42 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             try
             {
-                var detailsResponse = await feedbackApi.GetSubmittedFeedbackDetails(new Base.Request.SubmittedFeedbackDetailsRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    ServiceReqNo = submittedFeedback.FeedbackId
-                }, cts.Token);
+                //var detailsResponse = await feedbackApi.GetSubmittedFeedbackDetails(new Base.Request.SubmittedFeedbackDetailsRequest()
+                //{
+                //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                //    ServiceReqNo = submittedFeedback.FeedbackId
+                //}, cts.Token);
+
+                var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackDetails(new SubmittedFeedbackDetailsRequest(submittedFeedback.FeedbackId));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!detailsResponse.Data.IsError)
+                if (detailsResponse.IsSuccessResponse())
                 {
                     if (submittedFeedback.FeedbackCategoryId.Equals("1"))
                     {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.Data.Data));
-                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.Data.Data, submittedFeedback);
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
                     }
                     else if (submittedFeedback.FeedbackCategoryId.Equals("2"))
                     {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.Data.Data));
-                        this.mView.ShowFeedbackDetailsFaultyLamps(detailsResponse.Data.Data);
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                        this.mView.ShowFeedbackDetailsFaultyLamps(detailsResponse.GetData());
                     }
                     else
                     {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.Data.Data));
-                        this.mView.ShowFeedbackDetailsOthers(detailsResponse.Data.Data);
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                        this.mView.ShowFeedbackDetailsOthers(detailsResponse.GetData());
                     }
                 }
                 else
                 {
-                    if (detailsResponse.Data.Status.Equals("failed"))
+                    if (detailsResponse.Response.Status.Equals("failed"))
                     {
-                        this.mView.ShowBCRMDownException(detailsResponse.Data.Message);
+                        this.mView.ShowBCRMDownException(detailsResponse.Response.Message);
                     }
                     else
                     {

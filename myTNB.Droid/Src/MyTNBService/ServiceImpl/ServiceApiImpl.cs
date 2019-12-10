@@ -228,5 +228,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetRegisteredCards<RegisteredCardsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetSubmittedFeedbackDetails with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<RegisteredCardsResponse> SubmittedFeedbackDetails([Body] Request.BaseRequest request)
+        {
+            return api.SubmittedFeedbackDetails<RegisteredCardsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

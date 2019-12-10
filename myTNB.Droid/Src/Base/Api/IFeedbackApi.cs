@@ -22,9 +22,5 @@ namespace myTNB_Android.Src.Base.Api
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/GetOtherFeedbackType")]
         Task<FeedbackTypeResponse> GetOtherFeedbackType([Body] FeedbackTypeRequest request, CancellationToken token);
-
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/GetSubmittedFeedbackDetails")]
-        Task<SubmittedFeedbackDetailsResponse> GetSubmittedFeedbackDetails([Body] SubmittedFeedbackDetailsRequest request, CancellationToken token);
     }
 }
