@@ -78,7 +78,7 @@ namespace myTNB.SitecoreCMS.Services
 
                     RewardsCategoryModel rewardCategory = new RewardsCategoryModel()
                     {
-                        CategoryName = item.DisplayName,
+                        CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardCategory),
                         ID = item.Id
                     };
                     List<RewardsModel> rewardList = GetChildrenItems(item.Path, rewardCategory);

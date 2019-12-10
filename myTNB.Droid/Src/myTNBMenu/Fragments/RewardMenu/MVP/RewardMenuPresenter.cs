@@ -268,8 +268,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                             if (userList != null && userList.Count > 0)
                             {
                                 string checkID = checkList[j].ID;
-                                // checkID = checkID.Replace("{", "");
-                                // checkID = checkID.Replace("}", "");
+                                checkID = checkID.Replace("{", "");
+                                checkID = checkID.Replace("}", "");
 
                                 AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkID));
                                 if (found != null)
@@ -277,12 +277,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                     if (found.Read)
                                     {
                                         string readDate = !string.IsNullOrEmpty(found.ReadDate) ? found.ReadDate : "";
+                                        if (readDate.Contains("Date("))
+                                        {
+                                            int startIndex = readDate.LastIndexOf("(") + 1;
+                                            int lastIndex = readDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < readDate.Length)
+                                            {
+                                                string timeStamp = readDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                readDate = dateTimeParse.ToString();
+                                            }
+                                        }
                                         mRewardsEntity.UpdateReadItem(checkList[j].ID, found.Read, readDate);
                                     }
 
                                     if (found.Favourite)
                                     {
                                         string favDate = !string.IsNullOrEmpty(found.FavUpdatedDate) ? found.FavUpdatedDate : "";
+                                        if (favDate.Contains("Date("))
+                                        {
+                                            int startIndex = favDate.LastIndexOf("(") + 1;
+                                            int lastIndex = favDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < favDate.Length)
+                                            {
+                                                string timeStamp = favDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                favDate = dateTimeParse.ToString();
+                                            }
+                                        }
                                         mRewardsEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, favDate);
                                     }
                                     else
@@ -293,6 +317,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                     if (found.Redeemed)
                                     {
                                         string redeemDate = !string.IsNullOrEmpty(found.RedeemedDate) ? found.RedeemedDate : "";
+                                        if (redeemDate.Contains("Date("))
+                                        {
+                                            int startIndex = redeemDate.LastIndexOf("(") + 1;
+                                            int lastIndex = redeemDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < redeemDate.Length)
+                                            {
+                                                string timeStamp = redeemDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                redeemDate = dateTimeParse.ToString();
+                                            }
+                                        }
                                         mRewardsEntity.UpdateIsUsedItem(checkList[j].ID, found.Redeemed, redeemDate);
                                     }
                                 }
@@ -343,7 +379,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
             else
             {
-                this.mView.SetEmptyView();
+                if (RewardsMenuUtils.GetRewardLoading())
+                {
+                    CheckRewardsCache();
+                }
+                else
+                {
+                    this.mView.SetEmptyView();
+                }
             }
         }
 

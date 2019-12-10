@@ -165,6 +165,7 @@
                     public const string RewardUseWithinTime = "RewardUseWithinTime";
                     public const string RewardUseTitle = "RewardUseTitle";
                     public const string RewardUseDescription = "RewardUseDescription";
+                    public const string RewardCategory = "RewardCategory";
                 }
                 
                 public struct Language

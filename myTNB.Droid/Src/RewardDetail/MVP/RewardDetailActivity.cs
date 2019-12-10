@@ -297,7 +297,18 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_share_promotion:
-                    
+                    if (LocalItem != null)
+                    {
+                        Intent shareIntent = new Intent(Intent.ActionSend);
+                        shareIntent.SetType("text/plain");
+                        string ID = LocalItem.ID;
+                        ID = ID.Replace("{", "");
+                        ID = ID.Replace("}", "");
+                        string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
+                        shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
+                        shareIntent.PutExtra(Intent.ExtraText, deepLinkUrl);
+                        StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                    }
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -404,7 +415,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                     try
                     {
-                        DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime);
+                        DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
                         TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
                         DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
                         dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");

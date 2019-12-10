@@ -278,11 +278,11 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     Email = UserEntity.GetActive().Email,
                     RewardId = rewardId,
                     Read = currentItem.Read,
-                    ReadDate = currentItem.ReadDateTime,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
                     Favourite = currentItem.IsSaved,
-                    FavUpdatedDate = currentItem.IsSavedDateTime,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
                     Redeemed = true,
-                    RedeemedDate = formattedDate
+                    RedeemedDate = !string.IsNullOrEmpty(formattedDate) ? formattedDate + " +00:00" : ""
                 };
 
                 AddUpdateRewardRequest request = new AddUpdateRewardRequest()
@@ -332,7 +332,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         public List<string> ExtractUrls(string text)
         {
             List<string> containedUrls = new List<string>();
-            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            string urlRegex = "\\(?\\b(https://|http://)[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
             Pattern pattern = Pattern.Compile(urlRegex);
             Matcher urlMatcher = pattern.Matcher(text);
 
@@ -390,11 +390,11 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     Email = UserEntity.GetActive().Email,
                     RewardId = rewardId,
                     Read = currentItem.Read,
-                    ReadDate = currentItem.ReadDateTime,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
                     Favourite = currentItem.IsSaved,
-                    FavUpdatedDate = currentItem.IsSavedDateTime,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
                     Redeemed = currentItem.IsUsed,
-                    RedeemedDate = currentItem.IsUsedDateTime
+                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
                 };
 
                 AddUpdateRewardRequest request = new AddUpdateRewardRequest()

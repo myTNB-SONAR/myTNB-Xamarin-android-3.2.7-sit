@@ -36,6 +36,7 @@ using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
@@ -68,6 +69,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private bool urlSchemaCalled = false;
         private string urlSchemaData = "";
+        private string urlSchemaPath = "";
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -189,6 +191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 urlSchemaCalled = true;
                 urlSchemaData = data;
+                urlSchemaPath = Intent?.Data?.EncodedPath;
             }
 
             SetBottomNavigationLabels();
@@ -463,7 +466,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         loadingOverlay.Dismiss();
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        public void OnDataSchemeShow()
+        {
+            try
+            {
                 if (urlSchemaCalled)
                 {
                     if (urlSchemaData != null)
@@ -491,6 +504,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             payment_activity.PutExtra(Constants.QUESTION_ID_CATEGORY, ((int)QuestionCategoryID.Payment));
                             StartActivity(payment_activity);
                             urlSchemaCalled = false;
+                        }
+                        else if (urlSchemaData.Contains("rewards"))
+                        {
+                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(rewardID))
+                            {
+                                this.mPresenter.OnStartRewardThread();
+                            }
                         }
                     }
                 }
@@ -1334,11 +1355,69 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void OnCheckUserReward()
+        {
+            try
+            {
+                _ = this.mPresenter.OnGetUserRewardList();
+            }
+            catch (Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnCheckRewardTab()
         {
-            if (this.mPresenter != null)
+            try
             {
-                this.mPresenter.OnResumeUpdateRewardUnRead();
+                RewardsMenuUtils.OnSetRewardLoading(false);
+
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnResumeUpdateRewardUnRead();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (urlSchemaCalled)
+                {
+                    HideProgressDialog();
+                    urlSchemaCalled = false;
+                    if (urlSchemaData != null)
+                    {
+                        if (urlSchemaData.Contains("rewards"))
+                        {
+                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(rewardID))
+                            {
+                                rewardID = "{" + rewardID + "}";
+
+                                RewardsEntity wtManager = new RewardsEntity();
+
+                                RewardsEntity item = wtManager.GetItem(rewardID);
+
+                                if (item != null)
+                                {
+                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
+                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
+                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "Rewards");
+                                    StartActivity(activity);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
         public void ReloadProfileMenu()

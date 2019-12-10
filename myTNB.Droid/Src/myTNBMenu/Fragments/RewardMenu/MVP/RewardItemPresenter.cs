@@ -194,11 +194,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     Email = UserEntity.GetActive().Email,
                     RewardId = rewardId,
                     Read = currentItem.Read,
-                    ReadDate = currentItem.ReadDateTime,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
                     Favourite = currentItem.IsSaved,
-                    FavUpdatedDate = currentItem.IsSavedDateTime,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
                     Redeemed = currentItem.IsUsed,
-                    RedeemedDate = currentItem.IsUsedDateTime
+                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
                 };
 
                 AddUpdateRewardRequest request = new AddUpdateRewardRequest()

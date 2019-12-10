@@ -1667,6 +1667,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     fetchList.Add(currentMyServiceList[i]);
                 }
+
                 this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
                 this.mView.SetMyServiceResult(fetchList);
             }

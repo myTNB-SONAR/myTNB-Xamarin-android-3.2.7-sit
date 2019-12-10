@@ -17,6 +17,10 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
@@ -62,12 +66,22 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private static bool isRewardClicked = false;
 
+        private RewardServiceImpl mApi;
+
+        private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
+
+        private RewardsCategoryEntity mRewardsCategoryEntity;
+
+        private RewardsEntity mRewardsEntity;
+
         public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
 			this.mView = mView;
 			this.mSharedPref = preferences;
 			this.mView?.SetPresenter(this);
-		}
+
+            this.mApi = new RewardServiceImpl();
+        }
 
 		public void Logout()
 		{
@@ -443,6 +457,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			}
 		}
 
+        public void OnStartRewardThread()
+        {
+            if (!RewardsMenuUtils.GetRewardLoading())
+            {
+                this.mView.ShowProgressDialog();
+                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+            }
+            else
+            {
+                this.mView.ShowProgressDialog();
+                this.mView.OnCheckUserReward();
+            }
+        }
+
 		public void Start()
 		{
 
@@ -467,7 +495,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				OnMenuSelect(Resource.Id.menu_bill);
 			}
 
-
+            this.mView.OnDataSchemeShow();
 
 
 		}
@@ -1045,6 +1073,161 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
             return isHaveData;
+        }
+
+        public async Task OnGetUserRewardList()
+        {
+            try
+            {
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                GetUserRewardsRequest request = new GetUserRewardsRequest()
+                {
+                    usrInf = currentUsrInf
+                };
+
+                GetUserRewardsResponse response = await this.mApi.GetUserRewards(request, new System.Threading.CancellationTokenSource().Token);
+
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200"
+                    && response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
+                {
+                    userList = response.Data.Data.CurrentList;
+                }
+                else
+                {
+                    userList = new List<AddUpdateRewardModel>();
+                }
+                CheckRewardsCache();
+            }
+            catch (Exception e)
+            {
+                userList = new List<AddUpdateRewardModel>();
+                CheckRewardsCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckRewardsCache()
+        {
+            if (mRewardsCategoryEntity == null)
+            {
+                mRewardsCategoryEntity = new RewardsCategoryEntity();
+            }
+
+            if (mRewardsEntity == null)
+            {
+                mRewardsEntity = new RewardsEntity();
+            }
+
+            List<RewardsCategoryModel> mDisplayCategoryList = new List<RewardsCategoryModel>();
+
+            List<RewardsCategoryEntity> mCategoryList = mRewardsCategoryEntity.GetAllItems();
+
+            if (mCategoryList != null && mCategoryList.Count > 0)
+            {
+                for (int i = 0; i < mCategoryList.Count; i++)
+                {
+                    List<RewardsEntity> checkList = mRewardsEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
+                    if (checkList != null && checkList.Count > 0)
+                    {
+                        for (int j = 0; j < checkList.Count; j++)
+                        {
+                            if (userList != null && userList.Count > 0)
+                            {
+                                string checkID = checkList[j].ID;
+                                checkID = checkID.Replace("{", "");
+                                checkID = checkID.Replace("}", "");
+
+                                AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkID));
+                                if (found != null)
+                                {
+                                    if (found.Read)
+                                    {
+                                        string readDate = !string.IsNullOrEmpty(found.ReadDate) ? found.ReadDate : "";
+                                        if (readDate.Contains("Date("))
+                                        {
+                                            int startIndex = readDate.LastIndexOf("(") + 1;
+                                            int lastIndex = readDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < readDate.Length)
+                                            {
+                                                string timeStamp = readDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                readDate = dateTimeParse.ToString();
+                                            }
+                                        }
+                                        mRewardsEntity.UpdateReadItem(checkList[j].ID, found.Read, readDate);
+                                    }
+
+                                    if (found.Favourite)
+                                    {
+                                        string favDate = !string.IsNullOrEmpty(found.FavUpdatedDate) ? found.FavUpdatedDate : "";
+                                        if (favDate.Contains("Date("))
+                                        {
+                                            int startIndex = favDate.LastIndexOf("(") + 1;
+                                            int lastIndex = favDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < favDate.Length)
+                                            {
+                                                string timeStamp = favDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                favDate = dateTimeParse.ToString();
+                                            }
+                                        }
+                                        mRewardsEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, favDate);
+                                    }
+                                    else
+                                    {
+                                        mRewardsEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, "");
+                                    }
+
+                                    if (found.Redeemed)
+                                    {
+                                        string redeemDate = !string.IsNullOrEmpty(found.RedeemedDate) ? found.RedeemedDate : "";
+                                        if (redeemDate.Contains("Date("))
+                                        {
+                                            int startIndex = redeemDate.LastIndexOf("(") + 1;
+                                            int lastIndex = redeemDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < redeemDate.Length)
+                                            {
+                                                string timeStamp = redeemDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                redeemDate = dateTimeParse.ToString();
+                                            }
+                                        }
+                                        mRewardsEntity.UpdateIsUsedItem(checkList[j].ID, found.Redeemed, redeemDate);
+                                    }
+                                }
+                            }
+                        }
+
+                        mDisplayCategoryList.Add(new RewardsCategoryModel()
+                        {
+                            ID = mCategoryList[i].ID,
+                            CategoryName = mCategoryList[i].CategoryName
+                        });
+                    }
+                    else
+                    {
+                        mRewardsEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                        mRewardsCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                    }
+                }
+            }
+
+            this.mView.OnCheckRewardTab();
         }
 
     }

@@ -99,17 +99,26 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         }
                                         else
                                         {
-                                            getSiteCoreRewards = false;
+                                            RewardsEntity mRewardsEntityCheck = new RewardsEntity();
+                                            List<RewardsEntity> mCheckList = mRewardsEntityCheck.GetAllItems();
+                                            if (mCheckList == null || mCheckList.Count == 0)
+                                            {
+                                                getSiteCoreRewards = true;
+                                            }
+                                            else
+                                            {
+                                                getSiteCoreRewards = false;
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        getSiteCoreRewards = false;
+                                        getSiteCoreRewards = true;
                                     }
                                 }
                                 else
                                 {
-                                    getSiteCoreRewards = false;
+                                    getSiteCoreRewards = true;
                                 }
                             }
                         }
@@ -255,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
             if (mHomeView != null)
             {
-                mHomeView.OnCheckRewardTab();
+                mHomeView.OnCheckUserReward();
             }
         }
 
