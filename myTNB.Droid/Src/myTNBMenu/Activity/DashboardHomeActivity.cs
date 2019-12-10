@@ -53,9 +53,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         , ScreenOrientation = ScreenOrientation.Portrait
         ,Theme = "@style/Theme.DashboardHome"
         ,WindowSoftInputMode = SoftInput.AdjustNothing)]
-    [IntentFilter(new[] { Android.Content.Intent.ActionView },
-            DataScheme = "mytnbapp",
-            Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable })]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
@@ -184,16 +181,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
 
-
-            // Get CategoryBrowsable intent data
-            var data = Intent?.Data?.EncodedAuthority;
-            if (!String.IsNullOrEmpty(data))
-            {
-                urlSchemaCalled = true;
-                urlSchemaData = data;
-                urlSchemaPath = Intent?.Data?.EncodedPath;
-            }
-
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
@@ -213,6 +200,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 mPresenter.OnAccountSelectDashBoard();
                 isFromNotification = true;
                 alreadyStarted = true;
+            }
+
+            if (extras != null && extras.ContainsKey("urlSchemaData"))
+            {
+                urlSchemaCalled = true;
+                urlSchemaData = extras.GetString("urlSchemaData");
+                if (extras != null && extras.ContainsKey("urlSchemaPath"))
+                {
+                    urlSchemaPath = extras.GetString("urlSchemaPath");
+                }
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
@@ -510,7 +507,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
                             if (!string.IsNullOrEmpty(rewardID))
                             {
-                                this.mPresenter.OnStartRewardThread();
+                                rewardID = "{" + rewardID + "}";
+
+                                RewardsEntity wtManager = new RewardsEntity();
+
+                                RewardsEntity item = wtManager.GetItem(rewardID);
+
+                                if (item != null && item.IsUsed)
+                                {
+                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
+                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
+                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "Rewards");
+                                    StartActivity(activity);
+                                }
+                                else
+                                {
+                                    this.mPresenter.OnStartRewardThread();
+                                }
                             }
                         }
                     }
