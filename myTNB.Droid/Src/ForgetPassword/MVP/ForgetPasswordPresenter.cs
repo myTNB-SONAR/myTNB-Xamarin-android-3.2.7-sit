@@ -121,7 +121,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
 
             this.mView.ClearErrorMessages();
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(email))
             {
                 this.mView.ShowEmptyEmailError();
@@ -146,44 +145,26 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 this.mView.ShowProgressDialog();
             }
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IForgetPassword>(httpClient);
-
-#else
-             var api = RestService.For<IForgetPassword>(Constants.SERVER_URL.END_POINT);
-            
-#endif
 
             try
             {
-                var forgetPasswordResponse = await api.ResetPasswordWithToken(new ForgetPasswordVerificationCodeRequest(apiKeyId,
-                   code,
-                   email,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId), cts.Token);
+                var forgetPasswordResponse = await ServiceApiImpl.Instance.ResetPasswordWithToken(new ResetPasswordWithTokenRequest(code));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (forgetPasswordResponse.response.IsError)
+                if (!forgetPasswordResponse.IsSuccessResponse())
                 {
-                    string errorMessage = forgetPasswordResponse.response.Message;
+                    string errorMessage = forgetPasswordResponse.Response.Message;
                     this.mView.ShowError(errorMessage);
                 }
                 else
                 {
                     this.mView.ClearErrorMessages();
                     this.mView.ClearTextFields();
-                    string message = forgetPasswordResponse.response.Message;
+                    string message = forgetPasswordResponse.Response.Message;
                     //this.mView.ShowSuccess(message);
                     this.mView.ShowCodeVerifiedSuccess();
                     this.mView.DisableResendButton();

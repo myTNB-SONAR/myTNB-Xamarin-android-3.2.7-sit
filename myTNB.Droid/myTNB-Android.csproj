@@ -841,7 +841,6 @@
     <Compile Include="Src\Database\Model\CustomerBillingAccount.cs" />
     <Compile Include="Src\Database\Model\UserRegister.cs" />
     <Compile Include="Src\ForgetPassword\Activity\ForgetPasswordActivity.cs" />
-    <Compile Include="Src\ForgetPassword\Api\IForgetPassword.cs" />
     <Compile Include="Src\ForgetPassword\Models\ForgetPasswordVerificationResponse.cs" />
     <Compile Include="Src\ForgetPassword\MVP\ForgetPasswordPresenter.cs" />
     <Compile Include="Src\ForgetPassword\Models\ForgetPassword.cs" />
@@ -3785,6 +3784,8 @@
     <Compile Include="Src\MyTNBService\Request\CreateNewUserWithTokenRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\SendResetPasswordCodeResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SendResetPasswordCodeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\ResetPasswordWithTokenResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\ResetPasswordWithTokenRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4158,6 +4159,7 @@
     <Folder Include="Src\Login\Api\" />
     <Folder Include="Src\NotificationSettings\Api\" />
     <Folder Include="Src\RegistrationForm\Api\" />
+    <Folder Include="Src\ForgetPassword\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

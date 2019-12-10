@@ -258,5 +258,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.SendResetPasswordCode<SendResetPasswordCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call ResetPasswordWithToken with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<ResetPasswordWithTokenResponse> ResetPasswordWithToken([Body] Request.BaseRequest request)
+        {
+            return api.ResetPasswordWithToken<ResetPasswordWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }
