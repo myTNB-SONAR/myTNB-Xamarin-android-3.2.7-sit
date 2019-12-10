@@ -13,7 +13,7 @@ namespace myTNB
     public partial class RewardsViewController : CustomUIViewController
     {
         internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
-        internal UIView _skeletonLoadingView;
+        internal UIView _skeletonLoadingView, _emptyRewardView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
         private int _selectedCategoryIndex, props_index;
@@ -29,25 +29,16 @@ namespace myTNB
             PageName = RewardsConstants.PageName_Rewards;
             base.ViewDidLoad();
             _isViewDidLoad = true;
-            NotifCenterUtility.AddObserver((NSString)"OnReceiveRewardsNotification", OnReceiveRewards);
+            NotifCenterUtility.AddObserver((NSString)"OnReceivedRewardsNotification", OnReceivedRewards);
             ViewHeight += GetBottomPadding;
             View.BackgroundColor = MyTNBColor.VeryLightPinkEight;
-            SetNavigationBar();
-            SetSkeletonLoading();
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
-            {
-                ValidateRewards();
-            }
+            InitiateView();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!_isViewDidLoad)
-            {
-                props_needsUpdate = true;
-                OnTableReload();
-            }
+            CheckForRewardUpdates();
             _isViewDidLoad = false;
         }
 
@@ -64,21 +55,98 @@ namespace myTNB
             Title = GetI18NValue(RewardsConstants.I18N_Title);
         }
 
-        private void OnReceiveRewards(NSNotification notification)
+        private void OnReceivedRewards(NSNotification notification)
         {
-            Debug.WriteLine("OnReceiveRewardsNotification");
+            Debug.WriteLine("OnReceivedRewardsNotification");
+            RewardsServices.FilterExpiredRewards();
             ValidateRewards();
+        }
+
+        private void CheckForRewardUpdates()
+        {
+            string timeStamp = string.Empty;
+            InvokeInBackground(async () =>
+            {
+                bool hasUpdate = await RewardsServices.RewardListHasUpdates();
+                InvokeOnMainThread(() =>
+                {
+                    if (hasUpdate)
+                    {
+                        DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                        ResetViews();
+                        SetSkeletonLoading();
+                        InvokeInBackground(async () =>
+                        {
+                            await RewardsServices.GetLatestRewards();
+                            await RewardsServices.GetUserRewards();
+                            InvokeOnMainThread(() =>
+                            {
+                                DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                RewardsServices.FilterExpiredRewards();
+                                ValidateRewards();
+                            });
+                        });
+                    }
+                    else
+                    {
+                        bool needsUpdate = RewardsServices.FilterExpiredRewards();
+                        if (needsUpdate)
+                        {
+                            ValidateRewards();
+                        }
+                        else
+                        {
+                            if (!_isViewDidLoad)
+                            {
+                                props_needsUpdate = true;
+                                OnTableReload();
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        private void ResetViews()
+        {
+            if (_skeletonLoadingView != null)
+            {
+                _skeletonLoadingView.RemoveFromSuperview();
+                _skeletonLoadingView = null;
+            }
+            if (_topBarScrollView != null)
+            {
+                _topBarScrollView.RemoveFromSuperview();
+                _topBarScrollView = null;
+            }
+            if (_rewardsScrollView != null)
+            {
+                _rewardsScrollView.RemoveFromSuperview();
+                _rewardsScrollView = null;
+            }
+            if (_emptyRewardView != null)
+            {
+                _emptyRewardView.RemoveFromSuperview();
+                _emptyRewardView = null;
+            }
+        }
+
+        private void InitiateView()
+        {
+            SetNavigationBar();
+            SetSkeletonLoading();
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            {
+                RewardsServices.FilterExpiredRewards();
+                ValidateRewards();
+            }
         }
 
         private void ValidateRewards()
         {
             InvokeOnMainThread(async () =>
             {
-                if (_skeletonLoadingView != null)
-                {
-                    _skeletonLoadingView.RemoveFromSuperview();
-                    _skeletonLoadingView = null;
-                }
+                ResetViews();
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
                 if (_rewardsList != null && _rewardsList.Count > 0)
@@ -108,7 +176,6 @@ namespace myTNB
             Title = GetI18NValue(RewardsConstants.I18N_Title);
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                Debug.WriteLine("btnSavedRewards");
                 SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
                 {
                     SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
@@ -122,11 +189,7 @@ namespace myTNB
 
         private void SetSkeletonLoading()
         {
-            if (_skeletonLoadingView != null)
-            {
-                _skeletonLoadingView.RemoveFromSuperview();
-                _skeletonLoadingView = null;
-            }
+            ResetViews();
             _skeletonLoadingView = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, ViewHeight))
             {
                 BackgroundColor = UIColor.White
@@ -228,21 +291,12 @@ namespace myTNB
 
         private void SetEmptyRewardView()
         {
-            if (_skeletonLoadingView != null)
+            ResetViews();
+            _emptyRewardView = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, ViewHeight))
             {
-                _skeletonLoadingView.RemoveFromSuperview();
-                _skeletonLoadingView = null;
-            }
-            if (_topBarScrollView != null)
-            {
-                _topBarScrollView.RemoveFromSuperview();
-                _topBarScrollView = null;
-            }
-            if (_rewardsScrollView != null)
-            {
-                _rewardsScrollView.RemoveFromSuperview();
-                _rewardsScrollView = null;
-            }
+                BackgroundColor = UIColor.White
+            };
+            View.AddSubview(_emptyRewardView);
             nfloat iconWidth = GetScaledWidth(102F);
             nfloat iconHeight = GetScaledHeight(94F);
             UIImageView emptyIcon = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth), DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(88F), iconWidth, iconHeight))
@@ -261,18 +315,12 @@ namespace myTNB
             };
             emptyDesc.TextContainer.LineFragmentPadding = 0F;
 
-            View.AddSubviews(new UIView { emptyIcon, emptyDesc });
+            _emptyRewardView.AddSubviews(new UIView { emptyIcon, emptyDesc });
         }
 
         #region REWARDS SCROLL VIEW
         private void AddRewardsScrollView()
         {
-            if (_rewardsScrollView != null)
-            {
-                _rewardsScrollView.RemoveFromSuperview();
-                _rewardsScrollView = null;
-            }
-
             nfloat yDelta = DeviceHelper.IsIphoneXUpResolution() ? 0 : DeviceHelper.GetStatusBarHeight();
             _rewardsScrollView = new UIScrollView(new CGRect(0
                 , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
@@ -359,10 +407,6 @@ namespace myTNB
         #region CATEGORY TOP BAR MENU
         private void CreateCategoryTopBar()
         {
-            if (_topBarScrollView != null)
-            {
-                _topBarScrollView.RemoveFromSuperview();
-            }
             _topBarScrollView = new UIScrollView(new CGRect(0
                 , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height
                 , ViewWidth, GetScaledHeight(44F)))
@@ -455,9 +499,26 @@ namespace myTNB
             if (reward != null)
             {
                 RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
+                DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
+                string rDateStr = string.Empty;
+                if (rDate != null)
+                {
+                    try
+                    {
+                        DateTime? rDateValue = rDate.Value.ToLocalTime();
+                        rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Error in ParseDate: " + e.Message);
+                    }
+                }
+                rewardDetailView.RedeemedDate = rDateStr;
                 rewardDetailView.RewardModel = reward;
-                UINavigationController navController = new UINavigationController(rewardDetailView);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                UINavigationController navController = new UINavigationController(rewardDetailView)
+                {
+                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                };
                 PresentViewController(navController, true, null);
             }
         }
@@ -466,10 +527,6 @@ namespace myTNB
         {
             if (reward != null)
             {
-                // Call Save/Unsave Service API here...
-                Debug.WriteLine("OnSaveUnsaveAction");
-                Debug.WriteLine(reward.ID);
-                Debug.WriteLine(reward.RewardName);
                 InvokeInBackground(async () =>
                 {
                     await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);

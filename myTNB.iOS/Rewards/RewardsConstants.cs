@@ -13,6 +13,12 @@ namespace myTNB
         public static int Tag_CategoryLabel = 101;
         public static int Tag_ViewContainer = 1000;
         public static int Tag_TableView = 2000;
+        public static int Tag_DetailRewardImage = 3000;
+        public static int Tag_DetailRewardTitle = 3001;
+        public static int Tag_DetailRewardView = 3002;
+
+        //Format
+        public static string Format_Date = "dd MMM yyyy, h:mm tt.";
 
         //nfloat
         public static nfloat RewardsCellHeight = ScaleUtility.GetScaledHeight(177F);
@@ -46,7 +52,7 @@ namespace myTNB
         public static string Img_HeartSaveIcon = "Heart-Save-Icon";
         public static string Img_HeartUnsaveIcon = "Heart-Unsave-Icon";
         public static string Img_RewardPeriodIcon = "Reward-Period-Icon";
-        public static string Img_RewardLocationIconn = "Reward-Location-Icon";
+        public static string Img_RewardLocationIcon = "Reward-Location-Icon";
         public static string Img_RewardTCIcon = "Reward-TC-Icon";
         public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
         public static string Img_UseRewardBanner = "Use-Reward-Banner";

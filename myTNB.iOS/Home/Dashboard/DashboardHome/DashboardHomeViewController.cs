@@ -682,7 +682,7 @@ namespace myTNB
                             }
                             else
                             {
-                                DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                                DataManager.DataManager.SharedInstance.ServicesList?.Clear();
                                 _isGetServicesFailed = true;
                             }
                             OnUpdateTable();
@@ -707,7 +707,7 @@ namespace myTNB
                             }
                             else
                             {
-                                DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                                DataManager.DataManager.SharedInstance.ServicesList?.Clear();
                                 _isGetServicesFailed = true;
                             }
                             OnUpdateTable();
