@@ -503,7 +503,7 @@ namespace myTNB
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                         await SitecoreServices.Instance.LoadRewards();
                         GetUserRewardsResponseModel userRewardsResponse = await RewardsServices.GetUserRewards();
-                        NotifCenterUtility.PostNotificationName("OnReceiveRewardsNotification", new NSObject());
+                        NotifCenterUtility.PostNotificationName("OnReceivedRewardsNotification", new NSObject());
                         InvokeOnMainThread(() =>
                         {
                             UpdateRewardsTabBarIcon();

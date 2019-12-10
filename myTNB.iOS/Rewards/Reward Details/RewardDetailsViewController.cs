@@ -15,6 +15,7 @@ namespace myTNB
     public class RewardDetailsViewController : CustomUIViewController
     {
         public RewardsModel RewardModel;
+        public string RedeemedDate;
         private UIView _footerView;
         private UIScrollView _scrollView;
         private Timer _useTimer;
@@ -75,12 +76,25 @@ namespace myTNB
             {
                 DismissViewController(true, null);
             });
-            UIBarButtonItem btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                Debug.WriteLine("btnShareReward");
-            });
             NavigationItem.LeftBarButtonItem = btnBack;
-            NavigationItem.RightBarButtonItem = btnShareReward;
+
+            if (!RewardModel.IsUsed)
+            {
+                UIBarButtonItem btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
+                {
+                    BaseService baseService = new BaseService();
+                    APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                    string deeplinkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx?rid=" + RewardModel.ID;
+                    NSObject item = NSObject.FromObject(deeplinkUrl);
+                    NSObject[] activityItems = { item };
+                    UIActivity[] applicationActivities = null;
+                    UIActivityViewController activityController = new UIActivityViewController(activityItems, applicationActivities);
+                    UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                    activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(activityController, true, null);
+                });
+                NavigationItem.RightBarButtonItem = btnShareReward;
+            }
         }
 
         private void SetScrollView()
@@ -273,13 +287,31 @@ namespace myTNB
             };
 
             UITextView tandCTextView = CreateHTMLContent(RewardModel.TandCLabel);
+            tandCTextView.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                BrowserViewController viewController =
+                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                if (viewController != null)
+                {
+                    viewController.NavigationTitle = "Rewards";
+                    viewController.URL = url.AbsoluteString;
+                    viewController.IsDelegateNeeded = false;
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    PresentViewController(navController, true, null);
+                }
+            }));
             CGSize tandCTextViewSize = tandCTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(tandCTextView, tandCTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(tandCTextView, 0);
             ViewHelper.AdjustFrameSetY(tandCTextView, GetYLocationFromFrame(tandCTitle.Frame, 10F));
             ViewHelper.AdjustFrameSetWidth(tandCTextView, viewWidth);
 
-            tandCView.AddSubviews(new UIView { tandCIcon, tandCTitle, tandCTextView });
+            tandCView.AddSubviews(new UIView { tandCIcon, tandCTitle });
+            tandCView.AddSubview(tandCTextView);
 
             ViewHelper.AdjustFrameSetHeight(tandCView, tandCTextView.Frame.GetMaxY());
             _scrollView.AddSubview(imageContainer);
@@ -313,8 +345,8 @@ namespace myTNB
             {
                 ForegroundColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_14_500,
-                UnderlineStyle = NSUnderlineStyle.None,
-                UnderlineColor = UIColor.Clear
+                UnderlineStyle = NSUnderlineStyle.Single,
+                UnderlineColor = MyTNBColor.WaterBlue
             };
 
             UITextView textView = new UITextView()
@@ -324,7 +356,6 @@ namespace myTNB
                 ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
-                UserInteractionEnabled = true,
                 TextContainerInset = UIEdgeInsets.Zero
             };
 
@@ -359,13 +390,14 @@ namespace myTNB
 
             if (isUsedReward)
             {
+                string dateValue = RedeemedDate.IsValid() ? "Reward used " + RedeemedDate : string.Empty;
                 UILabel usedLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(20F)))
                 {
                     BackgroundColor = UIColor.Clear,
                     Font = TNBFont.MuseoSans_14_300I,
                     TextColor = MyTNBColor.CharcoalGrey,
                     TextAlignment = UITextAlignment.Left,
-                    Text = "Reward used 13 Sep 2019, 2:35 PM."
+                    Text = dateValue
                 };
 
                 UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(usedLabel.Frame, 16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))

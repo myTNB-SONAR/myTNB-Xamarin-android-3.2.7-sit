@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -133,6 +134,21 @@ namespace myTNB
             if (reward != null)
             {
                 RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
+                DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
+                string rDateStr = string.Empty;
+                if (rDate != null)
+                {
+                    try
+                    {
+                        DateTime? rDateValue = rDate.Value.ToLocalTime();
+                        rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Error in ParseDate: " + e.Message);
+                    }
+                }
+                rewardDetailView.RedeemedDate = rDateStr;
                 rewardDetailView.RewardModel = reward;
                 UINavigationController navController = new UINavigationController(rewardDetailView);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;

@@ -49,7 +49,7 @@ namespace myTNB
         protected override void LanguageDidChange(NSNotification notification)
         {
             base.LanguageDidChange(notification);
-            if (_searchLbl != null && _addLbl != null)
+            if (_searchLbl != null && _addLbl != null && _searchIcon != null && _addIcon != null)
             {
                 _searchLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Search);
                 CGSize searchSize = _searchLbl.SizeThatFits(new CGSize(1000F, 1000F));

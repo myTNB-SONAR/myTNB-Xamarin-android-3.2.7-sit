@@ -17,6 +17,9 @@ namespace myTNB
         public static int Tag_DetailRewardTitle = 3001;
         public static int Tag_DetailRewardView = 3002;
 
+        //Format
+        public static string Format_Date = "dd MMM yyyy, h:mm tt.";
+
         //nfloat
         public static nfloat RewardsCellHeight = ScaleUtility.GetScaledHeight(177F);
 

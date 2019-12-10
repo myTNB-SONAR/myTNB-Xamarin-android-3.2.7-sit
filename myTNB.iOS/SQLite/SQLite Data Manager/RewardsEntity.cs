@@ -44,6 +44,29 @@ namespace myTNB.SQLite.SQLiteDataManager
                 Debug.WriteLine("Error in Insert Item in Table : {0}", e.Message);
             }
         }
+
+        /// <summary>
+        /// Deletes the item
+        /// </summary>
+        /// <param name="key"></param>
+        public void DeleteItem(string key)
+        {
+            try
+            {
+                if (key.IsValid())
+                {
+                    SQLiteHelper._db.Delete<RewardsEntity>(key);
+#if DEBUG
+                    Debug.WriteLine("Delete Record Successful");
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in Delete Item in Table : {0}", e.Message);
+            }
+        }
+
         /// <summary>
         /// Inserts the list of items.
         /// </summary>
@@ -211,7 +234,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     IsUsed = reward.IsUsed,
                     RewardUseWithinTime = reward.RewardUseWithinTime,
                     RewardUseTitle = reward.RewardUseTitle,
-                    RewardUseDescription=reward.RewardUseDescription
+                    RewardUseDescription = reward.RewardUseDescription
                 };
                 UpdateItem(item);
             }

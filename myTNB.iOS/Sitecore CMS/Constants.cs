@@ -134,6 +134,7 @@
 
                 public struct Rewards
                 {
+                    public const string Category = "RewardCategory";
                     public const string Title = "Title";
                     public const string TitleOnListing = "TitleOnListing";
                     public const string Description = "Description";
