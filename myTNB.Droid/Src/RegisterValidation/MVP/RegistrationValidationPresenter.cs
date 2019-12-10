@@ -86,11 +86,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var registrationApi = RestService.For<IRegisterUser>(httpClient);
             var loginApi = RestService.For<IAuthenticateUser>(httpClient);
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
 #else
             var registrationApi = RestService.For<IRegisterUser>(Constants.SERVER_URL.END_POINT);
             var loginApi = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
             try

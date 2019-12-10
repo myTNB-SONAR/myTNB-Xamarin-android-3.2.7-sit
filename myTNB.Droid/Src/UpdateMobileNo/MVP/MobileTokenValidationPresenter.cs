@@ -13,6 +13,9 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.UpdateMobileNo.Api;
 using myTNB_Android.Src.UpdateMobileNo.Request;
 using myTNB_Android.Src.Utils;
@@ -345,11 +348,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IAuthenticateUser>(httpClient);
 
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-
 #else
             var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 
 #endif
 
@@ -501,28 +501,15 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void ShowDashboard()
         {
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
             if (mView.IsActive())
             {
                 this.mView.ShowRegistrationProgress();
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<INotificationApi>(httpClient);
-            //var weblinkApi = RestService.For<IWeblinksApi>(httpClient);
-            //var locationTypesApi = RestService.For<GetLocationTypseApi>(httpClient);
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-
             var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
 
 #else
-            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-            //var weblinkApi = RestService.For<IWeblinksApi>(Constants.SERVER_URL.END_POINT);
-            //var locationTypesApi = RestService.For<GetLocationTypseApi>(Constants.SERVER_URL.END_POINT);
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
@@ -547,21 +534,21 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         }
                     }
 
-                    var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
-                    {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = loggedUser.Email,
-                        DeviceId = this.mView.GetDeviceId()
+                    var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
 
-                    }, cts.Token);
-
-                    if (!submittedFeedbackResponse.Data.IsError)
+                    if (submittedFeedbackResponse.IsSuccessResponse())
                     {
                         SubmittedFeedbackEntity.Remove();
-                        foreach (SubmittedFeedback sFeed in submittedFeedbackResponse.Data.Data)
+                        foreach (SubmittedFeedbackListResponse.ResponseData responseData in submittedFeedbackResponse.GetData())
                         {
-                            int newRecord = SubmittedFeedbackEntity.InsertOrReplace(sFeed);
-                            Console.WriteLine(string.Format("SubmitFeedback Id = {0}", newRecord));
+                            SubmittedFeedback sf = new SubmittedFeedback();
+                            sf.FeedbackId = responseData.ServiceReqNo;
+                            sf.FeedbackCategoryId = responseData.FeedbackCategoryId;
+                            sf.DateCreated = responseData.DateCreated;
+                            sf.FeedbackMessage = responseData.FeedbackMessage;
+                            sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
+                            sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
+                            SubmittedFeedbackEntity.InsertOrReplace(sf);
                         }
                     }
                     UserSessions.SavePhoneVerified(mSharedPref, true);

@@ -426,7 +426,6 @@
     <Compile Include="Src\AddAccount\Api\AddMultipleAccountsToUserApi.cs" />
     <Compile Include="Src\AddAccount\Api\GetCustomerAccounts.cs" />
     <Compile Include="Src\AddAccount\Api\GetCustomerAccountsForICNumApi.cs" />
-    <Compile Include="Src\AddAccount\Api\ValidateManualAccountLinkingApi.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountByRightsFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountFormFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountTypeFragment.cs" />
@@ -462,7 +461,6 @@
     <Compile Include="Src\AppLaunch\Activity\LaunchViewActivity.cs" />
     <Compile Include="Src\AppLaunch\Api\GetAccounts.cs" />
     <Compile Include="Src\AppLaunch\Api\GetMasterDataApi.cs" />
-    <Compile Include="Src\AppLaunch\Api\INotificationApi.cs" />
     <Compile Include="Src\AppLaunch\Api\IWeblinksApi.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountType.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountTypesResponse.cs" />
@@ -3765,6 +3763,15 @@
     <Compile Include="Src\MyTNBService\Response\ValidateManualAccountResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\ValidateManualAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\PhoneVerifyStatusResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppNotificationChannelsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppNotificationTypesResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\CustomerAccountsForICNumResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\CustomerAccountsForICNumRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmitFeedbackResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmitFeedbackRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\DeviceInfoRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmittedFeedbackListResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackListRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {
@@ -8,6 +9,15 @@ namespace myTNB_Android.Src.MyTNBService.Response
         [JsonProperty(PropertyName = "d")]
         public ResponseD Response { get; set; }
 
+        public bool IsSuccessResponse()
+        {
+            bool IsSuccess = false;
+            if (Response != null && Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+            {
+                IsSuccess = true;
+            }
+            return IsSuccess;
+        }
         public class ResponseD
         {
             [JsonProperty(PropertyName = "__type")]

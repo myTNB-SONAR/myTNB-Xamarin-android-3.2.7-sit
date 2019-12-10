@@ -164,10 +164,8 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 #if DEBUG || STUB
                             var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                             var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
-                            var notificationsApi = RestService.For<INotificationApi>(httpClient);
 #else
                             var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-                            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                             var newObject = new

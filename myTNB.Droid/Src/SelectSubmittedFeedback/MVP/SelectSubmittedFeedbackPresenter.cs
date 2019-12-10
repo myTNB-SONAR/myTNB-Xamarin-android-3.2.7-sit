@@ -2,10 +2,14 @@
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -121,91 +125,44 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
         public async void OnStartShowLoading(string deviceId)
         {
-
-            cts = new CancellationTokenSource();
-
             //if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
             //}
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-#else
 
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-#endif
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             try
             {
-                if (UserEntity.IsCurrentlyActive())
+                var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
+
+                //if (mView.IsActive())
+                //{
+                this.mView.HideProgressDialog();
+                //}
+
+                if (submittedFeedbackResponse.IsSuccessResponse())
                 {
-                    UserEntity loggedUser = UserEntity.GetActive();
-
-                    var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
+                    List<SubmittedFeedback> submittedFeedbackList = new List<SubmittedFeedback>();
+                    foreach (SubmittedFeedbackListResponse.ResponseData responseData in submittedFeedbackResponse.GetData())
                     {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = loggedUser.Email,
-                        DeviceId = deviceId
-
-                    }, cts.Token);
-
-                    //if (mView.IsActive())
-                    //{
-                    this.mView.HideProgressDialog();
-                    //}
-
-                    if (!submittedFeedbackResponse.Data.IsError)
-                    {
-                        foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
-                        {
-                            SubmittedFeedbackEntity.InsertOrReplace(sf);
-
-                        }
-
-                        this.mView.ClearList();
-
-                        this.mView.ShowList(submittedFeedbackResponse.Data.Data);
+                        SubmittedFeedback sf = new SubmittedFeedback();
+                        sf.FeedbackId = responseData.ServiceReqNo;
+                        sf.FeedbackCategoryId = responseData.FeedbackCategoryId;
+                        sf.DateCreated = responseData.DateCreated;
+                        sf.FeedbackMessage = responseData.FeedbackMessage;
+                        sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
+                        sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
+                        submittedFeedbackList.Add(sf);
+                        SubmittedFeedbackEntity.InsertOrReplace(sf);
                     }
-                    else
-                    {
 
-                        this.mView.ShowRetryOptionsCancelledException(null);
-                    }
+                    this.mView.ClearList();
+
+                    this.mView.ShowList(submittedFeedbackList);
                 }
                 else
                 {
-                    var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
-                    {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = "",
-                        DeviceId = deviceId
 
-                    }, cts.Token);
-
-                    //if (mView.IsActive())
-                    //{
-                    this.mView.HideProgressDialog();
-                    //}
-
-                    if (!submittedFeedbackResponse.Data.IsError)
-                    {
-                        foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
-                        {
-                            SubmittedFeedbackEntity.InsertOrReplace(sf);
-
-                        }
-
-                        this.mView.ClearList();
-
-                        this.mView.ShowList(submittedFeedbackResponse.Data.Data);
-                    }
-                    else
-                    {
-                        this.mView.ShowRetryOptionsCancelledException(null);
-                    }
+                    this.mView.ShowRetryOptionsCancelledException(null);
                 }
-
-
             }
             catch (System.OperationCanceledException e)
             {

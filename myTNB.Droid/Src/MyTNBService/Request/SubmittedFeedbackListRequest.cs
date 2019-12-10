@@ -1,12 +1,10 @@
-﻿
-using myTNB_Android.Src.Utils;
-
+﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class AppLaunchMasterDataRequest : BaseRequest
+    public class SubmittedFeedbackListRequest : BaseRequest
     {
         public DeviceInfoRequest deviceInf;
-        public AppLaunchMasterDataRequest()
+        public SubmittedFeedbackListRequest()
         {
             deviceInf = new DeviceInfoRequest();
         }

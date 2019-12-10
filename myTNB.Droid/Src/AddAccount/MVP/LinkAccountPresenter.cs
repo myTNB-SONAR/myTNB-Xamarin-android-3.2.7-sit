@@ -6,6 +6,9 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -102,17 +105,16 @@ namespace myTNB_Android.Src.AddAccount.MVP
             try
             {
                 this.mView.ShowGetAccountsProgressDialog();
-                var api = RestService.For<GetCustomerAccountsForICNumApi>(Constants.SERVER_URL.END_POINT);
-                // TODO : UPDATE TO V5
-                var result = await api.GetCustomerAccountByIc(new GetBCRMAccountRequest(apiKeyID, currentAccountList, email, identificationNo));
 
-                if (result.Data.IsError)
+                var result = await ServiceApiImpl.Instance.CustomerAccountsForICNum(new CustomerAccountsForICNumRequest(currentAccountList, identificationNo));
+
+                if (result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
                     this.mView.HideGetAccountsProgressDialog();
 
-                    if (result.Data.Status.Equals("failed"))
+                    if (result.Response.Status.Equals("failed"))
                     {
-                        this.mView.ShowBCRMDownException(result.Data.Message);
+                        this.mView.ShowBCRMDownException(result.Response.Message);
                     }
                     else
                     {
@@ -123,8 +125,19 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 else
                 {
                     this.mView.HideGetAccountsProgressDialog();
-
-                    this.mView.ShowBCRMAccountList(result.Data.BCRMAccountList);
+                    List<BCRMAccount> bCRMAccountList = new List<BCRMAccount>();
+                    foreach (CustomerAccountsForICNumResponse.ResponseData response in result.GetData())
+                    {
+                        BCRMAccount bCRMAccount = new BCRMAccount();
+                        bCRMAccount.accNum = response.accNum;
+                        bCRMAccount.accountTypeId = response.accountTypeId;
+                        bCRMAccount.accountStAddress = response.accountStAddress;
+                        bCRMAccount.icNum = response.icNum;
+                        bCRMAccount.isOwned = response.isOwned;
+                        bCRMAccount.accountCategoryId = response.accountCategoryId;
+                        bCRMAccountList.Add(bCRMAccount);
+                    }
+                    this.mView.ShowBCRMAccountList(bCRMAccountList);
 
                 }
             }

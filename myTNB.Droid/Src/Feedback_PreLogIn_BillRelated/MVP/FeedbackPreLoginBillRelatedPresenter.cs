@@ -7,6 +7,8 @@ using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -118,8 +120,6 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
 
         public async void OnSubmit(string deviceId, string fullname, string mobile_no, string email, string account_no, string feedback, List<AttachedImage> attachedImages)
         {
-
-            cts = new CancellationTokenSource();
             this.mView.ClearErrors();
             if (TextUtils.IsEmpty(fullname))
             {
@@ -194,13 +194,6 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var preloginFeedbackApi = RestService.For<IFeedbackApi>(httpClient);
-#else
-            var preloginFeedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-#endif
             try
             {
                 List<AttachedImageRequest> imageRequest = new List<AttachedImageRequest>();
@@ -213,41 +206,25 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     ctr++;
                 }
 
-                var request = new FeedbackRequest()
+                SubmitFeedbackRequest submitFeedbackRequest = new SubmitFeedbackRequest("1", "", account_no, fullname, mobile_no, feedback, "", "", "");
+                foreach (AttachedImageRequest image in imageRequest)
                 {
+                    submitFeedbackRequest.SetFeedbackImage(image.ImageHex, image.FileName, image.FileSize.ToString());
+                }
 
-                    Images = imageRequest,
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    FeedbackCategoryId = "1",
-                    FeedbackTypeId = "",
-                    PhoneNum = mobile_no,
-                    AccountNum = account_no,
-                    Name = fullname,
-                    Email = email,
-                    DeviceId = deviceId,
-                    FeedbackMessage = feedback,
-                    StateId = "",
-                    Location = "",
-                    PoleNum = ""
-
-                };
-                Console.WriteLine("Request => " + request);
-                Console.WriteLine("Serialized Request => " + JsonConvert.SerializeObject(request));
-
-
-                var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
+                var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitFeedback(submitFeedbackRequest);
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!preLoginFeedbackResponse.Data.IsError)
+                if (preLoginFeedbackResponse.IsSuccessResponse())
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     var newSubmittedFeedback = new SubmittedFeedback()
                     {
-                        FeedbackId = preLoginFeedbackResponse.Data.Data.FeedbackId,
+                        FeedbackId = preLoginFeedbackResponse.GetData().ServiceReqNo,
                         DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
                         FeedbackMessage = feedback,
                         FeedbackCategoryId = "1"
@@ -257,12 +234,11 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);
 
                     this.mView.ClearInputFields();
-                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId, attachedImages.Count);
+                    this.mView.ShowSuccess(preLoginFeedbackResponse.GetData().DateCreated, preLoginFeedbackResponse.GetData().ServiceReqNo, attachedImages.Count);
                 }
                 else
                 {
-                    //this.mView.ShowFail();
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Data.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
                 }
 
             }

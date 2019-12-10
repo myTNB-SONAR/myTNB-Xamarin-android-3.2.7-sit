@@ -20,7 +20,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
     {
         private static string TAG = "AddAccountPresenter";
         private AddAccountContract.IView mView;
-        private CancellationTokenSource addAccountCts;
 
         public AddAccountPresenter(AddAccountContract.IView mView)
         {
@@ -96,16 +95,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         private async void AddAccountAsync(string apiKeyId, string userID, string email, string tnbBillAcctNo, string tnbAcctHolderIC, string tnbAcctContractNo, string type, string des, bool isOwner, string suppliedMotherName)
         {
-            addAccountCts = new CancellationTokenSource();
             mView.ShowAddingAccountProgressDialog();
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<AddAccountToCustomer>(httpClient);
-#else
-            var api = RestService.For<AddAccountToCustomer>(Constants.SERVER_URL.END_POINT);
-            
-#endif
 
             try
             {
@@ -207,23 +197,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         private async void ValidateAccountAsync(string apiKeyId, string accountNum, string accountType, string userIdentificationNum, string suppliedMotherName, bool isOwner, string accountLable)
         {
-            addAccountCts = new CancellationTokenSource();
             mView.ShowAddingAccountProgressDialog();
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<ValidateManualAccountLinkingApi>(httpClient);
-
-#else
-            var api = RestService.For<ValidateManualAccountLinkingApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-
-                //var result = await api.ValidateManualAccount(new ValidateManualAccountRequest(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner));
-
                 var result = await ServiceApiImpl.Instance.ValidateManualAccount(new MyTNBService.Request.ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString()));
                 if (mView.IsActive())
                 {

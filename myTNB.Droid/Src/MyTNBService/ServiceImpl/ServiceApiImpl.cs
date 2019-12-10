@@ -98,5 +98,55 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.PhoneVerifyStatus<PhoneVerifyStatusResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetAppNotificationChannels with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<AppNotificationChannelsResponse> AppNotificationChannels([Body] Request.BaseRequest request)
+        {
+            return api.AppNotificationChannels<AppNotificationChannelsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetAppNotificationTypes with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<AppNotificationTypesResponse> AppNotificationTypes([Body] Request.BaseRequest request)
+        {
+            return api.AppNotificationTypes<AppNotificationTypesResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetCustomerAccountsForICNum with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<CustomerAccountsForICNumResponse> CustomerAccountsForICNum([Body] Request.BaseRequest request)
+        {
+            return api.CustomerAccountsForICNum<CustomerAccountsForICNumResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call SubmitFeedback with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitFeedbackResponse> SubmitFeedback([Body] Request.BaseRequest request)
+        {
+            return api.SubmitFeedback<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetSubmittedFeedbackList with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmittedFeedbackListResponse> SubmittedFeedbackList([Body] Request.BaseRequest request)
+        {
+            return api.SubmittedFeedbackList<SubmittedFeedbackListResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }
