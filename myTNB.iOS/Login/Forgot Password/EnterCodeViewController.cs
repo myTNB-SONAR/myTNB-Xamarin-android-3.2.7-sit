@@ -33,6 +33,7 @@ namespace myTNB
         private Timer timer;
         private const double INTERVAL = 1000f;
         private int timerCtr = 30;
+        private int margin = 0;
 
         public override void ViewDidLoad()
         {
@@ -42,6 +43,10 @@ namespace myTNB
             timer.Interval = INTERVAL;
             timer.Elapsed += TimerElapsed;
             timer.AutoReset = true;
+            if (TNBGlobal.APP_LANGUAGE == "MS")
+            {
+                margin += 60;
+            }
             AddBackButton();
             SetViews();
         }
@@ -66,38 +71,44 @@ namespace myTNB
 
         private void SetViews()
         {
-            UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60));
-            lblDescription.Font = MyTNBFont.MuseoSans16_300;
-            lblDescription.TextColor = MyTNBColor.TunaGrey();
-            lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Lines = 0;
-            lblDescription.Text = string.Format(GetI18NValue(ForgotPasswordConstants.I18N_Details), EmailAddress);
-            lblDescription.TextAlignment = UITextAlignment.Left;
+            UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60))
+            {
+                Font = MyTNBFont.MuseoSans16_300,
+                TextColor = MyTNBColor.TunaGrey(),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                Text = string.Format(GetI18NValue(ForgotPasswordConstants.I18N_Details), EmailAddress),
+                TextAlignment = UITextAlignment.Left
+            };
             View.AddSubview(lblDescription);
 
-            UILabel lblResendToken = new UILabel(new CGRect(18, 158, View.Frame.Width - 36, 16));
-            lblResendToken.Font = MyTNBFont.MuseoSans12_300;
-            lblResendToken.TextColor = MyTNBColor.TunaGrey();
-            lblResendToken.LineBreakMode = UILineBreakMode.WordWrap;
-            lblResendToken.Lines = 0;
-            lblResendToken.Text = GetI18NValue(ForgotPasswordConstants.I18N_EmailNotReceived);
-            lblResendToken.TextAlignment = UITextAlignment.Center;
+            UILabel lblResendToken = new UILabel(new CGRect(18, 158, View.Frame.Width - 36, 16))
+            {
+                Font = MyTNBFont.MuseoSans12_300,
+                TextColor = MyTNBColor.TunaGrey(),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                Text = GetI18NValue(ForgotPasswordConstants.I18N_EmailNotReceived),
+                TextAlignment = UITextAlignment.Center
+            };
             View.AddSubview(lblResendToken);
 
             CreateTokenField();
 
-            int xLocation = ((int)View.Bounds.Width - 140) / 2;
+            int xLocation = ((int)View.Bounds.Width - (140 + margin)) / 2;
             int yLocation = 180;
-            int width = 140;
+            int width = 140 + margin;
             int height = 48;
-            _loadingView = new UIView(new CGRect(xLocation, yLocation, width, height));
-            _loadingView.BackgroundColor = UIColor.White;
+            _loadingView = new UIView(new CGRect(xLocation, yLocation, width, height))
+            {
+                BackgroundColor = UIColor.White
+            };
             _loadingView.Layer.CornerRadius = 5.0f;
             _loadingView.Layer.BorderWidth = 1.0f;
             _loadingView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             View.AddSubview(_loadingView);
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
-            _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
+            _resendLabel = new UILabel(new CGRect(41, 15, 100 + margin, 20));
             _segment = new UIView(new CGRect(0, 0, 0, height));
             _segment.Layer.CornerRadius = 5.0f;
             _loadingView.AddSubview(_segment);
@@ -116,38 +127,44 @@ namespace myTNB
             UITextField txtFieldToken;
             UIView viewLine;
             _viewTokenFieldContainer = new UIView(new CGRect(66, 70, View.Frame.Width - 132, 40));
-            _lblError = new UILabel(new CGRect(0, _viewTokenFieldContainer.Frame.Height - 14, _viewTokenFieldContainer.Frame.Width, 14));
-            _lblError.Font = MyTNBFont.MuseoSans9_300;
-            _lblError.TextColor = MyTNBColor.Tomato;
-            _lblError.TextAlignment = UITextAlignment.Left;
-            _lblError.Text = GetErrorI18NValue(Constants.Error_InvalidCode);
-            _lblError.Hidden = true;
+            _lblError = new UILabel(new CGRect(0, _viewTokenFieldContainer.Frame.Height - 14, _viewTokenFieldContainer.Frame.Width, 14))
+            {
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.Tomato,
+                TextAlignment = UITextAlignment.Left,
+                Text = GetErrorI18NValue(Constants.Error_InvalidCode),
+                Hidden = true
+            };
             float txtFieldWidth = ((float)_viewTokenFieldContainer.Frame.Width - 36) / 4;
             float xLocation = 0;
             for (int i = 0; i < 4; i++)
             {
                 int index = i;
-                txtFieldToken = new UITextField(new CGRect(xLocation, 0, txtFieldWidth, 24));
-                txtFieldToken.Placeholder = "-";
-                txtFieldToken.TextColor = MyTNBColor.TunaGrey();
-                txtFieldToken.Font = MyTNBFont.MuseoSans16_300;
-                txtFieldToken.Tag = index + 1;
-                txtFieldToken.KeyboardType = UIKeyboardType.NumberPad;
-                txtFieldToken.AutocorrectionType = UITextAutocorrectionType.No;
-                txtFieldToken.AutocapitalizationType = UITextAutocapitalizationType.None;
-                txtFieldToken.SpellCheckingType = UITextSpellCheckingType.No;
-                txtFieldToken.ReturnKeyType = UIReturnKeyType.Done;
-                txtFieldToken.TextAlignment = UITextAlignment.Center;
-                txtFieldToken.ShouldChangeCharacters = (textField, range, replacementString) =>
+                txtFieldToken = new UITextField(new CGRect(xLocation, 0, txtFieldWidth, 24))
                 {
-                    var newLength = textField.Text.Length + replacementString.Length - range.Length;
-                    return newLength <= 1;
+                    Placeholder = "-",
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans16_300,
+                    Tag = index + 1,
+                    KeyboardType = UIKeyboardType.NumberPad,
+                    AutocorrectionType = UITextAutocorrectionType.No,
+                    AutocapitalizationType = UITextAutocapitalizationType.None,
+                    SpellCheckingType = UITextSpellCheckingType.No,
+                    ReturnKeyType = UIReturnKeyType.Done,
+                    TextAlignment = UITextAlignment.Center,
+                    ShouldChangeCharacters = (textField, range, replacementString) =>
+                    {
+                        nint newLength = textField.Text.Length + replacementString.Length - range.Length;
+                        return newLength <= 1;
+                    }
                 };
                 _textFieldHelper.CreateDoneButton(txtFieldToken);
 
-                viewLine = new UIView(new CGRect(xLocation, 25, txtFieldWidth, 1));
-                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
-                viewLine.Tag = index + 5;
+                viewLine = new UIView(new CGRect(xLocation, 25, txtFieldWidth, 1))
+                {
+                    BackgroundColor = MyTNBColor.PlatinumGrey,
+                    Tag = index + 5
+                };
 
                 SetTextFieldEvents(txtFieldToken, viewLine);
 
@@ -188,16 +205,16 @@ namespace myTNB
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
-                _segment.Frame = new CGRect(0, 0, 140, 48);
+                _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
                 //Fresh green with 24% opacity
                 _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
                 _loadingImage.Image = _loadingImg;
             }, () =>
             {
-                _segment.Frame = new CGRect(0, 0, 140, 48);
+                _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
                 _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
-                _resendLabel.Frame = new CGRect(55, 15, 85, 20);
+                _resendLabel.Frame = new CGRect(55, 15, 85 + margin, 20);
                 _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
@@ -383,7 +400,7 @@ namespace myTNB
                         _loadingImage.RemoveFromSuperview();
                         _resendLabel.RemoveFromSuperview();
                         _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
-                        _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
+                        _resendLabel = new UILabel(new CGRect(41, 15, 100 + margin, 20));
                         _segment = new UIView(new CGRect(0, 0, 0, 48));
                         _loadingView.AddSubview(_segment);
                         _loadingView.AddSubview(_loadingImage);
@@ -436,7 +453,7 @@ namespace myTNB
                 {
                     if (ServiceCall.ValidateBaseResponse(_resetCodeList))
                     {
-                        var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                         sharedPreference.SetBool(true, "isPasswordResetCodeSent");
                         sharedPreference.SetString(_resetCodeList.d.ErrorMessage, "resetPasswordMessage");
                         sharedPreference.Synchronize();

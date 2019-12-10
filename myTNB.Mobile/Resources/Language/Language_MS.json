@@ -29,7 +29,7 @@
     "customerAccountNumber": "Nombor akaun pelanggan {0}",
     "confirm": "Sahkan",
     "ok": "Ok",
-    "acctNickname": "Nama Ringkas Akaun",
+    "acctNickname": "Nama Akaun",
     "name": "Nama",
     "done": "Selesai",
     "yes": "Ya",
@@ -96,7 +96,7 @@
     "emptyAcctSelector": "---",
     "nickname": "cth. Rumah Saya, Rumah Ibu",
     "businessNickname": "cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka)."
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka"
   },
   "Error": {
     "invalid_email": "Format emel tidak sah.",
@@ -107,11 +107,11 @@
     "invalidNickname": "Aksara tidak sah. Gunakan huruf atau nombor sahaja.",
     "duplicateNickname": "Nama ringkas sudah digunakan. Sila buat yang baru.",
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
-    "serviceErrorDefaultMessage": "Maaf, berlaku kesilapan teknikal. Sila cuba lagi.",
+    "serviceErrorDefaultMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba lagi kemudian.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_pin": "PIN tidak sah",
-    "invalid_password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka).",
+    "invalid_pin": "Kod tidak sah",
+    "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka",
     "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
     "invalid_fullname": "Nama Penuh Tidak Sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport Tidak Sah",
@@ -124,8 +124,8 @@
     "invalid_accountType": "Jenis Akaun Tidah Sah",
     "noDataConnectionTitle": "Tiada sambungan internet",
     "noDataConnectionMessage": "Sila periksa sambungan internet anda dan cuba lagi.",
-    "defaultErrorTitle": "Ralat",
-    "defaultErrorMessage": "Maaf, berlaku kesilapan teknikal. Sila cuba lagi.",
+    "defaultErrorTitle": "Alamak, ada sesuatu yang tidak kena.",
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba lagi kemudian.",
     "numberNotAvailable": "Maaf, nombor tersebut tidak ditemui. Sila cuba sebentar lagi.",
     "ratingNotAvailable": "Maaf, tindakan ini tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi.",
     "shareNotAvailable": "Maaf, perkongsian tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi."
@@ -137,7 +137,7 @@
     "myAccounts": "Akaun Saya",
     "myServices": "Perkhidmatan Saya",
     "needHelp": "Perlu Bantuan?",
-    "promotions": "Promosi",
+    "promotions": "Terkini",
     "addElectricityAcct": "Tambah Akaun Elektrik",
     "searchPlaceholder": "Cari mengikut nama ringkas atau nombor",
     "refreshMessage": "Nampaknya sambungan bagi skrin ini telah terputus. Refresh untuk sambung semula!",
@@ -149,8 +149,8 @@
     "add": "Tambah",
     "search": "Cari",
     "showLess": "Kurangkan Paparan",
-    "moreAccts": "Tambah Akaun",
-    "rearrangeAccts": "Susun Akaun",
+    "moreAccts": "Akaun Selebihnya",
+    "rearrangeAccts": "Susun Semula Akaun",
     "showMore": "Selebihnya",
     "viewAdvice": "Lihat<br>Makluman Saya",
     "viewAdvices": "Lihat<br>Makluman Saya",
@@ -236,7 +236,7 @@
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
     "headerTitle": "Sejarah Bacaan Meter Saya",
-    "subTitle": "Saya ingin membaca meter sendiri untuk:",
+    "subTitle": "Saya ingin baca meter sendiri untuk:",
     "disableSSMRCTA": "Hentikan Self Meter Reading",
     "enableSSMRCTA": "Aktifkan Self Meter Reading",
     "enableSSMRDescription": "Akaun elektrik ini belum diaktifkan untuk bacaan meter sendiri, tekan butang di bawah untuk memulakan!",
@@ -388,17 +388,17 @@
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
     "tutorialBillTitle": "Ringkasan keseluruhan bil anda",
-    "tutorialAdviceTitle": "Your advice overview.",
+    "tutorialAdviceTitle": "Pantau rekod pembayaran anda.",
     "tutorialPayTitle": "Bayar cara mudah.",
     "tutorialViewDetailsTitle": "Fahami bil anda.",
-    "tutorialHistoryNormalTitle": "Keep track of payments.",
-    "tutorialHistoryTitle": "Pantau rekod bil dan pembayaran anda.",
+    "tutorialHistoryNormalTitle": "Pantau pembayaran anda.",
+    "tutorialHistoryTitle": "Pantau rekod caj anda.",
     "tutorialBillREAcctDesc": "Klik pada butang \"#dropdown#\" untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan",
     "tutorialBillNormalAcctDesc": "Tekan “ #dropdown# ” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
     "tutorialViewDetailsDesc": "\"Lihat Butiran\" untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
-    "tutorialHistoryREAcctDesc": "Akses dan lihat makluman pembayaran dan resit pembayaran anda untuk tempoh enam bulan yang lalu. Gunakan fungsi penapis untuk memilih paparan makluman atau resit pembayaran.",
+    "tutorialHistoryREAcctDesc": "Lihat dan akses makluman serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "gotIt": "Faham!"
   },
   "Bills_selector": {
@@ -420,7 +420,7 @@
   "BillDetails": {
     "title": "Butiran Bil",
     "billDetails": "Butiran Bil Saya",
-    "outstandingCharges": "Tunggakan saya",
+    "outstandingCharges": "Tunggakan",
     "billThisMonth": "Caj Semasa",
     "needToPay": "Jumlah Perlu Dibayar",
     "by": "sebelum",
@@ -496,7 +496,7 @@
     "title": "Tambah Akaun Elektrik",
     "noAcctFoundMsg": "Sila tekan butang di bawah untuk memasukkan akaun elektrik TNB anda.",
     "supplyAcctCount": "akaun bekalan elektrik ditemui!",
-    "addAnotherAcct": "Masukkan Satu Lagi Akaun",
+    "addAnotherAcct": "Tambah Akaun",
     "addAccount": "Akaun Sedang Ditambah",
     "addAccounts": "Akaun Sedang Ditambah",
     "addAccountMsg": "Proses ini mungkin mengambil sedikit masa",
@@ -504,7 +504,7 @@
     "noAccountsTitle": "Tiada Akaun Ditemui!",
     "additionalAccts": "Akaun tambahan",
     "removeAcct": "Keluarkan Akaun",
-    "removeAcctMsg": "Anda sedang mengeluarkan {0}, Nombor Akaun: {1}",
+    "removeAcctMsg": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Layari Self-Service Portal atau kunjungi Kedai Tenaga untuk menutup akaun bekalan elektrik anda.",
     "addAcctSuccessMsg": "Akaun Berjaya Ditambah",
     "ownerICNumber": "Nombor KP / Pasport Pemilik",
     "rocNumber": "ROC Nombor",
@@ -626,7 +626,7 @@
     "resendPinMessage": "Emel mengandungi pin pengaktifan telah dihantar ke alamat emel anda."
   },
   "PasswordResetSuccess": {
-    "title": "Berjaya Set Semula Kata Laluan",
+    "title": "Set Semula Kata Laluan Berjaya",
     "details": "Log masuk dengan kata laluan sementara 8 digit yang telah dihantar ke {0}.\r\n\r\nKata laluan boleh ditukar selepas log masuk.",
     "proceedToLogin": "Teruskan Log Masuk",
     "resetSuccessMessage": "Kata laluan anda telah berjaya ditukar. Anda boleh teruskan log masuk dengan kata laluan baru."
@@ -668,7 +668,7 @@
   },
   "ManageAccount": {
     "title": "Uruskan Akaun Elektrik",
-    "nicknameUpdateSuccess": "Aksara tidak sah. Gunakan huruf atau nombor sahaja.",
+    "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Keluarkan Akaun Ini",
     "popupremoveAccountTitle": "Keluarkan Akaun",
     "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
@@ -684,7 +684,7 @@
     "title6": "Apa yang baru dengan myTNB?",
     "description1": "Banyak yang anda boleh manfaatkan dengan aplikasi ini. Sila pilih bahasa anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Kesan, pantau dan ketahui penggunaan terkini elektrik anda!",
-    "description3": "Akses bil versi PDF anda untuk 6 bulan dengan mudah, di satu lokasi!",
+    "description3": "Akses bil versi PDF anda untuk 6 bulan kebelakangan dengan mudah, semuanya di sini!",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam keretapi - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below."
@@ -799,11 +799,11 @@
     "backToHome": "Kembali ke Laman Utama"
   },
   "Promotions": {
-    "title": "Terbaru",
+    "title": "Terkini",
     "noPromotions": "Tiada promosi buat masa ini. Cuba semak kemudian!"
   },
   "RearrangeAccount": {
-    "title": "Susun Semula Akaun",
+    "title": "Susun Akaun",
     "btnTitle": "Simpan Perubahan",
     "rearrangeTitle": "Perubahan yang anda buat masih belum disimpan. Teruskan?",
     "rearrangeMsg": "Adakah anda ingin menyimpan perubahan yang telah dibuat untuk susunan akaun anda?",
@@ -812,23 +812,23 @@
   },
   "Rewards": {
     "title": "Ganjaran",
-    "viewAll": "View All",
+    "viewAll": "Lihat Semua",
     "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
   },
   "RewardDetails": {
     "title": "Ganjaran",
-    "rewardPeriod": "Reward Period",
+    "rewardPeriod": "Tempoh Ganjaran",
     "location": "Lokasi",
     "tnc": "Terma dan Syarat",
     "save": "Simpan",
-    "unsave": "Unsave",
-    "useNow": "Use Now",
-    "useNowPopupTitle": "Please make sure you’re at the shop.",
-    "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
-    "useLater": "Use Later",
+    "unsave": "Keluarkan",
+    "useNow": "Guna Sekarang",
+    "useNowPopupTitle": "Sila pastikan anda berada di kedai.",
+    "useNowPopupMessage": "Ganjaran ini hanya boleh digunakan sekali sahaja, sila pastikan anda berada di kedai.",
+    "useLater": "Gunakan Kemudian",
     "confirm": "Sahkan"
   },
   "SavedRewards": {
-    "title": "My Saved Rewards"
+    "title": "Ganjaran Yang Disimpan"
   }
 }

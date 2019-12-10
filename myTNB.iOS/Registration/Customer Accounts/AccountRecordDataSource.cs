@@ -251,15 +251,13 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 var nickName = acount?.accDesc ?? string.Empty;
                 var accountNumber = acount?.accNum ?? string.Empty;
-                var okCancelAlertController = UIAlertController.Create(GetI18NValue(AddAccountConstants.I18N_RemoveAcct)
+
+                _controller.DisplayCustomAlert(GetI18NValue(AddAccountConstants.I18N_RemoveAcct)
                     , string.Format(GetI18NValue(AddAccountConstants.I18N_RemoveAcctMsg), nickName, accountNumber)
-                    , UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Ok)
-                    , UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
-                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Cancel)
-                    , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
-                okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                _controller?.PresentViewController(okCancelAlertController, true, null);
+                    , new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Cancel),  () => Debug.WriteLine("Cancel was clicked")}
+                        , { LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Ok), ()=> RemoveAccount(acount) }
+                    }, UITextAlignment.Center, UITextAlignment.Center);
             };
 
             cell.NickNameTitle = LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_AcctNickname).ToUpper();
