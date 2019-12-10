@@ -159,7 +159,7 @@ namespace myTNB
             return url;
         }
 
-        private string GetDomain(APIEnvironment environment)
+        public string GetDomain(APIEnvironment environment)
         {
             string env = environment.ToString();
             return DomainDictionary.ContainsKey(env) ? DomainDictionary[env] : string.Empty;

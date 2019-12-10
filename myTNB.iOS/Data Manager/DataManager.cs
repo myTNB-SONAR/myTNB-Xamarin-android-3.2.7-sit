@@ -125,6 +125,7 @@ namespace myTNB.DataManager
 
         //Rewards
         public bool IsRewardsLoading = true;
+        public bool IsFromRewardsDeeplink;
 
         //Payment
         private List<string> AccountNumbersForPaymentList;
@@ -242,6 +243,7 @@ namespace myTNB.DataManager
 
             IsPromotionFirstLoad = false;
             IsRewardsLoading = true;
+            IsFromRewardsDeeplink = false;
 
             //Account Related
             InstallationDetails = new InstallationDetailDataModel();

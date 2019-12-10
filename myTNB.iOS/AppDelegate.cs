@@ -8,7 +8,6 @@ using Firebase.CloudMessaging;
 using System.Text.RegularExpressions;
 using myTNB.Dashboard;
 using Facebook.CoreKit;
-using Firebase.Core;
 using Firebase.Crashlytics;
 using System.Diagnostics;
 
@@ -178,6 +177,43 @@ namespace myTNB
 
             //Setup the Navigation Bar tint color 
             UINavigationBar.Appearance.TintColor = UIColor.White;
+        }
+
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+            {
+                if (url != null)
+                {
+                    string absoluteURL = url.ToString();
+                    if (absoluteURL.Contains("mytnbapp://rewards/rewardid"))
+                    {
+                        Regex regex = new Regex("\\brewardid.*\\b");
+                        Match match = regex.Match(absoluteURL);
+                        if (match.Success)
+                        {
+                            string rewardId = match.Value.Replace("rewardid=", "");
+                            DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = rewardId.IsValid();
+
+                            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && rewardId.IsValid())
+                            {
+                                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                var topVc = GetTopViewController(baseRootVc);
+                                if (topVc != null)
+                                {
+                                    if (!(topVc is RewardDetailsViewController))
+                                    {
+                                        RewardsCache.DeeplinkRewardId = rewardId;
+                                        RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                    }
+                                }
+                                DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         #region FCM

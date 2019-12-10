@@ -508,6 +508,7 @@ namespace myTNB
                         {
                             UpdateRewardsTabBarIcon();
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                            CheckForRewardDeepLink();
                         });
                     });
                 }
@@ -532,6 +533,18 @@ namespace myTNB
             else
             {
                 TabBar.Items[3].BadgeValue = null;
+            }
+        }
+
+        private void CheckForRewardDeepLink()
+        {
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            {
+                if (DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink)
+                {
+                    RewardsServices.OpenRewardDetails(RewardsCache.DeeplinkRewardId, this);
+                    DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                }
             }
         }
     }
