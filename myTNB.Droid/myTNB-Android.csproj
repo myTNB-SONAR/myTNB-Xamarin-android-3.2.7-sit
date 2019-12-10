@@ -714,7 +714,6 @@
     <Compile Include="Src\myTNBMenu\Api\IAmountDueApi.cs" />
     <Compile Include="Src\myTNBMenu\Api\IBillsPaymentHistoryApi.cs" />
     <Compile Include="Src\myTNBMenu\Api\IDetailedCustomerAccount.cs" />
-    <Compile Include="Src\myTNBMenu\Api\IUserNotificationsApi.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsDayFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsHourFormatter.cs" />
@@ -3778,6 +3777,8 @@
     <Compile Include="Src\MyTNBService\Request\SaveUserNotificationTypePreferenceRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\SaveUserNotificationChannelPreferenceResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SaveUserNotificationChannelPreferenceRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationTypePreferencesResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationChannelPreferencesResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
