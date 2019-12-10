@@ -64,8 +64,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private static bool isPromoClicked = false;
 
-        private static bool isRewardClicked = false;
-
         private RewardServiceImpl mApi;
 
         private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
@@ -406,8 +404,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
                     this.mView.ShowRewardsMenu();
 
-                    isRewardClicked = true;
-
                     if (this.mView.IsActive())
                     {
                         if (RewardsEntity.HasUnread())
@@ -462,6 +458,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             if (!RewardsMenuUtils.GetRewardLoading())
             {
                 this.mView.ShowProgressDialog();
+                RewardsMenuUtils.OnSetRewardLoading(true);
                 new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
             }
             else
@@ -477,6 +474,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
 				new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                RewardsMenuUtils.OnSetRewardLoading(true);
                 new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
@@ -635,11 +633,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private void OnUpdateRewardUnRead()
         {
-            if (isRewardClicked && !UserSessions.HasRewardsShown(mSharedPref))
-            {
-                UserSessions.DoRewardsShown(mSharedPref);
-            }
-
             if (RewardsEntity.HasUnread())
             {
                 this.mView.ShowUnreadRewards(false);
@@ -650,17 +643,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 this.mView.HideUnreadRewards(false);
 
             }
-
-            isRewardClicked = false;
         }
 
         public void OnResumeUpdateRewardUnRead()
         {
-            if (isRewardClicked && !UserSessions.HasRewardsShown(mSharedPref))
-            {
-                UserSessions.DoRewardsShown(mSharedPref);
-            }
-
             if (RewardsEntity.HasUnread())
             {
                 this.mView.ShowUnreadRewards();
@@ -670,8 +656,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 this.mView.HideUnreadRewards();
             }
-
-            isRewardClicked = false;
         }
 
         public void OnValidateData()

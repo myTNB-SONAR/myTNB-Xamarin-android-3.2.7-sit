@@ -188,6 +188,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             bottomNavigationView.NavigationItemSelected += BottomNavigationView_NavigationItemSelected;
 
+            RewardsMenuUtils.OnSetRewardLoading(false);
+
             Bundle extras = Intent?.Extras;
             if (extras != null && extras.ContainsKey(Constants.PROMOTION_NOTIFICATION_VIEW))
             {
@@ -513,7 +515,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 RewardsEntity item = wtManager.GetItem(rewardID);
 
-                                if (item != null && item.IsUsed)
+                                if (item != null && item.IsUsed && item.IsSaved)
                                 {
                                     Intent activity = new Intent(this, typeof(RewardDetailActivity));
                                     activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);

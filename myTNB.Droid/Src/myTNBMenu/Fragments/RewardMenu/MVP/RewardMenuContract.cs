@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
@@ -16,6 +17,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             void OnSetResultTabView(List<RewardMenuModel> list);
 
             void SetEmptyView();
+
+            bool CheckTabVisibility();
         }
 
 		public interface IRewardMenuPresenter
@@ -33,6 +36,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             void CheckRewardsCache();
 
             Task OnGetUserRewardList();
+
+            List<NewAppModel> OnGeneraNewAppTutorialList();
         }
 	}
 }

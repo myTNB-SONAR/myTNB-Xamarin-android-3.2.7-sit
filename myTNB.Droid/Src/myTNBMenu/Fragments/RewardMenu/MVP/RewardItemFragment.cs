@@ -13,6 +13,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
 using myTNB_Android.Src.RewardDetail.MVP;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
@@ -180,6 +181,72 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                     mRewardsRecyclerAdapter.RefreshList(mRewardList);
                 }
+            }
+        }
+
+        public int GetFirstItemRelativePosition()
+        {
+            int i = 0;
+
+            try
+            {
+                View firstView = mRewardsRecyclerView.GetChildAt(0);
+                int[] location = new int[2];
+                firstView.GetLocationOnScreen(location);
+                i = location[1];
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public int GetFirstItemHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                View firstView = mRewardsRecyclerView.GetChildAt(0);
+                i = firstView.Height;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                mRewardsRecyclerView.SmoothScrollBy(0, 0);
+                mRewardsRecyclerView.ScrollTo(0, 0);
+                mRewardsRecyclerView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void RewardCustomScrolling(int yPosition)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    mRewardsRecyclerView.ScrollTo(0, yPosition);
+                    mRewardsRecyclerView.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

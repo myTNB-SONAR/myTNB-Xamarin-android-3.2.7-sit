@@ -232,7 +232,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-            // Check if isPendingRewardClaim then update the flag isUsed
         }
 
         public override Boolean ShowCustomToolbarTitle()
@@ -413,20 +412,27 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                     string dateTime = "Reward used ";
 
-                    try
+                    if (string.IsNullOrEmpty(item.IsUsedDateTime))
                     {
-                        DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
-                        TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-                        DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-                        dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
+                        dateTime = "";
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Utility.LoggingNonFatalError(ex);
+                        try
+                        {
+                            DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
+                            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                            DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                            dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
+                            dateTime += ".";
+                            dateTime = "<i>" + dateTime + "</i>";
+                        }
+                        catch (Exception ex)
+                        {
+                            dateTime = "";
+                            Utility.LoggingNonFatalError(ex);
+                        }
                     }
-                    dateTime += ".";
-
-                    dateTime = "<i>" + dateTime + "</i>";
 
                     txtRewardUsedDateTime.TextFormatted = GetFormattedText(dateTime);
 

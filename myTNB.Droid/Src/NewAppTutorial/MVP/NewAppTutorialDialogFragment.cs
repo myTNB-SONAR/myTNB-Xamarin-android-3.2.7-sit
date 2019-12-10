@@ -13,6 +13,7 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
@@ -65,18 +66,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            /*Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
-            Dialog.Window.SetDimAmount(0.0f);
-            Dialog.SetCancelable(false);
-            Dialog.SetCanceledOnTouchOutside(false);
-            WindowManagerLayoutParams wlp = Dialog.Window.Attributes;
-            wlp.Gravity = GravityFlags.Center;
-            wlp.Width = ViewGroup.LayoutParams.MatchParent;
-            wlp.Height = ViewGroup.LayoutParams.MatchParent;
-            Dialog.Window.Attributes = wlp;
-            Dialog.Window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
-            Dialog.Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);*/
-
             View rootView = inflater.Inflate(Resource.Layout.NewAppTutorialLayout, container, false);
 
             try
@@ -176,6 +165,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             ((DashboardChartFragment)this.mFragment).HideBottomSheet();
                             ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                         }
+                    }
+                    else if (this.mFragment is RewardMenuFragment)
+                    {
+                        ((RewardMenuFragment)this.mFragment).StopScrolling();
                     }
                 }
                 else
@@ -756,6 +749,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                         ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
                         UserSessions.DoSMRDashboardTutorialShown(this.mPref);
+                    }
+                    else if (this.mFragment is RewardMenuFragment)
+                    {
+                        ((RewardMenuFragment)this.mFragment).StopScrolling();
+                        UserSessions.DoRewardsShown(this.mPref);
                     }
                 }
                 else

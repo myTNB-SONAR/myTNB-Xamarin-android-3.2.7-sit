@@ -174,6 +174,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            try
+            {
+                if (mTabList != null && mTabList.Count > 0 && mTabList[0].FragmentListMode == Constants.REWARDSITEMLISTMODE.LOADED)
+                {
+                    if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                    {
+                        Handler h = new Handler();
+                        Action myAction = () =>
+                        {
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            OnShowRewardMenuTutorial();
+                        };
+                        h.PostDelayed(myAction, 50);
+
+                        // UserSessions.DoRewardsShown(mSharedPref);
+
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -424,6 +448,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     {
                         Utility.LoggingNonFatalError(ex);
                     }
+
+                    try
+                    {
+                        if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                        {
+                            Handler h = new Handler();
+                            Action myAction = () =>
+                            {
+                                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                                OnShowRewardMenuTutorial();
+                            };
+                            h.PostDelayed(myAction, 50);
+                        }
+                    }
+                    catch (System.Exception exp)
+                    {
+                        Utility.LoggingNonFatalError(exp);
+                    }
                 });
             }
             catch (System.Exception e)
@@ -476,7 +518,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         }
                         else
                         {
-                            _ = this.presenter.OnGetUserRewardList();
+                            RewardsEntity wtItemManager = new RewardsEntity();
+                            List<RewardsEntity> subItems = wtItemManager.GetAllItems();
+                            if (subItems != null && subItems.Count > 0)
+                            {
+                                _ = this.presenter.OnGetUserRewardList();
+                            }
+                            else
+                            {
+                                this.presenter.OnGetRewards();
+                            }
                         }
                     }
                     else
@@ -517,6 +568,78 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     Utility.LoggingNonFatalError(e);
                 }
             });
+        }
+
+        public void OnShowRewardMenuTutorial()
+        {
+            if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+            {
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                };
+                h.PostDelayed(myAction, 100);
+            }
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                if (mTabList != null && mTabList.Count > 0)
+                {
+                    mTabList[0].Fragment.StopScrolling();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public List<RewardMenuModel> GetTabList()
+        {
+            return mTabList;
+        }
+
+        public bool CheckTabVisibility()
+        {
+            return rewardsSlidingTabs.Visibility == ViewStates.Visible;
+        }
+
+        public int GetTabRelativePosition()
+        {
+            int i = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                rewardsSlidingTabs.GetLocationOnScreen(location);
+                i = location[1];
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public int GetTabHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                i = rewardsSlidingTabs.Height;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
     }
 }
