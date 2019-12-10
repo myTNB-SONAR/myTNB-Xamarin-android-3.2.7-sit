@@ -26,7 +26,7 @@ namespace myTNB.SitecoreCMS
                 LoadMeterReadSSMRWalkthrough(),
                 LoadMeterReadSSMRWalkthroughV2(),
                 LoadBillDetailsTooltip(),
-                LoadSSMRWalkthrough(),
+                //LoadSSMRWalkthrough(),
                 LoadTermsAndCondition()
             };
             if (_isForcedUpdate)
@@ -86,7 +86,7 @@ namespace myTNB.SitecoreCMS
                 Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
             }
         }
-
+/*
         private Task LoadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
@@ -140,7 +140,7 @@ namespace myTNB.SitecoreCMS
                 }
             });
         }
-
+*/
         private Task LoadMeterReadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
