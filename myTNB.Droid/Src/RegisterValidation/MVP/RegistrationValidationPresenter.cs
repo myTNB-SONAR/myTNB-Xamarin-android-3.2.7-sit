@@ -28,7 +28,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
         private RegistrationValidationContract.IView mView;
         private UserCredentialsEntity userCredentialsEntity;
         private readonly string TAG = typeof(RegistrationValidationPresenter).Name;
-        private CancellationTokenSource cts;
         private ISharedPreferences mSharedPref;
 
         public RegistrationValidationPresenter(RegistrationValidationContract.IView mView, UserCredentialsEntity userCredentialsEntity, ISharedPreferences sharedPreferences)
@@ -51,8 +50,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void OnRegister(string num1, string num2, string num3, string num4, string deviceId)
         {
-
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
                 this.mView.ShowEmptyErrorPin_1();
@@ -83,34 +80,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.ClearErrors();
 
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var registrationApi = RestService.For<IRegisterUser>(httpClient);
-#else
-            var registrationApi = RestService.For<IRegisterUser>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var userRegistrationResponse = await registrationApi.RegisterUser(new RegistrationForm.Requests.UserRegistrationRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    displayName = userCredentialsEntity.Fullname,
-                    username = userCredentialsEntity.Email,
-                    email = userCredentialsEntity.Email,
-                    token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
-                    password = userCredentialsEntity.Password,
-                    confirmPassword = userCredentialsEntity.ConfirmEmail,
-                    icNo = userCredentialsEntity.ICNo,
-                    mobileNo = userCredentialsEntity.MobileNo,
-                    ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = DeviceIdUtils.GetAppVersionName(),
-                    activeUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    devicePlatform = Constants.DEVICE_PLATFORM,
-                    deviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                    deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken(new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
+                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.MobileNo));
 
-                if (!userRegistrationResponse.userRegistration.IsError)
+                if (userRegistrationResponse.IsSuccessResponse())
                 {
 
                     string fcmToken = String.Empty;
@@ -189,7 +164,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         this.mView.HideRegistrationProgress();
                     }
                     // TODO : ADD REGISTRATION ERROR
-                    string message = userRegistrationResponse.userRegistration.Message;
+                    string message = userRegistrationResponse.Response.Message;
                     this.mView.ShowError(message);
                 }
             }

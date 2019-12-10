@@ -232,11 +232,21 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call GetSubmittedFeedbackDetails with default timeout.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request"></param>km
         /// <returns></returns>
-        public Task<RegisteredCardsResponse> SubmittedFeedbackDetails([Body] Request.BaseRequest request)
+        public Task<SubmittedFeedbackDetailsResponse> SubmittedFeedbackDetails([Body] Request.BaseRequest request)
         {
-            return api.SubmittedFeedbackDetails<RegisteredCardsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmittedFeedbackDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call CreateNewUserWithToken with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<CreateNewUserWithTokenResponse> CreateNewUserWithToken([Body] Request.BaseRequest request)
+        {
+            return api.CreateNewUserWithToken<CreateNewUserWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }
