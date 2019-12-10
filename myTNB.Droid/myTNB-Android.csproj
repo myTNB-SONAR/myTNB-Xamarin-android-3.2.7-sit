@@ -858,7 +858,6 @@
     <Compile Include="Src\PreLogin\MVP\PreLoginContract.cs" />
     <Compile Include="Src\PreLogin\MVP\PreLoginPresenter.cs" />
     <Compile Include="Src\RegistrationForm\Activity\RegistrationFormActivity.cs" />
-    <Compile Include="Src\RegistrationForm\Api\IRegisterUser.cs" />
     <Compile Include="Src\RegistrationForm\Models\UserRegistration.cs" />
     <Compile Include="Src\RegistrationForm\Models\UserRegistrationResponse.cs" />
     <Compile Include="Src\RegistrationForm\Models\VerificationCode.cs" />
@@ -3784,6 +3783,8 @@
     <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackDetailsRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\CreateNewUserWithTokenResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\CreateNewUserWithTokenRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendResetPasswordCodeResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendResetPasswordCodeRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4156,6 +4157,7 @@
     <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
     <Folder Include="Src\Login\Api\" />
     <Folder Include="Src\NotificationSettings\Api\" />
+    <Folder Include="Src\RegistrationForm\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

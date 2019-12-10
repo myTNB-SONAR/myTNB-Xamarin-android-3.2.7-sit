@@ -4,6 +4,8 @@ using Android.Util;
 using myTNB_Android.Src.ForgetPassword.Api;
 using myTNB_Android.Src.ForgetPassword.MVP;
 using myTNB_Android.Src.ForgetPassword.Requests;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -29,7 +31,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public async void GetCode(string apiKeyId, string email)
         {
-            cts = new CancellationTokenSource();
             mView.ClearErrorMessages();
             if (TextUtils.IsEmpty(email))
             {
@@ -48,43 +49,24 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.mView.ShowGetCodeProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IForgetPassword>(httpClient);
-
-#else
-             var api = RestService.For<IForgetPassword>(Constants.SERVER_URL.END_POINT);
-            
-#endif
-
             try
             {
-                var forgetPasswordResponse = await api.SendResetPasswordCode(new ForgetPasswordRequest(apiKeyId,
-                   email,
-                   email,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId,
-                   apiKeyId), cts.Token);
+                var forgetPasswordResponse = await ServiceApiImpl.Instance.SendResetPasswordCode(new SendResetPasswordCodeRequest());
 
                 if (mView.IsActive())
                 {
                     this.mView.HideGetCodeProgressDialog();
                 }
 
-                if (forgetPasswordResponse.response.IsError)
+                if (!forgetPasswordResponse.IsSuccessResponse())
                 {
-                    string errorMessage = forgetPasswordResponse.response.Message;
+                    string errorMessage = forgetPasswordResponse.Response.Message;
                     this.mView.ShowError(errorMessage);
                 }
                 else
                 {
 
-                    string message = forgetPasswordResponse.response.Message;
+                    string message = forgetPasswordResponse.Response.Message;
                     this.mView.ShowSuccess(message);
                 }
             }
