@@ -278,5 +278,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.LogoutUser<LogoutUserResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call LogoutUser with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<RemoveRegisteredCardResponse> RemoveRegisteredCard([Body] Request.BaseRequest request)
+        {
+            return api.RemoveRegisteredCard<RemoveRegisteredCardResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

@@ -3788,6 +3788,8 @@
     <Compile Include="Src\MyTNBService\Request\ResetPasswordWithTokenRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\LogoutUserResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\LogoutUserRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\RemoveRegisteredCardResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\RemoveRegisteredCardRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
