@@ -9,9 +9,10 @@ namespace myTNB
     public class RewardsCell : CustomUITableViewCell
     {
         private UIView _viewContainer, _readIndicator;
-        public UIImageView RewardImageVIew;
-        private UILabel _title;
+        public UIImageView RewardImageView;
+        public UILabel Title;
         public UIImageView SaveIcon;
+        public UIView UsedView;
         public ActivityIndicatorComponent ActivityIndicator;
 
         public RewardsCell(IntPtr handle) : base(handle)
@@ -37,15 +38,15 @@ namespace myTNB
             };
             rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
 
-            RewardImageVIew = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
+            RewardImageView = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
             {
                 ClipsToBounds = true,
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
-            ActivityIndicator = new ActivityIndicatorComponent(RewardImageVIew);
-            rewardImgView.AddSubview(RewardImageVIew);
+            ActivityIndicator = new ActivityIndicatorComponent(RewardImageView);
+            rewardImgView.AddSubview(RewardImageView);
             _viewContainer.AddSubview(rewardImgView);
-            _title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageVIew.Frame, 16F)
+            Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageView.Frame, 16F)
                 , _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
@@ -53,13 +54,13 @@ namespace myTNB
                 TextColor = MyTNBColor.WaterBlue,
                 LineBreakMode = UILineBreakMode.TailTruncation
             };
-            _viewContainer.AddSubview(_title);
+            _viewContainer.AddSubview(Title);
             nfloat iconWidth = GetScaledWidth(24F);
             nfloat iconHeight = GetScaledHeight(21F);
             nfloat iconWidthPadding = GetScaledWidth(8F);
             nfloat iconHeightPadding = GetScaledHeight(8F);
-            SaveIcon = new UIImageView(new CGRect(RewardImageVIew.Frame.Width - iconWidth - iconWidthPadding
-                , RewardImageVIew.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
+            SaveIcon = new UIImageView(new CGRect(RewardImageView.Frame.Width - iconWidth - iconWidthPadding
+                , RewardImageView.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsaveIcon),
                 UserInteractionEnabled = true
@@ -75,6 +76,31 @@ namespace myTNB
             _viewContainer.AddSubview(_readIndicator);
 
             _viewContainer.AddSubview(SaveIcon);
+
+            nfloat usedWidth = GetScaledWidth(52F);
+            nfloat usedHeight = GetScaledHeight(24F);
+            UsedView = new UIView(new CGRect(_viewContainer.Frame.Width - usedWidth - GetScaledWidth(12F), GetScaledHeight(12F), usedWidth, usedHeight))
+            {
+                BackgroundColor = MyTNBColor.GreyishBrown,
+                Hidden = true
+            };
+            UsedView.Layer.CornerRadius = GetScaledHeight(5F);
+
+            UILabel usedLbl = new UILabel(new CGRect(0, GetYLocationToCenterObject(GetScaledHeight(16F), UsedView), 0, GetScaledHeight(16F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = UIColor.White,
+                Text = "Used"
+            };
+
+            CGSize lblSize = usedLbl.SizeThatFits(new CGSize(_cellWidth - (BaseMarginWidth16 * 2), usedLbl.Frame.Height));
+            ViewHelper.AdjustFrameSetWidth(UsedView, lblSize.Width + (GetScaledWidth(12F) * 2));
+            ViewHelper.AdjustFrameSetWidth(usedLbl, lblSize.Width);
+            ViewHelper.AdjustFrameSetX(usedLbl, GetXLocationToCenterObject(lblSize.Width, UsedView));
+            UsedView.AddSubview(usedLbl);
+            _viewContainer.AddSubview(UsedView);
+
             AddSubview(_viewContainer);
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
@@ -83,11 +109,11 @@ namespace myTNB
         {
             if (model != null)
             {
-                _title.Text = model.TitleOnListing;
+                Title.Text = model.TitleOnListing;
                 _readIndicator.Hidden = model.IsRead;
                 if (!model.IsRead)
                 {
-                    ViewHelper.AdjustFrameSetWidth(_title, _viewContainer.Frame.Width - BaseMarginWidth16 - _readIndicator.Frame.Width - GetScaledWidth(18F) - GetScaledWidth(12F));
+                    ViewHelper.AdjustFrameSetWidth(Title, _viewContainer.Frame.Width - BaseMarginWidth16 - _readIndicator.Frame.Width - GetScaledWidth(18F) - GetScaledWidth(12F));
                 }
             }
         }

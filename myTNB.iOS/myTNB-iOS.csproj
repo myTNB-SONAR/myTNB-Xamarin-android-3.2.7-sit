@@ -2651,6 +2651,7 @@
     <BundleResource Include="Resources\Dashboard Zoom.json" />
     <BundleResource Include="Resources\JSON\AppUpdateOnboarding.json" />
     <BundleResource Include="Resources\JSON\FreshInstallOnboarding.json" />
+    <BundleResource Include="Resources\Fonts\MuseoSans-300Italic.otf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">

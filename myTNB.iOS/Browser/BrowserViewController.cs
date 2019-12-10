@@ -5,7 +5,7 @@ using CoreGraphics;
 
 namespace myTNB
 {
-    public partial class BrowserViewController : UIViewController
+    public partial class BrowserViewController : CustomUIViewController
     {
         public BrowserViewController(IntPtr handle) : base(handle)
         {
@@ -15,7 +15,7 @@ namespace myTNB
 
         public string NavigationTitle = string.Empty;
         public string URL = string.Empty;
-        public bool IsDelegateNeeded = false;
+        public bool IsDelegateNeeded;
 
         public override void ViewDidLoad()
         {
@@ -42,7 +42,7 @@ namespace myTNB
 
         void SetSubviews()
         {
-            _webView = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+            _webView = new UIWebView(new CGRect(0, 0, ViewWidth, ViewHeight));
             if (IsDelegateNeeded)
             {
                 _webView.Delegate = new WebViewDelegate(View);

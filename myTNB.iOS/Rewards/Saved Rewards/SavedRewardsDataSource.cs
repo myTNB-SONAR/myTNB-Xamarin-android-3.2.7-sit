@@ -64,17 +64,25 @@ namespace myTNB
                     {
                         try
                         {
-                            if ((bool)cell.ActivityIndicator?.GetView?.IsDescendantOfView(cell.RewardImageVIew))
+                            if ((bool)cell.ActivityIndicator?.GetView?.IsDescendantOfView(cell.RewardImageView))
                             {
                                 cell.ActivityIndicator.GetView.RemoveFromSuperview();
                                 cell.ActivityIndicator.GetView = null;
                                 cell.ActivityIndicator = null;
-                                cell.ActivityIndicator = new ActivityIndicatorComponent(cell.RewardImageVIew);
+                                cell.ActivityIndicator = new ActivityIndicatorComponent(cell.RewardImageView);
                             }
                             NSData imgData = RewardsCache.GetImage(reward.ID);
                             if (imgData != null)
                             {
-                                cell.RewardImageVIew.Image = UIImage.LoadFromData(imgData);
+                                cell.RewardImageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                using (var image = UIImage.LoadFromData(imgData))
+                                {
+                                    cell.RewardImageView.Image = image;
+                                }
+                                if (reward.IsUsed)
+                                {
+                                    cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
+                                }
                             }
                             else
                             {
@@ -90,12 +98,24 @@ namespace myTNB
                                         {
                                             if (cell.Tag == indexPath.Row)
                                             {
-                                                cell.RewardImageVIew.Image = UIImage.LoadFromData(data);
+                                                cell.RewardImageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                                using (var image = UIImage.LoadFromData(data))
+                                                {
+                                                    cell.RewardImageView.Image = image;
+                                                }
+                                                if (reward.IsUsed)
+                                                {
+                                                    cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
+                                                }
                                             }
                                         }
                                         else
                                         {
-                                            cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                            cell.RewardImageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                            if (reward.IsUsed)
+                                            {
+                                                cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
+                                            }
                                         }
                                         cell.ActivityIndicator.Hide();
                                     });
@@ -106,14 +126,23 @@ namespace myTNB
                         catch (Exception e)
                         {
                             Debug.WriteLine("Image load Error: " + e.Message);
-                            cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                            cell.RewardImageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                            if (reward.IsUsed)
+                            {
+                                cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
+                            }
                         }
                     }
                 }
                 else
                 {
-                    cell.RewardImageVIew.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                    cell.RewardImageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                    if (reward.IsUsed)
+                    {
+                        cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
+                    }
                 }
+                cell.Title.TextColor = reward.IsUsed ? MyTNBColor.GreyishBrown : MyTNBColor.WaterBlue;
                 cell.UsedView.Hidden = !reward.IsUsed;
             }
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;

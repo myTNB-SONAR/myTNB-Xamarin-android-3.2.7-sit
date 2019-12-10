@@ -498,9 +498,12 @@ namespace myTNB.SitecoreCMS
                             {
                                 foreach (var reward in rewardsList)
                                 {
-                                    reward.CategoryID = category.ID;
-                                    reward.CategoryName = category.CategoryName;
-                                    rewardsData.Add(reward);
+                                    if (!RewardsServices.RewardHasExpired(reward))
+                                    {
+                                        reward.CategoryID = category.ID;
+                                        reward.CategoryName = category.CategoryName;
+                                        rewardsData.Add(reward);
+                                    }
                                 }
                             }
                         }

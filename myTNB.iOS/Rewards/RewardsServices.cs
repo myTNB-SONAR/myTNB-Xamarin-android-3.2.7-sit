@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading.Tasks;
+using CoreGraphics;
+using Foundation;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using UIKit;
 
 namespace myTNB
 {
@@ -70,6 +75,49 @@ namespace myTNB
             rewardsEntity.UpdateEntity(reward);
         }
 
+        public static UIImage ConvertToGrayScale(UIImage image)
+        {
+            using (image)
+            {
+                RectangleF imageRect = new RectangleF(PointF.Empty, (System.Drawing.SizeF)image.Size);
+                var colorSpace = CGColorSpace.CreateDeviceGray();
+                using (var context = new CGBitmapContext(IntPtr.Zero, (int)imageRect.Width, (int)imageRect.Height, 8, 0, colorSpace, CGImageAlphaInfo.None))
+                {
+                    context.DrawImage(imageRect, image.CGImage);
+                    var grayImage = context.ToImage();
+                    using (var maskContext = new CGBitmapContext(null, (int)imageRect.Width, (int)imageRect.Height, 8, 0, null, CGImageAlphaInfo.Only))
+                    {
+                        maskContext.DrawImage(imageRect, image.CGImage);
+                        using (var mask = maskContext.ToImage())
+                        {
+                            return UIImage.FromImage(grayImage.WithMask(mask), image.CurrentScale, image.Orientation);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static bool RewardHasExpired(RewardsModel reward)
+        {
+            bool res = true;
+            if (reward != null && reward.ID.IsValid())
+            {
+                if (reward.EndDate.IsValid())
+                {
+                    var rewardEndDate = DateHelper.GetDateWithoutSeparator(reward.EndDate);
+                    if (rewardEndDate != default(DateTime))
+                    {
+                        DateTime now = DateTime.Now.Date;
+                        if (now < rewardEndDate)
+                        {
+                            res = false;
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
         #region Rewards Services
         public static async Task<GetUserRewardsResponseModel> GetUserRewards()
         {
@@ -95,6 +143,7 @@ namespace myTNB
                 return serviceManager.OnExecuteAPIV6<GetUserRewardsResponseModel>("GetUserRewards", requestParameter);
             });
             _userRewards = response;
+            RewardsCache.AddGetUserRewardsResponseData(response);
             UpdateRewardsSitecorCache();
             return response;
         }
@@ -171,6 +220,118 @@ namespace myTNB
             _updateRewards = response;
             UpdateRewardsSitecorCache(reward);
             return response;
+        }
+
+        public static bool FilterExpiredRewards()
+        {
+            bool isExpired = false;
+            RewardsEntity rewardsEntity = new RewardsEntity();
+            var list = rewardsEntity.GetAllItems();
+            if (list != null && list.Count > 0)
+            {
+                foreach (var reward in list)
+                {
+                    if (RewardHasExpired(reward))
+                    {
+                        isExpired = true;
+                        rewardsEntity.DeleteItem(reward.ID);
+                    }
+                }
+            }
+            return isExpired;
+        }
+
+        public static async Task<bool> RewardListHasUpdates()
+        {
+            bool needsUpdate = true;
+            await Task.Run(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                , DataManager.DataManager.SharedInstance.ImageSize
+                , TNBGlobal.SITECORE_URL
+                , TNBGlobal.APP_LANGUAGE);
+
+                RewardsTimestampResponseModel timeStamp = iService.GetRewardsTimestampItem();
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new RewardsTimestampResponseModel();
+                    timeStamp.Data = new List<RewardsTimestamp> { new RewardsTimestamp { Timestamp = string.Empty } };
+                }
+
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                string currentTS = sharedPreference.StringForKey("SiteCoreRewardsTimeStamp");
+
+                if (currentTS != null && currentTS.Equals(timeStamp.Data[0].Timestamp))
+                {
+                    needsUpdate = false;
+                }
+            });
+
+            return needsUpdate;
+        }
+
+        public static Task GetLatestRewards()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                RewardsTimestampResponseModel timeStamp = iService.GetRewardsTimestampItem();
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new RewardsTimestampResponseModel();
+                    timeStamp.Data = new List<RewardsTimestamp> { new RewardsTimestamp { Timestamp = string.Empty } };
+                }
+
+                RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
+                if (rewardsResponse != null && rewardsResponse.Status != null &&
+                    rewardsResponse.Status.Equals("Success") &&
+                    rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
+                {
+                    RewardsEntity rewardsEntity = new RewardsEntity();
+                    List<RewardsModel> rewardsData = new List<RewardsModel>();
+                    List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
+                    foreach (var category in categoryList)
+                    {
+                        List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
+                        if (rewardsList.Count > 0)
+                        {
+                            foreach (var reward in rewardsList)
+                            {
+                                if (!RewardHasExpired(reward))
+                                {
+                                    reward.CategoryID = category.ID;
+                                    reward.CategoryName = category.CategoryName;
+                                    rewardsData.Add(reward);
+                                }
+                            }
+                        }
+                    }
+                    rewardsEntity.DeleteTable();
+                    rewardsEntity.CreateTable();
+                    rewardsEntity.InsertListOfItems(rewardsData);
+
+                    try
+                    {
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
+                    }
+                }
+            });
         }
         #endregion
     }

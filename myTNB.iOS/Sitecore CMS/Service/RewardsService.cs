@@ -98,7 +98,7 @@ namespace myTNB.SitecoreCMS.Service
                         list.Add(new RewardsCategoryModel
                         {
                             ID = GetValidID(item.Id),
-                            CategoryName = item.DisplayName,
+                            CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Category),
                             Rewards = GetChildItems(item)
                         });
                     }
