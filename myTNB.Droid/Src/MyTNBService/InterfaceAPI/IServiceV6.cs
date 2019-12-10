@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using Refit;
 
@@ -14,5 +15,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccounts")]
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
+        Task<T> AddAccountToCustomer<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
     }
 }

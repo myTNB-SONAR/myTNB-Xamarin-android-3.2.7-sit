@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -68,6 +69,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequest request, CancellationToken token)
         {
             return api.GetCustomerAccountList<CustomerAccountListResponse>(request, token);
+        }
+
+        /// <summary>
+        /// Call AddAccountToCustomer with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<AccountToCustomerResponse> AddAccountToCustomer([Body] Request.BaseRequest request)
+        {
+            return api.AddAccountToCustomer<AccountToCustomerResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }

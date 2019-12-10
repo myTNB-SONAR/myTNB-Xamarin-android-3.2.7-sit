@@ -4,6 +4,8 @@ using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -108,11 +110,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             try
             {
                 UserEntity user = UserEntity.GetActive();
-                var result = await api.AddAccountToCustomer(new AddAccountToCustomerRequest(apiKeyId, user.UserID, user.Email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName), addAccountCts.Token);
+                var result = await ServiceApiImpl.Instance.AddAccountToCustomer(new AccountToCustomerRequest(tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, des, isOwner.ToString(), suppliedMotherName, Convert.ToInt32(type)));
 
-                if (result.response[0].isError)
+                if (result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
-                    mView.ShowAddAccountFail(result.response[0].message);
+                    mView.ShowAddAccountFail(result.Response.Message);
                     if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
@@ -125,9 +127,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountSuccess(result.response[0].message);
+                    mView.ShowAddAccountSuccess(result.Response.Message);
                 }
-
             }
             catch (System.OperationCanceledException cancelledException)
             {

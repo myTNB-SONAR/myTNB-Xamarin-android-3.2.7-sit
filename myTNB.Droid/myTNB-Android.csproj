@@ -3761,6 +3761,8 @@
     <Compile Include="Src\CompoundView\ProfileMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
+    <Compile Include="Src\MyTNBService\Request\AccountToCustomerRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\AccountToCustomerResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
