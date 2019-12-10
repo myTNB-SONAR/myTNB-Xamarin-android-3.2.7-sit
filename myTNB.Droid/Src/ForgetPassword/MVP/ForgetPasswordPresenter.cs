@@ -1,7 +1,6 @@
 ﻿using Android.Content;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.ForgetPassword.Api;
 using myTNB_Android.Src.ForgetPassword.MVP;
 using myTNB_Android.Src.ForgetPassword.Requests;
 using myTNB_Android.Src.MyTNBService.Request;

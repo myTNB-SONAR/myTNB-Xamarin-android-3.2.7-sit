@@ -3786,6 +3786,8 @@
     <Compile Include="Src\MyTNBService\Request\SendResetPasswordCodeRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\ResetPasswordWithTokenResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\ResetPasswordWithTokenRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\LogoutUserResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\LogoutUserRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

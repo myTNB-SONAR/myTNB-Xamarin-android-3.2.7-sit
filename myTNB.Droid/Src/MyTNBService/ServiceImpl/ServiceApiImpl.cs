@@ -268,5 +268,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.ResetPasswordWithToken<ResetPasswordWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call LogoutUser with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<LogoutUserResponse> LogoutUser([Body] Request.BaseRequest request)
+        {
+            return api.LogoutUser<LogoutUserResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

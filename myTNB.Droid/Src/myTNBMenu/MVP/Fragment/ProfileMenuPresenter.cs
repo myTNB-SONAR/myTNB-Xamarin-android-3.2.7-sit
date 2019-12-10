@@ -222,45 +222,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public async void OnLogout(string deviceId)
         {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            cts = new CancellationTokenSource();
-
-
             if (mView.IsActive())
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
 
-
-
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-
-            var logoutApi = RestService.For<ILogoutApi>(httpClient);
-#else
-            var logoutApi = RestService.For<ILogoutApi>(Constants.SERVER_URL.END_POINT);
-#endif
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
                 if (userEntity != null)
                 {
-                    var logoutResponse = await logoutApi.LogoutUserV2(new myTNB_Android.Src.LogoutRate.Request.LogoutRequestV2()
-                    {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = userEntity.Email,
-                        DeviceId = deviceId,
-                        AppVersion = DeviceIdUtils.GetAppVersionName(),
-                        OsType = Constants.DEVICE_PLATFORM,
-                        OsVersion = DeviceIdUtils.GetAndroidVersion()
-                    }, cts.Token);
+                    var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
 
                     if (mView.IsActive())
                     {
                         this.mView.HideNotificationsProgressDialog();
                     }
 
-                    if (!logoutResponse.Data.IsError)
+                    if (logoutResponse.IsSuccessResponse())
                     {
                         UserEntity.RemoveActive();
                         UserRegister.RemoveActive();
@@ -285,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
-                        this.mView.ShowLogoutErrorMessage(logoutResponse.Data.Message);
+                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.Message);
                     }
                 }
             }
