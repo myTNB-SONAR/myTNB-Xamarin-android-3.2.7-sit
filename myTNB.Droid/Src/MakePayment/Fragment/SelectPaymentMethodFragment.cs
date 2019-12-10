@@ -18,6 +18,7 @@ using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MakePayment.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
@@ -651,23 +652,23 @@ namespace myTNB_Android.Src.MakePayment.Fragment
             }
         }
 
-        public void GetRegisterCardsResult(GetRegisteredCardsResponse response)
+        public void GetRegisterCardsResult(RegisteredCardsResponse response)
         {
             try
             {
                 if (response != null)
                 {
-                    if (response.Data.IsError)
+                    if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Data.Message);
+                        ShowErrorMessage(response.Response.Message);
                     }
                     else
                     {
-                        if (response.Data.creditCard != null)
+                        if (response.GetData() != null)
                         {
-                            if (response.Data.creditCard.Count() > 0)
+                            if (response.GetData().Count() > 0)
                             {
-                                List<CreditCard> cards = response.Data.creditCard;
+                                List<CreditCard> cards = response.GetData();
                                 foreach (CreditCard card in cards)
                                 {
                                     registerdCards.Add(card);

@@ -1,6 +1,7 @@
 ﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.MakePayment.Model;
 using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.MakePayment.MVP
 {
@@ -76,7 +77,7 @@ namespace myTNB_Android.Src.MakePayment.MVP
             /// Show get registered card sucess with registered cards response
             /// </summary>
 
-            void GetRegisterCardsResult(GetRegisteredCardsResponse response);
+            void GetRegisterCardsResult(RegisteredCardsResponse response);
         }
 
         public interface IUserActionsListener : IBasePresenter

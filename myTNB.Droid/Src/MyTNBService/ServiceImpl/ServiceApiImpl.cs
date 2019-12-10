@@ -208,5 +208,25 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.UserNotificationChannelPreferences<UserNotificationChannelPreferencesResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call SendRegistrationTokenSMS with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SendRegistrationTokenSMSResponse> SendRegistrationTokenSMS([Body] Request.BaseRequest request)
+        {
+            return api.SendRegistrationTokenSMS<SendRegistrationTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetRegisteredCards with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<RegisteredCardsResponse> GetRegisteredCards([Body] Request.BaseRequest request)
+        {
+            return api.GetRegisteredCards<RegisteredCardsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

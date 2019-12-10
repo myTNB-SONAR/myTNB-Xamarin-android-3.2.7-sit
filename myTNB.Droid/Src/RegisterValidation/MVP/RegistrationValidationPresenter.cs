@@ -258,33 +258,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.StartProgress();
 
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IGetVerificationCode>(httpClient);
-#else
-            var api = RestService.For<IGetVerificationCode>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
             try
             {
-                var verificationResponse = await api.GetVerificationCodeThruSMSV2(new VerificationCodeRequest(Constants.APP_CONFIG.API_KEY_ID)
+                var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(new SendRegistrationTokenSMSRequest());
+                if (!verificationResponse.IsSuccessResponse())
                 {
-                    userEmail = userCredentialsEntity.Email,
-                    username = userCredentialsEntity.Email,
-                    mobileNo = userCredentialsEntity.MobileNo,
-                    ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = Constants.APP_CONFIG.API_KEY_ID,
-                    activeUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    devicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-
-                });
-
-                if (verificationResponse.verificationCode.isError)
-                {
-                    this.mView.ShowError(verificationResponse.verificationCode.message);
+                    this.mView.ShowError(verificationResponse.Response.Message);
                 }
 
             }

@@ -13,6 +13,7 @@ using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -48,35 +49,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         private async void LoadAccount()
         {
-            cts = new CancellationTokenSource();
-
             if (mView.IsActive())
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
 
             UserEntity userEntity = UserEntity.GetActive();
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetRegisteredCardsApi>(httpClient);
-#else
-            var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-#endif
             try
             {
-                var cardsApiResponse = await api.GetRegisteredCards(new MakePayment.Models.GetRegisteredCardsRequest(
-                        Constants.APP_CONFIG.API_KEY_ID,
-                        userEntity.Email
-                    ));
+                //var cardsApiResponse = await api.GetRegisteredCards(new MakePayment.Models.GetRegisteredCardsRequest(
+                //        Constants.APP_CONFIG.API_KEY_ID,
+                //        userEntity.Email
+                //    ));
+
+                var cardsApiResponse = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideNotificationsProgressDialog();
                 }
 
-                if (!cardsApiResponse.Data.IsError)
+                if (cardsApiResponse.IsSuccessResponse())
                 {
-                    foreach (CreditCard card in cardsApiResponse.Data.creditCard)
+                    foreach (CreditCard card in cardsApiResponse.GetData())
                     {
                         cardList.Add(CreditCardData.Copy(card));
                     }

@@ -649,7 +649,6 @@
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
-    <Compile Include="Src\MakePayment\Api\GetRegisteredCardsApi.cs" />
     <Compile Include="Src\MakePayment\Api\SubmitPaymentApi.cs" />
     <Compile Include="Src\MakePayment\Models\CreditCard.cs" />
     <Compile Include="Src\MakePayment\Models\GetRegisteredCardsRequest.cs" />
@@ -860,7 +859,6 @@
     <Compile Include="Src\PreLogin\MVP\PreLoginContract.cs" />
     <Compile Include="Src\PreLogin\MVP\PreLoginPresenter.cs" />
     <Compile Include="Src\RegistrationForm\Activity\RegistrationFormActivity.cs" />
-    <Compile Include="Src\RegistrationForm\Api\IGetVerificationCode.cs" />
     <Compile Include="Src\RegistrationForm\Api\IRegisterUser.cs" />
     <Compile Include="Src\RegistrationForm\Models\UserRegistration.cs" />
     <Compile Include="Src\RegistrationForm\Models\UserRegistrationResponse.cs" />
@@ -3779,6 +3777,10 @@
     <Compile Include="Src\MyTNBService\Request\SaveUserNotificationChannelPreferenceRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationTypePreferencesResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationChannelPreferencesResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendRegistrationTokenSMSResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendRegistrationTokenSMSRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\RegisteredCardsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\RegisteredCardsRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

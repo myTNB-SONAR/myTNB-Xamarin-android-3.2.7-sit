@@ -2,6 +2,8 @@
 using Android.Telephony;
 using Android.Text;
 using Android.Util;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Api;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
@@ -221,34 +223,11 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             this.mView.ShowRegistrationProgressDialog();
             this.mView.ClearAllErrorFields();
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IGetVerificationCode>(httpClient);
-#else
-            var api = RestService.For<IGetVerificationCode>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
             try
             {
+                var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(new SendRegistrationTokenSMSRequest());
 
-                var verificationResponse = await api.GetVerificationCodeThruSMSV2(new VerificationCodeRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    userEmail = email,
-                    username = email,
-                    mobileNo = mobile_no,
-                    ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = Constants.APP_CONFIG.API_KEY_ID,
-                    activeUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    devicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-
-                });
-
-                if (!verificationResponse.verificationCode.isError)
+                if (verificationResponse.IsSuccessResponse())
                 {
                     var userCredentials = new UserCredentialsEntity()
                     {
@@ -267,7 +246,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 }
                 else
                 {
-                    this.mView.ShowInvalidAcquiringTokenThruSMS(verificationResponse.verificationCode.message);
+                    this.mView.ShowInvalidAcquiringTokenThruSMS(verificationResponse.Response.Message);
                 }
 
             }
