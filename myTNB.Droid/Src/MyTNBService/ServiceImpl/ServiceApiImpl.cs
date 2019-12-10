@@ -148,5 +148,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.SubmittedFeedbackList<SubmittedFeedbackListResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetLocationsByKeyword with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<LocationsByKeywordResponse> LocationsByKeyword([Body] Request.BaseRequest request)
+        {
+            return api.LocationsByKeyword<LocationsByKeywordResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

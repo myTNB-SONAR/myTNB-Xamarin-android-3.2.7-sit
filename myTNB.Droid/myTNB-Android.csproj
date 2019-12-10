@@ -3772,6 +3772,8 @@
     <Compile Include="Src\MyTNBService\Request\DeviceInfoRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\SubmittedFeedbackListResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\LocationsByKeywordResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\LocationsByKeywordRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
