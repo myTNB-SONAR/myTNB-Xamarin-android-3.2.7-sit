@@ -10,7 +10,6 @@ using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -337,33 +336,22 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void CallLoginServce(UserAuthenticationRequest request, string newPhone)
         {
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
             if (mView.IsActive())
             {
                 this.mView.ShowRegistrationProgress();
             }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IAuthenticateUser>(httpClient);
-
-#else
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-                var userResponse = await api.DoLogin(request, cts.Token);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(request.ClientType,request.Password));
 
-                if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
+                if (!userResponse.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         this.mView.HideRegistrationProgress();
                     }
-                    this.mView.ShowRetryLoginUnknownException(userResponse.Data.Message);
+                    this.mView.ShowRetryLoginUnknownException(userResponse.Response.Message);
                 }
                 else
                 {
@@ -379,7 +367,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     AccountDataEntity.RemoveAll();
                     SummaryDashBoardAccountEntity.RemoveAll();
                     SelectBillsEntity.RemoveAll();
-                    int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                    int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                     if (Id > 0)
                     {
 
@@ -398,7 +386,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             usrInf = new
                             {
                                 eid = UserEntity.GetActive().UserName,
-                                sspuid = userResponse.Data.User.UserId,
+                                sspuid = userResponse.GetData().UserId,
                                 lang = "EN",
                                 sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                                 sec_auth_k2 = "",

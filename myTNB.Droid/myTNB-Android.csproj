@@ -853,7 +853,6 @@
     <Compile Include="Src\ForgetPassword\MVP\ForgetPasswordContract.cs" />
     <Compile Include="Src\ForgetPassword\Requests\ForgetPasswordRequest.cs" />
     <Compile Include="Src\Login\Activity\LoginActivity.cs" />
-    <Compile Include="Src\Login\Api\IAuthenticateUser.cs" />
     <Compile Include="Src\Login\Models\User.cs" />
     <Compile Include="Src\Login\Models\UserResponse.cs" />
     <Compile Include="Src\Login\MVP\LoginContract.cs" />
@@ -3774,6 +3773,8 @@
     <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackListRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\LocationsByKeywordResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\LocationsByKeywordRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserAuthenticateResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\UserAuthenticateRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4144,6 +4145,7 @@
     <Folder Include="Src\RearrangeAccount\" />
     <Folder Include="Src\RearrangeAccount\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
+    <Folder Include="Src\Login\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -13,7 +13,6 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.MyTNBService.Notification;
@@ -77,7 +76,6 @@ namespace myTNB_Android.Src.Login.MVP
 
         public async void LoginAsync(string usrNme, string pwd, string deviceId, bool rememberMe)
         {
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(usrNme))
             {
                 this.mView.ShowEmptyEmailError();
@@ -103,32 +101,9 @@ namespace myTNB_Android.Src.Login.MVP
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if STUB
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-#elif DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IAuthenticateUser>(httpClient);
-#else
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-#endif
             Log.Debug(TAG, "Awaiting...");
             try
             {
-                //var userResponse = await api.DoLoginV5(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID,
-                //   username,
-                //   password,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID), cts.Token);
-
-                //if (userResponse.userData != null)
-                //{
-                //    Log.Debug(TAG , "User Response = " + userResponse.userData.status);
-                //}
                 string fcmToken = String.Empty;
 
                 if (FirebaseTokenEntity.HasLatest())
@@ -141,32 +116,14 @@ namespace myTNB_Android.Src.Login.MVP
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
 
-                var userResponse = await api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    UserName = usrNme,
-                    Password = pwd,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = DeviceIdUtils.GetAppVersionName(),
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.DEVICE_PLATFORM,
-                    DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceId = deviceId,
-                    FcmToken = fcmToken,
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd));
 
-
-
-
-                }, cts.Token);
-
-
-
-                if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
+                if (!userResponse.IsSuccessResponse())
                 {
                     if (this.mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
-                        this.mView.ShowInvalidEmailPasswordError(userResponse.Data.Message);
+                        this.mView.ShowInvalidEmailPasswordError(userResponse.Response.Message);
                     }
                 }
                 else
@@ -196,7 +153,7 @@ namespace myTNB_Android.Src.Login.MVP
                             this.mView.ShowResetPassword(usrNme, pwd);
                         }
                     }
-                    else if (!userResponse.Data.User.isPhoneVerified)
+                    else if (!userResponse.GetData().isPhoneVerified)
                     {
                         UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
@@ -204,7 +161,7 @@ namespace myTNB_Android.Src.Login.MVP
                             Password = pwd,
                             IpAddress = Constants.APP_CONFIG.API_KEY_ID,
                             ClientType = DeviceIdUtils.GetAppVersionName(),
-                            ActiveUserName = userResponse.Data.User.UserId,
+                            ActiveUserName = userResponse.GetData().UserId,
                             DevicePlatform = Constants.DEVICE_PLATFORM,
                             DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
                             DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
@@ -216,7 +173,7 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.Data.User.MobileNo);
+                        this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.GetData().MobileNo);
                     }
                     else
                     {
@@ -248,7 +205,7 @@ namespace myTNB_Android.Src.Login.MVP
                         EnergySavingTipsParentManager.DeleteTable();
                         try
                         {
-                            UserEntity.UpdatePhoneNumber(userResponse.Data.User.MobileNo);
+                            UserEntity.UpdatePhoneNumber(userResponse.GetData().MobileNo);
                             UserSessions.SavePhoneVerified(mSharedPref, true);
                         }
                         catch (System.Exception e)
@@ -256,34 +213,10 @@ namespace myTNB_Android.Src.Login.MVP
                             Utility.LoggingNonFatalError(e);
                         }
 
-                        int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                        int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
                             UserEntity.UpdateDeviceId(deviceId);
-
-//#if STUB
-//                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-
-//#elif DEBUG
-//                            var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-//                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
-//#else
-//                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-//#endif
-                            //var newObject = new
-                            //{
-                            //    usrInf = new
-                            //    {
-                            //        eid = UserEntity.GetActive().UserName,
-                            //        sspuid = userResponse.Data.User.UserId,
-                            //        lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                            //        sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                            //        sec_auth_k2 = "",
-                            //        ses_param1 = "",
-                            //        ses_param2 = ""
-                            //    }
-                            //};
-                            //var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);
 
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new BaseRequest());
                             if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
