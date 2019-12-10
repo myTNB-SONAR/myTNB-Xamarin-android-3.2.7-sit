@@ -125,10 +125,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             cts = new CancellationTokenSource();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
             var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(httpClient);
 #else
-            var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
             var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
 #endif
 			try
@@ -166,17 +164,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {
-                                            //var phoneVerifyResponse = await getPhoneVerifyApi.GetPhoneVerifyStatus(new GetPhoneVerifyStatusRequest()
-                                            //{
-                                            //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                            //    Email = entity.Email,
-                                            //    SSPUserID = entity.UserID,
-                                            //    DeviceID = this.mView.GetDeviceId()
-                                            //}, cts.Token);
-
                                             var phoneVerifyResponse = await ServiceApiImpl.Instance.PhoneVerifyStatus(new BaseRequest());
 
-                                            if (phoneVerifyResponse != null && phoneVerifyResponse.Response != null && phoneVerifyResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                                            if (phoneVerifyResponse != null && phoneVerifyResponse.Response != null &&
+                                                phoneVerifyResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                                             {
                                                 if (!phoneVerifyResponse.GetData().IsPhoneVerified)
                                                 {

@@ -462,7 +462,6 @@
     <Compile Include="Src\AppLaunch\Activity\LaunchViewActivity.cs" />
     <Compile Include="Src\AppLaunch\Api\GetAccounts.cs" />
     <Compile Include="Src\AppLaunch\Api\GetMasterDataApi.cs" />
-    <Compile Include="Src\AppLaunch\Api\GetPhoneVerifyStatusApi.cs" />
     <Compile Include="Src\AppLaunch\Api\INotificationApi.cs" />
     <Compile Include="Src\AppLaunch\Api\IWeblinksApi.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountType.cs" />
