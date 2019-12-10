@@ -662,7 +662,6 @@
     <Compile Include="Src\MakePayment\Requests\SubmitPaymentRequestPG.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
-    <Compile Include="Src\ManageCards\Api\IManageCardsApi.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
     <Compile Include="Src\ManageCards\Models\RemoveRegisteredCardResponse.cs" />
     <Compile Include="Src\ManageCards\MVP\ManageCardsContract.cs" />
@@ -3790,6 +3789,8 @@
     <Compile Include="Src\MyTNBService\Request\LogoutUserRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\RemoveRegisteredCardResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\RemoveRegisteredCardRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\ChangeNewPasswordResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\ChangeNewPasswordRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4164,6 +4165,7 @@
     <Folder Include="Src\NotificationSettings\Api\" />
     <Folder Include="Src\RegistrationForm\Api\" />
     <Folder Include="Src\ForgetPassword\Api\" />
+    <Folder Include="Src\ManageCards\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

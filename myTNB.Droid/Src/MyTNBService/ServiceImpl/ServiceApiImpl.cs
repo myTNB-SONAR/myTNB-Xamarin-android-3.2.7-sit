@@ -280,13 +280,23 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
-        /// Call LogoutUser with default timeout.
+        /// Call RemoveRegisteredCard with default timeout.
         /// </summary>
         /// <param name="request"></param>km
         /// <returns></returns>
         public Task<RemoveRegisteredCardResponse> RemoveRegisteredCard([Body] Request.BaseRequest request)
         {
             return api.RemoveRegisteredCard<RemoveRegisteredCardResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call ChangeNewPassword with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<ChangeNewPasswordResponse> ChangeNewPassword([Body] Request.BaseRequest request)
+        {
+            return api.ChangeNewPassword<ChangeNewPasswordResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }

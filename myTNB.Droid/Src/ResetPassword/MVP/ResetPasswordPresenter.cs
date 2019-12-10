@@ -50,8 +50,6 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
         public async void Submit(string apiKeyId, string newPassword, string confirmNewPassword, string oldPassword, string username, string deviceId)
         {
-            cts = new CancellationTokenSource();
-
             if (TextUtils.IsEmpty(newPassword))
             {
                 this.mView.ShowEmptyNewPasswordError();
@@ -84,37 +82,17 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var resetPasswordApi = RestService.For<IResetPassword>(httpClient);
-
-#else
-            var resetPasswordApi = RestService.For<IResetPassword>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var changePasswordResponse = await resetPasswordApi.ChangeNewPassword(new ResetPasswordRequest(apiKeyId,
-                                                                           username,
-                                                                           oldPassword,
-                                                                           newPassword,
-                                                                           confirmNewPassword,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId), cts.Token);
+                var changePasswordResponse = await ServiceApiImpl.Instance.ChangeNewPassword(new ChangeNewPasswordRequest(oldPassword, newPassword, newPassword));
 
-                if (changePasswordResponse.Data.IsError)
+                if (!changePasswordResponse.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
                     }
-                    string message = changePasswordResponse.Data.Message;
+                    string message = changePasswordResponse.Response.Message;
                     this.mView.ShowErrorMessage(message);
                 }
                 else

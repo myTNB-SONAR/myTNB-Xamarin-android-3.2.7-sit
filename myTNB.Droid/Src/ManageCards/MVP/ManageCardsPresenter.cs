@@ -1,5 +1,4 @@
-﻿using myTNB_Android.Src.ManageCards.Api;
-using myTNB_Android.Src.ManageCards.Models;
+﻿using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
