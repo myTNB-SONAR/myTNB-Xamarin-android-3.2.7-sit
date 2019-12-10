@@ -12,6 +12,7 @@ using Java.Text;
 using myTNB_Android.Src.AddCard.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
@@ -45,7 +46,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private static string PARAM3 = "Param3=";
         private string param3 = "0";
         private string selectedPaymentMethod;
-        private MPCreditCard selectedCard;
+        private CreditCard selectedCard;
 
         FrameLayout baseView;
         EditText txtTotalAmount;
@@ -72,7 +73,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         ListView listAddedCards;
         MPAddCardAdapter cardAdapter;
         List<MPCardDetails> cards = new List<MPCardDetails>();
-        List<MPCreditCard> registerdCards = new List<MPCreditCard>();
+        List<CreditCard> registerdCards = new List<CreditCard>();
 
         Button btnAddCard;
         Button btnFPXPayment;
@@ -382,7 +383,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             //throw new NotImplementedException();
         }
 
-        public void EnterCVVNumber(MPCreditCard card)
+        public void EnterCVVNumber(CreditCard card)
         {
             try
             {
@@ -781,24 +782,24 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
         }
 
-        public void GetRegisterCardsResult(MPGetRegisteredCardsResponse response)
+        public void GetRegisterCardsResult(RegisteredCardsResponse response)
         {
             try
             {
                 if (response != null)
                 {
-                    if (response.Data.IsError)
+                    if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Data.Message);
+                        ShowErrorMessage(response.Response.Message);
                     }
                     else
                     {
-                        if (response.Data.creditCard != null)
+                        if (response.GetData() != null)
                         {
-                            if (response.Data.creditCard.Count() > 0)
+                            if (response.GetData().Count() > 0)
                             {
-                                List<MPCreditCard> cards = response.Data.creditCard;
-                                foreach (MPCreditCard card in cards)
+                                List<CreditCard> cards = response.GetData();
+                                foreach (CreditCard card in cards)
                                 {
                                     registerdCards.Add(card);
                                 }

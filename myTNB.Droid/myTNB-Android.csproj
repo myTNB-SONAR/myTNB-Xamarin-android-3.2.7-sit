@@ -680,7 +680,6 @@
     <Compile Include="Src\MultipleAccountPayment\Adapter\MPAddCardAdapter.cs" />
     <Compile Include="Src\MultipleAccountPayment\Adapter\SelectAccountListAdapter.cs" />
     <Compile Include="Src\MultipleAccountPayment\Api\MPGetAccountsDueAmountApi.cs" />
-    <Compile Include="Src\MultipleAccountPayment\Api\MPGetRegisteredCardsApi.cs" />
     <Compile Include="Src\MultipleAccountPayment\Api\MPRequestPaymentApi.cs" />
     <Compile Include="Src\MultipleAccountPayment\Fragment\MPPaymentWebViewFragment.cs" />
     <Compile Include="Src\MultipleAccountPayment\Fragment\MPSelectPaymentMethodFragment.cs" />

@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Enter CVV number
             /// </summary>
-            void EnterCVVNumber(MPCreditCard card); // -- CVV enabled --
+            void EnterCVVNumber(CreditCard card); // -- CVV enabled --
 
             /// <summary>
             /// Show progress dialog for payment request
@@ -79,7 +80,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Show get registered card sucess with registered cards response
             /// </summary>
 
-            void GetRegisterCardsResult(MPGetRegisteredCardsResponse response);
+            void GetRegisterCardsResult(RegisteredCardsResponse response);
 
             /// <summary>
             /// NEW API RESPONSE

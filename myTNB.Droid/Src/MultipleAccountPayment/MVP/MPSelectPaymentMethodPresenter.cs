@@ -5,6 +5,7 @@ using myTNB_Android.Src.MultipleAccountPayment.Requests;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -144,7 +145,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             var api = RestService.For<MPGetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
-                MPGetRegisteredCardsResponse result = await api.GetRegisteredCards(new MPGetRegisteredCardsRequest(apiKeyId, email));
+                //MPGetRegisteredCardsResponse result = await api.GetRegisteredCards(new MPGetRegisteredCardsRequest(apiKeyId, email));
+                var result = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
                 this.mView.GetRegisterCardsResult(result);
                 this.mView.HideGetRegisteredCardDialog();
             }
