@@ -56,5 +56,13 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/IsUserAuth")]
         Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreference")]
+        Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SaveUserNotificationChannelPreference")]
+        Task<T> SaveUserNotificationChannelPreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
     }
 }

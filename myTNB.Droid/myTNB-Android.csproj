@@ -778,7 +778,6 @@
     <Compile Include="Src\NotificationSettings\Activity\NotificationSettingsActivity.cs" />
     <Compile Include="Src\NotificationSettings\Adapter\NotificationChannelAdapter.cs" />
     <Compile Include="Src\NotificationSettings\Adapter\NotificationTypeAdapter.cs" />
-    <Compile Include="Src\NotificationSettings\Api\IUserPreference.cs" />
     <Compile Include="Src\NotificationSettings\Models\NotificationChannelUserPreference.cs" />
     <Compile Include="Src\NotificationSettings\Models\NotificationTypeUserPreference.cs" />
     <Compile Include="Src\NotificationSettings\Models\SaveUserPreferenceResponse.cs" />
@@ -3775,6 +3774,10 @@
     <Compile Include="Src\MyTNBService\Request\LocationsByKeywordRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserAuthenticateResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\UserAuthenticateRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SaveUserNotificationTypePreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SaveUserNotificationTypePreferenceRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SaveUserNotificationChannelPreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SaveUserNotificationChannelPreferenceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4146,6 +4149,7 @@
     <Folder Include="Src\RearrangeAccount\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
     <Folder Include="Src\Login\Api\" />
+    <Folder Include="Src\NotificationSettings\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

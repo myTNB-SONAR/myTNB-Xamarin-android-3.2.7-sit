@@ -160,13 +160,33 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
-        /// Call GetLocationsByKeyword with default timeout.
+        /// Call IsUserAuth with default timeout.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public Task<UserAuthenticateResponse> UserAuthenticate([Body] Request.BaseRequest request)
         {
             return api.UserAuthenticate<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call SaveUserNotificationTypePreference with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SaveUserNotificationTypePreferenceResponse> SaveUserNotificationTypePreference([Body] Request.BaseRequest request)
+        {
+            return api.SaveUserNotificationTypePreference<SaveUserNotificationTypePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call SaveUserNotificationChannelPreference with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SaveUserNotificationChannelPreferenceResponse> SaveUserNotificationChannelPreference([Body] Request.BaseRequest request)
+        {
+            return api.SaveUserNotificationChannelPreference<SaveUserNotificationChannelPreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }
