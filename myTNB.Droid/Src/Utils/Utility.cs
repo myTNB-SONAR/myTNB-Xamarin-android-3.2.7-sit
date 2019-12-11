@@ -178,7 +178,7 @@ namespace myTNB_Android.Src.Utils
                         .SetContentGravity(Android.Views.GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
-                        .SetSecondaryCTAaction(()=>
+                        .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();
                         })
@@ -258,6 +258,24 @@ namespace myTNB_Android.Src.Utils
                 }
             }
             return isPaymentEnable;
+        }
+
+        public static string GetAppVersionName(Context appContext)
+        {
+            string appVersionName = "";
+            var name = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionName;
+            var code = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionCode;
+            if (name != null)
+            {
+                appVersionName = GetLocalizedLabel("Profile", "appVersion") + " " + name;
+            }
+#if DEBUG || STUB || DEVELOP || SIT
+            if (code != null)
+            {
+                appVersionName = appVersionName + "(" + code + ")";
+            }
+#endif
+            return appVersionName;
         }
     }
 }

@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
 
         public override bool ShowCustomToolbarTitle()
         {
-            return false;
+            return true;
         }
     }
 }

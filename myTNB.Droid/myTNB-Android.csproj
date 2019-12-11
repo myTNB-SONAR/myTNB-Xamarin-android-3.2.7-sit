@@ -4126,6 +4126,16 @@
     <Compile Include="Src\MyTNBService\Request\CustomerAccountListRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataBaseResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ProfileMenu\ProfileMenuFragment.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuFragmentLayout.axml" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemLayout.axml" />
+    <Compile Include="Src\CompoundView\ProfileMenuItemComponent.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemContentLayout.axml" />
+    <Compile Include="Src\CompoundView\ProfileMenuItemContentComponent.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemContentNoActionLayout.axml" />
+    <Compile Include="Src\CompoundView\ProfileMenuItemSingleContentComponent.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuContract.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4507,6 +4517,7 @@
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Api\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Request\" />
     <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Response\" />
+    <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
