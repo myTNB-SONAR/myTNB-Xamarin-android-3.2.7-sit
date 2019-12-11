@@ -215,17 +215,17 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_billHistory.d.ErrorMessage, (obj) =>
-                       {
-                           if (IsFromHome && !IsFromHomeForSingleAcct)
-                           {
-                               NavigationController.PopViewController(true);
-                           }
-                           else
-                           {
-                               DismissViewController(true, null);
-                           }
-                       });
+                        DisplayServiceError(_billHistory.d.DisplayMessage, (obj) =>
+                        {
+                            if (IsFromHome && !IsFromHomeForSingleAcct)
+                            {
+                                NavigationController.PopViewController(true);
+                            }
+                            else
+                            {
+                                DismissViewController(true, null);
+                            }
+                        });
                     }
                 });
             });

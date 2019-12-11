@@ -37,12 +37,10 @@ namespace myTNB.Payment
         {
             if (indexPath.Section == 0)
             {
-                int? lastIndex = _registeredCards?.d?.isError?.ToLower() == "false"
-                    && _registeredCards?.d != null ? _registeredCards?.d?.data?.Count : 0;
-
+                int lastIndex = _registeredCards != null && _registeredCards.d != null
+                    && _registeredCards.d.IsSuccess && _registeredCards.d.data != null ? _registeredCards.d.data.Count : 0;
                 if (indexPath.Row == lastIndex)
                 {
-
                     const string CELLIDENTIFIER = "addCardCell";
                     AddCardCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as AddCardCell;
 
@@ -125,8 +123,7 @@ namespace myTNB.Payment
             if (section == 0)
             {
                 if (_registeredCards != null && _registeredCards.d != null
-                   && _registeredCards.d.isError.ToLower().Equals("false")
-                   && _registeredCards.d.data != null)
+                    && _registeredCards.d.IsSuccess && _registeredCards.d.data != null)
                 {
                     return _registeredCards.d.data.Count + 1;
                 }
@@ -136,7 +133,8 @@ namespace myTNB.Payment
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            int lastIndex = _registeredCards.d.isError.ToLower() == "false" && _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
+            int lastIndex = _registeredCards != null && _registeredCards.d != null
+                    && _registeredCards.d.IsSuccess && _registeredCards.d.data != null ? _registeredCards.d.data.Count : 0;
             return indexPath.Section == 0 && indexPath.Row == lastIndex ? 78 : 58;
         }
 

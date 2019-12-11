@@ -656,7 +656,7 @@ namespace myTNB
                               }
                               else
                               {
-                                  DisplayServiceError(_ssmrApplicationStatus?.d?.ErrorMessage);
+                                  DisplayServiceError(_ssmrApplicationStatus?.d?.DisplayMessage);
                               }
                               ActivityIndicator.Hide();
                           });

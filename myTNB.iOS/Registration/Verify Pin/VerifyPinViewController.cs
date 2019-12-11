@@ -288,7 +288,7 @@ namespace myTNB.Registration
                                 {
                                     BaseResponseModelV2 response = await ServiceCall.UpdatePhoneNumber(_mobileNo, _token, IsFromLogin);
 
-                                    if (response?.d?.didSucceed == true)
+                                    if (response != null && response.d != null && response.d.IsSuccess)
                                     {
                                         DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo = _mobileNo;
                                         if (!IsFromLogin)
@@ -320,7 +320,7 @@ namespace myTNB.Registration
                                         _isTokenInvalid = true;
                                         IsPinInvalid();
                                         UpdateTextFieldColor();
-                                        DisplayServiceError(response?.d?.ErrorMessage ?? string.Empty);
+                                        DisplayServiceError(response?.d?.DisplayMessage ?? string.Empty);
                                         ActivityIndicator.Hide();
                                     }
                                 }
@@ -425,7 +425,7 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayServiceError(_smsToken?.d?.ErrorMessage ?? string.Empty);
+                            DisplayServiceError(_smsToken?.d?.DisplayMessage ?? string.Empty);
                         }
                     }
                 });
@@ -452,7 +452,7 @@ namespace myTNB.Registration
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_smsToken?.d?.ErrorMessage ?? string.Empty);
+                                    DisplayServiceError(_smsToken?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -585,14 +585,14 @@ namespace myTNB.Registration
                             //DataManager.DataManager.SharedInstance.User.ICNo = DataManager.DataManager.SharedInstance.User.ICNo;
                             //ExecuteLoginCall();
 
-                            DisplayServiceError(newUser?.ErrorMessage ?? string.Empty);
+                            DisplayServiceError(newUser?.DisplayMessage ?? string.Empty);
                             ClearTokenField();
                             ActivityIndicator.Hide();
                         }
                     }
                     else
                     {
-                        DisplayServiceError(_registerAccountList?.d?.ErrorMessage ?? string.Empty);
+                        DisplayServiceError(_registerAccountList?.d?.DisplayMessage ?? string.Empty);
                         ClearTokenField();
                         ActivityIndicator.Hide();
                     }
@@ -672,14 +672,14 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayServiceError(_authenticationList?.d?.ErrorMessage ?? string.Empty);
+                            DisplayServiceError(_authenticationList?.d?.DisplayMessage ?? string.Empty);
                             ClearTokenField();
                         }
                         ActivityIndicator.Hide();
                     }
                     else
                     {
-                        DisplayServiceError(_authenticationList?.d?.ErrorMessage ?? string.Empty);
+                        DisplayServiceError(_authenticationList?.d?.DisplayMessage ?? string.Empty);
                         ClearTokenField();
                     }
                     ActivityIndicator.Hide();

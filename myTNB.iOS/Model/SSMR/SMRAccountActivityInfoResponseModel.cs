@@ -188,10 +188,10 @@ namespace myTNB.Model
 
     public class PopupModel
     {
-        public string Title { set; get; }
-        public string Description { set; get; }
-        public string CTA { set; get; }
-        public string Type { set; get; }
+        public string Title { set; get; } = string.Empty;
+        public string Description { set; get; } = string.Empty;
+        public string CTA { set; get; } = string.Empty;
+        public string Type { set; get; } = string.Empty;
     }
 
     public class SMRMROValidateRegisterDetailsInfoModel

@@ -191,7 +191,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_removeAccount?.d?.ErrorMessage ?? string.Empty);
+                        DisplayServiceError(_removeAccount?.d?.DisplayMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });

@@ -1,7 +1,6 @@
 Sprint 3 SIT Build
 
 [Task] Latest build for Multilingual
-[Task] Profile entry point update
 
 Non-testable: Rewards
 

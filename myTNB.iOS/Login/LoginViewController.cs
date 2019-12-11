@@ -10,7 +10,6 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.DataManager;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.Model.Language;
 using myTNB.SitecoreCMS;
 
 namespace myTNB
@@ -530,13 +529,13 @@ namespace myTNB
                         }
                         else
                         {
-                            ShowServerError(userAuthenticationModel?.ErrorMessage);
+                            ShowServerError(userAuthenticationModel?.DisplayMessage);
                             ActivityIndicator.Hide();
                         }
                     }
                     else
                     {
-                        ShowServerError(_authenticationList?.d?.ErrorMessage);
+                        ShowServerError(_authenticationList?.d?.DisplayMessage);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -811,7 +810,7 @@ namespace myTNB
         private void OnChangeLanguage(bool isPhoneVerified)
         {
             int index = 0;
-            if (TNBGlobal.APP_LANGUAGE == "EN")
+            if (LanguageUtility.ServiceLanguage == "MS")
             {
                 index = 1;
             }

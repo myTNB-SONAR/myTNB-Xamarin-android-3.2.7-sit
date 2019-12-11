@@ -110,7 +110,14 @@ namespace myTNB
                     {
                         try
                         {
-                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_billsTooltipData[i].Image)));
+                            if (_billsTooltipData[i].NSDataImage != null)
+                            {
+                                displayImage = UIImage.LoadFromData(_billsTooltipData[i].NSDataImage);
+                            }
+                            else
+                            {
+                                displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_billsTooltipData[i].Image)));
+                            }
                         }
                         catch (Exception e)
                         {

@@ -629,7 +629,7 @@ namespace myTNB.Registration
                     }
                     else
                     {
-                        DisplayServiceError(_smsToken?.d?.ErrorMessage ?? string.Empty);
+                        DisplayServiceError(_smsToken?.d?.DisplayMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });

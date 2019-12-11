@@ -121,6 +121,11 @@
         public static string Error_RatingNotAvailable = "ratingNotAvailable";
         public static string Error_ShareNotAvailable = "shareNotAvailable";
 
+        //Refresh
+        public static string Refresh_BillDetails = "refreshBillDetails";
+        public static string Refresh_UsageSSMR = "refreshUsageSSMR";
+        public static string Refresh_BillPayHistory = "refreshBillPayHistory";
+
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
         public static string Hint_MobileNumber = "mobileNumberSample";

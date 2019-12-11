@@ -1236,6 +1236,9 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\img5S3%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\img5S3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Refresh.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Refresh.imageset\grey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Refresh.imageset\grey%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1735,6 +1738,8 @@
     <Folder Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\" />
+    <Folder Include="Components\Refresh\" />
+    <Folder Include="Assets.xcassets\IC-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2620,6 +2625,8 @@
     <Compile Include="Session Cache\RewardsCache.cs" />
     <Compile Include="Components\Tutorial Overlay\RewardsTutorialOverlay.cs" />
     <Compile Include="Components\Tutorial Overlay\RewardsDetailTutorialOverlay.cs" />
+    <Compile Include="Components\Refresh\RefreshComponent.cs" />
+    <Compile Include="Components\Refresh\RefreshConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

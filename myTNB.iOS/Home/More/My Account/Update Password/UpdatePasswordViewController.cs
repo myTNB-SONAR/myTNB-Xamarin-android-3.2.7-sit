@@ -363,7 +363,7 @@ namespace myTNB
                                 //txtFieldPassword.TextColor = myTNBColor.Tomato;
                                 //btnSave.Enabled = false;
                                 //btnSave.BackgroundColor = myTNBColor.SilverChalice;
-                                DisplayServiceError(_saveResponse?.d?.ErrorMessage ?? string.Empty);
+                                DisplayServiceError(_saveResponse?.d?.DisplayMessage ?? string.Empty);
                             }
                         }
                         else

@@ -239,14 +239,14 @@ namespace myTNB
             {
                 string errorMessage = GetErrorI18NValue(Constants.Error_DefaultErrorMessage);
                 if (DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == false
-                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.ErrorMessage))
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.DisplayMessage))
                 {
-                    errorMessage = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.ErrorMessage;
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.DisplayMessage;
                 }
                 else if (DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.didSucceed == false
-                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.ErrorMessage))
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.DisplayMessage))
                 {
-                    errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.ErrorMessage;
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.DisplayMessage;
                 }
                 DisplayServiceError(errorMessage);
                 ActivityIndicator.Hide();

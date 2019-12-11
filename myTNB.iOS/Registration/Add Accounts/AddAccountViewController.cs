@@ -236,7 +236,7 @@ namespace myTNB.Registration
                     }
                     else
                     {
-                        DisplayServiceError(_validateManualAccountLinkingResponse?.d?.ErrorMessage ?? string.Empty);
+                        DisplayServiceError(_validateManualAccountLinkingResponse?.d?.DisplayMessage ?? string.Empty);
                         ActivityIndicator.Hide();
                     }
                 });

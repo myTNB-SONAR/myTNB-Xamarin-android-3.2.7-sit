@@ -659,7 +659,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, response?.d?.ErrorMessage);
+                        DisplayServiceError(response?.d?.DisplayMessage);
                     }
                 });
             });

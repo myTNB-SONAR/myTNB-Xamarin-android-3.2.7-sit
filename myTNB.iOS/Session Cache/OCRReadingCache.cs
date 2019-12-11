@@ -27,7 +27,7 @@ namespace myTNB
                     OCRValue = response.d.data.OCRValue,
                     IsSuccess = response.d.IsSuccess && !string.IsNullOrEmpty(response.d.data.OCRUnit)
                         && !string.IsNullOrEmpty(response.d.data.OCRValue),
-                    Message = response?.d?.ErrorMessage ?? string.Empty
+                    Message = response?.d?.DisplayMessage ?? string.Empty
                 };
                 OCRReadingList.Add(data);
             }

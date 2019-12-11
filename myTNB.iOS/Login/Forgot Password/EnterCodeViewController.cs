@@ -410,7 +410,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_resetCodeList?.d?.ErrorMessage);
+                        DisplayServiceError(_resetCodeList?.d?.DisplayMessage);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -455,7 +455,7 @@ namespace myTNB
                     {
                         NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                         sharedPreference.SetBool(true, "isPasswordResetCodeSent");
-                        sharedPreference.SetString(_resetCodeList.d.ErrorMessage, "resetPasswordMessage");
+                        sharedPreference.SetString(_resetCodeList.d.DisplayMessage, "resetPasswordMessage");
                         sharedPreference.Synchronize();
                         UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
                         PasswordResetSuccessViewController viewController =
@@ -469,7 +469,7 @@ namespace myTNB
                         _isTokenInvalid = true;
                         IsPinInvalid();
                         UpdateTextFieldColor();
-                        DisplayServiceError(_resetCodeList?.d?.ErrorMessage);
+                        DisplayServiceError(_resetCodeList?.d?.DisplayMessage);
                     }
                     ActivityIndicator.Hide();
                 });

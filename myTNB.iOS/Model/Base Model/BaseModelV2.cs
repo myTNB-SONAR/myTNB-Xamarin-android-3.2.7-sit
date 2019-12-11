@@ -29,10 +29,6 @@ namespace myTNB.Model
         {
             get
             {
-                if (!string.IsNullOrEmpty(isError))
-                {
-                    return IsSuccess || !bool.Parse(isError);
-                }
                 return IsSuccess;
             }
         }

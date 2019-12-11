@@ -150,7 +150,7 @@ namespace myTNB
             }
             else
             {
-                DisplayServiceError(_submittedFeedback?.d?.ErrorMessage ?? string.Empty);
+                DisplayServiceError(_submittedFeedback?.d?.DisplayMessage ?? string.Empty);
             }
         }
 
