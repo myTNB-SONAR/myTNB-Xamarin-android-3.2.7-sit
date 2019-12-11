@@ -70,6 +70,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 				{
                     TextViewUtils.SetMuseoSans500Typeface(vh.txtTitle, vh.txtRewardUsed);
 
+                    vh.txtRewardUsed.Text = Utility.GetLocalizedLabel("Rewards", "used");
+
                     LinearLayout.LayoutParams currentShimmerImg = vh.rewardMainShimmerImgLayout.LayoutParameters as LinearLayout.LayoutParams;
                     LinearLayout.LayoutParams currentMainImgLayout = vh.rewardMainImgLayout.LayoutParameters as LinearLayout.LayoutParams;
                     int currentImgWidth = this.mActivity.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(16f) - (int)DPUtils.ConvertDPToPx(16f);

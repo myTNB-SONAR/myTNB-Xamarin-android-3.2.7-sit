@@ -65,6 +65,8 @@ namespace myTNB_Android.Src.SavedRewards.MVP
 
                 rewardEmptyLayout.Visibility = ViewStates.Gone;
 
+                txtEmptyReward.Text = Utility.GetLocalizedLabel("SavedRewards", "emptyDesc");
+
                 SetToolBarTitle(Utility.GetLocalizedLabel("SavedRewards", "title"));
             }
             catch (Exception e)

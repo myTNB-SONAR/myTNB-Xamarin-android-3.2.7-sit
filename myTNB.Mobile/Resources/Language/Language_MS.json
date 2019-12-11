@@ -816,7 +816,14 @@
   "Rewards": {
     "title": "Ganjaran",
     "viewAll": "Lihat Semua",
-    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!",
+    "tutorialRewardTitle": "Pilih ganjaran yang anda gemari!",
+    "tutorialRewardDesc": "Tap on a reward to find out more, or tap on the heart to save it for later.",
+    "tutorialCategoryTitle": "Ganjaran untuk anda.",
+    "tutorialCategoryDesc": "Tukar kategori untuk melihat pelbagai ganjaran berbeza.",
+    "tutorialSaveTitle": "Kegemaran anda semuanya di satu tempat.",
+    "tutorialSaveDesc": "Anda boleh lihat semua ganjaran yang anda simpan di sini untuk digunakan kemudian.",
+    "used": "Telah Digunakan"
   },
   "RewardDetails": {
     "title": "Ganjaran",
@@ -829,9 +836,18 @@
     "useNowPopupTitle": "Sila pastikan anda berada di kedai.",
     "useNowPopupMessage": "Ganjaran ini hanya boleh digunakan sekali sahaja, sila pastikan anda berada di kedai.",
     "useLater": "Gunakan Kemudian",
-    "confirm": "Sahkan"
+    "confirm": "Sahkan",
+    "rewardUsedPrefix": "Ganjaran telah digunakan pada ",
+    "rewardUsed": "Telah Digunakan",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
+    "used": "Telah Digunakan",
+    "tutorialSaveTitle": "Jangan terlepas ganjaran.",
+    "tutorialSaveDesc": "Anda boleh simpan ganjaran untuk digunakan kemudian.",
+    "tutorialUseNowTitle": "Tebus Ganjaran Anda.",
+    "tutorialUseNowDesc": "Anda di kedai dan sedia menebus ganjaran anda? Tekan sini."
   },
   "SavedRewards": {
-    "title": "Ganjaran Yang Disimpan"
+    "title": "Ganjaran Yang Disimpan",
+    "emptyDesc": "Your saved rewards will appear here."
   }
 }

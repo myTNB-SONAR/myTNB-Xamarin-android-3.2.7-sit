@@ -420,8 +420,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = "Never miss out on a reward.",
-                ContentMessage = "Save a reward to your favourite<br/>so that you can use it later.",
+                ContentTitle = Utility.GetLocalizedLabel("RewardDetails", "tutorialSaveTitle"), // "Never miss out on a reward.",
+                ContentMessage = Utility.GetLocalizedLabel("RewardDetails", "tutorialSaveDesc"), // "Save a reward to your favourite<br/>so that you can use it later.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = false
@@ -430,8 +430,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopRight,
-                ContentTitle = "Redeem your rewards.",
-                ContentMessage = "At the merchant’s place and ready<br/>to redeem your reward? Tap here.",
+                ContentTitle = Utility.GetLocalizedLabel("RewardDetails", "tutorialUseNowTitle"), // "Redeem your rewards.",
+                ContentMessage = Utility.GetLocalizedLabel("RewardDetails", "tutorialUseNowDesc"), // "At the merchant’s place and ready<br/>to redeem your reward? Tap here.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true

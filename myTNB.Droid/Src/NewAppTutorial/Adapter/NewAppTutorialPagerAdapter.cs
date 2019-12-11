@@ -115,6 +115,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     innerTxtBtnBottomLayoutParam.Gravity = GravityFlags.Right;
                 }
 
+                txtBottomContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
+
                 txtBottomContent.RequestLayout();
                 btnBottomGotIt.RequestLayout();
                 innerUpperBottomLayout.RequestLayout();
@@ -213,6 +215,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     innerMiddleTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0);
                     innerMiddleTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(12f);
                 }
+
+                txtTopContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
 
                 txtTopContent.RequestLayout();
                 txtTopTitle.RequestLayout();

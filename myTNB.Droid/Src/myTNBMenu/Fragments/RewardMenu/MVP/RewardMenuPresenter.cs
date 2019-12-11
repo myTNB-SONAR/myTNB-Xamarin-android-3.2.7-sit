@@ -526,8 +526,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.BottomLeft,
-                ContentTitle = "Pick a reward, check it out!",
-                ContentMessage = "Tap on a reward to find out more, or<br/>tap on the heart to save it for later.",
+                ContentTitle = Utility.GetLocalizedLabel("Rewards", "tutorialRewardTitle"), //"Pick a reward, check it out!",
+                ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialRewardDesc"), //"Tap on a reward to find out more, or<br/>tap on the heart to save it for later.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = false
@@ -538,8 +538,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.BottomLeft,
-                    ContentTitle = "Rewards for you.",
-                    ContentMessage = "Switch between the categories to<br/>explore the different rewards.",
+                    ContentTitle = Utility.GetLocalizedLabel("Rewards", "tutorialCategoryTitle"), // "Rewards for you.",
+                    ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialCategoryDesc"), // "Switch between the categories to<br/>explore the different rewards.",
                     ItemCount = 0,
                     DisplayMode = "",
                     IsButtonShow = false
@@ -549,8 +549,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.BottomRight,
-                ContentTitle = "Your favourites all in one place.",
-                ContentMessage = "Here you’ll find all the rewards<br/>you’ve saved for later use.",
+                ContentTitle = Utility.GetLocalizedLabel("Rewards", "tutorialSaveTitle"), // "Your favourites all in one place.",
+                ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialSaveDesc"), // "Here you’ll find all the rewards<br/>you’ve saved for later use.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true

@@ -68,7 +68,9 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 				{
 					TextViewUtils.SetMuseoSans500Typeface(vh.txtTitle, vh.txtRewardUsed);
 
-					LinearLayout.LayoutParams currentShimmerImg = vh.rewardMainShimmerImgLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    vh.txtRewardUsed.Text = Utility.GetLocalizedLabel("Rewards", "used");
+
+                    LinearLayout.LayoutParams currentShimmerImg = vh.rewardMainShimmerImgLayout.LayoutParameters as LinearLayout.LayoutParams;
 					LinearLayout.LayoutParams currentMainImgLayout = vh.rewardMainImgLayout.LayoutParameters as LinearLayout.LayoutParams;
 					int currentImgWidth = this.mActivity.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(16f) - (int)DPUtils.ConvertDPToPx(16f);
 					float currentImgRatio = 112f / 288f;

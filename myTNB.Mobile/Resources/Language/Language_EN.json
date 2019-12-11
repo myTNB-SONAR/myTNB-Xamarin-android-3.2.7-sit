@@ -816,7 +816,14 @@
   "Rewards": {
     "title": "Rewards",
     "viewAll": "View All",
-    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!",
+    "tutorialRewardTitle": "Pick a reward, check it out!.",
+    "tutorialRewardDesc": "Tap on a reward to find out more, or tap on the heart to save it for later.",
+    "tutorialCategoryTitle": "Rewards for you.",
+    "tutorialCategoryDesc": "Switch between the categories to explore the different rewards.",
+    "tutorialSaveTitle": "Your favourites all in one place.",
+    "tutorialSaveDesc": "Here you’ll find all the rewards you’ve saved for later use.",
+    "used": "Used"
   },
   "RewardDetails": {
     "title": "Rewards",
@@ -829,9 +836,18 @@
     "useNowPopupTitle": "Please make sure you’re at the shop.",
     "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
     "useLater": "Use Later",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "rewardUsedPrefix": "Reward used ",
+    "rewardUsed": "Reward Used",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
+    "used": "Used",
+    "tutorialSaveTitle": "Never miss out on a reward.",
+    "tutorialSaveDesc": "Save a reward to your favourite so that you can use it later.",
+    "tutorialUseNowTitle": "Redeem your rewards.",
+    "tutorialUseNowDesc": "At the merchant’s place and ready to redeem your reward? Tap here."
   },
   "SavedRewards": {
-    "title": "My Saved Rewards"
+    "title": "My Saved Rewards",
+    "emptyDesc": "Your saved rewards will appear here."
   }
 }

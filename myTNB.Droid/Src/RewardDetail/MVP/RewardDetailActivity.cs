@@ -152,6 +152,12 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     txtTimeCounter, txtRewardUsedDateTime);
                 btnRewardSave.Clickable = true;
                 isPendingRewardConfirm = false;
+
+                btnRewardRedeemed.Text = Utility.GetLocalizedLabel("RewardDetails", "rewardUsed");
+
+                txtRewardRedeemedWord.Text = Utility.GetLocalizedLabel("RewardDetails", "redeemRewardNote");
+
+                txtRewardUsed.Text = Utility.GetLocalizedLabel("RewardDetails", "used");
             }
             catch (Exception e)
             {
@@ -428,7 +434,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                         rewardRedeemedLayout.Visibility = ViewStates.Visible;
                         rewardCountDownLayout.Visibility = ViewStates.Gone;
 
-                        string dateTime = "Reward used ";
+                        string dateTime = Utility.GetLocalizedLabel("RewardDetails", "rewardUsedPrefix"); // "Reward used ";
 
                         if (string.IsNullOrEmpty(item.IsUsedDateTime))
                         {
