@@ -86,7 +86,7 @@
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
     "new": "Baru",
-    "tutorialSwipeText": "Leret untuk melihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
+    "tutorialSwipeText": "Leret untuk lihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
     "wellBeBack": "We’ll be back shortly!",
     "electricityAccounts": "Electricity Accounts"
   },
@@ -94,8 +94,8 @@
     "mobileNumber": "Please include the country code of your phone number.",
     "mobileNumberSample": "Contoh: +6012 345 6789",
     "emptyAcctSelector": "---",
-    "nickname": "cth. Rumah Saya, Rumah Ibu",
-    "businessNickname": "cth. Bangsar Shopping Centre Branch",
+    "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
+    "businessNickname": "Cth. Bangsar Shopping Centre Branch",
     "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka"
   },
   "Error": {
@@ -182,7 +182,7 @@
   "Tabbar": {
     "home": "Utama",
     "bill": "Bil",
-    "promotion": "Terbaru",
+    "promotion": "Terkini",
     "rewards": "Ganjaran",
     "profile": "Profil"
   },
