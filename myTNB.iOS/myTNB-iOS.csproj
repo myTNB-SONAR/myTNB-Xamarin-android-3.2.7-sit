@@ -2618,6 +2618,8 @@
     <Compile Include="Rewards\Saved Rewards\SavedRewardCell.cs" />
     <Compile Include="Rewards\Saved Rewards\SavedRewardsDataSource.cs" />
     <Compile Include="Session Cache\RewardsCache.cs" />
+    <Compile Include="Components\Tutorial Overlay\RewardsTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\RewardsDetailTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

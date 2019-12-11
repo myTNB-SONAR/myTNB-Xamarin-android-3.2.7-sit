@@ -68,7 +68,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
-                Text = "Used"
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_Used)
             };
 
             CGSize lblSize = usedLbl.SizeThatFits(new CGSize(viewContainerWidth, usedLbl.Frame.Height));

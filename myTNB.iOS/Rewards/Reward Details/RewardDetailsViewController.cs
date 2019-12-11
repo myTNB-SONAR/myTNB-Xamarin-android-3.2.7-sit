@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Threading.Tasks;
 using System.Timers;
 using CoreGraphics;
 using Foundation;
@@ -22,7 +20,7 @@ namespace myTNB
         private UIView _timerContainerView;
         private UILabel _timerLabel;
         private int _currentSeconds;
-        private UIView _lastView;
+        private UIView _tutorialContainer;
 
         public override void ViewDidLoad()
         {
@@ -60,6 +58,15 @@ namespace myTNB
                     RewardModel.IsRead = true;
                     RewardsServices.UpdateRewardItem(RewardModel);
                 });
+            }
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            if (RewardModel != null && !RewardModel.IsUsed)
+            {
+                CheckTutorialOverlay();
             }
         }
 
@@ -294,7 +301,7 @@ namespace myTNB
                     storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
                 if (viewController != null)
                 {
-                    viewController.NavigationTitle = "Rewards";
+                    viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
                     viewController.URL = url.AbsoluteString;
                     viewController.IsDelegateNeeded = false;
                     UINavigationController navController = new UINavigationController(viewController)
@@ -320,7 +327,6 @@ namespace myTNB
             _scrollView.AddSubview(rewardPeriodView);
             _scrollView.AddSubview(locationView);
             _scrollView.AddSubview(tandCView);
-            _lastView = tandCView;
             UpdateScrollViewContentSize(tandCView);
         }
 
@@ -390,7 +396,7 @@ namespace myTNB
 
             if (isUsedReward)
             {
-                string dateValue = RedeemedDate.IsValid() ? "Reward used " + RedeemedDate : string.Empty;
+                string dateValue = RedeemedDate.IsValid() ? GetI18NValue(RewardsConstants.I18N_RewardUsedPrefix) + RedeemedDate : string.Empty;
                 UILabel usedLabel = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(20F)))
                 {
                     BackgroundColor = UIColor.Clear,
@@ -414,7 +420,7 @@ namespace myTNB
                     Font = TNBFont.MuseoSans_16_500,
                     TextColor = MyTNBColor.SilverChalice,
                     TextAlignment = UITextAlignment.Center,
-                    Text = "Reward Used"
+                    Text = GetI18NValue(RewardsConstants.I18N_RewardUsed)
                 };
 
                 rewardUsedBtn.AddSubview(rewardUsedLbl);
@@ -485,7 +491,6 @@ namespace myTNB
                 btnUseNow.Font = TNBFont.MuseoSans_16_500;
                 btnUseNow.TouchUpInside += (sender, e) =>
                 {
-                    Debug.WriteLine("btnUseNow on tap");
                     var title = GetI18NValue(RewardsConstants.I18N_UseNowPopupTitle);
                     if (RewardModel.RewardUseTitle.IsValid())
                     {
@@ -525,6 +530,117 @@ namespace myTNB
             ViewHelper.AdjustFrameSetY(saveBtnView, GetYLocationToCenterObject(saveBtnView.Frame.Height, viewRef));
             ViewHelper.AdjustFrameSetX(saveBtnView, GetXLocationToCenterObject(saveBtnView.Frame.Width, viewRef));
         }
+
+        #region TUTORIAL OVERLAY
+        public void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(RewardsConstants.Pref_RewardsDetailTutorialOverlay);
+
+            if (tutorialOverlayHasShown) { return; }
+
+            if (RewardModel != null)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is RewardDetailsViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                        else
+                        {
+                            if (_tutorialContainer != null)
+                            {
+                                _tutorialContainer.RemoveFromSuperview();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            if (_tutorialContainer != null && _tutorialContainer.IsDescendantOfView(currentWindow)) { return; }
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear,
+                Tag = 1001
+            };
+
+            RewardsDetailTutorialOverlay tutorialView = new RewardsDetailTutorialOverlay(_tutorialContainer, this)
+            {
+                OnDismissAction = HideTutorialOverlay,
+                GetI18NValue = GetI18NValue
+            };
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is RewardDetailsViewController && _tutorialContainer != null && !_tutorialContainer.IsDescendantOfView(currentWindow))
+                {
+                    foreach (UIView view in currentWindow.Subviews)
+                    {
+                        if (view.Tag == 1001)
+                        {
+                            view.RemoveFromSuperview();
+                            break;
+                        }
+                    }
+
+                    _tutorialContainer.AddSubview(tutorialView.GetView());
+                    currentWindow.AddSubview(_tutorialContainer);
+                }
+                else
+                {
+                    if (_tutorialContainer != null)
+                    {
+                        _tutorialContainer.RemoveFromSuperview();
+                    }
+                }
+            }
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, RewardsConstants.Pref_RewardsDetailTutorialOverlay);
+                sharedPreference.Synchronize();
+            }
+        }
+
+        public nfloat GetFooterButtonXPos()
+        {
+            try
+            {
+                return _footerView.Frame.Y + NavigationController.NavigationBar.Frame.GetMaxY() + GetScaledHeight(16F);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in services: " + e.Message);
+                return 0;
+            }
+        }
+        #endregion
 
         #region Action Methods
         private void OnUseNowAction()
@@ -578,7 +694,7 @@ namespace myTNB
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
-                Text = "Reward redeemed. Please show the merchant this screen before the timer runs out."
+                Text = GetI18NValue(RewardsConstants.I18N_RedeemRewardNote)
             };
             _timerContainerView.AddSubviews(new UIView { _timerLabel, timerDesc });
             View.AddSubview(_timerContainerView);
@@ -689,7 +805,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
-                Text = "Used"
+                Text = GetI18NValue(RewardsConstants.I18N_Used)
             };
 
             CGSize lblSize = usedLbl.SizeThatFits(new CGSize(_scrollView.Frame.Width - (BaseMarginWidth16 * 2), usedLbl.Frame.Height));

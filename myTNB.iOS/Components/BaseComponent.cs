@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
@@ -92,6 +93,28 @@ namespace myTNB
         public nfloat GetWidthByScreenSize(nfloat width)
         {
             return ScaleUtility.GetWidthByScreenSize(width);
+        }
+        #endregion
+
+        #region Others
+        public nfloat GetBottomPadding
+        {
+            get
+            {
+                try
+                {
+                    return DeviceHelper.BottomSafeAreaInset;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in Bottom Safe Area Inset: " + e.Message);
+                    if (DeviceHelper.IsIphoneXUpResolution())
+                    {
+                        return 20;
+                    }
+                }
+                return 0;
+            }
         }
         #endregion
     }
