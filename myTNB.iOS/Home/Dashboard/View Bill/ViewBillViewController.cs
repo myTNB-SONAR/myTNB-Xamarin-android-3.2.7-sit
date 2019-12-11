@@ -216,16 +216,16 @@ namespace myTNB
                     else
                     {
                         DisplayServiceError(_billHistory.d.DisplayMessage, (obj) =>
-                       {
-                           if (IsFromHome && !IsFromHomeForSingleAcct)
-                           {
-                               NavigationController.PopViewController(true);
-                           }
-                           else
-                           {
-                               DismissViewController(true, null);
-                           }
-                       });
+                        {
+                            if (IsFromHome && !IsFromHomeForSingleAcct)
+                            {
+                                NavigationController.PopViewController(true);
+                            }
+                            else
+                            {
+                                DismissViewController(true, null);
+                            }
+                        });
                     }
                 });
             });
