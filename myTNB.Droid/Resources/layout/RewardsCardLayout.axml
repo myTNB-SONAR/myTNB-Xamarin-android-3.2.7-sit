@@ -27,6 +27,13 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/feedback_banner"/>
             <ImageView
+                android:id="@+id/rewardSaveImgShadow"
+                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/reward_card_shadow"/>
+            <ImageView
                 android:id="@+id/btnRewardSaveImg"
                 android:layout_height="15dp"
                 android:layout_width="18dp"

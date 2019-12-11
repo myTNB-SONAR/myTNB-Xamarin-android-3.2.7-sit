@@ -141,7 +141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     rewardsTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     RewardsTimeStampResponseModel responseModel = getItemsService.GetRewardsTimestampItem();
                     rewardsTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
@@ -177,7 +177,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     RewardsResponseModel responseModel = getItemsService.GetRewardsItems();
                     if (responseModel.Status.Equals("Success"))
                     {
@@ -208,7 +208,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     sspuid = UserEntity.GetActive().UserID,
                     did = UserEntity.GetActive().DeviceId,
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -358,7 +358,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     list.Add(new RewardMenuModel()
                     {
-                        TabTitle = "View All",
+                        TabTitle = Utility.GetLocalizedLabel("Rewards","viewAll"),
                         Fragment = new RewardItemFragment(),
                         FragmentListMode = REWARDSITEMLISTMODE.LOADED,
                         FragmentSearchString = ""

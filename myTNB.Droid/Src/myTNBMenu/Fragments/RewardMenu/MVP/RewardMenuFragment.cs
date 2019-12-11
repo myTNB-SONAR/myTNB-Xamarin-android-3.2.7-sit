@@ -188,9 +188,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                             OnShowRewardMenuTutorial();
                         };
                         h.PostDelayed(myAction, 50);
-
-                        // UserSessions.DoRewardsShown(mSharedPref);
-
                     }
                 }
             }
@@ -556,6 +553,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     rewardMainLayout.Visibility = ViewStates.Gone;
 
                     rewardEmptyLayout.Visibility = ViewStates.Visible;
+
+                    txtEmptyReward.Text = Utility.GetLocalizedLabel("Rewards", "noRewards");
 
                     LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
                     rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);

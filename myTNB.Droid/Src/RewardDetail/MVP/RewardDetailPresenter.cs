@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 }
                 else
                 {
-                    this.mView.SetRewardDetail(new RewardsModel());
+                    this.mView.SetRewardDetail(null);
                 }
             }
             catch (Exception e)
@@ -262,7 +262,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     sspuid = UserEntity.GetActive().UserID,
                     did = UserEntity.GetActive().DeviceId,
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",
@@ -374,7 +374,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     sspuid = UserEntity.GetActive().UserID,
                     did = UserEntity.GetActive().DeviceId,
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",
                     ses_param1 = "",

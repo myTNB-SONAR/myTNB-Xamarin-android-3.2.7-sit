@@ -64,6 +64,8 @@ namespace myTNB_Android.Src.SavedRewards.MVP
                 rewardMainLayout.Visibility = ViewStates.Visible;
 
                 rewardEmptyLayout.Visibility = ViewStates.Gone;
+
+                SetToolBarTitle(Utility.GetLocalizedLabel("SavedRewards", "title"));
             }
             catch (Exception e)
             {
@@ -171,7 +173,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
 
                 Intent activity = new Intent(this, typeof(RewardDetailActivity));
                 activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, items[e].ID);
-                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "My Saved Rewards");
+                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("SavedRewards", "title"));
                 StartActivity(activity);
             }
         }

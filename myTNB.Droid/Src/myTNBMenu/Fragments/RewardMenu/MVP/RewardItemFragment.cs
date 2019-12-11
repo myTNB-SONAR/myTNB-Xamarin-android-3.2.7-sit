@@ -136,7 +136,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
                 activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, mRewardList[e].ID);
-                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "Rewards");
+                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
                 StartActivity(activity);
             }
         }

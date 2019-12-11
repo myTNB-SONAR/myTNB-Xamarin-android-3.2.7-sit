@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 					try
 					{
 						string density = DPUtils.GetDeviceDensity(Application.Context);
-                        GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                        GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                         RewardsTimeStampResponseModel responseMasterModel = getItemsService.GetRewardsTimestampItem();
                         if (responseMasterModel.Status.Equals("Success"))
                         {
@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 								try
 								{
                                     string newDensity = DPUtils.GetDeviceDensity(Application.Context);
-                                    GetItemsService getRewardItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                                    GetItemsService getRewardItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                                     RewardsResponseModel responseModel = getRewardItemsService.GetRewardsItems();
                                     if (responseModel.Status.Equals("Success"))
                                     {

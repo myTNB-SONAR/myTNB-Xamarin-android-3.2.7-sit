@@ -520,7 +520,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 {
                                     Intent activity = new Intent(this, typeof(RewardDetailActivity));
                                     activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
-                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "Rewards");
+                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
                                     StartActivity(activity);
                                 }
                                 else
@@ -563,6 +563,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowRewardsMenu()
         {
             ShowBackButton(false);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
             RewardMenuFragment fragment = new RewardMenuFragment();
             currentFragment = fragment;
             FragmentManager.BeginTransaction()
@@ -1423,7 +1424,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 {
                                     Intent activity = new Intent(this, typeof(RewardDetailActivity));
                                     activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
-                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, "Rewards");
+                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
                                     StartActivity(activity);
                                 }
                             }

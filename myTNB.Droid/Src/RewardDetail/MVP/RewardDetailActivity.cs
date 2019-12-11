@@ -317,133 +317,144 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             try
             {
-                LocalItem = item;
-                txtTitle.Text = item.Title;
-                txtRewardPeriodContent.TextFormatted = GetFormattedText(item.PeriodLabel);
-                txtRewardLocationContent.TextFormatted = GetFormattedText(item.LocationLabel);
-                txtRewardConditionContent.TextFormatted = GetFormattedText(item.TandCLabel);
-
-                if (item.LocationLabel != null && (item.LocationLabel.Contains("http") || item.LocationLabel.Contains("www.")))
+                if (item != null)
                 {
-                    SpannableString s = new SpannableString(txtRewardLocationContent.TextFormatted);
+                    LocalItem = item;
+                    txtTitle.Text = item.Title;
+                    txtRewardPeriodTitle.Text = Utility.GetLocalizedLabel("RewardDetails", "rewardPeriod");
+                    txtRewardPeriodContent.TextFormatted = GetFormattedText(item.PeriodLabel);
+                    txtRewardLocationTitle.Text = Utility.GetLocalizedLabel("RewardDetails", "location");
+                    txtRewardLocationContent.TextFormatted = GetFormattedText(item.LocationLabel);
+                    txtRewardConditionTitle.Text = Utility.GetLocalizedLabel("RewardDetails", "tnc");
+                    txtRewardConditionContent.TextFormatted = GetFormattedText(item.TandCLabel);
+                    btnRewardUse.Text = Utility.GetLocalizedLabel("RewardDetails", "useNow");
 
-                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-
-                    List<string> extractedUrls = this.presenter.ExtractUrls(item.LocationLabel);
-
-                    if (urlSpans.Length == extractedUrls.Count)
+                    if (item.LocationLabel != null && (item.LocationLabel.Contains("http") || item.LocationLabel.Contains("www.")))
                     {
-                        for (int i = 0; i < urlSpans.Length; i++)
+                        SpannableString s = new SpannableString(txtRewardLocationContent.TextFormatted);
+
+                        var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+
+                        List<string> extractedUrls = this.presenter.ExtractUrls(item.LocationLabel);
+
+                        if (urlSpans.Length == extractedUrls.Count)
                         {
-                            int startIndex = s.GetSpanStart(urlSpans[i]);
-                            int endIndex = s.GetSpanEnd(urlSpans[i]);
-                            s.RemoveSpan(urlSpans[i]);
-                            ClickSpan clickableSpan = new ClickSpan()
+                            for (int i = 0; i < urlSpans.Length; i++)
                             {
-                                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                            };
-                            string url = extractedUrls[i];
-                            clickableSpan.Click += v =>
-                            {
-                                OnClickSpan(url);
-                            };
-                            s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                                int startIndex = s.GetSpanStart(urlSpans[i]);
+                                int endIndex = s.GetSpanEnd(urlSpans[i]);
+                                s.RemoveSpan(urlSpans[i]);
+                                ClickSpan clickableSpan = new ClickSpan()
+                                {
+                                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
+                                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                                };
+                                string url = extractedUrls[i];
+                                clickableSpan.Click += v =>
+                                {
+                                    OnClickSpan(url);
+                                };
+                                s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                            }
                         }
-                    }
-                    txtRewardLocationContent.TextFormatted = s;
-                    txtRewardLocationContent.MovementMethod = new LinkMovementMethod();
-                }
-
-                if (item.TandCLabel != null && (item.TandCLabel.Contains("http") || item.TandCLabel.Contains("www.")))
-                {
-                    SpannableString se = new SpannableString(txtRewardConditionContent.TextFormatted);
-
-                    var seUrlSpans = se.GetSpans(0, se.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-
-                    List<string> extractedUrls = this.presenter.ExtractUrls(item.TandCLabel);
-
-                    if (seUrlSpans.Length == extractedUrls.Count)
-                    {
-                        for (int i = 0; i < seUrlSpans.Length; i++)
-                        {
-                            int startIndex = se.GetSpanStart(seUrlSpans[i]);
-                            int endIndex = se.GetSpanEnd(seUrlSpans[i]);
-                            se.RemoveSpan(seUrlSpans[i]);
-                            ClickSpan clickableSpan = new ClickSpan()
-                            {
-                                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                            };
-                            string url = extractedUrls[i];
-                            clickableSpan.Click += v =>
-                            {
-                                OnClickSpan(url);
-                            };
-                            se.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
-                        }
+                        txtRewardLocationContent.TextFormatted = s;
+                        txtRewardLocationContent.MovementMethod = new LinkMovementMethod();
                     }
 
-                    txtRewardConditionContent.TextFormatted = se;
-                    txtRewardConditionContent.MovementMethod = new LinkMovementMethod();
-                }
-
-                if (!item.IsUsed)
-                {
-                    btnUseSaveLayout.Visibility = ViewStates.Visible;
-                    rewardRedeemedLayout.Visibility = ViewStates.Gone;
-                    rewardCountDownLayout.Visibility = ViewStates.Gone;
-                    if (item.IsSaved)
+                    if (item.TandCLabel != null && (item.TandCLabel.Contains("http") || item.TandCLabel.Contains("www.")))
                     {
-                        imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_save);
-                        txtBtnRewardSave.Text = "Unsave";
+                        SpannableString se = new SpannableString(txtRewardConditionContent.TextFormatted);
+
+                        var seUrlSpans = se.GetSpans(0, se.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+
+                        List<string> extractedUrls = this.presenter.ExtractUrls(item.TandCLabel);
+
+                        if (seUrlSpans.Length == extractedUrls.Count)
+                        {
+                            for (int i = 0; i < seUrlSpans.Length; i++)
+                            {
+                                int startIndex = se.GetSpanStart(seUrlSpans[i]);
+                                int endIndex = se.GetSpanEnd(seUrlSpans[i]);
+                                se.RemoveSpan(seUrlSpans[i]);
+                                ClickSpan clickableSpan = new ClickSpan()
+                                {
+                                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
+                                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                                };
+                                string url = extractedUrls[i];
+                                clickableSpan.Click += v =>
+                                {
+                                    OnClickSpan(url);
+                                };
+                                se.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                            }
+                        }
+
+                        txtRewardConditionContent.TextFormatted = se;
+                        txtRewardConditionContent.MovementMethod = new LinkMovementMethod();
+                    }
+
+                    if (!item.IsUsed)
+                    {
+                        btnUseSaveLayout.Visibility = ViewStates.Visible;
+                        rewardRedeemedLayout.Visibility = ViewStates.Gone;
+                        rewardCountDownLayout.Visibility = ViewStates.Gone;
+                        if (item.IsSaved)
+                        {
+                            imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_save);
+                            txtBtnRewardSave.Text = Utility.GetLocalizedLabel("RewardDetails", "unsave");
+                        }
+                        else
+                        {
+                            imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_unsave);
+                            txtBtnRewardSave.Text = Utility.GetLocalizedLabel("RewardDetails", "save");
+                        }
                     }
                     else
                     {
-                        imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_unsave);
-                        txtBtnRewardSave.Text = "Save";
+                        btnUseSaveLayout.Visibility = ViewStates.Gone;
+                        rewardRedeemedLayout.Visibility = ViewStates.Visible;
+                        rewardCountDownLayout.Visibility = ViewStates.Gone;
+
+                        string dateTime = "Reward used ";
+
+                        if (string.IsNullOrEmpty(item.IsUsedDateTime))
+                        {
+                            dateTime = "";
+                        }
+                        else
+                        {
+                            try
+                            {
+                                DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
+                                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                                DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                                dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
+                                dateTime += ".";
+                                dateTime = "<i>" + dateTime + "</i>";
+                            }
+                            catch (Exception ex)
+                            {
+                                dateTime = "";
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        }
+
+                        txtRewardUsedDateTime.TextFormatted = GetFormattedText(dateTime);
+
+                        txtTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                        txtRewardPeriodTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                        txtRewardLocationTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                        txtRewardConditionTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+
+                        imgRewardPeriod.SetImageResource(Resource.Drawable.ic_reward_time_used);
+                        imgRewardLocation.SetImageResource(Resource.Drawable.ic_reward_locate_used);
+                        imgRewardCondition.SetImageResource(Resource.Drawable.ic_reward_t_c_used);
                     }
                 }
                 else
                 {
-                    btnUseSaveLayout.Visibility = ViewStates.Gone;
-                    rewardRedeemedLayout.Visibility = ViewStates.Visible;
-                    rewardCountDownLayout.Visibility = ViewStates.Gone;
-
-                    string dateTime = "Reward used ";
-
-                    if (string.IsNullOrEmpty(item.IsUsedDateTime))
-                    {
-                        dateTime = "";
-                    }
-                    else
-                    {
-                        try
-                        {
-                            DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
-                            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-                            DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-                            dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
-                            dateTime += ".";
-                            dateTime = "<i>" + dateTime + "</i>";
-                        }
-                        catch (Exception ex)
-                        {
-                            dateTime = "";
-                            Utility.LoggingNonFatalError(ex);
-                        }
-                    }
-
-                    txtRewardUsedDateTime.TextFormatted = GetFormattedText(dateTime);
-
-                    txtTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
-                    txtRewardPeriodTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
-                    txtRewardLocationTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
-                    txtRewardConditionTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
-
-                    imgRewardPeriod.SetImageResource(Resource.Drawable.ic_reward_time_used);
-                    imgRewardLocation.SetImageResource(Resource.Drawable.ic_reward_locate_used);
-                    imgRewardCondition.SetImageResource(Resource.Drawable.ic_reward_t_c_used);
+                    this.Finish();
                 }
             }
             catch (Exception e)
@@ -577,14 +588,14 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     LocalItem.IsSaved = true;
                     this.presenter.UpdateRewardSave(LocalItem.ID, LocalItem.IsSaved);
                     imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_save);
-                    txtBtnRewardSave.Text = "Unsave";
+                    txtBtnRewardSave.Text = Utility.GetLocalizedLabel("RewardDetails", "unsave");
                 }
                 else
                 {
                     LocalItem.IsSaved = false;
                     this.presenter.UpdateRewardSave(LocalItem.ID, LocalItem.IsSaved);
                     imgBtnRewardSave.SetImageResource(Resource.Drawable.ic_button_reward_unsave);
-                    txtBtnRewardSave.Text = "Save";
+                    txtBtnRewardSave.Text = Utility.GetLocalizedLabel("RewardDetails", "save");
                 }
 
                 this.SetIsClicked(false);
@@ -599,10 +610,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 this.SetIsClicked(true);
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                    .SetTitle(!string.IsNullOrEmpty(LocalItem.RewardUseTitle) ? LocalItem.RewardUseTitle : "Please make sure you’re at the shop.")
-                    .SetMessage(!string.IsNullOrEmpty(LocalItem.RewardUseDescription) ? LocalItem.RewardUseDescription : "This reward can only be used once, please confirm you’re at the shop / merchant.")
+                    .SetTitle(!string.IsNullOrEmpty(LocalItem.RewardUseTitle) ? LocalItem.RewardUseTitle : Utility.GetLocalizedLabel("RewardDetails", "useNowPopupTitle"))
+                    .SetMessage(!string.IsNullOrEmpty(LocalItem.RewardUseDescription) ? LocalItem.RewardUseDescription : Utility.GetLocalizedLabel("RewardDetails", "useNowPopupMessage"))
                     .SetHeaderImage(Resource.Drawable.img_tooltip_reward_confirm)
-                    .SetCTALabel("Use Later")
+                    .SetCTALabel(Utility.GetLocalizedLabel("RewardDetails", "useLater"))
                     .SetCTAaction(() => {
                         this.SetIsClicked(false);
                     })
@@ -616,7 +627,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                         }
                         this.presenter.UpdateRewardUsed(LocalItem.ID);
                     })
-                    .SetSecondaryCTALabel("Confirm")
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("RewardDetails", "confirm"))
                     .Build().Show();
             }
         }
@@ -754,8 +765,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     mApiExcecptionSnackBar.Dismiss();
                 }
 
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
-                .SetAction("Close", delegate
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
 
                     mApiExcecptionSnackBar.Dismiss();

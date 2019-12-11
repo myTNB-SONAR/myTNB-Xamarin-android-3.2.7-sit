@@ -84,6 +84,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                     currentSaveRewardLayout.Height = currentSaveRewardHeight;
                     currentSaveRewardLayout.Width = currentSaveRewardWidth;
 
+                    RelativeLayout.LayoutParams currentSaveRewardShadowLayout = vh.rewardSaveImgShadow.LayoutParameters as RelativeLayout.LayoutParams;
+                    int currentSaveRewardShadowHeight = (int)((40f / 112f) * currentImgHeight);
+                    currentSaveRewardShadowLayout.Height = currentSaveRewardShadowHeight;
+
                     RelativeLayout.LayoutParams currentRewardLayout = vh.rewardImg.LayoutParameters as RelativeLayout.LayoutParams;
                     currentRewardLayout.Height = currentImgHeight;
 
@@ -474,6 +478,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
             // Reward Save Button, Enable click to save / unsave reward
             public ImageView btnRewardSaveImg { get; private set; }
+            public ImageView rewardSaveImgShadow { get; private set; }
 
             // Image Shimmer Main Layout, enable when no img url / have img url but need pull
             public LinearLayout rewardMainShimmerImgLayout  { get; private set; }
@@ -511,6 +516,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                 rewardMainImgLayout = itemView.FindViewById<RelativeLayout>(Resource.Id.rewardMainImg);
                 rewardImg = itemView.FindViewById<ImageView>(Resource.Id.rewardImg);
                 btnRewardSaveImg = itemView.FindViewById<ImageView>(Resource.Id.btnRewardSaveImg);
+                rewardSaveImgShadow = itemView.FindViewById<ImageView>(Resource.Id.rewardSaveImgShadow);
 
                 rewardMainShimmerImgLayout = itemView.FindViewById<LinearLayout>(Resource.Id.rewardMainShimmerImgLayout);
                 shimmerRewardImageLayout = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerRewardImageLayout);

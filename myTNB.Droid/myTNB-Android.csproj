@@ -4136,6 +4136,26 @@
     <Compile Include="Src\CompoundView\ProfileMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
