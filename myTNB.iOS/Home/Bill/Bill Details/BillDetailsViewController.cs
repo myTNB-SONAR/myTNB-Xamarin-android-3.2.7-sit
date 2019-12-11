@@ -17,7 +17,7 @@ namespace myTNB
     public partial class BillDetailsViewController : CustomUIViewController
     {
         private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine
-            , _viewPayment, _toolTipParentView, _viewCTAContainer;
+            , _viewPayment, _toolTipParentView, _viewCTAContainer, _refreshViewContainer;
         private CustomUIView _viewMandatory, _viewTooltip;
         private UIScrollView _uiScrollView;
         private CustomUIButtonV2 _btnViewBill, _btnPay;
@@ -35,6 +35,7 @@ namespace myTNB
         private UIView _tutorialContainer;
         private bool IsLoading = true;
         private Timer tutorialOverlayTimer;
+        private bool _isTooltipCreated;
 
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
@@ -105,12 +106,31 @@ namespace myTNB
                                     && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
                                     && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
                                 {
+                                    if (_refreshViewContainer != null)
+                                    {
+                                        _refreshViewContainer.RemoveFromSuperview();
+                                        _refreshViewContainer = null;
+                                    }
                                     AccountChargesCache.SetData(_accountCharges);
                                     LoadViews();
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, _accountCharges?.d?.DisplayMessage);
+                                    InitializeTooltip();
+                                    AddDetails();
+                                    AddSectionTitle();
+                                    if (_refreshViewContainer == null)
+                                    {
+                                        _refreshViewContainer = new UIView(new CGRect(0
+                                           , _viewTitleSection.Frame.GetMaxY(), ViewWidth, ScaleUtility.GetScaledHeight(220)));
+                                        _uiScrollView.AddSubview(_refreshViewContainer);
+
+                                        RefreshComponent refreshComponent = new RefreshComponent(RefreshConstants.IMG_RefreshIcon
+                                            , GetErrorI18NValue(Constants.Refresh_BillDetails)
+                                            , GetCommonI18NValue(Constants.Common_RefreshNow), OnRefreshCall)
+                                        { PageName = PageName };
+                                        _refreshViewContainer.AddSubview(refreshComponent.GetUI(_refreshViewContainer));
+                                    }
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -267,6 +287,8 @@ namespace myTNB
 
         private void InitializeTooltip()
         {
+            if (_isTooltipCreated) { return; }
+            _isTooltipCreated = true;
             SetTooltipFallbackData();
             BillDetailsTooltipEntity wsManager = new BillDetailsTooltipEntity();
             _toolTipList = wsManager.GetAllItems();
@@ -324,6 +346,7 @@ namespace myTNB
 
         private void AddDetails()
         {
+            if (_uiScrollView != null) { return; }
             _uiScrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight - _viewCTAContainer.Frame.Height));
             View.AddSubview(_uiScrollView);
             _viewDetails = new UIView { BackgroundColor = UIColor.White };
@@ -355,6 +378,7 @@ namespace myTNB
 
         private void AddSectionTitle()
         {
+            if (_viewTitleSection != null) { return; }
             _viewTitleSection = new UIView(new CGRect(0, _viewDetails.Frame.GetMaxY(), ViewWidth, GetScaledHeight(48)));
             UILabel lblSectionTitle = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(24)))
             {

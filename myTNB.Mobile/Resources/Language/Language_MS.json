@@ -128,7 +128,10 @@
     "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba lagi kemudian.",
     "numberNotAvailable": "Maaf, nombor tersebut tidak ditemui. Sila cuba sebentar lagi.",
     "ratingNotAvailable": "Maaf, tindakan ini tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi.",
-    "shareNotAvailable": "Maaf, perkongsian tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi."
+    "shareNotAvailable": "Maaf, perkongsian tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi.",
+    "refreshBillDetails": "Alamak! Nampaknya laman yang mengandungi butiran bil anda terputus sambungan. Refresh untuk kekalkan sambungan!",
+    "refreshUsageSSMR": "Alamak! Nampaknya perkhidmatan Self Meter Reading terputus sambungan. Refresh untuk kekalkan sambungan!",
+    "refreshBillPayHistory": "Alamak! Nampaknya laman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. Refresh untuk kekalkan sambungan!"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -156,8 +159,8 @@
     "viewAdvices": "Lihat<br>Makluman Saya",
     "viewEBill": "Lihat<br>Bil Saya",
     "viewEBills": "Lihat<br>Bil Saya",
-    "payBill": "Lihat<br>Makluman Saya",
-    "payBills": "Lihat<br>Makluman Saya",
+    "payBill": "Bayar<br>Bil Saya",
+    "payBills": "Bayar<br>Bil Saya",
     "submitFeedback": "Hantar<br>Maklum Balas",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
@@ -271,12 +274,12 @@
     "headerDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
     "singleHeaderDescription": "<b>Take or upload a photo</b>, or <b>manually enter</b> your meter reading for each respective unit.",
     "imReady": "Saya Bersedia!",
-    "note": "Nota: Sila genapkan nombor sekiranya bacaan pada meter anda memiliki titik perpuluhan.",
-    "previousMeterReading": "Bacaan Meter Sebelum",
+    "note": "Nota: Sila genapkan nombor sekiranya nilai bacaan pada meter menunjukkan titik perpuluhan.",
+    "previousMeterReading": "Bacaan Meter Sebelumnya",
     "submitReading": "Hantar Bacaan",
     "takeOrUploadPhoto": "Tangkap / Muat Naik Gambar",
     "manualInputTitle": "Sila masukkan bacaan meter anda untuk unit berkenaan di bawah.",
-    "ocrDownMessage": "Servis menghantar foto tidak tersedia pada masa in. Sila <b>masukkan bacaan anda secara manual</b> di bawah.",
+    "ocrDownMessage": "Servis menghantar foto tidak tersedia pada masa ini. Sila <b>masukkan bacaan anda secara manual</b> di bawah.",
     "tutorialReadMeterTitle": "Masukkan bacaan meter anda di sini.",
     "tutorialReadMeterDesc": "Masukkan mengikut unit. Anda akan dapat melihat bacaan bulan sebelumnya sebagai rujukan.",
     "tutorialReadMeterGotIt": "Faham!"

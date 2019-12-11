@@ -336,7 +336,7 @@ namespace myTNB
                                 else
                                 {
                                     UpDateTotalAmount();
-                                    DisplayServiceError(_accountChargesResponse?.d?.ErrorMessage ?? string.Empty);
+                                    DisplayServiceError(_accountChargesResponse?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });

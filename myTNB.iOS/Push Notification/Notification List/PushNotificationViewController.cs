@@ -465,7 +465,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_detailedInfo?.d?.ErrorMessage ?? string.Empty);
+                                    DisplayServiceError(_detailedInfo?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -533,7 +533,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    DisplayToast(readNotificationResponse?.d?.ErrorMessage ?? GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
+                                    DisplayToast(readNotificationResponse?.d?.DisplayMessage ?? GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -574,7 +574,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    DisplayToast(deleteNotifResponse?.d?.ErrorMessage ?? GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
+                                    DisplayToast(deleteNotifResponse?.d?.DisplayMessage ?? GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                                 }
                                 ActivityIndicator.Hide();
                             });

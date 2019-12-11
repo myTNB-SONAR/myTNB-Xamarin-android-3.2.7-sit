@@ -252,7 +252,7 @@ namespace myTNB
                             }
                             else
                             {
-                                DisplayServiceError(_saveResponse?.d?.ErrorMessage ?? string.Empty);
+                                DisplayServiceError(_saveResponse?.d?.DisplayMessage ?? string.Empty);
                             }
                         }
                         else

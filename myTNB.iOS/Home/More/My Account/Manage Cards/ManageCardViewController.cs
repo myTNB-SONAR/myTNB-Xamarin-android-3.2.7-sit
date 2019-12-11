@@ -135,7 +135,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    _lblNotificationDetails.Text = _removeCardResponse?.d?.ErrorMessage
+                                    _lblNotificationDetails.Text = _removeCardResponse?.d?.DisplayMessage
                                         ?? string.Format(GetI18NValue(MyAccountConstants.I18N_CardNotRemovedMessage), lastDigits);
                                     ActivityIndicator.Hide();
                                     ShowNotificationMessage();

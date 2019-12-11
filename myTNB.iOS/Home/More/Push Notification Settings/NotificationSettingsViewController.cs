@@ -96,7 +96,7 @@ namespace myTNB
                                    || _notificationPreferenceUpdate.d == null
                                    || !_notificationPreferenceUpdate.d.IsSuccess)
                                 {
-                                    DisplayServiceError(_notificationPreferenceUpdate?.d?.ErrorMessage ?? string.Empty);
+                                    DisplayServiceError(_notificationPreferenceUpdate?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 else
                                 {

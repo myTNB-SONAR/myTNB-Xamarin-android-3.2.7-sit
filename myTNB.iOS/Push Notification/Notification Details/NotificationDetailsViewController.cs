@@ -670,7 +670,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_smrActivityInfoResponse?.d?.ErrorMessage ?? string.Empty);
+                                    DisplayServiceError(_smrActivityInfoResponse?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -709,7 +709,7 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayServiceError(_deleteNotificationResponse?.d?.ErrorMessage ?? string.Empty);
+                            DisplayServiceError(_deleteNotificationResponse?.d?.DisplayMessage ?? string.Empty);
                         }
                         ActivityIndicator.Hide();
                     }

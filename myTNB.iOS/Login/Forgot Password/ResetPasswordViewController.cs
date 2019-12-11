@@ -374,7 +374,7 @@ namespace myTNB.Login.ForgotPassword
                     }
                     else
                     {
-                        DisplayServiceError(_changePasswordList?.d?.ErrorMessage ?? string.Empty);
+                        DisplayServiceError(_changePasswordList?.d?.DisplayMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });

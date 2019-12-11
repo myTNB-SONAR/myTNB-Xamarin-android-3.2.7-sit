@@ -112,7 +112,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_feedbackDetails.d.ErrorMessage);
+                                    DisplayServiceError(_feedbackDetails.d.DisplayMessage);
                                 }
                                 ActivityIndicator.Hide();
                             });

@@ -215,7 +215,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_billHistory.d.ErrorMessage, (obj) =>
+                        DisplayServiceError(_billHistory.d.DisplayMessage, (obj) =>
                        {
                            if (IsFromHome && !IsFromHomeForSingleAcct)
                            {

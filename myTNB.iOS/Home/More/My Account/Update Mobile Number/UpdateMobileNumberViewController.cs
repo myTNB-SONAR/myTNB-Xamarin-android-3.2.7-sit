@@ -287,7 +287,7 @@ namespace myTNB
                 }
                 else
                 {
-                    DisplayServiceError(response?.d?.ErrorMessage ?? string.Empty);
+                    DisplayServiceError(response?.d?.DisplayMessage ?? string.Empty);
                     ActivityIndicator.Hide();
                 }
             };
