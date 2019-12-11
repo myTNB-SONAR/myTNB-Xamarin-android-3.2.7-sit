@@ -214,7 +214,7 @@ namespace myTNB
                 Image = UIImage.FromBundle(PreloginConstants.IMG_FeedbackIcon)
             };
 
-            _lblFeedback = new UILabel(new CGRect(GetScaledWidth(4), GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width- GetScaledWidth(8), GetScaledHeight(28F)))
+            _lblFeedback = new UILabel(new CGRect(GetScaledWidth(4), GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width - GetScaledWidth(8), GetScaledHeight(28F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_Feedback),
                 TextAlignment = UITextAlignment.Center,
@@ -245,12 +245,11 @@ namespace myTNB
 
             changeLanguageView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                string langSuffix = TNBGlobal.APP_LANGUAGE == "EN" ? "MS" : "EN";
-                DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, langSuffix))
-                    , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, langSuffix))
+                DisplayCustomAlert(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle)
+                    , GetFormattedLangKey(Constants.Common_ChangeLanguageMessage)
                     , new Dictionary<string, Action> {
-                        { GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageNo, langSuffix)), null}
-                        ,{ GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageYes, langSuffix))
+                        { GetFormattedLangKey( Constants.Common_ChangeLanguageNo), null}
+                        ,{ GetFormattedLangKey( Constants.Common_ChangeLanguageYes)
                         ,()=>{ OnChangeLanguage(); } } }
                     , UITextAlignment.Center
                     , UITextAlignment.Center);
@@ -269,6 +268,11 @@ namespace myTNB
 
             View.AddSubviews(new UIView[] { imgHeader, imgLogo, _lblWelcome
                 , _lblSubtitle, viewCTA, viewLine, viewQuickAccess});
+        }
+
+        private string GetFormattedLangKey(string key)
+        {
+            return GetCommonI18NValue(string.Format("{0}_{1}", key, TNBGlobal.APP_LANGUAGE));
         }
 
         private void AddCardShadow(ref UIView view)

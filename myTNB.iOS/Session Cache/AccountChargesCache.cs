@@ -152,7 +152,7 @@ namespace myTNB
                     };
                 }
             }
-            return null;
+            return new PopupModel();
         }
 
         private static void SetPopupSelectorValues()

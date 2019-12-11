@@ -56,7 +56,7 @@
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Simpan",
     "gotIt": "Faham!",
-    "login": "Log masuk",
+    "login": "Log Masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
     "retry": "Cuba lagi",
@@ -246,7 +246,7 @@
     "noEligibleAccount": "Maaf, akaun anda tidak layak untuk memulakan perkhidmatan Self Meter Reading",
     "selectAccountNavTitle": "Pilih Akaun Elektrik",
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
-    "tutorialHeaderTitle": "Status Bacaan Anda Sepintas Lalu.",
+    "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
     "tutorialGotIt": "Faham!"
   },
@@ -391,7 +391,7 @@
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
     "tutorialBillTitle": "Ringkasan keseluruhan bil anda",
-    "tutorialAdviceTitle": "Pantau rekod pembayaran anda.",
+    "tutorialAdviceTitle": "Gambaran keseluruhan makluman anda.",
     "tutorialPayTitle": "Bayar cara mudah.",
     "tutorialViewDetailsTitle": "Fahami bil anda.",
     "tutorialHistoryNormalTitle": "Pantau pembayaran anda.",
@@ -407,15 +407,15 @@
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
       {
-        "Title": "Akaun ini mempunyai amaun minimum yang perlu dibayar.",
-        "Description": "Caj lain anda seperti Deposit Keselamatan, Fi Pemprosesan, Duti Setem dan Kos Meter mesti dijelaskan terlebih dahulu dan merupakan pembayaran minimum akaun anda.",
+        "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
+        "Description": "Caj sekali bayar anda seperti Wang Cagaran, Caj Pemprosesan, Duti Setem dan Caj Meter hendaklah dibersihkan terlebih dahulu untuk memastikan permulaan/penerusan perkhidmatan.",
         "CTA": "Faham!",
         "Type": "MandatoryCharges"
       },
       {
-        "Title": "This account has a minimum amount to be paid.",
-        "Description": "You are required to clear <b>{0}</b> from your service charges first.<br><br>You may view a breakdown in your bill details.",
-        "CTA": "View Details,Faham!",
+        "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
+        "Description": "Pelangsaian <b>{0}</b> dari caj sekali bayar bertujuan untuk memastikan bekalan dapat dimulakan/berterusan.<br><br>Sila lihat butiran bil anda untuk mengetahui dengan lebih lanjut.",
+        "CTA": "Lihat Butiran,Faham!",
         "Type": "MandatoryPayment"
       }
     ]
@@ -454,6 +454,22 @@
     "loadMore": "Selebihnya",
     "title": "Pilih Bil",
     "iamPaying": "JUMLAH BAYARAN (RM)"
+  },
+  "SelectBills_selector": {
+    "MandatoryChargesPopUpDetails": [
+      {
+        "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
+        "Description": "Caj sekali bayar anda seperti Wang Cagaran, Caj Pemprosesan, Duti Setem dan Caj Meter hendaklah dibersihkan terlebih dahulu untuk memastikan permulaan/penerusan perkhidmatan.",
+        "CTA": "Faham!",
+        "Type": "MandatoryCharges"
+      },
+      {
+        "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
+        "Description": "Pelangsaian <b>{0}</b> dari caj sekali bayar bertujuan untuk memastikan bekalan dapat dimulakan/berterusan.<br><br>Sila lihat butiran bil anda untuk mengetahui dengan lebih lanjut.",
+        "CTA": "Lihat Butiran,Faham!",
+        "Type": "MandatoryPayment"
+      }
+    ]
   },
   "SelectPaymentMethod": {
     "title": "Pilih Kaedah Pembayaran",
@@ -600,11 +616,11 @@
     "welcomeTitle": "Selamat datang ke myTNB",
     "tagline": "Wajah baru penuh bertenaga dan ceria.",
     "register": "Daftar",
-    "login": "Log masuk",
+    "login": "Log Masuk",
     "quickAccess": "Akses Mudah",
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
-    "feedback": "Hantar Maklumbalas",
+    "feedback": "Hantar Maklum Balas",
     "changeLanguage": "Change language to English"
   },
   "Login": {
@@ -613,7 +629,7 @@
     "forgotPassword": "Terlupa kata laluan?",
     "dontHaveAcct": "Tidak mempunyai akaun myTNB?",
     "registerAcctNow": "Daftar akaun anda sekarang.",
-    "login": "Log masuk",
+    "login": "Log Masuk",
     "emailRequired": "Sila masukkan alamat email.",
     "passwordRequired": "Sila masukkan kata laluan."
   },
@@ -629,7 +645,7 @@
     "resendPinMessage": "Emel mengandungi pin pengaktifan telah dihantar ke alamat emel anda."
   },
   "PasswordResetSuccess": {
-    "title": "Set Semula Kata Laluan Berjaya",
+    "title": "Berjaya Set Semula Kata Laluan",
     "details": "Log masuk dengan kata laluan sementara 8 digit yang telah dihantar ke {0}.\r\n\r\nKata laluan boleh ditukar selepas log masuk.",
     "proceedToLogin": "Teruskan Log Masuk",
     "resetSuccessMessage": "Kata laluan anda telah berjaya ditukar. Anda boleh teruskan log masuk dengan kata laluan baru."
@@ -685,7 +701,7 @@
     "title4": "Bayar bil anda bila-bila masa, di mana sahaja",
     "title5": "Nikmati Pelbagai Ganjaran Melalui myTNB!",
     "title6": "Apa yang baru dengan myTNB?",
-    "description1": "Banyak yang anda boleh manfaatkan dengan aplikasi ini. Sila pilih bahasa anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
+    "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Kesan, pantau dan ketahui penggunaan terkini elektrik anda!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan kebelakangan dengan mudah, semuanya di sini!",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam keretapi - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
