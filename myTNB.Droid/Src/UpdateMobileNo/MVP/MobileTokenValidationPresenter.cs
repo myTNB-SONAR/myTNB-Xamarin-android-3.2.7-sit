@@ -231,55 +231,13 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.StartProgress();
 
-            cts = new CancellationTokenSource();
-
-            string ssp_userid = "";
-            string user_name = "";
-            string user_email = "";
-
-            if (this.authenticationRequest != null)
-            {
-                ssp_userid = authenticationRequest.ActiveUserName;
-                user_name = authenticationRequest.UserName;
-                user_email = authenticationRequest.UserName;
-            }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                ssp_userid = entity.UserID;
-                user_name = entity.UserName;
-                user_email = entity.Email;
-            }
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(httpClient);
-#else
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
             try
             {
-                var verificationResponse = await updateMobileApi.SendUpdatePhoneTokenSMS(new SendUpdatePhoneTokenSMSRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = Constants.APP_CONFIG.API_KEY_ID,
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                    sspUserId = ssp_userid,
-                    username = user_name,
-                    userEmail = user_email,
-                    mobileNo = newPhoneNumber
-                }
-                , cts.Token);
+                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber));
 
-                if (verificationResponse.Data.IsError)
+                if (!verificationResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(verificationResponse.Data.Message);
+                    this.mView.ShowError(verificationResponse.Response.Message);
                 }
 
 

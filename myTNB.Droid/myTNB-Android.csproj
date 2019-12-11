@@ -940,7 +940,6 @@
     <Compile Include="Src\TermsAndConditions\MVP\TermsAndConditionPresenter.cs" />
     <Compile Include="Src\UpdateMobileNo\Activity\MobileTokenValidationActivity.cs" />
     <Compile Include="Src\UpdateMobileNo\Activity\UpdateMobileActivity.cs" />
-    <Compile Include="Src\UpdateMobileNo\Api\ISendUpdatePhoneTokenSMSApi.cs" />
     <Compile Include="Src\UpdateMobileNo\Api\IUpdateMobileNoApi.cs" />
     <Compile Include="Src\UpdateMobileNo\Models\UpdateMobileResponse.cs" />
     <Compile Include="Src\UpdateMobileNo\Models\UpdatePhoneTokenSMSResponse.cs" />
@@ -3791,6 +3790,8 @@
     <Compile Include="Src\MyTNBService\Request\RemoveRegisteredCardRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\ChangeNewPasswordResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\ChangeNewPasswordRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendUpdatePhoneTokenSMSResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendUpdatePhoneTokenSMSRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
