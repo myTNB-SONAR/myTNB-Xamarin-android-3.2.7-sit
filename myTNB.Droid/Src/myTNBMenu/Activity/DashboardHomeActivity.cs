@@ -650,7 +650,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(flag, "New", promotionMenuItem);
+                        SetNewWhatsNewBottomView(flag, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -680,7 +680,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, "New", promotionMenuItem);
+                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -702,7 +702,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(flag, "New", promotionMenuItem);
+                        SetNewWhatsNewBottomView(flag, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -724,7 +724,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, "New", promotionMenuItem);
+                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -1167,7 +1167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    SetNewRewardsBottomView(rewardMenuItem.IsChecked, "New", rewardMenuItem);
+                    SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
@@ -1182,7 +1182,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    SetNewRewardsBottomView(flag, "New", rewardMenuItem);
+                    SetNewRewardsBottomView(flag, Utility.GetLocalizedCommonLabel(Utility.GetLocalizedCommonLabel("new")), rewardMenuItem);
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
