@@ -165,6 +165,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         start = searchText.LastIndexOf("\" #") + 1;
                     }
+                    else if (searchText.Contains("\"#"))
+                    {
+                        start = searchText.LastIndexOf("\"#") + 1;
+                    }
+                    else if (searchText.Contains("“#"))
+                    {
+                        start = searchText.LastIndexOf("“#") + 1;
+                    }
 
                     if (searchText.Contains("# ”"))
                     {
@@ -173,6 +181,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     else if (searchText.Contains("# \""))
                     {
                         end = searchText.LastIndexOf("# \"") + 2;
+                    }
+                    else if (searchText.Contains("#\""))
+                    {
+                        end = searchText.LastIndexOf("#\"") + 1;
+                    }
+                    else if (searchText.Contains("#”"))
+                    {
+                        end = searchText.LastIndexOf("#”") + 1;
                     }
 
                     if (start != -1 && end != -1)
