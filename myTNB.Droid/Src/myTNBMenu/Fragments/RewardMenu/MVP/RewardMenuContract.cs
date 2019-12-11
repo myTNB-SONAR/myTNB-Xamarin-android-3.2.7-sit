@@ -19,6 +19,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             void SetEmptyView();
 
             bool CheckTabVisibility();
+
+            void SetRefreshView(string buttonText, string messageText);
         }
 
 		public interface IRewardMenuPresenter

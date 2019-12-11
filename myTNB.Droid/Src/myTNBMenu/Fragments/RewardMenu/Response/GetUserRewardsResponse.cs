@@ -24,6 +24,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response
 			[JsonProperty(PropertyName = "DisplayType")]
 			public string DisplayType { get; set; }
 
+            [JsonProperty(PropertyName = "RefreshMessage")]
+            public string RefreshMessage { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
+
             [JsonProperty(PropertyName = "data")]
             public UserRewards Data { get; set; }
         }

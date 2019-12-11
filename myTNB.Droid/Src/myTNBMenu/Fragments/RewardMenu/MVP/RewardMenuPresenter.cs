@@ -185,12 +185,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
                     else
                     {
-                        _ = OnGetUserRewardList();
+                        this.mView.SetRefreshView(null, null);
                     }
                 }
                 catch (Exception e)
                 {
-                    _ = OnGetUserRewardList();
+                    this.mView.SetRefreshView(null, null);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -222,21 +222,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 GetUserRewardsResponse response = await this.mApi.GetUserRewards(request, new System.Threading.CancellationTokenSource().Token);
 
-                if (response != null && response.Data != null && response.Data.ErrorCode == "7200"
-                    && response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                 {
-                    userList = response.Data.Data.CurrentList;
+                    if (response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
+                    {
+                        userList = response.Data.Data.CurrentList;
+                    }
+                    else
+                    {
+                        userList = new List<AddUpdateRewardModel>();
+                    }
+                    CheckRewardsCache();
                 }
                 else
                 {
                     userList = new List<AddUpdateRewardModel>();
+
+                    string messageText = "";
+                    string buttonText = "";
+
+                    if (response != null && response.Data != null)
+                    {
+                        if (!string.IsNullOrEmpty(response.Data.RefreshMessage))
+                        {
+                            messageText = response.Data.RefreshMessage;
+                        }
+
+                        if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                        {
+                            buttonText = response.Data.RefreshBtnText;
+                        }
+                    }
+
+                    this.mView.SetRefreshView(buttonText, messageText);
                 }
-                CheckRewardsCache();
             }
             catch (Exception e)
             {
                 userList = new List<AddUpdateRewardModel>();
-                CheckRewardsCache();
+                this.mView.SetRefreshView(null, null);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -485,11 +509,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     mRewardsCategoryEntity.CreateTable();
                     mRewardsEntity.CreateTable();
                 }
+
                 _ = OnGetUserRewardList();
             }
             catch (Exception e)
             {
-                _ = OnGetUserRewardList();
+                this.mView.SetRefreshView(null, null);
                 Utility.LoggingNonFatalError(e);
             }
         }

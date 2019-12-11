@@ -43,6 +43,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         [BindView(Resource.Id.txtEmptyReward)]
         TextView txtEmptyReward;
 
+        [BindView(Resource.Id.rewardRefreshLayout)]
+        LinearLayout rewardRefreshLayout;
+
+        [BindView(Resource.Id.txtRefresh)]
+        TextView txtRefresh;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnRefresh;
+
         private RewardsTabAdapter mAdapter;
 
         RewardMenuContract.IRewardMenuPresenter presenter;
@@ -98,11 +107,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 this.presenter.GetRewardsTimeStamp();
 
-                TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward);
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward, txtRefresh);
+
+                TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
                 rewardMainLayout.Visibility = ViewStates.Visible;
 
                 rewardEmptyLayout.Visibility = ViewStates.Gone;
+
+                rewardRefreshLayout.Visibility = ViewStates.Gone;
             }
             catch (System.Exception e)
             {
@@ -560,6 +573,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                     rewardEmptyLayout.Visibility = ViewStates.Visible;
 
+                    rewardRefreshLayout.Visibility = ViewStates.Gone;
+
                     txtEmptyReward.Text = Utility.GetLocalizedLabel("Rewards", "noRewards");
 
                     LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
@@ -567,6 +582,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
                     rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
                     rewardEmptyImg.RequestLayout();
+
+                    RewardsMenuUtils.OnSetTouchDisable(false);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        public void SetRefreshView(string buttonText, string messageText)
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    rewardMainLayout.Visibility = ViewStates.Gone;
+
+                    rewardEmptyLayout.Visibility = ViewStates.Gone;
+
+                    rewardRefreshLayout.Visibility = ViewStates.Visible;
+
+                    if (!string.IsNullOrEmpty(buttonText))
+                    {
+                        btnRefresh.Text = buttonText;
+                    }
+                    else
+                    {
+                        btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                    }
+
+                    if (!string.IsNullOrEmpty(messageText))
+                    {
+                        txtRefresh.Text = messageText;
+                    }
+                    else
+                    {
+                        txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
+                    }
+
+                    IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
+                    if (item != null)
+                    {
+                        item.SetVisible(false);
+                    }
 
                     RewardsMenuUtils.OnSetTouchDisable(false);
                 }
@@ -647,6 +707,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
 
             return i;
+        }
+
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).ShowRewardsMenu();
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
     }
 }
