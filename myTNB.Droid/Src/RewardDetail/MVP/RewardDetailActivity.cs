@@ -260,6 +260,18 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            try
+            {
+                if (LocalItem != null && !LocalItem.IsUsed)
+                {
+                    OnShowRewardMenuTutorial();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnPause()
@@ -778,6 +790,83 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OnShowRewardMenuTutorial()
+        {
+            if (!UserSessions.HasRewardsDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+            {
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this), this.presenter.OnGeneraNewAppTutorialList(), true);
+                };
+                h.PostDelayed(myAction, 100);
+            }
+        }
+
+        public int GetRewardSaveButtonHeight()
+        {
+            int height = btnRewardSave.Height;
+            return height;
+        }
+
+        public int GetRewardSaveButtonWidth()
+        {
+            int width = btnRewardSave.Width;
+            return width;
+        }
+
+        public int GetRewardUseButtonHeight()
+        {
+            int height = btnRewardUse.Height;
+            return height;
+        }
+
+        public int GetRewardUseButtonWidth()
+        {
+            int width = btnRewardUse.Width;
+            return width;
+        }
+
+        public int[] GetSaveButtonRelativePosition()
+        {
+            int[] i = new int[2];
+            i[0] = 0;
+            i[1] = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                btnRewardSave.GetLocationOnScreen(location);
+                return location;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public int[] GetUseButtonRelativePosition()
+        {
+            int[] i = new int[2];
+            i[0] = 0;
+            i[1] = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                btnRewardUse.GetLocationOnScreen(location);
+                return location;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
     }
 }

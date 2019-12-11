@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.RewardDetail.MVP
 {
@@ -38,6 +39,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             Task UpdateRewardUsed(string itemID);
 
             List<string> ExtractUrls(string text);
+
+            List<NewAppModel> OnGeneraNewAppTutorialList();
 
         }
 	}

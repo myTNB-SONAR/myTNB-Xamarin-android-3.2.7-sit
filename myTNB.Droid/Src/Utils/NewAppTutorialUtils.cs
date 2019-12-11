@@ -15,7 +15,7 @@ namespace myTNB_Android.Src.Utils
     {
         private static NewAppTutorialDialogFragment mDialog;
 
-        public static void OnShowNewAppTutorial(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list)
+        public static void OnShowNewAppTutorial(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
             if (mDialog != null)
             {
@@ -54,7 +54,7 @@ namespace myTNB_Android.Src.Utils
                 }
             }
 
-            mDialog = new NewAppTutorialDialogFragment(ctx, fragment, pref, list);
+            mDialog = new NewAppTutorialDialogFragment(ctx, fragment, pref, list, mIndicationShowTop);
             mDialog.Cancelable = false;
             mDialog.Show(((AppCompatActivity)ctx).SupportFragmentManager, "NewAppTutorial Dialog");
         }

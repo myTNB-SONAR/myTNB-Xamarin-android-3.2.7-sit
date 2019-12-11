@@ -9,6 +9,7 @@ namespace myTNB_Android.Src.Utils
         private static List<string> updatedList = new List<string>();
         private static bool refreshAll = false;
         private static bool isRewardLoading = false;
+        private static bool touchDisable = false;
 
         public static void OnSetUpdateList(string mUpdateExclude)
         {
@@ -54,6 +55,16 @@ namespace myTNB_Android.Src.Utils
         public static bool GetRewardLoading()
         {
             return isRewardLoading;
+        }
+
+        public static void OnSetTouchDisable(bool flag)
+        {
+            touchDisable = flag;
+        }
+
+        public static bool GetTouchDisable()
+        {
+            return touchDisable;
         }
 
     }

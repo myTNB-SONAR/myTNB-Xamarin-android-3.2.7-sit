@@ -240,6 +240,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnStartRewardThread();
 
             Task OnGetUserRewardList();
+
+            void UpdateRewardRead(string itemID, bool flag);
         }
 	}
 }

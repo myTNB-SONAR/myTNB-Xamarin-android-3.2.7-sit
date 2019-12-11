@@ -17,6 +17,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 using Refit;
 
@@ -410,6 +411,33 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Never miss out on a reward.",
+                ContentMessage = "Save a reward to your favourite<br/>so that you can use it later.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = false
+            });
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopRight,
+                ContentTitle = "Redeem your rewards.",
+                ContentMessage = "At the merchant’s place and ready<br/>to redeem your reward? Tap here.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }

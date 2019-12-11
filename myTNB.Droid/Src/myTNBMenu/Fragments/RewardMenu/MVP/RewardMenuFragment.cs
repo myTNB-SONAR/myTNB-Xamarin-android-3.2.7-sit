@@ -57,6 +57,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             SetHasOptionsMenu(true);
             presenter = new RewardMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+
+            RewardsMenuUtils.OnSetTouchDisable(false);
         }
 
         public override void OnAttach(Context context)
@@ -81,6 +83,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                RewardsMenuUtils.OnSetTouchDisable(true);
+
                 InitializeView();
 
                 if (mTabList != null && mTabList.Count > 0)
@@ -446,6 +450,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         Utility.LoggingNonFatalError(ex);
                     }
 
+                    RewardsMenuUtils.OnSetTouchDisable(false);
+
                     try
                     {
                         if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
@@ -561,6 +567,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
                     rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
                     rewardEmptyImg.RequestLayout();
+
+                    RewardsMenuUtils.OnSetTouchDisable(false);
                 }
                 catch (System.Exception e)
                 {

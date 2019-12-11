@@ -516,17 +516,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 RewardsEntity item = wtManager.GetItem(rewardID);
 
-                                if (item != null && item.IsUsed && item.IsSaved)
-                                {
-                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
-                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
-                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
-                                    StartActivity(activity);
-                                }
-                                else
-                                {
-                                    this.mPresenter.OnStartRewardThread();
-                                }
+                                this.mPresenter.OnStartRewardThread();
                             }
                         }
                     }
@@ -1154,6 +1144,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         fragment.CheckRMKwhSelectDropDown();
                     }
                 }
+                else if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_reward
+                    && currentFragment.GetType() == typeof(RewardMenuFragment))
+                {
+                    if (RewardsMenuUtils.GetTouchDisable())
+                    {
+                        int x = (int)ev.RawX;
+                        int y = (int)ev.RawY;
+                        if (!IsViewInBounds(bottomNavigationView, x, y))
+                        {
+                            return true;
+                        }
+                    }
+                }
                 return base.DispatchTouchEvent(ev);
             }
             catch (System.Exception e)
@@ -1376,7 +1380,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                _ = this.mPresenter.OnGetUserRewardList();
+                RunOnUiThread(() =>
+                {
+                    _ = this.mPresenter.OnGetUserRewardList();
+                });
             }
             catch (Exception e)
             {
@@ -1422,6 +1429,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 if (item != null)
                                 {
+                                    if (!item.Read)
+                                    {
+                                        this.mPresenter.UpdateRewardRead(item.ID, true);
+                                    }
+
                                     Intent activity = new Intent(this, typeof(RewardDetailActivity));
                                     activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
                                     activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));

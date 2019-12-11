@@ -108,6 +108,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             else
                                             {
                                                 getSiteCoreRewards = false;
+
                                             }
                                         }
                                     }
@@ -213,6 +214,10 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             {
                                                 mRewardsCategoryEntity.InsertListOfItems(ToStoredList);
                                                 mRewardsEntity.InsertListOfItems(ToStoredRewardList);
+                                                if (mHomeView != null)
+                                                {
+                                                    mHomeView.OnCheckUserReward();
+                                                }
                                             }
                                         }
                                         else
@@ -223,19 +228,41 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             mRewardsEntity.CreateTable();
                                         }
                                     }
+                                    else
+                                    {
+                                        if (mHomeView != null)
+                                        {
+                                            mHomeView.OnCheckUserReward();
+                                        }
+                                    }
 								}
 								catch (System.Exception e)
 								{
-									Utility.LoggingNonFatalError(e);
+                                    if (mHomeView != null)
+                                    {
+                                        mHomeView.OnCheckUserReward();
+                                    }
+                                    Utility.LoggingNonFatalError(e);
 								}
 							}).ContinueWith((Task previous) =>
 							{
 							}, cts.Token);
 						}
+                        else
+                        {
+                            if (mHomeView != null)
+                            {
+                                mHomeView.OnCheckUserReward();
+                            }
+                        }
 					}
 					catch (System.Exception e)
 					{
-						Utility.LoggingNonFatalError(e);
+                        if (mHomeView != null)
+                        {
+                            mHomeView.OnCheckUserReward();
+                        }
+                        Utility.LoggingNonFatalError(e);
 					}
 				}).ContinueWith((Task previous) =>
 				{
@@ -244,15 +271,27 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			}
 			catch (ApiException apiException)
 			{
-				Utility.LoggingNonFatalError(apiException);
+                if (mHomeView != null)
+                {
+                    mHomeView.OnCheckUserReward();
+                }
+                Utility.LoggingNonFatalError(apiException);
 			}
 			catch (Newtonsoft.Json.JsonReaderException e)
 			{
-				Utility.LoggingNonFatalError(e);
+                if (mHomeView != null)
+                {
+                    mHomeView.OnCheckUserReward();
+                }
+                Utility.LoggingNonFatalError(e);
 			}
 			catch (System.Exception e)
 			{
-				Utility.LoggingNonFatalError(e);
+                if (mHomeView != null)
+                {
+                    mHomeView.OnCheckUserReward();
+                }
+                Utility.LoggingNonFatalError(e);
 			}
 			Console.WriteLine("000 SitecoreRewardAPI ended");
 			return null;
@@ -261,11 +300,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 		protected override void OnPostExecute(Java.Lang.Object result)
 		{
 			base.OnPostExecute(result);
-
-            if (mHomeView != null)
-            {
-                mHomeView.OnCheckUserReward();
-            }
         }
 
 	}

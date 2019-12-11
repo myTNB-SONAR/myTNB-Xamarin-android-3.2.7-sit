@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Preferences;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Utils;
@@ -54,6 +55,7 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
+                LaunchViewActivity.MAKE_INITIAL_CALL = true;
                 Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                 PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(PreLoginIntent);
@@ -63,6 +65,7 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
         public override void OnBackPressed()
         {
             base.OnBackPressed();
+            LaunchViewActivity.MAKE_INITIAL_CALL = true;
             Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
             PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(PreLoginIntent);

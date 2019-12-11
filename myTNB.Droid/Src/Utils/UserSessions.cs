@@ -182,6 +182,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasRewardsDetailShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasRewardsDetailShown", false);
+        }
+
+        public static void DoRewardsDetailShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasRewardsDetailShown", true);
+            editor.Apply();
+        }
+
         public static System.Boolean HasHomeTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasHomeTutorialShown", false);
