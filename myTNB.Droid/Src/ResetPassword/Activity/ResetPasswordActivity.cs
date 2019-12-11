@@ -178,7 +178,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 {
 
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
-                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
                     txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     if (!this.userActionsListener.CheckPasswordIsValid(newPassword))
@@ -200,7 +200,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
-                    txtInputLayoutConfirmNewPassword.Error = GetString(Resource.String.registration_form_errors_not_equal_confirm_password);
+                    txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
                     txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
                     if (!newPassword.Equals(confirmPassword))
@@ -266,12 +266,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowNotEqualConfirmNewPasswordToNewPasswordError()
         {
-            txtInputLayoutConfirmNewPassword.Error = GetString(Resource.String.reset_password_confirm_password_does_not_match_error);
+            txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
         }
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
-            txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+            txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
         }
 

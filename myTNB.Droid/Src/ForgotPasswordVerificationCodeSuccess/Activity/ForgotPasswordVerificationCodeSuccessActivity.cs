@@ -31,8 +31,8 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
         [BindView(Resource.Id.verifyCodeTxtContentInfo)]
         TextView verifyCodeTxtContentInfo;
 
-        [BindView(Resource.Id.verifyCodeTxtContentInfo2)]
-        TextView verifyCodeTxtContentInfo2;
+        //[BindView(Resource.Id.verifyCodeTxtContentInfo2)]
+        //TextView verifyCodeTxtContentInfo2;
 
 
         [BindView(Resource.Id.verifyCodeBtnLogin)]
@@ -53,7 +53,7 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(verifyCodeTxtTitleInfo);
                 TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo);
-                TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo2);
+                //TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo2);
                 TextViewUtils.SetMuseoSans500Typeface(verifyCodeBtnLogin);
 
                 verifyCodeTxtTitleInfo.Text = GetLabelByLanguage("title");
@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
                 {
                     email = extras.GetString("email");
 
-                    verifyCodeTxtContentInfo.Text = "Log in using the 8-digit temporary password that was sent to " + email + ".";
+                    verifyCodeTxtContentInfo.Text = string.Format(GetLabelByLanguage("details"),email);
 
 
                 }

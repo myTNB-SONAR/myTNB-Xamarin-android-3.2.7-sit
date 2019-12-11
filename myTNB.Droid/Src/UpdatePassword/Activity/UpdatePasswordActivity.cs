@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
                 if (!string.IsNullOrEmpty(newPassword))
                 {
-                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
                     txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
         public void ShowInvalidNewPassword()
         {
-            txtInputLayoutNewPassword.Error = GetString(Resource.String.update_password_invalid_new_password);
+            txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
         }
 

@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 if (!string.IsNullOrEmpty(password))
                 {
-                    textInputLayoutPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
                     textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
@@ -372,7 +372,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowNotEqualConfirmPasswordError()
         {
-            textInputLayoutConfirmPassword.Error = GetString(Resource.String.registration_form_errors_not_equal_confirm_password);
+            textInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
         }
 
         public void ShowTermsAndConditions()
