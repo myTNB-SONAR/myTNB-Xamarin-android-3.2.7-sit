@@ -422,7 +422,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
-                    this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
                     OnUpdateRewardUnRead();
                     this.mView.ShowMoreMenu();
 					break;
