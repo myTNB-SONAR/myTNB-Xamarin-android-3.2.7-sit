@@ -137,15 +137,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             try
             {
                 this.mView.ShowGetRegisteredCardDialog();
-
-#if DEBUG || STUB
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var api = RestService.For<MPGetRegisteredCardsApi>(httpClient);
-#else
-            var api = RestService.For<MPGetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-                //MPGetRegisteredCardsResponse result = await api.GetRegisteredCards(new MPGetRegisteredCardsRequest(apiKeyId, email));
                 var result = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
                 this.mView.GetRegisterCardsResult(result);
                 this.mView.HideGetRegisteredCardDialog();

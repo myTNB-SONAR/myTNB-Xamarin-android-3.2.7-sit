@@ -115,15 +115,16 @@ namespace myTNB_Android.Src.Login.MVP
                     fcmToken = FirebaseInstanceId.Instance.Token;
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
-
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd));
+                UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
+                userAuthRequest.SetUserName(usrNme);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
                 {
                     if (this.mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
-                        this.mView.ShowInvalidEmailPasswordError(userResponse.Response.Message);
+                        this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayMessage);
                     }
                 }
                 else

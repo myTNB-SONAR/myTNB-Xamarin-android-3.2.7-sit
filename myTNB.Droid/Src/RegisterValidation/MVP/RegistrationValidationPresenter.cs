@@ -11,7 +11,6 @@ using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.RegistrationForm.Api;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;

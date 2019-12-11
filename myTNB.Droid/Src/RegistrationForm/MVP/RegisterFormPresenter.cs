@@ -4,7 +4,6 @@ using Android.Text;
 using Android.Util;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.RegistrationForm.Api;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;
