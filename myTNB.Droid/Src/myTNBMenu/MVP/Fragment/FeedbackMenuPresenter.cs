@@ -1,6 +1,9 @@
 ﻿using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -46,19 +49,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public async void OnRetry()
         {
-            cts = new CancellationTokenSource();
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
             }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-#else
 
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-#endif
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             try
             {
                 string email = string.Empty;
@@ -66,25 +61,26 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     email = UserEntity.GetActive().Email;
                 }
-                var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = email,
-                    DeviceId = this.mView.GetDeviceId()
 
-                }, cts.Token);
+                var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!submittedFeedbackResponse.Data.IsError)
+                if (submittedFeedbackResponse.IsSuccessResponse())
                 {
                     SubmittedFeedbackEntity.Remove();
-                    foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
+                    foreach (SubmittedFeedbackListResponse.ResponseData responseData in submittedFeedbackResponse.GetData())
                     {
+                        SubmittedFeedback sf = new SubmittedFeedback();
+                        sf.FeedbackId = responseData.ServiceReqNo;
+                        sf.FeedbackCategoryId = responseData.FeedbackCategoryId;
+                        sf.DateCreated = responseData.DateCreated;
+                        sf.FeedbackMessage = responseData.FeedbackMessage;
+                        sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
+                        sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
                         SubmittedFeedbackEntity.InsertOrReplace(sf);
-
                     }
 
                     int count = SubmittedFeedbackEntity.Count();

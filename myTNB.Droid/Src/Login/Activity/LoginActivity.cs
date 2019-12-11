@@ -300,7 +300,7 @@ namespace myTNB_Android.Src.Login.Activity
             else
             {
                 mEmptyEmailSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_email_empty_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mEmptyEmailSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyEmailSnackBar.Dismiss(); }
                 );
                 mEmptyEmailSnackBar.Show();
             }
@@ -321,7 +321,7 @@ namespace myTNB_Android.Src.Login.Activity
             else
             {
                 mEmptyPasswordSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_password_empty_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mEmptyPasswordSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyPasswordSnackBar.Dismiss(); }
                 );
                 mEmptyPasswordSnackBar.Show();
             }
@@ -342,7 +342,7 @@ namespace myTNB_Android.Src.Login.Activity
             else
             {
                 mInvalidEmailSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_email_invalid_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mInvalidEmailSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mInvalidEmailSnackBar.Dismiss(); }
                 );
                 mInvalidEmailSnackBar.Show();
             }
@@ -362,7 +362,7 @@ namespace myTNB_Android.Src.Login.Activity
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }

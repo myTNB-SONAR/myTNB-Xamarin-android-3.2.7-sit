@@ -10,9 +10,11 @@ using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.UpdateMobileNo.Api;
 using myTNB_Android.Src.UpdateMobileNo.Request;
 using myTNB_Android.Src.Utils;
@@ -54,8 +56,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void OnVerifyToken(string num1, string num2, string num3, string num4, string newPhone, UserAuthenticationRequest request, bool fromAppLaunch, bool verfiyPhone)
         {
-
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
                 this.mView.ShowEmptyErrorPin_1();
@@ -94,48 +94,19 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 oldPhoneNo = entity.MobileNo;
             }
 
-            string user_id = "";
-            string user_email = "";
-            if (request != null)
-            {
-                this.authenticationRequest = request;
-                user_id = request.ActiveUserName;
-                user_email = request.UserName;
-            }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                user_id = entity.UserID;
-                user_email = entity.Email;
-            }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var verifyTokenApi = RestService.For<IUpdateMobileNoApi>(httpClient);
-#else
-            var verifyTokenApi = RestService.For<IUpdateMobileNoApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var verifyTokenResponse = await verifyTokenApi.UpdatePhoneNumberV2(new UpdateMobileNo.Request.UpdateMobileV2Request()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    UserId = user_id,
-                    Email = user_email,
-                    OldPhoneNumber = oldPhoneNo,
-                    NewPhoneNumber = newPhone,
-                    token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)
-                }, cts.Token);
+                var verifyTokenResponse = await ServiceApiImpl.Instance.UpdatePhoneNumber(new UpdateNewPhoneNumberRequest(oldPhoneNo, newPhone, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideRegistrationProgress();
                 }
 
-                if (!verifyTokenResponse.Data.IsError)
+                if (verifyTokenResponse.IsSuccessResponse())
                 {
                     //this.mView.ShowDashboardMyAccount();
-                    /// call login service 
+                    /// call login service
                     if (UserEntity.IsCurrentlyActive())
                     {
                         UserEntity.UpdatePhoneNumber(newPhone);
@@ -156,7 +127,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 else
                 {
                     // TODO : ADD REGISTRATION ERROR
-                    this.mView.ShowError(verifyTokenResponse.Data.Message);
+                    this.mView.ShowError(verifyTokenResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -229,55 +200,13 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.StartProgress();
 
-            cts = new CancellationTokenSource();
-
-            string ssp_userid = "";
-            string user_name = "";
-            string user_email = "";
-
-            if (this.authenticationRequest != null)
-            {
-                ssp_userid = authenticationRequest.ActiveUserName;
-                user_name = authenticationRequest.UserName;
-                user_email = authenticationRequest.UserName;
-            }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                ssp_userid = entity.UserID;
-                user_name = entity.UserName;
-                user_email = entity.Email;
-            }
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(httpClient);
-#else
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
             try
             {
-                var verificationResponse = await updateMobileApi.SendUpdatePhoneTokenSMS(new SendUpdatePhoneTokenSMSRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = Constants.APP_CONFIG.API_KEY_ID,
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                    sspUserId = ssp_userid,
-                    username = user_name,
-                    userEmail = user_email,
-                    mobileNo = newPhoneNumber
-                }
-                , cts.Token);
+                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber));
 
-                if (verificationResponse.Data.IsError)
+                if (!verificationResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(verificationResponse.Data.Message);
+                    this.mView.ShowError(verificationResponse.Response.DisplayMessage);
                 }
 
 
@@ -334,36 +263,22 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void CallLoginServce(UserAuthenticationRequest request, string newPhone)
         {
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
             if (mView.IsActive())
             {
                 this.mView.ShowRegistrationProgress();
             }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IAuthenticateUser>(httpClient);
-
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-
-#else
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-                var userResponse = await api.DoLogin(request, cts.Token);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(request.ClientType,request.Password));
 
-                if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
+                if (!userResponse.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         this.mView.HideRegistrationProgress();
                     }
-                    this.mView.ShowRetryLoginUnknownException(userResponse.Data.Message);
+                    this.mView.ShowRetryLoginUnknownException(userResponse.Response.DisplayMessage);
                 }
                 else
                 {
@@ -379,7 +294,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     AccountDataEntity.RemoveAll();
                     SummaryDashBoardAccountEntity.RemoveAll();
                     SelectBillsEntity.RemoveAll();
-                    int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                    int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                     if (Id > 0)
                     {
 
@@ -398,7 +313,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             usrInf = new
                             {
                                 eid = UserEntity.GetActive().UserName,
-                                sspuid = userResponse.Data.User.UserId,
+                                sspuid = userResponse.GetData().UserId,
                                 lang = "EN",
                                 sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                                 sec_auth_k2 = "",
@@ -501,33 +416,16 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void ShowDashboard()
         {
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
             if (mView.IsActive())
             {
                 this.mView.ShowRegistrationProgress();
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<INotificationApi>(httpClient);
-            //var weblinkApi = RestService.For<IWeblinksApi>(httpClient);
-            //var locationTypesApi = RestService.For<GetLocationTypseApi>(httpClient);
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-
             var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
 
-            var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
-
 #else
-            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-            //var weblinkApi = RestService.For<IWeblinksApi>(Constants.SERVER_URL.END_POINT);
-            //var locationTypesApi = RestService.For<GetLocationTypseApi>(Constants.SERVER_URL.END_POINT);
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
-
-            var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
             try
@@ -551,21 +449,21 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         }
                     }
 
-                    var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
-                    {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = loggedUser.Email,
-                        DeviceId = this.mView.GetDeviceId()
+                    var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
 
-                    }, cts.Token);
-
-                    if (!submittedFeedbackResponse.Data.IsError)
+                    if (submittedFeedbackResponse.IsSuccessResponse())
                     {
                         SubmittedFeedbackEntity.Remove();
-                        foreach (SubmittedFeedback sFeed in submittedFeedbackResponse.Data.Data)
+                        foreach (SubmittedFeedbackListResponse.ResponseData responseData in submittedFeedbackResponse.GetData())
                         {
-                            int newRecord = SubmittedFeedbackEntity.InsertOrReplace(sFeed);
-                            Console.WriteLine(string.Format("SubmitFeedback Id = {0}", newRecord));
+                            SubmittedFeedback sf = new SubmittedFeedback();
+                            sf.FeedbackId = responseData.ServiceReqNo;
+                            sf.FeedbackCategoryId = responseData.FeedbackCategoryId;
+                            sf.DateCreated = responseData.DateCreated;
+                            sf.FeedbackMessage = responseData.FeedbackMessage;
+                            sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
+                            sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
+                            SubmittedFeedbackEntity.InsertOrReplace(sf);
                         }
                     }
                     UserSessions.SavePhoneVerified(mSharedPref, true);

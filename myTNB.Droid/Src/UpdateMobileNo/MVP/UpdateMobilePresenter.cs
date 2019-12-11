@@ -2,6 +2,7 @@
 using Android.Text;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.UpdateMobileNo.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -147,68 +148,27 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 return;
             }
 
-            string sspUser_ID = "";
-            string user_name = "";
-            string user_email = "";
-
-            if (request != null)
-            {
-                sspUser_ID = request.ActiveUserName;
-                user_name = request.UserName;
-                user_email = request.UserName;
-            }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                sspUser_ID = entity.UserID;
-                user_name = entity.UserName;
-                user_email = entity.Email;
-            }
-
             if (mView.IsActive())
             {
                 this.mView.ShowProgress();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            cts = new CancellationTokenSource();
-
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(httpClient);
-#else
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(Constants.SERVER_URL.END_POINT);
-#endif
             try
             {
-
-                var updateMobileResponse = await updateMobileApi.SendUpdatePhoneTokenSMS(new Request.SendUpdatePhoneTokenSMSRequest
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = Constants.APP_CONFIG.API_KEY_ID,
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                    sspUserId = sspUser_ID,
-                    username = user_name,
-                    userEmail = user_email,
-                    mobileNo = newPhoneNumber
-                }, cts.Token);
+                var updateMobileResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgress();
                 }
 
-                if (!updateMobileResponse.Data.IsError)
+                if (updateMobileResponse.IsSuccessResponse())
                 {
                     this.mView.ShowSuccess(newPhoneNumber);
                 }
                 else
                 {
-                    this.mView.ShowErrorMessage(updateMobileResponse.Data.Message);
+                    this.mView.ShowErrorMessage(updateMobileResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

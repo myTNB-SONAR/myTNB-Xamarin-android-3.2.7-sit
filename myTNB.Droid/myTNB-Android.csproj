@@ -426,7 +426,6 @@
     <Compile Include="Src\AddAccount\Api\AddMultipleAccountsToUserApi.cs" />
     <Compile Include="Src\AddAccount\Api\GetCustomerAccounts.cs" />
     <Compile Include="Src\AddAccount\Api\GetCustomerAccountsForICNumApi.cs" />
-    <Compile Include="Src\AddAccount\Api\ValidateManualAccountLinkingApi.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountByRightsFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountFormFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountTypeFragment.cs" />
@@ -462,8 +461,6 @@
     <Compile Include="Src\AppLaunch\Activity\LaunchViewActivity.cs" />
     <Compile Include="Src\AppLaunch\Api\GetAccounts.cs" />
     <Compile Include="Src\AppLaunch\Api\GetMasterDataApi.cs" />
-    <Compile Include="Src\AppLaunch\Api\GetPhoneVerifyStatusApi.cs" />
-    <Compile Include="Src\AppLaunch\Api\INotificationApi.cs" />
     <Compile Include="Src\AppLaunch\Api\IWeblinksApi.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountType.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountTypesResponse.cs" />
@@ -652,7 +649,6 @@
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
-    <Compile Include="Src\MakePayment\Api\GetRegisteredCardsApi.cs" />
     <Compile Include="Src\MakePayment\Api\SubmitPaymentApi.cs" />
     <Compile Include="Src\MakePayment\Models\CreditCard.cs" />
     <Compile Include="Src\MakePayment\Models\GetRegisteredCardsRequest.cs" />
@@ -666,7 +662,6 @@
     <Compile Include="Src\MakePayment\Requests\SubmitPaymentRequestPG.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
-    <Compile Include="Src\ManageCards\Api\IManageCardsApi.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
     <Compile Include="Src\ManageCards\Models\RemoveRegisteredCardResponse.cs" />
     <Compile Include="Src\ManageCards\MVP\ManageCardsContract.cs" />
@@ -684,7 +679,6 @@
     <Compile Include="Src\MultipleAccountPayment\Adapter\MPAddCardAdapter.cs" />
     <Compile Include="Src\MultipleAccountPayment\Adapter\SelectAccountListAdapter.cs" />
     <Compile Include="Src\MultipleAccountPayment\Api\MPGetAccountsDueAmountApi.cs" />
-    <Compile Include="Src\MultipleAccountPayment\Api\MPGetRegisteredCardsApi.cs" />
     <Compile Include="Src\MultipleAccountPayment\Api\MPRequestPaymentApi.cs" />
     <Compile Include="Src\MultipleAccountPayment\Fragment\MPPaymentWebViewFragment.cs" />
     <Compile Include="Src\MultipleAccountPayment\Fragment\MPSelectPaymentMethodFragment.cs" />
@@ -717,7 +711,6 @@
     <Compile Include="Src\myTNBMenu\Api\IAmountDueApi.cs" />
     <Compile Include="Src\myTNBMenu\Api\IBillsPaymentHistoryApi.cs" />
     <Compile Include="Src\myTNBMenu\Api\IDetailedCustomerAccount.cs" />
-    <Compile Include="Src\myTNBMenu\Api\IUserNotificationsApi.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsDayFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsHourFormatter.cs" />
@@ -781,7 +774,6 @@
     <Compile Include="Src\NotificationSettings\Activity\NotificationSettingsActivity.cs" />
     <Compile Include="Src\NotificationSettings\Adapter\NotificationChannelAdapter.cs" />
     <Compile Include="Src\NotificationSettings\Adapter\NotificationTypeAdapter.cs" />
-    <Compile Include="Src\NotificationSettings\Api\IUserPreference.cs" />
     <Compile Include="Src\NotificationSettings\Models\NotificationChannelUserPreference.cs" />
     <Compile Include="Src\NotificationSettings\Models\NotificationTypeUserPreference.cs" />
     <Compile Include="Src\NotificationSettings\Models\SaveUserPreferenceResponse.cs" />
@@ -811,7 +803,6 @@
     <Compile Include="Src\Promotions\MVP\PromotionPresenter.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
-    <Compile Include="Src\Rating\Api\GetRateUsQuestionsApi.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
     <Compile Include="Src\Rating\Fargment\ThankYouFragment.cs" />
     <Compile Include="Src\Rating\Model\QuestionCategoryID.cs" />
@@ -848,7 +839,6 @@
     <Compile Include="Src\Database\Model\CustomerBillingAccount.cs" />
     <Compile Include="Src\Database\Model\UserRegister.cs" />
     <Compile Include="Src\ForgetPassword\Activity\ForgetPasswordActivity.cs" />
-    <Compile Include="Src\ForgetPassword\Api\IForgetPassword.cs" />
     <Compile Include="Src\ForgetPassword\Models\ForgetPasswordVerificationResponse.cs" />
     <Compile Include="Src\ForgetPassword\MVP\ForgetPasswordPresenter.cs" />
     <Compile Include="Src\ForgetPassword\Models\ForgetPassword.cs" />
@@ -856,7 +846,6 @@
     <Compile Include="Src\ForgetPassword\MVP\ForgetPasswordContract.cs" />
     <Compile Include="Src\ForgetPassword\Requests\ForgetPasswordRequest.cs" />
     <Compile Include="Src\Login\Activity\LoginActivity.cs" />
-    <Compile Include="Src\Login\Api\IAuthenticateUser.cs" />
     <Compile Include="Src\Login\Models\User.cs" />
     <Compile Include="Src\Login\Models\UserResponse.cs" />
     <Compile Include="Src\Login\MVP\LoginContract.cs" />
@@ -866,8 +855,6 @@
     <Compile Include="Src\PreLogin\MVP\PreLoginContract.cs" />
     <Compile Include="Src\PreLogin\MVP\PreLoginPresenter.cs" />
     <Compile Include="Src\RegistrationForm\Activity\RegistrationFormActivity.cs" />
-    <Compile Include="Src\RegistrationForm\Api\IGetVerificationCode.cs" />
-    <Compile Include="Src\RegistrationForm\Api\IRegisterUser.cs" />
     <Compile Include="Src\RegistrationForm\Models\UserRegistration.cs" />
     <Compile Include="Src\RegistrationForm\Models\UserRegistrationResponse.cs" />
     <Compile Include="Src\RegistrationForm\Models\VerificationCode.cs" />
@@ -952,7 +939,6 @@
     <Compile Include="Src\TermsAndConditions\MVP\TermsAndConditionPresenter.cs" />
     <Compile Include="Src\UpdateMobileNo\Activity\MobileTokenValidationActivity.cs" />
     <Compile Include="Src\UpdateMobileNo\Activity\UpdateMobileActivity.cs" />
-    <Compile Include="Src\UpdateMobileNo\Api\ISendUpdatePhoneTokenSMSApi.cs" />
     <Compile Include="Src\UpdateMobileNo\Api\IUpdateMobileNoApi.cs" />
     <Compile Include="Src\UpdateMobileNo\Models\UpdateMobileResponse.cs" />
     <Compile Include="Src\UpdateMobileNo\Models\UpdatePhoneTokenSMSResponse.cs" />
@@ -964,7 +950,6 @@
     <Compile Include="Src\UpdateMobileNo\Request\UpdateMobileRequest.cs" />
     <Compile Include="Src\UpdateMobileNo\Request\UpdateMobileV2Request.cs" />
     <Compile Include="Src\UpdateNickname\Activity\UpdateNicknameActivity.cs" />
-    <Compile Include="Src\UpdateNickname\Api\IUpdateAccountApi.cs" />
     <Compile Include="Src\UpdateNickname\Models\UpdateLinkedAccountNickNameResponse.cs" />
     <Compile Include="Src\UpdateNickname\MVP\UpdateNicknameContract.cs" />
     <Compile Include="Src\UpdateNickname\MVP\UpdateNicknamePresenter.cs" />
@@ -3761,6 +3746,58 @@
     <Compile Include="Src\CompoundView\ProfileMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
+    <Compile Include="Src\MyTNBService\Request\AccountToCustomerRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\AccountToCustomerResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\ValidateManualAccountResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\ValidateManualAccountRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\PhoneVerifyStatusResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppNotificationChannelsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppNotificationTypesResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\CustomerAccountsForICNumResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\CustomerAccountsForICNumRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmitFeedbackResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmitFeedbackRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\DeviceInfoRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmittedFeedbackListResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\LocationsByKeywordResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\LocationsByKeywordRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserAuthenticateResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\UserAuthenticateRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SaveUserNotificationTypePreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SaveUserNotificationTypePreferenceRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SaveUserNotificationChannelPreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SaveUserNotificationChannelPreferenceRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationTypePreferencesResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationChannelPreferencesResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendRegistrationTokenSMSResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendRegistrationTokenSMSRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\RegisteredCardsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\RegisteredCardsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmittedFeedbackDetailsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmittedFeedbackDetailsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\CreateNewUserWithTokenResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\CreateNewUserWithTokenRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendResetPasswordCodeResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendResetPasswordCodeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\ResetPasswordWithTokenResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\ResetPasswordWithTokenRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\LogoutUserResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\LogoutUserRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\RemoveRegisteredCardResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\RemoveRegisteredCardRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\ChangeNewPasswordResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\ChangeNewPasswordRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendUpdatePhoneTokenSMSResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendUpdatePhoneTokenSMSRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UpdateNewPhoneNumberResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\UpdateNewPhoneNumberRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmitRateUsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmitRateUsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UpdateLinkedAccountNameResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\UpdateLinkedAccountNameRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetRateUsQuestionResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetRateUsQuestionRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4131,6 +4168,13 @@
     <Folder Include="Src\RearrangeAccount\" />
     <Folder Include="Src\RearrangeAccount\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
+    <Folder Include="Src\Login\Api\" />
+    <Folder Include="Src\NotificationSettings\Api\" />
+    <Folder Include="Src\RegistrationForm\Api\" />
+    <Folder Include="Src\ForgetPassword\Api\" />
+    <Folder Include="Src\ManageCards\Api\" />
+    <Folder Include="Src\UpdateNickname\Api\" />
+    <Folder Include="Src\Rating\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

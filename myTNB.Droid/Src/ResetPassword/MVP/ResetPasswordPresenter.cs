@@ -6,9 +6,10 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.ResetPassword.Api;
 using myTNB_Android.Src.ResetPassword.Request;
 using myTNB_Android.Src.Utils;
@@ -49,8 +50,6 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
         public async void Submit(string apiKeyId, string newPassword, string confirmNewPassword, string oldPassword, string username, string deviceId)
         {
-            cts = new CancellationTokenSource();
-
             if (TextUtils.IsEmpty(newPassword))
             {
                 this.mView.ShowEmptyNewPasswordError();
@@ -83,73 +82,30 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var resetPasswordApi = RestService.For<IResetPassword>(httpClient);
-            var loginApi = RestService.For<IAuthenticateUser>(httpClient);
-
-#else
-            var resetPasswordApi = RestService.For<IResetPassword>(Constants.SERVER_URL.END_POINT);
-            var loginApi = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var changePasswordResponse = await resetPasswordApi.ChangeNewPassword(new ResetPasswordRequest(apiKeyId,
-                                                                           username,
-                                                                           oldPassword,
-                                                                           newPassword,
-                                                                           confirmNewPassword,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId,
-                                                                           apiKeyId), cts.Token);
+                var changePasswordResponse = await ServiceApiImpl.Instance.ChangeNewPassword(new ChangeNewPasswordRequest(oldPassword, newPassword, newPassword));
 
-                if (changePasswordResponse.Data.IsError)
+                if (!changePasswordResponse.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
                     }
-                    string message = changePasswordResponse.Data.Message;
+                    string message = changePasswordResponse.Response.DisplayMessage;
                     this.mView.ShowErrorMessage(message);
                 }
                 else
                 {
                     UserSessions.DoUnflagResetPassword(mSharedPref);
-                    string fcmToken = "";
-                    if (FirebaseTokenEntity.HasLatest())
-                    {
-                        fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
-                    }
-                    var userResponse = await loginApi.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
-                    {
-                        UserName = username,
-                        Password = newPassword,
-                        IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                        ClientType = DeviceIdUtils.GetAppVersionName(),
-                        ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                        DevicePlatform = Constants.DEVICE_PLATFORM,
-                        DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                        DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                        DeviceId = deviceId,
-                        FcmToken = fcmToken
 
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), newPassword));
 
-
-                    }, cts.Token);
-
-
-
-                    if (!userResponse.Data.IsError && userResponse.Data.Status.Equals("success"))
+                    if (userResponse.IsSuccessResponse())
                     {
 
                         mView.ClearTextFields();
-                        int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                        int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
 
@@ -164,10 +120,8 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 #if DEBUG || STUB
                             var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                             var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
-                            var notificationsApi = RestService.For<INotificationApi>(httpClient);
 #else
                             var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-                            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                             var newObject = new
@@ -175,7 +129,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                 usrInf = new
                                 {
                                     eid = UserEntity.GetActive().UserName,
-                                    sspuid = userResponse.Data.User.UserId,
+                                    sspuid = userResponse.GetData().UserId,
                                     lang = "EN",
                                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                                     sec_auth_k2 = "",
@@ -245,7 +199,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        this.mView.ShowErrorMessage(userResponse.Data.Message);
+                        this.mView.ShowErrorMessage(userResponse.Response.DisplayMessage);
                     }
 
                 }

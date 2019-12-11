@@ -2,6 +2,7 @@
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -36,54 +37,32 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IUserNotificationsApi>(httpClient);
-
-#else
-            var api = RestService.For<IUserNotificationsApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-                UserEntity userEntity = UserEntity.GetActive();
-                var notificationTypesApi = await api.GetNotificationType(new Requests.UserNotificationTypeRequest()
+                var notificationTypesApi = await ServiceApiImpl.Instance.UserNotificationTypePreferences(new MyTNBService.Request.BaseRequest());
+
+                if (notificationTypesApi.IsSuccessResponse())
                 {
-                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = userEntity.Email,
-                    DeviceId = deviceId
-
-                }, cts.Token);
-
-                if (!notificationTypesApi.Data.IsError)
-                {
-                    var notificationChannelApi = await api.GetNotificationChannel(new Requests.UserNotificationChannelRequest()
-                    {
-                        ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = userEntity.Email,
-
-                    }, cts.Token);
+                    var notificationChannelApi = await ServiceApiImpl.Instance.UserNotificationChannelPreferences(new MyTNBService.Request.BaseRequest());
 
                     if (mView.IsActive())
                     {
                         this.mView.HideNotificationsProgressDialog();
                     }
 
-                    if (!notificationChannelApi.Data.IsError)
+                    if (notificationChannelApi.IsSuccessResponse())
                     {
                         UserNotificationTypesEntity.RemoveActive();
                         UserNotificationChannelEntity.RemoveActive();
 
-                        foreach (UserNotificationType notificationType in notificationTypesApi.Data.Data)
+                        foreach (UserNotificationType notificationType in notificationTypesApi.GetData())
                         {
                             int newRecord = UserNotificationTypesEntity.InsertOrReplace(notificationType);
                             Console.WriteLine(string.Format("New Type Created {0}", newRecord));
                         }
 
-                        foreach (UserNotificationChannel notificationChannel in notificationChannelApi.Data.Data)
+                        foreach (UserNotificationChannel notificationChannel in notificationChannelApi.GetData())
                         {
                             int newRecord = UserNotificationChannelEntity.InsertOrReplace(notificationChannel);
                             Console.WriteLine(string.Format("New Channel Created {0}", newRecord));

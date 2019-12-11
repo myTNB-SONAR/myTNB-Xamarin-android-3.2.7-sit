@@ -3,6 +3,8 @@ using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.MakePayment.Api;
 using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MakePayment.Requests;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -136,17 +138,9 @@ namespace myTNB_Android.Src.MakePayment.MVP
             {
                 this.mView.ShowGetRegisteredCardDialog();
             }
-
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetRegisteredCardsApi>(httpClient);
-#else
-            var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-#endif
-            //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
             try
             {
-                GetRegisteredCardsResponse result = await api.GetRegisteredCards(new GetRegisteredCardsRequest(apiKeyId, email));
+                var result = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
                 if (mView.IsActive())
                 {
                     this.mView.HideGetRegisteredCardDialog();
