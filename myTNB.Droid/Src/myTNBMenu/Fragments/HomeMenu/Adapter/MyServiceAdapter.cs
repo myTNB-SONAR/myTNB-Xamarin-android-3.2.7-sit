@@ -407,6 +407,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     currentNewLabel.LeftMargin = imgHeight;
 
                     TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle, vh.txtNewLabel);
+
+                    vh.txtNewLabel.Text = Utility.GetLocalizedLabel("Common","new");
                 }
                 catch (Exception e)
                 {
