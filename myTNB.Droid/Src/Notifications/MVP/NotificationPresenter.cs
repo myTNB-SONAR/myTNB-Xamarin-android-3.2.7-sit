@@ -27,6 +27,7 @@ using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -315,41 +316,65 @@ namespace myTNB_Android.Src.Notifications.MVP
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
             cts = new CancellationTokenSource();
             this.mView.ShowQueryProgress();
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
-#else
-            var api = RestService.For<AppLaunch.Api.INotificationApi>(Constants.SERVER_URL.END_POINT);
-#endif
 
             try
             {
-                var appNotificationChannelsResponse = await api.GetAppNotificationChannels(new NotificationRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+                //var appNotificationChannelsResponse = await api.GetAppNotificationChannels(new NotificationRequest()
+                //{
+                //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
+                //}, cts.Token);
 
-                var appNotificationTypesResponse = await api.GetAppNotificationTypes(new NotificationRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+                var appNotificationChannelsResponse = await ServiceApiImpl.Instance.AppNotificationChannels(new BaseRequest());
 
-                if (!appNotificationChannelsResponse.Data.IsError)
+                //var appNotificationTypesResponse = await api.GetAppNotificationTypes(new NotificationRequest()
+                //{
+                //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
+                //}, cts.Token);
+
+                var appNotificationTypesResponse = await ServiceApiImpl.Instance.AppNotificationTypes(new BaseRequest());
+
+                if (appNotificationChannelsResponse != null && appNotificationChannelsResponse.Response != null && appNotificationChannelsResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
-                    if (!appNotificationTypesResponse.Data.IsError)
+                    if (appNotificationTypesResponse != null && appNotificationTypesResponse.Response != null && appNotificationTypesResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                     {
 
 
-                        foreach (NotificationChannels notificationChannel in appNotificationChannelsResponse.Data.Data)
+                        foreach (AppNotificationChannelsResponse.ResponseData notificationChannel in appNotificationChannelsResponse.GetData())
                         {
-                            NotificationChannelEntity.InsertOrReplace(notificationChannel);
+                            NotificationChannels channel = new NotificationChannels()
+                            {
+                                Id = notificationChannel.Id,
+                                Title = notificationChannel.Title,
+                                Code = notificationChannel.Code,
+                                PreferenceMode = notificationChannel.PreferenceMode,
+                                Type = notificationChannel.Type,
+                                CreatedDate = notificationChannel.CreatedDate,
+                                MasterId = notificationChannel.MasterId,
+                                IsOpted = notificationChannel.IsOpted == "true" ? true : false,
+                                ShowInPreference = notificationChannel.ShowInPreference == "true" ? true : false,
+                                ShowInFilterList = notificationChannel.ShowInFilterList == "true" ? true : false
+                            };
+                            NotificationChannelEntity.InsertOrReplace(channel);
 
                         }
 
-                        foreach (NotificationTypes notificationTypes in appNotificationTypesResponse.Data.Data)
+                        foreach (AppNotificationTypesResponse.ResponseData notificationTypes in appNotificationTypesResponse.GetData())
                         {
-                            NotificationTypesEntity.InsertOrReplace(notificationTypes);
+                            NotificationTypes type = new NotificationTypes()
+                            {
+                                Id = notificationTypes.Id,
+                                Title = notificationTypes.Title,
+                                Code = notificationTypes.Code,
+                                PreferenceMode = notificationTypes.PreferenceMode,
+                                Type = notificationTypes.Type,
+                                CreatedDate = notificationTypes.CreatedDate,
+                                MasterId = notificationTypes.MasterId,
+                                IsOpted = notificationTypes.IsOpted == "true" ? true : false,
+                                ShowInPreference = notificationTypes.ShowInPreference == "true" ? true : false,
+                                ShowInFilterList = notificationTypes.ShowInFilterList == "true" ? true : false
+                            };
 
+                            NotificationTypesEntity.InsertOrReplace(type);
                         }
 
                         if (UserEntity.IsCurrentlyActive())

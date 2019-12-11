@@ -7,10 +7,10 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
-using myTNB_Android.Src.RegistrationForm.Api;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;
@@ -27,7 +27,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
         private RegistrationValidationContract.IView mView;
         private UserCredentialsEntity userCredentialsEntity;
         private readonly string TAG = typeof(RegistrationValidationPresenter).Name;
-        private CancellationTokenSource cts;
         private ISharedPreferences mSharedPref;
 
         public RegistrationValidationPresenter(RegistrationValidationContract.IView mView, UserCredentialsEntity userCredentialsEntity, ISharedPreferences sharedPreferences)
@@ -50,8 +49,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void OnRegister(string num1, string num2, string num3, string num4, string deviceId)
         {
-
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
                 this.mView.ShowEmptyErrorPin_1();
@@ -82,38 +79,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.ClearErrors();
 
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var registrationApi = RestService.For<IRegisterUser>(httpClient);
-            var loginApi = RestService.For<IAuthenticateUser>(httpClient);
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-#else
-            var registrationApi = RestService.For<IRegisterUser>(Constants.SERVER_URL.END_POINT);
-            var loginApi = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var userRegistrationResponse = await registrationApi.RegisterUser(new RegistrationForm.Requests.UserRegistrationRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    displayName = userCredentialsEntity.Fullname,
-                    username = userCredentialsEntity.Email,
-                    email = userCredentialsEntity.Email,
-                    token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
-                    password = userCredentialsEntity.Password,
-                    confirmPassword = userCredentialsEntity.ConfirmEmail,
-                    icNo = userCredentialsEntity.ICNo,
-                    mobileNo = userCredentialsEntity.MobileNo,
-                    ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = DeviceIdUtils.GetAppVersionName(),
-                    activeUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    devicePlatform = Constants.DEVICE_PLATFORM,
-                    deviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                    deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken(new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
+                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.MobileNo));
 
-                if (!userRegistrationResponse.userRegistration.IsError)
+                if (userRegistrationResponse.IsSuccessResponse())
                 {
 
                     string fcmToken = String.Empty;
@@ -123,29 +94,15 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
                     }
 
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password));
 
-                    var userResponse = await loginApi.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
-
-                    {
-                        UserName = userCredentialsEntity.Email,
-                        Password = userCredentialsEntity.Password,
-                        IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                        ClientType = DeviceIdUtils.GetAppVersionName(),
-                        ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                        DevicePlatform = Constants.DEVICE_PLATFORM,
-                        DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                        DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                        DeviceId = deviceId,
-                        FcmToken = fcmToken
-                    }, cts.Token);
-
-                    if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
+                    if (!userResponse.IsSuccessResponse())
                     {
                         if (mView.IsActive())
                         {
                             this.mView.HideRegistrationProgress();
                         }
-                        this.mView.ShowError(userResponse.Data.Message);
+                        this.mView.ShowError(userResponse.Response.DisplayMessage);
                     }
                     else
                     {
@@ -160,7 +117,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             }
                         }
 
-                        int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                        int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
                             NotificationApiImpl notificationAPI = new NotificationApiImpl();
@@ -220,7 +177,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         this.mView.HideRegistrationProgress();
                     }
                     // TODO : ADD REGISTRATION ERROR
-                    string message = userRegistrationResponse.userRegistration.Message;
+                    string message = userRegistrationResponse.Response.DisplayMessage;
                     this.mView.ShowError(message);
                 }
             }
@@ -289,33 +246,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.StartProgress();
 
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IGetVerificationCode>(httpClient);
-#else
-            var api = RestService.For<IGetVerificationCode>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
             try
             {
-                var verificationResponse = await api.GetVerificationCodeThruSMSV2(new VerificationCodeRequest(Constants.APP_CONFIG.API_KEY_ID)
+                var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(new SendRegistrationTokenSMSRequest());
+                if (!verificationResponse.IsSuccessResponse())
                 {
-                    userEmail = userCredentialsEntity.Email,
-                    username = userCredentialsEntity.Email,
-                    mobileNo = userCredentialsEntity.MobileNo,
-                    ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = Constants.APP_CONFIG.API_KEY_ID,
-                    activeUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    devicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-
-                });
-
-                if (verificationResponse.verificationCode.isError)
-                {
-                    this.mView.ShowError(verificationResponse.verificationCode.message);
+                    this.mView.ShowError(verificationResponse.Response.DisplayMessage);
                 }
 
             }

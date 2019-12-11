@@ -5,6 +5,7 @@ using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Adapter;
 using myTNB_Android.Src.Rating.Model;
@@ -168,15 +169,15 @@ namespace myTNB_Android.Src.Rating.Fargment
             ).Show();
         }
 
-        public void ShowGetQuestionSuccess(GetRateUsQuestionsResponse response)
+        public void ShowGetQuestionSuccess(GetRateUsQuestionResponse response)
         {
             try
             {
                 if (response != null)
                 {
-                    if (response.feedbackQuestionStatus.rateUsQuestionList.Count > 0)
+                    if (response.GetData().Count > 0)
                     {
-                        foreach (RateUsQuestion que in response.feedbackQuestionStatus.rateUsQuestionList)
+                        foreach (RateUsQuestion que in response.GetData())
                         {
                             if (que.IsActive)
                             {

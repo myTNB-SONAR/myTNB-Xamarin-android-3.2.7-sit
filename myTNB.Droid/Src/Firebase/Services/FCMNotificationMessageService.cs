@@ -80,83 +80,83 @@ namespace myTNB_Android.Src.Firebase.Services
 
         private async void QueryNotifications(string title, string message)
         {
-            cts = new CancellationTokenSource();
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<INotificationApi>(httpClient);
-#else
-            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-#endif
+//            cts = new CancellationTokenSource();
+//#if DEBUG
+//            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+//            var api = RestService.For<INotificationApi>(httpClient);
+//#else
+//            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
+//#endif
 
-            try
-            {
-                var appNotificationChannelsResponse = await api.GetAppNotificationChannels(new NotificationRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+//            try
+//            {
+//                var appNotificationChannelsResponse = await api.GetAppNotificationChannels(new NotificationRequest()
+//                {
+//                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
+//                }, cts.Token);
 
-                var appNotificationTypesResponse = await api.GetAppNotificationTypes(new NotificationRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
-
-
-
-                if (!appNotificationChannelsResponse.Data.IsError)
-                {
-                    if (!appNotificationTypesResponse.Data.IsError)
-                    {
-
-
-                        foreach (NotificationChannels notificationChannel in appNotificationChannelsResponse.Data.Data)
-                        {
-                            NotificationChannelEntity.InsertOrReplaceAsync(notificationChannel);
-
-                        }
-
-                        foreach (NotificationTypes notificationTypes in appNotificationTypesResponse.Data.Data)
-                        {
-                            NotificationTypesEntity.InsertOrReplaceAsync(notificationTypes);
-
-                        }
-
-                        if (UserEntity.IsCurrentlyActive())
-                        {
-                            NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                            if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
-                            {
-                                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                                    response.Data.ResponseData.UserNotificationList.Count > 0)
-                                {
-                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
-                                    {
-                                        // tODO : SAVE ALL NOTIFICATIONs
-                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                                    }
-                                }
-
-                                SendNotification(title, message);
-                            }
-                        }
-
-                    }
-
-                }
+//                var appNotificationTypesResponse = await api.GetAppNotificationTypes(new NotificationRequest()
+//                {
+//                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
+//                }, cts.Token);
 
 
 
+//                if (!appNotificationChannelsResponse.Data.IsError)
+//                {
+//                    if (!appNotificationTypesResponse.Data.IsError)
+//                    {
 
 
-            }
-            catch (ApiException apiException)
-            {
+//                        foreach (NotificationChannels notificationChannel in appNotificationChannelsResponse.Data.Data)
+//                        {
+//                            NotificationChannelEntity.InsertOrReplaceAsync(notificationChannel);
 
-            }
-            catch (Exception e)
-            {
+//                        }
 
-            }
+//                        foreach (NotificationTypes notificationTypes in appNotificationTypesResponse.Data.Data)
+//                        {
+//                            NotificationTypesEntity.InsertOrReplaceAsync(notificationTypes);
+
+//                        }
+
+//                        if (UserEntity.IsCurrentlyActive())
+//                        {
+//                            NotificationApiImpl notificationAPI = new NotificationApiImpl();
+//                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+//                            if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+//                            {
+//                                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+//                                    response.Data.ResponseData.UserNotificationList.Count > 0)
+//                                {
+//                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+//                                    {
+//                                        // tODO : SAVE ALL NOTIFICATIONs
+//                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+//                                    }
+//                                }
+
+//                                SendNotification(title, message);
+//                            }
+//                        }
+
+//                    }
+
+//                }
+
+
+
+
+
+//            }
+//            catch (ApiException apiException)
+//            {
+
+//            }
+//            catch (Exception e)
+//            {
+
+//            }
         }
 
         private void SendNotification(String title, String message)

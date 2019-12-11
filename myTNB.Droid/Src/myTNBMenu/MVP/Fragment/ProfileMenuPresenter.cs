@@ -13,6 +13,8 @@ using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 
@@ -47,35 +49,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         private async void LoadAccount()
         {
-            cts = new CancellationTokenSource();
-
             if (mView.IsActive())
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
 
             UserEntity userEntity = UserEntity.GetActive();
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetRegisteredCardsApi>(httpClient);
-#else
-            var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-#endif
             try
             {
-                var cardsApiResponse = await api.GetRegisteredCards(new MakePayment.Models.GetRegisteredCardsRequest(
-                        Constants.APP_CONFIG.API_KEY_ID,
-                        userEntity.Email
-                    ));
+                //var cardsApiResponse = await api.GetRegisteredCards(new MakePayment.Models.GetRegisteredCardsRequest(
+                //        Constants.APP_CONFIG.API_KEY_ID,
+                //        userEntity.Email
+                //    ));
+
+                var cardsApiResponse = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideNotificationsProgressDialog();
                 }
 
-                if (!cardsApiResponse.Data.IsError)
+                if (cardsApiResponse.IsSuccessResponse())
                 {
-                    foreach (CreditCard card in cardsApiResponse.Data.creditCard)
+                    foreach (CreditCard card in cardsApiResponse.GetData())
                     {
                         cardList.Add(CreditCardData.Copy(card));
                     }
@@ -143,54 +139,32 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IUserNotificationsApi>(httpClient);
-
-#else
-            var api = RestService.For<IUserNotificationsApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-                UserEntity userEntity = UserEntity.GetActive();
-                var notificationTypesApi = await api.GetNotificationType(new Requests.UserNotificationTypeRequest()
+                var notificationTypesApi = await ServiceApiImpl.Instance.UserNotificationTypePreferences(new MyTNBService.Request.BaseRequest());
+
+                if (notificationTypesApi.IsSuccessResponse())
                 {
-                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = userEntity.Email,
-                    DeviceId = deviceId
-
-                }, cts.Token);
-
-                if (!notificationTypesApi.Data.IsError)
-                {
-                    var notificationChannelApi = await api.GetNotificationChannel(new Requests.UserNotificationChannelRequest()
-                    {
-                        ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = userEntity.Email,
-
-                    }, cts.Token);
+                    var notificationChannelApi = await ServiceApiImpl.Instance.UserNotificationChannelPreferences(new MyTNBService.Request.BaseRequest());
 
                     if (mView.IsActive())
                     {
                         this.mView.HideNotificationsProgressDialog();
                     }
 
-                    if (!notificationChannelApi.Data.IsError)
+                    if (notificationChannelApi.IsSuccessResponse())
                     {
                         UserNotificationTypesEntity.RemoveActive();
                         UserNotificationChannelEntity.RemoveActive();
 
-                        foreach (UserNotificationType notificationType in notificationTypesApi.Data.Data)
+                        foreach (UserNotificationType notificationType in notificationTypesApi.GetData())
                         {
                             int newRecord = UserNotificationTypesEntity.InsertOrReplace(notificationType);
                             Console.WriteLine(string.Format("New Type Created {0}", newRecord));
                         }
 
-                        foreach (UserNotificationChannel notificationChannel in notificationChannelApi.Data.Data)
+                        foreach (UserNotificationChannel notificationChannel in notificationChannelApi.GetData())
                         {
                             int newRecord = UserNotificationChannelEntity.InsertOrReplace(notificationChannel);
                             Console.WriteLine(string.Format("New Channel Created {0}", newRecord));
@@ -248,45 +222,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public async void OnLogout(string deviceId)
         {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            cts = new CancellationTokenSource();
-
-
             if (mView.IsActive())
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
 
-
-
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-
-            var logoutApi = RestService.For<ILogoutApi>(httpClient);
-#else
-            var logoutApi = RestService.For<ILogoutApi>(Constants.SERVER_URL.END_POINT);
-#endif
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
                 if (userEntity != null)
                 {
-                    var logoutResponse = await logoutApi.LogoutUserV2(new myTNB_Android.Src.LogoutRate.Request.LogoutRequestV2()
-                    {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = userEntity.Email,
-                        DeviceId = deviceId,
-                        AppVersion = DeviceIdUtils.GetAppVersionName(),
-                        OsType = Constants.DEVICE_PLATFORM,
-                        OsVersion = DeviceIdUtils.GetAndroidVersion()
-                    }, cts.Token);
+                    var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
 
                     if (mView.IsActive())
                     {
                         this.mView.HideNotificationsProgressDialog();
                     }
 
-                    if (!logoutResponse.Data.IsError)
+                    if (logoutResponse.IsSuccessResponse())
                     {
                         UserEntity.RemoveActive();
                         UserRegister.RemoveActive();
@@ -311,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
-                        this.mView.ShowLogoutErrorMessage(logoutResponse.Data.Message);
+                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.DisplayMessage);
                     }
                 }
             }

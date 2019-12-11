@@ -11,6 +11,11 @@ namespace myTNB_Android.Src.MyTNBService.Request
         {
             usrInf = new UserInfo();
         }
+
+        public void SetUserName(string userName)
+        {
+            usrInf.eid = userName;
+        }
     }
 
     public class UserInfo

@@ -147,7 +147,7 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
 
         public override bool ShowCustomToolbarTitle()
         {
-            return false;
+            return true;
         }
     }
 }

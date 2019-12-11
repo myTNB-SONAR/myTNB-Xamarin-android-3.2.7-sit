@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Request;
 using myTNB_Android.Src.Rating.Response;
 using System;
@@ -36,7 +37,7 @@ namespace myTNB_Android.Src.Rating.MVP
             ///<summary>
             /// Show questions success
             ///</summary>
-            void ShowGetQuestionSuccess(GetRateUsQuestionsResponse response);
+            void ShowGetQuestionSuccess(GetRateUsQuestionResponse response);
 
             /// <summary>
             /// Enable register button
