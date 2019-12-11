@@ -102,7 +102,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         {
                             this.mView.HideRegistrationProgress();
                         }
-                        this.mView.ShowError(userResponse.Response.Message);
+                        this.mView.ShowError(userResponse.Response.DisplayMessage);
                     }
                     else
                     {
@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         this.mView.HideRegistrationProgress();
                     }
                     // TODO : ADD REGISTRATION ERROR
-                    string message = userRegistrationResponse.Response.Message;
+                    string message = userRegistrationResponse.Response.DisplayMessage;
                     this.mView.ShowError(message);
                 }
             }
@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(new SendRegistrationTokenSMSRequest());
                 if (!verificationResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(verificationResponse.Response.Message);
+                    this.mView.ShowError(verificationResponse.Response.DisplayMessage);
                 }
 
             }

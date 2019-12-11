@@ -245,7 +245,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 }
                 else
                 {
-                    this.mView.ShowInvalidAcquiringTokenThruSMS(verificationResponse.Response.Message);
+                    this.mView.ShowInvalidAcquiringTokenThruSMS(verificationResponse.Response.DisplayMessage);
                 }
 
             }

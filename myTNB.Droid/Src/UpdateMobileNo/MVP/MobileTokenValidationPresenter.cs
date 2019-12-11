@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 if (verifyTokenResponse.IsSuccessResponse())
                 {
                     //this.mView.ShowDashboardMyAccount();
-                    /// call login service 
+                    /// call login service
                     if (UserEntity.IsCurrentlyActive())
                     {
                         UserEntity.UpdatePhoneNumber(newPhone);
@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 else
                 {
                     // TODO : ADD REGISTRATION ERROR
-                    this.mView.ShowError(verifyTokenResponse.Response.Message);
+                    this.mView.ShowError(verifyTokenResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                 if (!verificationResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(verificationResponse.Response.Message);
+                    this.mView.ShowError(verificationResponse.Response.DisplayMessage);
                 }
 
 
@@ -278,7 +278,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     {
                         this.mView.HideRegistrationProgress();
                     }
-                    this.mView.ShowRetryLoginUnknownException(userResponse.Response.Message);
+                    this.mView.ShowRetryLoginUnknownException(userResponse.Response.DisplayMessage);
                 }
                 else
                 {

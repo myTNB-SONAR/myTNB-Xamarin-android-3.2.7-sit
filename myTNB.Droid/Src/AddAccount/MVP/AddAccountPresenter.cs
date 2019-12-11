@@ -104,7 +104,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 if (result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
-                    mView.ShowAddAccountFail(result.Response.Message);
+                    mView.ShowAddAccountFail(result.Response.DisplayMessage);
                     if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountSuccess(result.Response.Message);
+                    mView.ShowAddAccountSuccess(result.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
@@ -208,7 +208,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 }
                 if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
-                    mView.ShowAddAccountFail(result.Response.Message);
+                    mView.ShowAddAccountFail(result.Response.DisplayMessage);
                 }
                 else
                 {

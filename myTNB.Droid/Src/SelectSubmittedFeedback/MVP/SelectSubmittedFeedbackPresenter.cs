@@ -82,7 +82,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                 {
                     if (detailsResponse.Response.Status.Equals("failed"))
                     {
-                        this.mView.ShowBCRMDownException(detailsResponse.Response.Message);
+                        this.mView.ShowBCRMDownException(detailsResponse.Response.DisplayMessage);
                     }
                     else
                     {

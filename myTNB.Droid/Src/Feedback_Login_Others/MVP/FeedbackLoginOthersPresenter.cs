@@ -184,7 +184,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 else
                 {
                     //this.mView.ShowFail();
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }
@@ -334,7 +334,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 }
                 else
                 {
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }

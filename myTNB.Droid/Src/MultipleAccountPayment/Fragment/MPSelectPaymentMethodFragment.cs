@@ -790,7 +790,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Response.Message);
+                        ShowErrorMessage(response.Response.DisplayMessage);
                     }
                     else
                     {

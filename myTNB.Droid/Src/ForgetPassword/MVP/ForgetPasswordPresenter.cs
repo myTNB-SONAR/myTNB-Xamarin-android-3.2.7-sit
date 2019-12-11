@@ -61,13 +61,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 if (!forgetPasswordResponse.IsSuccessResponse())
                 {
-                    string errorMessage = forgetPasswordResponse.Response.Message;
+                    string errorMessage = forgetPasswordResponse.Response.DisplayMessage;
                     this.mView.ShowError(errorMessage);
                 }
                 else
                 {
 
-                    string message = forgetPasswordResponse.Response.Message;
+                    string message = forgetPasswordResponse.Response.DisplayMessage;
                     this.mView.ShowSuccess(message);
                 }
             }
@@ -158,14 +158,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 if (!forgetPasswordResponse.IsSuccessResponse())
                 {
-                    string errorMessage = forgetPasswordResponse.Response.Message;
+                    string errorMessage = forgetPasswordResponse.Response.DisplayMessage;
                     this.mView.ShowError(errorMessage);
                 }
                 else
                 {
                     this.mView.ClearErrorMessages();
                     this.mView.ClearTextFields();
-                    string message = forgetPasswordResponse.Response.Message;
+                    string message = forgetPasswordResponse.Response.DisplayMessage;
                     //this.mView.ShowSuccess(message);
                     this.mView.ShowCodeVerifiedSuccess();
                     this.mView.DisableResendButton();

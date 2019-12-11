@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessage(updateMobileResponse.Response.Message);
+                    this.mView.ShowErrorMessage(updateMobileResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

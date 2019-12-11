@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.Rating.MVP
 
                 if (!questionRespone.IsSuccessResponse())
                 {
-                    this.mView.ShowError(questionRespone.Response.Message);
+                    this.mView.ShowError(questionRespone.Response.DisplayMessage);
                 }
                 else
                 {
@@ -151,7 +151,7 @@ namespace myTNB_Android.Src.Rating.MVP
 
                 if (!submitRateUsResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(submitRateUsResponse.Response.Message);
+                    this.mView.ShowError(submitRateUsResponse.Response.DisplayMessage);
                 }
                 else
                 {

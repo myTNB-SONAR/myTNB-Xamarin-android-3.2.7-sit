@@ -173,7 +173,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                 }
                 else
                 {
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }
@@ -216,7 +216,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
         {
             try
             {
-                // TODO: REPLACE WITH THE FIRST 
+                // TODO: REPLACE WITH THE FIRST
                 this.mView.DisableSubmitButton();
                 if (selectedCustomerBillingAccount != null)
                 {
@@ -382,7 +382,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                 }
                 else
                 {
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }
@@ -432,7 +432,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
                 if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
                 {
-                    //this.mView.ShowEmptyFeedbackError();    
+                    //this.mView.ShowEmptyFeedbackError();
                     this.mView.DisableSubmitButton();
                     return;
                 }

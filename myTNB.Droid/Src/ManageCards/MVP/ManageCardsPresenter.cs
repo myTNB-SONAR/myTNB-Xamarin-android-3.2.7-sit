@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.ManageCards.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessage(removeCardsResponse.Response.Message);
+                    this.mView.ShowErrorMessage(removeCardsResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

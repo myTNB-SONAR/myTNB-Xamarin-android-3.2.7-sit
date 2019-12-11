@@ -264,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
-                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.Message);
+                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.DisplayMessage);
                     }
                 }
             }

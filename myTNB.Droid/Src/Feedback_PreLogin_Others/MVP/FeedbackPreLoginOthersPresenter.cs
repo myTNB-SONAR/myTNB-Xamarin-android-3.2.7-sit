@@ -225,7 +225,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
                 }
                 else
                 {
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }

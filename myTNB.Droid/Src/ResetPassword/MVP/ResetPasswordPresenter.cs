@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    string message = changePasswordResponse.Response.Message;
+                    string message = changePasswordResponse.Response.DisplayMessage;
                     this.mView.ShowErrorMessage(message);
                 }
                 else
@@ -199,7 +199,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        this.mView.ShowErrorMessage(userResponse.Response.Message);
+                        this.mView.ShowErrorMessage(userResponse.Response.DisplayMessage);
                     }
 
                 }

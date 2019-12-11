@@ -114,7 +114,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                     if (result.Response.Status.Equals("failed"))
                     {
-                        this.mView.ShowBCRMDownException(result.Response.Message);
+                        this.mView.ShowBCRMDownException(result.Response.DisplayMessage);
                     }
                     else
                     {

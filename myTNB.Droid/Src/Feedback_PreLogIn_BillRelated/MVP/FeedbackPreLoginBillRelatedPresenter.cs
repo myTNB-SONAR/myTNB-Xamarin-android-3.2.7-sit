@@ -238,7 +238,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 }
                 else
                 {
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }
@@ -345,7 +345,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 {
                     if (!Utility.isAlphaNumeric(fullname))
                     {
-                        
+
                         this.mView.ShowNameError();
                         isError = true;
                     }
@@ -382,7 +382,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 {
                     if (!Android.Util.Patterns.EmailAddress.Matcher(email).Matches())
                     {
-                        
+
                         this.mView.ShowInvalidEmailError();
                         isError = true;
                     }

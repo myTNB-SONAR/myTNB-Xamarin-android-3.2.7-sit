@@ -660,7 +660,7 @@ namespace myTNB_Android.Src.MakePayment.Fragment
                 {
                     if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Response.Message);
+                        ShowErrorMessage(response.Response.DisplayMessage);
                     }
                     else
                     {

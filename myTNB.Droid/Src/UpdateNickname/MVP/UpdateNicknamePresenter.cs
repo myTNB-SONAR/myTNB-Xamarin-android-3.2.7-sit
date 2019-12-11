@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                 }
                 else
                 {
-                    this.mView.ShowResponseError(updateNickNameResponse.Response.Message);
+                    this.mView.ShowResponseError(updateNickNameResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

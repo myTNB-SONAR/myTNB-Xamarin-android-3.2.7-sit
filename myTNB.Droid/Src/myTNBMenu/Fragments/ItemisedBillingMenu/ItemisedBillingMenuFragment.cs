@@ -17,6 +17,7 @@ using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
 using Java.Text;
+using Java.Util;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Common;
@@ -119,11 +120,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
 
-        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
 
-        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy");
-        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy", new Locale(LanguageUtil.GetAppLanguage()));
 
         IMenuItem billFilterMenuItem;
 
