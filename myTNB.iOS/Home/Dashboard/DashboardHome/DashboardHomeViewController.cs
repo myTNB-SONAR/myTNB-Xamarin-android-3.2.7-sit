@@ -383,7 +383,10 @@ namespace myTNB
             }
             DataManager.DataManager.SharedInstance.ServicesList = null;
             DataManager.DataManager.SharedInstance.HelpList = null;
-            OnLoadHomeData();
+            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+            {
+                OnLoadHomeData();
+            }
         }
 
         private void OnEnterForeground(NSNotification notification)
