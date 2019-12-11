@@ -149,7 +149,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
             try
             {
-                var forgetPasswordResponse = await ServiceApiImpl.Instance.ResetPasswordWithToken(new ResetPasswordWithTokenRequest(code));
+                ResetPasswordWithTokenRequest resetRequest = new ResetPasswordWithTokenRequest(code);
+                resetRequest.SetUserName(email);
+                var forgetPasswordResponse = await ServiceApiImpl.Instance.ResetPasswordWithToken(resetRequest);
 
                 if (mView.IsActive())
                 {

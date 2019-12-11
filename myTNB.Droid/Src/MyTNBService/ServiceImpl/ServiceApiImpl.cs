@@ -232,7 +232,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call GetSubmittedFeedbackDetails with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<SubmittedFeedbackDetailsResponse> SubmittedFeedbackDetails([Body] Request.BaseRequest request)
         {
@@ -242,7 +242,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call CreateNewUserWithToken with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<CreateNewUserWithTokenResponse> CreateNewUserWithToken([Body] Request.BaseRequest request)
         {
@@ -252,7 +252,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call SendResetPasswordCode with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<SendResetPasswordCodeResponse> SendResetPasswordCode([Body] Request.BaseRequest request)
         {
@@ -262,7 +262,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call ResetPasswordWithToken with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<ResetPasswordWithTokenResponse> ResetPasswordWithToken([Body] Request.BaseRequest request)
         {
@@ -272,7 +272,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call LogoutUser with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<LogoutUserResponse> LogoutUser([Body] Request.BaseRequest request)
         {
@@ -282,7 +282,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call RemoveRegisteredCard with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<RemoveRegisteredCardResponse> RemoveRegisteredCard([Body] Request.BaseRequest request)
         {
@@ -292,7 +292,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call ChangeNewPassword with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<ChangeNewPasswordResponse> ChangeNewPassword([Body] Request.BaseRequest request)
         {
@@ -302,7 +302,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call SendUpdatePhoneTokenSMS with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<SendUpdatePhoneTokenSMSResponse> SendUpdatePhoneTokenSMS([Body] Request.BaseRequest request)
         {
@@ -312,7 +312,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call UpdatePhoneNumber with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<UpdateNewPhoneNumberResponse> UpdatePhoneNumber([Body] Request.BaseRequest request)
         {
@@ -322,7 +322,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call SubmitRateUs with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<SubmitRateUsResponse> SubmitRateUs([Body] Request.BaseRequest request)
         {
@@ -332,7 +332,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call UpdateLinkedAccountNickName with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<UpdateLinkedAccountNameResponse> UpdateLinkedAccountNickName([Body] Request.BaseRequest request)
         {
@@ -342,7 +342,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call UpdateLinkedAccountNickName with default timeout.
         /// </summary>
-        /// <param name="request"></param>km
+        /// <param name="request"></param>
         /// <returns></returns>
         public Task<GetRateUsQuestionResponse> GetRateUsQuestions([Body] Request.BaseRequest request)
         {

@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 txtTitleInfo.Text = GetLabelByLanguage("details");
                 txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
                 txtInputLayoutConfirmNewPassword.Hint = GetLabelByLanguage("confirmNewPassword");
-                btnSubmit.Text = GetLabelByLanguage("submit");
+                btnSubmit.Text = GetLabelCommonByLanguage("submit");
 
                 mProgressDialog = new AlertDialog.Builder(this)
                     .SetTitle(GetString(Resource.String.reset_password_alert_dialog_title))

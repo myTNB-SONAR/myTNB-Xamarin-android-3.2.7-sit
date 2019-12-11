@@ -84,7 +84,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
             try
             {
-                var changePasswordResponse = await ServiceApiImpl.Instance.ChangeNewPassword(new ChangeNewPasswordRequest(oldPassword, newPassword, newPassword));
+                ChangeNewPasswordRequest changePasswordRequest = new ChangeNewPasswordRequest(oldPassword, newPassword, newPassword);
+                changePasswordRequest.SetUserName(username);
+                var changePasswordResponse = await ServiceApiImpl.Instance.ChangeNewPassword(changePasswordRequest);
 
                 if (!changePasswordResponse.IsSuccessResponse())
                 {
@@ -99,7 +101,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                 {
                     UserSessions.DoUnflagResetPassword(mSharedPref);
 
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), newPassword));
+                    UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), newPassword);
+                    userAuthenticateRequest.SetUserName(username);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
 
                     if (userResponse.IsSuccessResponse())
                     {
