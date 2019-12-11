@@ -1,7 +1,7 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Rating.Api;
 using myTNB_Android.Src.Rating.Request;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -36,35 +36,22 @@ namespace myTNB_Android.Src.Rating.MVP
 
         public async void GetRateUsQuestions(string questionCategoryID)
         {
-            cts = new CancellationTokenSource();
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
             }
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetRateUsQuestionsApi>(httpClient);
-#else
-            var api = RestService.For<GetRateUsQuestionsApi>(Constants.SERVER_URL.END_POINT);
-#endif
             try
             {
-                var questionRespone = await api.GetQuestions(new Request.GetRateUsQuestionsRequest()
-                {
-                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                    QuestionCategoryId = questionCategoryID
-                }, cts.Token);
+                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (questionRespone.feedbackQuestionStatus.IsError)
+                if (!questionRespone.IsSuccessResponse())
                 {
-                    this.mView.ShowError(questionRespone.feedbackQuestionStatus.Message);
+                    this.mView.ShowError(questionRespone.Response.Message);
                 }
                 else
                 {
@@ -104,7 +91,7 @@ namespace myTNB_Android.Src.Rating.MVP
             }
         }
 
-        public void PrepareSubmitRateUsRequest(string referenceId, string deviceID, List<SubmitRateUsRequest.InputAnswerDetails> inputAnswerDetails)
+        public void PrepareSubmitRateUsRequest(string referenceId, string deviceID, List<Request.SubmitRateUsRequest.InputAnswerDetails> inputAnswerDetails)
         {
             try
             {
@@ -112,11 +99,11 @@ namespace myTNB_Android.Src.Rating.MVP
                 {
                     UserEntity entity = UserEntity.GetActive();
 
-                    SubmitRateUsRequest submitRateUsRequest = new SubmitRateUsRequest()
+                    Request.SubmitRateUsRequest submitRateUsRequest = new Request.SubmitRateUsRequest()
                     {
                         ApiKeyID = Constants.APP_CONFIG.API_KEY_ID
                     };
-                    submitRateUsRequest.InputAnswer = new SubmitRateUsRequest.InputAnswerT()
+                    submitRateUsRequest.InputAnswer = new Request.SubmitRateUsRequest.InputAnswerT()
                     {
                         ReferenceId = referenceId,
                         Email = entity.Email,
@@ -139,7 +126,7 @@ namespace myTNB_Android.Src.Rating.MVP
 
         }
 
-        public async void SubmitRateUs(SubmitRateUsRequest submitRateUsRequest)
+        public async void SubmitRateUs(Request.SubmitRateUsRequest submitRateUsRequest)
         {
             if (mView.IsActive())
             {

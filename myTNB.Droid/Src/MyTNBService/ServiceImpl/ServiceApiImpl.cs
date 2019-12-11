@@ -329,5 +329,24 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.SubmitRateUs<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+        /// <summary>
+        /// Call UpdateLinkedAccountNickName with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<UpdateLinkedAccountNameResponse> UpdateLinkedAccountNickName([Body] Request.BaseRequest request)
+        {
+            return api.UpdateLinkedAccountNickName<UpdateLinkedAccountNameResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call UpdateLinkedAccountNickName with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<GetRateUsQuestionResponse> GetRateUsQuestions([Body] Request.BaseRequest request)
+        {
+            return api.GetRateUsQuestions<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

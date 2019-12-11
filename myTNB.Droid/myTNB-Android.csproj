@@ -803,7 +803,6 @@
     <Compile Include="Src\Promotions\MVP\PromotionPresenter.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
-    <Compile Include="Src\Rating\Api\GetRateUsQuestionsApi.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
     <Compile Include="Src\Rating\Fargment\ThankYouFragment.cs" />
     <Compile Include="Src\Rating\Model\QuestionCategoryID.cs" />
@@ -951,7 +950,6 @@
     <Compile Include="Src\UpdateMobileNo\Request\UpdateMobileRequest.cs" />
     <Compile Include="Src\UpdateMobileNo\Request\UpdateMobileV2Request.cs" />
     <Compile Include="Src\UpdateNickname\Activity\UpdateNicknameActivity.cs" />
-    <Compile Include="Src\UpdateNickname\Api\IUpdateAccountApi.cs" />
     <Compile Include="Src\UpdateNickname\Models\UpdateLinkedAccountNickNameResponse.cs" />
     <Compile Include="Src\UpdateNickname\MVP\UpdateNicknameContract.cs" />
     <Compile Include="Src\UpdateNickname\MVP\UpdateNicknamePresenter.cs" />
@@ -3796,6 +3794,10 @@
     <Compile Include="Src\MyTNBService\Request\UpdateNewPhoneNumberRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\SubmitRateUsResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitRateUsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UpdateLinkedAccountNameResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\UpdateLinkedAccountNameRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetRateUsQuestionResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetRateUsQuestionRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4171,6 +4173,8 @@
     <Folder Include="Src\RegistrationForm\Api\" />
     <Folder Include="Src\ForgetPassword\Api\" />
     <Folder Include="Src\ManageCards\Api\" />
+    <Folder Include="Src\UpdateNickname\Api\" />
+    <Folder Include="Src\Rating\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
