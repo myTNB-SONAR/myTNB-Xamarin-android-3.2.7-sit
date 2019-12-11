@@ -27,15 +27,6 @@ namespace myTNB
             }
         }
 
-        public static GetUserRewardsResponseModel GetUserRewardsResponse()
-        {
-            if (userRewardsResponse != null)
-            {
-                return userRewardsResponse;
-            }
-            return new GetUserRewardsResponseModel();
-        }
-
         public static List<RewardsItemModel> GetUserRewardsList()
         {
             if (rewardsList != null)
@@ -57,6 +48,8 @@ namespace myTNB
             }
             return null;
         }
+
+        public static string DeeplinkRewardId { set; get; }
 
         public static void SaveImage(string key, NSData data)
         {

@@ -176,13 +176,16 @@ namespace myTNB
             Title = GetI18NValue(RewardsConstants.I18N_Title);
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
+                if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && _rewardsList != null)
                 {
-                    SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
-                };
-                UINavigationController navController = new UINavigationController(savedRewardsView);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
+                    SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
+                    {
+                        SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
+                    };
+                    UINavigationController navController = new UINavigationController(savedRewardsView);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
             });
             NavigationItem.RightBarButtonItem = btnSavedRewards;
         }

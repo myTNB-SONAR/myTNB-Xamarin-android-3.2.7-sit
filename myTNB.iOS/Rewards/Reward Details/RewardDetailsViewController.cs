@@ -84,7 +84,7 @@ namespace myTNB
                 {
                     BaseService baseService = new BaseService();
                     APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-                    string deeplinkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx?rid=" + RewardModel.ID;
+                    string deeplinkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
                     NSObject item = NSObject.FromObject(deeplinkUrl);
                     NSObject[] activityItems = { item };
                     UIActivity[] applicationActivities = null;
@@ -543,7 +543,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, response?.d?.DisplayMessage);
+                        DisplayServiceError(response?.d?.DisplayMessage);
                     }
                 });
             });
