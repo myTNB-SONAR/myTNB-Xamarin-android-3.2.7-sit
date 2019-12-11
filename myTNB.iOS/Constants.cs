@@ -89,7 +89,6 @@
         public static string Common_SaveLanguageMessage = "saveLanguageMessage";
         public static string Common_WellBeBack = "wellBeBack";
         public static string Common_ElectricityAccounts = "electricityAccounts";
-        public static string Common_Used = "used";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

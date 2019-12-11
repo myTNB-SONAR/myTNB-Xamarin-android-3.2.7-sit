@@ -88,8 +88,7 @@
         "new": "New",
         "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss.",
         "wellBeBack": "We’ll be back shortly!",
-        "electricityAccounts": "Electricity Accounts",
-        "used": "Used"
+        "electricityAccounts": "Electricity Accounts"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",

@@ -10,7 +10,7 @@ namespace myTNB
     {
         private UIView _viewContainer;
         public UIImageView RewardImageView;
-        public UILabel Title;
+        public UILabel Title, _usedLbl;
         public UIView UsedView;
         public ActivityIndicatorComponent ActivityIndicator;
 
@@ -63,19 +63,18 @@ namespace myTNB
             };
             UsedView.Layer.CornerRadius = GetScaledHeight(5F);
 
-            UILabel usedLbl = new UILabel(new CGRect(0, GetYLocationToCenterObject(GetScaledHeight(16F), UsedView), 0, GetScaledHeight(16F)))
+            _usedLbl = new UILabel(new CGRect(0, GetYLocationToCenterObject(GetScaledHeight(16F), UsedView), 0, GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
-                TextColor = UIColor.White,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_Used)
+                TextColor = UIColor.White
             };
 
-            CGSize lblSize = usedLbl.SizeThatFits(new CGSize(viewContainerWidth, usedLbl.Frame.Height));
+            CGSize lblSize = _usedLbl.SizeThatFits(new CGSize(viewContainerWidth, _usedLbl.Frame.Height));
             ViewHelper.AdjustFrameSetWidth(UsedView, lblSize.Width + (GetScaledWidth(12F) * 2));
-            ViewHelper.AdjustFrameSetWidth(usedLbl, lblSize.Width);
-            ViewHelper.AdjustFrameSetX(usedLbl, GetXLocationToCenterObject(lblSize.Width, UsedView));
-            UsedView.AddSubview(usedLbl);
+            ViewHelper.AdjustFrameSetWidth(_usedLbl, lblSize.Width);
+            ViewHelper.AdjustFrameSetX(_usedLbl, GetXLocationToCenterObject(lblSize.Width, UsedView));
+            UsedView.AddSubview(_usedLbl);
             _viewContainer.AddSubview(UsedView);
 
             AddSubview(_viewContainer);
@@ -85,6 +84,7 @@ namespace myTNB
         {
             if (model != null)
             {
+                _usedLbl.Text = GetI18NValue(RewardsConstants.I18N_Used);
                 Title.Text = model.TitleOnListing;
             }
         }
