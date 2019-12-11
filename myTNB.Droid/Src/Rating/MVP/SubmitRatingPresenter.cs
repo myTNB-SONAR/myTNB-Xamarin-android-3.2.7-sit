@@ -1,5 +1,6 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Rating.Api;
 using myTNB_Android.Src.Rating.Request;
 using myTNB_Android.Src.Utils;
@@ -140,32 +141,30 @@ namespace myTNB_Android.Src.Rating.MVP
 
         public async void SubmitRateUs(SubmitRateUsRequest submitRateUsRequest)
         {
-            cts = new CancellationTokenSource();
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetRateUsQuestionsApi>(httpClient);
-#else
-            var api = RestService.For<GetRateUsQuestionsApi>(Constants.SERVER_URL.END_POINT);
-#endif
             try
             {
-                var submitRateUsResponse = await api.SubmitRateUs(submitRateUsRequest, cts.Token);
+                MyTNBService.Request.SubmitRateUsRequest rateUsRequest = new MyTNBService.Request.SubmitRateUsRequest(submitRateUsRequest.InputAnswer.ReferenceId,
+                    submitRateUsRequest.InputAnswer.Email, submitRateUsRequest.InputAnswer.DeviceId);
+                submitRateUsRequest.InputAnswer.InputAnswerDetails.ForEach(answer =>
+                {
+                    rateUsRequest.AddAnswerDetails(answer.WLTYQuestionId,
+                        answer.RatingInput, answer.MultilineInput);
+                });
+                var submitRateUsResponse = await ServiceApiImpl.Instance.SubmitRateUs(rateUsRequest);
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (submitRateUsResponse.submitRateUsResult.IsError)
+                if (!submitRateUsResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(submitRateUsResponse.submitRateUsResult.Message);
+                    this.mView.ShowError(submitRateUsResponse.Response.Message);
                 }
                 else
                 {

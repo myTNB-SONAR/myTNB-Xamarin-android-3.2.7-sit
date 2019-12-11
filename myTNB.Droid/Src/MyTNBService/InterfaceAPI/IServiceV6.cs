@@ -116,5 +116,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdatePhoneNumber")]
         Task<T> UpdatePhoneNumber<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SubmitRateUs")]
+        Task<T> SubmitRateUs<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
     }
 }
