@@ -11,9 +11,5 @@ namespace myTNB_Android.Src.UpdateMobileNo.Api
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/UpdatePhoneNumber")]
         Task<UpdateMobileResponse> UpdatePhoneNumber([Body] UpdateMobileRequest request, CancellationToken cancellationToken);
-
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/UpdatePhoneNumber_v2")]
-        Task<UpdateMobileResponse> UpdatePhoneNumberV2([Body] UpdateMobileV2Request request, CancellationToken cancellationToken);
     }
 }

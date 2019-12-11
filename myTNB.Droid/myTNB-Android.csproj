@@ -3792,6 +3792,8 @@
     <Compile Include="Src\MyTNBService\Request\ChangeNewPasswordRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\SendUpdatePhoneTokenSMSResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SendUpdatePhoneTokenSMSRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UpdateNewPhoneNumberResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\UpdateNewPhoneNumberRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

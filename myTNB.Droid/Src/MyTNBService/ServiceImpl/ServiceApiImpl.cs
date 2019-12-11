@@ -309,5 +309,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.SendUpdatePhoneTokenSMS<SendUpdatePhoneTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+        /// <summary>
+        /// Call UpdatePhoneNumber with default timeout.
+        /// </summary>
+        /// <param name="request"></param>km
+        /// <returns></returns>
+        public Task<UpdateNewPhoneNumberResponse> UpdatePhoneNumber([Body] Request.BaseRequest request)
+        {
+            return api.UpdatePhoneNumber<UpdateNewPhoneNumberResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
     }
 }

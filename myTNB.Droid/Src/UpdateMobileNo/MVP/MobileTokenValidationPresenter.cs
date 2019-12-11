@@ -56,8 +56,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void OnVerifyToken(string num1, string num2, string num3, string num4, string newPhone, UserAuthenticationRequest request, bool fromAppLaunch, bool verfiyPhone)
         {
-
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
                 this.mView.ShowEmptyErrorPin_1();
@@ -96,45 +94,16 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 oldPhoneNo = entity.MobileNo;
             }
 
-            string user_id = "";
-            string user_email = "";
-            if (request != null)
-            {
-                this.authenticationRequest = request;
-                user_id = request.ActiveUserName;
-                user_email = request.UserName;
-            }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                user_id = entity.UserID;
-                user_email = entity.Email;
-            }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var verifyTokenApi = RestService.For<IUpdateMobileNoApi>(httpClient);
-#else
-            var verifyTokenApi = RestService.For<IUpdateMobileNoApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var verifyTokenResponse = await verifyTokenApi.UpdatePhoneNumberV2(new UpdateMobileNo.Request.UpdateMobileV2Request()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    UserId = user_id,
-                    Email = user_email,
-                    OldPhoneNumber = oldPhoneNo,
-                    NewPhoneNumber = newPhone,
-                    token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)
-                }, cts.Token);
+                var verifyTokenResponse = await ServiceApiImpl.Instance.UpdatePhoneNumber(new UpdateNewPhoneNumberRequest(oldPhoneNo, newPhone, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideRegistrationProgress();
                 }
 
-                if (!verifyTokenResponse.Data.IsError)
+                if (verifyTokenResponse.IsSuccessResponse())
                 {
                     //this.mView.ShowDashboardMyAccount();
                     /// call login service 
@@ -158,7 +127,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 else
                 {
                     // TODO : ADD REGISTRATION ERROR
-                    this.mView.ShowError(verifyTokenResponse.Data.Message);
+                    this.mView.ShowError(verifyTokenResponse.Response.Message);
                 }
             }
             catch (System.OperationCanceledException e)
