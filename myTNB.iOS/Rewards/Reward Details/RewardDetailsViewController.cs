@@ -543,7 +543,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, response?.d?.ErrorMessage);
+                        AlertHandler.DisplayServiceError(this, response?.d?.DisplayMessage);
                     }
                 });
             });

@@ -538,7 +538,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_submitFeedback?.d?.ErrorMessage ?? string.Empty);
+                                    DisplayServiceError(_submitFeedback?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });

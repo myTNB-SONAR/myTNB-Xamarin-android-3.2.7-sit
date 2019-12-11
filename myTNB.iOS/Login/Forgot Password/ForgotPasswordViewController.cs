@@ -215,7 +215,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_resetCodeList?.d?.ErrorMessage);
+                        DisplayServiceError(_resetCodeList?.d?.DisplayMessage);
                     }
                     ActivityIndicator.Hide();
                 });

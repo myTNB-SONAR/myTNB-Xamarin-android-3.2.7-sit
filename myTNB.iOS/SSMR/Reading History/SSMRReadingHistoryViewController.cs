@@ -111,7 +111,7 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayServiceError(_eligibilityAccount?.d?.ErrorMessage ?? string.Empty);
+                            DisplayServiceError(_eligibilityAccount?.d?.DisplayMessage ?? string.Empty);
                             ActivityIndicator.Hide();
                         }
                     });
@@ -586,7 +586,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_contactDetails?.d?.ErrorMessage);
+                                    DisplayServiceError(_contactDetails?.d?.DisplayMessage);
                                 }
                             }
                             else

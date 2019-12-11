@@ -529,13 +529,13 @@ namespace myTNB
                         }
                         else
                         {
-                            ShowServerError(userAuthenticationModel?.ErrorMessage);
+                            ShowServerError(userAuthenticationModel?.DisplayMessage);
                             ActivityIndicator.Hide();
                         }
                     }
                     else
                     {
-                        ShowServerError(_authenticationList?.d?.ErrorMessage);
+                        ShowServerError(_authenticationList?.d?.DisplayMessage);
                         ActivityIndicator.Hide();
                     }
                 });

@@ -588,7 +588,7 @@ namespace myTNB
                 }
                 else
                 {
-                    DisplayServiceError(_paymentTransaction?.d?.ErrorMessage ?? string.Empty);
+                    DisplayServiceError(_paymentTransaction?.d?.DisplayMessage ?? string.Empty);
                 }
                 ActivityIndicator.Hide();
             });
