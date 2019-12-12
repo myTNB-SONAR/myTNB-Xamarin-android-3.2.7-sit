@@ -833,13 +833,13 @@
     "title": "Ganjaran",
     "viewAll": "Lihat Semua",
     "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!",
-    "tutorialRewardTitle": "Pick a reward, check it out!.",
+    "tutorialRewardTitle": "Pilih ganjaran yang anda gemari!",
     "tutorialRewardDesc": "Tap on a reward to find out more, or tap on the heart to save it for later.",
-    "tutorialCategoryTitle": "Rewards for you.",
-    "tutorialCategoryDesc": "Switch between the categories to explore the different rewards.",
-    "tutorialSaveTitle": "Your favourites all in one place.",
-    "tutorialSaveDesc": "Here you’ll find all the rewards you’ve saved for later use.",
-    "used": "Used"
+    "tutorialCategoryTitle": "Ganjaran untuk anda.",
+    "tutorialCategoryDesc": "Tukar kategori untuk melihat pelbagai ganjaran berbeza.",
+    "tutorialSaveTitle": "Kegemaran anda semuanya di satu tempat.",
+    "tutorialSaveDesc": "Anda boleh lihat semua ganjaran yang anda simpan di sini untuk digunakan kemudian.",
+    "used": "Telah Digunakan"
   },
   "RewardDetails": {
     "title": "Ganjaran",
@@ -853,18 +853,18 @@
     "useNowPopupMessage": "Ganjaran ini hanya boleh digunakan sekali sahaja, sila pastikan anda berada di kedai.",
     "useLater": "Gunakan Kemudian",
     "confirm": "Sahkan",
-    "rewardUsedPrefix": "Reward used ",
-    "rewardUsed": "Reward Used",
+    "rewardUsedPrefix": "Telah Digunakan ",
+    "rewardUsed": "Telah Digunakan",
     "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
-    "used": "Used",
-    "tutorialSaveTitle": "Never miss out on a reward.",
-    "tutorialSaveDesc": "Save a reward to your favourite so that you can use it later.",
-    "tutorialUseNowTitle": "Redeem your rewards.",
-    "tutorialUseNowDesc": "At the merchant’s place and ready to redeem your reward? Tap here."
+    "used": "Telah Digunakan",
+    "tutorialSaveTitle": "Jangan terlepas ganjaran.",
+    "tutorialSaveDesc": "Anda boleh simpan ganjaran untuk digunakan kemudian.",
+    "tutorialUseNowTitle": "Tebus Ganjaran Anda.",
+    "tutorialUseNowDesc": "Anda di kedai dan sedia menebus ganjaran anda? Tekan sini."
   },
   "SavedRewards": {
     "title": "Ganjaran Yang Disimpan",
     "emptyDesc": "Your saved rewards will appear here.",
-    "used": "Used"
+    "used": "Telah Digunakan"
   }
 }
