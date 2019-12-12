@@ -93,10 +93,6 @@ namespace myTNB
                 TextColor = UIColor.White
             };
 
-            CGSize lblSize = _usedLbl.SizeThatFits(new CGSize(_cellWidth - (BaseMarginWidth16 * 2), _usedLbl.Frame.Height));
-            ViewHelper.AdjustFrameSetWidth(UsedView, lblSize.Width + (GetScaledWidth(12F) * 2));
-            ViewHelper.AdjustFrameSetWidth(_usedLbl, lblSize.Width);
-            ViewHelper.AdjustFrameSetX(_usedLbl, GetXLocationToCenterObject(lblSize.Width, UsedView));
             UsedView.AddSubview(_usedLbl);
             _viewContainer.AddSubview(UsedView);
 
@@ -109,6 +105,11 @@ namespace myTNB
             if (model != null)
             {
                 _usedLbl.Text = GetI18NValue(RewardsConstants.I18N_Used);
+                CGSize lblSize = _usedLbl.SizeThatFits(new CGSize(_cellWidth - (BaseMarginWidth16 * 2), _usedLbl.Frame.Height));
+                ViewHelper.AdjustFrameSetWidth(UsedView, lblSize.Width + (GetScaledWidth(12F) * 2));
+                ViewHelper.AdjustFrameSetWidth(_usedLbl, lblSize.Width);
+                ViewHelper.AdjustFrameSetX(_usedLbl, GetXLocationToCenterObject(lblSize.Width, UsedView));
+                ViewHelper.AdjustFrameSetX(UsedView, _viewContainer.Frame.Width - UsedView.Frame.Width - GetScaledWidth(12F));
                 Title.Text = model.TitleOnListing;
                 _readIndicator.Hidden = model.IsRead;
                 if (!model.IsRead)

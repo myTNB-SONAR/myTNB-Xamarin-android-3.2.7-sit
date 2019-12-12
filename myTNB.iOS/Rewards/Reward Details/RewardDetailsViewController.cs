@@ -256,6 +256,23 @@ namespace myTNB
             };
 
             UITextView locationTextView = CreateHTMLContent(RewardModel.LocationLabel);
+            locationTextView.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                BrowserViewController viewController =
+                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                if (viewController != null)
+                {
+                    viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
+                    viewController.URL = url.AbsoluteString;
+                    viewController.IsDelegateNeeded = false;
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    PresentViewController(navController, true, null);
+                }
+            }));
             CGSize locationTextViewSize = locationTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(locationTextView, locationTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(locationTextView, 0);
@@ -812,6 +829,7 @@ namespace myTNB
             ViewHelper.AdjustFrameSetWidth(usedView, lblSize.Width + (GetScaledWidth(12F) * 2));
             ViewHelper.AdjustFrameSetWidth(usedLbl, lblSize.Width);
             ViewHelper.AdjustFrameSetX(usedLbl, GetXLocationToCenterObject(lblSize.Width, usedView));
+            ViewHelper.AdjustFrameSetX(usedView, _scrollView.Frame.Width - usedView.Frame.Width - GetScaledWidth(12F));
             usedView.AddSubview(usedLbl);
             _scrollView.AddSubview(usedView);
         }
