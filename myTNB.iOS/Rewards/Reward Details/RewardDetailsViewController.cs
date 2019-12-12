@@ -676,7 +676,11 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(response?.d?.DisplayMessage);
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                            LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_IllDoItLater), null },
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_TryAgain), () => OnUseNowAction()}});
                     }
                 });
             });

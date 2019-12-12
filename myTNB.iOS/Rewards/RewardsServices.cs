@@ -152,7 +152,10 @@ namespace myTNB
                     }
                     else
                     {
-                        //Expired shared reward handling goes here...
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
+                            LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () => topView.TabBarController.SelectedIndex = 3} });
                     }
                 }
             }
