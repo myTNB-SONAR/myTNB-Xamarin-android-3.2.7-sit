@@ -165,7 +165,7 @@
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda",
-    "tutorialSingleAcctTitle": "Welcome to your new Home view!",
+    "tutorialSingleAcctTitle": "Selamat datang ke laman Utama baru anda!",
     "tutorialQuickAccessTitle": "Akses pantas akaun.",
     "tutorialQuickActionTitle": "Akses Mudah",
     "tutorialNeedHelpTitle": "Perlu bantuan?",
@@ -832,9 +832,9 @@
   "Rewards": {
     "title": "Ganjaran",
     "viewAll": "Lihat Semua",
-    "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!",
+    "noRewards": "Nampaknya tidak ada ganjaran buat masa ini. Datang kembali untuk menikmati tawaran yang hebat!",
     "tutorialRewardTitle": "Pilih ganjaran yang anda gemari!",
-    "tutorialRewardDesc": "Tap on a reward to find out more, or tap on the heart to save it for later.",
+    "tutorialRewardDesc": "Sila tekan pada ganjaran yang dipilih untuk mengetahui lebih lanjut atau tekan pada hati untuk menyimpannya.",
     "tutorialCategoryTitle": "Ganjaran untuk anda.",
     "tutorialCategoryDesc": "Tukar kategori untuk melihat pelbagai ganjaran berbeza.",
     "tutorialSaveTitle": "Kegemaran anda semuanya di satu tempat.",
@@ -855,7 +855,7 @@
     "confirm": "Sahkan",
     "rewardUsedPrefix": "Telah Digunakan ",
     "rewardUsed": "Telah Digunakan",
-    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
+    "redeemRewardNote": "Ganjaran ditebus. Sila tunjukkan peniaga skrin ini sebelum pemasa tamat.",
     "used": "Telah Digunakan",
     "tutorialSaveTitle": "Jangan terlepas ganjaran.",
     "tutorialSaveDesc": "Anda boleh simpan ganjaran untuk digunakan kemudian.",
@@ -864,7 +864,7 @@
   },
   "SavedRewards": {
     "title": "Ganjaran Yang Disimpan",
-    "emptyDesc": "Your saved rewards will appear here.",
+    "emptyDesc": "Ganjaran yang anda simpan akan muncul di sini.",
     "used": "Telah Digunakan"
   }
 }
