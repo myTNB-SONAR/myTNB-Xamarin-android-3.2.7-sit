@@ -338,8 +338,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
                                     imgPromotion.SetImageBitmap(imageBitmap);
                                     imgPromotion.Click += delegate
                                     {
-                                        //Intent webIntent = new Intent(this, typeof(PromotionWebActivity));
-                                        //webIntent.PutExtra(Constants.PROMOTIONS_LINK, obj.GeneralLinkUrl);
+                                        //Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                                        //webIntent.PutExtra(Constants.IN_APP_LINK, obj.GeneralLinkUrl);
+                                        //webIntent.PutExtra(Constants.IN_APP_TITLE, "Promotions");
                                         //StartActivity(webIntent);
                                     };
                                 }

@@ -13,7 +13,9 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -29,14 +31,18 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private ViewPager pager;
         private NewAppTutorialPagerAdapter adapter;
         private LinearLayout swipeDoubleTapLayout;
+        private LinearLayout swipeTopDoubleTapLayout;
         private LinearLayout indicator;
         private TextView txtDoubleTapDismiss;
+        private LinearLayout indicatorTopContainer;
+        private TextView txtTopDoubleTapDismiss;
         private List<NewAppModel> NewAppTutorialList = new List<NewAppModel>();
         private GestureDetector mGeatureDetector;
         private Android.App.Fragment mFragment;
         private ISharedPreferences mPref;
+        private bool IndicationShowTop = false;
 
-        public NewAppTutorialDialogFragment(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list)
+        public NewAppTutorialDialogFragment(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
             this.mContext = ctx;
             if (list != null && list.Count > 0)
@@ -45,6 +51,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             }
             this.mFragment = fragment;
             this.mPref = pref;
+            this.IndicationShowTop = mIndicationShowTop;
         }
 
         public override void OnStart()
@@ -65,37 +72,30 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            /*Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
-            Dialog.Window.SetDimAmount(0.0f);
-            Dialog.SetCancelable(false);
-            Dialog.SetCanceledOnTouchOutside(false);
-            WindowManagerLayoutParams wlp = Dialog.Window.Attributes;
-            wlp.Gravity = GravityFlags.Center;
-            wlp.Width = ViewGroup.LayoutParams.MatchParent;
-            wlp.Height = ViewGroup.LayoutParams.MatchParent;
-            Dialog.Window.Attributes = wlp;
-            Dialog.Window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
-            Dialog.Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);*/
-
             View rootView = inflater.Inflate(Resource.Layout.NewAppTutorialLayout, container, false);
 
             try
             {
                 pager = rootView.FindViewById<ViewPager>(Resource.Id.viewPager);
                 indicator = rootView.FindViewById<LinearLayout>(Resource.Id.indicatorContainer);
+                indicatorTopContainer = rootView.FindViewById<LinearLayout>(Resource.Id.indicatorTopContainer);
                 swipeDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeDoubleTapLayout);
+                swipeTopDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeTopDoubleTapLayout);
                 txtDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtDoubleTapDismiss);
+                txtTopDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtTopDoubleTapDismiss);
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
+                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
                     txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
+                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
                 }
 
-                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss);
+                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
 
                 if (this.mFragment != null)
                 {
@@ -177,6 +177,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                         }
                     }
+                    else if (this.mFragment is RewardMenuFragment)
+                    {
+                        ((RewardMenuFragment)this.mFragment).StopScrolling();
+                    }
                 }
                 else
                 {
@@ -229,13 +233,25 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 {
                     if (NewAppTutorialList.Count > 1)
                     {
-                        swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                        if (IndicationShowTop)
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                        }
                         txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                         indicator.Visibility = ViewStates.Visible;
+                        indicatorTopContainer.Visibility = ViewStates.Visible;
                     }
                     else
                     {
                         swipeDoubleTapLayout.Visibility = ViewStates.Gone;
+                        swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
                     }
 
                     if (this.mFragment != null && this.mFragment is ItemisedBillingMenuFragment)
@@ -255,6 +271,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
                             }
                             else
                             {
@@ -284,6 +301,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                     if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                     {
                                         txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                        txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
                                     }
                                 }
                             }
@@ -310,6 +328,22 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 image.SetImageResource(Resource.Drawable.white_circle);
                             }
                             indicator.AddView(image, i);
+
+                            ImageView imageTop = new ImageView(mContext);
+                            imageTop.Id = i;
+                            LinearLayout.LayoutParams layoutTopParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                            layoutTopParams.RightMargin = 12;
+                            layoutTopParams.LeftMargin = 12;
+                            imageTop.LayoutParameters = layoutTopParams;
+                            if (i == 0)
+                            {
+                                imageTop.SetImageResource(Resource.Drawable.white_circle_active);
+                            }
+                            else
+                            {
+                                imageTop.SetImageResource(Resource.Drawable.white_circle);
+                            }
+                            indicatorTopContainer.AddView(imageTop, i);
                         }
                     }
 
@@ -330,15 +364,27 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 {
                                     selectedDot.SetImageResource(Resource.Drawable.white_circle);
                                 }
+
+                                ImageView selectedTopDot = (ImageView)indicatorTopContainer.GetChildAt(i);
+                                if (e.Position == i)
+                                {
+                                    selectedTopDot.SetImageResource(Resource.Drawable.white_circle_active);
+                                }
+                                else
+                                {
+                                    selectedTopDot.SetImageResource(Resource.Drawable.white_circle);
+                                }
                             }
 
                             if (e.Position == NewAppTutorialList.Count - 1)
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
                             }
                             else
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
 
                             if (this.mFragment != null)
@@ -381,6 +427,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                             if (((topHeight / 2 + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                                             {
                                                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                                                txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
                                                             }
                                                         }
                                                     }
@@ -485,6 +532,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                     {
                                                         ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
                                                         txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                                        txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
                                                     }
                                                     else
                                                     {
@@ -578,6 +626,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
                                                     txtDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                                    txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
                                                 }
                                                 else
                                                 {
@@ -598,6 +647,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 else
                 {
                     swipeDoubleTapLayout.Visibility = ViewStates.Gone;
+                    swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
                 }
 
                 mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment, this.mContext, this.mPref, this.NewAppTutorialList));
@@ -757,6 +807,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
                         UserSessions.DoSMRDashboardTutorialShown(this.mPref);
                     }
+                    else if (this.mFragment is RewardMenuFragment)
+                    {
+                        ((RewardMenuFragment)this.mFragment).StopScrolling();
+                        UserSessions.DoRewardsShown(this.mPref);
+                    }
                 }
                 else
                 {
@@ -773,6 +828,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((SubmitMeterReadingActivity)mActivity).SubmitMeterCustomScrolling(0);
                         UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is RewardDetailActivity)
+                    {
+                        UserSessions.DoRewardsDetailShown(this.mPref);
                     }
                 }
                 return true;

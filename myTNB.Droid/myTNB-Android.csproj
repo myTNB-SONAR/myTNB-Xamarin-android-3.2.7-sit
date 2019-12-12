@@ -792,7 +792,6 @@
     <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
-    <Compile Include="Src\PreLogin\Activity\PromotionWebActivity.cs" />
     <Compile Include="Src\Promotions\Activity\PromotionsActivity.cs" />
     <Compile Include="Src\Promotions\Adapter\PromotionListAdapter.cs" />
     <Compile Include="Src\Promotions\Adapter\PromotionPagerAdapter.cs" />
@@ -3727,6 +3726,382 @@
     <AndroidResource Include="Resources\drawable-xhdpi\maintenance_bcrm.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_bcrm.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm.png" />
+    <Compile Include="Src\SitecoreCMS\Model\RewardsModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\RewardsService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardMenuFragment.cs" />
+    <AndroidResource Include="Resources\layout\RewardListView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Database\Model\RewardsEntity.cs" />
+    <Compile Include="Src\Database\Model\RewardsParentEntity.cs" />
+    <Compile Include="Src\Database\Model\RewardsCategoryEntity.cs" />
+    <AndroidResource Include="Resources\layout\CustomTabLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\RewardIListtemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardItemFragment.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Adapter\RewardsTabAdapter.cs" />
+    <AndroidResource Include="Resources\layout\RewardsCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_card_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_card_reward_unsaved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_card_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_card_reward_unsaved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_card_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_card_reward_unsaved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_card_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_card_reward_unsaved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_card_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_card_reward_unsaved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward_saved.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\RewardsToolBarMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Adapter\RewardsRecyclerAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardItemPresenter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardItemContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardMenuContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Model\RewardMenuModel.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\RewardMenuPresenter.cs" />
+    <Compile Include="Src\SavedRewards\MVP\SavedRewardsActivity.cs" />
+    <AndroidResource Include="Resources\layout\SavedRewardsLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SavedRewards\Adapter\SavedRewardsRecyclerAdapter.cs" />
+    <Compile Include="Src\SavedRewards\MVP\SavedRewardsContract.cs" />
+    <Compile Include="Src\SavedRewards\MVP\SavedRewardsPresenter.cs" />
+    <Compile Include="Src\Utils\RewardsMenuUtils.cs" />
+    <AndroidResource Include="Resources\layout\RewardDetailLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_button_reward_save.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_button_reward_unsave.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_locate.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_t_c.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_time.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_button_reward_save.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_button_reward_unsave.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_locate.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_t_c.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_time.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_button_reward_save.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_button_reward_unsave.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_locate.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_t_c.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_time.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_button_reward_save.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_button_reward_unsave.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_locate.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_t_c.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_time.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_button_reward_save.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_button_reward_unsave.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_locate.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_t_c.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_time.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\RewardUsedRect.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\RewardDetailShadowBG.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\RewardDetail\MVP\RewardDetailActivity.cs" />
+    <Compile Include="Src\RewardDetail\MVP\RewardDetailPresenter.cs" />
+    <Compile Include="Src\RewardDetail\MVP\RewardDetailContract.cs" />
+    <AndroidResource Include="Resources\values\RewardDetailStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_image_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_saved_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\img_tooltip_reward_confirm.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_image_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_saved_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_tooltip_reward_confirm.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_image_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_saved_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_tooltip_reward_confirm.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_image_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_saved_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_tooltip_reward_confirm.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_image_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_saved_reward_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_tooltip_reward_confirm.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\CustomDialogWithImageHeaderTwoButton.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_locate_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_t_c_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_reward_time_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_locate_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_t_c_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_reward_time_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_locate_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_t_c_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_reward_time_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_locate_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_t_c_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reward_time_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_locate_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_t_c_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_reward_time_used.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Base\Activity\BaseWebviewActivity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Request\AddUpdateRewardRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Model\AddUpdateRewardModel.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Response\AddUpdateRewardResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\IAddUpdateRewardApi.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\RewardServiceImpl.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Api\IGetUserRewardsApi.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Request\GetUserRewardsRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\RewardMenu\Response\GetUserRewardsResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Async\SitecoreRewardAPI.cs" />
     <Compile Include="Src\MyTNBService\InterfaceAPI\IServiceV6.cs" />
     <Compile Include="Src\MyTNBService\Request\AppLaunchMasterDataRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\BaseResponse.cs" />
@@ -3746,6 +4121,26 @@
     <Compile Include="Src\CompoundView\ProfileMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\ProfileMenuPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\reward_card_shadow.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\AccountToCustomerRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\AccountToCustomerResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\ValidateManualAccountResponse.cs" />
@@ -4167,6 +4562,18 @@
     <Folder Include="Src\MyTNBService\ServiceImpl\" />
     <Folder Include="Src\RearrangeAccount\" />
     <Folder Include="Src\RearrangeAccount\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Model\" />
+    <Folder Include="Src\SavedRewards\" />
+    <Folder Include="Src\SavedRewards\MVP\" />
+    <Folder Include="Src\SavedRewards\Adapter\" />
+    <Folder Include="Src\RewardDetail\" />
+    <Folder Include="Src\RewardDetail\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Api\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Request\" />
+    <Folder Include="Src\myTNBMenu\Fragments\RewardMenu\Response\" />
     <Folder Include="Src\myTNBMenu\Fragments\ProfileMenu\" />
     <Folder Include="Src\Login\Api\" />
     <Folder Include="Src\NotificationSettings\Api\" />

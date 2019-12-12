@@ -150,6 +150,24 @@
                     public const string Image_XXXHDPI = "image_xxxhdpi";
                 }
 
+                public struct Rewards
+                {
+                    public const string Title = "Title";
+                    public const string TitleOnListing = "TitleOnListing";
+                    public const string DisplayName = "DisplayName";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                    public const string PeriodLabel = "RewardPeriodText";
+                    public const string LocationLabel = "LocationsText";
+                    public const string TandCLabel = "TermsAndConditions";
+                    public const string StartDate = "StartDateTime";
+                    public const string EndDate = "EndDateTime";
+                    public const string RewardUseWithinTime = "RewardUseWithinTime";
+                    public const string RewardUseTitle = "RewardUseTitle";
+                    public const string RewardUseDescription = "RewardUseDescription";
+                    public const string RewardCategory = "RewardCategory";
+                }
+                
                 public struct Language
                 {
                     public const string LanguageFile = "Language File";
@@ -193,6 +211,7 @@
                 public const string SSMRMeterReadingOnePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase OCR Off";
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
 
+                public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }

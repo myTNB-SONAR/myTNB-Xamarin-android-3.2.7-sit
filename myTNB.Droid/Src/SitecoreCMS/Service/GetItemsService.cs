@@ -439,6 +439,43 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
+        public RewardsResponseModel GetRewardsItems()
+        {
+            RewardsResponseModel respModel = new RewardsResponseModel();
+            try
+            {
+                RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetRewardsItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public RewardsTimeStampResponseModel GetRewardsTimestampItem()
+        {
+            RewardsTimeStampResponseModel respModel = new RewardsTimeStampResponseModel();
+            try
+            {
+                RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<RewardsTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetRewardsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
         private BaseModel CheckData(List<object> data)
         {
             BaseModel bm = new BaseModel();

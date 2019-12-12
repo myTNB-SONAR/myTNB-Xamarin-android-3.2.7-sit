@@ -167,6 +167,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowUnreadRewards(bool flag);
 
             void ShowUnreadRewards();
+
+            void HideUnreadRewards(bool flag);
+
+            void HideUnreadRewards();
+
+            void ShowRewardsMenu();
+
+            void OnCheckRewardTab();
+
+            void OnDataSchemeShow();
+
+            void OnCheckUserReward();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -222,6 +234,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             int CheckCurrentDashboardMenu();
 
             void BillMenuStartRefresh();
+
+            void OnResumeUpdateRewardUnRead();
+
+            void OnStartRewardThread();
+
+            Task OnGetUserRewardList();
+
+            void UpdateRewardRead(string itemID, bool flag);
         }
 	}
 }

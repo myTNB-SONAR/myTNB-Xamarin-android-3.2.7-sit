@@ -17,6 +17,10 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
@@ -60,12 +64,22 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private static bool isPromoClicked = false;
 
-		public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
+        private RewardServiceImpl mApi;
+
+        private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
+
+        private RewardsCategoryEntity mRewardsCategoryEntity;
+
+        private RewardsEntity mRewardsEntity;
+
+        public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
 			this.mView = mView;
 			this.mSharedPref = preferences;
 			this.mView?.SetPresenter(this);
-		}
+
+            this.mApi = new RewardServiceImpl();
+        }
 
 		public void Logout()
 		{
@@ -302,7 +316,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 					}
 
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_bill:
                     OnUpdatePromoUnRead();
@@ -354,7 +368,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
                     WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
@@ -381,19 +395,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						}
 					}
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_reward:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
-                    OnUpdateRewardUnRead(true);
-                    this.mView.ShowToBeAddedToast();
-					break;
+                    this.mView.HideAccountName();
+                    this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
+                    this.mView.ShowRewardsMenu();
+
+                    if (this.mView.IsActive())
+                    {
+                        if (RewardsEntity.HasUnread())
+                        {
+                            this.mView.ShowUnreadRewards(true);
+
+                        }
+                        else
+                        {
+                            this.mView.HideUnreadRewards(true);
+
+                        }
+                    }
+                    break;
 				case Resource.Id.menu_more:
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
-                    OnUpdateRewardUnRead(false);
+                    OnUpdateRewardUnRead();
                     this.mView.ShowMoreMenu();
 					break;
 			}
@@ -423,13 +452,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			}
 		}
 
+        public void OnStartRewardThread()
+        {
+            if (!RewardsMenuUtils.GetRewardLoading())
+            {
+                this.mView.ShowProgressDialog();
+                RewardsMenuUtils.OnSetRewardLoading(true);
+                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+            }
+            else
+            {
+                this.mView.ShowProgressDialog();
+                this.mView.OnCheckUserReward();
+            }
+        }
+
 		public void Start()
 		{
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
 				new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
-				LaunchViewActivity.MAKE_INITIAL_CALL = false;
+                RewardsMenuUtils.OnSetRewardLoading(true);
+                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
 
 			if (currentBottomNavigationMenu == Resource.Id.menu_promotion || currentBottomNavigationMenu == Resource.Id.menu_reward || currentBottomNavigationMenu == Resource.Id.menu_more)
@@ -446,7 +492,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				OnMenuSelect(Resource.Id.menu_bill);
 			}
 
-
+            this.mView.OnDataSchemeShow();
 
 
 		}
@@ -584,14 +630,31 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             isPromoClicked = false;
         }
 
-        private void OnUpdateRewardUnRead(bool flag)
+        private void OnUpdateRewardUnRead()
         {
-            this.mView.ShowUnreadRewards(flag);
+            if (RewardsEntity.HasUnread())
+            {
+                this.mView.ShowUnreadRewards(false);
+
+            }
+            else
+            {
+                this.mView.HideUnreadRewards(false);
+
+            }
         }
 
-        private void OnResumeUpdateRewardUnRead()
+        public void OnResumeUpdateRewardUnRead()
         {
-            this.mView.ShowUnreadRewards();
+            if (RewardsEntity.HasUnread())
+            {
+                this.mView.ShowUnreadRewards();
+
+            }
+            else
+            {
+                this.mView.HideUnreadRewards();
+            }
         }
 
         public void OnValidateData()
@@ -993,6 +1056,228 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
             return isHaveData;
+        }
+
+        public async Task OnGetUserRewardList()
+        {
+            try
+            {
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                GetUserRewardsRequest request = new GetUserRewardsRequest()
+                {
+                    usrInf = currentUsrInf
+                };
+
+                GetUserRewardsResponse response = await this.mApi.GetUserRewards(request, new System.Threading.CancellationTokenSource().Token);
+
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200"
+                    && response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
+                {
+                    userList = response.Data.Data.CurrentList;
+                }
+                else
+                {
+                    userList = new List<AddUpdateRewardModel>();
+                }
+                CheckRewardsCache();
+            }
+            catch (Exception e)
+            {
+                userList = new List<AddUpdateRewardModel>();
+                CheckRewardsCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckRewardsCache()
+        {
+            if (mRewardsCategoryEntity == null)
+            {
+                mRewardsCategoryEntity = new RewardsCategoryEntity();
+            }
+
+            if (mRewardsEntity == null)
+            {
+                mRewardsEntity = new RewardsEntity();
+            }
+
+            List<RewardsCategoryModel> mDisplayCategoryList = new List<RewardsCategoryModel>();
+
+            List<RewardsCategoryEntity> mCategoryList = mRewardsCategoryEntity.GetAllItems();
+
+            if (mCategoryList != null && mCategoryList.Count > 0)
+            {
+                for (int i = 0; i < mCategoryList.Count; i++)
+                {
+                    List<RewardsEntity> checkList = mRewardsEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
+                    if (checkList != null && checkList.Count > 0)
+                    {
+                        for (int j = 0; j < checkList.Count; j++)
+                        {
+                            if (userList != null && userList.Count > 0)
+                            {
+                                string checkID = checkList[j].ID;
+                                checkID = checkID.Replace("{", "");
+                                checkID = checkID.Replace("}", "");
+
+                                AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkID));
+                                if (found != null)
+                                {
+                                    if (found.Read)
+                                    {
+                                        string readDate = !string.IsNullOrEmpty(found.ReadDate) ? found.ReadDate : "";
+                                        if (readDate.Contains("Date("))
+                                        {
+                                            int startIndex = readDate.LastIndexOf("(") + 1;
+                                            int lastIndex = readDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < readDate.Length)
+                                            {
+                                                string timeStamp = readDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                readDate = dateTimeParse.ToString();
+                                            }
+                                        }
+                                        mRewardsEntity.UpdateReadItem(checkList[j].ID, found.Read, readDate);
+                                    }
+
+                                    if (found.Favourite)
+                                    {
+                                        string favDate = !string.IsNullOrEmpty(found.FavUpdatedDate) ? found.FavUpdatedDate : "";
+                                        if (favDate.Contains("Date("))
+                                        {
+                                            int startIndex = favDate.LastIndexOf("(") + 1;
+                                            int lastIndex = favDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < favDate.Length)
+                                            {
+                                                string timeStamp = favDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                favDate = dateTimeParse.ToString();
+                                            }
+                                        }
+                                        mRewardsEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, favDate);
+                                    }
+                                    else
+                                    {
+                                        mRewardsEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, "");
+                                    }
+
+                                    if (found.Redeemed)
+                                    {
+                                        string redeemDate = !string.IsNullOrEmpty(found.RedeemedDate) ? found.RedeemedDate : "";
+                                        if (redeemDate.Contains("Date("))
+                                        {
+                                            int startIndex = redeemDate.LastIndexOf("(") + 1;
+                                            int lastIndex = redeemDate.LastIndexOf(")");
+                                            int lengthOfId = (lastIndex - startIndex);
+                                            if (lengthOfId < redeemDate.Length)
+                                            {
+                                                string timeStamp = redeemDate.Substring(startIndex, lengthOfId);
+                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
+                                                redeemDate = dateTimeParse.ToString();
+                                            }
+                                        }
+                                        mRewardsEntity.UpdateIsUsedItem(checkList[j].ID, found.Redeemed, redeemDate);
+                                    }
+                                }
+                            }
+                        }
+
+                        mDisplayCategoryList.Add(new RewardsCategoryModel()
+                        {
+                            ID = mCategoryList[i].ID,
+                            CategoryName = mCategoryList[i].CategoryName
+                        });
+                    }
+                    else
+                    {
+                        mRewardsEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                        mRewardsCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                    }
+                }
+            }
+
+            this.mView.OnCheckRewardTab();
+        }
+
+        public void UpdateRewardRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            RewardsEntity wtManager = new RewardsEntity();
+            string formattedDate = currentDate.ToString();
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+
+            _ = OnUpdateReward(itemID);
+        }
+
+        private async Task OnUpdateReward(string itemID)
+        {
+            try
+            {
+                // Update api calling
+                RewardsEntity wtManager = new RewardsEntity();
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
+                    Redeemed = currentItem.IsUsed,
+                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
     }

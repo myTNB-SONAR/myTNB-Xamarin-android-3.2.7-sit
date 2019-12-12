@@ -28,6 +28,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
@@ -36,6 +37,7 @@ using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
@@ -52,9 +54,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         , ScreenOrientation = ScreenOrientation.Portrait
         ,Theme = "@style/Theme.DashboardHome"
         ,WindowSoftInputMode = SoftInput.AdjustNothing)]
-    [IntentFilter(new[] { Android.Content.Intent.ActionView },
-            DataScheme = "mytnbapp",
-            Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable })]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
@@ -68,6 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private bool urlSchemaCalled = false;
         private string urlSchemaData = "";
+        private string urlSchemaPath = "";
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -182,27 +182,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
 
-
-            // Get CategoryBrowsable intent data
-            var data = Intent?.Data?.EncodedAuthority;
-            if (!String.IsNullOrEmpty(data))
-            {
-                urlSchemaCalled = true;
-                urlSchemaData = data;
-            }
-
             SetBottomNavigationLabels();
-
-            // Lin Siong Note to Sprint 3: Remove this on Sprint 3
-            if (bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
-            {
-                bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
-            }
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
 
             bottomNavigationView.NavigationItemSelected += BottomNavigationView_NavigationItemSelected;
+
+            RewardsMenuUtils.OnSetRewardLoading(false);
 
             Bundle extras = Intent?.Extras;
             if (extras != null && extras.ContainsKey(Constants.PROMOTION_NOTIFICATION_VIEW))
@@ -218,10 +205,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 alreadyStarted = true;
             }
 
+            if (extras != null && extras.ContainsKey("urlSchemaData"))
+            {
+                urlSchemaCalled = true;
+                urlSchemaData = extras.GetString("urlSchemaData");
+                if (extras != null && extras.ContainsKey("urlSchemaPath"))
+                {
+                    urlSchemaPath = extras.GetString("urlSchemaPath");
+                }
+            }
+
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
-
-            ShowUnreadRewards();
-
+            
             try
             {
                 if (!alreadyStarted)
@@ -471,7 +466,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         loadingOverlay.Dismiss();
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        public void OnDataSchemeShow()
+        {
+            try
+            {
                 if (urlSchemaCalled)
                 {
                     if (urlSchemaData != null)
@@ -500,6 +505,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             StartActivity(payment_activity);
                             urlSchemaCalled = false;
                         }
+                        else if (urlSchemaData.Contains("rewards"))
+                        {
+                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(rewardID))
+                            {
+                                rewardID = "{" + rewardID + "}";
+
+                                RewardsEntity wtManager = new RewardsEntity();
+
+                                RewardsEntity item = wtManager.GetItem(rewardID);
+
+                                this.mPresenter.OnStartRewardThread();
+                            }
+                        }
                     }
                 }
             }
@@ -524,6 +543,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(false);
             SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
             PromotionListFragment fragment = new PromotionListFragment();
+            currentFragment = fragment;
+            FragmentManager.BeginTransaction()
+                        .Replace(Resource.Id.content_layout, fragment)
+                        .CommitAllowingStateLoss();
+
+        }
+
+        public void ShowRewardsMenu()
+        {
+            ShowBackButton(false);
+            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+            RewardMenuFragment fragment = new RewardMenuFragment();
             currentFragment = fragment;
             FragmentManager.BeginTransaction()
                         .Replace(Resource.Id.content_layout, fragment)
@@ -880,6 +911,75 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             });
         }
 
+        private void SetReadUnReadRewardNewBottomView(bool flag, bool isGotRead, int count, IMenuItem rewardsMenuItem)
+        {
+            RunOnUiThread(() =>
+            {
+                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                if (isGotRead && count > 0)
+                {
+                    newLabel.Visibility = ViewStates.Visible;
+                    newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
+                    TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                    RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                    RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                    newLabelParam.TopMargin = 0;
+                    newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
+                    bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                    txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
+                    txtNewLabel.Text = count.ToString();
+                    txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                    newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
+                    if (count > 0 && count <= 9)
+                    {
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                    }
+                    else
+                    {
+                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
+                        if (count > 99)
+                        {
+                            txtNewLabel.Text = "99+";
+                        }
+                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
+                    }
+
+                    if (!flag)
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                    }
+                    else
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                    }
+                }
+                else
+                {
+                    newLabel.Visibility = ViewStates.Gone;
+                    if (!flag)
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                    }
+                    else
+                    {
+                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                    }
+                }
+                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                v.Measure(specWidth, specWidth);
+                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                Canvas c = new Canvas(b);
+                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                v.Draw(c);
+
+                var bitmapDrawable = new BitmapDrawable(b);
+                rewardsMenuItem.SetIcon(bitmapDrawable);
+            });
+        }
+
         public void ShowPromotionTimestamp(bool success)
         {
             if (success)
@@ -1044,6 +1144,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         fragment.CheckRMKwhSelectDropDown();
                     }
                 }
+                else if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_reward
+                    && currentFragment.GetType() == typeof(RewardMenuFragment))
+                {
+                    if (RewardsMenuUtils.GetTouchDisable())
+                    {
+                        int x = (int)ev.RawX;
+                        int y = (int)ev.RawY;
+                        if (!IsViewInBounds(bottomNavigationView, x, y))
+                        {
+                            return true;
+                        }
+                    }
+                }
                 return base.DispatchTouchEvent(ev);
             }
             catch (System.Exception e)
@@ -1167,7 +1281,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
+                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        int count = RewardsEntity.Count();
+                        if (count > 0)
+                        {
+                            SetReadUnReadRewardNewBottomView(rewardMenuItem.IsChecked, true, count, rewardMenuItem);
+                        }
+                        else
+                        {
+                            HideUnreadRewards(rewardMenuItem.IsChecked);
+                        }
+                    }
+                    else
+                    {
+                        SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
+                    }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
@@ -1182,7 +1311,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    SetNewRewardsBottomView(flag, Utility.GetLocalizedCommonLabel(Utility.GetLocalizedCommonLabel("new")), rewardMenuItem);
+                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        int count = RewardsEntity.Count();
+                        if (count > 0)
+                        {
+                            SetReadUnReadRewardNewBottomView(flag, true, count, rewardMenuItem);
+                        }
+                        else
+                        {
+                            HideUnreadRewards(flag);
+                        }
+                    }
+                    else
+                    {
+                        SetNewRewardsBottomView(flag, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
+                    }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
@@ -1197,12 +1341,114 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_selector);
+                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        SetReadUnReadRewardNewBottomView(rewardMenuItem.IsChecked, false, 0, rewardMenuItem);
+                    }
+                    else
+                    {
+                        SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
+                    }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }
 
+        public void HideUnreadRewards(bool flag)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        SetReadUnReadRewardNewBottomView(flag, false, 0, rewardMenuItem);
+                    }
+                    else
+                    {
+                        SetNewRewardsBottomView(flag, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
+                    }
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
+        public void OnCheckUserReward()
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    _ = this.mPresenter.OnGetUserRewardList();
+                });
+            }
+            catch (Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnCheckRewardTab()
+        {
+            try
+            {
+                RewardsMenuUtils.OnSetRewardLoading(false);
+
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnResumeUpdateRewardUnRead();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (urlSchemaCalled)
+                {
+                    HideProgressDialog();
+                    urlSchemaCalled = false;
+                    if (urlSchemaData != null)
+                    {
+                        if (urlSchemaData.Contains("rewards"))
+                        {
+                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(rewardID))
+                            {
+                                rewardID = "{" + rewardID + "}";
+
+                                RewardsEntity wtManager = new RewardsEntity();
+
+                                RewardsEntity item = wtManager.GetItem(rewardID);
+
+                                if (item != null)
+                                {
+                                    if (!item.Read)
+                                    {
+                                        this.mPresenter.UpdateRewardRead(item.ID, true);
+                                    }
+
+                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
+                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
+                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                    StartActivity(activity);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public void ReloadProfileMenu()
         {
             bottomNavigationView.SelectedItemId = Resource.Id.menu_more;

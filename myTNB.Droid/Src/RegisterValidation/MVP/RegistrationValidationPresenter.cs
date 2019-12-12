@@ -140,6 +140,20 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 this.mView.HideRegistrationProgress();
                             }
 
+                            try
+                            {
+                                RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                                mRewardParentEntity.DeleteTable();
+                                RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                                mRewardCategoryEntity.DeleteTable();
+                                RewardsEntity mRewardEntity = new RewardsEntity();
+                                mRewardEntity.DeleteTable();
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                             HomeMenuUtils.ResetAll();

@@ -293,6 +293,21 @@ namespace myTNB_Android.Src.Utils
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";
 
+        public const string REWARDS_ITEM_LIST_MODE = ".rewardItemList";
+        public const string REWARDS_ITEM_LIST_SEARCH_STRING_KEY = ".rewardSearchKey";
+
+        public const string REWARD_DETAIL_TITLE_KEY = ".rewardDetailTitle";
+        public const string REWARD_DETAIL_ITEM_KEY = ".rewardDetailItem";
+
+        public const string IN_APP_LINK = ".inAppLink";
+        public const string IN_APP_TITLE = ".inAppTitle";
+
+        public enum REWARDSITEMLISTMODE
+        {
+            INITIATE,
+            LOADED
+        }
+
         //Timeout Duration
         internal static readonly int SERVICE_TIMEOUT_DEFAULT = 60000;
         internal static readonly int ACCOUNT_LIST_TIMEOUT = 8000;

@@ -48,6 +48,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Launch")]
+    [IntentFilter(new[] { Android.Content.Intent.ActionView },
+            DataScheme = "mytnbapp",
+            Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable })]
     public class LaunchViewActivity : BaseAppCompatActivity, AppLaunchContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -75,6 +78,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private AppLaunchMasterDataResponse cacheResponseData = null;
 
+        private string urlSchemaData = "";
+        private string urlSchemaPath = "";
+
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -97,6 +103,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         string email = Intent.Extras.GetString("Email");
                         UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                    }
+
+                    // Get CategoryBrowsable intent data
+                    var data = Intent?.Data?.EncodedAuthority;
+                    if (!String.IsNullOrEmpty(data))
+                    {
+                        urlSchemaData = data;
+                        urlSchemaPath = Intent?.Data?.EncodedPath;
                     }
                 }
             }
@@ -228,6 +242,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    if (!string.IsNullOrEmpty(urlSchemaData))
+                    {
+                        DashboardIntent.PutExtra("urlSchemaData", urlSchemaData);
+                        if (!string.IsNullOrEmpty(urlSchemaPath))
+                        {
+                            DashboardIntent.PutExtra("urlSchemaPath", urlSchemaPath);
+                        }
+                    }
                     StartActivity(DashboardIntent);
                 }
                 else
