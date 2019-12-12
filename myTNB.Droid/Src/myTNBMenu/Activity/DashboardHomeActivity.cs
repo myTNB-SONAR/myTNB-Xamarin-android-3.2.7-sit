@@ -1369,7 +1369,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewRewardsBottomView(flag, Utility.GetLocalizedLabel("Common","new"), rewardMenuItem);
+                        SetNewRewardsBottomView(flag, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
