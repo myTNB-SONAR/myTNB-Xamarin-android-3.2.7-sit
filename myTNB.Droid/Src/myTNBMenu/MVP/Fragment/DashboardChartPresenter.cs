@@ -1173,8 +1173,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = "Your reading status at a glance.",
-                ContentMessage = "Get an overview of your reading<br/>status here. We’ll also tell you when<br/>it’s time to submit your readings.",
+                ContentTitle = Utility.GetLocalizedLabel("Usage", "tutorialSMRTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("Usage", "tutorialSMRDesc"),
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true
