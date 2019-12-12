@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
     }
 
     [Activity(Label = "@string/meter_reading_title", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.SubmitMeterReadingInput")]
-    public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
+    public class SubmitMeterReadingActivity : BaseActivityCustom, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
         private SubmitMeterReadingPresenter mPresenter;
@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private int MAX_DIGIT = 8;
         private List<MeterValidation> validationStateList;
         private List<MeterReadingModel> meterReadingModelList;
-
+        private string PAGE_ID = "SSMRSubmitMeterReading";
 
         [BindView(Resource.Id.meterReadingTitle)]
 		TextView meterReadingTitle;
@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void InitializePage()
         {
-			meterReadingNote.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_note));
+			meterReadingNote.TextFormatted = GetFormattedText(GetLabelByLanguage("note"));
 
 			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote, prevReading1, prevReading2, prevReading3, prevReading4, prevReading5,
                 prevReading6, prevReading7, prevReading8);
@@ -184,6 +184,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             EnableSubmitButton(false);
             TextViewUtils.SetMuseoSans500Typeface(btnTakeUploadPictureText, btnSubmitReading);
+
+            btnSubmitReading.Text = GetLabelByLanguage("submitReading");
 
             previousMeterViews = new int[8];
             previousMeterViews[0] = Resource.Id.previous_reading_1;
@@ -317,7 +319,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 captureReadingLayout.Visibility = ViewStates.Gone;
                 meterReadingManualTitle.Visibility = ViewStates.Visible;
-                meterReadingManualTitle.Text = GetString(Resource.String.smr_manual_reading_title);
+                meterReadingManualTitle.Text = GetLabelByLanguage("manualInputTitle");
             }
             else
             {
@@ -325,7 +327,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     captureReadingLayout.Visibility = ViewStates.Gone;
                     meterReadingManualTitle.Visibility = ViewStates.Visible;
-                    string downMessage = GetString(Resource.String.smr_manual_reading_down_title);
+                    string downMessage = GetLabelByLanguage("ocrDownMessage");
                     meterReadingManualTitle.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
@@ -338,8 +340,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            meterReadingTitle.TextFormatted = (meterReadingModelList.Count == 1) ? GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_single))
-                : GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_multiple));
+            meterReadingTitle.TextFormatted = (meterReadingModelList.Count == 1) ? GetFormattedText(GetLabelByLanguage("singleHeaderDescription"))
+                : GetFormattedText(GetLabelByLanguage("headerDescription"));
             SetMeterReadingCards();
             OnGenerateTooltipData();
             OnUpdateSubmitMeterButton();
@@ -377,6 +379,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
                     TextViewUtils.SetMuseoSans300Typeface(txtPreviousMeterReading, txtPreviousMeterReading1, txtPreviousMeterReading2, txtPreviousMeterReading3, txtPreviousMeterReading4, txtPreviousMeterReading5, txtPreviousMeterReading6, txtPreviousMeterReading7, txtPreviousMeterReading8);
                     TextViewUtils.SetMuseoSans500Typeface(meterTypeView);
+                    txtPreviousMeterReading.Text = GetLabelByLanguage("previousMeterReading");
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     PopulatePreviousMeterReadingValues(linearLayoutContainer,meterReadingModel);
@@ -1097,7 +1100,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             textPaint.TextSize = meterReadingManualTitle.TextSize;
             textPaint.TextAlign = Paint.Align.Left;
 
-            string text = GetString(Resource.String.smr_manual_reading_title);
+            string text = GetLabelByLanguage("manualInputTitle");
             Java.Lang.ICharSequence textConverted = new Java.Lang.String(text);
 
             StaticLayout staticLayout = new StaticLayout(textConverted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int) DPUtils.ConvertDPToPx(32f), Layout.Alignment.AlignNormal, 3f, 0f, true);
@@ -1105,6 +1108,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             i = staticLayout.LineCount;
 
             return i;
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
