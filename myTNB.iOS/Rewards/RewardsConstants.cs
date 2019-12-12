@@ -23,6 +23,10 @@ namespace myTNB
         //nfloat
         public static nfloat RewardsCellHeight = ScaleUtility.GetScaledHeight(177F);
 
+        //Preference Key
+        public static string Pref_RewardsTutorialOverlay = "RewardsTutorialOverlayV2.1.0";
+        public static string Pref_RewardsDetailTutorialOverlay = "RewardsDetailTutorialOverlayV2.1.0";
+
         //Cell
         public static string Cell_Rewards = "rewardsTableViewCell";
         public static string Cell_SavedRewards = "savedRewardsTableViewCell";
@@ -41,6 +45,19 @@ namespace myTNB
         public static string I18N_UseLater = "useLater";
         public static string I18N_Confirm = "confirm";
         public static string I18N_NoRewards = "noRewards";
+        public static string I18N_RewardUsedPrefix = "rewardUsedPrefix";
+        public static string I18N_RewardUsed = "rewardUsed";
+        public static string I18N_RedeemRewardNote = "redeemRewardNote";
+        public static string I18N_Used = "used";
+        public static string I18N_EmptySavedReward = "emptyDesc";
+        public static string I18N_TutorialRewardTitle = "tutorialRewardTitle";
+        public static string I18N_TutorialRewardDesc = "tutorialRewardDesc";
+        public static string I18N_TutorialCategoryTitle = "tutorialCategoryTitle";
+        public static string I18N_TutorialCategoryDesc = "tutorialCategoryDesc";
+        public static string I18N_TutorialSaveTitle = "tutorialSaveTitle";
+        public static string I18N_TutorialSaveDesc = "tutorialSaveDesc";
+        public static string I18N_TutorialUseNowTitle = "tutorialUseNowTitle";
+        public static string I18N_TutorialUseNowDesc = "tutorialUseNowDesc";
 
         //Img
         public static string Img_HeartIcon = "Heart-Icon";

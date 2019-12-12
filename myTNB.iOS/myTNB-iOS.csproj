@@ -2623,6 +2623,8 @@
     <Compile Include="Rewards\Saved Rewards\SavedRewardCell.cs" />
     <Compile Include="Rewards\Saved Rewards\SavedRewardsDataSource.cs" />
     <Compile Include="Session Cache\RewardsCache.cs" />
+    <Compile Include="Components\Tutorial Overlay\RewardsTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\RewardsDetailTutorialOverlay.cs" />
     <Compile Include="Components\Refresh\RefreshComponent.cs" />
     <Compile Include="Components\Refresh\RefreshConstants.cs" />
   </ItemGroup>

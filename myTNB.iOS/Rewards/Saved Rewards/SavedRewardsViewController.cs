@@ -102,7 +102,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Center,
-                Text = "Your saved rewards will appear here."
+                Text = GetI18NValue(RewardsConstants.I18N_EmptySavedReward)
             };
             emptyDesc.TextContainer.LineFragmentPadding = 0F;
 

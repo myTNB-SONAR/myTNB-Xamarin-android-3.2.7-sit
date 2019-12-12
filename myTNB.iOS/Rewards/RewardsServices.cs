@@ -255,7 +255,7 @@ namespace myTNB
             };
             UpdateRewardsResponseModel response = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPIV6<UpdateRewardsResponseModel>("AddUpdateRewards", requestParameter);
+                return serviceManager.OnExecuteAPIV6<UpdateRewardsResponseModel>("UpdateRewards", requestParameter);
             });
             _updateRewards = response;
             UpdateRewardsSitecorCache(reward);

@@ -21,6 +21,7 @@ namespace myTNB
         private bool props_needsUpdate;
         private bool _isViewDidLoad;
         private List<RewardsModel> props_rewardsList;
+        private UIView _tutorialContainer;
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 
@@ -162,6 +163,7 @@ namespace myTNB
                     _selectedCategoryIndex = 0;
                     CreateCategoryTopBar();
                     AddRewardsScrollView();
+                    CheckTutorialOverlay();
                 }
                 else
                 {
@@ -634,7 +636,145 @@ namespace myTNB
                 }
             }
         }
+        #endregion
 
+        #region TUTORIAL OVERLAY
+        public void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(RewardsConstants.Pref_RewardsTutorialOverlay);
+
+            if (tutorialOverlayHasShown) { return; }
+
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && _rewardsList != null && _rewardsList.Count > 0)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is RewardsViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                        else
+                        {
+                            if (_tutorialContainer != null)
+                            {
+                                _tutorialContainer.RemoveFromSuperview();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            if (_tutorialContainer != null && _tutorialContainer.IsDescendantOfView(currentWindow)) { return; }
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear,
+                Tag = 1001
+            };
+
+            RewardsTutorialOverlay tutorialView = new RewardsTutorialOverlay(_tutorialContainer, this)
+            {
+                OnDismissAction = HideTutorialOverlay,
+                GetI18NValue = GetI18NValue
+            };
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is RewardsViewController && _tutorialContainer != null && !_tutorialContainer.IsDescendantOfView(currentWindow))
+                {
+                    foreach (UIView view in currentWindow.Subviews)
+                    {
+                        if (view.Tag == 1001)
+                        {
+                            view.RemoveFromSuperview();
+                            break;
+                        }
+                    }
+
+                    _tutorialContainer.AddSubview(tutorialView.GetView());
+                    currentWindow.AddSubview(_tutorialContainer);
+                }
+                else
+                {
+                    if (_tutorialContainer != null)
+                    {
+                        _tutorialContainer.RemoveFromSuperview();
+                    }
+                }
+            }
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, RewardsConstants.Pref_RewardsTutorialOverlay);
+                sharedPreference.Synchronize();
+            }
+        }
+
+        public nfloat GetFirstRewardYPos()
+        {
+            nfloat yPos = 0;
+            if (_rewardsScrollView != null)
+            {
+                yPos = _rewardsScrollView.Frame.Y + GetScaledHeight(17F);
+            }
+            return yPos;
+        }
+
+        public nfloat GetNavigationMaxYPos()
+        {
+            try
+            {
+                return NavigationController.NavigationBar.Frame.GetMaxY();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in services: " + e.Message);
+                return 0;
+            }
+        }
+
+        public CGRect GetSavedRewardFrame()
+        {
+            try
+            {
+                return NavigationController.NavigationItem.RightBarButtonItem.AccessibilityFrame;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in services: " + e.Message);
+                return new CGRect();
+            }
+        }
+
+        public bool CategoryMenuIsVisible()
+        {
+            return _categoryList != null && _categoryList.Count > 0;
+        }
         #endregion
     }
 }
