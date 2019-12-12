@@ -155,8 +155,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                 btnRewardRedeemed.Text = Utility.GetLocalizedLabel("RewardDetails", "rewardUsed");
 
-                txtRewardRedeemedWord.Text = Utility.GetLocalizedLabel("RewardDetails", "redeemRewardNote");
-
                 txtRewardUsed.Text = Utility.GetLocalizedLabel("RewardDetails", "used");
             }
             catch (Exception e)
@@ -447,7 +445,15 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                                 DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
                                 DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-                                dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
+                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                                {
+                                    dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt", currCult);
+                                }
+                                else
+                                {
+                                    dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
+                                }
                                 dateTime += ".";
                                 dateTime = "<i>" + dateTime + "</i>";
                             }
@@ -712,7 +718,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     btnUseSaveLayout.Visibility = ViewStates.Gone;
                     rewardRedeemedLayout.Visibility = ViewStates.Gone;
                     rewardCountDownLayout.Visibility = ViewStates.Visible;
-                    txtRewardRedeemedWord.Text = "Reward redeemed. Please show the merchant this screen before the timer runs out.";
+                    txtRewardRedeemedWord.Text = Utility.GetLocalizedLabel("RewardDetails", "redeemRewardNote");
                 });
 
                 isPendingRewardConfirm = true;
