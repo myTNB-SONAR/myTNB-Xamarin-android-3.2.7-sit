@@ -681,7 +681,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(flag, Utility.GetLocalizedLabel("Common","new"), promotionMenuItem);
+                        SetNewWhatsNewBottomView(flag, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -711,7 +711,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, Utility.GetLocalizedLabel("Common","new"), promotionMenuItem);
+                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -733,7 +733,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(flag, Utility.GetLocalizedLabel("Common","new"), promotionMenuItem);
+                        SetNewWhatsNewBottomView(flag, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -755,7 +755,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, Utility.GetLocalizedLabel("Common","new"), promotionMenuItem);
+                        SetNewWhatsNewBottomView(promotionMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), promotionMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -1295,7 +1295,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedLabel("Common","new"), rewardMenuItem);
+                        SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -1325,7 +1325,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewRewardsBottomView(flag, Utility.GetLocalizedLabel("Common","new"), rewardMenuItem);
+                        SetNewRewardsBottomView(flag, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
@@ -1347,7 +1347,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedLabel("Common","new"), rewardMenuItem);
+                        SetNewRewardsBottomView(rewardMenuItem.IsChecked, Utility.GetLocalizedCommonLabel("new"), rewardMenuItem);
                     }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
