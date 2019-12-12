@@ -1,14 +1,18 @@
 Sprint 3 SIT Build
 
-[Task] Latest build for Multilingual
+[User Story] 2424 [Rewards] As a myTNB App user, I want to view exclusive rewards from myTNB App easily.
+[Task] 3559 Change Request: iOS - Prelogin change language update
+[Bug] 3566 [Sprint 3] iOS: SMR Usage View - Misalignment in Font Style
+[Bug] 3553 [Sprint 3] Prelogin & Login - Misalignment in Copy
+[Bug] 3520 Multilingual_IOS: Missing content in Need Help's card
 
 Non-testable: Rewards
 
 Note to tester.
 Please test the following.
 1. Sprint 2C update to Sprint 3
-2. 1.1.9 update to Sprint 3
-3. 1.2.0 update to Sprint 3
+2. 1.2.0 update to Sprint 3
+3. 2.0.0 update to Sprint 3
 4. Fresh install
 5. App updates should be on same environment, not Prod to SIT
 	ie. If you have Prod app and want to download Sprint 2 or 3, App should be uninstalled first.
