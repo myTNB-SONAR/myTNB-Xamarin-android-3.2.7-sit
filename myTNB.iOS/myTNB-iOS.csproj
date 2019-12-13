@@ -1118,15 +1118,8 @@
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-2%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\whatSNewNotificationNew%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\whatSNewNotificationNew%403x.png" />
@@ -1228,17 +1221,27 @@
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Heart-Saved-Green-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Heart-Saved-Green-Icon.imageset\Heart-Saved-Green-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\img1S3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\img1S3%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\walkthrough5S3Install%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\walkthrough5S3Install%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\img5S3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\img5S3%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Refresh.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Refresh.imageset\grey%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Refresh.imageset\grey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\group8%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\group8%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\wt1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\wt1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\wt5%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\wt5%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\wt3%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\wt3%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\wt4%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\wt4%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\wt5%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\wt5%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\wt5%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\wt5%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1696,7 +1699,6 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-3.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-2.imageset\" />
-    <Folder Include="Assets.xcassets\Onboarding-Image-1.imageset\" />
     <Folder Include="Sitecore CMS\Model\Language\" />
     <Folder Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Promotions-Selected-New-EN.imageset\" />
@@ -1740,6 +1742,8 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\" />
     <Folder Include="Components\Refresh\" />
     <Folder Include="Assets.xcassets\IC-Refresh.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
