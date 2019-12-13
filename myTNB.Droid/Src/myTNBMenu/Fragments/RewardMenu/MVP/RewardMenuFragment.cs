@@ -500,24 +500,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     {
                         Action myAction = () =>
                         {
-                            int widthS = DPUtils.GetWidth();
-                            rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
-                            int widthT = rewardsSlidingTabs.MeasuredWidth;
-
-                            if (widthS > widthT)
+                            Activity.RunOnUiThread(() =>
                             {
-                                if (mTabList.Count <= 4)
+                                int widthS = DPUtils.GetWidth();
+                                rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
+                                int widthT = rewardsSlidingTabs.MeasuredWidth;
+
+                                if (widthS > widthT)
                                 {
-                                    rewardsSlidingTabs.TabMode = TabLayout.ModeFixed;
-                                    rewardsSlidingTabs.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
+                                    if (mTabList.Count <= 4)
+                                    {
+                                        rewardsSlidingTabs.TabMode = TabLayout.ModeFixed;
+                                        rewardsSlidingTabs.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
+                                    }
+                                    else
+                                    {
+                                        int diff = widthS - widthT;
+                                        int diffOnEachItem = diff / mTabList.Count;
+                                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f) + diffOnEachItem);
+                                    }
                                 }
-                                else
-                                {
-                                    int diff = widthS - widthT;
-                                    int diffOnEachItem = diff / mTabList.Count;
-                                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f) + diffOnEachItem);
-                                }
-                            }
+                            });
                         };
                         rewardsSlidingTabs.Post(myAction);
                     }
