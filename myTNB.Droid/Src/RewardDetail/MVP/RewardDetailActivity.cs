@@ -6,6 +6,7 @@ using Android.Graphics.Drawables;
 using Android.Icu.Text;
 using Android.OS;
 using Android.Preferences;
+using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
@@ -16,6 +17,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using Firebase.DynamicLinks;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -27,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace myTNB_Android.Src.RewardDetail.MVP
@@ -35,7 +38,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Dashboard")]
-    public class RewardDetailActivity : BaseToolbarAppCompatActivity, RewardDetailContract.IRewardDetailView
+    public class RewardDetailActivity : BaseToolbarAppCompatActivity, RewardDetailContract.IRewardDetailView, Android.Gms.Tasks.IOnSuccessListener, Android.Gms.Tasks.IOnFailureListener, Android.Gms.Tasks.IOnCompleteListener
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -140,6 +143,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         private bool isPendingRewardConfirm = false;
 
         private LoadingOverlay loadingOverlay;
+
+        private bool linkGenerationSuccessful = false;
+
+        private string generatedLink = "";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -314,15 +321,37 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 case Resource.Id.action_share_promotion:
                     if (LocalItem != null)
                     {
-                        Intent shareIntent = new Intent(Intent.ActionSend);
-                        shareIntent.SetType("text/plain");
-                        string ID = LocalItem.ID;
-                        ID = ID.Replace("{", "");
-                        ID = ID.Replace("}", "");
-                        string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
-                        shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
-                        shareIntent.PutExtra(Intent.ExtraText, deepLinkUrl);
-                        StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                        if (!string.IsNullOrEmpty(generatedLink))
+                        {
+                            Intent shareIntent = new Intent(Intent.ActionSend);
+                            shareIntent.SetType("text/plain");
+                            shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
+                            shareIntent.PutExtra(Intent.ExtraText, generatedLink);
+                            StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                        }
+                        else
+                        {
+                            string ID = LocalItem.ID;
+                            ID = ID.Replace("{", "");
+                            ID = ID.Replace("}", "");
+                            string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
+
+                            String buildLink = new LinkBuilder().setDomain(Constants.SERVER_URL.FIREBASE_DEEP_LINK_END_POINT)
+                               .setLink(deepLinkUrl)
+                               .setApn(ApplicationContext.PackageName)
+                               .setAmv(Constants.DYNAMIC_LINK_ANDROID_MIN_VER_CODE.ToString())
+                               .setIbi(ApplicationContext.PackageName)
+                               .setImv(Constants.DYNAMIC_LINK_IOS_MIN_VER_CODE)
+                               .setIsi(Constants.DYNAMIC_LINK_IOS_APP_ID)
+                               .build();
+
+                            FirebaseDynamicLinks.Instance.CreateDynamicLink()
+                                .SetLongLink(Android.Net.Uri.Parse(buildLink))
+                                .BuildShortDynamicLink()
+                                .AddOnSuccessListener(this, this)
+                                .AddOnFailureListener(this, this)
+                                .AddOnCompleteListener(this, this);
+                        }
                     }
                     return true;
             }
@@ -353,24 +382,28 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                         List<string> extractedUrls = this.presenter.ExtractUrls(item.LocationLabel);
 
-                        if (urlSpans.Length == extractedUrls.Count)
+                        if (urlSpans != null && urlSpans.Length > 0 && extractedUrls != null && extractedUrls.Count > 0)
                         {
                             for (int i = 0; i < urlSpans.Length; i++)
                             {
-                                int startIndex = s.GetSpanStart(urlSpans[i]);
-                                int endIndex = s.GetSpanEnd(urlSpans[i]);
-                                s.RemoveSpan(urlSpans[i]);
-                                ClickSpan clickableSpan = new ClickSpan()
+                                URLSpan URLItem = urlSpans[i] as URLSpan;
+                                string searchedString = extractedUrls.Find(x => x == URLItem.URL);
+                                if (!string.IsNullOrEmpty(searchedString))
                                 {
-                                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                                };
-                                string url = extractedUrls[i];
-                                clickableSpan.Click += v =>
-                                {
-                                    OnClickSpan(url);
-                                };
-                                s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                                    int startIndex = s.GetSpanStart(urlSpans[i]);
+                                    int endIndex = s.GetSpanEnd(urlSpans[i]);
+                                    s.RemoveSpan(urlSpans[i]);
+                                    ClickSpan clickableSpan = new ClickSpan()
+                                    {
+                                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
+                                        typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                                    };
+                                    clickableSpan.Click += v =>
+                                    {
+                                        OnClickSpan(searchedString);
+                                    };
+                                    s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                                }
                             }
                         }
                         txtRewardLocationContent.TextFormatted = s;
@@ -385,24 +418,28 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                         List<string> extractedUrls = this.presenter.ExtractUrls(item.TandCLabel);
 
-                        if (seUrlSpans.Length == extractedUrls.Count)
+                        if (seUrlSpans != null && seUrlSpans.Length > 0 && extractedUrls != null && extractedUrls.Count > 0)
                         {
                             for (int i = 0; i < seUrlSpans.Length; i++)
                             {
-                                int startIndex = se.GetSpanStart(seUrlSpans[i]);
-                                int endIndex = se.GetSpanEnd(seUrlSpans[i]);
-                                se.RemoveSpan(seUrlSpans[i]);
-                                ClickSpan clickableSpan = new ClickSpan()
+                                URLSpan URLItem = seUrlSpans[i] as URLSpan;
+                                string searchedString = extractedUrls.Find(x => x == URLItem.URL);
+                                if (!string.IsNullOrEmpty(searchedString))
                                 {
-                                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                                };
-                                string url = extractedUrls[i];
-                                clickableSpan.Click += v =>
-                                {
-                                    OnClickSpan(url);
-                                };
-                                se.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                                    int startIndex = se.GetSpanStart(seUrlSpans[i]);
+                                    int endIndex = se.GetSpanEnd(seUrlSpans[i]);
+                                    se.RemoveSpan(seUrlSpans[i]);
+                                    ClickSpan clickableSpan = new ClickSpan()
+                                    {
+                                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
+                                        typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                                    };
+                                    clickableSpan.Click += v =>
+                                    {
+                                        OnClickSpan(searchedString);
+                                    };
+                                    se.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+                                }
                             }
                         }
 
@@ -779,24 +816,33 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             });
         }
 
-        private Snackbar mApiExcecptionSnackBar;
-        public void ShowRetryOptionsApiException()
+        public void ShowRetryPopup()
         {
             try
             {
-                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+                RunOnUiThread(() =>
                 {
-                    mApiExcecptionSnackBar.Dismiss();
-                }
+                    IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
+                    if (item != null)
+                    {
+                        item.SetVisible(true);
+                    }
 
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
-                {
-
-                    mApiExcecptionSnackBar.Dismiss();
-                }
-                );
-                mApiExcecptionSnackBar.Show();
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("Error", "redeemRewardFailMsg"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "illDoItLater"))
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        if (item != null)
+                        {
+                            item.SetVisible(false);
+                        }
+                        this.presenter.UpdateRewardUsed(LocalItem.ID);
+                    })
+                    .Build().Show();
+                });
             }
             catch (System.Exception e)
             {
@@ -879,6 +925,163 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
 
             return i;
+        }
+
+        void Android.Gms.Tasks.IOnSuccessListener.OnSuccess(Java.Lang.Object result)
+        {
+            linkGenerationSuccessful = true;
+        }
+
+        void Android.Gms.Tasks.IOnCompleteListener.OnComplete(Android.Gms.Tasks.Task task)
+        {
+            if (linkGenerationSuccessful)
+            {
+                linkGenerationSuccessful = false;
+
+                var pendingResult = task.Result.JavaCast<IShortDynamicLink>();
+
+                Android.Net.Uri deepLink = null;
+                if (pendingResult != null)
+                {
+                    deepLink = pendingResult.ShortLink;
+                    string deepLinkUrl = deepLink.ToString();
+                    if (!string.IsNullOrEmpty(deepLinkUrl))
+                    {
+                        generatedLink = deepLinkUrl;
+                        Intent shareIntent = new Intent(Intent.ActionSend);
+                        shareIntent.SetType("text/plain");
+                        shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
+                        shareIntent.PutExtra(Intent.ExtraText, deepLinkUrl);
+                        StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                    }
+                }
+            }
+            else
+            {
+                string ID = LocalItem.ID;
+                ID = ID.Replace("{", "");
+                ID = ID.Replace("}", "");
+                string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
+
+                generatedLink = deepLinkUrl;
+                Intent shareIntent = new Intent(Intent.ActionSend);
+                shareIntent.SetType("text/plain");
+                shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
+                shareIntent.PutExtra(Intent.ExtraText, deepLinkUrl);
+                StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+            }
+        }
+
+        void Android.Gms.Tasks.IOnFailureListener.OnFailure(Java.Lang.Exception e)
+        {
+            linkGenerationSuccessful = false;
+            Utility.LoggingNonFatalError(e);
+        }
+
+        public class LinkBuilder
+        {
+            private String domain;
+            private String link;
+            private String apn;
+            private String amv;
+
+            private String ibi;
+            private String imv;
+            private String isi;
+
+
+            private String st;
+            private String sd;
+            private String si;
+
+            public String getURLEncode(String input){
+
+                try
+                {
+                    return Java.Net.URLEncoder.Encode(input, "UTF-8");
+                }
+                catch (Exception ex){
+                    if (String.IsNullOrEmpty(input))
+                    {
+                        input = "";
+                    }
+                    Utility.LoggingNonFatalError(ex);
+                }
+
+                return input;
+            }
+
+
+            // https://mytnbdev.page.link
+            // https://mytnbsit.page.link
+            // https://mytnb.page.link
+            public LinkBuilder setDomain(String domain) {
+                this.domain = domain;
+                return this;
+            }
+
+            // Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID
+            public LinkBuilder setLink(String link) {
+                this.link = getURLEncode(link);
+                return this;
+            }
+
+            // Android Package Name, for our case com.mytnb.mytnb
+            public LinkBuilder setApn(String apn) {
+                this.apn = apn;
+                return this;
+            }
+
+            // Android Min Version Code Suport,
+            // for our testing now let's put 169,
+            // but before creating build need to set to the build before the current available SIT build
+            public LinkBuilder setAmv(String amv) {
+                this.amv = amv;
+                return this;
+            }
+
+            // iOS Package Name, for our case com.mytnb.mytnb
+            public LinkBuilder setIbi(String ibi) {
+                this.ibi = ibi;
+                return this;
+            }
+
+            // iOS Min Version Code Suport
+            // 2.1.0
+            public LinkBuilder setImv(String imv) {
+                this.imv = imv;
+                return this;
+            }
+
+            // iOS App Store ID, now is unclear
+            // Need it to do the redirection to App Store
+            public LinkBuilder setIsi(String isi) {
+                this.isi = isi;
+                return this;
+            }
+
+            // Social Post Title when been shared
+            public LinkBuilder setSt(String st) {
+                this.st = getURLEncode(st);
+                return this;
+            }
+
+            // Social Post Descriptiom when been shared
+            public LinkBuilder setSd(String sd) {
+                this.sd = getURLEncode(sd);
+                return this;
+            }
+
+            // Social Post Image when been shared
+            public LinkBuilder setSi(String si) {
+                this.si = getURLEncode(si);
+                return this;
+            }
+
+            public String build(){
+                return String.Format("{0}/?link={1}&apn={2}&amv={3}&ibi={4}&imv={5}&isi={6}&st={7}&sd={8}&si={9}"
+                        , domain, link, apn, amv, ibi, imv, isi, st, sd, si);
+            }
         }
     }
 }

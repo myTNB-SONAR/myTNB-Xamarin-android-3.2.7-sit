@@ -431,7 +431,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     rewardViewPager.Adapter = mAdapter;
                     rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
 
-                    if (mTabList != null && mTabList.Count > 0)
+                    if (mTabList != null && mTabList.Count > 1)
                     {
                         SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f));
                         MeasureTabScroll();
@@ -496,19 +496,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    Action myAction = () =>
+                    try
                     {
-                        int widthS = this.Activity.Resources.DisplayMetrics.WidthPixels;
-                        rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
-                        int widthT = rewardsSlidingTabs.MeasuredWidth;
-
-                        if (widthS > widthT)
+                        Action myAction = () =>
                         {
-                            rewardsSlidingTabs.TabMode = TabLayout.ModeFixed;
-                            rewardsSlidingTabs.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
-                        }
-                    };
-                    rewardsSlidingTabs.Post(myAction);
+                            int widthS = DPUtils.GetWidth();
+                            rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
+                            int widthT = rewardsSlidingTabs.MeasuredWidth;
+
+                            if (widthS > widthT)
+                            {
+                                if (mTabList.Count <= 4)
+                                {
+                                    rewardsSlidingTabs.TabMode = TabLayout.ModeFixed;
+                                    rewardsSlidingTabs.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
+                                }
+                                else
+                                {
+                                    int diff = widthS - widthT;
+                                    int diffOnEachItem = diff / mTabList.Count;
+                                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f) + diffOnEachItem);
+                                }
+                            }
+                        };
+                        rewardsSlidingTabs.Post(myAction);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 });
             }
             catch (System.Exception e)

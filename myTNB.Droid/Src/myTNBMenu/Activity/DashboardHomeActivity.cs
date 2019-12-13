@@ -505,8 +505,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             StartActivity(payment_activity);
                             urlSchemaCalled = false;
                         }
-                        else if (urlSchemaData.Contains("rewards"))
+                        else if (urlSchemaData.Contains("rewards") && !string.IsNullOrEmpty(urlSchemaPath))
                         {
+                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(rewardID))
+                            {
+                                rewardID = "{" + rewardID + "}";
+
+                                RewardsEntity wtManager = new RewardsEntity();
+
+                                RewardsEntity item = wtManager.GetItem(rewardID);
+
+                                this.mPresenter.OnStartRewardThread();
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("rewards"))
+                        {
+                            urlSchemaData = "rewards";
                             string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
                             if (!string.IsNullOrEmpty(rewardID))
                             {
@@ -1439,6 +1454,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
                                     StartActivity(activity);
                                 }
+                                else
+                                {
+                                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                    .SetCTAaction(() =>
+                                    {
+                                        OnSelectReward();
+                                    })
+                                    .Build().Show();
+                                }
                             }
                         }
                     }
@@ -1449,9 +1476,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public void ReloadProfileMenu()
         {
             bottomNavigationView.SelectedItemId = Resource.Id.menu_more;
+            SetBottomNavigationLabels();
+        }
+
+        private void OnSelectReward()
+        {
+            bottomNavigationView.SelectedItemId = Resource.Id.menu_reward;
             SetBottomNavigationLabels();
         }
     }

@@ -463,7 +463,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             else
             {
                 this.mView.ShowProgressDialog();
-                this.mView.OnCheckUserReward();
             }
         }
 

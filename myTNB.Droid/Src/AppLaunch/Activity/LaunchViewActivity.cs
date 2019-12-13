@@ -39,6 +39,7 @@ using Android.Graphics.Drawables;
 using myTNB_Android.Src.NewWalkthrough.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.Response;
+using Firebase.DynamicLinks;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -51,7 +52,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
             DataScheme = "mytnbapp",
             Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable })]
-    public class LaunchViewActivity : BaseAppCompatActivity, AppLaunchContract.IView
+    public class LaunchViewActivity : BaseAppCompatActivity, AppLaunchContract.IView, Android.Gms.Tasks.IOnSuccessListener, Android.Gms.Tasks.IOnFailureListener
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
@@ -89,6 +90,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
+                FirebaseDynamicLinks.Instance
+                    .GetDynamicLink(Intent)
+                    .AddOnSuccessListener(this, this)
+                    .AddOnFailureListener(this, this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
                 if (Intent != null && Intent.Extras != null)
                 {
                     if (Intent.Extras.ContainsKey("Type"))
@@ -104,6 +117,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
                     }
+
 
                     // Get CategoryBrowsable intent data
                     var data = Intent?.Data?.EncodedAuthority;
@@ -1014,6 +1028,30 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
             );
             mSomethingWrongExceptionSnackBar.Show();
+        }
+
+        void Android.Gms.Tasks.IOnSuccessListener.OnSuccess(Java.Lang.Object result)
+        {
+            PendingDynamicLinkData pendingResult = result as PendingDynamicLinkData;
+
+            Android.Net.Uri deepLink = null;
+            if (pendingResult != null)
+            {
+                deepLink = pendingResult.Link;
+                string deepLinkUrl = deepLink.ToString();
+                if (!string.IsNullOrEmpty(deepLinkUrl) && deepLinkUrl.Contains("rewards"))
+                {
+                    urlSchemaData = "rewards";
+                    string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
+                    urlSchemaPath = "rewardId=" + id;
+                }
+            }
+
+        }
+
+        void Android.Gms.Tasks.IOnFailureListener.OnFailure(Java.Lang.Exception e)
+        {
+            Utility.LoggingNonFatalError(e);
         }
     }
 }

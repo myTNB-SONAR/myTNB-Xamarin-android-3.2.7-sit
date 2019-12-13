@@ -114,14 +114,17 @@ namespace myTNB_Android.Src.Utils
             //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbdev.page.link";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbsit.page.link";
 #else
            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnb.page.link";
 
 #endif
 
@@ -323,5 +326,11 @@ namespace myTNB_Android.Src.Utils
         //Service Error Codes
         internal static readonly string SERVICE_CODE_SUCCESS = "7200";
         internal static readonly string SERVICE_CODE_MAINTENANCE = "7000";
+
+        // Firebase Dynamic Link
+        internal static readonly int DYNAMIC_LINK_ANDROID_MIN_VER_CODE = 169;
+        internal static readonly string DYNAMIC_LINK_IOS_MIN_VER_CODE = "2.1.0";
+        internal static readonly string DYNAMIC_LINK_IOS_APP_ID = "1297089591";
+        
     }
 }

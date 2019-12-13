@@ -88,7 +88,11 @@
     "new": "New",
     "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss.",
     "wellBeBack": "We’ll be back shortly!",
-    "electricityAccounts": "Electricity Accounts"
+    "electricityAccounts": "Electricity Accounts",
+    "rewardNotAvailableTitle": "Reward not available.",
+    "rewardNotAvailableDesc": "Looks like this reward has expired. But that’s okay, we have more for you to check out!",
+    "showMoreRewards": "Show More Rewards!",
+    "illDoItLater": "I’ll Do It Later"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -131,7 +135,8 @@
     "shareNotAvailable": "We're sorry but sharing is currently unavailable. Please try again in a while.",
     "refreshBillDetails": "Uh oh, looks like the page with your bill details have been unplugged. Refresh to stay plugged in!",
     "refreshUsageSSMR": "Uh oh, looks like your Self Meter Reading service has been unplugged. Refresh to stay plugged in!",
-    "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!"
+    "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!",
+    "redeemRewardFailMsg": "Let’s do this one more time."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -407,14 +412,14 @@
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
       {
-        "Title": "This account has a minimum amount to be paid.",
-        "Description": "Your <b>service charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost are required to be cleared first and will be your account’s minimum payment.",
+        "Title": "We strongly advise clearing your one-time charges first.",
+        "Description": "Your <b>one-time charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost should be cleared first to ensure the start/continuation of services.",
         "CTA": "Got It!",
         "Type": "MandatoryCharges"
       },
       {
-        "Title": "This account has a minimum amount to be paid.",
-        "Description": "You are required to clear <b>{0}</b> from your service charges first.<br><br>You may view a breakdown in your bill details.",
+        "Title": "We strongly advise clearing your one-time charges first.",
+        "Description": "Clearing the <b>{0}</b> from your one-time charges will ensure the start/continuation of services.<br><br>You may view a breakdown in your bill details.",
         "CTA": "View Details,Got It!",
         "Type": "MandatoryPayment"
       }
@@ -454,6 +459,22 @@
     "loadMore": "Show More",
     "title": "Select Bill(s)",
     "iamPaying": "I AM PAYING (RM)"
+  },
+  "SelectBills_selector": {
+    "MandatoryChargesPopUpDetails": [
+      {
+        "Title": "We strongly advise clearing your one-time charges first.",
+        "Description": "Your <b>one-time charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost should be cleared first to ensure the start/continuation of services.",
+        "CTA": "Got It!",
+        "Type": "MandatoryCharges"
+      },
+      {
+        "Title": "We strongly advise clearing your one-time charges first.",
+        "Description": "Clearing the <b>{0}</b> from your one-time charges will ensure the start/continuation of services.<br><br>You may view a breakdown in your bill details.",
+        "CTA": "View Details,Got It!",
+        "Type": "MandatoryPayment"
+      }
+    ]
   },
   "SelectPaymentMethod": {
     "title": "Select Payment Method",
@@ -680,7 +701,7 @@
     "letsStart": "Let's get started!",
     "skip": "Skip",
     "title1": "Welcome to myTNB!",
-    "title2": "Stay current with your usage",
+    "title2": "Stay current with your usage.",
     "title3": "Bills at Your Fingertips.",
     "title4": "Pay Your Bills Anytime, Anywhere.",
     "title5": "Say Hi to myTNB Rewards!",
@@ -848,6 +869,7 @@
   },
   "SavedRewards": {
     "title": "My Saved Rewards",
-    "emptyDesc": "Your saved rewards will appear here."
+    "emptyDesc": "Your saved rewards will appear here.",
+    "used": "Used"
   }
 }
