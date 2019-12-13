@@ -1864,7 +1864,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (position == 0)
                 {
                     int middleHeight = ((RewardDetailActivity)this.mContext).GetRewardSaveButtonHeight() + (int)DPUtils.ConvertDPToPx(12f);
-                    int topHeight = ((RewardDetailActivity)this.mContext).GetSaveButtonRelativePosition()[1] - (int)DPUtils.ConvertDPToPx(30f);
+                    int topHeight = ((RewardDetailActivity)this.mContext).GetSaveButtonRelativePosition()[1] - GetStatusBarHeight() - (int)DPUtils.ConvertDPToPx(6f);
 
                     int leftWidth = (int)DPUtils.ConvertDPToPx(14f);
                     int middleWidth = ((this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(3f) - (int)DPUtils.ConvertDPToPx(24f)) / 2) + (int)DPUtils.ConvertDPToPx(2f);
@@ -1898,7 +1898,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 else
                 {
                     int middleHeight = ((RewardDetailActivity)this.mContext).GetRewardSaveButtonHeight() + (int)DPUtils.ConvertDPToPx(12f);
-                    int topHeight = ((RewardDetailActivity)this.mContext).GetSaveButtonRelativePosition()[1] - (int)DPUtils.ConvertDPToPx(30f);
+                    int topHeight = ((RewardDetailActivity)this.mContext).GetSaveButtonRelativePosition()[1] - GetStatusBarHeight() - (int)DPUtils.ConvertDPToPx(6f);
 
                     int rightWidth = (int)DPUtils.ConvertDPToPx(14f);
                     int middleWidth = ((this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(3f) - (int)DPUtils.ConvertDPToPx(24f)) / 2) + (int)DPUtils.ConvertDPToPx(2f);
