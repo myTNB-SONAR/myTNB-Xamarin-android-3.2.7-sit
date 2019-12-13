@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Rearrange")]
-    public class RearrangeAccountActivity : BaseToolbarAppCompatActivity
+    public class RearrangeAccountActivity : BaseActivityCustom
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -37,12 +37,16 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
 
         private LoadingOverlay loadingOverlay;
 
+        private string PAGE_ID = "RearrangeAccount";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+
+                btnSubmit.Text = GetLabelByLanguage("btnTitle");
 
                 listView = FindViewById<RearrangeAccountListView>(Resource.Id.list_view);
 
@@ -144,7 +148,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                     }
 
                     mRearrangeSnackbar = Snackbar.Make(rootView,
-                        "Uh oh, your changes were not saved. Please try again.",
+                        GetLabelByLanguage("rearrangeToastFailMsg"),
                         Snackbar.LengthLong);
                     mRearrangeSnackbar.Show();
                     this.SetIsClicked(false);
@@ -195,9 +199,9 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                     this.SetIsClicked(true);
 
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle("Leave without saving changes?")
-                        .SetMessage("Looks like you’ve rearranged your accounts. Would you like to keep this new arrangement?")
-                        .SetCTALabel("No")
+                        .SetTitle(GetLabelByLanguage("rearrangeTitle"))
+                        .SetMessage(GetLabelByLanguage("rearrangeMsg"))
+                        .SetCTALabel(GetLabelCommonByLanguage("no"))
                         .SetCTAaction(() => {
                             SetResult(Result.Canceled);
                             this.Finish();
@@ -206,7 +210,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                         {
                             OnSave();
                         })
-                        .SetSecondaryCTALabel("Yes")
+                        .SetSecondaryCTALabel(GetLabelCommonByLanguage("yes"))
                         .Build().Show();
                 }
             }
@@ -246,6 +250,9 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
-
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

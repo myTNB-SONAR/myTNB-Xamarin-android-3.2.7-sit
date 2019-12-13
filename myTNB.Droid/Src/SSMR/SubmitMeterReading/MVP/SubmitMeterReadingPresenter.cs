@@ -384,8 +384,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = isOCRDown ? ContentType.BottomLeft : ContentType.TopLeft,
-                ContentTitle = "Enter your meter reading here.",
-                ContentMessage = "Enter according to its unit(s).<br/>You’ll see your previous month's<br/>reading as a reference.",
+                ContentTitle = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "tutorialReadMeterTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "tutorialReadMeterDesc"),
                 ItemCount = 0,
                 DisplayMode = isOCRDown ? "DOWN" : "UP",
                 IsButtonShow = true

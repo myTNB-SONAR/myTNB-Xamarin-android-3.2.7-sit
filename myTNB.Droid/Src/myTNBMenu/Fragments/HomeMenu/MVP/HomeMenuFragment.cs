@@ -1044,7 +1044,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             mRearrangeSnackbar = Snackbar.Make(rootView,
-                "Your new account arrangement has successfully been saved!",
+                Utility.GetLocalizedLabel("RearrangeAccount", "rearrangeToastSuccessMsg"),
                 Snackbar.LengthLong);
             mRearrangeSnackbar.Show();
         }

@@ -43,7 +43,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private static string METHOD_CREDIT_CARD = "CC";
         private static string METHOD_FPX = "FPX";
-        private static string PARAM3 = "Param3=";
         private string param3 = "0";
         private string selectedPaymentMethod;
         private CreditCard selectedCard;
@@ -685,7 +684,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             try
             {
-                var uri = Android.Net.Uri.Parse(Constants.SERVER_URL.FPX_PAYMENT + response.requestPayBill.initiatePaymentResult.payMerchant_transID + "&" + PARAM3 + param3);
+                string parameter1 = "Param1=3";
+                string parameter2 = "Param2=" + response.requestPayBill.initiatePaymentResult.payMerchant_transID;
+                string parameter3 = "Param3=" + param3;
+                string langProp = "lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                var uri = Android.Net.Uri.Parse(response.requestPayBill.initiatePaymentResult.action +
+                    "?" + parameter1 + "&" + parameter2 + "&" + parameter3 + "&" + langProp);
 
                 Bundle bundle = new Bundle();
                 bundle.PutString("html_fpx", uri.ToString());

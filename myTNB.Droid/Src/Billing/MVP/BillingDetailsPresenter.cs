@@ -105,8 +105,8 @@ namespace myTNB_Android.Src.Billing.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = "View your e-bill",
-                ContentMessage = "Tap here to acess the PDF version<br/>of your bill.",
+                ContentTitle = Utility.GetLocalizedLabel("BillDetails", "tutorialTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("BillDetails", "tutorialDesc"),
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true

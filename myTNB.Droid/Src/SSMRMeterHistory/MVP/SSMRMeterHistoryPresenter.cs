@@ -317,8 +317,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = "Your reading status at a glance.",
-                ContentMessage = "Switch between your accounts<br/>and get an overview of your<br/>meter reading status here.",
+                ContentTitle = Utility.GetLocalizedLabel("SSMRReadingHistory", "tutorialHeaderTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("SSMRReadingHistory", "tutorialHeaderDesc"),
                 ItemCount = isSubmitButtonHide ? 1 : 0,
                 DisplayMode = isSMR? "SMR" : "NONSMR",
                 IsButtonShow = true

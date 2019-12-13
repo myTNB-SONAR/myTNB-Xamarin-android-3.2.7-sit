@@ -316,12 +316,10 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             try
             {
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
-                //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded) , null , null , null );
-                //btnResend.SetTextColor(Resources.GetColor(Resource.Color.white));
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(30)";
                 btnResend.Visibility = ViewStates.Gone;
                 OnCompleteResend.Visibility = ViewStates.Visible;
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend);
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
                 btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                 progressGenerator.Progress = 0;
@@ -443,7 +441,7 @@ namespace myTNB_Android.Src.RegisterValidation
             //}
             try
             {
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(" + Math.Abs(count - 30) + ")";
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(" + Math.Abs(count - 30) + ")";
             }
             catch (Exception e)
             {

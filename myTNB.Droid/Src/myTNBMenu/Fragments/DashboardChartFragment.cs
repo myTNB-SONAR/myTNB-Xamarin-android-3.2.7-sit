@@ -842,6 +842,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent, txtTariffBlockLegendDisclaimer);
 
+                txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
+                btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
+                btnPay.Text = Utility.GetLocalizedLabel("Usage", "pay");
+                txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
+                txtTotalPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
+
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
@@ -901,9 +907,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         ssmrHistoryContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Gone;
                         energyTipsView.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
+                        btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewPaymentAdvice");
                         // txtUsageHistory.Visibility = ViewStates.Gone;
-                        txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                        txtTotalPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
                         graphToggleSelection.Visibility = ViewStates.Gone;
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
@@ -920,7 +926,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
@@ -962,7 +968,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
                         layoutSMSegmentGroup.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                     }
@@ -1270,8 +1276,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                string textMessage = Activity.GetString(Resource.String.tooltip_sm_what_are_these_message);
-                string btnLabel = Activity.GetString(Resource.String.tooltip_btnLabel);
+                string textMessage = Utility.GetLocalizedLabel("Usage", "projectedCostMsg");
+                string btnLabel = Utility.GetLocalizedCommonLabel("gotIt");
 
                 if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
                 {
@@ -1288,7 +1294,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
 
-                            btnLabel = costValue.SMBtnText ?? Activity.GetString(Resource.String.tooltip_btnLabel);
+                            btnLabel = costValue.SMBtnText ?? Utility.GetLocalizedCommonLabel("gotIt");
                         }
                     }
                 }
@@ -1628,12 +1634,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = "Show Tariff";
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
                 }
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = "Hide Tariff";
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "hideTariff");
                 }
 
                 if (!isSMAccount)
@@ -1657,7 +1663,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
-                txtTarifToggle.Text = "Show Tariff";
+                txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
                 txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
 
@@ -4844,7 +4850,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = "Show Tariff";
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
@@ -4871,7 +4877,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = "Hide Tariff";
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "hideTariff");
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
                     {
@@ -5492,7 +5498,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         HideSMStatisticCard();
                         energyTipsView.Visibility = ViewStates.Gone;
 
-                        string defaultMessage = Activity.GetString(Resource.String.new_account_view);
+                        string defaultMessage = Utility.GetLocalizedLabel("Usage", "emptyDataMsg");
 
                         if (isREAccount)
                         {
@@ -5684,7 +5690,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextView btnGotIt = mDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
                 txtMessage.MovementMethod = new ScrollingMovementMethod();
 
-                txtMessage.Text = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
+                txtMessage.Text = Utility.GetLocalizedLabel("Usage", "missedReadTitle");
                 txtTitle.Text = Utility.GetLocalizedLabel("Usage", "missedReadMsg");
                 btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
 
@@ -6185,8 +6191,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mNoInternetSnackbar.Dismiss();
                 }
 
-                mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
 
                     mNoInternetSnackbar.Dismiss();
@@ -6211,8 +6217,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
                 }
@@ -6505,7 +6511,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 mSmartMeterError = Snackbar.Make(rootView, errorMsg, 10000)
-                .SetAction(GetString(Resource.String.logout_rate_unknown_exception_btn_close), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("common"), delegate
                 {
                     mSmartMeterError.Dismiss();
                 }
@@ -6529,8 +6535,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mDisconnectionSnackbar.Dismiss();
                 }
 
-                mDisconnectionSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                mDisconnectionSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                 {
 
                     mDisconnectionSnackbar.Dismiss();
@@ -9120,7 +9126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 try
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = "Show Tariff";
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {

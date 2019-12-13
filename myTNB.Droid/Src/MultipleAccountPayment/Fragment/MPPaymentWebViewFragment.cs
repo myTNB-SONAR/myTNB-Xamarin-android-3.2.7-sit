@@ -187,7 +187,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     + "&DESCRIPTION=" + URLEncoder.Encode(des)
                                     //+ "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
                                     + "&CARDCVC=" + URLEncoder.Encode(cardCvv) // -- CVV Enabled --
-                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL);
+                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
+                                    + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     }
                     else
                     {
@@ -216,7 +217,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         + "&CARDTYPE=" + URLEncoder.Encode(cardType)
                                         + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
                                         + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv)
+                                        + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                         }
                         else
                         {
@@ -240,7 +242,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                        + "&CARDTYPE=" + URLEncoder.Encode(cardType)
                                        + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
                                        + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv)
+                                       + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                         }
                     }
                     mWebView.PostUrl(action, EncodingUtils.GetBytes(data, "base64"));
