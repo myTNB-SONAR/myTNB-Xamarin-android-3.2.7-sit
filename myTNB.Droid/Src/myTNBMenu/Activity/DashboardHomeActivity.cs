@@ -1391,14 +1391,44 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void OnCheckUserReward()
+        public void OnCheckUserReward(bool isSitecoreApiFailed)
         {
             try
             {
-                RunOnUiThread(() =>
+                if (isSitecoreApiFailed)
                 {
-                    _ = this.mPresenter.OnGetUserRewardList();
-                });
+                    HideProgressDialog();
+                    if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                    {
+                        urlSchemaCalled = false;
+                        ShowSomethingWrongException();
+                    }
+                }
+                else
+                {
+                    RunOnUiThread(() =>
+                    {
+                        _ = this.mPresenter.OnGetUserRewardList();
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnCheckUserRewardApiFailed()
+        {
+            try
+            {
+                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                {
+                    HideProgressDialog();
+                    urlSchemaCalled = false;
+                    ShowSomethingWrongException();
+                }
             }
             catch (Exception e)
             {
@@ -1487,6 +1517,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             bottomNavigationView.SelectedItemId = Resource.Id.menu_reward;
             SetBottomNavigationLabels();
+        }
+
+        public void ShowSomethingWrongException()
+        {
+            try
+            {
+                if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                {
+                    HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    fragment.ShowSomethingWrongException();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

@@ -114,17 +114,17 @@ namespace myTNB_Android.Src.Utils
             //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbdev.page.link";
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbsit.page.link";
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnb.page.link";
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbapp.page.link";
 
 #endif
 

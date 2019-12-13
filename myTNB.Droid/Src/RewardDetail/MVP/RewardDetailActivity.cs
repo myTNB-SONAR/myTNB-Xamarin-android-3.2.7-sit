@@ -336,6 +336,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                             ID = ID.Replace("}", "");
                             string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
 
+                            ShowProgressDialog();
                             String buildLink = new LinkBuilder().setDomain(Constants.SERVER_URL.FIREBASE_DEEP_LINK_END_POINT)
                                .setLink(deepLinkUrl)
                                .setApn(ApplicationContext.PackageName)
@@ -934,6 +935,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         void Android.Gms.Tasks.IOnCompleteListener.OnComplete(Android.Gms.Tasks.Task task)
         {
+            HideProgressDialog();
             if (linkGenerationSuccessful)
             {
                 linkGenerationSuccessful = false;

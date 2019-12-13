@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 if (mTabList != null && mTabList.Count > 0)
                 {
-                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f));
+                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
                     MeasureTabScroll();
                     HighLightCurrentTab(0);
                     rewardViewPager.AddOnPageChangeListener(this);
@@ -433,7 +433,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                     if (mTabList != null && mTabList.Count > 1)
                     {
-                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f));
+                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
                         MeasureTabScroll();
                         HighLightCurrentTab(0);
                     }
@@ -508,17 +508,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                                 if (widthS > widthT)
                                 {
-                                    if (mTabList.Count <= 4)
-                                    {
-                                        rewardsSlidingTabs.TabMode = TabLayout.ModeFixed;
-                                        rewardsSlidingTabs.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
-                                    }
-                                    else
-                                    {
-                                        int diff = widthS - widthT;
-                                        int diffOnEachItem = diff / mTabList.Count;
-                                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f) + diffOnEachItem);
-                                    }
+                                    int diff = widthS - widthT;
+                                    int diffOnEachItem = diff / mTabList.Count;
+                                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f) + diffOnEachItem / 2, (int)DPUtils.ConvertDPToPx(10f) + diffOnEachItem / 2);
                                 }
                             });
                         };
