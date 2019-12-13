@@ -544,8 +544,6 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%403x.png" />
@@ -730,8 +728,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%403x.png" />
@@ -1095,8 +1091,6 @@
     <ImageAsset Include="Assets.xcassets\Call-Us-Icon.imageset\Call-Us-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Call-Us-Icon.imageset\Call-Us-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\Feedback-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\Feedback-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Email-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Email-Icon.imageset\Email-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Email-Icon.imageset\Email-Icon%403x.png" />
@@ -1242,6 +1236,12 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Install.imageset\wt5%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\wt5%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5-Update.imageset\wt5%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\submittedFeedback%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\submittedFeedback%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\feedback1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\feedback1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
