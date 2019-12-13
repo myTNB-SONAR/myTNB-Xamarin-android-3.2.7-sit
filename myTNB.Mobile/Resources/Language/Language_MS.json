@@ -396,10 +396,10 @@
     "tutorialViewDetailsTitle": "Fahami bil anda.",
     "tutorialHistoryNormalTitle": "Pantau pembayaran anda.",
     "tutorialHistoryTitle": "Pantau rekod caj anda.",
-    "tutorialBillREAcctDesc": "Klik pada butang \"#dropdown#\" untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan",
+    "tutorialBillREAcctDesc": "Klik pada butang “ #dropdown# ” untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan",
     "tutorialBillNormalAcctDesc": "Tekan “ #dropdown# ” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
-    "tutorialViewDetailsDesc": "\"Lihat Butiran\" untuk menyemak pecahan bil anda.",
+    "tutorialViewDetailsDesc": "“ Lihat Butiran ” untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "tutorialHistoryREAcctDesc": "Lihat dan akses makluman serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "gotIt": "Faham!"
@@ -571,7 +571,7 @@
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
-    "typeDescription": "Pilih jenis makluman yang ingin diterima daripada TNB",
+    "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
     "modeDescription": "Pilih cara pemberitahuan anda"
   },
   "FAQ": {
@@ -683,7 +683,7 @@
     "confirmNewPassword": "Sahkan Kata Laluan Baharu"
   },
   "UpdateNickname": {
-    "title": "Kemas Kini Nama Panggilan Akaun"
+    "title": "Kemaskini Nama Ringkas"
   },
   "ManageAccount": {
     "title": "Uruskan Akaun Elektrik",

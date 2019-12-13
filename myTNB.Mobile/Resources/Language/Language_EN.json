@@ -399,7 +399,7 @@
     "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
     "tutorialBillNormalAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
     "tutorialPayDesc": "Tap here to pay your bill.",
-    "tutorialViewDetailsDesc": "\"View Details\" to review your bill breakdown.",
+    "tutorialViewDetailsDesc": "“View Details” to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
     "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
     "gotIt": "Got it!"
