@@ -1536,7 +1536,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     if (position == 0)
                     {
                         int middleHeight = ((RewardMenuFragment)this.mFragment).GetTabList()[0].Fragment.GetFirstItemHeight() - (int)DPUtils.ConvertDPToPx(10f);
-                        int topHeight = ((RewardMenuFragment)this.mFragment).GetTabList()[0].Fragment.GetFirstItemRelativePosition() - (int) DPUtils.ConvertDPToPx(18f);
+                        int topHeight = ((RewardMenuFragment)this.mFragment).GetTabList()[0].Fragment.GetFirstItemRelativePosition() - GetStatusBarHeight() + (int)DPUtils.ConvertDPToPx(5f);
 
                         int leftWidth = (int)DPUtils.ConvertDPToPx(16f);
                         int rightWidth = (int)DPUtils.ConvertDPToPx(16f);
@@ -1617,7 +1617,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     else if (list.Count == 3 && position == 1)
                     {
                         int middleHeight = ((RewardMenuFragment)this.mFragment).GetTabHeight() + (int)DPUtils.ConvertDPToPx(6f);
-                        int topHeight = ((RewardMenuFragment)this.mFragment).GetTabRelativePosition() - (int)DPUtils.ConvertDPToPx(24f);
+                        int topHeight = ((RewardMenuFragment)this.mFragment).GetTabRelativePosition() - GetStatusBarHeight();
 
                         int leftWidth = 0;
                         int rightWidth = 0;
@@ -1657,7 +1657,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     else if (list.Count == 3 && position == 2)
                     {
                         int middleHeight = (int)DPUtils.ConvertDPToPx(38f);
-                        int topHeight = ((RewardMenuFragment)this.mFragment).GetTabRelativePosition() - (int)DPUtils.ConvertDPToPx(24f) - (int)DPUtils.ConvertDPToPx(47f);
+                        int topHeight = (int) DPUtils.ConvertDPToPx(10f);
 
                         int rightWidth = (int)DPUtils.ConvertDPToPx(5f);
                         int middleWidth = (int)DPUtils.ConvertDPToPx(38f);
@@ -2015,6 +2015,48 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         {
             byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
             return BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+        }
+
+        private int GetStatusBarHeight()
+        {
+            int statusBarHeight = 0;
+
+            try
+            {
+                Rect rectangle = new Rect();
+                Window window = this.mContext.Window;
+                window.DecorView.GetWindowVisibleDisplayFrame(rectangle);
+                statusBarHeight = rectangle.Top;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return statusBarHeight;
+        }
+
+        private int GetTitleBarHeight()
+        {
+            int titleBarHeight = 0;
+
+            try
+            {
+                Rect rectangle = new Rect();
+                Window window = this.mContext.Window;
+                window.DecorView.GetWindowVisibleDisplayFrame(rectangle);
+                int statusBarHeight = rectangle.Top;
+
+                int contentViewTop =
+                    window.FindViewById(Window.IdAndroidContent).Top;
+                titleBarHeight = contentViewTop - statusBarHeight;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return titleBarHeight;
         }
     }
 }
