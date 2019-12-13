@@ -337,32 +337,34 @@ namespace myTNB
 
                 RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
                 if (rewardsResponse != null && rewardsResponse.Status != null &&
-                    rewardsResponse.Status.Equals("Success") &&
-                    rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
+                    rewardsResponse.Status.Equals("Success"))
                 {
-                    RewardsEntity rewardsEntity = new RewardsEntity();
-                    List<RewardsModel> rewardsData = new List<RewardsModel>();
-                    List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
-                    foreach (var category in categoryList)
+                    RewardsCache.RewardIsAvailable = true;
+                    if (rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                     {
-                        List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
-                        if (rewardsList.Count > 0)
+                        RewardsEntity rewardsEntity = new RewardsEntity();
+                        List<RewardsModel> rewardsData = new List<RewardsModel>();
+                        List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
+                        foreach (var category in categoryList)
                         {
-                            foreach (var reward in rewardsList)
+                            List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
+                            if (rewardsList.Count > 0)
                             {
-                                if (!RewardHasExpired(reward))
+                                foreach (var reward in rewardsList)
                                 {
-                                    reward.CategoryID = category.ID;
-                                    reward.CategoryName = category.CategoryName;
-                                    rewardsData.Add(reward);
+                                    if (!RewardHasExpired(reward))
+                                    {
+                                        reward.CategoryID = category.ID;
+                                        reward.CategoryName = category.CategoryName;
+                                        rewardsData.Add(reward);
+                                    }
                                 }
                             }
                         }
+                        rewardsEntity.DeleteTable();
+                        rewardsEntity.CreateTable();
+                        rewardsEntity.InsertListOfItems(rewardsData);
                     }
-                    rewardsEntity.DeleteTable();
-                    rewardsEntity.CreateTable();
-                    rewardsEntity.InsertListOfItems(rewardsData);
-
                     try
                     {
                         NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -373,6 +375,10 @@ namespace myTNB
                     {
                         Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
                     }
+                }
+                else
+                {
+                    RewardsCache.RewardIsAvailable = false;
                 }
             });
         }

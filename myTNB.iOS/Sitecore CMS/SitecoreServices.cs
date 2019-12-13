@@ -86,61 +86,61 @@ namespace myTNB.SitecoreCMS
                 Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
             }
         }
-/*
-        private Task LoadSSMRWalkthrough()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize
-                    , TNBGlobal.SITECORE_URL
-                    , TNBGlobal.APP_LANGUAGE);
-
-                ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
-                bool needsUpdate = true;
-
-                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
-                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
-                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+        /*
+                private Task LoadSSMRWalkthrough()
                 {
-                    timeStamp = new ApplySSMRTimeStampResponseModel();
-                    timeStamp.Data = new List<ApplySSMRTimeStamp> { new ApplySSMRTimeStamp { Timestamp = string.Empty } };
-                }
-
-                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp", ref needsUpdate);
-
-                if (needsUpdate)
-                {
-                    ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
-                    if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
+                    return Task.Factory.StartNew(() =>
                     {
-                        List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
-                        for (int i = 0; i < applySSMrWalkthroughItems.Data.Count; i++)
+                        GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                            , DataManager.DataManager.SharedInstance.ImageSize
+                            , TNBGlobal.SITECORE_URL
+                            , TNBGlobal.APP_LANGUAGE);
+
+                        ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
+                        bool needsUpdate = true;
+
+                        if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                             || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                             || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
                         {
-                            ApplySSMRModel item = applySSMrWalkthroughItems.Data[i];
-                            GetImagesTask.Add(GetImageFromURL(item.Image));
+                            timeStamp = new ApplySSMRTimeStampResponseModel();
+                            timeStamp.Data = new List<ApplySSMRTimeStamp> { new ApplySSMRTimeStamp { Timestamp = string.Empty } };
                         }
 
-                        Task.WaitAll(GetImagesTask.ToArray());
+                        UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp", ref needsUpdate);
 
-                        for (int j = 0; j < GetImagesTask.Count; j++)
+                        if (needsUpdate)
                         {
-                            if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
-                            byte[] data = GetImagesTask[j].Result.ToByteArray();
-                            applySSMrWalkthroughItems.Data[j].ImageByteArray = data;
-                        }
+                            ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
+                            if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
+                            {
+                                List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
+                                for (int i = 0; i < applySSMrWalkthroughItems.Data.Count; i++)
+                                {
+                                    ApplySSMRModel item = applySSMrWalkthroughItems.Data[i];
+                                    GetImagesTask.Add(GetImageFromURL(item.Image));
+                                }
 
-                        ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
-                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
-                        Debug.WriteLine("LoadSSMRWalkthrough Done");
-                    }
+                                Task.WaitAll(GetImagesTask.ToArray());
+
+                                for (int j = 0; j < GetImagesTask.Count; j++)
+                                {
+                                    if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
+                                    byte[] data = GetImagesTask[j].Result.ToByteArray();
+                                    applySSMrWalkthroughItems.Data[j].ImageByteArray = data;
+                                }
+
+                                ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                                wsManager.DeleteTable();
+                                wsManager.CreateTable();
+                                wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
+                                UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
+                                Debug.WriteLine("LoadSSMRWalkthrough Done");
+                            }
+                        }
+                    });
                 }
-            });
-        }
-*/
+        */
         private Task LoadMeterReadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
@@ -485,32 +485,39 @@ namespace myTNB.SitecoreCMS
                 {
                     RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
                     if (rewardsResponse != null && rewardsResponse.Status != null &&
-                        rewardsResponse.Status.Equals("Success") &&
-                        rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
+                        rewardsResponse.Status.Equals("Success"))
                     {
-                        RewardsEntity rewardsEntity = new RewardsEntity();
-                        List<RewardsModel> rewardsData = new List<RewardsModel>();
-                        List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
-                        foreach (var category in categoryList)
+                        RewardsCache.RewardIsAvailable = true;
+                        if (rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                         {
-                            List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
-                            if (rewardsList.Count > 0)
+                            RewardsEntity rewardsEntity = new RewardsEntity();
+                            List<RewardsModel> rewardsData = new List<RewardsModel>();
+                            List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
+                            foreach (var category in categoryList)
                             {
-                                foreach (var reward in rewardsList)
+                                List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
+                                if (rewardsList.Count > 0)
                                 {
-                                    if (!RewardsServices.RewardHasExpired(reward))
+                                    foreach (var reward in rewardsList)
                                     {
-                                        reward.CategoryID = category.ID;
-                                        reward.CategoryName = category.CategoryName;
-                                        rewardsData.Add(reward);
+                                        if (!RewardsServices.RewardHasExpired(reward))
+                                        {
+                                            reward.CategoryID = category.ID;
+                                            reward.CategoryName = category.CategoryName;
+                                            rewardsData.Add(reward);
+                                        }
                                     }
                                 }
                             }
+                            rewardsEntity.DeleteTable();
+                            rewardsEntity.CreateTable();
+                            rewardsEntity.InsertListOfItems(rewardsData);
                         }
-                        rewardsEntity.DeleteTable();
-                        rewardsEntity.CreateTable();
-                        rewardsEntity.InsertListOfItems(rewardsData);
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
+                    }
+                    else
+                    {
+                        RewardsCache.RewardIsAvailable = false;
                     }
                 }
             });

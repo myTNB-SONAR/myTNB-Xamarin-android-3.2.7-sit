@@ -13,6 +13,8 @@ namespace myTNB
         private static GetUserRewardsResponseModel userRewardsResponse = new GetUserRewardsResponseModel();
         private static List<RewardsItemModel> rewardsList = new List<RewardsItemModel>();
 
+        public static bool RewardIsAvailable { set; get; }
+
         public static void AddGetUserRewardsResponseData(GetUserRewardsResponseModel resp)
         {
             if (userRewardsResponse == null)
@@ -23,7 +25,12 @@ namespace myTNB
             if (userRewardsResponse != null && userRewardsResponse.d != null &&
                 userRewardsResponse.d.data != null && userRewardsResponse.d.IsSuccess)
             {
+                RewardIsAvailable = true;
                 rewardsList = userRewardsResponse.d.data.UserRewards;
+            }
+            else
+            {
+                RewardIsAvailable = false;
             }
         }
 

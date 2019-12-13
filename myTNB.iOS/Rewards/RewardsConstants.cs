@@ -31,6 +31,9 @@ namespace myTNB
         public static string Cell_Rewards = "rewardsTableViewCell";
         public static string Cell_SavedRewards = "savedRewardsTableViewCell";
 
+        //Event Names
+        public static string EVENT_Refresh = "Refresh";
+
         //I18N Keys
         public static string I18N_Title = "title";
         public static string I18N_ViewAll = "viewAll";
@@ -74,5 +77,6 @@ namespace myTNB
         public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
         public static string Img_UseRewardBanner = "Use-Reward-Banner";
         public static string Img_EmptyRewardIcon = "Empty-Reward-Icon";
+        public static string IMG_Refresh = "SSMR-Refresh";
     }
 }

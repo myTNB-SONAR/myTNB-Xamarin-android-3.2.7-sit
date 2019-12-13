@@ -1,5 +1,7 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Components;
+using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System;
@@ -13,7 +15,7 @@ namespace myTNB
     public partial class RewardsViewController : CustomUIViewController
     {
         internal UIScrollView _loadingScrollView, _topBarScrollView, _rewardsScrollView;
-        internal UIView _skeletonLoadingView, _emptyRewardView;
+        internal UIView _skeletonLoadingView, _emptyRewardView, _refreshScreenView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
         private int _selectedCategoryIndex, props_index;
@@ -59,8 +61,14 @@ namespace myTNB
         private void OnReceivedRewards(NSNotification notification)
         {
             Debug.WriteLine("OnReceivedRewardsNotification");
-            RewardsServices.FilterExpiredRewards();
-            ValidateRewards();
+            if (RewardsCache.RewardIsAvailable)
+            {
+                ProcessRewards();
+            }
+            else
+            {
+                SetRefreshScreen();
+            }
         }
 
         private void CheckForRewardUpdates()
@@ -79,32 +87,157 @@ namespace myTNB
                         InvokeInBackground(async () =>
                         {
                             await RewardsServices.GetLatestRewards();
-                            await RewardsServices.GetUserRewards();
-                            InvokeOnMainThread(() =>
+                            if (RewardsCache.RewardIsAvailable)
                             {
-                                DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                                RewardsServices.FilterExpiredRewards();
-                                ValidateRewards();
-                            });
+                                await RewardsServices.GetUserRewards();
+                                if (RewardsCache.RewardIsAvailable)
+                                {
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                        ProcessRewards();
+                                    });
+                                }
+                                else
+                                {
+                                    SetRefreshScreen();
+                                }
+                            }
+                            else
+                            {
+                                SetRefreshScreen();
+                            }
                         });
                     }
                     else
                     {
-                        bool needsUpdate = RewardsServices.FilterExpiredRewards();
-                        if (needsUpdate)
+                        if (RewardsCache.RewardIsAvailable)
                         {
-                            ValidateRewards();
+                            bool needsUpdate = RewardsServices.FilterExpiredRewards();
+                            if (needsUpdate)
+                            {
+                                ValidateRewards();
+                            }
+                            else
+                            {
+                                if (!_isViewDidLoad)
+                                {
+                                    props_needsUpdate = true;
+                                    OnTableReload();
+                                }
+                            }
                         }
                         else
                         {
-                            if (!_isViewDidLoad)
-                            {
-                                props_needsUpdate = true;
-                                OnTableReload();
-                            }
+                            SetRefreshScreen();
                         }
                     }
                 });
+            });
+        }
+
+        private void SetRefreshScreen()
+        {
+            ResetViews();
+            NavigationController.NavigationBar.Hidden = true;
+
+            _refreshScreenView = new UIView(new CGRect(0, 0, ViewWidth, ViewHeight))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIImageView refreshIcon = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
+            {
+                Image = UIImage.FromBundle(RewardsConstants.IMG_Refresh),
+                BackgroundColor = UIColor.Clear
+            };
+
+            _refreshScreenView.AddSubview(refreshIcon);
+
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetCommonI18NValue(Constants.Common_RefreshMessage)
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(16F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.Grey,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Left,
+                    LineSpacing = 3.0f
+                }
+            }, new NSRange(0, htmlBody.Length));
+
+            nfloat descwidth = ViewWidth - (BaseMarginWidth16 * 2);
+            UITextView desc = new UITextView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(refreshIcon.Frame, 16F), descwidth, 0))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false,
+                TextAlignment = UITextAlignment.Center
+
+            };
+            desc.TextContainer.LineFragmentPadding = 0F;
+            CGSize cGSize = desc.SizeThatFits(new CGSize(descwidth, GetScaledHeight(500F)));
+            ViewHelper.AdjustFrameSetWidth(desc, cGSize.Width);
+            ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
+
+            _refreshScreenView.AddSubview(desc);
+
+            CustomUIButtonV2 btnRefresh = new CustomUIButtonV2()
+            {
+                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(desc.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+                BackgroundColor = MyTNBColor.FreshGreen,
+                PageName = PageName,
+                EventName = RewardsConstants.EVENT_Refresh,
+                Hidden = false
+            };
+            btnRefresh.SetTitle(GetCommonI18NValue(Constants.Common_RefreshNow), UIControlState.Normal);
+            btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
+            btnRefresh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                RefreshButtonOnTap();
+            }));
+            _refreshScreenView.AddSubview(btnRefresh);
+            View.AddSubview(_refreshScreenView);
+        }
+
+        private void RefreshButtonOnTap()
+        {
+            ResetViews();
+            NavigationController.NavigationBar.Hidden = false;
+            SetSkeletonLoading();
+
+            InvokeInBackground(async () =>
+            {
+                DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                await SitecoreServices.Instance.LoadRewards();
+                if (RewardsCache.RewardIsAvailable)
+                {
+                    await RewardsServices.GetUserRewards();
+                    InvokeOnMainThread(() =>
+                    {
+                        if (RewardsCache.RewardIsAvailable)
+                        {
+                            ProcessRewards();
+                        }
+                        else
+                        {
+                            SetRefreshScreen();
+                        }
+                    });
+                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                }
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        SetRefreshScreen();
+                    });
+                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                }
             });
         }
 
@@ -130,6 +263,11 @@ namespace myTNB
                 _emptyRewardView.RemoveFromSuperview();
                 _emptyRewardView = null;
             }
+            if (_refreshScreenView != null)
+            {
+                _refreshScreenView.RemoveFromSuperview();
+                _refreshScreenView = null;
+            }
         }
 
         private void InitiateView()
@@ -138,9 +276,21 @@ namespace myTNB
             SetSkeletonLoading();
             if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
             {
-                RewardsServices.FilterExpiredRewards();
-                ValidateRewards();
+                if (RewardsCache.RewardIsAvailable)
+                {
+                    ProcessRewards();
+                }
+                else
+                {
+                    SetRefreshScreen();
+                }
             }
+        }
+
+        private void ProcessRewards()
+        {
+            RewardsServices.FilterExpiredRewards();
+            ValidateRewards();
         }
 
         private void ValidateRewards()
@@ -178,7 +328,7 @@ namespace myTNB
             Title = GetI18NValue(RewardsConstants.I18N_Title);
             UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && _rewardsList != null)
+                if (RewardsCache.RewardIsAvailable && !DataManager.DataManager.SharedInstance.IsRewardsLoading && _rewardsList != null)
                 {
                     SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
                     {
@@ -584,8 +734,12 @@ namespace myTNB
                                 props_rewardsList[index].IsUsed = item.Redeemed;
                             }
                         }
+                        OnReloadTableAction(props_rewardsList, props_index);
                     }
-                    OnReloadTableAction(props_rewardsList, props_index);
+                    else
+                    {
+                        SetRefreshScreen();
+                    }
                     props_needsUpdate = false;
                 }
 
@@ -641,6 +795,8 @@ namespace myTNB
         #region TUTORIAL OVERLAY
         public void CheckTutorialOverlay()
         {
+            if (!RewardsCache.RewardIsAvailable) { return; }
+
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(RewardsConstants.Pref_RewardsTutorialOverlay);
 
