@@ -1032,7 +1032,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         void Android.Gms.Tasks.IOnSuccessListener.OnSuccess(Java.Lang.Object result)
         {
-            PendingDynamicLinkData pendingResult = result as PendingDynamicLinkData;
+            PendingDynamicLinkData pendingResult = result.JavaCast<PendingDynamicLinkData>();
 
             Android.Net.Uri deepLink = null;
             if (pendingResult != null)
