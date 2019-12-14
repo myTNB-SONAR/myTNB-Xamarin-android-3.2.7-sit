@@ -148,6 +148,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private string generatedLink = "";
 
+        private Snackbar mNoInternetSnackbar;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -319,39 +321,54 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_share_promotion:
-                    if (LocalItem != null)
+                    if (!this.GetIsClicked())
                     {
-                        if (!string.IsNullOrEmpty(generatedLink))
+                        this.SetIsClicked(true);
+                        HideNoInternetSnackbar();
+
+                        if (ConnectionUtils.ChceckInternetConnection(this))
                         {
-                            Intent shareIntent = new Intent(Intent.ActionSend);
-                            shareIntent.SetType("text/plain");
-                            shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
-                            shareIntent.PutExtra(Intent.ExtraText, generatedLink);
-                            StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                            if (LocalItem != null)
+                            {
+                                if (!string.IsNullOrEmpty(generatedLink))
+                                {
+                                    Intent shareIntent = new Intent(Intent.ActionSend);
+                                    shareIntent.SetType("text/plain");
+                                    shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
+                                    shareIntent.PutExtra(Intent.ExtraText, generatedLink);
+                                    StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                                    this.SetIsClicked(false);
+                                }
+                                else
+                                {
+                                    string ID = LocalItem.ID;
+                                    ID = ID.Replace("{", "");
+                                    ID = ID.Replace("}", "");
+                                    string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
+
+                                    ShowProgressDialog();
+                                    String buildLink = new LinkBuilder().setDomain(Constants.SERVER_URL.FIREBASE_DEEP_LINK_END_POINT)
+                                       .setLink(deepLinkUrl)
+                                       .setApn(ApplicationContext.PackageName)
+                                       .setAmv(Constants.DYNAMIC_LINK_ANDROID_MIN_VER_CODE.ToString())
+                                       .setIbi(ApplicationContext.PackageName)
+                                       .setImv(Constants.DYNAMIC_LINK_IOS_MIN_VER_CODE)
+                                       .setIsi(Constants.DYNAMIC_LINK_IOS_APP_ID)
+                                       .build();
+
+                                    FirebaseDynamicLinks.Instance.CreateDynamicLink()
+                                        .SetLongLink(Android.Net.Uri.Parse(buildLink))
+                                        .BuildShortDynamicLink()
+                                        .AddOnSuccessListener(this, this)
+                                        .AddOnFailureListener(this, this)
+                                        .AddOnCompleteListener(this, this);
+                                }
+                            }
                         }
                         else
                         {
-                            string ID = LocalItem.ID;
-                            ID = ID.Replace("{", "");
-                            ID = ID.Replace("}", "");
-                            string deepLinkUrl = Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID;
-
-                            ShowProgressDialog();
-                            String buildLink = new LinkBuilder().setDomain(Constants.SERVER_URL.FIREBASE_DEEP_LINK_END_POINT)
-                               .setLink(deepLinkUrl)
-                               .setApn(ApplicationContext.PackageName)
-                               .setAmv(Constants.DYNAMIC_LINK_ANDROID_MIN_VER_CODE.ToString())
-                               .setIbi(ApplicationContext.PackageName)
-                               .setImv(Constants.DYNAMIC_LINK_IOS_MIN_VER_CODE)
-                               .setIsi(Constants.DYNAMIC_LINK_IOS_APP_ID)
-                               .build();
-
-                            FirebaseDynamicLinks.Instance.CreateDynamicLink()
-                                .SetLongLink(Android.Net.Uri.Parse(buildLink))
-                                .BuildShortDynamicLink()
-                                .AddOnSuccessListener(this, this)
-                                .AddOnFailureListener(this, this)
-                                .AddOnCompleteListener(this, this);
+                            this.SetIsClicked(false);
+                            ShowNoInternetSnackbar();
                         }
                     }
                     return true;
@@ -619,22 +636,31 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         public void OnClickSpan(string url)
         {
-            if (!string.IsNullOrEmpty(url) && (url.Contains("http") || url.Contains("www.")))
+            try
             {
-                if (!this.GetIsClicked())
+                HideNoInternetSnackbar();
+
+                if (!string.IsNullOrEmpty(url) && (url.Contains("http") || url.Contains("www.")))
                 {
-                    this.SetIsClicked(true);
-
-                    if (!url.Contains("http"))
+                    if (!this.GetIsClicked())
                     {
-                        url = "http://" + url;
-                    }
+                        this.SetIsClicked(true);
 
-                    Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-                    webIntent.PutExtra(Constants.IN_APP_LINK, url);
-                    webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-                    StartActivity(webIntent);
+                        if (!url.Contains("http"))
+                        {
+                            url = "http://" + url;
+                        }
+
+                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                        webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                        webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+                        StartActivity(webIntent);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -643,6 +669,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             if (!this.GetIsClicked())
             {
+                HideNoInternetSnackbar();
+
                 this.SetIsClicked(true);
 
                 if (!LocalItem.IsSaved)
@@ -670,6 +698,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             if (!this.GetIsClicked())
             {
+                HideNoInternetSnackbar();
+
                 this.SetIsClicked(true);
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
                     .SetTitle(!string.IsNullOrEmpty(LocalItem.RewardUseTitle) ? LocalItem.RewardUseTitle : Utility.GetLocalizedLabel("RewardDetails", "useNowPopupTitle"))
@@ -936,6 +966,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         void Android.Gms.Tasks.IOnCompleteListener.OnComplete(Android.Gms.Tasks.Task task)
         {
             HideProgressDialog();
+            this.SetIsClicked(false);
             if (linkGenerationSuccessful)
             {
                 linkGenerationSuccessful = false;
@@ -979,6 +1010,43 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             linkGenerationSuccessful = false;
             Utility.LoggingNonFatalError(e);
         }
+
+        public void ShowNoInternetSnackbar()
+        {
+            try
+            {
+                HideNoInternetSnackbar();
+
+                mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Error", "noDataConnectionMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedLabel("Common", "ok"), delegate
+                {
+
+                    mNoInternetSnackbar.Dismiss();
+                }
+                );
+                mNoInternetSnackbar.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideNoInternetSnackbar()
+        {
+            try
+            {
+                if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+                {
+                    mNoInternetSnackbar.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public class LinkBuilder
         {

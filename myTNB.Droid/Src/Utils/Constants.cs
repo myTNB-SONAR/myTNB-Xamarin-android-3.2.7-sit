@@ -328,7 +328,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SERVICE_CODE_MAINTENANCE = "7000";
 
         // Firebase Dynamic Link
-        internal static readonly int DYNAMIC_LINK_ANDROID_MIN_VER_CODE = 169;
+        internal static readonly int DYNAMIC_LINK_ANDROID_MIN_VER_CODE = 171;
         internal static readonly string DYNAMIC_LINK_IOS_MIN_VER_CODE = "2.1.0";
         internal static readonly string DYNAMIC_LINK_IOS_APP_ID = "1297089591";
         
