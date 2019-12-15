@@ -186,6 +186,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnTakeUploadPictureText, btnSubmitReading);
 
             btnSubmitReading.Text = GetLabelByLanguage("submitReading");
+            btnTakeUploadPictureText.Text = GetLabelByLanguage("takeOrUploadPhoto");
 
             previousMeterViews = new int[8];
             previousMeterViews[0] = Resource.Id.previous_reading_1;
@@ -406,6 +407,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
                     TextViewUtils.SetMuseoSans300Typeface(txtPreviousMeterReading, txtPreviousMeterReading1, txtPreviousMeterReading2, txtPreviousMeterReading3, txtPreviousMeterReading4, txtPreviousMeterReading5, txtPreviousMeterReading6, txtPreviousMeterReading7, txtPreviousMeterReading8);
                     TextViewUtils.SetMuseoSans500Typeface(meterTypeView);
+                    txtPreviousMeterReading.Text = GetLabelByLanguage("previousMeterReading");
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     PopulatePreviousMeterReadingValues(linearLayoutContainer, meterReadingModel);
@@ -432,6 +434,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
                     TextViewUtils.SetMuseoSans300Typeface(txtPreviousMeterReading, txtPreviousMeterReading1, txtPreviousMeterReading2, txtPreviousMeterReading3, txtPreviousMeterReading4, txtPreviousMeterReading5, txtPreviousMeterReading6, txtPreviousMeterReading7, txtPreviousMeterReading8);
                     TextViewUtils.SetMuseoSans500Typeface(meterTypeView);
+                    txtPreviousMeterReading.Text = GetLabelByLanguage("previousMeterReading");
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     PopulatePreviousMeterReadingValues(linearLayoutContainer, meterReadingModel);
