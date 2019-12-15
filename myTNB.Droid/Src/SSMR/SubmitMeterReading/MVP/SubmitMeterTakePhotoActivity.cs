@@ -165,6 +165,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             EnableSubmitButton();
             TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto, btnSubmitPhotoToOCR);
+            btnDeletePhoto.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "deletePhoto");
+            btnSubmitPhotoToOCR.Text = Utility.GetLocalizedCommonLabel("submit");
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -243,7 +245,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 cropContainer.AddView(new CropAreaPreView(this, mCropAreaHeight));
 
                 TextView adjustPhotoNote = FindViewById<TextView>(Resource.Id.adjust_photo_note);
-                adjustPhotoNote.Text = GetString(Resource.String.ssmr_single_adjust_photo_note);
+                adjustPhotoNote.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "editDescription");
                 TextViewUtils.SetMuseoSans300Typeface(adjustPhotoNote);
                 adjustPhotoNote.BringToFront();
 
@@ -251,7 +253,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                SetToolBarTitle("Take Photo");
+                SetToolBarTitle(Utility.GetLocalizedLabel("SSMRCaptureMeter", "navTitleTakePhoto"));
                 btnDeletePhoto.Visibility = ViewStates.Gone;
             }
         }
@@ -410,7 +412,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
                 else
                 {
-                    takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
+                    takePhotoFragment.UpdateTakePhotoNote(Utility.GetLocalizedLabel("SSMRCaptureMeter", "multiTakeNextPhotoDescription"));
                 }
             }
             else
@@ -547,21 +549,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
                 if (photoBoxes.Count == photoContainerBoxes.Count)
                 {
-                    takePhotoFragment.UpdateTakePhotoNote(String.Format("There will be {0} different units. Take a photo of the 1st unit you see.", photoBoxes.Count.ToString()));
+                    takePhotoFragment.UpdateTakePhotoNote(String.Format(Utility.GetLocalizedLabel("SSMRCaptureMeter", "multiTakePhotoDescription"), photoBoxes.Count.ToString()));
                 }
                 else
                 {
-                    takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
+                    takePhotoFragment.UpdateTakePhotoNote(Utility.GetLocalizedLabel("SSMRCaptureMeter", "multiTakeNextPhotoDescription"));
                 }
             }
         }
 
         public void UpdateTakePhotoFormattedNote()
         {
-            string singleDone = "You're done with {0}! ";
-            string pluralDone = "You're done with {0} and {1}! ";
-            string singleOnto = "On to the final unit {0} now.";
-            string pluralOnto = "On to the next units {0} and {1}.";
+            string singleDone = Utility.GetLocalizedLabel("SSMRCaptureMeter", "singularDone") + " ";
+            string pluralDone = Utility.GetLocalizedLabel("SSMRCaptureMeter", "pluralDone") + " ";
+            string singleOnto = Utility.GetLocalizedLabel("SSMRCaptureMeter", "singularOnto");
+            string pluralOnto = Utility.GetLocalizedLabel("SSMRCaptureMeter", "pluralOnto");
             string finalString = "";
 
             List<string> doneUnitList = new List<string>();
