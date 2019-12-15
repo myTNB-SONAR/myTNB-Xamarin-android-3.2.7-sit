@@ -847,6 +847,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnPay.Text = Utility.GetLocalizedLabel("Usage", "pay");
                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
                 txtTotalPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
+                reTotalPayableTitle.Text = Utility.GetLocalizedLabel("Bills", "myEarnings");
+                btnReView.Text = Utility.GetLocalizedLabel("Usage", "viewPaymentAdvice");
+                btnToggleDay.Text = Utility.GetLocalizedCommonLabel("day");
+                btnToggleMonth.Text = Utility.GetLocalizedCommonLabel("month");
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
