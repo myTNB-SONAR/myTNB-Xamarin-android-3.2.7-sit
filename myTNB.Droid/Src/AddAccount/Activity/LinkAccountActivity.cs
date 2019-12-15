@@ -218,7 +218,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 NewAccount item = accountList[position];
                 mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle("Remove Account")
+                  .SetTitle(GetLabelByLanguage("removeAcct"))
                   .SetMessage("Are you sure! Remove " + item.accountNumber + " from the list ?")
                   .SetPositiveButton("Remove", (senderAlert, args) =>
                   {
@@ -327,6 +327,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
                 btnAddAnotherAccount.Text = GetLabelByLanguage("addAnotherAcct");
                 btnConfirm.Text = GetLabelCommonByLanguage("confirm");
+                textAdditionalAcoount.Text = GetLabelByLanguage("additionalAccts");
 
                 adapter = new AccountListAdapter(this, accountList);
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);

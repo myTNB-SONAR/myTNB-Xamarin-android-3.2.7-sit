@@ -88,7 +88,7 @@
     "new": "Baru",
     "tutorialSwipeText": "Leret untuk lihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
     "wellBeBack": "We’ll be back shortly!",
-    "electricityAccounts": "Electricity Accounts"
+    "electricityAccounts": "Akaun Elektrik"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -540,7 +540,7 @@
     "addAsOwnerMessage": "Saya pemilik akaun elektrik ini.",
     "addAsTenantMessage": "Saya menyewa rumah ini/milik ibu bapa saya.",
     "addAsTenantWithICMessage": "Saya berhak melihat semua maklumat yang berkaitan dengan akaun bekalan elektrik ini.",
-    "addAsTenantWithoutICMessage": "Saya mungkin tidak berhak untuk melihat semua maklumat  berkaitan dengan akaun elektrik ini.\r\n\r\nSaya hanya berhak melihat:",
+    "addAsTenantWithoutICMessage": "Saya mungkin tidak berhak untuk melihat semua maklumat  berkaitan dengan akaun elektrik ini.<br><br>Saya hanya berhak melihat:",
     "outstandingPayment": "Tunggakan bayaran",
     "usageGraph": "Graf penggunaan",
     "paymentHistory": "Rekod bayaran",

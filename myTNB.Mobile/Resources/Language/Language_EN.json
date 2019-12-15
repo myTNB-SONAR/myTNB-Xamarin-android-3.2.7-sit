@@ -540,7 +540,7 @@
     "addAsOwnerMessage": "I'm the owner of this electricity supply account.",
     "addAsTenantMessage": "I’m renting this place / it belongs to my parents.",
     "addAsTenantWithICMessage": "I have the rights to view all information related to this electricity supply account.",
-    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:",
+    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.<br><br>I may only view:",
     "outstandingPayment": "Outstanding payment",
     "usageGraph": "Usage graph",
     "paymentHistory": "Payment history",
