@@ -684,12 +684,12 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.feedback_others_feedback_empty_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.feedback_others_feedback_invalid_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ClearMobileNoError()

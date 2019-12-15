@@ -310,7 +310,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowEmptyConfirmEmailError()
         {
-            textInputLayoutConfirmEmail.Error = GetString(Resource.String.registration_form_errors_empty_confirm_email);
+            textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
         public void ShowEmptyConfirmPasswordError()
@@ -336,7 +336,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            textInputLayoutMobileNo.Error = GetString(Resource.String.registration_form_errors_empty_mobile_no);
+            textInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowEmptyPasswordError()
@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowInvalidMobileNoError()
         {
-            textInputLayoutMobileNo.Error = GetString(Resource.String.registration_form_errors_invalid_mobile_no);
+            textInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidEmailError()
