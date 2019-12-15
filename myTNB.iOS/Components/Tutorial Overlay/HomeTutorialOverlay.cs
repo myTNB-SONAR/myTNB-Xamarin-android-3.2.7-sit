@@ -324,8 +324,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(DataManager.DataManager.SharedInstance.ActiveAccountList?.Count == 1 ? DashboardHomeConstants.I18N_TutorialSingleAcctTitle : DashboardHomeConstants.I18N_TutorialAccountTitle)
+                Text = GetI18NValue(DataManager.DataManager.SharedInstance.ActiveAccountList?.Count == 1
+                    ? DashboardHomeConstants.I18N_TutorialSingleAcctTitle : DashboardHomeConstants.I18N_TutorialAccountTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
 
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descText
