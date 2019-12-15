@@ -4193,6 +4193,9 @@
     <Compile Include="Src\MyTNBService\Request\UpdateLinkedAccountNameRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\GetRateUsQuestionResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRateUsQuestionRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetLanguagePreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\SaveLanguagePreferenceResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SaveLanguagePreferenceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

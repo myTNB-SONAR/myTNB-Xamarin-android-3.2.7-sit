@@ -348,5 +348,25 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetRateUsQuestions<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetLanguagePreference with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetLanguagePreferenceResponse> GetLanguagePreference([Body] Request.BaseRequest request)
+        {
+            return api.GetLanguagePreference<GetLanguagePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call SaveLanguagePreference with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SaveLanguagePreferenceResponse> SaveLanguagePreference([Body] Request.BaseRequest request)
+        {
+            return api.SaveLanguagePreference<SaveLanguagePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

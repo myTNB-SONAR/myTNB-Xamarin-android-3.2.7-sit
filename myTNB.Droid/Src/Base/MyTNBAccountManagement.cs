@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
 
 namespace myTNB_Android.Src.Base
 {
@@ -18,8 +23,10 @@ namespace myTNB_Android.Src.Base
         private static MasterDataResponse currentMasterDataRes = null;
         private static AppLaunchMasterDataResponse appMasterDataResponse = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
+        private int appLaunchMasterDataTimeout;
         private MyTNBAccountManagement()
         {
+            appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
         }
 
         public static MyTNBAccountManagement GetInstance()
@@ -268,5 +275,53 @@ namespace myTNB_Android.Src.Base
 		{
 			IsNotificationComplete = isCompleted;
 		}
+
+        public void UpdateAppMasterData()
+        {
+            LoadAppMasterData();
+        }
+
+        private void LoadAppMasterData()
+        {
+            try
+            {
+                Task<AppLaunchMasterDataResponse> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterData
+                    (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout)));
+                //appLaunchMasterDataTask.Wait();
+                AppLaunchMasterDataResponse masterDataResponse = appLaunchMasterDataTask.Result;
+                if (masterDataResponse.IsSuccessResponse())
+                {
+                    SetMasterDataResponse(masterDataResponse);
+                    foreach (NotificationTypes notificationType in GetMasterDataResponse().GetData().NotificationTypes)
+                    {
+                        int newRecord = NotificationTypesEntity.InsertOrReplace(notificationType);
+                    }
+                    List<NotificationTypesEntity> notificationTypeList = NotificationTypesEntity.List();
+                    NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                    foreach (NotificationTypesEntity notificationType in notificationTypeList)
+                    {
+                        if (notificationType.ShowInFilterList)
+                        {
+                            NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                        }
+                    }
+                }
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+                //EvaluateServiceRetry();
+            }
+            catch (JsonReaderException e)
+            {
+                Utility.LoggingNonFatalError(e);
+                //EvaluateServiceRetry();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                //EvaluateServiceRetry();
+            }
+        }
 	}
 }

@@ -21,6 +21,10 @@ using myTNB;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.SSMR.Util;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -40,6 +44,7 @@ namespace myTNB_Android.Src.Profile.Activity
         private List<Item> languageItemList;
         private string savedLanguage;
         private bool isSelectionChange;
+        private LoadingOverlay loadingOverlay;
 
         public override string GetPageId()
         {
@@ -121,6 +126,7 @@ namespace myTNB_Android.Src.Profile.Activity
             languageListView.ItemClick += OnItemClick;
 
             selectItemAdapter = new SelectItemAdapter(this, languageItemList);
+            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             languageListView.Adapter = selectItemAdapter;
             UpdateLabels();
             SetSelectedLanguage(null);
@@ -140,7 +146,9 @@ namespace myTNB_Android.Src.Profile.Activity
             string currentLanguage = LanguageUtil.GetAppLanguage();
             Utility.ShowChangeLanguageDialog(this, currentLanguage, ()=>
             {
+                ShowProgressDialog();
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 UpdateLanguage();
             });
         }
@@ -151,6 +159,7 @@ namespace myTNB_Android.Src.Profile.Activity
             await LanguageUtil.CheckUpdatedLanguage();
             UpdateLabels();
             EnableDisableButton();
+            HideShowProgressDialog();
         }
 
         public void EnableDisableButton()
@@ -217,6 +226,37 @@ namespace myTNB_Android.Src.Profile.Activity
             SetResult(Result.Ok);
             Finish();
             base.OnBackPressed();
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

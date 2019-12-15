@@ -248,7 +248,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 }
 
                                 List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
-                                NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Constants.ZERO_INDEX_TITLE, true);
+                                NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
                                 foreach (NotificationTypesEntity notificationType in notificationTypes)
                                 {
                                     if (notificationType.ShowInFilterList)
