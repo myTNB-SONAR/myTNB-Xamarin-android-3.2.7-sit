@@ -128,5 +128,13 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetRateUsQuestions")]
         Task<T> GetRateUsQuestions<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetLanguagePreference")]
+        Task<T> GetLanguagePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SaveLanguagePreference")]
+        Task<T> SaveLanguagePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
     }
 }

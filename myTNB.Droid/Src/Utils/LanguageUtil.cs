@@ -7,6 +7,7 @@ using Android.Util;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -20,25 +21,6 @@ namespace myTNB_Android.Src.Utils
         private LanguageUtil()
         {
         }
-
-		/// <summary>
-		/// Gets the Error labels by key
-		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
-		public static string GetLocalizedErrorLabel(string key)
-		{
-			string label = "";
-			try
-			{
-				label = LanguageManager.Instance.GetErrorValuePairs()[key];
-			}
-			catch (Exception e)
-			{
-				Log.Debug("DEBUG Error: ", e.Message);
-			}
-			return label;
-		}
 
 		public static string GetDeviceLanguage()
 		{
@@ -79,8 +61,11 @@ namespace myTNB_Android.Src.Utils
             {
                 savedLanguage = language;
             }
+            //Saves language in session
             UserSessions.SaveAppLanguage(savedLanguage);
+            //Updates language in LanguageManager
             UpdateSavedLanguage(savedLanguage);
+            //Sets language flag to true
             SetIsLanguageChanged(true);
         }
 
@@ -230,26 +215,19 @@ namespace myTNB_Android.Src.Utils
         {
             try
             {
-                bool IsChangedLanguage = IsLanguageChanged();
-                LanguagePreferenceResponse response;
-                AccountApiImpl accountApi = new AccountApiImpl();
                 string appLanguage = GetAppLanguage();
-                if (!IsChangedLanguage)
+                if (!IsLanguageChanged())
                 {
-                    response = await accountApi.GetLanguagePreference<LanguagePreferenceResponse>(new Base.Request.APIBaseRequest());
-                    if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                    var response = await ServiceApiImpl.Instance.GetLanguagePreference(new MyTNBService.Request.BaseRequest());
+                    if (response.IsSuccessResponse())
                     {
-                        if (response.Data.ResponseData != null)
+                        if (!string.IsNullOrEmpty(response.GetData().lang))
                         {
-                            if (!string.IsNullOrEmpty(response.Data.ResponseData.lang))
-                            {
-                                appLanguage = response.Data.ResponseData.lang;
-                            }
+                            appLanguage = response.GetData().lang;
                         }
                     }
                 }
-                await accountApi.SaveLanguagePreference<LanguagePreferenceResponse>(new LanguagePreferenceRequest(appLanguage));
-                SaveAppLanguage(appLanguage.ToUpper());
+                _ = ServiceApiImpl.Instance.SaveLanguagePreference(new MyTNBService.Request.SaveLanguagePreferenceRequest(appLanguage));
             }
             catch (Exception e)
             {
