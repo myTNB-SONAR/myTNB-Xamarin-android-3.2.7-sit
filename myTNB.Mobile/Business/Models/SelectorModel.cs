@@ -17,12 +17,12 @@ namespace myTNB
     public class PopupSelectorModel
     {
         [JsonProperty("Title")]
-        public string Title { set; get; }
+        public string Title { set; get; } = string.Empty;
         [JsonProperty("Description")]
-        public string Description { set; get; }
+        public string Description { set; get; } = string.Empty;
         [JsonProperty("CTA")]
-        public string CTA { set; get; }
+        public string CTA { set; get; } = string.Empty;
         [JsonProperty("Type")]
-        public string Type { set; get; }
+        public string Type { set; get; } = string.Empty;
     }
 }
