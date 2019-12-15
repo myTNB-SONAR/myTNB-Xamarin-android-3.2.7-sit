@@ -89,7 +89,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                         indicator.Visibility = ViewStates.Gone;
                         LinearLayout.LayoutParams pagerParam = pager.LayoutParameters as LinearLayout.LayoutParams;
                         pagerParam.Height = (int)DPUtils.ConvertDPToPx(300f);
-                        txtBtnLabel.Text = this.Activity.GetString(Resource.String.tooltip_btnLabel);
+                        txtBtnLabel.Text = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "imReady");
                     }
 
                     adapter = new SSMRMeterReadingPagerAdapter(mContext, SSMRMeterReadingModelList);
@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                     pagerParam.Height = (int)DPUtils.ConvertDPToPx(300f);
                 }
 
-                txtBtnLabel.Text = this.Activity.GetString(Resource.String.tooltip_btnLabel);
+                txtBtnLabel.Text = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "imReady");
 
                 txtBtnFirst.Click += GotIt_Click;
 
