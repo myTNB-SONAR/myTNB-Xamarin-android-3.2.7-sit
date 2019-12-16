@@ -572,7 +572,9 @@
     "myTNBAccount": "myTNB Account",
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
-    "electricityAccount": "Electricity Accounts"
+    "electricityAccount": "Electricity Accounts",
+    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "passwordUpdateSuccess": "Your password has been changed successfully."
   },
   "NotificationSettings": {
     "title": "Notification Settings",

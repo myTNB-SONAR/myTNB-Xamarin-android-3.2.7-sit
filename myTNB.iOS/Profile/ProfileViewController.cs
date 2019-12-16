@@ -16,7 +16,8 @@ namespace myTNB
     {
         public ProfileViewController(IntPtr handle) : base(handle) { }
 
-        private UILabel _lblAppVersion;
+        private UIView _viewNotificationMsg;
+        private UILabel _lblAppVersion, _lblNotificationDetails;
         private bool _isSitecoreDone, _isMasterDataDone;
         private GenericSelectorViewController languageViewController;
         private CustomUIButtonV2 _btnLogout;
@@ -44,6 +45,20 @@ namespace myTNB
             };
             _profileTableview.Source = dataSource;
             _profileTableview.ReloadData();
+
+            InitializeNotificationMessage();
+            if (DataManager.DataManager.SharedInstance.IsMobileNumberUpdated)
+            {
+                _lblNotificationDetails.Text = GetI18NValue(ProfileConstants.I18N_MobileNumberVerified);
+                ShowNotificationMessage();
+                DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = false;
+            }
+            if (DataManager.DataManager.SharedInstance.IsPasswordUpdated)
+            {
+                _lblNotificationDetails.Text = GetI18NValue(ProfileConstants.I18N_MobileNumberVerified);
+                ShowNotificationMessage();
+                DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
+            }
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -659,6 +674,47 @@ namespace myTNB
                     }
                     ActivityIndicator.Hide();
                 });
+            });
+        }
+
+        private void InitializeNotificationMessage()
+        {
+            if (_viewNotificationMsg == null)
+            {
+                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64))
+                {
+                    BackgroundColor = MyTNBColor.SunGlow,
+                    Hidden = true
+                };
+                _viewNotificationMsg.Layer.CornerRadius = 2.0f;
+
+                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Text = TNBGlobal.EMPTY_ADDRESS,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap
+                };
+
+                _viewNotificationMsg.AddSubview(_lblNotificationDetails);
+
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+                currentWindow.AddSubview(_viewNotificationMsg);
+            }
+        }
+
+        private void ShowNotificationMessage()
+        {
+            _viewNotificationMsg.Hidden = false;
+            _viewNotificationMsg.Alpha = 1.0f;
+            UIView.Animate(2, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            {
+                _viewNotificationMsg.Alpha = 0.0f;
+            }, () =>
+            {
+                _viewNotificationMsg.Hidden = true;
             });
         }
     }
