@@ -404,7 +404,7 @@
     "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
     "tutorialBillNormalAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
     "tutorialPayDesc": "Tap here to pay your bill.",
-    "tutorialViewDetailsDesc": "\"View Details\" to review your bill breakdown.",
+    "tutorialViewDetailsDesc": "“View Details” to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
     "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
     "gotIt": "Got it!"
@@ -545,7 +545,7 @@
     "addAsOwnerMessage": "I'm the owner of this electricity supply account.",
     "addAsTenantMessage": "I’m renting this place / it belongs to my parents.",
     "addAsTenantWithICMessage": "I have the rights to view all information related to this electricity supply account.",
-    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:",
+    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.<br><br>I may only view:",
     "outstandingPayment": "Outstanding payment",
     "usageGraph": "Usage graph",
     "paymentHistory": "Payment history",
@@ -625,7 +625,7 @@
     "quickAccess": "Quick Actions",
     "findUs": "Find Us",
     "callUs": "Call Us",
-    "feedback": "Give Us Feedback",
+    "feedback": "Submit Feedback",
     "changeLanguage": "Tukar kepada Bahasa Malaysia"
   },
   "Login": {
@@ -839,7 +839,7 @@
     "viewAll": "View All",
     "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!",
     "tutorialRewardTitle": "Pick a reward, check it out!.",
-    "tutorialRewardDesc": "Tap on a reward to find out more, or tap on the heart to save it for later.",
+    "tutorialRewardDesc": "Tap on a reward to find out more or tap on the heart to save it for later.",
     "tutorialCategoryTitle": "Rewards for you.",
     "tutorialCategoryDesc": "Switch between the categories to explore the different rewards.",
     "tutorialSaveTitle": "Your favourites all in one place.",

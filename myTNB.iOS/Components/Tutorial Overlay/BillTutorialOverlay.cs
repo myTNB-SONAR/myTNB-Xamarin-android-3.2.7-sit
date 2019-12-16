@@ -270,8 +270,13 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialAdviceTitle) : GetI18NValue(BillConstants.I18N_TutorialBillTitle)
+                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialAdviceTitle) : GetI18NValue(BillConstants.I18N_TutorialBillTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
 
             string desc;
             if (IsREAccount)
