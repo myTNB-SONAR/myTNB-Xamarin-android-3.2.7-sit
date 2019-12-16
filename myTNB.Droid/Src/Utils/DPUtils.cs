@@ -33,6 +33,16 @@ namespace myTNB_Android.Src.Utils
             return Android.App.Application.Context.Resources.DisplayMetrics.Density;
         }
 
+        internal static int GetWidth()
+        {
+            return global::Android.App.Application.Context.Resources.DisplayMetrics.WidthPixels;
+        }
+
+        internal static int GetHeight()
+        {
+            return global::Android.App.Application.Context.Resources.DisplayMetrics.HeightPixels;
+        }
+
         internal static String GetDeviceDensity(Context context)
         {
             String deviceDensity = "hdpi";

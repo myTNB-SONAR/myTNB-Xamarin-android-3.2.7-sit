@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
             void HideProgressDialog();
 
-            void ShowRetryOptionsApiException();
+            void ShowRetryPopup();
 
         }
 
