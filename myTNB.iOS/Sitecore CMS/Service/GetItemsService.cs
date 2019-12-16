@@ -49,21 +49,6 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-        public string GetPromotionsItem()
-        {
-            PromotionsV2Service service = new PromotionsV2Service();
-            var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-        public string GetPromotionsTimestampItem()
-        {
-            PromotionsV2Service service = new PromotionsV2Service();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
         public string GetFAQsItem()
         {
             FAQsService service = new FAQsService();
@@ -448,5 +433,43 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public PromotionsTimestampResponseModel GetPromotionsTimestampItem()
+        {
+            PromotionsTimestampResponseModel respModel = new PromotionsTimestampResponseModel();
+            try
+            {
+                PromotionsV2Service service = new PromotionsV2Service(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimestamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetPromotionsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public PromotionsV2ResponseModel GetPromotionsItem()
+        {
+            PromotionsV2ResponseModel respModel = new PromotionsV2ResponseModel();
+            try
+            {
+                PromotionsV2Service service = new PromotionsV2Service(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetPromotionsService();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetPromotionsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
     }
 }

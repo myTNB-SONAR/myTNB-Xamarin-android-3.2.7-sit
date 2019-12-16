@@ -38,6 +38,7 @@ namespace myTNB.SitecoreCMS
                 taskList.Add(LoadEnergyTips());
             }
             await Task.WhenAll(taskList.ToArray());
+            _isForcedUpdate = false;
         }
 
         private async Task<NSData> GetImageFromURL(string urlString)
@@ -67,9 +68,13 @@ namespace myTNB.SitecoreCMS
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             string currentTS = sharedPreference.StringForKey(key);
 
-            if (currentTS != null && currentTS.Equals(sitecoreTS) && !_isForcedUpdate)
+            if (_isForcedUpdate || !currentTS.IsValid())
             {
-                needsUpdate = false;
+                needsUpdate = true;
+            }
+            else
+            {
+                needsUpdate = !currentTS.Equals(sitecoreTS);
             }
         }
 
@@ -518,6 +523,43 @@ namespace myTNB.SitecoreCMS
                     else
                     {
                         RewardsCache.RewardIsAvailable = false;
+                    }
+                }
+            });
+        }
+
+        public Task LoadPromotions()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                PromotionsTimestampResponseModel timeStamp = iService.GetPromotionsTimestampItem();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new PromotionsTimestampResponseModel();
+                    timeStamp.Data = new List<PromotionParentModel> { new PromotionParentModel { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    PromotionsV2ResponseModel promotionResponse = iService.GetPromotionsItem();
+                    if (promotionResponse != null && promotionResponse.Status.Equals("Success")
+                        && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
+                    {
+                        PromotionsEntity wsManager = new PromotionsEntity();
+                        PromotionsEntity.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItemsV2(HomeTabBarController.SetValueForNullEndDate(promotionResponse.Data));
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                        Debug.WriteLine("LoadPromotions Done");
                     }
                 }
             });

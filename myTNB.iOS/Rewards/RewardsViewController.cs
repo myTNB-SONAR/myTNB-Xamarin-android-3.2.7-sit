@@ -41,7 +41,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            CheckForRewardUpdates();
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading) { CheckForRewardUpdates(); }
             _isViewDidLoad = false;
         }
 
@@ -73,67 +73,73 @@ namespace myTNB
 
         private void CheckForRewardUpdates()
         {
-            string timeStamp = string.Empty;
-            InvokeInBackground(async () =>
+            if (NetworkUtility.isReachable)
             {
-                bool hasUpdate = await RewardsServices.RewardListHasUpdates();
-                InvokeOnMainThread(() =>
+                InvokeInBackground(async () =>
                 {
-                    if (hasUpdate)
+                    bool hasUpdate = await RewardsServices.RewardListHasUpdates();
+                    InvokeOnMainThread(() =>
                     {
-                        DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
-                        ResetViews();
-                        SetSkeletonLoading();
-                        InvokeInBackground(async () =>
+                        if (hasUpdate)
                         {
-                            await RewardsServices.GetLatestRewards();
-                            if (RewardsCache.RewardIsAvailable)
+                            DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                            ResetViews();
+                            SetSkeletonLoading();
+                            InvokeInBackground(async () =>
                             {
-                                await RewardsServices.GetUserRewards();
+                                await RewardsServices.GetLatestRewards();
                                 if (RewardsCache.RewardIsAvailable)
                                 {
-                                    InvokeOnMainThread(() =>
+                                    await RewardsServices.GetUserRewards();
+                                    if (RewardsCache.RewardIsAvailable)
                                     {
-                                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                                        ProcessRewards();
-                                    });
+                                        InvokeOnMainThread(() =>
+                                        {
+                                            DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                            ProcessRewards();
+                                        });
+                                    }
+                                    else
+                                    {
+                                        SetRefreshScreen();
+                                    }
                                 }
                                 else
                                 {
                                     SetRefreshScreen();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            if (RewardsCache.RewardIsAvailable)
+                            {
+                                bool needsUpdate = RewardsServices.FilterExpiredRewards();
+                                if (needsUpdate)
+                                {
+                                    ValidateRewards();
+                                }
+                                else
+                                {
+                                    if (!_isViewDidLoad)
+                                    {
+                                        props_needsUpdate = true;
+                                        OnTableReload();
+                                    }
                                 }
                             }
                             else
                             {
                                 SetRefreshScreen();
                             }
-                        });
-                    }
-                    else
-                    {
-                        if (RewardsCache.RewardIsAvailable)
-                        {
-                            bool needsUpdate = RewardsServices.FilterExpiredRewards();
-                            if (needsUpdate)
-                            {
-                                ValidateRewards();
-                            }
-                            else
-                            {
-                                if (!_isViewDidLoad)
-                                {
-                                    props_needsUpdate = true;
-                                    OnTableReload();
-                                }
-                            }
                         }
-                        else
-                        {
-                            SetRefreshScreen();
-                        }
-                    }
+                    });
                 });
-            });
+            }
+            else
+            {
+                AlertHandler.DisplayNoDataAlert(this);
+            }
         }
 
         private void SetRefreshScreen()
@@ -206,39 +212,46 @@ namespace myTNB
 
         private void RefreshButtonOnTap()
         {
-            ResetViews();
-            NavigationController.NavigationBar.Hidden = false;
-            SetSkeletonLoading();
-
-            InvokeInBackground(async () =>
+            if (NetworkUtility.isReachable)
             {
-                DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
-                await SitecoreServices.Instance.LoadRewards();
-                if (RewardsCache.RewardIsAvailable)
+                ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
+                SetSkeletonLoading();
+
+                InvokeInBackground(async () =>
                 {
-                    await RewardsServices.GetUserRewards();
-                    InvokeOnMainThread(() =>
+                    DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                    await SitecoreServices.Instance.LoadRewards();
+                    if (RewardsCache.RewardIsAvailable)
                     {
-                        if (RewardsCache.RewardIsAvailable)
+                        await RewardsServices.GetUserRewards();
+                        InvokeOnMainThread(() =>
                         {
-                            ProcessRewards();
-                        }
-                        else
+                            if (RewardsCache.RewardIsAvailable)
+                            {
+                                ProcessRewards();
+                            }
+                            else
+                            {
+                                SetRefreshScreen();
+                            }
+                        });
+                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                    }
+                    else
+                    {
+                        InvokeOnMainThread(() =>
                         {
                             SetRefreshScreen();
-                        }
-                    });
-                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                }
-                else
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        SetRefreshScreen();
-                    });
-                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                }
-            });
+                        });
+                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                    }
+                });
+            }
+            else
+            {
+                AlertHandler.DisplayNoDataAlert(this);
+            }
         }
 
         private void ResetViews()
@@ -682,14 +695,21 @@ namespace myTNB
         {
             if (reward != null)
             {
-                InvokeInBackground(async () =>
+                if (NetworkUtility.isReachable)
                 {
-                    await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
-                    InvokeOnMainThread(() =>
+                    InvokeInBackground(async () =>
                     {
-                        OnReloadTableAction(rewardsList, index);
+                        await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
+                        InvokeOnMainThread(() =>
+                        {
+                            OnReloadTableAction(rewardsList, index);
+                        });
                     });
-                });
+                }
+                else
+                {
+                    AlertHandler.DisplayNoDataAlert(this);
+                }
             }
         }
 
@@ -721,20 +741,22 @@ namespace myTNB
                 GetUserRewardsResponseModel _userRewards = await RewardsServices.GetUserRewards();
                 if (props_needsUpdate && props_rewardsList != null)
                 {
-                    if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess
-                        && _userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
+                    if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess)
                     {
-                        foreach (RewardsItemModel item in _userRewards.d.data.UserRewards)
+                        if (_userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
                         {
-                            int index = props_rewardsList.FindIndex(x => x.ID == item.RewardId);
-                            if (index > -1)
+                            foreach (RewardsItemModel item in _userRewards.d.data.UserRewards)
                             {
-                                props_rewardsList[index].IsRead = item.Read;
-                                props_rewardsList[index].IsSaved = item.Favourite;
-                                props_rewardsList[index].IsUsed = item.Redeemed;
+                                int index = props_rewardsList.FindIndex(x => x.ID == item.RewardId);
+                                if (index > -1)
+                                {
+                                    props_rewardsList[index].IsRead = item.Read;
+                                    props_rewardsList[index].IsSaved = item.Favourite;
+                                    props_rewardsList[index].IsUsed = item.Redeemed;
+                                }
                             }
+                            OnReloadTableAction(props_rewardsList, props_index);
                         }
-                        OnReloadTableAction(props_rewardsList, props_index);
                     }
                     else
                     {

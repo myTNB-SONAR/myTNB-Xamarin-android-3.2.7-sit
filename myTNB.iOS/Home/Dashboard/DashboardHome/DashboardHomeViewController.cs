@@ -16,6 +16,7 @@ using myTNB.Home.Components;
 using Newtonsoft.Json;
 using myTNB.DataManager;
 using static myTNB.HomeTutorialOverlay;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -777,65 +778,13 @@ namespace myTNB
         {
             InvokeInBackground(async () =>
             {
-                await OnGetPromotions();
+                await SitecoreServices.Instance.LoadPromotions();
                 PromotionsEntity entity = new PromotionsEntity();
                 _promotions = entity.GetAllItemsV2();
                 InvokeOnMainThread(() =>
                 {
                     OnUpdateTable();
                 });
-            });
-        }
-
-        private Task OnGetPromotions()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
-                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                bool isValidTimeStamp = false;
-                string promotionTS = iService.GetPromotionsTimestampItem();
-                PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
-                if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
-                    && promotionTimeStamp.Data != null && promotionTimeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(promotionTimeStamp.Data[0].Timestamp)
-                    && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
-                {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(Constants.Key_PromotionTimestamp);
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
-                        sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
-                        {
-                            isValidTimeStamp = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, Constants.Key_PromotionTimestamp);
-                            sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
-                        }
-                    }
-                }
-                if (isValidTimeStamp)
-                {
-                    string promotionsItems = iService.GetPromotionsItem();
-                    PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
-                    if (promotionResponse != null && promotionResponse.Status.Equals("Success")
-                        && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
-                    {
-                        PromotionsEntity wsManager = new PromotionsEntity();
-                        PromotionsEntity.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItemsV2(HomeTabBarController.SetValueForNullEndDate(promotionResponse.Data));
-                    }
-                }
             });
         }
 

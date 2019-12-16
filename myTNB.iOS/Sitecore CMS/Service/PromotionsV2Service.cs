@@ -12,18 +12,27 @@ namespace myTNB.SitecoreCMS.Service
 {
     internal class PromotionsV2Service
     {
-        internal List<PromotionsModelV2> GetPromotionsService(string OS, string imageSize, string websiteUrl = null, string language = "en")
+        private string _os, _imgSize, _websiteURL, _language;
+        internal PromotionsV2Service(string os, string imageSize, string websiteUrl = null, string language = "en")
+        {
+            _os = os;
+            _imgSize = imageSize;
+            _websiteURL = websiteUrl;
+            _language = language;
+        }
+
+        internal List<PromotionsModelV2> GetPromotionsService()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.PromotionsV2, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.PromotionsV2, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
-            var list = GeneratePromotionChildren(item, OS, imageSize, websiteUrl, language);
+            var list = GeneratePromotionChildren(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        public async Task<IEnumerable<PromotionsModelV2>> GeneratePromotionChildren(ScItemsResponse itemsResponse, string OS, string imageSize, string websiteUrl = null, string language = "en")
+        public async Task<IEnumerable<PromotionsModelV2>> GeneratePromotionChildren(ScItemsResponse itemsResponse)
         {
             List<PromotionsModelV2> list = new List<PromotionsModelV2>();
 
@@ -43,10 +52,8 @@ namespace myTNB.SitecoreCMS.Service
                     Title = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.Title),
                     BodyContent = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.BodyContent),
                     FooterContent = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.FooterContent),
-                    //PortraitImage = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.PromotionsV2.PortraitImage, OS, imageSize, websiteUrl, language),
-                    //LandscapeImage = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.PromotionsV2.LandscapeImage, OS, imageSize, websiteUrl, language),
-                    PortraitImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.PromotionsV2.PortraitImage, websiteUrl, false),
-                    LandscapeImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.PromotionsV2.LandscapeImage, websiteUrl, false),
+                    PortraitImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.PromotionsV2.PortraitImage, _websiteURL, false),
+                    LandscapeImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.PromotionsV2.LandscapeImage, _websiteURL, false),
                     PromoStartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.PromotionsV2.PromoStartDate),
                     PromoEndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.PromotionsV2.PromoEndDate),
                     PublishedDate = item.GetDateValueFromField(Constants.Sitecore.Fields.PromotionsV2.PublishedDate),
@@ -61,18 +68,18 @@ namespace myTNB.SitecoreCMS.Service
 
             return list;
         }
-        internal PromotionParentModelV2 GetTimestamp(string websiteUrl = null, string language = "en")
+        internal PromotionParentModelV2 GetTimestamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.PromotionsV2, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.PromotionsV2, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateTimestamp(item, websiteUrl, language);
+            var list = GenerateTimestamp(item);
             var itemList = list.Result;
             return itemList;
         }
 
-        private async Task<PromotionParentModelV2> GenerateTimestamp(ScItemsResponse itemsResponse, string websiteUrl = null, string language = "en")
+        private async Task<PromotionParentModelV2> GenerateTimestamp(ScItemsResponse itemsResponse)
         {
             PromotionParentModelV2 listlItem = new PromotionParentModelV2();
 

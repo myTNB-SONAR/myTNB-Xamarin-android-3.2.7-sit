@@ -10,6 +10,7 @@ using myTNB.Dashboard;
 using Facebook.CoreKit;
 using Firebase.Crashlytics;
 using System.Diagnostics;
+using Firebase.DynamicLinks;
 
 namespace myTNB
 {
@@ -179,6 +180,53 @@ namespace myTNB
             UINavigationBar.Appearance.TintColor = UIColor.White;
         }
 
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            return DynamicLinks.SharedInstance.HandleUniversalLink(userActivity.WebPageUrl, (dynamicLink, error) =>
+            {
+                if (error != null)
+                {
+                    Debug.WriteLine(error.LocalizedDescription);
+                    return;
+                }
+                if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                {
+                    if (dynamicLink != null && dynamicLink.Url != null)
+                    {
+                        string absoluteURL = dynamicLink.Url.ToString();
+                        if (absoluteURL.Contains("rewards/redirect.aspx/rid"))
+                        {
+                            Regex regex = new Regex("\\brid.*\\b");
+                            Match match = regex.Match(absoluteURL);
+                            if (match.Success)
+                            {
+                                string rewardId = match.Value.Replace("rid=", "");
+                                DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = rewardId.IsValid();
+
+                                if (rewardId.IsValid())
+                                {
+                                    RewardsCache.DeeplinkRewardId = rewardId;
+                                    if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+                                    {
+                                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                        var topVc = GetTopViewController(baseRootVc);
+                                        if (topVc != null)
+                                        {
+                                            if (!(topVc is RewardDetailsViewController))
+                                            {
+                                                RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                            }
+                                        }
+                                        DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
         {
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
@@ -195,19 +243,22 @@ namespace myTNB
                             string rewardId = match.Value.Replace("rewardid=", "");
                             DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = rewardId.IsValid();
 
-                            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && rewardId.IsValid())
+                            if (rewardId.IsValid())
                             {
-                                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                                var topVc = GetTopViewController(baseRootVc);
-                                if (topVc != null)
+                                RewardsCache.DeeplinkRewardId = rewardId;
+                                if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
                                 {
-                                    if (!(topVc is RewardDetailsViewController))
+                                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                    var topVc = GetTopViewController(baseRootVc);
+                                    if (topVc != null)
                                     {
-                                        RewardsCache.DeeplinkRewardId = rewardId;
-                                        RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                        if (!(topVc is RewardDetailsViewController))
+                                        {
+                                            RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                        }
                                     }
+                                    DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
                                 }
-                                DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
                             }
                         }
                     }

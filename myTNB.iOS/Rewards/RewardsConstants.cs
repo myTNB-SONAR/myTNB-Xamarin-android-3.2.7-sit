@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace myTNB
 {
     public static class RewardsConstants
@@ -33,6 +35,14 @@ namespace myTNB
 
         //Event Names
         public static string EVENT_Refresh = "Refresh";
+
+        //String
+        public static Dictionary<string, string> DynamicLinkDomain = new Dictionary<string, string>
+        {
+            { "DEV", "mytnbappsit.page.link"}
+            , { "SIT", "mytnbappsit.page.link" }
+            , { "PROD", "mytnbapp.page.link"}
+        };
 
         //I18N Keys
         public static string I18N_Title = "title";
