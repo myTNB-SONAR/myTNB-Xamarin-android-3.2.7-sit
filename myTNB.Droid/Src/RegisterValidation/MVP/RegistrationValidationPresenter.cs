@@ -248,7 +248,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             try
             {
-                var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(new SendRegistrationTokenSMSRequest());
+                SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(userCredentialsEntity.MobileNo);
+                sendRegistrationTokenSMSRequest.SetUserName(userCredentialsEntity.Email);
+                var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
                 if (!verificationResponse.IsSuccessResponse())
                 {
                     this.mView.ShowError(verificationResponse.Response.DisplayMessage);
