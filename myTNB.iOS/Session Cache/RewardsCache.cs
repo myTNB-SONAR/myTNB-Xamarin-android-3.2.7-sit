@@ -89,6 +89,18 @@ namespace myTNB
             {
                 ImageDictionary.Clear();
             }
+            userRewardsResponse = new GetUserRewardsResponseModel();
+            rewardsList = new List<RewardsItemModel>();
+            RewardIsAvailable = false;
+            DeeplinkRewardId = string.Empty;
+        }
+
+        public static void ClearImages()
+        {
+            if (ImageDictionary != null)
+            {
+                ImageDictionary.Clear();
+            }
         }
     }
 }

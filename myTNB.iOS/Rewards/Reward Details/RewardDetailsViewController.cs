@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Timers;
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -14,6 +13,7 @@ namespace myTNB
     {
         public RewardsModel RewardModel;
         public string RedeemedDate;
+        public bool IsFromSavedRewards;
         private UIView _footerView;
         private UIScrollView _scrollView;
         private Timer _useTimer;
@@ -25,7 +25,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = RewardsConstants.PageName_RewardDetails;
+            PageName = IsFromSavedRewards ? RewardsConstants.PageName_SavedRewards : RewardsConstants.PageName_RewardDetails;
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
@@ -418,8 +418,7 @@ namespace myTNB
             {
                 ForegroundColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_14_500,
-                UnderlineStyle = NSUnderlineStyle.Single,
-                UnderlineColor = MyTNBColor.WaterBlue
+                UnderlineStyle = NSUnderlineStyle.None
             };
 
             UITextView textView = new UITextView()
@@ -442,6 +441,7 @@ namespace myTNB
 
         private void AddFooterView(bool isUsedReward = false)
         {
+            bool isRedeemDateEmpty = false;
             if (_footerView != null)
             {
                 _footerView.RemoveFromSuperview();
@@ -473,7 +473,9 @@ namespace myTNB
                     Text = dateValue
                 };
 
-                UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(usedLabel.Frame, 16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))
+                isRedeemDateEmpty = !dateValue.IsValid();
+                nfloat rewardButtonYPos = dateValue.IsValid() ? GetYLocationFromFrame(usedLabel.Frame, 16F) : GetScaledHeight(16F);
+                UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, rewardButtonYPos, width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))
                 {
                     BackgroundColor = UIColor.White
                 };
@@ -492,6 +494,14 @@ namespace myTNB
 
                 rewardUsedBtn.AddSubview(rewardUsedLbl);
                 _footerView.AddSubviews(new UIView { usedLabel, rewardUsedBtn });
+
+                if (isRedeemDateEmpty)
+                {
+                    nfloat newHeight = GetScaledHeight(80F);
+                    ViewHelper.AdjustFrameSetHeight(_footerView, newHeight + GetBottomPadding);
+                    ViewHelper.AdjustFrameSetY(_footerView, ViewHeight - newHeight);
+                    ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - newHeight);
+                }
             }
             else
             {
@@ -718,14 +728,34 @@ namespace myTNB
                 UpdateRewardsResponseModel response = await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Redeemed, true);
                 InvokeOnMainThread(() =>
                 {
-                    ActivityIndicator.Hide();
                     if (response != null && response.d != null &&
                         response.d.didSucceed)
                     {
+                        ActivityIndicator.Hide();
                         OnUseNowDone();
+                        InvokeInBackground(async () =>
+                        {
+                            await RewardsServices.GetUserRewards();
+                            DateTime? rDate = RewardsCache.GetRedeemedDate(RewardModel.ID);
+                            string rDateStr = string.Empty;
+                            if (rDate != null)
+                            {
+                                try
+                                {
+                                    DateTime? rDateValue = rDate.Value.ToLocalTime();
+                                    rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                }
+                            }
+                            RedeemedDate = rDateStr;
+                        });
                     }
                     else
                     {
+                        ActivityIndicator.Hide();
                         AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
                             LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
                             new Dictionary<string, Action> {
@@ -863,6 +893,7 @@ namespace myTNB
                     }
                 }
             }
+
             AddFooterView(true);
 
             nfloat usedWidth = GetScaledWidth(52F);

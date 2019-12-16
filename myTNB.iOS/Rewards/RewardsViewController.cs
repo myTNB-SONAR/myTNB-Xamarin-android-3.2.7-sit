@@ -1,6 +1,5 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -41,7 +40,15 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading) { CheckForRewardUpdates(); }
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            {
+                CheckForRewardUpdates();
+            }
+            else
+            {
+                ResetViews();
+                SetSkeletonLoading();
+            }
             _isViewDidLoad = false;
         }
 
@@ -681,6 +688,7 @@ namespace myTNB
                         Debug.WriteLine("Error in ParseDate: " + e.Message);
                     }
                 }
+                rewardDetailView.IsFromSavedRewards = false;
                 rewardDetailView.RedeemedDate = rDateStr;
                 rewardDetailView.RewardModel = reward;
                 UINavigationController navController = new UINavigationController(rewardDetailView)

@@ -32,6 +32,7 @@ namespace myTNB.SitecoreCMS
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
+                RewardsCache.ClearImages();
             }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
