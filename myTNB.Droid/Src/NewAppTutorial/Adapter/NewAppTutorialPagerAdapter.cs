@@ -1734,17 +1734,15 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             else if (this.mContext is SSMRMeterHistoryActivity)
             {
                 int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                int middleHeight = (int)DPUtils.ConvertDPToPx(255f);
+                int middleHeight = ((SSMRMeterHistoryActivity)this.mContext).GetSMRTopViewHeight();
                 int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
                 if (model.DisplayMode == "NONSMR")
                 {
-                    middleHeight = (int)DPUtils.ConvertDPToPx(235f);
                     checkPoint = (int)DPUtils.ConvertDPToPx(40f);
                 }
 
                 if (model.ItemCount == 1)
                 {
-                    middleHeight = (int)DPUtils.ConvertDPToPx(200f);
                     checkPoint = 0;
                 }
 

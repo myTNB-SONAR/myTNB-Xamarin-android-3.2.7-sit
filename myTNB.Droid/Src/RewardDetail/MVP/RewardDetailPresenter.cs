@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -233,7 +234,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         {
             DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
-            string formattedDate = currentDate.ToString();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
             if (!flag)
             {
                 formattedDate = "";
@@ -253,7 +255,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                 DateTime currentDate = DateTime.UtcNow;
                 RewardsEntity wtManager = new RewardsEntity();
-                string formattedDate = currentDate.ToString();
+                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
 
                 RewardsEntity currentItem = wtManager.GetItem(itemID);
 
