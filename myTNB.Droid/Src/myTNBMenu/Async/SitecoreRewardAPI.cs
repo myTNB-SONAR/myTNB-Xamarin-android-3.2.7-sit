@@ -25,6 +25,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         private DashboardHomeContract.IView mHomeView = null;
 
+        private bool isSitecoreApiFailed = false;
+
         public SitecoreRewardAPI(DashboardHomeContract.IView mView)
 		{
             this.mHomeView = mView;
@@ -39,7 +41,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 		{
 			try
 			{
-				Console.WriteLine("000 SitecoreRewardAPI started");
+                isSitecoreApiFailed = false;
+                Console.WriteLine("000 SitecoreRewardAPI started");
                 RewardsParentEntity wtManager = new RewardsParentEntity();
 
                 try
@@ -214,10 +217,11 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             {
                                                 mRewardsCategoryEntity.InsertListOfItems(ToStoredList);
                                                 mRewardsEntity.InsertListOfItems(ToStoredRewardList);
-                                                if (mHomeView != null)
-                                                {
-                                                    mHomeView.OnCheckUserReward();
-                                                }
+                                            }
+
+                                            if (mHomeView != null)
+                                            {
+                                                mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                                             }
                                         }
                                         else
@@ -226,21 +230,28 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             mRewardsEntity.DeleteTable();
                                             mRewardsCategoryEntity.CreateTable();
                                             mRewardsEntity.CreateTable();
+
+                                            if (mHomeView != null)
+                                            {
+                                                mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                            }
                                         }
                                     }
                                     else
                                     {
+                                        isSitecoreApiFailed = true;
                                         if (mHomeView != null)
                                         {
-                                            mHomeView.OnCheckUserReward();
+                                            mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                                         }
                                     }
 								}
 								catch (System.Exception e)
 								{
+                                    isSitecoreApiFailed = true;
                                     if (mHomeView != null)
                                     {
-                                        mHomeView.OnCheckUserReward();
+                                        mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                                     }
                                     Utility.LoggingNonFatalError(e);
 								}
@@ -252,15 +263,16 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         {
                             if (mHomeView != null)
                             {
-                                mHomeView.OnCheckUserReward();
+                                mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                             }
                         }
 					}
 					catch (System.Exception e)
 					{
+                        isSitecoreApiFailed = true;
                         if (mHomeView != null)
                         {
-                            mHomeView.OnCheckUserReward();
+                            mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                         }
                         Utility.LoggingNonFatalError(e);
 					}
@@ -271,25 +283,28 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			}
 			catch (ApiException apiException)
 			{
+                isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
-                    mHomeView.OnCheckUserReward();
+                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                 }
                 Utility.LoggingNonFatalError(apiException);
 			}
 			catch (Newtonsoft.Json.JsonReaderException e)
 			{
+                isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
-                    mHomeView.OnCheckUserReward();
+                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                 }
                 Utility.LoggingNonFatalError(e);
 			}
 			catch (System.Exception e)
 			{
+                isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
-                    mHomeView.OnCheckUserReward();
+                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
                 }
                 Utility.LoggingNonFatalError(e);
 			}

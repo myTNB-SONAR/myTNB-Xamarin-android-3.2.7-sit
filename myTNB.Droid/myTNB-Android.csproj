@@ -409,6 +409,9 @@
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
       <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Firebase.Dynamic.Links">
+      <HintPath>..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\lib\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -6835,4 +6838,5 @@
   <Import Project="..\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.targets')" />
 </Project>

@@ -88,7 +88,11 @@
     "new": "New",
     "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss.",
     "wellBeBack": "We’ll be back shortly!",
-    "electricityAccounts": "Electricity Accounts"
+    "electricityAccounts": "Electricity Accounts",
+    "rewardNotAvailableTitle": "Reward not available.",
+    "rewardNotAvailableDesc": "Looks like this reward has expired. But that’s okay, we have more for you to check out!",
+    "showMoreRewards": "Show More Rewards!",
+    "illDoItLater": "I’ll Do It Later"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -131,7 +135,8 @@
     "shareNotAvailable": "We're sorry but sharing is currently unavailable. Please try again in a while.",
     "refreshBillDetails": "Uh oh, looks like the page with your bill details have been unplugged. Refresh to stay plugged in!",
     "refreshUsageSSMR": "Uh oh, looks like your Self Meter Reading service has been unplugged. Refresh to stay plugged in!",
-    "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!"
+    "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!",
+    "redeemRewardFailMsg": "Let’s do this one more time."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",

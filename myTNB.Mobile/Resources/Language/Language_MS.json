@@ -88,7 +88,11 @@
     "new": "Baru",
     "tutorialSwipeText": "Leret untuk lihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
     "wellBeBack": "We’ll be back shortly!",
-    "electricityAccounts": "Akaun Elektrik"
+    "electricityAccounts": "Akaun Elektrik",
+    "rewardNotAvailableTitle": "Reward not available.",
+    "rewardNotAvailableDesc": "Looks like this reward has expired. But that’s okay, we have more for you to check out!",
+    "showMoreRewards": "Show More Rewards!",
+    "illDoItLater": "I’ll Do It Later"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -131,7 +135,8 @@
     "shareNotAvailable": "Maaf, perkongsian tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi.",
     "refreshBillDetails": "Alamak! Nampaknya laman yang mengandungi butiran bil anda terputus sambungan. Refresh untuk kekalkan sambungan!",
     "refreshUsageSSMR": "Alamak! Nampaknya perkhidmatan Self Meter Reading terputus sambungan. Refresh untuk kekalkan sambungan!",
-    "refreshBillPayHistory": "Alamak! Nampaknya laman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. Refresh untuk kekalkan sambungan!"
+    "refreshBillPayHistory": "Alamak! Nampaknya laman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. Refresh untuk kekalkan sambungan!",
+    "redeemRewardFailMsg": "Let’s do this one more time."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",

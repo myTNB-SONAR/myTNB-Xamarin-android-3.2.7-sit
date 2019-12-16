@@ -178,7 +178,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnDataSchemeShow();
 
-            void OnCheckUserReward();
+            void OnCheckUserReward(bool isSitecoreApiFailed);
+
+            void OnCheckUserRewardApiFailed();
         }
 
         public interface IUserActionsListener : IBasePresenter
