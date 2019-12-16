@@ -219,7 +219,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 return;
             }
 
-            this.mView.ShowRegistrationProgressDialog();
+            this.mView.ShowProgressDialog();
             this.mView.ClearAllErrorFields();
 
             try
@@ -271,11 +271,10 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-
-
-
-
-            this.mView.HideRegistrationProgressDialog();
+            finally
+            {
+                this.mView.HideRegistrationProgressDialog();
+            }
         }
 
         public void Start()

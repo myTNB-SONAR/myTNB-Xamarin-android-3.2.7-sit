@@ -18,6 +18,7 @@ using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.MVP;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -37,6 +38,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         private AlertDialog mVerificationProgressDialog;
         private AlertDialog mRegistrationProgressDialog;
+        private LoadingOverlay loadingOverlay;
         const string PAGE_ID = "Register";
 
         Snackbar mRegistrationSnackBar;
@@ -756,6 +758,39 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 
