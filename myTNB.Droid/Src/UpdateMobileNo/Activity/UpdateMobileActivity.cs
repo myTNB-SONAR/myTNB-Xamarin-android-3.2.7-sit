@@ -95,6 +95,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
                 lblVerifyMobileNo.Text = GetLabelByLanguage("details");
                 btnSave.Text = GetLabelCommonByLanguage("next");
+                txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))
                     .Content(GetString(Resource.String.update_mobile_progress_content))
@@ -150,12 +151,12 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 if (forceUpdatePhoneNo)
                 {
                     lblVerifyMobileNo.Visibility = ViewStates.Visible;
-                    SetToolBarTitle(GetString(Resource.String.verify_mobile_no));
+                    SetToolBarTitle(GetLabelByLanguage("verifyDeviceTitle"));
                 }
                 else
                 {
                     lblVerifyMobileNo.Visibility = ViewStates.Gone;
-                    SetToolBarTitle(GetString(Resource.String.update_mobile_activity_title));
+                    SetToolBarTitle(GetLabelByLanguage("updateMobileNumberTitle"));
                 }
 
             }

@@ -103,6 +103,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
                     .Cancelable(false)
                     .Build();
 
+                SetToolBarTitle(Utility.GetLocalizedLabel("VerifyPin", "title"));
                 Bundle extras = Intent.Extras;
 
                 if (extras != null)
@@ -131,7 +132,10 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
 
-                txtInfoTitle.Text = GetString(Resource.String.verfiy_mobile_validation_pin_info_wildcard, newPhoneNo);
+                txtInfoTitle.Text = string.Format(Utility.GetLocalizedLabel("VerifyPin", "otpMobileUpdate"), newPhoneNo);
+                txtDidntReceive.Text = Utility.GetLocalizedLabel("VerifyPin","smsNotReceived");
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
+                OnCompleteResend.Text = Utility.GetLocalizedCommonLabel("resend");
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -141,7 +145,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 //pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
 
                 Snackbar mPinSentInfo = Snackbar.Make(rootView,
-                    GetString(Resource.String.registration_validation_snackbar_sms_sent_msg),
+                    Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
                 mPinSentInfo.Show();
             }
@@ -430,22 +434,22 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         public void ShowEmptyErrorPin_1()
         {
-            txtInputLayoutNumber_1.Error = GetString(Resource.String.registration_validation_empty_error_1);
+            txtInputLayoutNumber_1.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_2()
         {
-            txtInputLayoutNumber_2.Error = GetString(Resource.String.registration_validation_empty_error_2);
+            txtInputLayoutNumber_2.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_3()
         {
-            txtInputLayoutNumber_3.Error = GetString(Resource.String.registration_validation_empty_error_3);
+            txtInputLayoutNumber_3.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_4()
         {
-            txtInputLayoutNumber_4.Error = GetString(Resource.String.registration_validation_empty_error_4);
+            txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ClearErrors()
