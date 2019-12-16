@@ -635,7 +635,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.more_menu_cancelled_exception_btn_close), delegate
+                .SetAction(GetLabelCommonByLanguage("close"), delegate
                 {
 
                     mCancelledExceptionSnackBar.Dismiss();
@@ -662,7 +662,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.more_menu_api_exception_btn_close), delegate
+                .SetAction(GetLabelCommonByLanguage("close"), delegate
                 {
 
                     mApiExcecptionSnackBar.Dismiss();
@@ -691,7 +691,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.more_menu_unknown_exception_btn_close), delegate
+                .SetAction(GetLabelCommonByLanguage("close"), delegate
                 {
 
                     mUknownExceptionSnackBar.Dismiss();

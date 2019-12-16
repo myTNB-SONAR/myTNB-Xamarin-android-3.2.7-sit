@@ -266,11 +266,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 reasonDetailContainer.Visibility = ViewStates.Gone;
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                 {
-                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
+                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribe"), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions));
+                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribe"));
                 }
                 ShowContactDetails();
             }
@@ -285,11 +285,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 this.mPresenter.InitiateTerminationReasonsList();
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                 {
-                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terminate_terms_conditions), FromHtmlOptions.ModeLegacy);
+                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terminate_terms_conditions));
+                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"));
                 }
                 EnableSubmitButton();
             }

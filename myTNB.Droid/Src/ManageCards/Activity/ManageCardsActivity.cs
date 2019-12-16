@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
     [Activity(Label = "@string/manage_cards_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageCards")]
-    public class ManageCardsActivity : BaseToolbarAppCompatActivity, ManageCardsContract.IView
+    public class ManageCardsActivity : BaseActivityCustom, ManageCardsContract.IView
     {
 
         [BindView(Resource.Id.layout_cards)]
@@ -58,6 +58,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
         MaterialDialog progress;
 
         private LoadingOverlay loadingOverlay;
+        private string PAGE_ID = "ManageCards";
 
         AlertDialog removeDialog;
 
@@ -97,6 +98,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
 
+                txtManageCardsTitle.Text = GetLabelByLanguage("details");
+                txtEmptyCard.Text = GetLabelByLanguage("noCards");
+
                 mPresenter = new ManageCardsPresenter(this);
                 this.userActionsListener.Start();
             }
@@ -118,14 +122,14 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 string lastDigit = creditCardData.LastDigits.Substring(creditCardData.LastDigits.Length - 4);
                 removeDialog = new AlertDialog.Builder(this)
 
-                    .SetTitle(Resource.String.manage_cards_remove_dialog_title)
-                    .SetMessage(GetString(Resource.String.manage_cards_remove_content_wildcard, lastDigit))
-                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    .SetTitle(GetLabelByLanguage("removeCardTitle"))
+                    .SetMessage(string.Format(GetLabelByLanguage("removeCardMessage"), lastDigit))
+                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
                     delegate
                     {
                         removeDialog.Dismiss();
                     })
-                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
                     delegate
                     {
                         this.userActionsListener.OnRemove(creditCardData, e);
@@ -326,7 +330,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
         public void ShowErrorMessage(string message)
         {
             Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                        .SetAction(GetString(Resource.String.manage_cards_btn_close),
+                        .SetAction(GetLabelCommonByLanguage("close"),
                          (view) =>
                          {
 
@@ -341,8 +345,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
             creditCard.PutExtra(Constants.REMOVED_CREDIT_CARD, JsonConvert.SerializeObject(RemovedCard));
             SetResult(Result.Ok, creditCard);
             string lastDigits = RemovedCard.LastDigits.Substring(RemovedCard.LastDigits.Length - 4);
-            Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
-                       .SetAction(GetString(Resource.String.manage_cards_btn_close),
+            Snackbar.Make(rootView, string.Format(GetLabelByLanguage("cardRemoveSuccess"), lastDigits), Snackbar.LengthIndefinite)
+                       .SetAction(GetLabelCommonByLanguage("close"),
                         (view) =>
                         {
 
@@ -369,5 +373,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

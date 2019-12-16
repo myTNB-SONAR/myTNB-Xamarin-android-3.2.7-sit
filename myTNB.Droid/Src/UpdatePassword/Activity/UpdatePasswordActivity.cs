@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
     [Activity(Label = "@string/update_password_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.UpdatePassword")]
-    public class UpdatePasswordActivity : BaseToolbarAppCompatActivity, UpdatePasswordContract.IView
+    public class UpdatePasswordActivity : BaseActivityCustom, UpdatePasswordContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -51,6 +51,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
         MaterialDialog progress;
         private LoadingOverlay loadingOverlay;
+        private string PAGE_ID = "UpdatePassword";
 
         UpdatePasswordContract.IUserActionsListener userActionsListener;
         UpdatePasswordPresenter mPresenter;
@@ -71,7 +72,12 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                     txtNewPassword,
                     txtConfirmPassword);
 
+                txtInputLayoutCurrentPassword.Hint = GetLabelByLanguage("currentPassword");
+                txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
+                txtInputLayoutConfirmPassword.Hint = GetLabelByLanguage("confirmNewPassword");
+
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
+                btnSave.Text = GetLabelCommonByLanguage("save");
 
                 txtCurrentPassword.TextChanged += TextChange;
                 txtNewPassword.TextChanged += TextChange;
@@ -375,6 +381,11 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

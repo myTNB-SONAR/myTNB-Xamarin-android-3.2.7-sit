@@ -1,5 +1,7 @@
 ﻿using Android.Text;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.UpdatePassword.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -29,7 +31,6 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
 
         public async void OnSave(string currentPassword, string newPassword, string confirmNewPassword)
         {
-            cts = new CancellationTokenSource();
             this.mView.ClearErrors();
             if (TextUtils.IsEmpty(currentPassword))
             {
@@ -66,42 +67,23 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
             {
                 this.mView.ShowProgress();
             }
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var updatePasswordApi = RestService.For<IUpdatePasswordApi>(httpClient);
-#else
-            var updatePasswordApi = RestService.For<IUpdatePasswordApi>(Constants.SERVER_URL.END_POINT);
-#endif
 
             try
             {
-                var updatePasswordResponse = await updatePasswordApi.ChangeNewPassword(new Request.UpdatePasswordRequest()
-                {
-                    Username = userEntity.UserName,
-                    CurrentPassword = currentPassword,
-                    NewPassword = newPassword,
-                    ConfirmNewPassword = confirmNewPassword,
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = Constants.APP_CONFIG.API_KEY_ID,
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+                var updatePasswordResponse = await ServiceApiImpl.Instance.ChangeNewPassword(new ChangeNewPasswordRequest(currentPassword, newPassword, confirmNewPassword));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgress();
                 }
 
-                if (!updatePasswordResponse.Data.IsError)
+                if (updatePasswordResponse.IsSuccessResponse())
                 {
                     this.mView.ShowSuccess();
                 }
                 else
                 {
-                    this.mView.ShowErrorMessage(updatePasswordResponse.Data.Message);
+                    this.mView.ShowErrorMessage(updatePasswordResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)
