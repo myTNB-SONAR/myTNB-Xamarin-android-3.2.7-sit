@@ -174,8 +174,8 @@ namespace myTNB
             }
             get
             {
-                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                return sharedPreference.BoolForKey("SSMROnboarding");
+                //NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return true;// sharedPreference.BoolForKey("SSMROnboarding");
             }
         }
 
