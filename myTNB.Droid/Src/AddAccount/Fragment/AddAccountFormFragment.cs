@@ -581,7 +581,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowSameAccountNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
         }
     }
 }

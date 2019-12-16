@@ -182,7 +182,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         public void ShowSameNickNameError()
         {
-            txtInputLayoutAccountNickname.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+            txtInputLayoutAccountNickname.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
         }
 
         public void ShowProgressDialog()
