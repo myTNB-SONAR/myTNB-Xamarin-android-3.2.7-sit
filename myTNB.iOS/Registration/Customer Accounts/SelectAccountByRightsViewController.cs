@@ -9,7 +9,8 @@ namespace myTNB
 {
     public partial class SelectAccountByRightsViewController : CustomUIViewController
     {
-        private UILabel lblTitle, lblYes, lblYesDescription, lblNo, lblNoDescription;
+        private UILabel lblTitle, lblYes, lblYesDescription, lblNo;
+        private UITextView txtViewNoDescription;
         private UIView viewYes, viewNo;
 
         private List<string> rightsList;
@@ -107,19 +108,27 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
             };
 
-            lblNoDescription = new UILabel
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(AddAccountConstants.I18N_AddAsTenantWithoutICMessage)
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, 16F);
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                Frame = new CGRect(16, 34, viewNo.Frame.Width - 32, 120),
-                AttributedText = new NSAttributedString(GetI18NValue(AddAccountConstants.I18N_AddAsTenantWithoutICMessage)
-                    , font: MyTNBFont.MuseoSans16_300
-                    , foregroundColor: MyTNBColor.TunaGrey()
-                    , strokeWidth: 0),
-                TextAlignment = UITextAlignment.Left,
-                Lines = 0,
-                LineBreakMode = UILineBreakMode.WordWrap
-            };
+                ForegroundColor = MyTNBColor.TunaGrey()
+            }, new NSRange(0, htmlBody.Length));
 
-            viewNo.AddSubviews(new UIView[] { lblNo, lblNoDescription });
+            txtViewNoDescription = new UITextView(new CGRect(16, 34, viewNo.Frame.Width - 32, 120))
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                ContentInset = new UIEdgeInsets(-5, 0, -5, 0),
+                TextAlignment = UITextAlignment.Left
+            };
+            txtViewNoDescription.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            txtViewNoDescription.TextContainer.LineFragmentPadding = 0F;
+
+            viewNo.AddSubviews(new UIView[] { lblNo, txtViewNoDescription });
             int yLocation = 161;
             for (int i = 0; i < rightsList.Count; i++)
             {
