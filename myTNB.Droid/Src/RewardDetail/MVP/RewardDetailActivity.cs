@@ -500,14 +500,15 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                                 DateTime dateTimeParse = DateTime.Parse(item.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
                                 DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
                                 if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                                 {
+                                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
                                     dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt", currCult);
                                 }
                                 else
                                 {
-                                    dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt");
+                                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                                    dateTime += dateTimeMalaysia.ToString("dd MMM yyyy, h:mm tt", currCult);
                                 }
                                 dateTime += ".";
                                 dateTime = "<i>" + dateTime + "</i>";
