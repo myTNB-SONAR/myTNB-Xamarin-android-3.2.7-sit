@@ -373,7 +373,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
                 else
                 {
-                    edtAccountNo.Error = "Account already added";
+                    edtAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage");
                     edtAccountNo.RequestFocus();
                 }
             }
