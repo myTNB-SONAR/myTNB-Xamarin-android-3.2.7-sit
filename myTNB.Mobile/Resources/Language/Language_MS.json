@@ -572,7 +572,9 @@
     "myTNBAccount": "Akaun myTNB",
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
-    "electricityAccount": "Akaun Elektrik"
+    "electricityAccount": "Akaun Elektrik",
+    "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
+    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar."
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",

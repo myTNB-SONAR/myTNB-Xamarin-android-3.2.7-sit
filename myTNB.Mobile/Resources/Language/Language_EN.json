@@ -401,8 +401,8 @@
     "tutorialViewDetailsTitle": "Understand your bill.",
     "tutorialHistoryNormalTitle": "Keep track of payments.",
     "tutorialHistoryTitle": "Keep track of your charges.",
-    "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
-    "tutorialBillNormalAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialBillREAcctDesc": "Tap “#dropdown#” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tap “#dropdown#” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
     "tutorialPayDesc": "Tap here to pay your bill.",
     "tutorialViewDetailsDesc": "“View Details” to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
@@ -572,7 +572,9 @@
     "myTNBAccount": "myTNB Account",
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
-    "electricityAccount": "Electricity Accounts"
+    "electricityAccount": "Electricity Accounts",
+    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "passwordUpdateSuccess": "Your password has been changed successfully."
   },
   "NotificationSettings": {
     "title": "Notification Settings",
