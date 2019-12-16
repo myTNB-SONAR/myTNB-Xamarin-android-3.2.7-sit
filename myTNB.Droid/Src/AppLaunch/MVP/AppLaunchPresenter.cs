@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                    LanguageUtil.SetInitialAppLanguage();
+                    
                     if (UserSessions.GetDeviceId() == null)
                     {
                         UserSessions.SaveDeviceId(this.mView.GetDeviceId());

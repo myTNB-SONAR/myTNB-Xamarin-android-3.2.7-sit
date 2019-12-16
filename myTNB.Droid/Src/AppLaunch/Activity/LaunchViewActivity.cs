@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            LanguageUtil.SetInitialAppLanguage();
             try
             {
                 FirebaseDynamicLinks.Instance
@@ -876,8 +876,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 mNoInternetSnackbar.Dismiss();
             }
 
-            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mNoInternetSnackbar.Dismiss();
