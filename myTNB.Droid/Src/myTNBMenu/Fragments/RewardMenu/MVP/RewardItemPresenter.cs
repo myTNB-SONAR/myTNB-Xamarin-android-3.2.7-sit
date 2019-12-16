@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Icu.Text;
@@ -138,7 +139,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         {
             DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
-            string formattedDate = currentDate.ToString();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
             if (!flag)
             {
                 formattedDate = "";
@@ -153,7 +155,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         {
             DateTime currentDate = DateTime.UtcNow;
             RewardsEntity wtManager = new RewardsEntity();
-            string formattedDate = currentDate.ToString();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
             if (!flag)
             {
                 formattedDate = "";
