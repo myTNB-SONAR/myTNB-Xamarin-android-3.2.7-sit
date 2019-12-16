@@ -89,19 +89,49 @@ namespace myTNB
             {
                 UIBarButtonItem btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
                 {
-                    BaseService baseService = new BaseService();
-                    APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-                    string deeplinkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
-                    NSObject item = NSObject.FromObject(deeplinkUrl);
-                    NSObject[] activityItems = { item };
-                    UIActivity[] applicationActivities = null;
-                    UIActivityViewController activityController = new UIActivityViewController(activityItems, applicationActivities);
-                    UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
-                    activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    PresentViewController(activityController, true, null);
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        BaseService baseService = new BaseService();
+                        APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                        string linkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
+
+                        var deeplinkUrl = string.Empty;
+                        var components = RewardsServices.GenerateLongURL(linkUrl);
+                        components.GetShortenUrl((shortUrl, warnings, error) =>
+                        {
+                            if (error == null)
+                            {
+                                deeplinkUrl = shortUrl.AbsoluteString;
+                            }
+                            else
+                            {
+                                // error handling goes here...
+                                deeplinkUrl = linkUrl;
+                            }
+                            Debug.WriteLine("deeplinkUrl: " + deeplinkUrl);
+                            ShareAction(deeplinkUrl);
+                            ActivityIndicator.Hide();
+                        });
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(this);
+                    }
                 });
                 NavigationItem.RightBarButtonItem = btnShareReward;
             }
+        }
+
+        private void ShareAction(string deeplinkUrl)
+        {
+            NSObject item = NSObject.FromObject(deeplinkUrl);
+            NSObject[] activityItems = { item };
+            UIActivity[] applicationActivities = null;
+            UIActivityViewController activityController = new UIActivityViewController(activityItems, applicationActivities);
+            UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+            activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            PresentViewController(activityController, true, null);
         }
 
         private void SetScrollView()
@@ -676,7 +706,11 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(response?.d?.DisplayMessage);
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                            LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_IllDoItLater), null },
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_TryAgain), () => OnUseNowAction()}});
                     }
                 });
             });

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using CoreGraphics;
+using Firebase.DynamicLinks;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
@@ -152,10 +153,63 @@ namespace myTNB
                     }
                     else
                     {
-                        //Expired shared reward handling goes here...
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
+                            LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () => topView.TabBarController.SelectedIndex = 3} });
                     }
                 }
             }
+        }
+
+        private static string GetDynamicLinkDomain(APIEnvironment environment)
+        {
+            string env = environment.ToString();
+            return RewardsConstants.DynamicLinkDomain.ContainsKey(env) ? RewardsConstants.DynamicLinkDomain[env] : string.Empty;
+        }
+
+        public static DynamicLinkComponents GenerateLongURL(string linkStr)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                { "Link", linkStr },
+                { "BundleID", "com.mytnb.mytnb" },
+                { "PackageName", "com.mytnb.mytnb" },
+                { "MinimumAppVersioniOS", "2.1.0" },
+                { "MinimumAppVersionAndroid", "171" },
+                { "AppStoreId", "1297089591" }
+            };
+
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            string Dynamic_Link_Domain = GetDynamicLinkDomain(env);
+
+            var link = NSUrl.FromString(dictionary["Link"]);
+            var components = DynamicLinkComponents.FromLink(link, Dynamic_Link_Domain);
+
+            var bundleId = dictionary["BundleID"];
+
+            if (!string.IsNullOrWhiteSpace(bundleId))
+            {
+                var iOSParams = DynamicLinkiOSParameters.FromBundleId(bundleId);
+                iOSParams.MinimumAppVersion = dictionary["MinimumAppVersioniOS"];
+                iOSParams.AppStoreId = dictionary["AppStoreId"];
+                components.IOSParameters = iOSParams;
+            }
+
+            var packageName = dictionary["PackageName"];
+
+            if (!string.IsNullOrWhiteSpace(packageName))
+            {
+                var androidParams = DynamicLinkAndroidParameters.FromPackageName(packageName);
+                androidParams.MinimumVersion = nint.Parse(dictionary["MinimumAppVersionAndroid"]);
+                components.AndroidParameters = androidParams;
+            }
+
+            var options = DynamicLinkComponentsOptions.Create();
+            options.PathLength = ShortDynamicLinkPathLength.Unguessable;
+            components.Options = options;
+
+            return components;
         }
 
         #region Rewards Services
@@ -334,32 +388,34 @@ namespace myTNB
 
                 RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
                 if (rewardsResponse != null && rewardsResponse.Status != null &&
-                    rewardsResponse.Status.Equals("Success") &&
-                    rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
+                    rewardsResponse.Status.Equals("Success"))
                 {
-                    RewardsEntity rewardsEntity = new RewardsEntity();
-                    List<RewardsModel> rewardsData = new List<RewardsModel>();
-                    List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
-                    foreach (var category in categoryList)
+                    RewardsCache.RewardIsAvailable = true;
+                    if (rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                     {
-                        List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
-                        if (rewardsList.Count > 0)
+                        RewardsEntity rewardsEntity = new RewardsEntity();
+                        List<RewardsModel> rewardsData = new List<RewardsModel>();
+                        List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
+                        foreach (var category in categoryList)
                         {
-                            foreach (var reward in rewardsList)
+                            List<RewardsModel> rewardsList = new List<RewardsModel>(category.Rewards);
+                            if (rewardsList.Count > 0)
                             {
-                                if (!RewardHasExpired(reward))
+                                foreach (var reward in rewardsList)
                                 {
-                                    reward.CategoryID = category.ID;
-                                    reward.CategoryName = category.CategoryName;
-                                    rewardsData.Add(reward);
+                                    if (!RewardHasExpired(reward))
+                                    {
+                                        reward.CategoryID = category.ID;
+                                        reward.CategoryName = category.CategoryName;
+                                        rewardsData.Add(reward);
+                                    }
                                 }
                             }
                         }
+                        rewardsEntity.DeleteTable();
+                        rewardsEntity.CreateTable();
+                        rewardsEntity.InsertListOfItems(rewardsData);
                     }
-                    rewardsEntity.DeleteTable();
-                    rewardsEntity.CreateTable();
-                    rewardsEntity.InsertListOfItems(rewardsData);
-
                     try
                     {
                         NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -370,6 +426,10 @@ namespace myTNB
                     {
                         Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
                     }
+                }
+                else
+                {
+                    RewardsCache.RewardIsAvailable = false;
                 }
             });
         }

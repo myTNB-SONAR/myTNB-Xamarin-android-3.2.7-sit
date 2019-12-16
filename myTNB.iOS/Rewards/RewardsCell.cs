@@ -1,4 +1,5 @@
 ﻿using System;
+using CoreAnimation;
 using CoreGraphics;
 using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
@@ -46,6 +47,25 @@ namespace myTNB
             ActivityIndicator = new ActivityIndicatorComponent(RewardImageView);
             rewardImgView.AddSubview(RewardImageView);
             _viewContainer.AddSubview(rewardImgView);
+
+            nfloat shadowViewHeight = GetScaledHeight(40F);
+            UIView shadowView = new UIView(new CGRect(0, RewardImageView.Frame.Height - shadowViewHeight, _viewContainer.Frame.Width, shadowViewHeight))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            var topColor = MyTNBColor.Black0;
+            var bottomColor = MyTNBColor.Black20;
+            CAGradientLayer gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { topColor.CGColor, bottomColor.CGColor }
+            };
+            gradientLayer.StartPoint = new CGPoint(x: 0.5, y: 0.0);
+            gradientLayer.EndPoint = new CGPoint(x: 0.5, y: 1.0);
+            gradientLayer.Frame = shadowView.Bounds;
+            gradientLayer.Opacity = 1f;
+            shadowView.Layer.InsertSublayer(gradientLayer, 0);
+            _viewContainer.AddSubview(shadowView);
+
             Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageView.Frame, 16F)
                 , _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {

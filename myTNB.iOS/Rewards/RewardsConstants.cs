@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace myTNB
 {
     public static class RewardsConstants
@@ -30,6 +32,17 @@ namespace myTNB
         //Cell
         public static string Cell_Rewards = "rewardsTableViewCell";
         public static string Cell_SavedRewards = "savedRewardsTableViewCell";
+
+        //Event Names
+        public static string EVENT_Refresh = "Refresh";
+
+        //String
+        public static Dictionary<string, string> DynamicLinkDomain = new Dictionary<string, string>
+        {
+            { "DEV", "mytnbappsit.page.link"}
+            , { "SIT", "mytnbappsit.page.link" }
+            , { "PROD", "mytnbapp.page.link"}
+        };
 
         //I18N Keys
         public static string I18N_Title = "title";
@@ -74,5 +87,6 @@ namespace myTNB
         public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
         public static string Img_UseRewardBanner = "Use-Reward-Banner";
         public static string Img_EmptyRewardIcon = "Empty-Reward-Icon";
+        public static string IMG_Refresh = "SSMR-Refresh";
     }
 }

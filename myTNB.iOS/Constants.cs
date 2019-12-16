@@ -89,6 +89,12 @@
         public static string Common_SaveLanguageMessage = "saveLanguageMessage";
         public static string Common_WellBeBack = "wellBeBack";
         public static string Common_ElectricityAccounts = "electricityAccounts";
+        public static string Common_RewardNotAvailableTitle = "rewardNotAvailableTitle";
+        public static string Common_RewardNotAvailableDesc = "rewardNotAvailableDesc";
+        public static string Common_ShowMoreRewards = "showMoreRewards";
+        public static string Common_IllDoItLater = "illDoItLater";
+        public static string Common_RedeemRewardFailMsg = "redeemRewardFailMsg";
+        public static string Common_TryAgain = "tryAgain";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

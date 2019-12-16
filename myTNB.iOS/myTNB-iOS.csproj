@@ -242,6 +242,9 @@
     <Reference Include="Lottie.iOS">
       <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.9\lib\xamarinios10\Lottie.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Firebase.DynamicLinks">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.DynamicLinks.2.1.0\lib\Xamarin.iOS10\Firebase.DynamicLinks.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -2675,4 +2678,5 @@
   <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\build\Xamarin.Firebase.iOS.Crashlytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\build\Xamarin.Firebase.iOS.Crashlytics.targets')" />
   <Import Project="..\packages\Refit.4.6.58\build\netstandard1.4\refit.targets" Condition="Exists('..\packages\Refit.4.6.58\build\netstandard1.4\refit.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.DynamicLinks.2.1.0\build\Xamarin.Firebase.iOS.DynamicLinks.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.DynamicLinks.2.1.0\build\Xamarin.Firebase.iOS.DynamicLinks.targets')" />
 </Project>
