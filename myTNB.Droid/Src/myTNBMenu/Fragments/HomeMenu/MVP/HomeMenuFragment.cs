@@ -873,7 +873,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else if (selectedService.ServiceCategoryId == "1001")
                         {
-                            Intent applySMRIntent;
+                            /*Intent applySMRIntent;
                             if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
                             {
                                 applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
@@ -886,8 +886,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
                                 UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-                            }
+                            }*/
 
+                            // Hide SMR Onboarding Tutorial
+                            Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
                         else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))

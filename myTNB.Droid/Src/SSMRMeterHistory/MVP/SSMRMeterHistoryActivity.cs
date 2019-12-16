@@ -130,7 +130,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.btnRefresh)]
         Button btnRefresh;
 
-				public override int ResourceId()
+        [BindView(Resource.Id.selectAccountContainer)]
+        LinearLayout selectAccountContainer;
+        
+
+        public override int ResourceId()
 		{
 			return Resource.Layout.SSMRMeterHistoryLayout;
 		}
@@ -916,6 +920,60 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public int GetSMRTopViewHeight()
+        {
+            int height = 0;
+
+            try
+            {
+                LinearLayout.LayoutParams smrTitleLayout = SMRMessageTitle.LayoutParameters as LinearLayout.LayoutParams;
+                height += SMRMessageTitle.Height + smrTitleLayout.TopMargin;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            if (selectAccountContainer.Visibility == ViewStates.Visible)
+            {
+                try
+                {
+                    LinearLayout.LayoutParams selectAccountContainerLayout = selectAccountContainer.LayoutParameters as LinearLayout.LayoutParams;
+                    height += selectAccountContainer.Height + selectAccountContainerLayout.TopMargin + selectAccountContainerLayout.BottomMargin;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            if (SMRActionContainer.Visibility == ViewStates.Visible)
+            {
+                try
+                {
+                    height += SMRActionContainer.Height;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            if (NonSMRActionContainer.Visibility == ViewStates.Visible)
+            {
+                try
+                {
+                    height += NonSMRActionContainer.Height;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            return height;
         }
     }
 }
