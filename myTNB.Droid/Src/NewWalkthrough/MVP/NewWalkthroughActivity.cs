@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         public void OnPageSelected(int position)
         {
-            if (!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
+            if (newWalkthroughAdapter != null && newWalkthroughAdapter.Count > 1)
             {
                 for (int i = 0; i < newWalkthroughAdapter.Count; i++)
                 {
@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         private void UpdateAccountListIndicator()
         {
-            if (!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
+            if (newWalkthroughAdapter != null && newWalkthroughAdapter.Count > 1)
             {
                 indicatorContainer.Visibility = ViewStates.Visible;
                 for (int i = 0; i < newWalkthroughAdapter.Count; i++)
@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 btnStart.Visibility = ViewStates.Visible;
                 RelativeLayout.LayoutParams param = btnStart.LayoutParameters as RelativeLayout.LayoutParams;
                 param.AddRule(LayoutRules.AlignParentBottom);
-                param.BottomMargin = (int) DPUtils.ConvertDPToPx(16f);
+                param.BottomMargin = (int)DPUtils.ConvertDPToPx(16f);
             }
         }
 
@@ -279,6 +279,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         public void UpdateContent()
         {
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "letsStart");
             newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();
