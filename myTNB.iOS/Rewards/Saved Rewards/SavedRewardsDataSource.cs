@@ -64,13 +64,6 @@ namespace myTNB
                     {
                         try
                         {
-                            if ((bool)cell.ActivityIndicator?.GetView?.IsDescendantOfView(cell.RewardImageView))
-                            {
-                                cell.ActivityIndicator.GetView.RemoveFromSuperview();
-                                cell.ActivityIndicator.GetView = null;
-                                cell.ActivityIndicator = null;
-                                cell.ActivityIndicator = new ActivityIndicatorComponent(cell.RewardImageView);
-                            }
                             NSData imgData = RewardsCache.GetImage(reward.ID);
                             if (imgData != null)
                             {
@@ -83,10 +76,11 @@ namespace myTNB
                                 {
                                     cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
                                 }
+                                cell.UsedView.Hidden = !reward.IsUsed;
                             }
                             else
                             {
-                                cell.ActivityIndicator.Show();
+                                cell.SetLoadingImageView();
                                 NSUrl url = new NSUrl(reward.Image);
                                 NSUrlSession session = NSUrlSession
                                     .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
@@ -117,7 +111,7 @@ namespace myTNB
                                                 cell.RewardImageView.Image = RewardsServices.ConvertToGrayScale(cell.RewardImageView.Image);
                                             }
                                         }
-                                        cell.ActivityIndicator.Hide();
+                                        cell.ShowDowloadedImage(reward);
                                     });
                                 });
                                 dataTask.Resume();
@@ -143,7 +137,6 @@ namespace myTNB
                     }
                 }
                 cell.Title.TextColor = reward.IsUsed ? MyTNBColor.GreyishBrown : MyTNBColor.WaterBlue;
-                cell.UsedView.Hidden = !reward.IsUsed;
             }
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;

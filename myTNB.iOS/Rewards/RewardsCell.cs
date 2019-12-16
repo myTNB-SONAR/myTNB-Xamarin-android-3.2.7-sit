@@ -9,12 +9,11 @@ namespace myTNB
 {
     public class RewardsCell : CustomUITableViewCell
     {
-        private UIView _viewContainer, _readIndicator;
+        private UIView _viewContainer, _readIndicator, _imgLoadingView, _rewardImgView, _shadowView;
         public UIImageView RewardImageView;
         public UILabel Title, _usedLbl;
         public UIImageView SaveIcon;
         public UIView UsedView;
-        public ActivityIndicatorComponent ActivityIndicator;
 
         public RewardsCell(IntPtr handle) : base(handle)
         {
@@ -32,26 +31,26 @@ namespace myTNB
             _viewContainer.Layer.ShadowRadius = 8;
             _viewContainer.Layer.ShadowPath = UIBezierPath.FromRect(_viewContainer.Bounds).CGPath;
 
-            UIView rewardImgView = new UIImageView(_viewContainer.Bounds)
+            _rewardImgView = new UIImageView(_viewContainer.Bounds)
             {
                 BackgroundColor = UIColor.Clear,
                 ClipsToBounds = true
             };
-            rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
+            _rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
 
             RewardImageView = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
             {
                 ClipsToBounds = true,
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
-            ActivityIndicator = new ActivityIndicatorComponent(RewardImageView);
-            rewardImgView.AddSubview(RewardImageView);
-            _viewContainer.AddSubview(rewardImgView);
+            _rewardImgView.AddSubview(RewardImageView);
+            _viewContainer.AddSubview(_rewardImgView);
 
             nfloat shadowViewHeight = GetScaledHeight(40F);
-            UIView shadowView = new UIView(new CGRect(0, RewardImageView.Frame.Height - shadowViewHeight, _viewContainer.Frame.Width, shadowViewHeight))
+            _shadowView = new UIView(new CGRect(0, RewardImageView.Frame.Height - shadowViewHeight, _viewContainer.Frame.Width, shadowViewHeight))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Hidden = true
             };
             var topColor = MyTNBColor.Black0;
             var bottomColor = MyTNBColor.Black20;
@@ -61,10 +60,10 @@ namespace myTNB
             };
             gradientLayer.StartPoint = new CGPoint(x: 0.5, y: 0.0);
             gradientLayer.EndPoint = new CGPoint(x: 0.5, y: 1.0);
-            gradientLayer.Frame = shadowView.Bounds;
+            gradientLayer.Frame = _shadowView.Bounds;
             gradientLayer.Opacity = 1f;
-            shadowView.Layer.InsertSublayer(gradientLayer, 0);
-            _viewContainer.AddSubview(shadowView);
+            _shadowView.Layer.InsertSublayer(gradientLayer, 0);
+            _viewContainer.AddSubview(_shadowView);
 
             Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageView.Frame, 16F)
                 , _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
@@ -83,7 +82,8 @@ namespace myTNB
                 , RewardImageView.Frame.Height - iconHeight - iconHeightPadding, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(RewardsConstants.Img_HeartUnsaveIcon),
-                UserInteractionEnabled = true
+                UserInteractionEnabled = true,
+                Hidden = true
             };
             nfloat dotWidth = GetScaledWidth(8F);
             nfloat dotHeight = GetScaledHeight(8F);
@@ -135,6 +135,89 @@ namespace myTNB
                 if (!model.IsRead)
                 {
                     ViewHelper.AdjustFrameSetWidth(Title, _viewContainer.Frame.Width - BaseMarginWidth16 - _readIndicator.Frame.Width - GetScaledWidth(18F) - GetScaledWidth(12F));
+                }
+            }
+        }
+
+        public void SetLoadingImageView()
+        {
+            if (_rewardImgView != null)
+            {
+                _rewardImgView.Hidden = true;
+            }
+
+            if (_shadowView != null)
+            {
+                _shadowView.Hidden = true;
+            }
+
+            if (_imgLoadingView != null)
+            {
+                _imgLoadingView.RemoveFromSuperview();
+            }
+
+            if (SaveIcon != null)
+            {
+                SaveIcon.Hidden = true;
+            }
+
+            if (UsedView != null)
+            {
+                UsedView.Hidden = true;
+            }
+
+            _imgLoadingView = new UIView(_viewContainer.Bounds)
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            AddSubview(_imgLoadingView);
+
+            UIView viewImage = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(17F), _viewContainer.Frame.Width, GetScaledHeight(112F)))
+            {
+                BackgroundColor = MyTNBColor.PaleGreyThree
+            };
+
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            UIView viewShimmerParent = new UIView(new CGRect(0, 0, _cellWidth, _cellHeight))
+            { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(0, 0, _cellWidth, _cellHeight))
+            { BackgroundColor = UIColor.Clear };
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            viewShimmerContent.AddSubview(viewImage);
+            _imgLoadingView.AddSubview(viewShimmerParent);
+        }
+
+        public void ShowDowloadedImage(RewardsModel model)
+        {
+            if (_rewardImgView != null)
+            {
+                _rewardImgView.Hidden = false;
+            }
+
+            if (_shadowView != null)
+            {
+                _shadowView.Hidden = false;
+            }
+
+            if (_imgLoadingView != null)
+            {
+                _imgLoadingView.RemoveFromSuperview();
+            }
+
+            if (model != null)
+            {
+                if (SaveIcon != null)
+                {
+                    SaveIcon.Hidden = false;
+                }
+
+                if (UsedView != null)
+                {
+                    UsedView.Hidden = !model.IsUsed;
                 }
             }
         }

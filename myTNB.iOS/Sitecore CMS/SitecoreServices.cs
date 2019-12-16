@@ -525,6 +525,10 @@ namespace myTNB.SitecoreCMS
                         RewardsCache.RewardIsAvailable = false;
                     }
                 }
+                else
+                {
+                    RewardsCache.RewardIsAvailable = true;
+                }
             });
         }
 

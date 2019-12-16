@@ -78,24 +78,33 @@ namespace myTNB
 
         public static UIImage ConvertToGrayScale(UIImage image)
         {
-            using (image)
+            if (image != null)
             {
-                RectangleF imageRect = new RectangleF(PointF.Empty, (System.Drawing.SizeF)image.Size);
-                var colorSpace = CGColorSpace.CreateDeviceGray();
-                using (var context = new CGBitmapContext(IntPtr.Zero, (int)imageRect.Width, (int)imageRect.Height, 8, 0, colorSpace, CGImageAlphaInfo.None))
+                try
                 {
-                    context.DrawImage(imageRect, image.CGImage);
-                    var grayImage = context.ToImage();
-                    using (var maskContext = new CGBitmapContext(null, (int)imageRect.Width, (int)imageRect.Height, 8, 0, null, CGImageAlphaInfo.Only))
+                    RectangleF imageRect = new RectangleF(PointF.Empty, (System.Drawing.SizeF)image.Size);
+                    var colorSpace = CGColorSpace.CreateDeviceGray();
+                    using (var context = new CGBitmapContext(IntPtr.Zero, (int)imageRect.Width, (int)imageRect.Height, 8, 0, colorSpace, CGImageAlphaInfo.None))
                     {
-                        maskContext.DrawImage(imageRect, image.CGImage);
-                        using (var mask = maskContext.ToImage())
+                        context.DrawImage(imageRect, image.CGImage);
+                        var grayImage = context.ToImage();
+                        using (var maskContext = new CGBitmapContext(null, (int)imageRect.Width, (int)imageRect.Height, 8, 0, null, CGImageAlphaInfo.Only))
                         {
-                            return UIImage.FromImage(grayImage.WithMask(mask), image.CurrentScale, image.Orientation);
+                            maskContext.DrawImage(imageRect, image.CGImage);
+                            using (var mask = maskContext.ToImage())
+                            {
+                                return UIImage.FromImage(grayImage.WithMask(mask), image.CurrentScale, image.Orientation);
+                            }
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in ConvertToGrayScale: " + e.Message);
+                    return image;
+                }
             }
+            return image;
         }
 
         public static bool RewardHasExpired(RewardsModel reward)

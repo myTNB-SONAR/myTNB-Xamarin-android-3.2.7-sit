@@ -21,6 +21,7 @@ namespace myTNB
         private UILabel _timerLabel;
         private int _currentSeconds;
         private UIView _tutorialContainer;
+        private UIBarButtonItem _btnShareReward;
 
         public override void ViewDidLoad()
         {
@@ -85,42 +86,37 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
-            if (!RewardModel.IsUsed)
+            _btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                UIBarButtonItem btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
+                if (NetworkUtility.isReachable)
                 {
-                    if (NetworkUtility.isReachable)
-                    {
-                        ActivityIndicator.Show();
-                        BaseService baseService = new BaseService();
-                        APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-                        string linkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
+                    ActivityIndicator.Show();
+                    BaseService baseService = new BaseService();
+                    APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                    string linkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
 
-                        var deeplinkUrl = string.Empty;
-                        var components = RewardsServices.GenerateLongURL(linkUrl);
-                        components.GetShortenUrl((shortUrl, warnings, error) =>
-                        {
-                            if (error == null)
-                            {
-                                deeplinkUrl = shortUrl.AbsoluteString;
-                            }
-                            else
-                            {
-                                // error handling goes here...
-                                deeplinkUrl = linkUrl;
-                            }
-                            Debug.WriteLine("deeplinkUrl: " + deeplinkUrl);
-                            ShareAction(deeplinkUrl);
-                            ActivityIndicator.Hide();
-                        });
-                    }
-                    else
+                    var deeplinkUrl = string.Empty;
+                    var components = RewardsServices.GenerateLongURL(linkUrl);
+                    components.GetShortenUrl((shortUrl, warnings, error) =>
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
-                    }
-                });
-                NavigationItem.RightBarButtonItem = btnShareReward;
-            }
+                        if (error == null)
+                        {
+                            deeplinkUrl = shortUrl.AbsoluteString;
+                        }
+                        else
+                        {
+                            deeplinkUrl = linkUrl;
+                        }
+                        ShareAction(deeplinkUrl);
+                        ActivityIndicator.Hide();
+                    });
+                }
+                else
+                {
+                    AlertHandler.DisplayNoDataAlert(this);
+                }
+            });
+            NavigationItem.RightBarButtonItem = _btnShareReward;
         }
 
         private void ShareAction(string deeplinkUrl)
@@ -151,10 +147,13 @@ namespace myTNB
 
         private void PrepareDetailView()
         {
-            UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(180F)))
+            nfloat imgHeight = GetScaledHeight(180F);
+
+            UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
             {
                 BackgroundColor = UIColor.Clear,
             };
+
             UIImageView imageView = new UIImageView(imageContainer.Bounds)
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
@@ -165,8 +164,29 @@ namespace myTNB
             {
                 try
                 {
-                    ActivityIndicatorComponent activityIndicator = new ActivityIndicatorComponent(imageContainer);
-                    activityIndicator.Show();
+                    UIView imgLoadingView = new UIView(imageContainer.Bounds)
+                    {
+                        BackgroundColor = UIColor.Clear
+                    };
+                    _scrollView.AddSubview(imgLoadingView);
+
+                    UIView viewImage = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                    {
+                        BackgroundColor = MyTNBColor.PaleGreyThree
+                    };
+
+                    CustomShimmerView shimmeringView = new CustomShimmerView();
+                    UIView viewShimmerParent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                    { BackgroundColor = UIColor.Clear };
+                    UIView viewShimmerContent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                    { BackgroundColor = UIColor.Clear };
+                    viewShimmerParent.AddSubview(shimmeringView);
+                    shimmeringView.ContentView = viewShimmerContent;
+                    shimmeringView.Shimmering = true;
+                    shimmeringView.SetValues();
+
+                    viewShimmerContent.AddSubview(viewImage);
+                    imgLoadingView.AddSubview(viewShimmerParent);
                     NSUrl url = new NSUrl(RewardModel.Image);
                     NSUrlSession session = NSUrlSession
                         .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
@@ -181,7 +201,7 @@ namespace myTNB
                                 {
                                     imageView.Image = image;
                                 }
-                                activityIndicator.Hide();
+                                imgLoadingView.RemoveFromSuperview();
                             });
                         }
                         else
@@ -189,7 +209,7 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
-                                activityIndicator.Hide();
+                                imgLoadingView.RemoveFromSuperview();
                             });
                         }
                     });
@@ -718,6 +738,7 @@ namespace myTNB
 
         private void OnUseNowDone()
         {
+            _btnShareReward.Enabled = false;
             nfloat height = GetScaledHeight(122F);
             _timerContainerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
             {
@@ -795,6 +816,7 @@ namespace myTNB
                         _timerContainerView = null;
                     }
                     UpdateView();
+                    _btnShareReward.Enabled = true;
                 }
             });
         }
