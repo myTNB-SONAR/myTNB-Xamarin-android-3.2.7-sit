@@ -44,5 +44,14 @@ namespace myTNB_Android.Src.Utils
 
             return false;
         }
+
+        public static bool ChceckInternetConnection(Context context)
+        {
+            ConnectivityManager connectivity = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
+            NetworkInfo activeNetwork = connectivity.ActiveNetworkInfo;
+
+            return activeNetwork != null &&
+                      activeNetwork.IsConnectedOrConnecting;
+        }
     }
 }

@@ -249,7 +249,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.update_mobile_mobile_no_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowProgress()
@@ -394,7 +394,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.bill_related_feedback_empty_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
 

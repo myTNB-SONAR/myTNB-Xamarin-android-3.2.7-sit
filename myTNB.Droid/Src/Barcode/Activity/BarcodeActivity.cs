@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.Barcode.Activity
     [Activity(Label = "@string/barcode_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.BarCode")]
-    public class BarcodeActivity : BaseToolbarAppCompatActivity, BarcodeContract.IView
+    public class BarcodeActivity : BaseActivityCustom, BarcodeContract.IView
     {
         readonly static string TAG = typeof(BarcodeActivity).Name;
         ZXingScannerFragment scanFragment;
@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.Barcode.Activity
 
         private BarcodeContract.IUserActionsListener userActionsListener;
         private BarcodePresenter mPresenter;
+        private string PAGE_ID = "AddAccount";
 
         public override int ResourceId()
         {
@@ -67,6 +68,7 @@ namespace myTNB_Android.Src.Barcode.Activity
             };
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitle);
+            txtTitle.Text = GetLabelByLanguage("scanMessage");
         }
 
         protected override void OnResume()
@@ -265,6 +267,11 @@ namespace myTNB_Android.Src.Barcode.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

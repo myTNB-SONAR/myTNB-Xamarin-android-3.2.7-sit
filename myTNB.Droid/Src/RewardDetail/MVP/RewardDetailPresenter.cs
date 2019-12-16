@@ -304,28 +304,28 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 else
                 {
                     // Show Error Message
-                    this.mView.ShowRetryOptionsApiException();
+                    this.mView.ShowRetryPopup();
                 }
             }
             catch (System.OperationCanceledException e)
             {
                 this.mView.HideProgressDialog();
                 // Show Error Message
-                this.mView.ShowRetryOptionsApiException();
+                this.mView.ShowRetryPopup();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 this.mView.HideProgressDialog();
                 // Show Error Message
-                this.mView.ShowRetryOptionsApiException();
+                this.mView.ShowRetryPopup();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 this.mView.HideProgressDialog();
                 // Show Error Message
-                this.mView.ShowRetryOptionsApiException();
+                this.mView.ShowRetryPopup();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -333,7 +333,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         public List<string> ExtractUrls(string text)
         {
             List<string> containedUrls = new List<string>();
-            string urlRegex = "\\(?\\b(https://|http://)[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
             Pattern pattern = Pattern.Compile(urlRegex);
             Matcher urlMatcher = pattern.Matcher(text);
 

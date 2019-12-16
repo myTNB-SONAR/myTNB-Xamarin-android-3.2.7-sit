@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 if (mTabList != null && mTabList.Count > 0)
                 {
-                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f));
+                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
                     MeasureTabScroll();
                     HighLightCurrentTab(0);
                     rewardViewPager.AddOnPageChangeListener(this);
@@ -431,9 +431,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     rewardViewPager.Adapter = mAdapter;
                     rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
 
-                    if (mTabList != null && mTabList.Count > 0)
+                    if (mTabList != null && mTabList.Count > 1)
                     {
-                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(8f));
+                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
                         MeasureTabScroll();
                         HighLightCurrentTab(0);
                     }
@@ -496,19 +496,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    Action myAction = () =>
+                    try
                     {
-                        int widthS = this.Activity.Resources.DisplayMetrics.WidthPixels;
-                        rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
-                        int widthT = rewardsSlidingTabs.MeasuredWidth;
-
-                        if (widthS > widthT)
+                        Action myAction = () =>
                         {
-                            rewardsSlidingTabs.TabMode = TabLayout.ModeFixed;
-                            rewardsSlidingTabs.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
-                        }
-                    };
-                    rewardsSlidingTabs.Post(myAction);
+                            Activity.RunOnUiThread(() =>
+                            {
+                                int widthS = DPUtils.GetWidth();
+                                rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
+                                int widthT = rewardsSlidingTabs.MeasuredWidth;
+
+                                if (widthS > widthT)
+                                {
+                                    int diff = widthS - widthT;
+                                    int diffOnEachItem = diff / mTabList.Count;
+                                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f) + diffOnEachItem / 2, (int)DPUtils.ConvertDPToPx(10f) + diffOnEachItem / 2);
+                                }
+                            });
+                        };
+                        rewardsSlidingTabs.Post(myAction);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 });
             }
             catch (System.Exception e)

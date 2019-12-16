@@ -120,8 +120,6 @@
   <string name="registration_form_errors_empty_fullname">Invalid fullname</string>
   <string name="registration_form_errors_empty_icno">Invalid IC / ROC / Passport No.</string>
   <string name="registration_form_errors_invalid_icno">Invalid IC / ROC / Passport No.</string>
-  <string name="registration_form_errors_empty_mobile_no">Invalid mobile no.</string>
-  <string name="registration_form_errors_invalid_mobile_no">Invalid mobile no.</string>
   <string name="registration_form_errors_empty_email">Invalid email address.</string>
   <string name="registration_form_errors_invalid_email">Invalid email address.</string>
   <string name="registration_form_errors_empty_confirm_email">Invalid confirm email.</string>
@@ -899,7 +897,6 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="update_mobile_cancelled_exception_btn_close">Close</string>
   <string name="update_mobile_api_exception_btn_close">Close</string>
   <string name="update_mobile_unknown_exception_btn_close">Close</string>
-  <string name="update_mobile_mobile_no_error">Invalid mobile no.</string>
   <string name="update_mobile_mobile_empty_error">Empty mobile no.</string>
 
   <string name="update_mobile_progress_title">Updating Mobile</string>
@@ -1033,8 +1030,6 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="bill_related_feedback_selection_option_title">Select Options</string>
 
   <string name="bill_related_feedback_empty_fullname_error">Invalid fullname.</string>
-  <string name="bill_related_feedback_empty_mobile_error">Invalid mobile no.</string>
-  <string name="bill_related_feedback_invalid_mobile_error">Invalid mobile no.</string>
   <string name="bill_related_feedback_empty_email_error">Invalid email address.</string>
   <string name="bill_related_feedback_invalid_email_error">Invalid email address.</string>
   <string name="bill_related_feedback_empty_account_no_error">Invalid account no.</string>
@@ -1142,8 +1137,6 @@ Please try again later.]]>
 
 
   <string name="faulty_street_lamps_feedback_empty_fullname_error">Invalid fullname.</string>
-  <string name="faulty_street_lamps_feedback_empty_mobile_error">Invalid mobile no.</string>
-  <string name="faulty_street_lamps_feedback_invalid_mobile_error">Invalid mobile no.</string>
   <string name="faulty_street_lamps_feedback_empty_email_error">Invalid email address.</string>
   <string name="faulty_street_lamps_feedback_invalid_email_error">Invalid email address.</string>
   <string name="faulty_street_lamps_feedback_empty_location_error">Invalid location.</string>
@@ -1178,8 +1171,6 @@ Please try again later.]]>
   <string name="feedback_others_feedback_max_feedback_characters">Max of 250 characters</string>
 
   <string name="feedback_others_feedback_empty_feedback_error">Invalid feedback.</string>
-  <string name="feedback_others_feedback_empty_mobile_error">Invalid mobile no.</string>
-  <string name="feedback_others_feedback_invalid_mobile_error">Invalid mobile no.</string>
 
   <!--End Feedback  Others -->
 

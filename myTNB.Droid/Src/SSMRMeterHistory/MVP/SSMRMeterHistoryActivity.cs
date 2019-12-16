@@ -165,6 +165,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 EmptySMRHistoryMessage.Text = GetString(Resource.String.ssmr_empty_history_message);
                 refreshMsg.Text = GetLabelCommonByLanguage("refreshDescription");
                 btnRefresh.Text = GetLabelCommonByLanguage("refreshNow");
+                NonSMRNoteContent.Text = GetLabelByLanguage("enableSSMRDescription");
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));

@@ -308,7 +308,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void ShowInvalidMobileNoError()
         {
-            textInputMobile.Error = GetString(Resource.String.registration_form_errors_invalid_mobile_no);
+            textInputMobile.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void DisableRegisterButton()

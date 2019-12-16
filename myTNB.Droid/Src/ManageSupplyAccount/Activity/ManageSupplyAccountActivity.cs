@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 removeDialog = new AlertDialog.Builder(this)
 
                     .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
-                    .SetMessage(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
+                    .SetMessage(GetFormattedText(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum)))
                     .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
                     delegate
                     {

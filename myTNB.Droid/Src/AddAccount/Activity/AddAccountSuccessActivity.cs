@@ -83,6 +83,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
             TextViewUtils.SetMuseoSans500Typeface(textAddAccountSuccess);
             TextViewUtils.SetMuseoSans500Typeface(done);
 
+            textAddAccountSuccess.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsg");
+            done.Text = Utility.GetLocalizedCommonLabel("done");
+
             appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
             appBarLayout.Visibility = ViewStates.Gone;
         }

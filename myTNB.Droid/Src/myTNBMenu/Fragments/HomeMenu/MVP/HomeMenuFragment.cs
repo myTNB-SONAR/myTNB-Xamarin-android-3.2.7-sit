@@ -2349,5 +2349,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowSearchAction(false);
             }
         }
+
+        private Snackbar mSomethingWrongExceptionSnackBar;
+        public void ShowSomethingWrongException()
+        {
+            if (mSomethingWrongExceptionSnackBar != null && mSomethingWrongExceptionSnackBar.IsShown)
+            {
+                mSomethingWrongExceptionSnackBar.Dismiss();
+
+            }
+
+            string msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+
+            mSomethingWrongExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate
+            {
+                mSomethingWrongExceptionSnackBar.Dismiss();
+            }
+            );
+            mSomethingWrongExceptionSnackBar.Show();
+        }
     }
 }

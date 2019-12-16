@@ -77,24 +77,30 @@ namespace myTNB_Android.Src.Base
             }
             else
             {
+                List<PopupSelectorModel> popupSelectorModels = Utility.GetTooltipSelectorModel("SSMRCaptureMeter", "SMRPhotoPopUpDetails");
                 if (isSinglePhase)
                 {
-                    item.Title = "How do I take this photo?";
-                    item.Description = "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it.</strong> Ensure the numbers are clear and there is no glare, shadow or distortion.";
-                    item.CTA = "Got It!";
+                    PopupSelectorModel popupSelectorModel = popupSelectorModels.Find(model => { return model.Type == "Single_TakePhoto"; });
+                    item.Title = popupSelectorModel.Title;
+                    item.Description = popupSelectorModel.Description;
+                    item.CTA = popupSelectorModel.CTA;
                 }
                 else
                 {
-                    item.Title = "How do I take these photos?";
                     if (isOneMissing)
                     {
-                        item.Description = String.Format("You'll need to submit 1 meter reading value <strong>({0})</strong>.<br><br>Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.", secondParam);
+                        PopupSelectorModel popupSelectorModel = popupSelectorModels.Find(model => { return model.Type == "Multi_TakePhoto_One_Missing"; });
+                        item.Title = popupSelectorModel.Title;
+                        item.Description = popupSelectorModel.Description;
+                        item.CTA = popupSelectorModel.CTA;
                     }
                     else
                     {
-                        item.Description = String.Format("You'll need to submit {0} different meter reading values <strong>({1}).</strong><br/><br/>Stand close to your meter.You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it.</strong>Ensure the numbers are clear and there is no glare, shadow or distortion.", firstParam, secondParam);
+                        PopupSelectorModel popupSelectorModel = popupSelectorModels.Find(model => { return model.Type == "Multi_TakePhoto"; });
+                        item.Title = popupSelectorModel.Title;
+                        item.Description = String.Format(popupSelectorModel.Description, firstParam, secondParam);
+                        item.CTA = popupSelectorModel.CTA;
                     }
-                    item.CTA = "Got It!";
                 }
             }
             return item;
@@ -128,24 +134,30 @@ namespace myTNB_Android.Src.Base
             }
             else
             {
+                List<PopupSelectorModel> popupSelectorModels = Utility.GetTooltipSelectorModel("SSMRCaptureMeter", "SMRPhotoPopUpDetails");
                 if (isSinglePhase)
                 {
-                    item.Title = "Uploading from your album?";
-                    item.Description = "Be sure to upload <strong>a straight-facing photo containing the value</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.";
-                    item.CTA = "Got It!";
+                    PopupSelectorModel popupSelectorModel = popupSelectorModels.Find(model => { return model.Type == "Single_UploadPhoto"; });
+                    item.Title = popupSelectorModel.Title;
+                    item.Description = popupSelectorModel.Description;
+                    item.CTA = popupSelectorModel.CTA;
                 }
                 else
                 {
-                    item.Title = "Uploading from your album?";
                     if (isOneMissing)
                     {
-                        item.Description = String.Format("You'll need to submit 1 meter reading value <strong>({0})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.", secondParam);
+                        PopupSelectorModel popupSelectorModel = popupSelectorModels.Find(model => { return model.Type == "Multi_UploadPhoto_One_Missing"; });
+                        item.Title = popupSelectorModel.Title;
+                        item.Description = popupSelectorModel.Description;
+                        item.CTA = popupSelectorModel.CTA;
                     }
                     else
                     {
-                        item.Description = String.Format("You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.", firstParam, secondParam);
+                        PopupSelectorModel popupSelectorModel = popupSelectorModels.Find(model => { return model.Type == "Multi_UploadPhoto"; });
+                        item.Title = popupSelectorModel.Title;
+                        item.Description = String.Format(popupSelectorModel.Description, firstParam, secondParam);
+                        item.CTA = popupSelectorModel.CTA;
                     }
-                    item.CTA = "Got It!";
                 }
             }
             return item;

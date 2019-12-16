@@ -202,7 +202,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             linearLayout.AddView(new CropAreaView(Context, this.Activity));
 
             takePhotoNoteView = view.FindViewById<TextView>(Resource.Id.take_photo_note);
-            takePhotoNoteView.Text = GetString(Resource.String.ssmr_single_take_photo_note);
+            takePhotoNoteView.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "singleTakePhotoDescription");
             takePhotoNoteView.BringToFront();
 
             TextViewUtils.SetMuseoSans300Typeface(takePhotoNoteView);

@@ -19,11 +19,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectAccountActivity : BaseToolbarAppCompatActivity
+    public class SelectAccountActivity : BaseActivityCustom
     {
 
         ListView listView;
         private AccountType selectedAccountType;
+        private string PAGE_ID = "AddAccount";
 
         private AccountTypeAdapter accountType;
         private List<AccountType> acctTypes = new List<AccountType>();
@@ -41,13 +42,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
             }
 
+            SetToolBarTitle(GetLabelByLanguage("selectAccountType"));
             AccountType Residential = new AccountType();
             Residential.Id = "1";
-            Residential.Type = "Residential";
+            Residential.Type = GetLabelByLanguage("residential");
 
             AccountType Commercial = new AccountType();
             Commercial.Id = "2";
-            Commercial.Type = "Commercial";
+            Commercial.Type = GetLabelByLanguage("commercial");
 
             //AccountType Government = new AccountType();
             //Government.Id = "3";
@@ -149,6 +151,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

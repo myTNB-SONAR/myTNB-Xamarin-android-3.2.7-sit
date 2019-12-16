@@ -166,6 +166,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
+                addAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
                 addAccount.Click += delegate
                 {
                     CallValidateAccountService();
@@ -212,7 +213,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "1";
-                Individual.Type = "Residential";
+                Individual.Type = Utility.GetLocalizedLabel("AddAccount", "residential");
                 Individual.IsSelected = true;
                 selectedAccountType = Individual;
                 accountType.Text = selectedAccountType.Type;
@@ -242,7 +243,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     if (e.HasFocus)
                     {
                         textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }
                 };
 
@@ -372,7 +373,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
                 else
                 {
-                    edtAccountNo.Error = "Account already added";
+                    edtAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage");
                     edtAccountNo.RequestFocus();
                 }
             }
@@ -396,7 +397,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             View v = mSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -467,7 +468,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowInvalidAccountNumberError()
         {
             textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = GetString(Resource.String.add_account_number_validation_error);
+            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -580,7 +581,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowSameAccountNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
         }
     }
 }

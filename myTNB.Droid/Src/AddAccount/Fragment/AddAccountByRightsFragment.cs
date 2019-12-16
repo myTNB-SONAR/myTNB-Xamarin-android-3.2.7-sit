@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByRightsMessage");
             txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithICMessage");
-            txtNonOwnerRights.TextFormatted = (GetHtmlText(Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithoutICMessage"), new ImgSrcGetter(Activity)));
+            txtNonOwnerRights.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithoutICMessage"));
             txtYes.Text = Utility.GetLocalizedLabel("Common","yes") + ",";
             txtNo.Text = Utility.GetLocalizedLabel("Common","no") + ",";
 
@@ -161,6 +161,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     output.Append("\n\t");
                 }
+            }
+        }
+
+        private ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
             }
         }
     }

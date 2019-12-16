@@ -218,7 +218,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 NewAccount item = accountList[position];
                 mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle("Remove Account")
+                  .SetTitle(GetLabelByLanguage("removeAcct"))
                   .SetMessage("Are you sure! Remove " + item.accountNumber + " from the list ?")
                   .SetPositiveButton("Remove", (senderAlert, args) =>
                   {
@@ -327,6 +327,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
                 btnAddAnotherAccount.Text = GetLabelByLanguage("addAnotherAcct");
                 btnConfirm.Text = GetLabelCommonByLanguage("confirm");
+                textAdditionalAcoount.Text = GetLabelByLanguage("additionalAccts");
 
                 adapter = new AccountListAdapter(this, accountList);
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
@@ -807,8 +808,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mErrorMessageSnackBar.Dismiss();
             }
 
-            mErrorMessageSnackBar = Snackbar.Make(rootView, "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            mErrorMessageSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -827,7 +828,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -882,7 +883,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             }
                             else
                             {
-                                ShowErrorMessage("Account already added!!");
+                                ShowErrorMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"));
                             }
                         }
 

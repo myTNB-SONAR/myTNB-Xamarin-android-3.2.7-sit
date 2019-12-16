@@ -463,7 +463,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             else
             {
                 this.mView.ShowProgressDialog();
-                this.mView.OnCheckUserReward();
             }
         }
 
@@ -1082,21 +1081,28 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
                 GetUserRewardsResponse response = await this.mApi.GetUserRewards(request, new System.Threading.CancellationTokenSource().Token);
 
-                if (response != null && response.Data != null && response.Data.ErrorCode == "7200"
-                    && response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                 {
-                    userList = response.Data.Data.CurrentList;
+                    if (response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
+                    {
+                        userList = response.Data.Data.CurrentList;
+                    }
+                    else
+                    {
+                        userList = new List<AddUpdateRewardModel>();
+                    }
+                    CheckRewardsCache();
                 }
                 else
                 {
-                    userList = new List<AddUpdateRewardModel>();
+                    this.mView.OnCheckUserRewardApiFailed();
                 }
-                CheckRewardsCache();
+                
             }
             catch (Exception e)
             {
                 userList = new List<AddUpdateRewardModel>();
-                CheckRewardsCache();
+                this.mView.OnCheckUserRewardApiFailed();
                 Utility.LoggingNonFatalError(e);
             }
         }
