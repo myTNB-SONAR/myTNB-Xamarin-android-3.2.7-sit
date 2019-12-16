@@ -311,7 +311,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                             {
                                                 string timeStamp = readDate.Substring(startIndex, lengthOfId);
                                                 DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                readDate = dateTimeParse.ToString();
+                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                                                readDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
                                             }
                                         }
                                         mRewardsEntity.UpdateReadItem(checkList[j].ID, found.Read, readDate);
@@ -329,7 +330,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                             {
                                                 string timeStamp = favDate.Substring(startIndex, lengthOfId);
                                                 DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                favDate = dateTimeParse.ToString();
+                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                                                favDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
                                             }
                                         }
                                         mRewardsEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, favDate);
@@ -351,7 +353,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                             {
                                                 string timeStamp = redeemDate.Substring(startIndex, lengthOfId);
                                                 DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                redeemDate = dateTimeParse.ToString();
+                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                                                redeemDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
                                             }
                                         }
                                         mRewardsEntity.UpdateIsUsedItem(checkList[j].ID, found.Redeemed, redeemDate);
