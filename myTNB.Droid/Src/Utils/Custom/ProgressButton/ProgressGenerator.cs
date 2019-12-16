@@ -71,8 +71,17 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
 
                 activity.RunOnUiThread(() =>
                 {
-                    action = () => UpdateProgress(button, 0);
-                    messageHandler.PostDelayed(action, generateDelay());
+                    try
+                    {
+                        action = () => UpdateProgress(button, 0);
+                        messageHandler.PostDelayed(action, generateDelay());
+                    }
+                    catch (System.ObjectDisposedException e)
+                    {
+                        messageHandler = new Handler();
+                        messageHandler.PostDelayed(action, generateDelay());
+                        Utility.LoggingNonFatalError(e);
+                    }
                 });
             }
             catch (Exception e)

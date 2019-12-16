@@ -122,6 +122,7 @@ namespace myTNB_Android.Src.RegisterValidation
 
                 txtInfoTitle.Text = string.Format(GetLabelByLanguage("otpRegistration"), entity.MobileNo);
                 txtDidntReceive.Text = GetLabelByLanguage("smsNotReceived");
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -131,7 +132,7 @@ namespace myTNB_Android.Src.RegisterValidation
                 //pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
 
                 Snackbar mPinSentInfo = Snackbar.Make(rootView,
-                    GetString(Resource.String.registration_validation_snackbar_sms_sent_msg),
+                    Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
                 mPinSentInfo.Show();
             }
@@ -318,6 +319,7 @@ namespace myTNB_Android.Src.RegisterValidation
             {
                 btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(30)";
                 btnResend.Visibility = ViewStates.Gone;
+                OnCompleteResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 OnCompleteResend.Visibility = ViewStates.Visible;
                 btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
@@ -408,6 +410,7 @@ namespace myTNB_Android.Src.RegisterValidation
             {
                 OnCompleteResend.Visibility = ViewStates.Gone;
                 btnResend.Visibility = ViewStates.Visible;
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
                 btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                 progressGenerator.Progress = 0;
