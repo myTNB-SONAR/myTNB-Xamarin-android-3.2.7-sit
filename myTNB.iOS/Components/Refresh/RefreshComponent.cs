@@ -19,9 +19,7 @@ namespace myTNB
         public RefreshComponent(string message, string btnTitle = ""
             , Action action = null, bool isSolidCTABG = true, string image = "")
         {
-            _image = string.IsNullOrEmpty(image) || string.IsNullOrWhiteSpace(image)
-                ? IsPlannedDownTime ? RefreshConstants.IMG_PlannedDowntime : RefreshConstants.IMG_RefreshIcon
-                : image;
+            _image = image;
             _message = message;
             _btnTitle = btnTitle;
             _action = action;
@@ -39,7 +37,9 @@ namespace myTNB
             UIImageView imgView = new UIImageView(new CGRect((width - ScaleUtility.GetScaledWidth(70)) / 2
                 , ScaleUtility.GetScaledHeight(24), ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledWidth(70)))
             {
-                Image = UIImage.FromBundle(_image ?? RefreshConstants.IMG_RefreshIcon)
+                Image = UIImage.FromBundle(string.IsNullOrEmpty(_image) || string.IsNullOrWhiteSpace(_image)
+                    ? IsPlannedDownTime ? RefreshConstants.IMG_PlannedDowntime : RefreshConstants.IMG_RefreshIcon
+                    : _image)
             };
 
             UILabel lblMessage = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(16)
