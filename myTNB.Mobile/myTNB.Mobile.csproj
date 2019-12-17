@@ -32,6 +32,7 @@
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\Usage\" />
+    <Folder Include="Resources\TnC\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Notification\NotificationInfo_1001 %28copy%29.json" />
@@ -43,6 +44,8 @@
     <None Remove="Resources\Notification\NotificationInfo_1099 %283rd copy%29.json" />
     <None Remove="Resources\Language\Language_EN.json" />
     <None Remove="Resources\Language\Language_MS.json" />
+    <None Remove="Resources\TnC\TermsAndConditions_EN.txt" />
+    <None Remove="Resources\TnC\TermsAndConditions_MS.txt" />
     <None Remove="Resources\Notification\GetUserNotifications.json" />
     <None Remove="Resources\Notification\NotificationInfo_10009.json" />
     <None Remove="Resources\Notification\NotificationInfo_1001.json" />
@@ -75,6 +78,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
+    <EmbeddedResource Include="Resources\TnC\TermsAndConditions_EN.txt" />
+    <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Notification\GetUserNotifications.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10009.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1001.json" />

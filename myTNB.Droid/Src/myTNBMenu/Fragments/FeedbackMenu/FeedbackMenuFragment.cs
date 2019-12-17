@@ -77,6 +77,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         MaterialDialog progressDialog;
         LoadingOverlay loadingOverlay;
 
+        [BindView(Resource.Id.feedbackMenuHeaderImage)]
+        ImageView feedbackMenuHeaderImage;
+        
+
         FeedbackMenuContract.IUserActionsListener userActionsListener;
         FeedbackMenuPresenter mPresenter;
 
@@ -122,6 +126,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                         txtFeedbackOthers);
 
             ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
+
+            feedbackMenuHeaderImage.Visibility = ViewStates.Gone;
 
             this.userActionsListener.Start();
 

@@ -264,6 +264,15 @@ namespace myTNB_Android.Src.Login.MVP
                                 {
                                     if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                                     {
+                                        try
+                                        {
+                                            UserNotificationEntity.RemoveAll();
+                                        }
+                                        catch (System.Exception ne)
+                                        {
+                                            Utility.LoggingNonFatalError(ne);
+                                        }
+
                                         foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                                         {
                                             // tODO : SAVE ALL NOTIFICATIONs
