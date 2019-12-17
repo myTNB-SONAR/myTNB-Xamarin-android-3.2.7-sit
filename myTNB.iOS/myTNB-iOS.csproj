@@ -2665,7 +2665,6 @@
     <BundleResource Include="Firebase\prod\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Release'">
       <LogicalName>GoogleService-Info.plist</LogicalName>
     </BundleResource>
-    <BundleResource Include="Resources\FAQ.json" />
     <BundleResource Include="Resources\Fonts\MuseoSans_500.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
