@@ -78,6 +78,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         [BindView(Resource.Id.spaceOthers)]
         View spaceOthers;
 
+        [BindView(Resource.Id.feedbackMenuHeaderImage)]
+        ImageView feedbackMenuHeaderImage;
 
 
         FeedbackPreLoginMenuContract.IUserActionsListener userActionsListener;
@@ -130,6 +132,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
 
                 mPresenter = new FeedbackPreLoginMenuPresenter(this, this.DeviceId());
+
+                feedbackMenuHeaderImage.Visibility = ViewStates.Gone;
+
                 this.userActionsListener.Start();
             }
             catch (Exception e)
