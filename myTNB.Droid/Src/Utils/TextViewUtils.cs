@@ -9,7 +9,6 @@ namespace myTNB_Android.Src.Utils
 
         public static string MuseoSans300 = "MuseoSans_300.otf";
         public static string MuseoSans500 = "MuseoSans_500.otf";
-        public static string MuseoSans700 = "MuseoSans_700.otf";
 
 
         public static void SetTypeface(string family, params EditText[] editTexts)
@@ -28,11 +27,6 @@ namespace myTNB_Android.Src.Utils
         public static void SetMuseoSans500Typeface(params EditText[] editTexts)
         {
             SetTypeface(MuseoSans500, editTexts);
-        }
-
-        public static void SetMuseoSans700Typeface(params EditText[] editTexts)
-        {
-            SetTypeface(MuseoSans700, editTexts);
         }
 
 
@@ -54,11 +48,6 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, textViews);
         }
 
-        public static void SetMuseoSans700Typeface(params TextView[] textViews)
-        {
-            SetTypeface(MuseoSans700, textViews);
-        }
-
 
         public static void SetTypeface(string family, params TextInputLayout[] textInputLayouts)
         {
@@ -78,11 +67,6 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, textInputLayouts);
         }
 
-        public static void SetMuseoSans700Typeface(params TextInputLayout[] textInputLayouts)
-        {
-            SetTypeface(MuseoSans700, textInputLayouts);
-        }
-
 
         public static void SetTypeface(string family, params Button[] buttons)
         {
@@ -100,11 +84,6 @@ namespace myTNB_Android.Src.Utils
         public static void SetMuseoSans500Typeface(params Button[] buttons)
         {
             SetTypeface(MuseoSans500, buttons);
-        }
-
-        public static void SetMuseoSans700Typeface(params Button[] buttons)
-        {
-            SetTypeface(MuseoSans700, buttons);
         }
 
     }

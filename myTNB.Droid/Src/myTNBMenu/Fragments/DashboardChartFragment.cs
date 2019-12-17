@@ -1,4 +1,4 @@
-using AFollestad.MaterialDialogs;
+﻿using AFollestad.MaterialDialogs;
 using Android.Animation;
 using Android.App;
 using Android.Content;
@@ -839,9 +839,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
-                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
+                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle, txtDayViewZoomInIndicator);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, newAccountContent, txtTariffBlockLegendDisclaimer);
-                TextViewUtils.SetMuseoSans700Typeface(txtDayViewZoomInIndicator);
 
 
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");

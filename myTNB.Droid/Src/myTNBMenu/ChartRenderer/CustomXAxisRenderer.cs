@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             {
                                 try
                                 {
-                                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans700);
+                                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                                     MAxisLabelPaint.SetTypeface(plain);
                                 }
                                 catch (System.Exception e)
@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             {
                                 try
                                 {
-                                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans700);
+                                    Typeface plain = Typeface.CreateFromAsset(currentActivity.Assets, "fonts/" + TextViewUtils.MuseoSans500);
                                     MAxisLabelPaint.SetTypeface(plain);
                                 }
                                 catch (System.Exception e)

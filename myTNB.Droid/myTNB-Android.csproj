@@ -4486,7 +4486,6 @@
     <AndroidResource Include="Resources\layout\ViewBillReceiptNewDesign.axml" />
     <AndroidResource Include="Resources\layout\ViewBillReceiptAccountDetails.axml" />
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
-    <AndroidAsset Include="Assets\fonts\MuseoSans_700.otf" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
