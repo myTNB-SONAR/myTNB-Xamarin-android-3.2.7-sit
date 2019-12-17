@@ -263,7 +263,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt),
+                Text = LanguageUtility.GetCommonI18NValue(isSSMRData ? SSMRConstants.I18N_ImReady : Constants.Common_GotIt),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };
