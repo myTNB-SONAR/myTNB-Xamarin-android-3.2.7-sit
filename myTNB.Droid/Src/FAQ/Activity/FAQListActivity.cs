@@ -209,6 +209,14 @@ namespace myTNB_Android.Src.FAQ.Activity
                                 ShowFAQ(true);
                             }
                         }
+                        else
+                        {
+                            this.userActionsListener.OnGetFAQs();
+                        }
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetFAQs();
                     }
 
                 }
@@ -219,6 +227,7 @@ namespace myTNB_Android.Src.FAQ.Activity
             }
             catch (Exception e)
             {
+                ShowFAQ(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
