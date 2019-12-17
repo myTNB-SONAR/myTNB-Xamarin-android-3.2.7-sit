@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -663,6 +664,8 @@ namespace myTNB
                            GetI18NValue = GetI18NValue,
                            OnShowFilter = ShowFilterScreen
                        };
+
+                       //Refresh Start
                        InvokeInBackground(async () =>
                        {
                            List<Task> taskList = new List<Task>
@@ -671,19 +674,12 @@ namespace myTNB
                                GetAccountBillPayHistory()
                            };
                            await Task.WhenAll(taskList.ToArray());
-                           InvokeOnMainThread(() =>
-                           {
-                               if (_accountCharges != null && _billHistory != null && _accountCharges.d != null && _billHistory.d != null)
-                               {
-
-                               }
-                               else
-                               {
-                                   //FullScreen Refresh
-                               }
-                           });
-
-
+                           EvaluateResponse();
+                       });
+                       //Refresh End
+                       /*
+                       InvokeInBackground(async () =>
+                       {
                            isGetAcctChargesLoading = true;
                            _accountCharges = await GetAccountsCharges();
                            InvokeOnMainThread(() =>
@@ -740,12 +736,82 @@ namespace myTNB
                                }
                            });
                        });
+                       */
                    }
                    else
                    {
                        DisplayNoDataAlert();
                    }
                });
+            });
+        }
+
+        private void EvaluateResponse()
+        {
+            InvokeOnMainThread(() =>
+            {
+                if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                    && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
+                {
+                    //Todo: Display Top Data
+                    if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
+                        && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
+                    {
+                        //Todo: Display Bot Data
+                        Debug.WriteLine("Display Top and Bot Data");
+                    }
+                    else
+                    {
+                        if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsPlannedDownTime)
+                        {
+                            //Todo: Display Bot as Planned
+                            Debug.WriteLine("Display Bot as Planned");
+                        }
+                        else
+                        {
+                            //Todo: Display Bot as Refresh
+                            Debug.WriteLine("Display Bot as Refresh");
+                        }
+                    }
+                }
+                else if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
+                    && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
+                {
+                    //Todo: Display Bot Data
+                    if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                        && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
+                    {
+                        //Todo: Display Top Data
+                        Debug.WriteLine("Display Top and Bot Data");
+                    }
+                    else
+                    {
+                        if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsPlannedDownTime)
+                        {
+                            //Todo: Display Top as Planned
+                            Debug.WriteLine("Display Bot as Planned");
+                        }
+                        else
+                        {
+                            //Todo: Display Top as Refresh
+                            Debug.WriteLine("Display Bot as Refresh");
+                        }
+                    }
+                }
+                else
+                {
+                    if (_accountCharges.d.IsPlannedDownTime && _billHistory.d.IsPlannedDownTime)
+                    {
+                        //Todo: Display Planned
+                        Debug.WriteLine("Display Full Planned");
+                    }
+                    else
+                    {
+                        //Todo: Display Refresh
+                        Debug.WriteLine("Display Full Refresh");
+                    }
+                }
+
             });
         }
 
