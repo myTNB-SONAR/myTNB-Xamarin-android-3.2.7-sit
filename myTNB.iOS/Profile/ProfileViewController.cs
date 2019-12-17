@@ -237,7 +237,7 @@ namespace myTNB
                     , AppVersionHelper.GetAppShortVersion());
                 if (!TNBGlobal.IsProduction)
                 {
-                    appVersion += string.Format("({0})", AppVersionHelper.GetBuildVersion());
+                    appVersion += string.Format("({0}): {1}", AppVersionHelper.GetBuildVersion(), DataManager.DataManager.SharedInstance.UDID);
                 }
                 return appVersion;
             }

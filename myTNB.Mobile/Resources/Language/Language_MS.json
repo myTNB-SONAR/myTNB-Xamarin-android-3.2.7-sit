@@ -674,7 +674,7 @@
   "VerifyPin": {
     "title": "Sahkan PIN",
     "smsNotReceived": "Tidak terima SMS?",
-    "resendPinMessage": "SMS mengandungi PIN pengaktifan telah dihantar ke nombor anda.",
+    "resendPinMessage": "SMS yang mengandungi kod OTP telah dihantar ke nombor anda.",
     "otpMobileUpdate": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",
     "otpRegistration": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}."
   },
@@ -775,7 +775,7 @@
     "title": "Maklum Balas"
   },
   "FeedbackForm": {
-    "attachPhotoTitle": "LAMPIRKAN GAMBAR/TANGKAP SKRIN (PILIHAN)",
+    "attachPhotoTitle": "SERTAKAN GAMBAR (TIDAK WAJIB)",
     "maxFile": "Maksimum 2 fail",
     "camera": "Kamera",
     "cameraRoll": "Roll Kamera",
@@ -804,7 +804,7 @@
     "feedbackStatus": "Status Maklum Balas",
     "dateTimeTitle": "Tarikh & Masa Maklum Balas ",
     "feedback": "Maklum Balas",
-    "photoTitle": "Gambar / Tangkap Skrin",
+    "photoTitle": "Gambar",
     //Not Supported by MS Translation Start
     "state": "State",
     "feedbackType": "Feedback Type",
