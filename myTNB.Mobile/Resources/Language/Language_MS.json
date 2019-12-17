@@ -280,7 +280,7 @@
     "headerDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
     "singleHeaderDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
     "imReady": "Saya Sedia!",
-    "note": "Nota: Sila genapkan nombor sekiranya nilai bacaan pada meter menunjukkan titik perpuluhan.",
+    "note": "Nota: Sila gunakan nombor sekiranya nilai bacaan pada meter menunjukkan titik perpuluhan.",
     "previousMeterReading": "Bacaan Meter Sebelumnya",
     "submitReading": "Hantar Bacaan",
     "takeOrUploadPhoto": "Tangkap / Muat Naik Gambar",
