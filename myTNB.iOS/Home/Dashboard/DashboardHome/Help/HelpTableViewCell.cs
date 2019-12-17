@@ -140,7 +140,7 @@ namespace myTNB
                 gradientBG.Layer.InsertSublayer(gradientLayer, 0);
 
                 AddCardShadow(ref helpCardView);
-                UILabel lblHelp = new UILabel(new CGRect(GetScaledWidth(8F), GetScaledHeight(12F), helpCardView.Frame.Width - GetScaledWidth(16F), helpCardView.Frame.Height - GetScaledHeight(24F)))
+                UILabel lblHelp = new UILabel(new CGRect(GetScaledWidth(6F), GetScaledHeight(12F), helpCardView.Frame.Width - GetScaledWidth(12F), helpCardView.Frame.Height - GetScaledHeight(24F)))
                 {
                     TextColor = UIColor.White,
                     Font = TNBFont.MuseoSans_12_500,
