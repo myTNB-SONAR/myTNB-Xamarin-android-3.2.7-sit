@@ -133,6 +133,8 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
 
                 progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
+                txtTitle.Text = "";
+
                 GetDataFromSiteCore();
             }
             catch (Exception e)
