@@ -155,7 +155,12 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
 
             try
             {
-                var updateMobileResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber));
+                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber);
+                if (request != null)
+                {
+                    sendUpdatePhoneTokenSMSRequest.SetUserName(request.UserName);
+                }
+                var updateMobileResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(sendUpdatePhoneTokenSMSRequest);
 
                 if (mView.IsActive())
                 {

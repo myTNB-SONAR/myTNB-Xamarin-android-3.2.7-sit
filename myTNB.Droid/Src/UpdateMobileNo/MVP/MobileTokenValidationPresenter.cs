@@ -94,9 +94,19 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 oldPhoneNo = entity.MobileNo;
             }
 
+            if (request != null)
+            {
+                this.authenticationRequest = request;
+            }
+
             try
             {
-                var verifyTokenResponse = await ServiceApiImpl.Instance.UpdatePhoneNumber(new UpdateNewPhoneNumberRequest(oldPhoneNo, newPhone, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)));
+                UpdateNewPhoneNumberRequest updateNewPhoneNumberRequest = new UpdateNewPhoneNumberRequest(oldPhoneNo, newPhone, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4));
+                if (this.authenticationRequest != null)
+                {
+                    updateNewPhoneNumberRequest.SetUserName(this.authenticationRequest.UserName);
+                }
+                var verifyTokenResponse = await ServiceApiImpl.Instance.UpdatePhoneNumber(updateNewPhoneNumberRequest);
 
                 if (mView.IsActive())
                 {
@@ -202,7 +212,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             try
             {
-                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber));
+                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber);
+                if (this.authenticationRequest != null)
+                {
+                    sendUpdatePhoneTokenSMSRequest.SetUserName(this.authenticationRequest.UserName);
+                }
+                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(sendUpdatePhoneTokenSMSRequest);
 
                 if (!verificationResponse.IsSuccessResponse())
                 {
@@ -270,7 +285,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             try
             {
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(request.ClientType,request.Password));
+                UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(request.ClientType, request.Password);
+                userAuthenticateRequest.SetUserName(request.UserName);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
 
                 if (!userResponse.IsSuccessResponse())
                 {

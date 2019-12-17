@@ -47,6 +47,7 @@
                             android:singleLine="true"
                             android:drawableLeft="@drawable/placeholder_account_no"
                             android:inputType="number"
+                            android:maxLength="12"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
                             android:id="@+id/account_no_edittext" />
                     </android.support.design.widget.TextInputLayout>
