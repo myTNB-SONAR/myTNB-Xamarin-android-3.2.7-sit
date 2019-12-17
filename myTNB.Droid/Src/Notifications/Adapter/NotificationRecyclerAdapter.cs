@@ -54,8 +54,8 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            SimpleDateFormat simpleDateTimeParser = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-            SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd MMM yyyy");
+            SimpleDateFormat simpleDateTimeParser = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a", new Locale(LanguageUtil.GetAppLanguage()));
+            SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
             NotificationRecyclerViewHolder viewHolder = holder as NotificationRecyclerViewHolder;
             UserNotificationData notificationData = GetItemObject(position);
             try
