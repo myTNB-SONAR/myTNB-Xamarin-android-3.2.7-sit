@@ -240,12 +240,18 @@ namespace myTNB_Android.Src.UpdateMobileNo
                     return;
                 }
 
-                if (TextUtils.IsEmpty(txt_3) || !TextUtils.IsDigitsOnly(txt_3))
+                if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
                 {
                     return;
                 }
-
-                this.userActionsListener.OnVerifyToken(txt_1, txt_2, txt_3, txt_4, newPhoneNo, loginRequest, fromAppLaunch, verifyPhone);
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    this.userActionsListener.OnVerifyToken(txt_1, txt_2, txt_3, txt_4, newPhoneNo, loginRequest, fromAppLaunch, verifyPhone);
+                }
+                else
+                {
+                    ShowNoInternetSnackbar();
+                }
             }
             catch (Exception e)
             {
@@ -308,9 +314,15 @@ namespace myTNB_Android.Src.UpdateMobileNo
         [OnClick(Resource.Id.re_send_btn)]
         void OnResend(object sender, EventArgs eventArgs)
         {
-            // TODO : UPDATE THIS TO RESEND ASYNC
-            this.userActionsListener.ResendAsync(newPhoneNo);
-
+            if (ConnectionUtils.HasInternetConnection(this))
+            {
+                // TODO : UPDATE THIS TO RESEND ASYNC
+                this.userActionsListener.ResendAsync(newPhoneNo);
+            }
+            else
+            {
+                ShowNoInternetSnackbar();
+            }
         }
 
         #region OnCompleteListener implementation
@@ -469,7 +481,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -489,7 +501,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -509,7 +521,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -532,7 +544,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -555,7 +567,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(resourceStringId), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -582,7 +594,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(Resource.String.runtime_permission_sms_received_rationale), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -719,6 +731,24 @@ namespace myTNB_Android.Src.UpdateMobileNo
                     GC.Collect();
                     break;
             }
+        }
+
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            mNoInternetSnackbar.Show();
         }
     }
 }

@@ -162,7 +162,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SMRListHeader.Text = GetLabelByLanguage("headerTitle");
                 btnEnableSubmitMeter.Text = GetLabelByLanguage("enableSSMRCTA");
                 btnDisableSubmitMeter.Text = GetLabelByLanguage("disableSSMRCTA");
-                EmptySMRHistoryMessage.Text = GetString(Resource.String.ssmr_empty_history_message);
+                EmptySMRHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
                 refreshMsg.Text = GetLabelCommonByLanguage("refreshDescription");
                 btnRefresh.Text = GetLabelCommonByLanguage("refreshNow");
                 NonSMRNoteContent.Text = GetLabelByLanguage("enableSSMRDescription");
