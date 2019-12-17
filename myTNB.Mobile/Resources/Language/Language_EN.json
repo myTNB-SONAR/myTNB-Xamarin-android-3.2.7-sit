@@ -427,7 +427,7 @@
     ]
   },
   "BillDetails": {
-    "title": "Bill Details",
+    "title": "Details",
     "billDetails": "My Bill Details",
     "outstandingCharges": "My outstanding charges",
     "billThisMonth": "My latest bill",
