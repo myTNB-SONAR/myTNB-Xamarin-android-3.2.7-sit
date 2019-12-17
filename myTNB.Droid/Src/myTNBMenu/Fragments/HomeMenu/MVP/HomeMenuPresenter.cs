@@ -2684,7 +2684,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.BottomLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialAccountTitle"),//"Your Accounts at a glance.",
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialSingleAcctTitle"),//"Your Accounts at a glance.",
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialSingleAcctDesc"),//"View a summary of all your linked<br/>electricity accounts here.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
