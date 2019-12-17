@@ -125,13 +125,16 @@ namespace myTNB
                                            , _viewTitleSection.Frame.GetMaxY(), ViewWidth, ScaleUtility.GetScaledHeight(220)));
                                         _uiScrollView.AddSubview(_refreshViewContainer);
 
-                                        RefreshComponent refreshComponent = new RefreshComponent(_accountCharges?.d?.RefreshMessage
-                                            ?? GetErrorI18NValue(Constants.Refresh_BillDetails), GetCommonI18NValue(Constants.Common_RefreshNow)
+                                        string message = _accountCharges != null && _accountCharges.d != null && _accountCharges.d.RefreshMessage.IsValid()
+                                            ? _accountCharges.d.RefreshMessage : GetErrorI18NValue(Constants.Refresh_BillDetails);
+
+                                        RefreshComponent refreshComponent = new RefreshComponent(message
+                                            , GetCommonI18NValue(Constants.Common_RefreshNow)
                                             , OnRefreshCall)
                                         {
                                             PageName = PageName,
-                                            IsPlannedDownTime = _accountCharges != null && _accountCharges.d != null ? false
-                                                : _accountCharges.d.IsPlannedDownTime
+                                            IsPlannedDownTime = _accountCharges != null && _accountCharges.d != null ? _accountCharges.d.IsPlannedDownTime
+                                                : false
                                         };
                                         _refreshViewContainer.AddSubview(refreshComponent.GetUI(_refreshViewContainer));
                                     }

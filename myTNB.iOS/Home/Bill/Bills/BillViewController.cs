@@ -931,35 +931,6 @@ namespace myTNB
         }
         #endregion
 
-        #region Services
-        private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
-        {
-            ServiceManager serviceManager = new ServiceManager();
-            object request = new
-            {
-                serviceManager.usrInf,
-                accounts = new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty },
-                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
-            };
-            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
-            return response;
-        }
-
-        private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
-        {
-            ServiceManager serviceManager = new ServiceManager();
-            object request = new
-            {
-                serviceManager.usrInf,
-                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty,
-                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
-                accountType = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount ? BillConstants.Param_RE : BillConstants.Param_UTIL
-            };
-            GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
-            return response;
-        }
-        #endregion
-
         #region Filter
         private List<string> GetHistoryFilterTypes(BillPayHistoriesDataModel billpayHistoryData)
         {
@@ -1040,9 +1011,37 @@ namespace myTNB
             };
             _historyTableView.ReloadData();
 
-            _imgFilter.Image = UIImage.FromBundle(index > 0 ? "IC-Action-Nav-Filtered" : "IC-Action-Nav-Unfiltered");
+            _imgFilter.Image = UIImage.FromBundle(index > 0 ? BillConstants.IMG_NavFiltered : BillConstants.IMG_NavUnfiltered);
+        }
+        #endregion
+
+        #region Services
+        private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                accounts = new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty },
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
+            };
+            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
+            return response;
         }
 
+        private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty,
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+                accountType = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount ? BillConstants.Param_RE : BillConstants.Param_UTIL
+            };
+            GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
+            return response;
+        }
         #endregion
     }
 }
