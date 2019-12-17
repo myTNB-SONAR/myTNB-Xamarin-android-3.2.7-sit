@@ -348,6 +348,15 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
                         if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                         {
+                            try
+                            {
+                                UserNotificationEntity.RemoveAll();
+                            }
+                            catch (System.Exception ne)
+                            {
+                                Utility.LoggingNonFatalError(ne);
+                            }
+
                             if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
                                 response.Data.ResponseData.UserNotificationList.Count > 0)
                             {

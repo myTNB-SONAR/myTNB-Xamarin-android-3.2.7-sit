@@ -386,6 +386,15 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
                                     {
+                                        try
+                                        {
+                                            UserNotificationEntity.RemoveAll();
+                                        }
+                                        catch (System.Exception ne)
+                                        {
+                                            Utility.LoggingNonFatalError(ne);
+                                        }
+
                                         foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                                         {
                                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
