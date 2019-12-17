@@ -356,7 +356,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
 
                 }
-                userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
 
                 btnAddAnotherAccount.Click += delegate
                 {
@@ -391,6 +390,15 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 };
 
                 AddAccountUtils.ClearList();
+
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
+                }
+                else
+                {
+                    ShowNoInternetSnackbar();
+                }
             }
             catch (Exception e)
             {
@@ -1183,6 +1191,24 @@ namespace myTNB_Android.Src.AddAccount.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            mNoInternetSnackbar.Show();
         }
     }
 }
