@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10.2dp"
+                    android:gravity="center"
                     android:text="@string/logout_rate_txt_title_info"
                     android:textColor="@color/powerBlue"
                     android:textSize="16sp" />
