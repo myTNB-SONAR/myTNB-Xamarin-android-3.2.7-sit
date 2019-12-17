@@ -149,6 +149,8 @@ namespace myTNB_Android.Src.Profile.Activity
                 ShowProgressDialog();
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                HomeMenuUtils.ResetAll();
                 UpdateLanguage();
             });
         }
