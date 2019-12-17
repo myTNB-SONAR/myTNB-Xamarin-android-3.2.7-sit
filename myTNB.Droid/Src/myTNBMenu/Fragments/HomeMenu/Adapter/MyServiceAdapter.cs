@@ -348,12 +348,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 newStringValue = Utility.GetLocalizedLabel("DashboardHome", "viewAdvice");
                                 if (isHasMoreThanOneREAccount)
                                 {
-                                    newStringValue += "s";
+                                    newStringValue = Utility.GetLocalizedLabel("DashboardHome", "viewAdvices");
                                 }
                             }
                             else if (isHasNonREAccount && isHasMoreThanOneNonREAccount && !isHasREAccount)
                             {
-                                newStringValue += "s";
+                                newStringValue = Utility.GetLocalizedLabel("DashboardHome", "viewEBills");
                             }
 
 
