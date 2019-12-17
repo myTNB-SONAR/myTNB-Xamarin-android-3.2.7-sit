@@ -34,8 +34,11 @@ namespace myTNB
             nfloat width = _parentView.Frame.Width;
             _refreshView = new UIView { BackgroundColor = UIColor.White };
 
-            UIImageView imgView = new UIImageView(new CGRect((width - ScaleUtility.GetScaledWidth(70)) / 2
-                , ScaleUtility.GetScaledHeight(24), ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledWidth(70)))
+            nfloat imgWidth = ScaleUtility.GetScaledWidth(IsPlannedDownTime ? 80 : 69);
+            nfloat imgHeight = ScaleUtility.GetScaledWidth(64);
+
+            UIImageView imgView = new UIImageView(new CGRect((width - imgWidth) / 2
+                , ScaleUtility.GetScaledHeight(24), imgWidth, imgHeight))
             {
                 Image = UIImage.FromBundle(string.IsNullOrEmpty(_image) || string.IsNullOrWhiteSpace(_image)
                     ? IsPlannedDownTime ? RefreshConstants.IMG_PlannedDowntime : RefreshConstants.IMG_RefreshIcon

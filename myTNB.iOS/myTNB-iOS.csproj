@@ -1245,6 +1245,9 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\feedback1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-PlannedDownTime.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-PlannedDownTime.imageset\group22%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-PlannedDownTime.imageset\group22%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1747,6 +1750,7 @@
     <Folder Include="Assets.xcassets\IC-Refresh.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\" />
+    <Folder Include="Assets.xcassets\IC-PlannedDownTime.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
