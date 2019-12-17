@@ -10,6 +10,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Runtime;
@@ -59,6 +60,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         private Snackbar mSnackBar;
         const string PAGE_ID = "ForgotPassword";
+        private LoadingOverlay loadingOverlay;
 
         public void ClearErrorMessages()
         {
@@ -328,10 +330,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             try
             {
-                if (mVerificationProgressDialog != null && !mVerificationProgressDialog.IsShowing)
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
-                    mVerificationProgressDialog.Show();
+                    loadingOverlay.Dismiss();
                 }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -343,9 +348,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             try
             {
-                if (mVerificationProgressDialog != null && mVerificationProgressDialog.IsShowing)
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
-                    mVerificationProgressDialog.Dismiss();
+                    loadingOverlay.Dismiss();
                 }
             }
             catch (Exception e)
