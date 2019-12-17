@@ -1,4 +1,4 @@
-using AFollestad.MaterialDialogs;
+﻿using AFollestad.MaterialDialogs;
 using Android.Animation;
 using Android.App;
 using Android.Content;
@@ -839,8 +839,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
-                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent, txtTariffBlockLegendDisclaimer);
+                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle, txtDayViewZoomInIndicator);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, newAccountContent, txtTariffBlockLegendDisclaimer);
+
 
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
                 btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
@@ -2245,6 +2246,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 XLabelsFormatter = new ChartsMonthFormatter(selectedHistoryData.ByMonth, mChart);
             }
 
+            CustomXAxisRenderer xAxisRenderer = new CustomXAxisRenderer(mChart.ViewPortHandler, mChart.XAxis, mChart.GetTransformer(YAxis.AxisDependency.Left))
+            {
+                barChart = mChart,
+                currentActivity = this.Activity,
+                isZoomIn = isZoomIn,
+                currentChartType = ChartType,
+                currentChartDataType = ChartDataType
+            };
+
+            mChart.SetXAxisRenderer(xAxisRenderer);
+
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
             xAxis.TextColor = Color.ParseColor("#ffffff");
@@ -2409,6 +2421,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
             }
+
+            CustomXAxisRenderer xAxisRenderer = new CustomXAxisRenderer(mChart.ViewPortHandler, mChart.XAxis, mChart.GetTransformer(YAxis.AxisDependency.Left))
+            {
+                barChart = mChart,
+                currentActivity = this.Activity,
+                isZoomIn = isZoomIn,
+                currentChartType = ChartType,
+                currentChartDataType = ChartDataType
+            };
+
+            mChart.SetXAxisRenderer(xAxisRenderer);
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;

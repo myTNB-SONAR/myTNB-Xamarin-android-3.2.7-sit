@@ -4199,6 +4199,7 @@
     <Compile Include="Src\MyTNBService\Response\GetLanguagePreferenceResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\SaveLanguagePreferenceResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SaveLanguagePreferenceRequest.cs" />
+    <Compile Include="Src\myTNBMenu\ChartRenderer\CustomXAxisRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
