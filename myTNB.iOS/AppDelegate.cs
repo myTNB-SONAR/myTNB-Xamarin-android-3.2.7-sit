@@ -227,46 +227,6 @@ namespace myTNB
             });
         }
 
-        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
-        {
-            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
-            {
-                if (url != null)
-                {
-                    string absoluteURL = url.ToString();
-                    if (absoluteURL.Contains("mytnbapp://rewards/rewardid"))
-                    {
-                        Regex regex = new Regex("\\brewardid.*\\b");
-                        Match match = regex.Match(absoluteURL);
-                        if (match.Success)
-                        {
-                            string rewardId = match.Value.Replace("rewardid=", "");
-                            DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = rewardId.IsValid();
-
-                            if (rewardId.IsValid())
-                            {
-                                RewardsCache.DeeplinkRewardId = rewardId;
-                                if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
-                                {
-                                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                                    var topVc = GetTopViewController(baseRootVc);
-                                    if (topVc != null)
-                                    {
-                                        if (!(topVc is RewardDetailsViewController))
-                                        {
-                                            RewardsServices.OpenRewardDetails(rewardId, topVc);
-                                        }
-                                    }
-                                    DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
         #region FCM
         public void DidRefreshRegistrationToken(Messaging messaging, string fcmToken)
         {
