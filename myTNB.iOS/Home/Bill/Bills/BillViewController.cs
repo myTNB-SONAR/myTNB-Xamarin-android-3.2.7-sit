@@ -666,18 +666,18 @@ namespace myTNB
                        };
 
                        //Refresh Start
-                       InvokeInBackground(async () =>
-                       {
-                           List<Task> taskList = new List<Task>
-                           {
-                               GetAccountsCharges(),
-                               GetAccountBillPayHistory()
-                           };
-                           await Task.WhenAll(taskList.ToArray());
-                           EvaluateResponse();
-                       });
+                       /* InvokeInBackground(async () =>
+                        {
+                            List<Task> taskList = new List<Task>
+                            {
+                                GetAccountsCharges(),
+                                GetAccountBillPayHistory()
+                            };
+                            await Task.WhenAll(taskList.ToArray());
+                            EvaluateResponse();
+                        });*/
                        //Refresh End
-                       /*
+
                        InvokeInBackground(async () =>
                        {
                            isGetAcctChargesLoading = true;
@@ -736,7 +736,7 @@ namespace myTNB
                                }
                            });
                        });
-                       */
+
                    }
                    else
                    {
@@ -753,12 +753,33 @@ namespace myTNB
                 if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
                     && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
                 {
+                    SetHeaderLoading(false);
+
                     //Todo: Display Top Data
+                    AccountChargesCache.SetData(_accountCharges);
+                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+
+                    isGetAcctChargesLoading = false;
+                    isGetAcctBillPayHistoryLoading = false;
+
                     if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                         && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
                     {
                         //Todo: Display Bot Data
                         Debug.WriteLine("Display Top and Bot Data");
+                        FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
+                        FilterIndex = 0;
+                        List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
+                        _historyTableView.Source = new BillHistorySource(historyList, false)
+                        {
+                            OnTableViewScroll = OnTableViewScroll,
+                            GetI18NValue = GetI18NValue,
+                            OnSelectBill = DisplayBillPDF,
+                            OnSelectPayment = DisplayReceipt,
+                            OnShowFilter = ShowFilterScreen
+                        };
+                        _historyTableView.ReloadData();
+                        CheckTutorialOverlay();
                     }
                     else
                     {
@@ -778,25 +799,38 @@ namespace myTNB
                     && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
                 {
                     //Todo: Display Bot Data
-                    if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
-                        && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
+                    FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
+                    FilterIndex = 0;
+                    List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
+                    _historyTableView.Source = new BillHistorySource(historyList, false)
                     {
-                        //Todo: Display Top Data
-                        Debug.WriteLine("Display Top and Bot Data");
+                        OnTableViewScroll = OnTableViewScroll,
+                        GetI18NValue = GetI18NValue,
+                        OnSelectBill = DisplayBillPDF,
+                        OnSelectPayment = DisplayReceipt,
+                        OnShowFilter = ShowFilterScreen
+                    };
+                    _historyTableView.ReloadData();
+
+                    /* if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                         && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
+                     {
+                         //Todo: Display Top Data
+                         Debug.WriteLine("Display Top and Bot Data");
+                     }
+                     else
+                     {*/
+                    if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsPlannedDownTime)
+                    {
+                        //Todo: Display Top as Planned
+                        Debug.WriteLine("Display Bot as Planned");
                     }
                     else
                     {
-                        if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsPlannedDownTime)
-                        {
-                            //Todo: Display Top as Planned
-                            Debug.WriteLine("Display Bot as Planned");
-                        }
-                        else
-                        {
-                            //Todo: Display Top as Refresh
-                            Debug.WriteLine("Display Bot as Refresh");
-                        }
+                        //Todo: Display Top as Refresh
+                        Debug.WriteLine("Display Bot as Refresh");
                     }
+                    //}
                 }
                 else
                 {
