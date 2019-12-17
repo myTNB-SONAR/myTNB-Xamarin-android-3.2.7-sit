@@ -201,6 +201,7 @@ namespace myTNB
                                 {
                                     imageView.Image = image;
                                 }
+                                if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
                                 imgLoadingView.RemoveFromSuperview();
                             });
                         }
@@ -209,6 +210,7 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
                                 imgLoadingView.RemoveFromSuperview();
                             });
                         }
@@ -221,6 +223,7 @@ namespace myTNB
                     InvokeOnMainThread(() =>
                     {
                         imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                        if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
                     });
                 }
             }
@@ -229,6 +232,7 @@ namespace myTNB
                 InvokeOnMainThread(() =>
                 {
                     imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                    if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
                 });
             }
 
@@ -255,7 +259,7 @@ namespace myTNB
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 Image = UIImage.FromBundle(RewardsConstants.Img_RewardPeriodIcon),
-                Tag = RewardsConstants.Tag_DetailRewardImage
+                Tag = RewardsConstants.Tag_DetailRewardPeriodImage
             };
 
             UILabel rpTitle = new UILabel(new CGRect(GetXLocationFromFrame(rpIcon.Frame, 4F), 0, viewWidth - (rpIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
@@ -293,7 +297,7 @@ namespace myTNB
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 Image = UIImage.FromBundle(RewardsConstants.Img_RewardLocationIcon),
-                Tag = RewardsConstants.Tag_DetailRewardImage
+                Tag = RewardsConstants.Tag_DetailLocationImage
             };
 
             UILabel locationTitle = new UILabel(new CGRect(GetXLocationFromFrame(locationIcon.Frame, 4F), 0, viewWidth - (locationIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
@@ -348,7 +352,7 @@ namespace myTNB
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 Image = UIImage.FromBundle(RewardsConstants.Img_RewardTCIcon),
-                Tag = RewardsConstants.Tag_DetailRewardImage
+                Tag = RewardsConstants.Tag_DetailTCImage
             };
 
             UILabel tandCTitle = new UILabel(new CGRect(GetXLocationFromFrame(tandCIcon.Frame, 4F), 0, viewWidth - (tandCIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
@@ -877,15 +881,21 @@ namespace myTNB
                             {
                                 foreach (var childView in innerSubView.Subviews)
                                 {
-                                    UILabel lbl = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) as UILabel;
-                                    if (lbl != null)
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) is UILabel lbl)
                                     {
                                         lbl.TextColor = MyTNBColor.GreyishBrown;
                                     }
-                                    UIImageView imageView = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardImage) as UIImageView;
-                                    if (imageView != null)
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailRewardPeriodImage) is UIImageView imgViewPeriod)
                                     {
-                                        imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image);
+                                        imgViewPeriod.Image = UIImage.FromBundle(RewardsConstants.Img_RewardPeriodIconUsed);
+                                    }
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailLocationImage) is UIImageView imgViewLocation)
+                                    {
+                                        imgViewLocation.Image = UIImage.FromBundle(RewardsConstants.Img_RewardLocationIconUsed);
+                                    }
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailTCImage) is UIImageView imgViewTC)
+                                    {
+                                        imgViewTC.Image = UIImage.FromBundle(RewardsConstants.Img_RewardTCIconUsed);
                                     }
                                 }
                             }

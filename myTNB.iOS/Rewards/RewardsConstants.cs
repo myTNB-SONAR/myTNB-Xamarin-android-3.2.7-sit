@@ -18,6 +18,9 @@ namespace myTNB
         public static int Tag_DetailRewardImage = 3000;
         public static int Tag_DetailRewardTitle = 3001;
         public static int Tag_DetailRewardView = 3002;
+        public static int Tag_DetailRewardPeriodImage = 3003;
+        public static int Tag_DetailLocationImage = 3004;
+        public static int Tag_DetailTCImage = 3005;
 
         //Format
         public static string Format_Date = "dd MMM yyyy, h:mm tt.";
@@ -84,6 +87,9 @@ namespace myTNB
         public static string Img_RewardPeriodIcon = "Reward-Period-Icon";
         public static string Img_RewardLocationIcon = "Reward-Location-Icon";
         public static string Img_RewardTCIcon = "Reward-TC-Icon";
+        public static string Img_RewardPeriodIconUsed = "Reward-Period-Icon-Used";
+        public static string Img_RewardLocationIconUsed = "Reward-Location-Icon-Used";
+        public static string Img_RewardTCIconUsed = "Reward-TC-Icon-Used";
         public static string Img_RewardDefaultBanner = "Reward_Default-Banner";
         public static string Img_UseRewardBanner = "Use-Reward-Banner";
         public static string Img_EmptyRewardIcon = "Empty-Reward-Icon";
