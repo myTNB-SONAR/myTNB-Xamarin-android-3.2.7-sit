@@ -8,11 +8,10 @@ namespace myTNB
 {
     public class SavedRewardCell : CustomUITableViewCell
     {
-        private UIView _viewContainer;
+        private UIView _viewContainer, _imgLoadingView, _rewardImgView, _shadowView;
         public UIImageView RewardImageView;
         public UILabel Title, _usedLbl;
         public UIView UsedView;
-        public ActivityIndicatorComponent ActivityIndicator;
 
         public SavedRewardCell(IntPtr handle) : base(handle)
         {
@@ -31,21 +30,20 @@ namespace myTNB
             _viewContainer.Layer.ShadowRadius = 8;
             _viewContainer.Layer.ShadowPath = UIBezierPath.FromRect(_viewContainer.Bounds).CGPath;
 
-            UIView rewardImgView = new UIImageView(_viewContainer.Bounds)
+            _rewardImgView = new UIImageView(_viewContainer.Bounds)
             {
                 BackgroundColor = UIColor.Clear,
                 ClipsToBounds = true
             };
-            rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
+            _rewardImgView.Layer.CornerRadius = GetScaledHeight(5F);
 
             RewardImageView = new UIImageView(new CGRect(0, 0, _viewContainer.Frame.Width, GetScaledHeight(112F)))
             {
                 ClipsToBounds = true,
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
-            ActivityIndicator = new ActivityIndicatorComponent(RewardImageView);
-            rewardImgView.AddSubview(RewardImageView);
-            _viewContainer.AddSubview(rewardImgView);
+            _rewardImgView.AddSubview(RewardImageView);
+            _viewContainer.AddSubview(_rewardImgView);
             Title = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(RewardImageView.Frame, 16F), _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
                 BackgroundColor = UIColor.Clear,
@@ -87,6 +85,79 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetX(_usedLbl, GetXLocationToCenterObject(lblSize.Width, UsedView));
                 ViewHelper.AdjustFrameSetX(UsedView, _viewContainer.Frame.Width - UsedView.Frame.Width - GetScaledWidth(12F));
                 Title.Text = model.TitleOnListing;
+            }
+        }
+
+        public void SetLoadingImageView()
+        {
+            if (_rewardImgView != null)
+            {
+                _rewardImgView.Hidden = true;
+            }
+
+            if (_shadowView != null)
+            {
+                _shadowView.Hidden = true;
+            }
+
+            if (_imgLoadingView != null)
+            {
+                _imgLoadingView.RemoveFromSuperview();
+            }
+
+            if (UsedView != null)
+            {
+                UsedView.Hidden = true;
+            }
+
+            _imgLoadingView = new UIView(_viewContainer.Bounds)
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            AddSubview(_imgLoadingView);
+
+            UIView viewImage = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(17F), _viewContainer.Frame.Width, GetScaledHeight(112F)))
+            {
+                BackgroundColor = MyTNBColor.PaleGreyThree
+            };
+
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            UIView viewShimmerParent = new UIView(new CGRect(0, 0, _cellWidth, _cellHeight))
+            { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(0, 0, _cellWidth, _cellHeight))
+            { BackgroundColor = UIColor.Clear };
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            viewShimmerContent.AddSubview(viewImage);
+            _imgLoadingView.AddSubview(viewShimmerParent);
+        }
+
+        public void ShowDowloadedImage(RewardsModel model)
+        {
+            if (_rewardImgView != null)
+            {
+                _rewardImgView.Hidden = false;
+            }
+
+            if (_shadowView != null)
+            {
+                _shadowView.Hidden = false;
+            }
+
+            if (_imgLoadingView != null)
+            {
+                _imgLoadingView.RemoveFromSuperview();
+            }
+
+            if (model != null)
+            {
+                if (UsedView != null)
+                {
+                    UsedView.Hidden = !model.IsUsed;
+                }
             }
         }
     }

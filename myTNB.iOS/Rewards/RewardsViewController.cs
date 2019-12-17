@@ -1,6 +1,5 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -41,7 +40,15 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading) { CheckForRewardUpdates(); }
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            {
+                CheckForRewardUpdates();
+            }
+            else
+            {
+                ResetViews();
+                SetSkeletonLoading();
+            }
             _isViewDidLoad = false;
         }
 
@@ -579,7 +586,8 @@ namespace myTNB
                 , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height
                 , ViewWidth, GetScaledHeight(44F)))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                Tag = 1001
             };
             _topBarScrollView.ShowsHorizontalScrollIndicator = false;
             View.AddSubview(_topBarScrollView);
@@ -657,6 +665,42 @@ namespace myTNB
                         line.Hidden = catView.Tag != index;
                     }
                 }
+
+                try
+                {
+                    if (catView != null && catView.GetType() != typeof(UIImageView))
+                    {
+                        if (catView.Tag == _selectedCategoryIndex)
+                        {
+                            nfloat maxXPos = catView.Frame.X - _topBarScrollView.ContentOffset.X + catView.Frame.Width;
+                            nfloat minXPos = catView.Frame.X;
+                            if (maxXPos > ViewWidth)
+                            {
+                                nfloat addtl = 0;
+                                UIView nView = _topBarScrollView.ViewWithTag(_selectedCategoryIndex + 1) as UIView;
+                                if (nView != null && nView.GetType() != typeof(UIImageView))
+                                {
+                                    addtl = nView.Frame.Width * 0.30F;
+                                }
+                                _topBarScrollView.SetContentOffset(new CGPoint(catView.Frame.X + catView.Frame.Width - ViewWidth + addtl, 0), true);
+                            }
+                            else if (minXPos < _topBarScrollView.ContentOffset.X)
+                            {
+                                nfloat addtl = 0;
+                                UIView pView = _topBarScrollView.ViewWithTag(_selectedCategoryIndex - 1) as UIView;
+                                if (pView != null && pView.GetType() != typeof(UIImageView))
+                                {
+                                    addtl = pView.Frame.Width * 0.30F;
+                                }
+                                _topBarScrollView.SetContentOffset(new CGPoint(minXPos - addtl, 0), true);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error: " + e.Message);
+                }
             }
         }
         #endregion
@@ -681,6 +725,7 @@ namespace myTNB
                         Debug.WriteLine("Error in ParseDate: " + e.Message);
                     }
                 }
+                rewardDetailView.IsFromSavedRewards = false;
                 rewardDetailView.RedeemedDate = rDateStr;
                 rewardDetailView.RewardModel = reward;
                 UINavigationController navController = new UINavigationController(rewardDetailView)

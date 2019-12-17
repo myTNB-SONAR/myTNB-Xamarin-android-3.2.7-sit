@@ -32,6 +32,7 @@ namespace myTNB.SitecoreCMS
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
+                RewardsCache.ClearImages();
             }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
@@ -524,6 +525,10 @@ namespace myTNB.SitecoreCMS
                     {
                         RewardsCache.RewardIsAvailable = false;
                     }
+                }
+                else
+                {
+                    RewardsCache.RewardIsAvailable = true;
                 }
             });
         }

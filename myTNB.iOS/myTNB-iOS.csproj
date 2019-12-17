@@ -1245,6 +1245,18 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\feedback1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\Empty-Saved-Reward-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\Empty-Saved-Reward-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\Reward-Period-Icon-Used%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\Reward-Period-Icon-Used%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\Reward-Location-Icon-Used%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\Reward-Location-Icon-Used%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Reward-TC-Icon-Used%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Reward-TC-Icon-Used%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1747,6 +1759,10 @@
     <Folder Include="Assets.xcassets\IC-Refresh.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\" />
+    <Folder Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\" />
+    <Folder Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
