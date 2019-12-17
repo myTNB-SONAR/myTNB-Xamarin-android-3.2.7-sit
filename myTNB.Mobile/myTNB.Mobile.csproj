@@ -17,6 +17,7 @@
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\Usage\" />
+    <Folder Include="Resources\TnC\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Notification\NotificationInfo_1001 %28copy%29.json" />
@@ -46,6 +47,8 @@
     <None Remove="Resources\Notification\NotificationInfo_10052.json" />
     <None Remove="Resources\Notification\NotificationInfo_10053.json" />
     <None Remove="Resources\Usage\AccountUsageSmart.json" />
+    <None Remove="Resources\TnC\TermsAndCondition.txt" />
+    <None Remove="Resources\TnC\TermsAndConditions_EN %28copy%29.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -75,5 +78,7 @@
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10052.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10053.json" />
     <EmbeddedResource Include="Resources\Usage\AccountUsageSmart.json" />
+    <EmbeddedResource Include="Resources\TnC\TermsAndConditions_EN.txt" />
+    <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
   </ItemGroup>
 </Project>
