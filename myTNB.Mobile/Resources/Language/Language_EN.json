@@ -136,7 +136,8 @@
     "refreshBillDetails": "Uh oh, looks like the page with your bill details have been unplugged. Refresh to stay plugged in!",
     "refreshUsageSSMR": "Uh oh, looks like your Self Meter Reading service has been unplugged. Refresh to stay plugged in!",
     "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!",
-    "redeemRewardFailMsg": "Let’s do this one more time."
+    "redeemRewardFailMsg": "Let’s do this one more time.",
+    "plannedDownTimeMessage": "Looks like this page can’t be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",

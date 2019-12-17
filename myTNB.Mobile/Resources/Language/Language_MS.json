@@ -136,7 +136,8 @@
     "refreshBillDetails": "Alamak! Nampaknya laman yang mengandungi butiran bil anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "refreshUsageSSMR": "Alamak! Nampaknya perkhidmatan Self Meter Reading terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "refreshBillPayHistory": "Alamak! Nampaknya laman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
-    "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi."
+    "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
+    "plannedDownTimeMessage": "Looks like this page can’t be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",

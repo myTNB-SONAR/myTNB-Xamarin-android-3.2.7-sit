@@ -665,6 +665,25 @@ namespace myTNB
                        };
                        InvokeInBackground(async () =>
                        {
+                           List<Task> taskList = new List<Task>
+                           {
+                               GetAccountsCharges(),
+                               GetAccountBillPayHistory()
+                           };
+                           await Task.WhenAll(taskList.ToArray());
+                           InvokeOnMainThread(() =>
+                           {
+                               if (_accountCharges != null && _billHistory != null && _accountCharges.d != null && _billHistory.d != null)
+                               {
+
+                               }
+                               else
+                               {
+                                   //FullScreen Refresh
+                               }
+                           });
+
+
                            isGetAcctChargesLoading = true;
                            _accountCharges = await GetAccountsCharges();
                            InvokeOnMainThread(() =>
@@ -1025,6 +1044,7 @@ namespace myTNB
                 isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
             };
             GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
+            _accountCharges = response;
             return response;
         }
 
@@ -1039,6 +1059,7 @@ namespace myTNB
                 accountType = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount ? BillConstants.Param_RE : BillConstants.Param_UTIL
             };
             GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
+            _billHistory = response;
             return response;
         }
         #endregion

@@ -53,7 +53,9 @@ namespace myTNB
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 TextColor = MyTNBColor.Grey,
-                Text = _message
+                Text = _message.IsValid() ? _message
+                    : IsPlannedDownTime ? LanguageUtility.GetErrorI18NValue(Constants.Error_PlannedDownTimeMessage)
+                        : string.Empty
             };
 
             nfloat newHeight = lblMessage.GetLabelHeight(1000f);
