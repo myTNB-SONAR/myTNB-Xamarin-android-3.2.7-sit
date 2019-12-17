@@ -5,6 +5,8 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
+using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.TermsAndConditions.MVP;
@@ -28,6 +30,8 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
         WebView tncWebView;
 
         const string PAGE_ID = "TnC";
+
+        private string mSavedTimeStamp = "0000000";
 
         [BindView(Resource.Id.progressBar)]
         ProgressBar progressBar;
@@ -73,20 +77,12 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                             {
                                 foreach (FullRTEPagesEntity obj in items)
                                 {
-                                    if (obj.GeneralText != null && obj.PublishedDate != null)
+                                    if (!string.IsNullOrEmpty(obj.GeneralText) && !string.IsNullOrEmpty(obj.PublishedDate))
                                     {
                                         string replacedString = obj.GeneralText.Replace("\\", string.Empty);
                                         Console.WriteLine("ReplaceStringOne::" + replacedString);
                                         replacedString = obj.GeneralText.Replace("\\n", string.Empty);
                                         Console.WriteLine("ReplaceStringTwo::" + replacedString);
-                                        //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                                        //{
-                                        //        txtTnCHtml.TextFormatted = Html.FromHtml(replacedString, FromHtmlOptions.ModeLegacy);
-                                        //}
-                                        //else
-                                        //{
-                                        //        txtTnCHtml.TextFormatted = Html.FromHtml(replacedString);
-                                        //}
                                         tncWebView.LoadData(replacedString, "text/html", "UTF-8");
                                         txtVersion.Text = "Version [" + obj.PublishedDate + "]";
                                         txtTitle.Text = "" + obj.Title;
@@ -137,14 +133,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
 
                 progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
-                if (MyTNBApplication.siteCoreUpdated)
-                {
-                    GetDataFromSiteCore();
-                }
-                else
-                {
-                    ShowTermsAndCondition(true);
-                }
+                GetDataFromSiteCore();
             }
             catch (Exception e)
             {
@@ -156,11 +145,28 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
         {
             try
             {
-                string tnc_version = "14 Dec 2105";
-                txtVersion.Text = "Version [" + tnc_version + "]";
-                txtTitle.Text = GetString(Resource.String.tnc_title);
+                string tnc = "";
+
+                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                {
+                    tnc = TnCManager.Instance.GetTnC(TnCManager.Language.MS);
+                }
+                else
+                {
+                    tnc = TnCManager.Instance.GetTnC();
+                }
+
+                string replacedString = tnc.Replace("\\", string.Empty);
+                Console.WriteLine("ReplaceStringOne::" + replacedString);
+                replacedString = replacedString.Replace("\\n", string.Empty);
+                replacedString = replacedString.Replace("\n", string.Empty);
+
+                string[] tncArray = replacedString.Split("<br>");
+
+                txtVersion.Text = "Version [" + tncArray[1] + "]";
+                txtTitle.Text = tncArray[0];
                 // txtTnCHtml.TextFormatted = Html.FromHtml(GetString(Resource.String.tnc_html));
-                tncWebView.LoadData(GetString(Resource.String.tnc_html), "text/html", "UTF-8");
+                tncWebView.LoadData(tncArray[3], "text/html", "UTF-8");
             }
             catch (Exception e)
             {
@@ -173,10 +179,69 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             try
             {
                 progressBar.Visibility = ViewStates.Visible;
-                this.userActionsListener.GetTermsAndConditionData();
+                this.userActionsListener.GetSavedTermsAndConditionTimeStamp();
             }
             catch (Exception e)
             {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedTimeStamp(string savedTimeStamp)
+        {
+            if (savedTimeStamp != null)
+            {
+                this.mSavedTimeStamp = savedTimeStamp;
+            }
+            this.userActionsListener.OnGetTermsAndConditionTimeStamp();
+        }
+
+        public void ShowTermsAndConditionTimestamp(bool success)
+        {
+            try
+            {
+                if (success)
+                {
+                    TimeStampEntity wtManager = new TimeStampEntity();
+                    List<TimeStampEntity> items = wtManager.GetAllItems();
+                    if (items != null)
+                    {
+                        TimeStampEntity entity = items[0];
+                        if (entity != null)
+                        {
+                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            {
+                                MyTNBApplication.siteCoreUpdated = true;
+                                this.userActionsListener.GetTermsAndConditionData();
+                            }
+                            else
+                            {
+                                MyTNBApplication.siteCoreUpdated = false;
+                                ShowTermsAndCondition(true);
+                            }
+                        }
+                        else
+                        {
+                            MyTNBApplication.siteCoreUpdated = true;
+                            this.userActionsListener.GetTermsAndConditionData();
+                        }
+                    }
+                    else
+                    {
+                        MyTNBApplication.siteCoreUpdated = true;
+                        this.userActionsListener.GetTermsAndConditionData();
+                    }
+                }
+                else
+                {
+                    MyTNBApplication.siteCoreUpdated = true;
+                    this.userActionsListener.GetTermsAndConditionData();
+                }
+            }
+            catch (Exception e)
+            {
+                MyTNBApplication.siteCoreUpdated = true;
+                this.userActionsListener.GetTermsAndConditionData();
                 Utility.LoggingNonFatalError(e);
             }
         }
