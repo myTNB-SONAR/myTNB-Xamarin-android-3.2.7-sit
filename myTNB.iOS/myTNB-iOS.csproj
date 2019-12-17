@@ -2640,7 +2640,6 @@
     <Compile Include="Components\Refresh\RefreshConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\TermsAndCondition.txt" />
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
       <LogicalName>GoogleService-Info.plist</LogicalName>
     </BundleResource>
