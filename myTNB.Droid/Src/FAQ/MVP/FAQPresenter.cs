@@ -39,6 +39,10 @@ namespace myTNB_Android.Src.FAQ.MVP
                     {
                         mView.OnSavedTimeStamp(entity?.Timestamp);
                     }
+                    else
+                    {
+                        mView.OnSavedTimeStamp(null);
+                    }
                 }
                 else
                 {
