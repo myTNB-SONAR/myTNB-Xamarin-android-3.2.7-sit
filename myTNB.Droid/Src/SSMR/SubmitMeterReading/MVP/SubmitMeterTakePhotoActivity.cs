@@ -59,6 +59,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [BindView(Resource.Id.btnDeletePhoto)]
         Button btnDeletePhoto;
 
+        [BindView(Resource.Id.loadingMessage)]
+        TextView loadingMessage;
+
         public override int ResourceId()
         {
             return Resource.Layout.SubmitMeterTakePhotoLayout;
@@ -165,8 +168,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             EnableSubmitButton();
             TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto, btnSubmitPhotoToOCR);
+            TextViewUtils.SetMuseoSans300Typeface(loadingMessage);
             btnDeletePhoto.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "deletePhoto");
             btnSubmitPhotoToOCR.Text = Utility.GetLocalizedCommonLabel("submit");
+            loadingMessage.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "ocrReading");
+            SetToolBarTitle(Utility.GetLocalizedLabel("SSMRCaptureMeter", "navTitleTakePhoto"));
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
