@@ -42,6 +42,9 @@ namespace myTNB
         private UIView _tutorialContainer;
         private bool isGetAcctChargesLoading = true, isGetAcctBillPayHistoryLoading = true;
 
+        private CGRect DefaultBannerRect;
+        private CGRect FailBannerRect;
+
         public BillViewController(IntPtr handle) : base(handle) { }
 
         #region Life Cycle
@@ -66,6 +69,10 @@ namespace myTNB
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
+
+            DefaultBannerRect = new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F);
+            FailBannerRect = new CGRect(0, 0, ViewWidth, ViewWidth * 0.76875F);
+
             SetNavigation();
             SetHeaderView();
             AddAccountSelector();
@@ -111,8 +118,8 @@ namespace myTNB
         {
             bool isRE = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             string keyString = isRE ? BillConstants.Pref_BillTutorialRElOverlay : BillConstants.Pref_BillTutorialNormalOverlay;
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var tutorialOverlayHasShown = sharedPreference.BoolForKey(keyString);
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+            bool tutorialOverlayHasShown = sharedPreference.BoolForKey(keyString);
 
             if (tutorialOverlayHasShown)
                 return;
@@ -121,8 +128,8 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
                     if (topVc != null)
                     {
                         if (topVc is BillViewController)
@@ -164,8 +171,8 @@ namespace myTNB
                 ScrollTableToTheTop = ScrollTableToTheTop,
                 ScrollToHistorySection = ScrollToHistorySection
             };
-            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
             if (topVc != null)
             {
                 if (topVc is BillViewController)
@@ -190,7 +197,7 @@ namespace myTNB
 
                 bool isRE = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
                 string keyString = isRE ? BillConstants.Pref_BillTutorialRElOverlay : BillConstants.Pref_BillTutorialNormalOverlay;
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetBool(true, keyString);
             }
         }
@@ -202,7 +209,7 @@ namespace myTNB
 
         private void ScrollToHistorySection()
         {
-            var count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
+            int count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
             if (count > 1)
             {
                 _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(2, 0), UITableViewScrollPosition.Bottom, false);
@@ -242,7 +249,7 @@ namespace myTNB
             };
             _tableViewOffset = DeviceHelper.GetStatusBarHeight() + _navBarHeight;
 
-            _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
+            _bgImageView = new UIImageView(DefaultBannerRect)
             {
                 Image = UIImage.FromBundle(BillConstants.IMG_Cleared),
                 BackgroundColor = UIColor.White
@@ -276,8 +283,8 @@ namespace myTNB
             viewTitleBar.AddSubview(_viewFilter);
             _navbarView.AddSubview(viewTitleBar);
 
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
+            UIColor startColor = MyTNBColor.GradientPurpleDarkElement;
+            UIColor endColor = MyTNBColor.GradientPurpleLightElement;
             _gradientLayer = new CAGradientLayer
             {
                 Colors = new[] { startColor.CGColor, endColor.CGColor }
@@ -407,6 +414,12 @@ namespace myTNB
             _headerView.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA, _shimmerView });
             _headerViewContainer.AddSubviews(_headerView);
             _headerViewContainer.AddSubviews(_accountSelectorContainer);
+
+            //Test
+            _headerView.Layer.BorderColor = UIColor.Red.CGColor;
+            _headerView.Layer.BorderWidth = 1;
+            _accountSelectorContainer.Layer.BorderColor = UIColor.Green.CGColor;
+            _accountSelectorContainer.Layer.BorderWidth = 1;
 
             CGRect frame = _headerView.Frame;
             frame.Height = GetYLocationFromFrame(_viewCTA.Frame, 16);
@@ -611,8 +624,8 @@ namespace myTNB
                     else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
                     {
                         string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
                         if (topVc != null)
                         {
                             UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
@@ -932,8 +945,8 @@ namespace myTNB
             frame.Y = newYLoc;
             _bgImageView.Frame = frame;
             _previousScrollOffset = _historyTableView.ContentOffset.Y;
-            var opac = _previousScrollOffset / _tableViewOffset;
-            var absOpacity = Math.Abs((float)opac);
+            nfloat opac = _previousScrollOffset / _tableViewOffset;
+            float absOpacity = Math.Abs((float)opac);
             AddViewWithOpacity(absOpacity);
         }
 
@@ -951,9 +964,9 @@ namespace myTNB
 
         private void AddViewWithOpacity(float opacity)
         {
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer
+            UIColor startColor = MyTNBColor.GradientPurpleDarkElement;
+            UIColor endColor = MyTNBColor.GradientPurpleLightElement;
+            CAGradientLayer gradientLayer = new CAGradientLayer
             {
                 Colors = new[] { startColor.CGColor, endColor.CGColor }
             };
@@ -1093,7 +1106,7 @@ namespace myTNB
                         {
                             foreach (BillPayHistoryModel obj in historyList)
                             {
-                                var historyData = obj.BillPayHistoryData;
+                                List<BillPayHistoryDataModel> historyData = obj.BillPayHistoryData;
                                 historyData.Remove(objToRemove);
                             }
                         }
