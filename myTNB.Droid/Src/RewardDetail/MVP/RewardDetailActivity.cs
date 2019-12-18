@@ -1019,7 +1019,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 HideNoInternetSnackbar();
 
                 mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Error", "noDataConnectionMessage"), Snackbar.LengthIndefinite)
-                .SetAction(Utility.GetLocalizedLabel("Common", "ok"), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate
                 {
 
                     mNoInternetSnackbar.Dismiss();

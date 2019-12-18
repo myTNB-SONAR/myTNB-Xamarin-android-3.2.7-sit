@@ -217,7 +217,7 @@ namespace myTNB_Android.Src.Barcode.Activity
 
             scanFragment.SetErrorMessage(GetString(Resource.String.barcode_form_invalid_barcode));
             mSnackbarMessage = Snackbar.Make(rootView, GetString(Resource.String.barcode_form_invalid_barcode), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.barcode_form_btn_snackbar_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mSnackbarMessage.Dismiss();

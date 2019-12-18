@@ -804,7 +804,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             try
             {
                 Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_password), Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
                                  // EMPTY WILL CLOSE SNACKBAR
@@ -830,7 +830,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 string lastDigits = creditCard.LastDigits.Substring(creditCard.LastDigits.Length - 4);
                 cards.SetValue(string.Format("{0}", numOfCards));
                 Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
-                           .SetAction(GetString(Resource.String.manage_cards_btn_close),
+                           .SetAction(Utility.GetLocalizedCommonLabel("close"),
                             (view) =>
                             {
                                 // EMPTY WILL CLOSE SNACKBAR

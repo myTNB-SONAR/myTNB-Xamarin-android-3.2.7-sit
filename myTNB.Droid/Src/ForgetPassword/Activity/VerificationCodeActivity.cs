@@ -293,7 +293,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
 
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.forget_password_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
 
@@ -307,7 +307,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mSnackBar.Dismiss();
             }
             mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
                 mSnackBar.Dismiss();
                 if (!resendCalled)

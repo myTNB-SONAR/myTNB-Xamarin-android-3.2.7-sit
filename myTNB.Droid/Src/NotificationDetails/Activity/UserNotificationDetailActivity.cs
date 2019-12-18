@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         [BindView(Resource.Id.notificationMainLayout)]
         ScrollView notificationMainLayout;
-        
+
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         {
                             removeDialog.Dismiss();
                         })
-                        .SetPositiveButton(Resource.String.notification_detail_remove_notification_positive_btn,
+                        .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"),
                         delegate
                         {
                             mPresenter.DeleteNotificationDetail(notificationDetails);
@@ -255,7 +255,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -275,7 +275,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -295,7 +295,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();

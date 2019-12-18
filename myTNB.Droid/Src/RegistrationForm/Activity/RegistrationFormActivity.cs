@@ -512,7 +512,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
 
             mRegistrationSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_failed_btn_close), delegate { mRegistrationSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mRegistrationSnackBar.Dismiss(); }
             );
             View v = mRegistrationSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

@@ -415,7 +415,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             mSnackBar = Snackbar.Make(rootView, response.message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             View v = mSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

@@ -256,7 +256,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                     if (!String.IsNullOrEmpty(cvv))
                     {
-                        textInputLayoutCVV.Error = "Invalid CVV."; 
+                        textInputLayoutCVV.Error = "Invalid CVV.";
                     }
 
                 }
@@ -392,7 +392,7 @@ namespace myTNB_Android.Src.AddCard.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

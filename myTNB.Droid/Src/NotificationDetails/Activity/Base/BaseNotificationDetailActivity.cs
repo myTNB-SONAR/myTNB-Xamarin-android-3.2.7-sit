@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
                         {
                             removeDialog.Dismiss();
                         })
-                        .SetPositiveButton(Resource.String.notification_detail_remove_notification_positive_btn,
+                        .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"),
                         delegate
                         {
                             this.userActionsListener.OnRemoveNotification(notificationDetails);
@@ -204,7 +204,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(GetRootView(), Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();

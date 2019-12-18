@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
 
                 mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.my_account_cancelled_exception_btn_close), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
 
                     mCancelledExceptionSnackBar.Dismiss();
@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
 
                 mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.my_account_api_exception_btn_close), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
 
                     mApiExcecptionSnackBar.Dismiss();
@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
 
                 mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.my_account_unknown_exception_btn_close), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
 
                     mUknownExceptionSnackBar.Dismiss();
@@ -381,7 +381,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             {
                 adapter.Remove(position);
                 Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_remove_supply_account), Snackbar.LengthIndefinite)
-                           .SetAction(GetString(Resource.String.my_account_successful_remove_supply_account_btn),
+                           .SetAction(Utility.GetLocalizedCommonLabel("close"),
                             (view) =>
                             {
 

@@ -208,7 +208,7 @@ namespace myTNB_Android.Src.Maintenance.Activity
             }
 
             mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mNoInternetSnackbar.Dismiss();

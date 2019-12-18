@@ -244,7 +244,7 @@ namespace myTNB_Android.Src.Base.Fragments
                 .SetTitle(rationaleTitle)
                 .SetMessage(rationaleContent)
                 .SetCancelable(false)
-                .SetPositiveButton(GetString(Resource.String.runtime_permission_dialog_btn_close), delegate
+                .SetPositiveButton(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
                     rationaleDialog.Dismiss();
                     if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)

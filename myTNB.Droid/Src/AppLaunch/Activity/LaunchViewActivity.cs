@@ -321,7 +321,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     .Title(GetString(Resource.String.app_launch_device_not_supported_title))
                     .Content(GetString(Resource.String.app_launch_device_not_supported_content))
                     .Cancelable(false)
-                    .PositiveText(GetString(Resource.String.app_launch_device_not_supported_btn_close))
+                    .PositiveText(Utility.GetLocalizedCommonLabel("close"))
                     .OnPositive(delegate
                     {
                         Finish();

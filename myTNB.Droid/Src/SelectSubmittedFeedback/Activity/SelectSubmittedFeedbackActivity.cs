@@ -298,7 +298,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
 
             bcrmExceptionSnackBar = Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_cards_btn_ok), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate
             {
 
                 bcrmExceptionSnackBar.Dismiss();
