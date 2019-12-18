@@ -237,6 +237,7 @@ namespace myTNB
 
         public void SetTariffButtonDisable(bool isDisable)
         {
+            _tariffSelectionView.UserInteractionEnabled = !isDisable;
             isTariffDisabled = isDisable;
             _tariffIcon.Image = isDisable ? UIImage.FromBundle(Constants.IMG_TariffEyeDisableIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
             _tariffLabel.TextColor = isDisable ? MyTNBColor.SilverChalice : UIColor.White;
