@@ -292,14 +292,19 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void ShowUnderstandBillTooltip()
         {
-            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
-            UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
-                .SetAdapter(adapter)
-                .SetContext(this)
-                .SetCTALabel(Utility.GetLocalizedLabel("Common","gotIt"))
-                .Build()
-                .Show();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
+                UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+                    .SetAdapter(adapter)
+                    .SetContext(this)
+                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                    .SetCTAaction(()=> { this.SetIsClicked(false);})
+                    .Build()
+                    .Show();
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
