@@ -212,6 +212,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(lblBack);
+                lblBack.Text = Utility.GetLocalizedCommonLabel("back");
                 lblBack.Click += delegate
                 {
                     enterCvvLayout.Visibility = ViewStates.Gone;
@@ -403,12 +404,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         if (card.CardType.Equals("AMEX") || card.CardType.Equals("A"))
                         {
-                            lblCvvInfo.Text = Activity.GetString(Resource.String.cvv_info_4_digit);
+                            lblCvvInfo.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "cvvFourDigitMessage");
                             edtNumber4.Visibility = ViewStates.Visible;
                         }
                         else
                         {
-                            lblCvvInfo.Text = Activity.GetString(Resource.String.cvv_info_3_digit);
+                            lblCvvInfo.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "cvvThreeDigitMessage");
                             edtNumber4.Visibility = ViewStates.Gone;
                         }
                     }
