@@ -93,6 +93,8 @@
         public static string IMG_LoadingBanner = "Bill-Loading-Banner";
         public static string IMG_Refresh = "SSMR-Refresh";
         public static string IMG_DropdownIcon = "IC-Action-Dropdown";
+        public static string IMG_NavFiltered = "IC-Action-Nav-Filtered";
+        public static string IMG_NavUnfiltered = "IC-Action-Nav-Unfiltered";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

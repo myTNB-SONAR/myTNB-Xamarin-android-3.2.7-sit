@@ -29,7 +29,7 @@ namespace myTNB
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     TNCString = reader.ReadToEnd();
-                    Debug.WriteLine("DEBUG >> JSONLang: " + TNCString);
+                    Debug.WriteLine("DEBUG >> TNCString: " + TNCString);
                 }
                 Debug.WriteLine("DEBUG >> SUCCESS");
             }

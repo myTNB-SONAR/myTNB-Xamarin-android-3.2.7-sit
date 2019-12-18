@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using myTNB.TabBar;

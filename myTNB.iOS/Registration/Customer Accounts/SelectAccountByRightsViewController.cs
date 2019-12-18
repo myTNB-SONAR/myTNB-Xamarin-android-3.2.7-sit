@@ -123,7 +123,8 @@ namespace myTNB
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
                 ContentInset = new UIEdgeInsets(-5, 0, -5, 0),
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                Selectable = false
             };
             txtViewNoDescription.ScrollIndicatorInsets = UIEdgeInsets.Zero;
             txtViewNoDescription.TextContainer.LineFragmentPadding = 0F;

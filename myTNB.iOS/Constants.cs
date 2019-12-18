@@ -126,6 +126,7 @@
         public static string Error_NumberNotAvailable = "numberNotAvailable";
         public static string Error_RatingNotAvailable = "ratingNotAvailable";
         public static string Error_ShareNotAvailable = "shareNotAvailable";
+        public static string Error_PlannedDownTimeMessage = "plannedDownTimeMessage";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";

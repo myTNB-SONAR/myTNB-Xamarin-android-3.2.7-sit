@@ -215,8 +215,12 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(RewardsConstants.I18N_TutorialRewardTitle)
+                Text = GetI18NValue(RewardsConstants.I18N_TutorialRewardTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
 
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(RewardsConstants.I18N_TutorialRewardDesc)
@@ -299,8 +303,12 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(RewardsConstants.I18N_TutorialCategoryTitle)
+                Text = GetI18NValue(RewardsConstants.I18N_TutorialCategoryTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
 
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(RewardsConstants.I18N_TutorialCategoryDesc)
@@ -399,8 +407,12 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Right,
-                Text = GetI18NValue(RewardsConstants.I18N_TutorialSaveTitle)
+                Text = GetI18NValue(RewardsConstants.I18N_TutorialSaveTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(RewardsConstants.I18N_TutorialSaveDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
