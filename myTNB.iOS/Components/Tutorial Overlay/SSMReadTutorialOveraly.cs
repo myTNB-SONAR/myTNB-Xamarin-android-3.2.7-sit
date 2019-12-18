@@ -58,7 +58,7 @@ namespace myTNB
             nfloat height = parentView.Frame.Height;
             UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ManualInputCardYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             nfloat boxViewXPos = GetScaledWidth(16F);
             nfloat boxViewWidth = width - GetScaledWidth(32F);
@@ -73,15 +73,15 @@ namespace myTNB
             nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), GetScaledWidth(16F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), GetScaledWidth(16F) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             nfloat verticalLineHeight = OCRIsDown ? GetScaledHeight(34.3F) : GetScaledHeight(173F);
             nfloat verticalLineYPos = OCRIsDown ? 0 : topView.Frame.GetMaxY() - verticalLineHeight;

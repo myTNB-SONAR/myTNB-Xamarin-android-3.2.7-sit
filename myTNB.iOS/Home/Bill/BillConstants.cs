@@ -72,6 +72,7 @@
 
         //Bill Filter
         public static string I18N_FilterDescription = "description";
+        public static string I18N_FilterDescriptionRE = "descriptionRE";
         public static string I18N_FilterBy = "filterBy";
         public static string I18N_ApplyFilter = "applyFilter";
         public static string I18N_SelectFilter = "selectFilter";
