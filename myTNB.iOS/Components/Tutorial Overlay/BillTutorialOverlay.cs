@@ -232,7 +232,7 @@ namespace myTNB
             nfloat height = parentView.Frame.Height;
             UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView topLine = new UIView(new CGRect(0, topView.Frame.GetMaxY() - GetScaledHeight(1F), width, GetScaledHeight(1F)))
             {
@@ -242,7 +242,7 @@ namespace myTNB
             nfloat bottomViewYPos = topView.Frame.GetMaxY() + _controller.GetDateAmountMaxY;
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView bottomLine = new UIView(new CGRect(0, 0, width, GetScaledHeight(1F)))
             {
@@ -359,7 +359,7 @@ namespace myTNB
             nfloat height = parentView.Frame.Height;
             UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView verticalLine = new UIView(new CGRect(width - GetScaledWidth(50.5F), topView.Frame.GetMaxY() - GetScaledHeight(69F), GetScaledWidth(1F), GetScaledHeight(69F)))
             {
@@ -422,15 +422,15 @@ namespace myTNB
             nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), width / 2 - GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), GetScaledWidth(13F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             parentView.AddSubviews(new UIView { topView, bottomView, leftView, rightView, boxView });
             _swipeText.Hidden = false;
@@ -447,7 +447,7 @@ namespace myTNB
             nfloat height = parentView.Frame.Height;
             UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView verticalLine = new UIView(new CGRect(GetScaledWidth(34.5F), topView.Frame.GetMaxY() - GetScaledHeight(88F), GetScaledWidth(1F), GetScaledHeight(88F)))
             {
@@ -510,15 +510,15 @@ namespace myTNB
             nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), GetScaledWidth(12F) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), width / 2 - GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             parentView.AddSubviews(new UIView { topView, bottomView, leftView, rightView, boxView });
             _swipeText.Hidden = false;
@@ -536,7 +536,7 @@ namespace myTNB
             CGRect historyRect = _controller._historyTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
             UIView topView = new UIView(new CGRect(0, 0, width, historyRect.Y + NavigationHeight - tableViewContentOffsetY))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView topLine = new UIView(new CGRect(0, topView.Frame.GetMaxY() - GetScaledHeight(1F), width, GetScaledHeight(1F)))
             {
@@ -618,7 +618,7 @@ namespace myTNB
             topView.AddSubview(btnGotIt);
             UIView bottomView = new UIView(new CGRect(0, height - TabBarHeight, width, TabBarHeight))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView bottomLine = new UIView(new CGRect(0, 0, width, GetScaledHeight(1F)))
             {

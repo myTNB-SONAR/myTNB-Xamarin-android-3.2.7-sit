@@ -17,7 +17,7 @@
     "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
     "refreshNow": "Refresh Now",
     "bcrmMessage": "BRCM will be down for maintenance purpose",
-    "disconnectionMsg": "Your electricity is currently disconnected.",
+    "disconnectionMsg": "Your electricity is currently unavailable.",
     "months": "Months",
     "days": "Days",
     "viewBill": "View Bill",
@@ -108,7 +108,7 @@
     "minimumMandatoryPayment": "Minimum amount must be at least {0}",
     "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00",
     "emptyNickname": "Account nickname cannot be empty. Please enter valid nickname and try adding your account again.",
-    "invalidNickname": "Invalid characters. Use letters or numbers only.",
+    "invalidNickname": "You can use letters, numbers and special characters for the nickname.",
     "duplicateNickname": "Nickname already used. Please create a new one.",
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, this is not working right now. Please try again later.",
@@ -137,7 +137,7 @@
     "refreshUsageSSMR": "Uh oh, looks like your Self Meter Reading service has been unplugged. Refresh to stay plugged in!",
     "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!",
     "redeemRewardFailMsg": "Let’s do this one more time.",
-    "plannedDownTimeMessage": "Looks like this page can’t be loaded at the moment. Come back in a while."
+    "plannedDownTimeMessage": "Looks like your page can't be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -319,7 +319,7 @@
       },
       {
         "Title": "How do I take this photo?",
-        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion. ",
+        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
         "CTA": "Got it!",
         "Type": "Single_TakePhoto"
       },
@@ -351,7 +351,7 @@
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
     "gotIt": "Got it!",
-    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
+    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Electricity supply to your premises is currently unavailable. This may be due to a temporary disconnection request by the owner or an overdue bill payment.<br><br>If you've made a payment, please give us some time for this to be reflected.",
     "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "What are these?",
     "missedReadTitle": "What does this mean?",
@@ -409,7 +409,10 @@
     "tutorialViewDetailsDesc": "“View Details” to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
     "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
-    "gotIt": "Got it!"
+    "gotIt": "Got it!",
+    "emptyHistory": "Looks like your history is empty at the moment. Your bill and payment history will appear here once you have any.",
+    "emptyPaymentHistory": "Looks like you have not made any payments yet! Once you do, your payment history will appear here.",
+    "emptyBillHistory": "Looks like you have no bills yet! Once you do, your bill history will appear here."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -450,6 +453,7 @@
   "BillFilter": {
     "title": "Filter Views",
     "description": "View your invoiced bills, payment receipts or both.",
+    "descriptionRE": "View your advices, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
     "selectFilter": "Select Filter"
@@ -662,7 +666,7 @@
   "ResetPassword": {
     "title": "Reset Password",
     "subTitle": "Please enter your new password.",
-    "details": "This will replace your current one. All your account details will remain unchanged.",
+    "details": "This new password will replace your current one. All other account details remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
     "confirmPassword": "Confirm Password"
@@ -720,11 +724,11 @@
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
     "noCards": "Looks like you have no credit/debit cards stored. You may add a credit/debit card during payment.",
-    "details": "You may only add a new credit / debit card when making payment.",
-    "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
-    "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
-    "removeCardTitle": "Remove Credit / Debit Card",
-    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+    "details": "You may only add a new credit/debit card when making payment.",
+    "cardRemoveSuccess": "The credit/debit card ending with {0} has been removed successfully.",
+    "removeCardMessage": "You are about to remove the credit/debit card ending with {0}.",
+    "removeCardTitle": "Remove Credit/Debit Card",
+    "cardNotRemovedMessage": "Credit/Debit Card ending with {0} was not removed. Please try again."
   },
   "ViewBill": {
     "titleBill": "Bill",
@@ -828,7 +832,7 @@
   },
   "Promotions": {
     "title": "What's New",
-    "noPromotions": "No promotions currently. Check back later!"
+    "noPromotions": "Looks like there's nothing new.. Yet! Check back soon."
   },
   "RearrangeAccount": {
     "title": "Rearrange Accounts",
@@ -874,6 +878,19 @@
   "SavedRewards": {
     "title": "My Saved Rewards",
     "emptyDesc": "Your saved rewards will appear here.",
-    "used": "Used"
+    "used": "Used",
+    "rewardPeriod": "Reward Period",
+    "location": "Location(s)",
+    "tnc": "Terms and Conditions",
+    "rewardUsedPrefix": "Reward used ",
+    "rewardUsed": "Reward Used",
+    "useNow": "Use Now",
+    "useNowPopupTitle": "Please make sure you’re at the shop.",
+    "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
+    "useLater": "Use Later",
+    "confirm": "Confirm",
+    "unsave": "Unsave",
+    "save": "Save",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
   }
 }

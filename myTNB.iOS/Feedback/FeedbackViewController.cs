@@ -87,7 +87,7 @@ namespace myTNB
                                     Image = UIImage.FromBundle("Feedback-Header")
                                 };
                                 viewHeader.AddSubview(imgViewBackgroundPhoto);
-                                feedbackTableView.TableHeaderView = viewHeader;
+                                //feedbackTableView.TableHeaderView = viewHeader;
 
                                 feedbackTableView.BackgroundColor = MyTNBColor.LightGrayBG;
                                 feedbackTableView.RowHeight = 80f;

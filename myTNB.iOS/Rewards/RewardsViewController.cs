@@ -32,7 +32,6 @@ namespace myTNB
             base.ViewDidLoad();
             _isViewDidLoad = true;
             NotifCenterUtility.AddObserver((NSString)"OnReceivedRewardsNotification", OnReceivedRewards);
-            ViewHeight += GetBottomPadding;
             View.BackgroundColor = MyTNBColor.VeryLightPinkEight;
             InitiateView();
         }
@@ -496,10 +495,9 @@ namespace myTNB
         #region REWARDS SCROLL VIEW
         private void AddRewardsScrollView()
         {
-            nfloat yDelta = DeviceHelper.IsIphoneXUpResolution() ? 0 : DeviceHelper.GetStatusBarHeight();
             _rewardsScrollView = new UIScrollView(new CGRect(0
                 , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
-                , ViewWidth, ViewHeight - GetScaledHeight(44F) + yDelta))
+                , ViewWidth, ViewHeight - GetScaledHeight(44F)))
             {
                 Delegate = new ScrollViewDelegate(this),
                 PagingEnabled = true,

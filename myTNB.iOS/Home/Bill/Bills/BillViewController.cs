@@ -1058,6 +1058,7 @@ namespace myTNB
             if (viewController != null)
             {
                 NeedsUpdate = false;
+                viewController.IsREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
                 viewController.FilterIndex = FilterIndex;
                 viewController.FilterTypes = FilterTypes;
                 viewController.ApplyFilter = ApplyFilterWithIndex;
