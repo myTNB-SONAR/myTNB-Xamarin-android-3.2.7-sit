@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreGraphics;
 using Foundation;
 using UIKit;
 
@@ -14,6 +15,12 @@ namespace myTNB.Home.Bill
         public Action OnShowFilter;
         public bool IsFiltered;
 
+        //For Refresh
+        public bool IsFailedService { set; private get; } = false;
+        public bool IsPlanned { set; private get; } = false;
+        public string FailMessage { set; private get; } = string.Empty;
+        public Action OnRefresh { set; private get; }
+
         private List<BillPayHistoryModel> _historyResponseList;
         private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
         private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
@@ -22,21 +29,24 @@ namespace myTNB.Home.Bill
         public BillHistorySource(List<BillPayHistoryModel> historyResponseList, bool isLoading)
         {
             _historyResponseList = historyResponseList;
-            for (int i = 0; i < _historyResponseList.Count; i++)
+            if (_historyResponseList != null)
             {
-                BillPayHistoryModel item = _historyResponseList[i];
-                if (i == 0)
+                for (int i = 0; i < _historyResponseList.Count; i++)
                 {
-                    _historyDictionary.Add(i, item.MonthYear);
-                }
-                else
-                {
-                    _historyDictionary.Add(_historyList.Count, item.MonthYear);
-                }
-                for (int j = 0; j < item.BillPayHistoryData.Count; j++)
-                {
-                    BillPayHistoryDataModel jItem = item.BillPayHistoryData[j];
-                    _historyList.Add(jItem);
+                    BillPayHistoryModel item = _historyResponseList[i];
+                    if (i == 0)
+                    {
+                        _historyDictionary.Add(i, item.MonthYear);
+                    }
+                    else
+                    {
+                        _historyDictionary.Add(_historyList.Count, item.MonthYear);
+                    }
+                    for (int j = 0; j < item.BillPayHistoryData.Count; j++)
+                    {
+                        BillPayHistoryDataModel jItem = item.BillPayHistoryData[j];
+                        _historyList.Add(jItem);
+                    }
                 }
             }
             _isLoading = isLoading;
@@ -50,13 +60,13 @@ namespace myTNB.Home.Bill
         public override nint RowsInSection(UITableView tableview, nint section)
         {
             int rowCount = 1;//Default to 1 for section view
-            if (IsEmptyHistory || _isLoading)
+            if (_isLoading || IsEmptyHistory || IsFailedService)
             {
                 rowCount++;
             }
             else
             {
-                rowCount += _historyList.Count;
+                rowCount += _historyList != null ? _historyList.Count : 0;
             }
             return rowCount;
         }
@@ -80,7 +90,24 @@ namespace myTNB.Home.Bill
                     cell.ClipsToBounds = false;
                     return cell;
                 }
-                if (IsEmptyHistory)
+                if (IsFailedService)
+                {
+                    NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
+                    foreach (UIView widget in cell._view) { if (widget != null) { widget.RemoveFromSuperview(); } }
+                    RefreshComponent refreshComponent = new RefreshComponent(FailMessage
+                                            , LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow)
+                                            , () => { if (OnRefresh != null) { OnRefresh.Invoke(); } })
+                    {
+                        PageName = "Bill",
+                        IsPlannedDownTime = IsPlanned
+                    };
+                    UIView refreshView = refreshComponent.GetUI(cell._view);
+                    cell._view.AddSubview(refreshView);
+                    cell._view.Frame = new CGRect(cell.Frame.Location, new CGSize(cell.Frame.Width, refreshView.Frame.Height));
+                    cell.Rescale();
+                    return cell;
+                }
+                else if (IsEmptyHistory)
                 {
                     NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
                     cell.Image = BillConstants.IMG_NoHistoryData;

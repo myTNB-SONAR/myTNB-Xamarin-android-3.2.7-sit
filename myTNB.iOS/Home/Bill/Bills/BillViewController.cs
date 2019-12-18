@@ -679,7 +679,7 @@ namespace myTNB
                        };
 
                        //Refresh Start
-                       /* InvokeInBackground(async () =>
+                       /*InvokeInBackground(async () =>
                         {
                             List<Task> taskList = new List<Task>
                             {
@@ -749,7 +749,6 @@ namespace myTNB
                                }
                            });
                        });
-
                    }
                    else
                    {
@@ -767,8 +766,6 @@ namespace myTNB
                     && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
                 {
                     SetHeaderLoading(false);
-
-                    //Todo: Display Top Data
                     AccountChargesCache.SetData(_accountCharges);
                     UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
 
@@ -778,8 +775,6 @@ namespace myTNB
                     if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                         && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
                     {
-                        //Todo: Display Bot Data
-                        Debug.WriteLine("Display Top and Bot Data");
                         FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
                         FilterIndex = 0;
                         List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
@@ -796,22 +791,41 @@ namespace myTNB
                     }
                     else
                     {
-                        if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsPlannedDownTime)
+                        string message = GetErrorI18NValue(Constants.Refresh_BillPayHistory);
+                        if (_billHistory != null && _billHistory.d != null)
                         {
-                            //Todo: Display Bot as Planned
-                            Debug.WriteLine("Display Bot as Planned");
+                            if (_billHistory.d.IsPlannedDownTime)
+                            {
+                                message = "Planned";
+                            }
+                            else if (_billHistory.d.RefreshMessage.IsValid())
+                            {
+                                message = _billHistory.d.RefreshMessage;
+                            }
                         }
-                        else
+
+                        bool isPlanned = _billHistory != null && _billHistory.d != null ? _billHistory.d.IsPlannedDownTime : false;
+
+                        FilterTypes = GetHistoryFilterTypes(_billHistory != null && _billHistory.d != null
+                            && _billHistory.d.data != null ? _billHistory.d.data : null);
+                        FilterIndex = 0;
+                        List<BillPayHistoryModel> historyList = _billHistory != null && _billHistory.d != null
+                            && _billHistory.d.data != null ? _billHistory.d.data.BillPayHistories : null;
+                        _historyTableView.Source = new BillHistorySource(historyList, false)
                         {
-                            //Todo: Display Bot as Refresh
-                            Debug.WriteLine("Display Bot as Refresh");
-                        }
+                            GetI18NValue = GetI18NValue,
+                            OnShowFilter = ShowFilterScreen,
+                            IsFailedService = true,
+                            FailMessage = message,
+                            OnRefresh = () => { Debug.WriteLine("History Refresh"); },
+                            IsPlanned = isPlanned
+                        };
+                        _historyTableView.ReloadData();
                     }
                 }
                 else if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                     && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
                 {
-                    //Todo: Display Bot Data
                     FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
                     FilterIndex = 0;
                     List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
@@ -825,14 +839,6 @@ namespace myTNB
                     };
                     _historyTableView.ReloadData();
 
-                    /* if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
-                         && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
-                     {
-                         //Todo: Display Top Data
-                         Debug.WriteLine("Display Top and Bot Data");
-                     }
-                     else
-                     {*/
                     if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsPlannedDownTime)
                     {
                         //Todo: Display Top as Planned
