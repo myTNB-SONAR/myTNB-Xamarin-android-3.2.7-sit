@@ -1260,6 +1260,12 @@
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\eye%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\eyeHide%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\eyeHide%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Refresh%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Refresh%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1767,6 +1773,8 @@
     <Folder Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\" />
+    <Folder Include="Assets.xcassets\Banner-PlannedDown.imageset\" />
+    <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
