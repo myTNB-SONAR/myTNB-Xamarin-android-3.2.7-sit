@@ -26,46 +26,46 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1001_Action()
         {
-            if (SSMRAccounts.IsHideOnboarding)
+            //if (SSMRAccounts.IsHideOnboarding)
+            //{
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                _controller.InvokeOnMainThread(() =>
                 {
-                    _controller.InvokeOnMainThread(() =>
+                    if (NetworkUtility.isReachable)
                     {
-                        if (NetworkUtility.isReachable)
+                        UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                        SSMRReadingHistoryViewController viewController =
+                            storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                        if (viewController != null)
                         {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                            SSMRReadingHistoryViewController viewController =
-                                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
-                            if (viewController != null)
-                            {
-                                viewController.IsFromHome = true;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                _controller.PresentViewController(navController, true, null);
-                                _controller.OnUpdateTable();
-                            }
+                            viewController.IsFromHome = true;
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                            _controller.PresentViewController(navController, true, null);
+                            _controller.OnUpdateTable();
                         }
-                        else
-                        {
-                            _controller.DisplayNoDataAlert();
-                        }
-                    });
+                    }
+                    else
+                    {
+                        _controller.DisplayNoDataAlert();
+                    }
                 });
-            }
-            else
-            {
-                UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
-                GenericPageRootViewController onboardingVC =
-                    onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
-                onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
-                var navController = new UINavigationController(onboardingVC)
-                {
-                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                };
-                _controller.PresentViewController(navController, true, null);
-                _controller.OnUpdateTable();
-            }
+            });
+            //}
+            //else
+            //{
+            //    UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
+            //    GenericPageRootViewController onboardingVC =
+            //        onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
+            //    onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
+            //    var navController = new UINavigationController(onboardingVC)
+            //    {
+            //        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            //    };
+            //    _controller.PresentViewController(navController, true, null);
+            //    _controller.OnUpdateTable();
+            //}
         }
 
         private void On_1002_Action() { }

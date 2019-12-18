@@ -163,7 +163,7 @@ namespace myTNB
         {
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _profileTableview = new UITableView(new CGRect(0, NavigationController.NavigationBar.Frame.GetMaxY(), View.Frame.Width
-                , ViewHeight + DeviceHelper.GetStatusBarHeight()))
+                , ViewHeight))
             {
                 SeparatorStyle = UITableViewCellSeparatorStyle.None
             };

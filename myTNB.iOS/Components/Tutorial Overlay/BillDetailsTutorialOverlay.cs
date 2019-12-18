@@ -56,7 +56,7 @@ namespace myTNB
             nfloat height = parentView.Frame.Height;
             UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAContainerYPos + GetScaledHeight(12F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), topView.Frame.GetMaxY() - GetScaledHeight(152F), GetScaledWidth(1F), GetScaledHeight(152F)))
             {
@@ -134,15 +134,15 @@ namespace myTNB
             nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), GetScaledWidth(12F) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), width / 2 - GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             parentView.AddSubview(topView);
             parentView.AddSubviews(new UIView { bottomView, leftView, rightView, boxView });

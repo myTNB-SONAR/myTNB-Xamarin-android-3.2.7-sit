@@ -17,7 +17,7 @@
     "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
     "refreshNow": "Refresh Now",
     "bcrmMessage": "BRCM will be down for maintenance purpose",
-    "disconnectionMsg": "Your electricity is currently disconnected.",
+    "disconnectionMsg": "Your electricity is currently unavailable.",
     "months": "Months",
     "days": "Days",
     "viewBill": "View Bill",
@@ -350,7 +350,7 @@
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
     "gotIt": "Got it!",
-    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
+    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Electricity supply to your premises is currently unavailable. This may be due to a temporary disconnection request by the owner or an overdue bill payment.<br><br>If you've made a payment, please give us some time for this to be reflected.",
     "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "What are these?",
     "missedReadTitle": "What does this mean?",
@@ -426,8 +426,8 @@
     ]
   },
   "BillDetails": {
-    "title": "Bill Details",
-    "billDetails": "My Bill Details",
+    "title": "Details",
+    "billDetails": "My Charges",
     "outstandingCharges": "My outstanding charges",
     "billThisMonth": "My latest bill",
     "needToPay": "I need to pay",
@@ -448,6 +448,7 @@
   "BillFilter": {
     "title": "Filter Views",
     "description": "View your invoiced bills, payment receipts or both.",
+    "descriptionRE": "View your advices, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
     "selectFilter": "Select Filter"
@@ -870,6 +871,19 @@
   "SavedRewards": {
     "title": "My Saved Rewards",
     "emptyDesc": "Your saved rewards will appear here.",
-    "used": "Used"
+    "used": "Used",
+    "rewardPeriod": "Reward Period",
+    "location": "Location(s)",
+    "tnc": "Terms and Conditions",
+    "rewardUsedPrefix": "Reward used ",
+    "rewardUsed": "Reward Used",
+    "useNow": "Use Now",
+    "useNowPopupTitle": "Please make sure you’re at the shop.",
+    "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
+    "useLater": "Use Later",
+    "confirm": "Confirm",
+    "unsave": "Unsave",
+    "save": "Save",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
   }
 }

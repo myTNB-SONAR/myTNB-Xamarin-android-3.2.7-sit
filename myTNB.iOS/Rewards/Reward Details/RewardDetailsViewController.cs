@@ -338,7 +338,8 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.VeryLightPinkSeven
             };
 
-            locationView.AddSubviews(new UIView { locationIcon, locationTitle, locationTextView, locationLine });
+            locationView.AddSubviews(new UIView { locationIcon, locationTitle, locationLine });
+            locationView.AddSubview(locationTextView);
 
             ViewHelper.AdjustFrameSetHeight(locationView, locationLine.Frame.GetMaxY());
 
