@@ -58,6 +58,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <param name="stringResourceId">integer</param>
             void SetToolbarTitle(int stringResourceId);
 
+            /// <summary>
+            /// Removed Header dropdown
+            /// </summary>
+            void RemoveHeaderDropDown();
+
             void SetAccountToolbarTitle(string accountName);
 
             /// <summary>
