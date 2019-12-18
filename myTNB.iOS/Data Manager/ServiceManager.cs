@@ -26,6 +26,26 @@ namespace myTNB
                 env = APIEnvironment.DEV;
 #endif
                 RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, version, env);
+                try
+                {
+                    if (rawResponse != null && rawResponse.Content.IsValid())
+                    {
+                        JObject jsonData = JObject.Parse(rawResponse.Content);
+                        JToken contentData = jsonData["d"];
+                        if (contentData != null)
+                        {
+                            BaseModelV2 baseModel = JsonConvert.DeserializeObject<BaseModelV2>(contentData.ToString());
+                            if (baseModel != null && baseModel.IsMaintenance)
+                            {
+                                //Todo: Intercept Screen
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Service Exception: {0} - {1} ", suffix, e.Message);
+                }
                 return (string.IsNullOrEmpty(rawResponse.Content)
                     || string.IsNullOrWhiteSpace(rawResponse.Content)) ? customClass
                     : JsonConvert.DeserializeObject<T>(rawResponse.Content);

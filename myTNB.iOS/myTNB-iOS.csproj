@@ -732,8 +732,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%403x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter%402x.png" />
@@ -1245,6 +1243,9 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\feedback1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\createFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-PlannedDownTime.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-PlannedDownTime.imageset\group22%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-PlannedDownTime.imageset\group22%403x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\Empty-Saved-Reward-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\Empty-Saved-Reward-Icon%403x.png" />
@@ -1257,6 +1258,8 @@
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Reward-TC-Icon-Used%402x.png" />
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Reward-TC-Icon-Used%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1759,6 +1762,7 @@
     <Folder Include="Assets.xcassets\IC-Refresh.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1-Install.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1-Update.imageset\" />
+    <Folder Include="Assets.xcassets\IC-PlannedDownTime.imageset\" />
     <Folder Include="Assets.xcassets\Empty-Saved-Reward-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\" />
@@ -2652,7 +2656,6 @@
     <Compile Include="Components\Refresh\RefreshConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\TermsAndCondition.txt" />
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
       <LogicalName>GoogleService-Info.plist</LogicalName>
     </BundleResource>
@@ -2662,7 +2665,6 @@
     <BundleResource Include="Firebase\prod\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Release'">
       <LogicalName>GoogleService-Info.plist</LogicalName>
     </BundleResource>
-    <BundleResource Include="Resources\FAQ.json" />
     <BundleResource Include="Resources\Fonts\MuseoSans_500.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>

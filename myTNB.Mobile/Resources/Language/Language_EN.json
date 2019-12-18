@@ -136,7 +136,8 @@
     "refreshBillDetails": "Uh oh, looks like the page with your bill details have been unplugged. Refresh to stay plugged in!",
     "refreshUsageSSMR": "Uh oh, looks like your Self Meter Reading service has been unplugged. Refresh to stay plugged in!",
     "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!",
-    "redeemRewardFailMsg": "Let’s do this one more time."
+    "redeemRewardFailMsg": "Let’s do this one more time.",
+    "plannedDownTimeMessage": "Looks like this page can’t be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -401,8 +402,8 @@
     "tutorialViewDetailsTitle": "Understand your bill.",
     "tutorialHistoryNormalTitle": "Keep track of payments.",
     "tutorialHistoryTitle": "Keep track of your charges.",
-    "tutorialBillREAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
-    "tutorialBillNormalAcctDesc": "Tap “ #dropdown# ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialBillREAcctDesc": "Tap “#dropdown#” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tap “#dropdown#” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
     "tutorialPayDesc": "Tap here to pay your bill.",
     "tutorialViewDetailsDesc": "“View Details” to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
@@ -573,7 +574,9 @@
     "myTNBAccount": "myTNB Account",
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
-    "electricityAccount": "Electricity Accounts"
+    "electricityAccount": "Electricity Accounts",
+    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "passwordUpdateSuccess": "Your password has been changed successfully."
   },
   "NotificationSettings": {
     "title": "Notification Settings",
@@ -704,9 +707,9 @@
     "title1": "Welcome to myTNB!",
     "title2": "Stay current with your usage.",
     "title3": "Bills at Your Fingertips.",
-    "title4": "Pay Your Bills Anytime, Anywhere.",
-    "title5": "Say Hi to myTNB Rewards!",
-    "title6": "What’s New with myTNB?",
+    "title4": "Pay your bills anytime, anywhere.",
+    "title5": "Say hi to myTNB Rewards!",
+    "title6": "What’s new with myTNB?",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",

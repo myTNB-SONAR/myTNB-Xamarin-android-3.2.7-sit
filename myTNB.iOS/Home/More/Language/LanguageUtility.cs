@@ -83,7 +83,7 @@ namespace myTNB
         {
             SetAppLanguage(IsLanguageSet ? CurrentSavedLanguage : CurrentDeviceLanguage);
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-            string content = sharedPreference.StringForKey("LanguageJSON");
+            string content = sharedPreference.StringForKey(LanguageContentKey);
             if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
             {
                 LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE

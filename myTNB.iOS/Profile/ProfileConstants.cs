@@ -32,6 +32,8 @@
         public static string I18N_Logout = "logout";
         public static string I18N_LogoutMessage = "logoutMessage";
         public static string I18N_ElectricityAccount = "electricityAccount";
+        public static string I18N_MobileNumberVerified = "mobileNumberVerified";
+        public static string I18N_PasswordUpdateSuccess = "passwordUpdateSuccess";
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";

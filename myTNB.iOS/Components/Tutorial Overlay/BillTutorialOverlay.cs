@@ -291,8 +291,8 @@ namespace myTNB
             string dropdownKey = BillConstants.REGEX_Dropdown;
             int startIndex = desc.IndexOf(dropdownKey, StringComparison.InvariantCulture);
             int endIndex = startIndex + dropdownKey.Length;
-            string preText = desc.Substring(0, startIndex - 1);
-            string postText = desc.Substring(endIndex + 1);
+            string preText = desc.Substring(0, startIndex);
+            string postText = desc.Substring(endIndex);
 
             NSAttributedString preAttibutedString = new NSAttributedString(
                    preText

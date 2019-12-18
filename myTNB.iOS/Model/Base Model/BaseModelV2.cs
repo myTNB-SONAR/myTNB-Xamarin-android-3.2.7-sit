@@ -17,11 +17,32 @@ namespace myTNB.Model
         public string DisplayMessage { set; get; }
         public string DisplayType { set; get; }
         public string DisplayTitle { set; get; }
+
+        //Refresh, Added as Virtual so that existing code will not be affected
+
+        public virtual string RefreshTitle { set; get; }
+        public virtual string RefreshMessage { set; get; }
+        public virtual string RefreshBtnText { set; get; }
+
         public bool IsSuccess
         {
             get
             {
                 return ErrorCode == StatusCodes.Success;
+            }
+        }
+        public bool IsPlannedDownTime
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public bool IsMaintenance
+        {
+            get
+            {
+                return false;
             }
         }
         [JsonIgnore]
