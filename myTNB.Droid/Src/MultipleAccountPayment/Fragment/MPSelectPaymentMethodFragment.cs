@@ -266,6 +266,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("Common", "cards");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM");
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
+                btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
 
                 //if(selectedAccount != null){
 
