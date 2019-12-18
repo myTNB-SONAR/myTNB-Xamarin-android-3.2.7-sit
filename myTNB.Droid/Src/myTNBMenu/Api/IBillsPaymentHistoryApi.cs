@@ -13,10 +13,6 @@ namespace myTNB_Android.Src.myTNBMenu.Api
         [Post("/v5/my_billingssp.asmx/GetPaymentHistory")]
         Task<PaymentHistoryResponseV5> GetPaymentHistoryV5([Body] PaymentHistoryRequest paymentHistoryRequest, CancellationToken cancellationToken);
 
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/GetBillHistory")]
-        Task<BillHistoryResponseV5> GetBillHistoryV5([Body] BillHistoryRequest billHistoryRequest, CancellationToken cancellationToken);
-
         //For RE account payment history
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/GetREPaymentHistory")]

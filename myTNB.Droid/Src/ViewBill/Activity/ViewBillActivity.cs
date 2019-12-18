@@ -16,6 +16,7 @@ using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Syncfusion.SfPdfViewer.Android;
@@ -35,7 +36,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
     {
 
         AccountData selectedAccount;
-        BillHistoryV5 selectedBill;
+        GetBillHistoryResponse.ResponseData selectedBill;
 
         BillHistoryResponseV5 billsHistoryResponseV5;
 
@@ -147,16 +148,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
             if (extras != null)
             {
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT) && extras.GetString(Constants.SELECTED_ACCOUNT) != null)
                 {
-                    //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                     selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                 }
 
-                if (extras.ContainsKey(Constants.SELECTED_BILL))
+                if (extras.ContainsKey(Constants.SELECTED_BILL) && extras.GetString(Constants.SELECTED_BILL) != null)
                 {
-                    //selectedBill = JsonConvert.DeserializeObject<BillHistoryV5>(Intent.Extras.GetString(Constants.SELECTED_BILL));
-                    selectedBill = DeSerialze<BillHistoryV5>(extras.GetString(Constants.SELECTED_BILL));
+                    selectedBill = DeSerialze<GetBillHistoryResponse.ResponseData>(extras.GetString(Constants.SELECTED_BILL));
                 }
 
                 if (extras.ContainsKey(Constants.CODE_KEY) && extras.GetInt(Constants.CODE_KEY) == Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE)
@@ -629,7 +628,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             }
         }
 
-        public void ShowBillPDF(BillHistoryV5 selectedBill = null)
+        public void ShowBillPDF(GetBillHistoryResponse.ResponseData selectedBill = null)
         {
             try
             {

@@ -1,5 +1,6 @@
 ﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Response;
 using Refit;
 using System;
 
@@ -9,7 +10,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
-            void ShowBillPDF(BillHistoryV5 selectedBill = null);
+            void ShowBillPDF(GetBillHistoryResponse.ResponseData selectedBill = null);
 
             void ShowProgressDialog();
 

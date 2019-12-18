@@ -49,6 +49,7 @@ using myTNB_Android.Src.myTNBMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMR.Util;
@@ -4721,7 +4722,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowViewBill(BillHistoryV5 selectedBill)
+        public void ShowViewBill(GetBillHistoryResponse.ResponseData selectedBill)
         {
             btnViewBill.Clickable = false;
             btnReView.Clickable = false;

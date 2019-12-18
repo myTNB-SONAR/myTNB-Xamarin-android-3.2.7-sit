@@ -32,6 +32,7 @@ using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2495,33 +2496,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
-                var billsHistoryResponseApi = await api.GetBillHistoryV5(new BillHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    AccountNum = selectedAccount.AccNum,
-                    IsOwner = selectedAccount.isOwned,
-                    Email = UserEntity.GetActive().Email
-                }, cts.Token);
-
-                var billsHistoryResponseV5 = billsHistoryResponseApi;
+                var billsHistoryResponse = await ServiceApiImpl.Instance.GetBillHistory(new MyTNBService.Request.GetBillHistoryRequest(selectedAccount.AccNum, selectedAccount.isOwned));
 
                 this.mView.HideProgressDialog();
 
                 AccountData select = AccountData.Copy(selectedAccount, true);
 
-                if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
+                if (billsHistoryResponse.IsSuccessResponse())
                 {
-                    if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
-                        && billsHistoryResponseV5.Data.Status.Equals("success"))
+                    if (billsHistoryResponse.GetData() != null && billsHistoryResponse.GetData().Count > 0)
                     {
-                        if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
-                        {
-                            this.mView.ShowBillPDF(select, billsHistoryResponseV5.Data.BillHistory[0]);
-                            return;
-                        }
-                        else
-                        {
-                            this.mView.ShowBillPDF(select);
-                        }
+                        this.mView.ShowBillPDF(select, billsHistoryResponse.GetData()[0]);
+                        return;
                     }
                     else
                     {
@@ -2532,7 +2518,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.mView.ShowBillPDF(select);
                 }
-
             }
             catch (System.OperationCanceledException e)
             {

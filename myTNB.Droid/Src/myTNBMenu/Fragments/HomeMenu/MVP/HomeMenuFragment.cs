@@ -47,6 +47,7 @@ using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.RearrangeAccount.MVP;
 using myTNB_Android.Src.AppLaunch.Activity;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2119,7 +2120,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void ShowBillPDF(AccountData selectedAccountData, BillHistoryV5 selectedBill = null)
+        public void ShowBillPDF(AccountData selectedAccountData, GetBillHistoryResponse.ResponseData selectedBill = null)
         {
             if (selectedBill != null && selectedBill.NrBill != null)
             {

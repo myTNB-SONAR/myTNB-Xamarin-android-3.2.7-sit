@@ -25,6 +25,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
@@ -351,16 +352,16 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
-        public void ShowBillPDF(BillHistoryV5 selectedBill)
+        public void ShowBillPDF(string selectedBillJson)
         {
-            if (selectedBill != null && selectedBill.NrBill != null)
-            {
-                selectedBill.NrBill = null;
-            }
+            //if (selectedBill != null && selectedBill.NrBill != null)
+            //{
+            //    selectedBill.NrBill = null;
+            //}
 
             Intent viewBill = new Intent(this, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+            viewBill.PutExtra(Constants.SELECTED_BILL, selectedBillJson);
             StartActivity(viewBill);
         }
 
