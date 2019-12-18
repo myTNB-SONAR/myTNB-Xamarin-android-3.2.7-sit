@@ -469,6 +469,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.imgMdmsDayViewDown)]
         ImageView imgMdmsDayViewDown;
 
+        [BindView(Resource.Id.dashboard_dropdown)]
+        ImageView imgRmKwhDropdownArrow;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -843,7 +846,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, newAccountContent, txtTariffBlockLegendDisclaimer);
 
 
-                txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
+                txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
                 btnPay.Text = Utility.GetLocalizedLabel("Usage", "pay");
                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
@@ -1137,6 +1140,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else
                     {
                         rmKwhSelection.Enabled = true;
+                        rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                        imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
                         tarifToggle.Enabled = true;
                         btnToggleDay.Enabled = true;
                         btnToggleMonth.Enabled = true;
@@ -1506,61 +1511,72 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isSMAccount)
                 {
-                    if (selectedSMHistoryData != null && selectedSMHistoryData.ByMonth != null && selectedSMHistoryData.ByMonth.Months != null && selectedSMHistoryData.ByMonth.Months.Count > 0)
+                    if (GetIsMDMSDown() && ChartType == ChartType.Day)
                     {
-                        for (int i = 0; i < selectedSMHistoryData.ByMonth.Months.Count; i++)
-                        {
-                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
-                            {
-                                bool isFound = false;
-
-                                if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
-                                {
-                                    for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
-                                    {
-                                        for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                                        {
-                                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
-                                            {
-                                                float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
-                                                if (float.IsPositiveInfinity(val))
-                                                {
-                                                    val = float.PositiveInfinity;
-                                                }
-                                                if (System.Math.Abs(val) > 0)
-                                                {
-                                                    isFound = true;
-                                                    isTariffAvailable = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-
-                                        if (isFound)
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (!isFound)
-                                {
-                                    isTariffAvailable = false;
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                isTariffAvailable = false;
-                            }
-                        }
+                        isTariffAvailable = false;
+                        rmKwhSelection.Enabled = false;
+                        smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
+                        rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
+                        imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle_disable);
                     }
                     else
                     {
-                        isTariffAvailable = false;
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByMonth != null && selectedSMHistoryData.ByMonth.Months != null && selectedSMHistoryData.ByMonth.Months.Count > 0)
+                        {
+                            for (int i = 0; i < selectedSMHistoryData.ByMonth.Months.Count; i++)
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                                {
+                                    bool isFound = false;
+
+                                    if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                            {
+                                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                {
+                                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                                    if (float.IsPositiveInfinity(val))
+                                                    {
+                                                        val = float.PositiveInfinity;
+                                                    }
+                                                    if (System.Math.Abs(val) > 0)
+                                                    {
+                                                        isFound = true;
+                                                        isTariffAvailable = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            if (isFound)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (!isFound)
+                                    {
+                                        isTariffAvailable = false;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    isTariffAvailable = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            isTariffAvailable = false;
+                        }
                     }
                 }
                 else
@@ -1639,12 +1655,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
+                    tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
+                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 }
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "hideTariff");
+                    tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_rounded_button_bg);
+                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 }
 
                 if (!isSMAccount)
@@ -1668,8 +1688,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     OnGenerateTariffLegendValue(CurrentParentIndex == -1 ? selectedSMHistoryData.ByMonth.Months.Count - 1 : CurrentParentIndex, isToggleTariff);
                 }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
-                txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
-                txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_disable_rounded_button_bg);
+                txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                txtTarifToggle.Alpha = 0.7f;
+                txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
             }
 
             if (isSMAccount)
@@ -4657,6 +4679,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Visibility = ViewStates.Visible;
 
             rmKwhSelection.Enabled = true;
+            rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+            imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
             tarifToggle.Enabled = true;
             btnToggleDay.Enabled = true;
             btnToggleMonth.Enabled = true;
@@ -4675,6 +4699,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Visibility = ViewStates.Visible;
 
             rmKwhSelection.Enabled = true;
+            rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+            imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
             tarifToggle.Enabled = true;
             btnToggleDay.Enabled = true;
             btnToggleMonth.Enabled = true;
@@ -4877,7 +4903,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
+                    tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
+                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
@@ -4904,7 +4932,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "hideTariff");
+                    tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_rounded_button_bg);
+                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
                     {
@@ -5206,7 +5236,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
                                 }
                             }
-                            else if (isSMAccount)
+                            else if (isSMAccount && !GetIsMDMSDown())
                             {
                                 if (newTariffList.Count >= 0 && newTariffList.Count < 1)
                                 {
@@ -5238,7 +5268,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
                             }
-                            else if (isSMAccount)
+                            else if (isSMAccount && !GetIsMDMSDown())
                             {
                                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                             }
@@ -5293,7 +5323,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
-                            if (isSMAccount)
+                            if (isSMAccount && !GetIsMDMSDown())
                             {
                                 if (newTariffList.Count >= 0 && newTariffList.Count < 1)
                                 {
@@ -5321,7 +5351,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
 
-                            if (isSMAccount)
+                            if (isSMAccount && !GetIsMDMSDown())
                             {
                                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                             }
@@ -9153,7 +9183,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 try
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "showTariff");
+                    tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
+                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {

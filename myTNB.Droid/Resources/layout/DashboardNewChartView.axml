@@ -534,7 +534,7 @@
                                     android:id="@+id/tarifToggle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@drawable/rectangle_rounded_button_bg"
+                                    android:background="@drawable/rectangle_white_outline_rounded_button_bg"
                                     android:paddingLeft="13dp"
                                     android:paddingRight="13dp"
                                     android:orientation="horizontal"
@@ -551,7 +551,7 @@
                                             android:id="@+id/txtTarifToggle"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:textColor="@color/powerBlue"
+                                            android:textColor="@color/white"
                                             android:textSize="13dp"
                                             android:layout_gravity="center"
                                             android:text="Show Tariff"/>

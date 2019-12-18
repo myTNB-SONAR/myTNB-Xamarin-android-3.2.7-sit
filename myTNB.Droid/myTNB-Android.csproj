@@ -4200,6 +4200,34 @@
     <Compile Include="Src\MyTNBService\Response\SaveLanguagePreferenceResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\SaveLanguagePreferenceRequest.cs" />
     <Compile Include="Src\myTNBMenu\ChartRenderer\CustomXAxisRenderer.cs" />
+    <AndroidResource Include="Resources\drawable\rectangle_white_outline_rounded_button_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\rectangle_white_outline_disable_rounded_button_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\rectangle_disable.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\rectangle_disable.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\rectangle_disable.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\rectangle_disable.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\rectangle_disable.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
