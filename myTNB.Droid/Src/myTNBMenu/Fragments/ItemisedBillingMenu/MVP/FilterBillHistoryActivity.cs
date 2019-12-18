@@ -126,6 +126,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         }
                     }
                 }
+
+                if (extras.ContainsKey("FILTER_DESCRIPTION") && !string.IsNullOrEmpty(extras.GetString("FILTER_DESCRIPTION")))
+                {
+                    billFilterMessage.Text = extras.GetString("FILTER_DESCRIPTION");
+                }
             }
 
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
