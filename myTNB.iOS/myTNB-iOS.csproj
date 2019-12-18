@@ -2661,6 +2661,7 @@
     <Compile Include="Components\Tutorial Overlay\RewardsTutorialOverlay.cs" />
     <Compile Include="Components\Tutorial Overlay\RewardsDetailTutorialOverlay.cs" />
     <Compile Include="Components\Refresh\RefreshComponent.cs" />
+    <Compile Include="Home\Bill\Bills\RefreshViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

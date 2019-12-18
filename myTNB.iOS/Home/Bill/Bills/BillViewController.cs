@@ -661,6 +661,7 @@ namespace myTNB
                 _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
             }
             FilterDisplay(false);
+
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>
@@ -679,7 +680,7 @@ namespace myTNB
                        };
 
                        //Refresh Start
-                       /*InvokeInBackground(async () =>
+                       InvokeInBackground(async () =>
                         {
                             List<Task> taskList = new List<Task>
                             {
@@ -688,10 +689,10 @@ namespace myTNB
                             };
                             await Task.WhenAll(taskList.ToArray());
                             EvaluateResponse();
-                        });*/
+                        });
                        //Refresh End
 
-                       InvokeInBackground(async () =>
+                       /*InvokeInBackground(async () =>
                        {
                            isGetAcctChargesLoading = true;
                            _accountCharges = await GetAccountsCharges();
@@ -748,7 +749,7 @@ namespace myTNB
                                    DisplayRefresh();
                                }
                            });
-                       });
+                       });*/
                    }
                    else
                    {
@@ -762,66 +763,16 @@ namespace myTNB
         {
             InvokeOnMainThread(() =>
             {
+                isGetAcctChargesLoading = false;
+                isGetAcctBillPayHistoryLoading = false;
+
                 if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
                     && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
                 {
                     SetHeaderLoading(false);
                     AccountChargesCache.SetData(_accountCharges);
                     UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
-
-                    isGetAcctChargesLoading = false;
-                    isGetAcctBillPayHistoryLoading = false;
-
-                    if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
-                        && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
-                    {
-                        FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
-                        FilterIndex = 0;
-                        List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
-                        _historyTableView.Source = new BillHistorySource(historyList, false)
-                        {
-                            OnTableViewScroll = OnTableViewScroll,
-                            GetI18NValue = GetI18NValue,
-                            OnSelectBill = DisplayBillPDF,
-                            OnSelectPayment = DisplayReceipt,
-                            OnShowFilter = ShowFilterScreen
-                        };
-                        _historyTableView.ReloadData();
-                        CheckTutorialOverlay();
-                    }
-                    else
-                    {
-                        string message = GetErrorI18NValue(Constants.Refresh_BillPayHistory);
-                        if (_billHistory != null && _billHistory.d != null)
-                        {
-                            if (_billHistory.d.IsPlannedDownTime)
-                            {
-                                message = "Planned";
-                            }
-                            else if (_billHistory.d.RefreshMessage.IsValid())
-                            {
-                                message = _billHistory.d.RefreshMessage;
-                            }
-                        }
-
-                        bool isPlanned = _billHistory != null && _billHistory.d != null ? _billHistory.d.IsPlannedDownTime : false;
-
-                        FilterTypes = GetHistoryFilterTypes(_billHistory != null && _billHistory.d != null
-                            && _billHistory.d.data != null ? _billHistory.d.data : null);
-                        FilterIndex = 0;
-                        List<BillPayHistoryModel> historyList = _billHistory != null && _billHistory.d != null
-                            && _billHistory.d.data != null ? _billHistory.d.data.BillPayHistories : null;
-                        _historyTableView.Source = new BillHistorySource(historyList, false)
-                        {
-                            GetI18NValue = GetI18NValue,
-                            OnShowFilter = ShowFilterScreen,
-                            IsFailedService = true,
-                            FailMessage = message,
-                            OnRefresh = () => { Debug.WriteLine("History Refresh"); },
-                            IsPlanned = isPlanned
-                        };
-                        _historyTableView.ReloadData();
-                    }
+                    EvaluateBillData();
                 }
                 else if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                     && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
@@ -866,6 +817,90 @@ namespace myTNB
                 }
 
             });
+        }
+
+        private void EvaluateBillData()
+        {
+            OnResetBGRect();
+            if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
+                        && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
+            {
+                FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
+                FilterIndex = 0;
+                List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
+                _historyTableView.Source = new BillHistorySource(historyList, false)
+                {
+                    OnTableViewScroll = OnTableViewScroll,
+                    GetI18NValue = GetI18NValue,
+                    OnSelectBill = DisplayBillPDF,
+                    OnSelectPayment = DisplayReceipt,
+                    OnShowFilter = ShowFilterScreen
+                };
+                _historyTableView.ReloadData();
+                CheckTutorialOverlay();
+            }
+            else
+            {
+                string message = GetErrorI18NValue(Constants.Refresh_BillPayHistory);
+                if (_billHistory != null && _billHistory.d != null)
+                {
+                    if (_billHistory.d.IsPlannedDownTime)
+                    {
+                        message = "Planned";
+                    }
+                    else if (_billHistory.d.RefreshMessage.IsValid())
+                    {
+                        message = _billHistory.d.RefreshMessage;
+                    }
+                }
+
+                bool isPlanned = _billHistory != null && _billHistory.d != null ? _billHistory.d.IsPlannedDownTime : false;
+
+                FilterTypes = GetHistoryFilterTypes(_billHistory != null && _billHistory.d != null
+                    && _billHistory.d.data != null ? _billHistory.d.data : null);
+                FilterIndex = 0;
+                List<BillPayHistoryModel> historyList = _billHistory != null && _billHistory.d != null
+                    && _billHistory.d.data != null ? _billHistory.d.data.BillPayHistories : null;
+                _historyTableView.Source = new BillHistorySource(historyList, false)
+                {
+                    OnTableViewScroll = OnTableViewScroll,
+                    GetI18NValue = GetI18NValue,
+                    OnShowFilter = ShowFilterScreen,
+                    IsFailedService = true,
+                    FailMessage = message,
+                    OnRefresh = OnHistoryRefresh,
+                    IsPlanned = isPlanned
+                };
+                _historyTableView.ReloadData();
+            }
+        }
+
+        private void OnHistoryRefresh()
+        {
+            rCount++;
+            isGetAcctBillPayHistoryLoading = true;
+            _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
+            {
+                GetI18NValue = GetI18NValue,
+                OnShowFilter = ShowFilterScreen
+            };
+            _historyTableView.ReloadData();
+            OnResetBGRect();
+            //Refresh Start
+            InvokeInBackground(async () =>
+            {
+                await GetAccountBillPayHistory();
+                InvokeOnMainThread(() =>
+                {
+                    EvaluateBillData();
+                    isGetAcctBillPayHistoryLoading = false;
+                });
+            });
+        }
+
+        private void OnAccountChagesRefresh()
+        {
+
         }
 
         private void UpdateHeaderData(AccountChargesModel data)
@@ -920,10 +955,13 @@ namespace myTNB
         {
             nfloat height = View.Frame.Height - _navbarView.Frame.Height - TabBarController.TabBar.Frame.Height;
             _historyTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, height));
+            _historyTableView.ShowsVerticalScrollIndicator = false;
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryViewCell), BillConstants.Cell_BillHistory);
             _historyTableView.RegisterClassForCellReuse(typeof(BillSectionViewCell), BillConstants.Cell_BillSection);
             _historyTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), Constants.Cell_NoHistoryData);
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryShimmerViewCell), BillConstants.Cell_BillHistoryShimmer);
+            _historyTableView.RegisterClassForCellReuse(typeof(RefreshViewCell), BillConstants.Cell_Refresh);
+
             _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
             {
                 OnTableViewScroll = OnTableViewScroll,
@@ -1167,7 +1205,7 @@ namespace myTNB
             _accountCharges = response;
             return response;
         }
-
+        int rCount = 0;
         private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
         {
             ServiceManager serviceManager = new ServiceManager();
@@ -1180,6 +1218,12 @@ namespace myTNB
             };
             GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
             _billHistory = response;
+            if (rCount > 3) { return response; }
+            if (DataManager.DataManager.SharedInstance.SelectedAccount.accNum == "210021822904"
+                || DataManager.DataManager.SharedInstance.SelectedAccount.accNum == "220151163207")
+            {
+                _billHistory = null;
+            }
             return response;
         }
         #endregion

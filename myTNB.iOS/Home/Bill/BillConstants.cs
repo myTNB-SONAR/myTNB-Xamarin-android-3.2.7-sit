@@ -25,6 +25,7 @@
         public static string Cell_BillHistory = "billHistoryTableViewCell";
         public static string Cell_BillSection = "billSectionTableViewCell";
         public static string Cell_BillHistoryShimmer = "billHistoryShimmerViewCell";
+        public static string Cell_Refresh = "refreshViewCell";
 
         //I18N
         //Bill

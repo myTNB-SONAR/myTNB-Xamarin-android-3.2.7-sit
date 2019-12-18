@@ -80,6 +80,8 @@ namespace myTNB.Home.Bill
                 cell.filterAction = OnShowFilter;
                 cell.Layer.ZPosition = 1;
                 cell.SetFilterImage(IsFiltered);
+                cell.DisplayFilterIcon = !IsFailedService;
+                cell.EnableFilter = !_isLoading;
                 return cell;
             }
             else
@@ -92,18 +94,17 @@ namespace myTNB.Home.Bill
                 }
                 if (IsFailedService)
                 {
-                    NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
-                    foreach (UIView widget in cell._view) { if (widget != null) { widget.RemoveFromSuperview(); } }
+                    RefreshViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_Refresh) as RefreshViewCell;
                     RefreshComponent refreshComponent = new RefreshComponent(FailMessage
-                                            , LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow)
-                                            , () => { if (OnRefresh != null) { OnRefresh.Invoke(); } })
+                        , LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow)
+                        , () => { if (OnRefresh != null) { OnRefresh.Invoke(); } })
                     {
                         PageName = "Bill",
                         IsPlannedDownTime = IsPlanned
                     };
                     UIView refreshView = refreshComponent.GetUI(cell._view);
                     cell._view.AddSubview(refreshView);
-                    cell._view.Frame = new CGRect(cell.Frame.Location, new CGSize(cell.Frame.Width, refreshView.Frame.Height));
+                    cell._view.Frame = new CGRect(new CGPoint(0, 0), new CGSize(tableView.Frame.Width, refreshView.Frame.Height));
                     cell.Rescale();
                     return cell;
                 }
@@ -112,6 +113,7 @@ namespace myTNB.Home.Bill
                     NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
                     cell.Image = BillConstants.IMG_NoHistoryData;
                     cell.Message = GetI18NValue(BillConstants.I18N_NoHistoryData);
+                    cell.Rescale();
                     return cell;
                 }
                 else
