@@ -104,7 +104,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             Bundle extras = Intent.Extras;
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
-            billFilterMessage.Text = GetLabelByLanguage("description");
             btnBillFilter.Text = GetLabelByLanguage("applyFilter");
             txtFilterLabel.Text = GetLabelByLanguage("filterBy");
             txtFilterSelected.Text = "";
@@ -129,8 +128,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
                 if (extras.ContainsKey("FILTER_DESCRIPTION") && !string.IsNullOrEmpty(extras.GetString("FILTER_DESCRIPTION")))
                 {
-                    billFilterMessage.Text = extras.GetString("FILTER_DESCRIPTION");
+                    if (extras.GetString("FILTER_DESCRIPTION") == "RE")
+                    {
+                        billFilterMessage.Text = GetLabelByLanguage("descriptionRE");
+                    }
+                    else
+                    {
+                        billFilterMessage.Text = GetLabelByLanguage("description");
+                    }
                 }
+                else
+                {
+                    billFilterMessage.Text = GetLabelByLanguage("description");
+                }
+            }
+            else
+            {
+                billFilterMessage.Text = GetLabelByLanguage("description");
             }
 
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);

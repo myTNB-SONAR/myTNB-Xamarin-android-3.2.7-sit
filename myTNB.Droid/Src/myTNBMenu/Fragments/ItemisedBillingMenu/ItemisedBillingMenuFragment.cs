@@ -262,11 +262,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     this.SetIsClicked(true);
                     Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
-                    string filterDescription = GetLabelByLanguage("description");
+                    string filterDescription = "NONRE";
                     bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
                     if (isREAccount)
                     {
-                        filterDescription = GetLabelByLanguage("descriptionRE");
+                        filterDescription = "RE";
                     }
                     newIntent.PutExtra("FILTER_DESCRIPTION", filterDescription);
                     newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
