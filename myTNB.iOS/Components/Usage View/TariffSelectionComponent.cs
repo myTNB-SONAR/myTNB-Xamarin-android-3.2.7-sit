@@ -88,9 +88,11 @@ namespace myTNB
 
             _tariffSelectionView = new UIView(new CGRect(tariffXPos, 0, tariffWidth, tariffHeight))
             {
-                BackgroundColor = UIColor.White,
+                BackgroundColor = UIColor.Clear
             };
-            _tariffSelectionView.Layer.CornerRadius = GetScaledHeight(13f);
+            _tariffSelectionView.Layer.CornerRadius = GetScaledHeight(14F);
+            _tariffSelectionView.Layer.BorderColor = UIColor.White.CGColor;
+            _tariffSelectionView.Layer.BorderWidth = GetScaledWidth(1);
             _containerView.AddSubview(_tariffSelectionView);
 
             nfloat tarrifIconXPos = GetScaledWidth(12f);
@@ -109,9 +111,9 @@ namespace myTNB
             _tariffLabel = new UILabel(new CGRect(tariffLabelXPos, tariffLabelYPos, tariffLabelWidth, tariffLabelHeight))
             {
                 Font = TNBFont.MuseoSans_12_500,
-                TextColor = MyTNBColor.WaterBlue,
+                TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(UsageConstants.I18N_ShowTariff)
+                Text = GetI18NValue(UsageConstants.I18N_TariffBlock)
             };
 
             //Resize
@@ -229,14 +231,15 @@ namespace myTNB
         public void UpdateTariffButton(bool showTariff)
         {
             _tariffIcon.Image = showTariff ? UIImage.FromBundle(Constants.IMG_TariffEyeCloseIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
-            _tariffLabel.Text = showTariff ? GetI18NValue(UsageConstants.I18N_HideTariff) : GetI18NValue(UsageConstants.I18N_ShowTariff);
+            _tariffSelectionView.BackgroundColor = showTariff ? UIColor.White : UIColor.Clear;
+            _tariffLabel.TextColor = showTariff ? MyTNBColor.WaterBlue : UIColor.White;
         }
 
         public void SetTariffButtonDisable(bool isDisable)
         {
             isTariffDisabled = isDisable;
             _tariffIcon.Image = isDisable ? UIImage.FromBundle(Constants.IMG_TariffEyeDisableIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
-            _tariffLabel.TextColor = isDisable ? MyTNBColor.SilverChalice : MyTNBColor.WaterBlue;
+            _tariffLabel.TextColor = isDisable ? MyTNBColor.SilverChalice : UIColor.White;
         }
         #endregion
     }

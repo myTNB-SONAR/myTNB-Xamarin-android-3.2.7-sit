@@ -72,6 +72,7 @@ namespace myTNB
 
         public void SetLanguage(string content)
         {
+            SetLanguage(Source.FILE, Language.EN);return;
             if (!string.IsNullOrEmpty(content) && ! string.IsNullOrWhiteSpace(content))
             {
                 JSONLang = content;

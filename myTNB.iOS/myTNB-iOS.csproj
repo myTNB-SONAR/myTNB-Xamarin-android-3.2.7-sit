@@ -845,11 +845,7 @@
     <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%402x.png" />
@@ -1260,6 +1256,10 @@
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Reward-TC-Icon-Used%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\eye%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\eye%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\eyeHide%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\eyeHide%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
