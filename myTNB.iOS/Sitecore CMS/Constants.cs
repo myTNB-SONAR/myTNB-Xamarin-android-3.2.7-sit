@@ -64,6 +64,7 @@
 
                 public struct Help
                 {
+                    public const string ShowNeedHelp = "Show Need Help";
                     public const string TopicBGImage = "TopicBGImage";
                     public const string BGStartColor = "BGStartColor";
                     public const string BGEndColor = "BGEndColor";

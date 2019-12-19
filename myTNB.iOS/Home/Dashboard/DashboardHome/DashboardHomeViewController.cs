@@ -468,7 +468,7 @@ namespace myTNB
                         {
                             _helpIsShimmering = true;
                             OnUpdateTable();
-                            OnGetHelpInfo().ContinueWith(task =>
+                            SitecoreServices.Instance.LoadNeedHelp().ContinueWith(task =>
                             {
                                 InvokeOnMainThread(() =>
                                 {
