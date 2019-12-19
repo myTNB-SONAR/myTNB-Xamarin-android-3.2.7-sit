@@ -298,7 +298,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 if (position == -1)
                 {
-                    ShowError(this.GetString(Resource.String.error_select_5_accounts));
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL)
+                        .SetMessage(Utility.GetLocalizedCommonLabel("selectBillMaxDesc"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .Build().Show();
                 }
 #if STUB
                 else if (position != -2)

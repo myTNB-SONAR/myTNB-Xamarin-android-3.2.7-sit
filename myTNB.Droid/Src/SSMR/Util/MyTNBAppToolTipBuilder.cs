@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.SSMR.Util
             NORMAL_WITH_HEADER_TWO_BUTTON,
             LISTVIEW_WITH_INDICATOR_AND_HEADER,
             IMAGE_HEADER_TWO_BUTTON,
+            NORMAL,
         }
 
         private ToolTipType toolTipType;
@@ -64,6 +65,10 @@ namespace myTNB_Android.Src.SSMR.Util
             else if (mToolTipType == ToolTipType.IMAGE_HEADER_TWO_BUTTON)
             {
                 layoutResource = Resource.Layout.CustomDialogWithImageHeaderTwoButton;
+            }
+            else if (mToolTipType == ToolTipType.NORMAL)
+            {
+                layoutResource = Resource.Layout.CustomToolTipWithHeaderLayout;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
@@ -354,6 +359,40 @@ namespace myTNB_Android.Src.SSMR.Util
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
 
 
+            }
+            else if (this.toolTipType == ToolTipType.NORMAL)
+            {
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+
+                tooltipCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (this.ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
+
+                tooltipTitle.Visibility = ViewStates.Gone;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                if (this.clickableSpan != null)
+                {
+                    tooltipMessage.TextFormatted = Utility.GetFormattedURLString(this.clickableSpan, tooltipMessage.TextFormatted);
+                    tooltipMessage.MovementMethod = new LinkMovementMethod();
+                }
+                tooltipCTA.Text = this.ctaLabel;
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
             }
             return this;
         }
