@@ -170,10 +170,10 @@
     "submitFeedback": "Hantar<br>Maklum Balas",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
-    "tutorialAccountTitle": "Ringkasan akaun anda",
+    "tutorialAccountTitle": "Ringkasan akaun anda.",
     "tutorialSingleAcctTitle": "Selamat datang ke laman Utama baru anda!",
     "tutorialQuickAccessTitle": "Akses pantas akaun.",
-    "tutorialQuickActionTitle": "Akses Mudah",
+    "tutorialQuickActionTitle": "Akses mudah.",
     "tutorialNeedHelpTitle": "Perlu bantuan?",
     "tutorialNoAcctDesc": "Masukkan akaun elektrik ke myTNB untuk mengakses penggunaan dan perkhidmatan yang ditawarkan.",
     "tutorialSingleAcctDesc": "Ini adalah ringkasan akaun elektrik anda. Tekan akaun tersebut untuk melihat Penggunaan anda. Tekan <b>“Tambah”</b> untuk menambah akaun ke myTNB.",
@@ -397,7 +397,7 @@
     "noHistoryData": "Nampaknya anda belum lagi mempunyai bil! Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
-    "tutorialBillTitle": "Ringkasan keseluruhan bil anda",
+    "tutorialBillTitle": "Ringkasan keseluruhan bil anda.",
     "tutorialAdviceTitle": "Gambaran keseluruhan makluman anda.",
     "tutorialPayTitle": "Bayar cara mudah.",
     "tutorialViewDetailsTitle": "Fahami bil anda.",
@@ -454,7 +454,7 @@
     "gotIt": "Faham!"
   },
   "BillFilter": {
-    "title": "Pilihan Paparan",
+    "title": "Tapis Paparan",
     "description": "Lihat bil anda, resit pembayaran atau kedua-duanya.",
     "descriptionRE": "Lihat makluman anda, resit pembayaran atau kedua-duanya.",
     "filterBy": "Pilihan Mengikut",
@@ -706,7 +706,7 @@
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Keluarkan Akaun Ini",
     "popupremoveAccountTitle": "Keluarkan Akaun",
-    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
+    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   },
   "Onboarding": {
     "letsStart": "Jom Mulakan!",
