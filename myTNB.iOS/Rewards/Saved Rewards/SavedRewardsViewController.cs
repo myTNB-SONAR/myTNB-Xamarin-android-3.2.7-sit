@@ -119,13 +119,25 @@ namespace myTNB
                 SavedRewardsList = rewardsList.FindAll(x => x.IsSaved);
                 InvokeOnMainThread(() =>
                 {
-                    _savedRewardsTableView.ClearsContextBeforeDrawing = true;
-                    _savedRewardsTableView.Source = new SavedRewardsDataSource(
-                        this,
-                        SavedRewardsList,
-                        GetI18NValue);
-                    _savedRewardsTableView.ReloadData();
+                    if (SavedRewardsList != null && SavedRewardsList.Count > 0)
+                    {
+                        _savedRewardsTableView.ClearsContextBeforeDrawing = true;
+                        _savedRewardsTableView.Source = new SavedRewardsDataSource(
+                            this,
+                            SavedRewardsList,
+                            GetI18NValue);
+                        _savedRewardsTableView.ReloadData();
+                    }
+                    else
+                    {
+                        SetEmptySavedRewardView();
+                    }
+
                 });
+            }
+            else
+            {
+                SetEmptySavedRewardView();
             }
         }
 

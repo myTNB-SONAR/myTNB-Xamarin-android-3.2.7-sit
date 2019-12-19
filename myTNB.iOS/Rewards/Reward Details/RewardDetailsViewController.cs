@@ -310,23 +310,6 @@ namespace myTNB
             };
 
             UITextView locationTextView = CreateHTMLContent(RewardModel.LocationLabel);
-            locationTextView.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                BrowserViewController viewController =
-                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                if (viewController != null)
-                {
-                    viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
-                    viewController.URL = url.AbsoluteString;
-                    viewController.IsDelegateNeeded = false;
-                    UINavigationController navController = new UINavigationController(viewController)
-                    {
-                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                    };
-                    PresentViewController(navController, true, null);
-                }
-            }));
             CGSize locationTextViewSize = locationTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(locationTextView, locationTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(locationTextView, 0);
@@ -366,23 +349,6 @@ namespace myTNB
             };
 
             UITextView tandCTextView = CreateHTMLContent(RewardModel.TandCLabel);
-            tandCTextView.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                BrowserViewController viewController =
-                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                if (viewController != null)
-                {
-                    viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
-                    viewController.URL = url.AbsoluteString;
-                    viewController.IsDelegateNeeded = false;
-                    UINavigationController navController = new UINavigationController(viewController)
-                    {
-                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                    };
-                    PresentViewController(navController, true, null);
-                }
-            }));
             CGSize tandCTextViewSize = tandCTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(tandCTextView, tandCTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(tandCTextView, 0);
@@ -423,6 +389,7 @@ namespace myTNB
             {
                 ForegroundColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_14_500,
+                UnderlineColor = UIColor.Clear,
                 UnderlineStyle = NSUnderlineStyle.None
             };
 
@@ -434,6 +401,31 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextContainerInset = UIEdgeInsets.Zero
+            };
+
+            Action<NSUrl> action = new Action<NSUrl>((url) =>
+            {
+                if (url != null)
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                    BrowserViewController viewController =
+                        storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                    if (viewController != null)
+                    {
+                        viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
+                        viewController.URL = url.AbsoluteString;
+                        viewController.IsDelegateNeeded = false;
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
+                        PresentViewController(navController, true, null);
+                    }
+                }
+            });
+            textView.Delegate = new TextViewDelegate(action)
+            {
+                InteractWithURL = false
             };
 
             return textView;
