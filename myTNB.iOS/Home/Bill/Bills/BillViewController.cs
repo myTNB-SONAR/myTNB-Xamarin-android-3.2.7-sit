@@ -786,7 +786,8 @@ namespace myTNB
                         GetI18NValue = GetI18NValue,
                         OnSelectBill = DisplayBillPDF,
                         OnSelectPayment = DisplayReceipt,
-                        OnShowFilter = ShowFilterScreen
+                        OnShowFilter = ShowFilterScreen,
+                        NoData = historyList.Count == 0
                     };
                     _historyTableView.ReloadData();
 
@@ -823,7 +824,7 @@ namespace myTNB
         {
             OnResetBGRect();
             if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
-                        && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
+                && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
             {
                 FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
                 FilterIndex = 0;
@@ -834,7 +835,8 @@ namespace myTNB
                     GetI18NValue = GetI18NValue,
                     OnSelectBill = DisplayBillPDF,
                     OnSelectPayment = DisplayReceipt,
-                    OnShowFilter = ShowFilterScreen
+                    OnShowFilter = ShowFilterScreen,
+                    NoData = historyList.Count == 0
                 };
                 _historyTableView.ReloadData();
                 CheckTutorialOverlay();

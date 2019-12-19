@@ -12,8 +12,11 @@ namespace myTNB.Home.Bill
         public Func<string, string> GetI18NValue;
         public Action<string> OnSelectBill;
         public Action<string> OnSelectPayment;
+
+        //For Filter
         public Action OnShowFilter;
         public bool IsFiltered;
+        public bool NoData { set; private get; }
 
         //For Refresh
         public bool IsFailedService { set; private get; } = false;
@@ -80,7 +83,7 @@ namespace myTNB.Home.Bill
                 cell.filterAction = OnShowFilter;
                 cell.Layer.ZPosition = 1;
                 cell.SetFilterImage(IsFiltered);
-                cell.DisplayFilterIcon = !IsFailedService;
+                cell.DisplayFilterIcon = !IsFailedService && !NoData;
                 cell.EnableFilter = !_isLoading;
                 return cell;
             }
