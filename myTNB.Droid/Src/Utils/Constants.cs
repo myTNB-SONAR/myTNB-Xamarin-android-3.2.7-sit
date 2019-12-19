@@ -331,6 +331,10 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int DYNAMIC_LINK_ANDROID_MIN_VER_CODE = 171;
         internal static readonly string DYNAMIC_LINK_IOS_MIN_VER_CODE = "2.1.0";
         internal static readonly string DYNAMIC_LINK_IOS_APP_ID = "1297089591";
+
+        internal static readonly string ITEMIZED_BILLING_ADVICE_KEY = "ADVICE";
+        internal static readonly string ITEMIZED_BILLING_BILL_KEY = "BILL";
+        internal static readonly string ITEMIZED_BILLING_PAYMENT_KEY = "PAYMENT";
         
     }
 }

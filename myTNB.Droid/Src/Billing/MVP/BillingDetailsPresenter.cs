@@ -12,16 +12,24 @@ using System.Collections.Generic;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using Newtonsoft.Json;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Billing;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.Parser;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
     public class BillingDetailsPresenter : BillingDetailsContract.IPresenter
     {
         BillingDetailsContract.IView mView;
+        BillingApiImpl billingApi;
 
         public BillingDetailsPresenter(BillingDetailsContract.IView view)
         {
             mView = view;
+            billingApi = new BillingApiImpl();
         }
 
         public void GetBillHistory(AccountData selectedAccount)
@@ -73,6 +81,55 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 this.mView.HideProgressDialog();
                 this.mView.ShowBillErrorSnackBar();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void ShowBillDetails(AccountData selectedAccount)
+        {
+            try
+            {
+                this.mView.ShowProgressDialog();
+                List<string> accountList = new List<string>();
+                accountList.Add(selectedAccount.AccountNum);
+                List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
+                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
+                    accountList,
+                    selectedAccount.IsOwner
+                    );
+                AccountChargesResponse accountChargeseResponse = await billingApi.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                this.mView.HideProgressDialog();
+                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                {
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    this.mView.ShowBillDetails(accountChargeModelList);
+                }
+                else
+                {
+                    // TODO: Refresh / Maintenance Screen
+                    // this.mView.ShowLoadBillRetryOptions();
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideProgressDialog();
+                // TODO: Refresh / Maintenance Screen
+                // this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                // TODO: Refresh / Maintenance Screen
+                // this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideProgressDialog();
+                // TODO: Refresh / Maintenance Screen
+                // this.mView.ShowLoadBillRetryOptions();
                 Utility.LoggingNonFatalError(e);
             }
         }
