@@ -506,6 +506,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             else
             {
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
+                bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
+                if (isREAccount)
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistoryRE");
+                }
+                else
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistory");
+                }
+                if (historyType.ToUpper() == Constants.ITEMIZED_BILLING_PAYMENT_KEY)
+                {
+                    if (isREAccount)
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyPaymentHistoryRE");
+                    }
+                    else
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyPaymentHistory");
+                    }
+                }
+                else if (historyType.ToUpper() == Constants.ITEMIZED_BILLING_BILL_KEY)
+                {
+                    if (isREAccount)
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistoryRE");
+                    }
+                    else
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistory");
+                    }
+                }
+                else if (historyType.ToUpper() == Constants.ITEMIZED_BILLING_ADVICE_KEY)
+                {
+                    if (isREAccount)
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistoryRE");
+                    }
+                    else
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistory");
+                    }
+                }
+
                 itemisedBillingList.Visibility = ViewStates.Gone;
             }
         }
@@ -595,7 +638,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 billFilterIcon.Visibility = ViewStates.Gone;
                 billFilterIcon.Enabled = true;
-                // TODO: Update empty state name
+                bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
+                if (isREAccount)
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistoryRE");
+                }
+                else
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistory");
+                }
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
                 itemisedBillingList.Visibility = ViewStates.Gone;
             }
