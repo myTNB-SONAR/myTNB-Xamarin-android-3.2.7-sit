@@ -130,6 +130,8 @@ namespace myTNB
                                     if (!_isViewDidLoad)
                                     {
                                         props_needsUpdate = true;
+                                        props_rewardsList = _rewardsList;
+                                        props_index = _selectedCategoryIndex;
                                         OnTableReload();
                                     }
                                 }
