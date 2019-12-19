@@ -1445,65 +1445,100 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
+                if (NewFAQParentManager == null)
+                {
+                    NewFAQParentManager = new NewFAQParentEntity();
+                }
+
                 if (NewFAQManager == null)
                 {
                     NewFAQManager = new NewFAQEntity();
                 }
+
                 currentNewFAQList.Clear();
-                List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
-                cachedDBList = NewFAQManager.GetAll();
-                if (cachedDBList.Count > 0)
+
+
+                List<NewFAQParentEntity> items = NewFAQParentManager.GetAllItems();
+                if (items != null)
                 {
-                    for (int i = 0; i < cachedDBList.Count; i++)
+                    NewFAQParentEntity entity = items[0];
+                    if (entity != null) // && entity.ShowNeedHelp)
                     {
-                        if (cachedDBList[i].Tags == "SM")
+
+                        List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
+                        cachedDBList = NewFAQManager.GetAll();
+                        if (cachedDBList.Count > 0)
                         {
-                            if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
+                            for (int i = 0; i < cachedDBList.Count; i++)
                             {
-                                currentNewFAQList.Add(new NewFAQ()
+                                if (cachedDBList[i].Tags == "SM")
                                 {
-                                    ID = cachedDBList[i].ID,
-                                    Image = cachedDBList[i].Image,
-                                    BGStartColor = cachedDBList[i].BGStartColor,
-                                    BGEndColor = cachedDBList[i].BGEndColor,
-                                    BGDirection = cachedDBList[i].BGDirection,
-                                    Title = cachedDBList[i].Title,
-                                    Description = cachedDBList[i].Description,
-                                    TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                                    TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                                    CTA = cachedDBList[i].CTA,
-                                    Tags = cachedDBList[i].Tags,
-                                    TargetItem = cachedDBList[i].TargetItem
-                                });
+                                    if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
+                                    {
+                                        currentNewFAQList.Add(new NewFAQ()
+                                        {
+                                            ID = cachedDBList[i].ID,
+                                            Image = cachedDBList[i].Image,
+                                            BGStartColor = cachedDBList[i].BGStartColor,
+                                            BGEndColor = cachedDBList[i].BGEndColor,
+                                            BGDirection = cachedDBList[i].BGDirection,
+                                            Title = cachedDBList[i].Title,
+                                            Description = cachedDBList[i].Description,
+                                            TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                            TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                            CTA = cachedDBList[i].CTA,
+                                            Tags = cachedDBList[i].Tags,
+                                            TargetItem = cachedDBList[i].TargetItem
+                                        });
+                                    }
+                                }
+                                else
+                                {
+                                    currentNewFAQList.Add(new NewFAQ()
+                                    {
+                                        ID = cachedDBList[i].ID,
+                                        Image = cachedDBList[i].Image,
+                                        BGStartColor = cachedDBList[i].BGStartColor,
+                                        BGEndColor = cachedDBList[i].BGEndColor,
+                                        BGDirection = cachedDBList[i].BGDirection,
+                                        Title = cachedDBList[i].Title,
+                                        Description = cachedDBList[i].Description,
+                                        TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                        TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                        CTA = cachedDBList[i].CTA,
+                                        Tags = cachedDBList[i].Tags,
+                                        TargetItem = cachedDBList[i].TargetItem
+                                    });
+                                }
                             }
-                        }
-                        else
-                        {
-                            currentNewFAQList.Add(new NewFAQ()
-                            {
-                                ID = cachedDBList[i].ID,
-                                Image = cachedDBList[i].Image,
-                                BGStartColor = cachedDBList[i].BGStartColor,
-                                BGEndColor = cachedDBList[i].BGEndColor,
-                                BGDirection = cachedDBList[i].BGDirection,
-                                Title = cachedDBList[i].Title,
-                                Description = cachedDBList[i].Description,
-                                TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                                TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                                CTA = cachedDBList[i].CTA,
-                                Tags = cachedDBList[i].Tags,
-                                TargetItem = cachedDBList[i].TargetItem
-                            });
+                            this.mView.SetNewFAQResult(currentNewFAQList);
+
+                            isNeedHelpDone = true;
+                            OnCheckToCallHomeMenuTutorial();
                         }
                     }
-                    this.mView.SetNewFAQResult(currentNewFAQList);
-
+                    else
+                    {
+                        // TODO: Hide Need Help
+                        /*this.mView.HideNewFAQ();
+                        isNeedHelpDone = true;
+                        OnCheckToCallHomeMenuTutorial();*/
+                    }
+                }
+                else
+                {
+                    // TODO: Hide Need Help
+                    /*this.mView.HideNewFAQ();
                     isNeedHelpDone = true;
-                    OnCheckToCallHomeMenuTutorial();
+                    OnCheckToCallHomeMenuTutorial();*/
                 }
             }
             catch (Exception e)
             {
+                // TODO: Hide Need Help
+                /*this.mView.HideNewFAQ();
+                isNeedHelpDone = true;
+                OnCheckToCallHomeMenuTutorial();*/
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -2705,6 +2740,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 IsButtonShow = false
             });
 
+            // TODO: Don't Popular this if Need Help is hiding
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopLeft,

@@ -202,6 +202,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.txtNewLabel)]
         TextView txtNewLabel;
 
+        [BindView(Resource.Id.indicatorContainer)]
+        LinearLayout indicatorContainer;
+
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -601,9 +604,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQListRecycleView.SetLayoutManager(linearLayoutManager);
+            LinearSnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.AttachToRecyclerView(newFAQListRecycleView);
+
 
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
+            LinearSnapHelper shimmerSnapHelper = new LinearSnapHelper();
+            shimmerSnapHelper.AttachToRecyclerView(newFAQShimmerList);
 
         }
 
@@ -680,6 +688,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void HideNewFAQ()
+        {
+            try
+            {
+                newFAQShimmerView.Visibility = ViewStates.Gone;
+                newFAQTitle.Visibility = ViewStates.Gone;
+                newFAQView.Visibility = ViewStates.Gone;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool CheckNeedHelp()
+        {
+            return newFAQView.Visibility == ViewStates.Gone && newFAQTitle.Visibility == ViewStates.Gone;
+        }
+
         public void SetNewFAQResult(List<NewFAQ> list)
         {
             try
@@ -692,6 +719,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         newFAQListRecycleView.SetAdapter(newFAQAdapter);
                         currentNewFAQList.Clear();
                         currentNewFAQList.AddRange(list);
+                        if (list != null && list.Count > 3)
+                        {
+                            indicatorContainer.Visibility = ViewStates.Visible;
+                            newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                            int count = 0;
+                            for (int i = 0; i < list.Count; i += 3)
+                            {
+                                ImageView image = new ImageView(this.Activity);
+                                image.Id = i;
+                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                                layoutParams.RightMargin = 9;
+                                layoutParams.LeftMargin = 9;
+                                image.LayoutParameters = layoutParams;
+                                if (i == 0)
+                                {
+                                    image.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                                }
+                                else
+                                {
+                                    image.SetImageResource(Resource.Drawable.faq_indication_inactive);
+                                }
+                                indicatorContainer.AddView(image, count);
+                                count++;
+                            }
+                        }
+                        else
+                        {
+                            newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                            indicatorContainer.Visibility = ViewStates.Gone;
+                        }
+
                         newFAQAdapter.ClickChanged += OnFAQClickChanged;
                         try
                         {
@@ -710,6 +768,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
+                // TODO: To Hide the FAQ
+                // HideNewFAQ();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1126,6 +1186,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 this.presenter.ReadNewFAQFromCache();
                             }
                         }
+                        else
+                        {
+                            this.presenter.OnGetFAQs();
+                        }
+                    }
+                    else
+                    {
+                        this.presenter.OnGetFAQs();
                     }
 
                 }
@@ -1136,6 +1204,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
+                this.presenter.ReadNewFAQFromCache();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -2369,6 +2438,73 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             );
             mSomethingWrongExceptionSnackBar.Show();
+        }
+
+        public class NewFAQScrollListener : RecyclerView.OnScrollListener
+        {
+            private List<NewFAQ> mList = new List<NewFAQ>();
+            private LinearLayout mIndicatorContainer;
+
+            public NewFAQScrollListener(List<NewFAQ> list, LinearLayout indicatorContainer)
+            {
+                if (list != null && list.Count > 0)
+                {
+                    mList = list;
+                }
+
+                mIndicatorContainer = indicatorContainer;
+            }
+
+            protected NewFAQScrollListener(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+            {
+
+            }
+
+            public override void OnScrollStateChanged(RecyclerView recyclerView, int newState)
+            {
+                base.OnScrollStateChanged(recyclerView, newState);
+
+                if (newState == (int)ScrollState.Idle && mList != null && mList.Count > 3)
+                {
+                    LinearLayoutManager layoutManager = recyclerView.GetLayoutManager() as LinearLayoutManager;
+                    int firstCompleteItemShow = layoutManager.FindFirstCompletelyVisibleItemPosition();
+                    int lastCompleteItemShow = layoutManager.FindLastCompletelyVisibleItemPosition();
+
+                    bool isLastItemReach = lastCompleteItemShow == (mList.Count - 1);
+
+                    int count = 0;
+
+                    for (int i = 0; i < mList.Count; i += 3)
+                    {
+                        ImageView selectedDot = (ImageView)mIndicatorContainer.GetChildAt(count);
+                        int nextLastItem = i + 3;
+
+                        if (isLastItemReach)
+                        {
+                            if (nextLastItem > (mList.Count - 1))
+                            {
+                                selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                            }
+                            else
+                            {
+                                selectedDot.SetImageResource(Resource.Drawable.faq_indication_inactive);
+                            }
+                        }
+                        else
+                        {
+                            if(firstCompleteItemShow >= i && firstCompleteItemShow < nextLastItem)
+                            {
+                                selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                            }
+                            else
+                            {
+                                selectedDot.SetImageResource(Resource.Drawable.faq_indication_inactive);
+                            }
+                        }
+                        count++;
+                    }
+                }
+            }
         }
     }
 }
