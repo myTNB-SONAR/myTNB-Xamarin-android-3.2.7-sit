@@ -230,7 +230,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -249,7 +249,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -268,7 +268,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -337,7 +337,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mErrorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mErrorSnackbar.Dismiss();

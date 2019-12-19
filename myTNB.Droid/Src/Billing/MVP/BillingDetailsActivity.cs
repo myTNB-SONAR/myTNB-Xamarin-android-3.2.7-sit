@@ -25,6 +25,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
@@ -291,14 +292,19 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void ShowUnderstandBillTooltip()
         {
-            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
-            UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
-                .SetAdapter(adapter)
-                .SetContext(this)
-                .SetCTALabel(Utility.GetLocalizedLabel("Common","gotIt"))
-                .Build()
-                .Show();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
+                UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+                    .SetAdapter(adapter)
+                    .SetContext(this)
+                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                    .SetCTAaction(()=> { this.SetIsClicked(false);})
+                    .Build()
+                    .Show();
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -351,16 +357,16 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
-        public void ShowBillPDF(BillHistoryV5 selectedBill)
+        public void ShowBillPDF(string selectedBillJson)
         {
-            if (selectedBill != null && selectedBill.NrBill != null)
-            {
-                selectedBill.NrBill = null;
-            }
+            //if (selectedBill != null && selectedBill.NrBill != null)
+            //{
+            //    selectedBill.NrBill = null;
+            //}
 
             Intent viewBill = new Intent(this, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+            viewBill.PutExtra(Constants.SELECTED_BILL, selectedBillJson);
             StartActivity(viewBill);
         }
 
@@ -408,7 +414,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 }
 
                 mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
                 }

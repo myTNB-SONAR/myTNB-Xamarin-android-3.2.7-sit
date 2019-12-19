@@ -489,7 +489,7 @@ namespace myTNB_Android.Src.RegisterValidation
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -509,7 +509,7 @@ namespace myTNB_Android.Src.RegisterValidation
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -529,7 +529,7 @@ namespace myTNB_Android.Src.RegisterValidation
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -552,7 +552,7 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -575,7 +575,7 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(resourceStringId), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -602,7 +602,7 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(Resource.String.runtime_permission_sms_received_rationale), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }

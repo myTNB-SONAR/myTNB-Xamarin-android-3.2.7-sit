@@ -16,6 +16,7 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
@@ -698,41 +699,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
             this.mView.ShowProgress();
-            cts = new CancellationTokenSource();
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IBillsPaymentHistoryApi>(httpClient);
-#else
-            var api = RestService.For<IBillsPaymentHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var billsHistoryResponseApi = await api.GetBillHistoryV5(new BillHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    AccountNum = selectedAccount.AccountNum,
-                    IsOwner = selectedAccount.IsOwner,
-                    Email = UserEntity.GetActive().Email
-                }, cts.Token);
-
-                var billsHistoryResponseV5 = billsHistoryResponseApi;
+                var billsHistoryResponse = await ServiceApiImpl.Instance.GetBillHistory(new MyTNBService.Request.GetBillHistoryRequest(selectedAccount.AccountNum, selectedAccount.IsOwner));
 
                 this.mView.HideProgress();
 
-                if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
+                if (billsHistoryResponse.IsSuccessResponse())
                 {
-                    if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
-                        && billsHistoryResponseV5.Data.Status.Equals("success"))
+                    if (billsHistoryResponse.GetData() != null && billsHistoryResponse.GetData().Count > 0)
                     {
-                        if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
-                        {
-                            this.mView.ShowViewBill(billsHistoryResponseV5.Data.BillHistory[0]);
-                            return;
-                        }
-                        else
-                        {
-                            this.mView.ShowViewBill();
-                        }
+                        this.mView.ShowViewBill(billsHistoryResponse.GetData()[0]);
+                        return;
                     }
                     else
                     {
@@ -743,7 +721,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowViewBill();
                 }
-
             }
             catch (System.OperationCanceledException e)
             {

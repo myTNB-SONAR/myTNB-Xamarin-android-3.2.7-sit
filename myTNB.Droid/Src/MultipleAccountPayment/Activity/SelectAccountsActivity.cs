@@ -466,7 +466,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 }
 
                 mErrorMessageSnackBar = Snackbar.Make(rootView, messge, Snackbar.LengthIndefinite)
-                .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
                 );
                 View v = mErrorMessageSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

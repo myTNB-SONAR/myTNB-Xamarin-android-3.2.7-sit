@@ -258,7 +258,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -296,7 +296,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -315,7 +315,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -333,7 +333,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -353,7 +353,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();

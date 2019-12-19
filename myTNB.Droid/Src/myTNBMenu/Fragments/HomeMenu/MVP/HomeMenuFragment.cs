@@ -47,6 +47,7 @@ using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.RearrangeAccount.MVP;
 using myTNB_Android.Src.AppLaunch.Activity;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2104,7 +2105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 mLoadBillSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
                 {
                     mLoadBillSnackBar.Dismiss();
                 }
@@ -2119,7 +2120,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void ShowBillPDF(AccountData selectedAccountData, BillHistoryV5 selectedBill = null)
+        public void ShowBillPDF(AccountData selectedAccountData, GetBillHistoryResponse.ResponseData selectedBill = null)
         {
             if (selectedBill != null && selectedBill.NrBill != null)
             {

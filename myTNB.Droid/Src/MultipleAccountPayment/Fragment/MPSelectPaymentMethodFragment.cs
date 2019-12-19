@@ -212,6 +212,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(lblBack);
+                lblBack.Text = Utility.GetLocalizedCommonLabel("back");
                 lblBack.Click += delegate
                 {
                     enterCvvLayout.Visibility = ViewStates.Gone;
@@ -266,6 +267,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("Common", "cards");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM");
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
+                btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
 
                 //if(selectedAccount != null){
 
@@ -402,12 +404,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         if (card.CardType.Equals("AMEX") || card.CardType.Equals("A"))
                         {
-                            lblCvvInfo.Text = Activity.GetString(Resource.String.cvv_info_4_digit);
+                            lblCvvInfo.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "cvvFourDigitMessage");
                             edtNumber4.Visibility = ViewStates.Visible;
                         }
                         else
                         {
-                            lblCvvInfo.Text = Activity.GetString(Resource.String.cvv_info_3_digit);
+                            lblCvvInfo.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "cvvThreeDigitMessage");
                             edtNumber4.Visibility = ViewStates.Gone;
                         }
                     }
@@ -664,7 +666,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
 
             mErrorMessageSnackBar = Snackbar.Make(baseView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

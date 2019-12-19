@@ -368,5 +368,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.SaveLanguagePreference<SaveLanguagePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetBillHistory with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetBillHistoryResponse> GetBillHistory([Body] Request.BaseRequest request)
+        {
+            return api.GetBillHistory<GetBillHistoryResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

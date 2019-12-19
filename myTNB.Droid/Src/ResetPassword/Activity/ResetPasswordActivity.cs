@@ -318,7 +318,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
             this.SetIsClicked(false);
@@ -332,7 +332,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
             this.SetIsClicked(false);

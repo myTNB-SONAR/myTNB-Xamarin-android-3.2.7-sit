@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     mNoAccountFoundDialog = new AlertDialog.Builder(this)
                     .SetTitle("Sorry")
                     .SetMessage("We could not find any supply accounts for you. Please use Add Account button below, to add accounts")
-                    .SetPositiveButton("Ok", (senderAlert, args) =>
+                    .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"), (senderAlert, args) =>
                     {
                         mNoAccountFoundDialog.Dismiss();
                     })
@@ -432,7 +432,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -975,7 +975,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
 
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
                 mSnackBar.Dismiss();
             });

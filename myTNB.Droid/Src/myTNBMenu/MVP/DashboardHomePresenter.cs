@@ -321,6 +321,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     break;
 				case Resource.Id.menu_bill:
                     OnUpdatePromoUnRead();
+                    this.mView.RemoveHeaderDropDown();
                     if (accountList.Count > 0)
 					{
                         CustomerBillingAccount selected;
@@ -372,6 +373,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
+                    this.mView.RemoveHeaderDropDown();
                     WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
 					if (weblinkEntity != null)
 					{
@@ -420,6 +422,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     break;
 				case Resource.Id.menu_more:
+                    this.mView.RemoveHeaderDropDown();
                     OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();

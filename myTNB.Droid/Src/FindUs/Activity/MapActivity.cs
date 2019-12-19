@@ -162,7 +162,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -341,7 +341,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                .SetTitle("Locations")
                .SetMessage("No records found!")
                .SetCancelable(true)
-                .SetPositiveButton("Ok", (senderAlert, args) =>
+                .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"), (senderAlert, args) =>
                 {
                     if (loadingOverlay != null && loadingOverlay.IsShowing)
                     {
@@ -458,7 +458,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                         mLocationDialog = new AlertDialog.Builder(this)
                                 .SetTitle("Location!")
                                 .SetMessage("Location service disabled. Please enable location from phone settings.")
-                                .SetPositiveButton("Ok", (senderAlert, args) =>
+                                .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"), (senderAlert, args) =>
                                 {
                                     mLocationDialog.Dismiss();
                                 })
@@ -564,7 +564,7 @@ namespace myTNB_Android.Src.FindUs.Activity
         }
 
         /// <summary>
-        /// Find clicked location from the map : detect weather user has clicked KT location or any other location 
+        /// Find clicked location from the map : detect weather user has clicked KT location or any other location
         /// </summary>
         public void FindClickedItem(LatLng clickedItem)
         {

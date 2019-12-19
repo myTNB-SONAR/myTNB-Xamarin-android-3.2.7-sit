@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(baseView, msg, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

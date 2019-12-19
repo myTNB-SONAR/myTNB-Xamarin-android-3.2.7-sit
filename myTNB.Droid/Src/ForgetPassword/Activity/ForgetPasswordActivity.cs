@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.forget_password_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }

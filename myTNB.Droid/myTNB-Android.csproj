@@ -4228,6 +4228,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\GetBillHistoryRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetBillHistoryResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

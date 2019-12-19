@@ -10,12 +10,13 @@ using Refit;
 using System.Linq;
 using System.Collections.Generic;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
     public class BillingDetailsPresenter : BillingDetailsContract.IPresenter
     {
-        CancellationTokenSource cts;
         BillingDetailsContract.IView mView;
 
         public BillingDetailsPresenter(BillingDetailsContract.IView view)
@@ -31,41 +32,19 @@ namespace myTNB_Android.Src.Billing.MVP
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
             this.mView.ShowProgressDialog();
-            cts = new CancellationTokenSource();
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IBillsPaymentHistoryApi>(httpClient);
-#else
-            var api = RestService.For<IBillsPaymentHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
 
             try
             {
-                var billsHistoryResponseApi = await api.GetBillHistoryV5(new BillHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    AccountNum = selectedAccount.AccountNum,
-                    IsOwner = selectedAccount.IsOwner,
-                    Email = UserEntity.GetActive().Email
-                }, cts.Token);
-
-                var billsHistoryResponseV5 = billsHistoryResponseApi;
+                var billsHistoryResponse = await ServiceApiImpl.Instance.GetBillHistory(new MyTNBService.Request.GetBillHistoryRequest(selectedAccount.AccountNum, selectedAccount.IsOwner));
 
                 this.mView.HideProgressDialog();
 
-                if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
+                if (billsHistoryResponse.IsSuccessResponse())
                 {
-                    if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
-                        && billsHistoryResponseV5.Data.Status.Equals("success"))
+                    if (billsHistoryResponse.GetData() != null && billsHistoryResponse.GetData().Count > 0)
                     {
-                        if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
-                        {
-                            this.mView.ShowBillPDF(billsHistoryResponseV5.Data.BillHistory[0]);
-                            return;
-                        }
-                        else
-                        {
-                            this.mView.ShowBillPDF();
-                        }
+                        this.mView.ShowBillPDF(JsonConvert.SerializeObject(billsHistoryResponse.GetData()[0]));
+                        return;
                     }
                     else
                     {

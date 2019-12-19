@@ -81,8 +81,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             try
             {
-                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken(new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
-                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.MobileNo));
+                CreateNewUserWithTokenRequest createNewUserWithTokenRequest = new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
+                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.MobileNo);
+                createNewUserWithTokenRequest.SetUserName(userCredentialsEntity.Email);
+                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken(createNewUserWithTokenRequest);
 
                 if (userRegistrationResponse.IsSuccessResponse())
                 {
@@ -93,8 +95,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     {
                         fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
                     }
-
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password));
+                    UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password);
+                    userAuthenticateRequest.SetUserName(userCredentialsEntity.Email);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
 
                     if (!userResponse.IsSuccessResponse())
                     {
@@ -121,7 +124,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         if (Id > 0)
                         {
                             NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                            Base.Request.APIBaseRequest getUserNotificationRequest = new Base.Request.APIBaseRequest();
+                            getUserNotificationRequest.usrInf.eid = userCredentialsEntity.Email;
+                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(getUserNotificationRequest);
                             if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                             {
                                 try

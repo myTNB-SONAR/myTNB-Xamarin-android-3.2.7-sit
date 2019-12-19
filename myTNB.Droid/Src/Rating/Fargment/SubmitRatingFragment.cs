@@ -160,7 +160,7 @@ namespace myTNB_Android.Src.Rating.Fargment
         public void ShowError(string exception)
         {
             Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_cards_btn_close),
+            .SetAction(Utility.GetLocalizedCommonLabel("close"),
                 (view) =>
                 {
 

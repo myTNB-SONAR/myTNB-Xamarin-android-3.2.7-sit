@@ -10,6 +10,7 @@ using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -66,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void ShowBillErrorSnackBar();
 
-            void ShowBillPDF(AccountData selectedAccountData, BillHistoryV5 selectedBill = null);
+            void ShowBillPDF(AccountData selectedAccountData, GetBillHistoryResponse.ResponseData selectedBill = null);
 
             void ShowNotificationCount(int count);
 

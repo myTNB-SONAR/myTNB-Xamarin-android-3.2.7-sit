@@ -174,13 +174,13 @@ namespace myTNB_Android.Src.AddCard.Activity
                     DisableSaveButton();
                     if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15)
                     {
-                        textInputLayoutCardNo.Error = "Invalid Card No.";
+                        textInputLayoutCardNo.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardNumber");
                     }
                 }
                 else if (!LuhnVerification(cardNo))
                 {
                     DisableSaveButton();
-                    textInputLayoutCardNo.Error = "Invalid Card No.";
+                    textInputLayoutCardNo.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardNumber");
                 }
                 else
                 {
@@ -229,7 +229,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                     DisableSaveButton();
                     if (!String.IsNullOrEmpty(exp))
                     {
-                        textInputLayoutCardExpDate.Error = "Invalid Card Expiration Date";
+                        textInputLayoutCardExpDate.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardExpiry");
                     }
                 }
                 else
@@ -256,7 +256,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                     if (!String.IsNullOrEmpty(cvv))
                     {
-                        textInputLayoutCVV.Error = "Invalid CVV."; 
+                        textInputLayoutCVV.Error = Utility.GetLocalizedLabel("AddCard", "invalidCVV");
                     }
 
                 }
@@ -319,7 +319,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                     DisableSaveButton();
                     mDuplicateCardDialog = new MaterialDialog.Builder(this)
                             .Title("Info")
-                            .Content("Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?")
+                            .Content(Utility.GetLocalizedLabel("AddCard", "savedCardMessage"))
                             .Cancelable(false)
                             .PositiveText("Continue")
                             .OnPositive((dialog, which) =>
@@ -330,7 +330,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                                 SetResult(Result.Ok, finishIntent);
                                 Finish();
                             })
-                            .NeutralText("Cancel")
+                            .NeutralText(Utility.GetLocalizedCommonLabel("cancel"))
                             .OnNeutral((dialog, which) => mDuplicateCardDialog.Dismiss()).Show();
                 }
                 else
@@ -392,7 +392,7 @@ namespace myTNB_Android.Src.AddCard.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

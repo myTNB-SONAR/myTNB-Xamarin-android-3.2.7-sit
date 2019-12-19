@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -40,7 +41,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <summary>
             /// Show ViewBill
             /// </summary>
-            void ShowViewBill(BillHistoryV5 selectedBill = null);
+            void ShowViewBill(GetBillHistoryResponse.ResponseData selectedBill = null);
 
             /// <summary>
             /// Show Payment
