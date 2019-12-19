@@ -43,7 +43,7 @@ namespace myTNB.SmartMeterView
             _lblMonth = new UILabel(new CGRect(0, _segmentScrollView.Frame.GetMaxY() - GetHeightByScreenSize(3), _width, GetHeightByScreenSize(12)))
             {
                 TextAlignment = UITextAlignment.Center,
-                Font = TNBFont.MuseoSans_10_300,
+                Font = TNBFont.MuseoSans_10_500,
                 TextColor = UIColor.White
             };
             view.AddSubview(_lblMonth);
@@ -130,7 +130,7 @@ namespace myTNB.SmartMeterView
                     , GetWidthByScreenSize(100), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
+                    Font = TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
                     Text = displayText,
                     Hidden = !isSelected,
@@ -159,8 +159,8 @@ namespace myTNB.SmartMeterView
                     , height - ((lblHeight * 2) + GetHeightByScreenSize(12)), GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
+                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
+                    TextColor = UIColor.White,
                     Text = item.Day,
                     Tag = 1003
                 };
@@ -262,7 +262,7 @@ namespace myTNB.SmartMeterView
             UILabel lblDay = view.ViewWithTag(1003) as UILabel;
             if (lblDay != null)
             {
-                lblDay.TextColor = isActive ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+                lblDay.Font = isActive ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
             }
 
             CustomUIView viewBar = view.ViewWithTag(1001) as CustomUIView;
