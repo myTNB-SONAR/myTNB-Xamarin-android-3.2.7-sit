@@ -27,7 +27,7 @@ namespace myTNB.Home.Bill
         private List<BillPayHistoryModel> _historyResponseList;
         private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
         private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
-        private bool _isLoading;
+        private bool _isLoading, _hideSection;
 
         public BillHistorySource(List<BillPayHistoryModel> historyResponseList, bool isLoading)
         {
@@ -53,15 +53,25 @@ namespace myTNB.Home.Bill
                 }
             }
             _isLoading = isLoading;
+            _hideSection = false;
+        }
+
+        public BillHistorySource(bool hideSection)
+        {
+            _hideSection = hideSection;
         }
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return 1;
+            return _hideSection ? 0 : 1;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
+            if (_hideSection)
+            {
+                return 0;
+            }
             int rowCount = 1;//Default to 1 for section view
             if (_isLoading || IsEmptyHistory || IsFailedService)
             {
