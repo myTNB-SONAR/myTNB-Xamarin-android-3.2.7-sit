@@ -485,11 +485,15 @@ namespace myTNB
             }
             else
             {
-                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                if (_segmentContainer != null)
                 {
-                    CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                    if (segmentView == null) { continue; }
-                    UpdateTariffView(segmentView, i);
+                    for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                    {
+                        CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                        if (segmentView == null) { continue; }
+                        UpdateTariffView(segmentView, i);
+
+                    }
                 }
             }
         }

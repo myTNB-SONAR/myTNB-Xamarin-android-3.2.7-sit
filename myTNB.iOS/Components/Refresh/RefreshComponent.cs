@@ -41,7 +41,7 @@ namespace myTNB
                 , ScaleUtility.GetScaledHeight(24), imgWidth, imgHeight))
             {
                 Image = UIImage.FromBundle(string.IsNullOrEmpty(_image) || string.IsNullOrWhiteSpace(_image)
-                    ? IsPlannedDownTime ? RefreshConstants.IMG_PlannedDowntime : RefreshConstants.IMG_RefreshIcon
+                    ? IsPlannedDownTime ? Constants.IMG_IconPlannedDowntime : Constants.IMG_IconRefresh
                     : _image)
             };
 

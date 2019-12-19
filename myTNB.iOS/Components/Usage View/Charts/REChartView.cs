@@ -116,7 +116,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
-                    Text = Math.Abs(amountValue).ToString("N2", CultureInfo.InvariantCulture).FormatAmountString(item.Currency),
+                    Text = Math.Abs(amountValue).ToString("N2", CultureInfo.InvariantCulture).FormatAmountString(item.Currency, true),
                     Hidden = !isSelected,
                     Tag = 1003
                 };

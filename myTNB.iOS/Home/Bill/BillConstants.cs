@@ -25,6 +25,7 @@
         public static string Cell_BillHistory = "billHistoryTableViewCell";
         public static string Cell_BillSection = "billSectionTableViewCell";
         public static string Cell_BillHistoryShimmer = "billHistoryShimmerViewCell";
+        public static string Cell_Refresh = "refreshViewCell";
 
         //I18N
         //Bill
@@ -76,6 +77,14 @@
         public static string I18N_FilterBy = "filterBy";
         public static string I18N_ApplyFilter = "applyFilter";
         public static string I18N_SelectFilter = "selectFilter";
+
+        //EmptyDataPreffix
+        public static string I18N_EmptyHistory = "emptyHistory";
+        public static string I18N_EmptyPaymentHistory = "emptyPaymentHistory";
+        public static string I18N_EmptyBillHistory = "emptyBillHistory";
+        public static string I18N_EmptyHistoryRE = "emptyHistoryRE";
+        public static string I18N_EmptyPaymentHistoryRE = "emptyPaymentHistoryRE";
+        public static string I18N_EmptyBillHistoryRE = "emptyBillHistoryRE";
 
         //Image
         public static string IMG_NeedToPay = "Bills-NeedToPay-Banner";

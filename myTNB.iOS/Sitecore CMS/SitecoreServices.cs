@@ -23,13 +23,13 @@ namespace myTNB.SitecoreCMS
         {
             _isForcedUpdate = isforcedUpdate;
             List<Task> taskList = new List<Task>
-            {
-                LoadMeterReadSSMRWalkthrough(),
-                LoadMeterReadSSMRWalkthroughV2(),
-                LoadBillDetailsTooltip(),
-                //LoadSSMRWalkthrough(),
-                LoadTermsAndCondition()
-            };
+                {
+                    LoadMeterReadSSMRWalkthrough(),
+                    LoadMeterReadSSMRWalkthroughV2(),
+                    LoadBillDetailsTooltip(),
+                    //LoadSSMRWalkthrough(),
+                    LoadTermsAndCondition()
+                };
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
@@ -54,14 +54,21 @@ namespace myTNB.SitecoreCMS
         private string GetDataFromFile(string url)
         {
             string content = string.Empty;
-            WebRequest webRequest = WebRequest.Create(url);
-            using (WebResponse response = webRequest.GetResponse())
-            using (Stream responseStream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(responseStream))
+            try
             {
-                content = reader.ReadToEnd();
+                WebRequest webRequest = WebRequest.Create(url);
+                using (WebResponse response = webRequest.GetResponse())
+                using (Stream responseStream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(responseStream))
+                {
+                    content = reader.ReadToEnd();
+                }
+                //Debug.WriteLine("Content: " + content);
             }
-            //Debug.WriteLine("Content: " + content);
+            catch (Exception e)
+            {
+                Debug.WriteLine("GetDataFromFile: " + e.Message);
+            }
             return content;
         }
 
