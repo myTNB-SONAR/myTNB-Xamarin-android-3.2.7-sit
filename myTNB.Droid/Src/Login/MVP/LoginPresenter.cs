@@ -194,25 +194,34 @@ namespace myTNB_Android.Src.Login.MVP
                         UserSessions.RemoveSessionData();
                         NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
                         NewFAQParentManager.DeleteTable();
+                        NewFAQParentManager.CreateTable();
                         SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
                         SSMRMeterReadingScreensParentManager.DeleteTable();
+                        SSMRMeterReadingScreensParentManager.CreateTable();
                         SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
                         SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingScreensOCROffParentManager.CreateTable();
                         SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
                         SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
                         SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
                         SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
                         EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
                         EnergySavingTipsParentManager.DeleteTable();
+                        EnergySavingTipsParentManager.CreateTable();
 
                         try
                         {
                             RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
                             mRewardParentEntity.DeleteTable();
+                            mRewardParentEntity.CreateTable();
                             RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
                             mRewardCategoryEntity.DeleteTable();
+                            mRewardCategoryEntity.CreateTable();
                             RewardsEntity mRewardEntity = new RewardsEntity();
                             mRewardEntity.DeleteTable();
+                            mRewardEntity.CreateTable();
                         }
                         catch (Exception ex)
                         {

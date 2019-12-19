@@ -205,7 +205,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("EN");
-                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                     ((NewWalkthroughActivity)Activity).UpdateContent();
                 }, () =>
                 {
