@@ -8,6 +8,7 @@ using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS
 {
@@ -631,5 +632,51 @@ namespace myTNB.SitecoreCMS
                 return sharedPreference.BoolForKey("ShowNeedHelp");
             }
         }
+
+        public async Task<bool> LoadDynamicSplash()
+        {
+            bool isDone = false;
+            await Task.Run(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                AppLaunchImageTimestampResponseModel timeStamp = iService.GetAppLaunchImageTimestampItem();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new AppLaunchImageTimestampResponseModel();
+                    timeStamp.Data = new List<AppLaunchImageTimestamp> { new AppLaunchImageTimestamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "AppLaunchImageTimeStamp", ref needsUpdate);
+
+                SplashHasNewTimestamp = needsUpdate;
+                if (needsUpdate)
+                {
+                    AppLaunchImageResponseModel appLaunchImageResponse = iService.GetAppLaunchImageItem();
+                    if (appLaunchImageResponse.Status.IsValid() && appLaunchImageResponse.Status.ToUpper() == "SUCCESS")
+                    {
+                        if (appLaunchImageResponse != null && appLaunchImageResponse.Data != null && appLaunchImageResponse.Data.Count > 0)
+                        {
+                            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                            var jsonStr = JsonConvert.SerializeObject(appLaunchImageResponse);
+                            sharedPreference.SetString(jsonStr, "AppLaunchImageData");
+                            sharedPreference.Synchronize();
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "AppLaunchImageTimeStamp");
+                            Debug.WriteLine("LoadDynamicSplash Done");
+                        }
+                    }
+                }
+                isDone = true;
+            });
+
+            return isDone;
+        }
+
+        public bool SplashHasNewTimestamp { get; set; }
     }
 }
