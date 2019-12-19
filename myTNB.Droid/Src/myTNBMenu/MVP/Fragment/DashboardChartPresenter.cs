@@ -566,7 +566,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
                 {
                     this.mView.SetISMDMSDown(true);
-                    this.mView.OnSetBackendTariffDisabled(true);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse);
                     OnByRM();
@@ -574,7 +573,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8304")
                 {
                     this.mView.SetISMDMSDown(true);
-                    this.mView.OnSetBackendTariffDisabled(true);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     this.mView.SetMDMSDownMessage(usageHistoryResponse);
                     OnByRM();
