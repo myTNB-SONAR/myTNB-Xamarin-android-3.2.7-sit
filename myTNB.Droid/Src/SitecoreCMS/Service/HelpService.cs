@@ -102,6 +102,7 @@ namespace myTNB.SitecoreCMS.Services
                     return new HelpTimeStamp
                     {
                         Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField),
+                        ShowNeedHelp = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.Timestamp.ShowNeedHelpField),
                         ID = item.Id
                     };
                 }

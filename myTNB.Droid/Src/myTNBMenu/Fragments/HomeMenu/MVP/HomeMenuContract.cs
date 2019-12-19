@@ -101,6 +101,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void RestartHomeMenu();
 
+            void HideNewFAQ();
+
+            bool CheckNeedHelp();
+
         }
 
         public interface IHomeMenuPresenter

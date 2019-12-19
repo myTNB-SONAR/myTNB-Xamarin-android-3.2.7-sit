@@ -36,6 +36,7 @@ namespace myTNB_Android.Src.SitecoreCMS.Model
     public class HelpTimeStamp
     {
         public string Timestamp { set; get; }
+        public bool ShowNeedHelp { set; get; }
         public string ID { set; get; }
     }
 }
