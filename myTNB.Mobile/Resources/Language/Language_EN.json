@@ -117,7 +117,7 @@
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Invalid PIN",
     "invalid_password": "Password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword": "Your password and confirmation password do not match.",
+    "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport Number",
     "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
@@ -670,7 +670,7 @@
   "ResetPassword": {
     "title": "Reset Password",
     "subTitle": "Please enter your new password.",
-    "details": "This new password will replace your current one. All other account details remain unchanged.",
+    "details": "This will replace your current one. All your account details will remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
     "confirmPassword": "Confirm Password"

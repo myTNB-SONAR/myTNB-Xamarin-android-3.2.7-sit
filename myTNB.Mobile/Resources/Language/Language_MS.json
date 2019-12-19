@@ -101,7 +101,7 @@
     "emptyAcctSelector": "---",
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka"
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka."
   },
   "Error": {
     "invalid_email": "Format emel tidak sah.",
@@ -116,8 +116,8 @@
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Kod tidak sah",
-    "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka",
-    "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
+    "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
+    "invalid_mismatchedPassword": "Kata laluan baru anda tidak sepadan.",
     "invalid_fullname": "Nama penuh tidak sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport tidak sah",
     "invalid_mismatchedEmail": "Kedua-dua emel tidak padan",
@@ -404,7 +404,7 @@
     "tutorialViewDetailsTitle": "Fahami bil anda.",
     "tutorialHistoryNormalTitle": "Pantau pembayaran anda.",
     "tutorialHistoryTitle": "Pantau rekod caj anda.",
-    "tutorialBillREAcctDesc": "Klik pada butang “#dropdown#” untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan",
+    "tutorialBillREAcctDesc": "Klik pada butang “#dropdown#” untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan.",
     "tutorialBillNormalAcctDesc": "Tekan “#dropdown#” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
     "tutorialViewDetailsDesc": "“Lihat Butiran” untuk menyemak pecahan bil anda.",
@@ -670,7 +670,7 @@
   "ResetPassword": {
     "title": "Set Semula Kata Laluan",
     "subTitle": "Sila masukkan kata laluan baharu.",
-    "details": "Kata laluan baru ini akan menggantikan kata laluan sedia ada. Semua butiran akaun tidak berubah.",
+    "details": "Ia akan menggantikan kata laluan sedia ada. Segala butiran akaun anda masih kekal.",
     "newPassword": "Masukkan kata laluan baharu",
     "confirmNewPassword": "Sahkan kata laluan baharu",
     "confirmPassword": "Sahkan Kata Laluan"
