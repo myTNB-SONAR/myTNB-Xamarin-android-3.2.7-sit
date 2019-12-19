@@ -350,7 +350,7 @@
   "Usage": {
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
-    "gotIt": "Faham!",
+    "gotIt": "Faham",
     "disconnectionMsg": "<strong>Maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "Apakah ini?",
@@ -706,7 +706,7 @@
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Keluarkan Akaun Ini",
     "popupremoveAccountTitle": "Keluarkan Akaun",
-    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
+    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Self-Service Portal atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   },
   "Onboarding": {
     "letsStart": "Jom Mulakan!",

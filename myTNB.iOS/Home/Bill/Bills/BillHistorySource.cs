@@ -12,6 +12,7 @@ namespace myTNB.Home.Bill
         public Func<string, string> GetI18NValue;
         public Action<string> OnSelectBill;
         public Action<string> OnSelectPayment;
+        public string EmptyMessage { set; private get; } = string.Empty;
 
         //For Filter
         public Action OnShowFilter;
@@ -125,7 +126,7 @@ namespace myTNB.Home.Bill
                 {
                     NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
                     cell.Image = BillConstants.IMG_NoHistoryData;
-                    cell.Message = GetI18NValue(BillConstants.I18N_NoHistoryData);
+                    cell.Message = EmptyMessage;
                     return cell;
                 }
                 else

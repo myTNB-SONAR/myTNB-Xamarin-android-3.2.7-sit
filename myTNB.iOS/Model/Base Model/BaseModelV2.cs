@@ -8,6 +8,8 @@ namespace myTNB.Model
         public const string EmptyData = "7201";
         public const string PlannedMDMSDown = "8304";
         public const string UnplannedMDMSDown = "7204";
+        public const string PlannedDowntime = "xxxx";
+        public const string AppMaintenance = "yyyy";
     }
 
     public class BaseModelV2
@@ -35,14 +37,14 @@ namespace myTNB.Model
         {
             get
             {
-                return false;
+                return ErrorCode == StatusCodes.PlannedDowntime;
             }
         }
         public bool IsMaintenance
         {
             get
             {
-                return false;
+                return ErrorCode == StatusCodes.AppMaintenance;
             }
         }
         [JsonIgnore]

@@ -586,7 +586,8 @@ namespace myTNB
                         OnSelectBill = DisplayBillPDF,
                         OnSelectPayment = DisplayReceipt,
                         OnShowFilter = ShowFilterScreen,
-                        NoData = historyList.Count == 0
+                        NoData = historyList.Count == 0,
+                        EmptyMessage = GetEmptyDataMessage()
                     };
                     _historyTableView.ReloadData();
                     EvaluateChargesData();
@@ -751,7 +752,8 @@ namespace myTNB
                     OnSelectBill = DisplayBillPDF,
                     OnSelectPayment = DisplayReceipt,
                     OnShowFilter = ShowFilterScreen,
-                    NoData = historyList.Count == 0
+                    NoData = historyList.Count == 0,
+                    EmptyMessage = GetEmptyDataMessage()
                 };
                 _historyTableView.ReloadData();
                 CheckTutorialOverlay();
@@ -786,7 +788,8 @@ namespace myTNB
                     IsFailedService = true,
                     FailMessage = message,
                     OnRefresh = OnHistoryRefresh,
-                    IsPlanned = isPlanned
+                    IsPlanned = isPlanned,
+                    EmptyMessage = GetEmptyDataMessage()
                 };
                 _historyTableView.ReloadData();
             }
@@ -1057,11 +1060,12 @@ namespace myTNB
             List<BillPayHistoryModel> historyList = _billHistory?.d?.data?.BillPayHistories.DeepClone() ?? new List<BillPayHistoryModel>();
             List<BillPayHistoryDataModel> dataToRemove = new List<BillPayHistoryDataModel>();
             List<BillPayHistoryModel> historyToRemove = new List<BillPayHistoryModel>();
+            string filterKey = string.Empty;
             if (historyList.Count > 0)
             {
                 if (index > 0)
                 {
-                    string filterKey = FilterKeys[index];
+                    filterKey = FilterKeys[index];
                     foreach (BillPayHistoryModel obj in historyList)
                     {
                         List<BillPayHistoryDataModel> historyData = obj.BillPayHistoryData;
@@ -1112,13 +1116,31 @@ namespace myTNB
                 OnSelectBill = DisplayBillPDF,
                 OnSelectPayment = DisplayReceipt,
                 OnShowFilter = ShowFilterScreen,
-                IsFiltered = index > 0
+                IsFiltered = index > 0,
+                EmptyMessage = GetEmptyDataMessage(filterKey),
             };
             _historyTableView.ReloadData();
 
             _imgFilter.Image = UIImage.FromBundle(index > 0 ? BillConstants.IMG_NavFiltered : BillConstants.IMG_NavUnfiltered);
         }
         #endregion
+
+        private string GetEmptyDataMessage(string filterKey = "")
+        {
+            bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+            if (filterKey == "ADVICE" || filterKey == "BILL")
+            {
+                return GetI18NValue(isRe ? BillConstants.I18N_EmptyBillHistoryRE : BillConstants.I18N_EmptyBillHistory);
+            }
+            else if (filterKey == "PAYMENT")
+            {
+                return GetI18NValue(isRe ? BillConstants.I18N_EmptyPaymentHistoryRE : BillConstants.I18N_EmptyPaymentHistory);
+            }
+            else
+            {
+                return GetI18NValue(isRe ? BillConstants.I18N_EmptyHistoryRE : BillConstants.I18N_EmptyHistory);
+            }
+        }
 
         #region Services
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
