@@ -33,14 +33,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQTimestamp(bool success);
             AccountsRecyclerViewAdapter GetAccountAdapter();
 
-            void CheckSSMRMeterReadingTimeStamp();
-
-            void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp);
-
-            void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp);
-
-            void CheckSSMRMeterReadingThreePhaseTimeStamp();
-
             void ShowRefreshScreen(string contentMsg, string buttonMsg);
 
             void UpdateCurrentSMRAccountList();
@@ -70,14 +62,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowBillPDF(AccountData selectedAccountData, GetBillHistoryResponse.ResponseData selectedBill = null);
 
             void ShowNotificationCount(int count);
-
-            void OnSavedSSMRMeterReadingNoOCRTimeStamp(string mSavedTimeStamp);
-
-            void CheckSSMRMeterReadingNoOCRTimeStamp();
-
-            void OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(string mSavedTimeStamp);
-
-            void CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
 
             void OnShowHomeMenuFragmentTutorialDialog();
 
@@ -124,18 +108,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 
-            void GetSmartMeterReadingWalkthroughtTimeStamp();
-
-            Task OnGetSmartMeterReadingWalkthroughtTimeStamp();
-
-            Task OnGetSSMRMeterReadingScreens();
-
-            void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
-
-            Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
-
-            Task OnGetSSMRMeterReadingThreePhaseScreens();
-
             void GetEnergySavingTipsTimeStamp();
 
             Task OnGetEnergySavingTipsTimeStamp();
@@ -161,18 +133,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void GetUserNotifications();
 
             void SetQueryClose();
-
-            void GetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
-
-            Task OnGetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
-
-            Task OnGetSSMRMeterReadingScreensNoOCR();
-
-            void GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
-
-            Task OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
-
-            Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
 

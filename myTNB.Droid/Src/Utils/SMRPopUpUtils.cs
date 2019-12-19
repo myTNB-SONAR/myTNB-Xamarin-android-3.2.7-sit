@@ -6,9 +6,11 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -19,6 +21,7 @@ namespace myTNB_Android.Src.Utils
         private static SMRActivityInfoResponse smrResponse;
         private static bool fromUsage = false;
         private static bool fromUsageSubmitSuccessful = false;
+        private static bool ssmrMeterReadingTutorialRefreshNeeded = false;
 
         public static SSMRMeterReadingDialogFragment OnShowSMRMeterReadingTooltipOnActivity(bool isSinglePhase, Android.App.Activity mActivity, Android.Support.V4.App.FragmentManager mManager, List<SSMRMeterReadingModel> list)
         {
@@ -87,6 +90,46 @@ namespace myTNB_Android.Src.Utils
         public static bool GetFromUsageSubmitSuccessfulFlag()
         {
             return fromUsageSubmitSuccessful;
+        }
+
+        public static void SetSSMRMeterReadingRefreshNeeded(bool flag)
+        {
+            ssmrMeterReadingTutorialRefreshNeeded = flag;
+        }
+
+        public static void OnResetSSMRMeterReadingTimestamp()
+        {
+            try
+            {
+                SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+
+                SSMRMeterReadingScreensParentManager.DeleteTable();
+                SSMRMeterReadingScreensParentManager.CreateTable();
+
+                SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+
+                SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                SSMRMeterReadingScreensOCROffParentManager.CreateTable();
+
+                SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+
+                SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+
+                SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+
+                SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static bool GetSSMRMeterReadingRefreshNeeded()
+        {
+            return ssmrMeterReadingTutorialRefreshNeeded;
         }
 
         public static string GetTitle()

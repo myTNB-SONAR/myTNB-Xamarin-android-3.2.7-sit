@@ -49,14 +49,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
         private static NewFAQParentEntity NewFAQParentManager;
         private static NewFAQEntity NewFAQManager;
-        private static SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager;
-        private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
-        private static SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager;
-        private static SSMRMeterReadingThreePhaseScreensEntity SSMRMeterReadingThreePhaseScreensManager;
-        private static SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager;
-        private static SSMRMeterReadingScreensOCROffEntity SSMRMeterReadingScreensOCROffManager;
-        private static SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager;
-        private static SSMRMeterReadingThreePhaseScreensOCROffEntity SSMRMeterReadingThreePhaseScreensOCROffManager;
         private static EnergySavingTipsParentEntity EnergySavingTipsParentManager;
         private static EnergySavingTipsEntity EnergySavingTipsManager;
         // private static List<string> loadedSummaryList;
@@ -71,14 +63,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private CancellationTokenSource FAQTokenSource = new CancellationTokenSource();
-
-        private CancellationTokenSource walkthroughTokenSource = new CancellationTokenSource();
-
-        private CancellationTokenSource walkthroughNoOCRTokenSource = new CancellationTokenSource();
-
-        private CancellationTokenSource threePhaseWalkthroughTokenSource = new CancellationTokenSource();
-
-        private CancellationTokenSource threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
 
         private CancellationTokenSource energyTipsTokenSource = new CancellationTokenSource();
 
@@ -1375,10 +1359,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             tokenSource = new CancellationTokenSource();
             FAQTokenSource = new CancellationTokenSource();
-            walkthroughTokenSource = new CancellationTokenSource();
-            walkthroughNoOCRTokenSource = new CancellationTokenSource();
-            threePhaseWalkthroughTokenSource = new CancellationTokenSource();
-            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
             energyTipsTokenSource = new CancellationTokenSource();
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
@@ -1391,10 +1371,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             tokenSource = new CancellationTokenSource();
             FAQTokenSource = new CancellationTokenSource();
-            walkthroughTokenSource = new CancellationTokenSource();
-            walkthroughNoOCRTokenSource = new CancellationTokenSource();
-            threePhaseWalkthroughTokenSource = new CancellationTokenSource();
-            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
             energyTipsTokenSource = new CancellationTokenSource();
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
@@ -1406,10 +1382,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             tokenSource.Cancel();
             FAQTokenSource.Cancel();
-            walkthroughTokenSource.Cancel();
-            walkthroughNoOCRTokenSource.Cancel();
-            threePhaseWalkthroughTokenSource.Cancel();
-            threePhaseWalkthroughNoOCRTokenSource.Cancel();
             energyTipsTokenSource.Cancel();
             isHomeMenuTutorialShown = false;
 
@@ -1458,7 +1430,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 currentNewFAQList.Clear();
 
 
-                List<NewFAQParentEntity> items = NewFAQParentManager.GetAllItems();
+                List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
+                cachedDBList = NewFAQManager.GetAll();
+                if (cachedDBList.Count > 0)
+                {
+                    for (int i = 0; i < cachedDBList.Count; i++)
+                    {
+                        if (cachedDBList[i].Tags == "SM")
+                        {
+                            if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
+                            {
+                                currentNewFAQList.Add(new NewFAQ()
+                                {
+                                    ID = cachedDBList[i].ID,
+                                    Image = cachedDBList[i].Image,
+                                    BGStartColor = cachedDBList[i].BGStartColor,
+                                    BGEndColor = cachedDBList[i].BGEndColor,
+                                    BGDirection = cachedDBList[i].BGDirection,
+                                    Title = cachedDBList[i].Title,
+                                    Description = cachedDBList[i].Description,
+                                    TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                    TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                    CTA = cachedDBList[i].CTA,
+                                    Tags = cachedDBList[i].Tags,
+                                    TargetItem = cachedDBList[i].TargetItem
+                                });
+                            }
+                        }
+                        else
+                        {
+                            currentNewFAQList.Add(new NewFAQ()
+                            {
+                                ID = cachedDBList[i].ID,
+                                Image = cachedDBList[i].Image,
+                                BGStartColor = cachedDBList[i].BGStartColor,
+                                BGEndColor = cachedDBList[i].BGEndColor,
+                                BGDirection = cachedDBList[i].BGDirection,
+                                Title = cachedDBList[i].Title,
+                                Description = cachedDBList[i].Description,
+                                TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                CTA = cachedDBList[i].CTA,
+                                Tags = cachedDBList[i].Tags,
+                                TargetItem = cachedDBList[i].TargetItem
+                            });
+                        }
+                    }
+                    this.mView.SetNewFAQResult(currentNewFAQList);
+
+                    isNeedHelpDone = true;
+                    OnCheckToCallHomeMenuTutorial();
+                }
+
+
+                /*List<NewFAQParentEntity> items = NewFAQParentManager.GetAllItems();
                 if (items != null)
                 {
                     NewFAQParentEntity entity = items[0];
@@ -1520,18 +1545,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     else
                     {
                         // TODO: Hide Need Help
-                        /*this.mView.HideNewFAQ();
+                        this.mView.HideNewFAQ();
                         isNeedHelpDone = true;
-                        OnCheckToCallHomeMenuTutorial();*/
+                        OnCheckToCallHomeMenuTutorial();
                     }
                 }
                 else
                 {
                     // TODO: Hide Need Help
-                    /*this.mView.HideNewFAQ();
+                    this.mView.HideNewFAQ();
                     isNeedHelpDone = true;
-                    OnCheckToCallHomeMenuTutorial();*/
-                }
+                    OnCheckToCallHomeMenuTutorial();
+                }*/
             }
             catch (Exception e)
             {
@@ -2004,376 +2029,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 catch (Exception e)
                 {
                     ReadNewFAQFromCache();
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
-
-        public void GetSmartMeterReadingWalkthroughtTimeStamp()
-        {
-            try
-            {
-                if (SSMRMeterReadingScreensParentManager == null)
-                {
-                    SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
-                }
-                List<SSMRMeterReadingScreensParentEntity> items = new List<SSMRMeterReadingScreensParentEntity>();
-                items = SSMRMeterReadingScreensParentManager.GetAllItems();
-                if (items != null && items.Count > 0)
-                {
-                    SSMRMeterReadingScreensParentEntity entity = items[0];
-                    if (entity != null && entity.Timestamp != null)
-                    {
-                        this.mView.OnSavedSSMRMeterReadingTimeStamp(entity?.Timestamp);
-                    }
-                }
-                else
-                {
-                    this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
-                }
-            }
-            catch (Exception e)
-            {
-                this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public Task OnGetSmartMeterReadingWalkthroughtTimeStamp()
-        {
-            walkthroughTokenSource = new CancellationTokenSource();
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    walkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem();
-                    walkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingScreensParentManager == null)
-                        {
-                            SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
-                        }
-                        SSMRMeterReadingScreensParentManager.DeleteTable();
-                        SSMRMeterReadingScreensParentManager.CreateTable();
-                        SSMRMeterReadingScreensParentManager.InsertListOfItems(responseModel.Data);
-                        this.mView.CheckSSMRMeterReadingTimeStamp();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, walkthroughTokenSource.Token);
-        }
-
-        public Task OnGetSSMRMeterReadingScreens()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughItems();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingScreensManager == null)
-                        {
-                            SSMRMeterReadingScreensManager = new SSMRMeterReadingScreensEntity();
-                        }
-                        SSMRMeterReadingScreensManager.DeleteTable();
-                        SSMRMeterReadingScreensManager.CreateTable();
-                        SSMRMeterReadingScreensManager.InsertListOfItems(responseModel.Data);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
-
-        public void GetSmartMeterReadingWalkthroughtNoOCRTimeStamp()
-        {
-            try
-            {
-                if (SSMRMeterReadingScreensOCROffParentManager == null)
-                {
-                    SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
-                }
-                List<SSMRMeterReadingScreensOCROffParentEntity> items = new List<SSMRMeterReadingScreensOCROffParentEntity>();
-                items = SSMRMeterReadingScreensOCROffParentManager.GetAllItems();
-                if (items != null && items.Count > 0)
-                {
-                    SSMRMeterReadingScreensOCROffParentEntity entity = items[0];
-                    if (entity != null && entity.Timestamp != null)
-                    {
-                        this.mView.OnSavedSSMRMeterReadingNoOCRTimeStamp(entity?.Timestamp);
-                    }
-                }
-                else
-                {
-                    this.mView.OnSavedSSMRMeterReadingNoOCRTimeStamp(null);
-                }
-            }
-            catch (Exception e)
-            {
-                this.mView.OnSavedSSMRMeterReadingNoOCRTimeStamp(null);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public Task OnGetSmartMeterReadingWalkthroughtNoOCRTimeStamp()
-        {
-            walkthroughNoOCRTokenSource = new CancellationTokenSource();
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    walkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem();
-                    walkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingScreensOCROffParentManager == null)
-                        {
-                            SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
-                        }
-                        SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
-                        SSMRMeterReadingScreensOCROffParentManager.CreateTable();
-                        SSMRMeterReadingScreensOCROffParentManager.InsertListOfItems(responseModel.Data);
-                        this.mView.CheckSSMRMeterReadingNoOCRTimeStamp();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, walkthroughNoOCRTokenSource.Token);
-        }
-
-        public Task OnGetSSMRMeterReadingScreensNoOCR()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingScreensOCROffManager == null)
-                        {
-                            SSMRMeterReadingScreensOCROffManager = new SSMRMeterReadingScreensOCROffEntity();
-                        }
-                        SSMRMeterReadingScreensOCROffManager.DeleteTable();
-                        SSMRMeterReadingScreensOCROffManager.CreateTable();
-                        SSMRMeterReadingScreensOCROffManager.InsertListOfItems(responseModel.Data);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
-
-        public void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp()
-        {
-            try
-            {
-                if (SSMRMeterReadingThreePhaseScreensParentManager == null)
-                {
-                    SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                }
-                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensParentEntity>();
-                items = SSMRMeterReadingThreePhaseScreensParentManager.GetAllItems();
-                if (items != null && items.Count > 0)
-                {
-                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
-                    if (entity != null && entity.Timestamp != null)
-                    {
-                        this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(entity?.Timestamp);
-                    }
-                }
-                else
-                {
-                    this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(null);
-                }
-            }
-            catch (Exception e)
-            {
-                this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(null);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp()
-        {
-            threePhaseWalkthroughTokenSource = new CancellationTokenSource();
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem();
-                    threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingThreePhaseScreensParentManager == null)
-                        {
-                            SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                        }
-                        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
-                        SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
-                        SSMRMeterReadingThreePhaseScreensParentManager.InsertListOfItems(responseModel.Data);
-                        this.mView.CheckSSMRMeterReadingThreePhaseTimeStamp();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, threePhaseWalkthroughTokenSource.Token);
-        }
-
-        public Task OnGetSSMRMeterReadingThreePhaseScreens()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughItems();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingThreePhaseScreensManager == null)
-                        {
-                            SSMRMeterReadingThreePhaseScreensManager = new SSMRMeterReadingThreePhaseScreensEntity();
-                        }
-                        SSMRMeterReadingThreePhaseScreensManager.DeleteTable();
-                        SSMRMeterReadingThreePhaseScreensManager.CreateTable();
-
-                        SSMRMeterReadingThreePhaseScreensManager.InsertListOfItems(responseModel.Data);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
-
-        public void GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp()
-        {
-            try
-            {
-                if (SSMRMeterReadingThreePhaseScreensOCROffParentManager == null)
-                {
-                    SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-                }
-                List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity>();
-                items = SSMRMeterReadingThreePhaseScreensOCROffParentManager.GetAllItems();
-                if (items != null && items.Count > 0)
-                {
-                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity entity = items[0];
-                    if (entity != null && entity.Timestamp != null)
-                    {
-                        this.mView.OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(entity?.Timestamp);
-                    }
-                }
-                else
-                {
-                    this.mView.OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(null);
-                }
-            }
-            catch (Exception e)
-            {
-                this.mView.OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(null);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public Task OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp()
-        {
-            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    threePhaseWalkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem();
-                    threePhaseWalkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingThreePhaseScreensOCROffParentManager == null)
-                        {
-                            SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-                        }
-                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
-                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
-                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.InsertListOfItems(responseModel.Data);
-                        this.mView.CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, threePhaseWalkthroughNoOCRTokenSource.Token);
-        }
-
-        public Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems();
-                    if (responseModel.Status.Equals("Success"))
-                    {
-                        if (SSMRMeterReadingThreePhaseScreensOCROffManager == null)
-                        {
-                            SSMRMeterReadingThreePhaseScreensOCROffManager = new SSMRMeterReadingThreePhaseScreensOCROffEntity();
-                        }
-                        SSMRMeterReadingThreePhaseScreensOCROffManager.DeleteTable();
-                        SSMRMeterReadingThreePhaseScreensOCROffManager.CreateTable();
-
-                        SSMRMeterReadingThreePhaseScreensOCROffManager.InsertListOfItems(responseModel.Data);
-                    }
-                }
-                catch (Exception e)
-                {
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>

@@ -151,6 +151,8 @@ namespace myTNB_Android.Src.Profile.Activity
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                 HomeMenuUtils.ResetAll();
+                SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                 UpdateLanguage();
             });
         }
@@ -213,6 +215,11 @@ namespace myTNB_Android.Src.Profile.Activity
                         {
                             Item selectedItem = languageItemList.Find(item => { return item.selected; });
                             LanguageUtil.SaveAppLanguage(selectedItem.type);
+                            MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
+                            SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                             UpdateLanguage();
                             OnBackProceed();
                         }).Build();

@@ -309,6 +309,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             Utility.ShowChangeLanguageDialog(this, tooltipLanguage, ()=>
             {
                 LanguageUtil.SaveAppLanguage(tooltipLanguage);
+                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                 UpdateLabels();
             });
         }

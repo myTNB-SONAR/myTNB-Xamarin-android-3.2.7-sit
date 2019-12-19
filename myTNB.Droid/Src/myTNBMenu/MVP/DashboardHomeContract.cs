@@ -186,6 +186,22 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnCheckUserReward(bool isSitecoreApiFailed);
 
             void OnCheckUserRewardApiFailed();
+
+            void OnSavedSSMRMeterReadingNoOCRTimeStamp(string mSavedTimeStamp);
+
+            void CheckSSMRMeterReadingNoOCRTimeStamp();
+
+            void OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(string mSavedTimeStamp);
+
+            void CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
+
+            void CheckSSMRMeterReadingTimeStamp();
+
+            void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp);
+
+            void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp);
+
+            void CheckSSMRMeterReadingThreePhaseTimeStamp();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -249,6 +265,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnGetUserRewardList();
 
             void UpdateRewardRead(string itemID, bool flag);
+
+            void GetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSSMRMeterReadingScreensNoOCR();
+
+            void GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
+
+            void GetSmartMeterReadingWalkthroughtTimeStamp();
+
+            Task OnGetSmartMeterReadingWalkthroughtTimeStamp();
+
+            Task OnGetSSMRMeterReadingScreens();
+
+            void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+
+            Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+
+            Task OnGetSSMRMeterReadingThreePhaseScreens();
         }
 	}
 }
