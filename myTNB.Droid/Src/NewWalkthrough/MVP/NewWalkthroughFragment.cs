@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
@@ -205,6 +206,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("EN");
+                    MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                     ((NewWalkthroughActivity)Activity).UpdateContent();
                 }, () =>
                 {
@@ -226,6 +229,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("MS");
+                    MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                     ((NewWalkthroughActivity)Activity).UpdateContent();
                 }, () =>

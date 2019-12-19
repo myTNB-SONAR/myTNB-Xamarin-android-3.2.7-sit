@@ -13,6 +13,7 @@ using CheeseBind;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
@@ -309,6 +310,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             Utility.ShowChangeLanguageDialog(this, tooltipLanguage, ()=>
             {
                 LanguageUtil.SaveAppLanguage(tooltipLanguage);
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 UpdateLabels();
             });
         }
