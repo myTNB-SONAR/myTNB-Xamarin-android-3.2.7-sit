@@ -100,6 +100,7 @@
         public static string Common_IllDoItLater = "illDoItLater";
         public static string Common_RedeemRewardFailMsg = "redeemRewardFailMsg";
         public static string Common_TryAgain = "tryAgain";
+        public static string Common_SelectBillMaxDesc = "selectBillMaxDesc";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

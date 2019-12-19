@@ -102,7 +102,11 @@ namespace myTNB
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = MyTNBColor.CharcoalGrey
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    LineSpacing = 3.0f
+                }
             }, new NSRange(0, htmlBody.Length));
 
             UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : ScaleUtility.GetScaledHeight(155F)));//width / 1.33F));

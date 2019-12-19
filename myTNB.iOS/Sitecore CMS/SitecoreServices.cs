@@ -576,5 +576,67 @@ namespace myTNB.SitecoreCMS
                 }
             });
         }
+
+        public Task LoadNeedHelp()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new HelpTimeStampResponseModel();
+                    timeStamp.Data = new List<HelpTimeStamp> { new HelpTimeStamp { Timestamp = string.Empty, ShowNeedHelp = false } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    ShowNeedHelp = timeStamp.Data[0].ShowNeedHelp;
+                    HelpResponseModel needHelpResponse = iService.GetHelpItems();
+                    if (needHelpResponse.Status.IsValid() && needHelpResponse.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
+                    {
+                        HelpEntity wsManager = new HelpEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
+                        {
+                            wsManager.InsertListOfItems(needHelpResponse.Data);
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
+                            Debug.WriteLine("LoadNeedHelp Done");
+                        }
+                    }
+                }
+            });
+        }
+
+        public bool ShowNeedHelp
+        {
+            set
+            {
+                try
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    sharedPreference.SetBool(value, "ShowNeedHelp");
+                    sharedPreference.Synchronize();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error: " + e.Message);
+                }
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey("ShowNeedHelp");
+            }
+        }
     }
 }

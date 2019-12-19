@@ -46,6 +46,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _veryLightPink = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _brownGreyTwo = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
         readonly static UIColor _brownGreyThree = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
+        readonly static UIColor _brownGreyThree30 = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 0.3f);
         readonly static UIColor _algaeGreen = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 1.0f);
         readonly static UIColor _butterScotch = new UIColor(red: 0.996f, green: 0.8f, blue: 0.22f, alpha: 1.0f);
         readonly static UIColor _babyBlue60 = new UIColor(red: 0.61f, green: 0.82f, blue: 1.00f, alpha: 0.6f);
@@ -397,6 +398,14 @@ using UIKit;  namespace myTNB {
             get
             {
                 return _brownGreyThree;
+            }
+        }
+
+        public static UIColor BrownGreyThree30
+        {
+            get
+            {
+                return _brownGreyThree30;
             }
         }
 

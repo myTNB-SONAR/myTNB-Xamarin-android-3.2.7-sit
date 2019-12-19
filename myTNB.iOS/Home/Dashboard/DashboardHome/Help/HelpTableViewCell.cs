@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
@@ -17,6 +18,9 @@ namespace myTNB
         private nfloat cardHeight;
         private int _imgIndex;
         public UILabel _titleLabel;
+        private UIPageControl _pageControl;
+        int _currentPageIndex = 0;
+        int _totalItems;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
             cardWidth = GetScaledWidth(92F);
@@ -37,16 +41,12 @@ namespace myTNB
                 ScrollEnabled = true,
                 ShowsHorizontalScrollIndicator = false
             };
+            _scrollView.Scrolled += OnScrolled;
+
             view.AddSubview(_scrollView);
             AddSubview(view);
             BackgroundColor = UIColor.Clear;
-            //if (view != null)
-            //{
-            //    view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            //    view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            //    view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            //    view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
-            //}
+            AddPageControl(view.Frame.GetMaxY());
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
@@ -64,6 +64,11 @@ namespace myTNB
             else
             {
                 AddContentData(helpList);
+                _totalItems = (int)Math.Ceiling((decimal)helpList.Count / 3);
+                if (_totalItems > 1)
+                {
+                    UpdatePageControl(_pageControl, _currentPageIndex, _totalItems);
+                }
             }
         }
 
@@ -107,11 +112,6 @@ namespace myTNB
                 {
                     ViewHelper.GoToFAQScreenWithId(helpKey);
                 }));
-
-                UIImageView imgView = new UIImageView(new CGRect(0, 0, cardWidth, cardHeight))
-                {
-                    Image = UIImage.FromBundle(string.Format("Help-Background-{0}", GetBackgroundImage(i)))
-                };
 
                 UIView gradientBG = new UIView(new CGRect(0, 0, cardWidth, cardHeight));
                 CGColor startColor = MyTNBColor.LightIndigo.CGColor;
@@ -214,6 +214,75 @@ namespace myTNB
                 return _dashboardHomeHelper.HasSmartMeterAccounts;
             }
             return true;
+        }
+
+        private void AddPageControl(nfloat yPos)
+        {
+            _pageControl = new UIPageControl(new CGRect(0, yPos - (DashboardHomeConstants.PageControlHeight / 2.5), Frame.Width, DashboardHomeConstants.PageControlHeight))
+            {
+                BackgroundColor = UIColor.Clear,
+                TintColor = UIColor.Clear,
+                PageIndicatorTintColor = MyTNBColor.BrownGreyThree30,
+                CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue,
+                UserInteractionEnabled = false,
+                Transform = CGAffineTransform.MakeScale(1.25F, 1.25F)
+            };
+            AddSubview(_pageControl);
+        }
+
+        private void UpdatePageControl(UIPageControl pageControl, int current, int pages)
+        {
+            if (pageControl != null)
+            {
+                pageControl.CurrentPage = current;
+                pageControl.Pages = pages;
+                pageControl.UpdateCurrentPageDisplay();
+            }
+        }
+
+        private void OnScrolled(object sender, EventArgs e)
+        {
+            if (_totalItems <= 1) { return; }
+
+            if (sender is UIScrollView scrollView)
+            {
+                for (int i = 0; i < scrollView.Subviews.Length; i++)
+                {
+                    UIView helpView = scrollView.Subviews[i];
+                    int totalCount = scrollView.Subviews.Length;
+                    if (helpView != null && helpView.GetType() != typeof(UIImageView))
+                    {
+                        nfloat maxXPos = helpView.Frame.X - scrollView.ContentOffset.X + helpView.Frame.Width;
+                        if (maxXPos <= _cellWidth)
+                        {
+                            nfloat objPos = i + 1;
+                            if (objPos < totalCount)
+                            {
+                                if (objPos % 3 == 0)
+                                {
+                                    _currentPageIndex = (int)((objPos / 3) - 1);
+                                    UpdatePageControl(_pageControl, _currentPageIndex, _totalItems);
+                                }
+                                else if (objPos > 3 && (totalCount - objPos == 2 || totalCount - objPos == 1))
+                                {
+                                    _currentPageIndex = _totalItems - 1;
+                                    UpdatePageControl(_pageControl, _currentPageIndex, _totalItems);
+                                }
+                            }
+                            else if (objPos == totalCount && objPos % 3 == 0)
+                            {
+                                _currentPageIndex = (int)((objPos / 3) - 1);
+                                UpdatePageControl(_pageControl, _currentPageIndex, _totalItems);
+                            }
+                            else if (objPos == totalCount && objPos % 3 != 0)
+                            {
+                                _currentPageIndex = _totalItems - 1;
+                                UpdatePageControl(_pageControl, _currentPageIndex, _totalItems);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

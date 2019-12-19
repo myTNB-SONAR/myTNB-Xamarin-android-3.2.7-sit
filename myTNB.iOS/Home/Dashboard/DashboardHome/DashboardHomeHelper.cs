@@ -332,7 +332,7 @@ namespace myTNB
             {
                 if (DataManager.DataManager.SharedInstance.HelpList?.Count > 0)
                 {
-                    tableViewCellHeight += ScaleUtility.GetScaledHeight(108F);
+                    tableViewCellHeight += ScaleUtility.GetScaledHeight(108F) + DashboardHomeConstants.PageControlHeight;
                 }
             }
             return tableViewCellHeight;
