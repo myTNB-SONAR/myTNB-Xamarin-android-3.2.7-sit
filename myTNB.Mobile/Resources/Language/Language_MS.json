@@ -412,7 +412,10 @@
     "gotIt": "Faham!",
     "emptyHistory": "MS-Looks like your history is empty at the moment. Your bill and payment history will appear here once you have any.",
     "emptyPaymentHistory": "MS-Looks like you have not made any payments yet! Once you do, your payment history will appear here.",
-    "emptyBillHistory": "MS-Looks like you have no bills yet! Once you do, your bill history will appear here."
+    "emptyBillHistory": "MS-Looks like you have no bills yet! Once you do, your bill history will appear here.",
+    "emptyHistoryRE": "Nampaknya sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
+    "emptyPaymentHistoryRE": "Nampaknya kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
+    "emptyBillHistoryRE": "Nampaknya anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [

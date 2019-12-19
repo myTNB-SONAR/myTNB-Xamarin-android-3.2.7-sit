@@ -163,7 +163,7 @@ namespace myTNB
             get
             {
                 return new List<string> {
-                    GetCommonI18NValue(Constants.Common_Name).ToUpper()
+                    GetCommonI18NValue(Constants.Common_Fullname).ToUpper()
                     , GetCommonI18NValue(Constants.Common_IDNumber).ToUpper()
                     , GetCommonI18NValue(Constants.Common_Email).ToUpper()
                     , GetCommonI18NValue(Constants.Common_MobileNo).ToUpper()

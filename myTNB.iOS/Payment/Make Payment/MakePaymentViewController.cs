@@ -100,10 +100,10 @@ namespace myTNB
                 UIAlertController okCancelAlertController = UIAlertController.Create(GetI18NValue(PaymentConstants.I18N_AbortTitle)
                     , GetI18NValue(PaymentConstants.I18N_AbortMessage)
                     , UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Ok)
-                    , UIAlertActionStyle.Default, alert => NavigationController?.PopViewController(true)));
-                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel)
-                    , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
+                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Yes)
+                    , UIAlertActionStyle.Cancel, alert => NavigationController?.PopViewController(true)));
+                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_No)
+                    , UIAlertActionStyle.Default, alert => Debug.WriteLine("Cancel was clicked")));
                 okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(okCancelAlertController, animated: true, completionHandler: null);
             });
