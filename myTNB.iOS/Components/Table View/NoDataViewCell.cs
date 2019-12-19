@@ -6,7 +6,7 @@ namespace myTNB
 {
     public class NoDataViewCell : UITableViewCell
     {
-        public UIView _view;
+        private UIView _view;
         private UIImageView _imgIcon;
         private UILabel _lblDescription;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
@@ -37,17 +37,6 @@ namespace myTNB
                 _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
             }
             SelectionStyle = UITableViewCellSelectionStyle.None;
-        }
-
-        public void Rescale()
-        {
-            if (_view != null)
-            {
-                _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-                _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-                _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-                _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
-            }
         }
 
         public string Image
