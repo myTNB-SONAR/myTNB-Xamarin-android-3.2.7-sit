@@ -92,7 +92,8 @@
     "rewardNotAvailableTitle": "Reward not available.",
     "rewardNotAvailableDesc": "Looks like this reward has expired. But that’s okay, we have more for you to check out!",
     "showMoreRewards": "Show More Rewards!",
-    "illDoItLater": "I’ll Do It Later"
+    "illDoItLater": "I’ll Do It Later",
+    "selectBillMaxDesc": "You may select up to <b>5 bills</b> to pay in each transaction. To pay the rest of your bills, complete this transaction first."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

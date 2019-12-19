@@ -92,7 +92,8 @@
     "rewardNotAvailableTitle": "Ganjaran tidak tersedia.",
     "rewardNotAvailableDesc": "Nampaknya ganjaran ini telah tamat tempoh. Tidak mengapa, kami mempunyai lebih banyak untuk anda meneroka!",
     "showMoreRewards": "Ganjaran Selebihnya",
-    "illDoItLater": "Kemudian"
+    "illDoItLater": "Kemudian",
+    "selectBillMaxDesc": "You may select up to <b>5 bills</b> to pay in each transaction. To pay the rest of your bills, complete this transaction first."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
