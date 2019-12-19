@@ -882,14 +882,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             else
                             {
                                 applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
-                            }
+                            }*/
+
+                            // Hide SMR Onboarding Tutorial
 
                             if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
                                 UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-                            }*/
+                            }
 
-                            // Hide SMR Onboarding Tutorial
                             Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
