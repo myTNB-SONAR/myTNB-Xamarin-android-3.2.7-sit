@@ -73,6 +73,15 @@ namespace myTNB
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _lblAppVersion.Text = Version;
             _btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
+
+            ProfileDataSource dataSource = new ProfileDataSource()
+            {
+                ProfileList = ProfileList,
+                ProfileLabels = ProfileLabels,
+                OnRowSelect = OnRowSelect
+            };
+            _profileTableview.Source = dataSource;
+            _profileTableview.ReloadData();
         }
 
         private void OnGetRegisteredCards()
