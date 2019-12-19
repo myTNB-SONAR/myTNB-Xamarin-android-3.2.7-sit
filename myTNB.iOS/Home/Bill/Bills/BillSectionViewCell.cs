@@ -24,7 +24,8 @@ namespace myTNB.Home.Bill
             };
 
             _viewFilter = new UIView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(20)
-                , scaled16, scaled16));
+                , scaled16, scaled16))
+            { Hidden = true };
             _imgFilter = new UIImageView(new CGRect(0, 0, scaled16, scaled16))
             {
                 Image = UIImage.FromBundle("IC-Action-Unfiltered")
@@ -68,6 +69,22 @@ namespace myTNB.Home.Bill
                         value.Invoke();
                     }));
                 }
+            }
+        }
+
+        public bool DisplayFilterIcon
+        {
+            set
+            {
+                _viewFilter.Hidden = !value;
+            }
+        }
+
+        public bool EnableFilter
+        {
+            set
+            {
+                _viewFilter.UserInteractionEnabled = value;
             }
         }
 

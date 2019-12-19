@@ -845,11 +845,7 @@
     <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%402x.png" />
@@ -991,8 +987,6 @@
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%402x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%403x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\Contents.json" />
@@ -1260,6 +1254,18 @@
     <ImageAsset Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\Reward-TC-Icon-Used%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\eye%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\eye%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\eyeHide%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\eyeHide%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Refresh%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Refresh%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1767,6 +1773,8 @@
     <Folder Include="Assets.xcassets\Reward-Period-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Reward-Location-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\" />
+    <Folder Include="Assets.xcassets\Banner-PlannedDown.imageset\" />
+    <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2653,7 +2661,7 @@
     <Compile Include="Components\Tutorial Overlay\RewardsTutorialOverlay.cs" />
     <Compile Include="Components\Tutorial Overlay\RewardsDetailTutorialOverlay.cs" />
     <Compile Include="Components\Refresh\RefreshComponent.cs" />
-    <Compile Include="Components\Refresh\RefreshConstants.cs" />
+    <Compile Include="Home\Bill\Bills\RefreshViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

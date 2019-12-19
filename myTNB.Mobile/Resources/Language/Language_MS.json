@@ -93,7 +93,7 @@
     "rewardNotAvailableDesc": "Nampaknya ganjaran ini telah tamat tempoh. Tidak mengapa, kami mempunyai lebih banyak untuk anda meneroka!",
     "showMoreRewards": "Ganjaran Selebihnya",
     "illDoItLater": "Kemudian",
-    "selectBillMaxDesc": "You may select up to <b>5 bills</b> to pay in each transaction. To pay the rest of your bills, complete this transaction first."
+    "selectBillMaxDesc": "Anda boleh pilih sehingga <b>5 bil</b> untuk bayar dalam setiap transaksi. Untuk bayar bil yang lain, lengkapkan transaksi ini terlebih dahulu."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -101,7 +101,7 @@
     "emptyAcctSelector": "---",
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka"
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka."
   },
   "Error": {
     "invalid_email": "Format emel tidak sah.",
@@ -116,8 +116,8 @@
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Kod tidak sah",
-    "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka",
-    "invalid_mismatchedPassword": "Kedua-dua kata laluan tidak padan.",
+    "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
+    "invalid_mismatchedPassword": "Kata laluan baru anda tidak sepadan.",
     "invalid_fullname": "Nama penuh tidak sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport tidak sah",
     "invalid_mismatchedEmail": "Kedua-dua emel tidak padan",
@@ -171,10 +171,10 @@
     "submitFeedback": "Hantar<br>Maklum Balas",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
-    "tutorialAccountTitle": "Ringkasan akaun anda",
+    "tutorialAccountTitle": "Ringkasan akaun anda.",
     "tutorialSingleAcctTitle": "Selamat datang ke laman Utama baru anda!",
     "tutorialQuickAccessTitle": "Akses pantas akaun.",
-    "tutorialQuickActionTitle": "Akses Mudah",
+    "tutorialQuickActionTitle": "Akses mudah.",
     "tutorialNeedHelpTitle": "Perlu bantuan?",
     "tutorialNoAcctDesc": "Masukkan akaun elektrik ke myTNB untuk mengakses penggunaan dan perkhidmatan yang ditawarkan.",
     "tutorialSingleAcctDesc": "Ini adalah ringkasan akaun elektrik anda. Tekan akaun tersebut untuk melihat Penggunaan anda. Tekan <b>“Tambah”</b> untuk menambah akaun ke myTNB.",
@@ -351,7 +351,7 @@
   "Usage": {
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
-    "gotIt": "Faham!",
+    "gotIt": "Faham",
     "disconnectionMsg": "<strong>Maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "Apakah ini?",
@@ -398,22 +398,25 @@
     "noHistoryData": "Nampaknya anda belum lagi mempunyai bil! Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
-    "tutorialBillTitle": "Ringkasan keseluruhan bil anda",
+    "tutorialBillTitle": "Ringkasan keseluruhan bil anda.",
     "tutorialAdviceTitle": "Gambaran keseluruhan makluman anda.",
     "tutorialPayTitle": "Bayar cara mudah.",
     "tutorialViewDetailsTitle": "Fahami bil anda.",
     "tutorialHistoryNormalTitle": "Pantau pembayaran anda.",
     "tutorialHistoryTitle": "Pantau rekod caj anda.",
-    "tutorialBillREAcctDesc": "Klik pada butang “#dropdown#” untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan",
+    "tutorialBillREAcctDesc": "Klik pada butang “#dropdown#” untuk menukar paparan akaun. Status pembayaran anda yang terkini akan dipaparkan.",
     "tutorialBillNormalAcctDesc": "Tekan “#dropdown#” untuk melihat akaun yang lain. Anda akan dapat melihat amaun tertunggak, sekiranya anda telah menjelaskan bil atau sekiranya anda terlebih bayar.",
     "tutorialPayDesc": "Tekan sini untuk membayar bil anda.",
     "tutorialViewDetailsDesc": "“Lihat Butiran” untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "tutorialHistoryREAcctDesc": "Lihat dan akses makluman serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "gotIt": "Faham!",
-    "emptyHistory": "MS-Looks like your history is empty at the moment. Your bill and payment history will appear here once you have any.",
-    "emptyPaymentHistory": "MS-Looks like you have not made any payments yet! Once you do, your payment history will appear here.",
-    "emptyBillHistory": "MS-Looks like you have no bills yet! Once you do, your bill history will appear here."
+    "emptyHistory": "Nampaknya sejarah transaksi anda kosong pada masa ini. Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
+    "emptyPaymentHistory": "Nampaknya anda belum lagi membuat pembayaran melalui myTNB. Setelah dibuat, ini akan dipaparkan di sini.",
+    "emptyBillHistory": "Nampaknya anda belum lagi ada bil. Setelah ada, sejarah bil anda akan dipaparkan di sini.",
+    "emptyHistoryRE": "Nampaknya sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
+    "emptyPaymentHistoryRE": "Nampaknya kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
+    "emptyBillHistoryRE": "Nampaknya anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -452,7 +455,7 @@
     "gotIt": "Faham!"
   },
   "BillFilter": {
-    "title": "Pilihan Paparan",
+    "title": "Tapis Paparan",
     "description": "Lihat bil anda, resit pembayaran atau kedua-duanya.",
     "descriptionRE": "Lihat makluman anda, resit pembayaran atau kedua-duanya.",
     "filterBy": "Pilihan Mengikut",
@@ -580,7 +583,7 @@
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "electricityAccount": "Akaun Elektrik",
-    "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
+    "mobileNumberVerified": "Nombor telefon anda telah berjaya disahkan.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar."
   },
   "NotificationSettings": {
@@ -667,7 +670,7 @@
   "ResetPassword": {
     "title": "Set Semula Kata Laluan",
     "subTitle": "Sila masukkan kata laluan baharu.",
-    "details": "Kata laluan baru ini akan menggantikan kata laluan sedia ada. Semua butiran akaun tidak berubah.",
+    "details": "Ia akan menggantikan kata laluan sedia ada. Segala butiran akaun anda masih kekal.",
     "newPassword": "Masukkan kata laluan baharu",
     "confirmNewPassword": "Sahkan kata laluan baharu",
     "confirmPassword": "Sahkan Kata Laluan"
@@ -704,10 +707,10 @@
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Keluarkan Akaun Ini",
     "popupremoveAccountTitle": "Keluarkan Akaun",
-    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
+    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Self-Service Portal atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   },
   "Onboarding": {
-    "letsStart": "Jom Mulakan!",
+    "letsStart": "Jom mulakan!",
     "skip": "Langkau",
     "title1": "Selamat datang ke myTNB!",
     "title2": "Ketahui penggunaan terkini anda.",
@@ -867,7 +870,7 @@
     "useNowPopupMessage": "Ganjaran ini hanya boleh digunakan sekali sahaja, sila pastikan anda berada di kedai.",
     "useLater": "Kemudian",
     "confirm": "Teruskan",
-    "rewardUsedPrefix": "Telah Digunakan ",
+    "rewardUsedPrefix": "Telah digunakan ",
     "rewardUsed": "Telah Digunakan",
     "redeemRewardNote": "Ganjaran ditebus. Sila tunjukkan peniaga skrin ini sebelum pemasa tamat.",
     "used": "Telah Digunakan",
@@ -883,7 +886,7 @@
     "rewardPeriod": "Tempoh Ganjaran",
     "location": "Lokasi",
     "tnc": "Terma dan Syarat",
-    "rewardUsedPrefix": "Telah Digunakan ",
+    "rewardUsedPrefix": "Telah digunakan ",
     "rewardUsed": "Telah Digunakan",
     "useNow": "Guna Sekarang",
     "useNowPopupTitle": "Sila pastikan anda berada di kedai.",

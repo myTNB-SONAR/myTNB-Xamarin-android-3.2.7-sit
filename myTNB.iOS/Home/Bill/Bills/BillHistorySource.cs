@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreGraphics;
 using Foundation;
 using UIKit;
 
@@ -11,52 +12,75 @@ namespace myTNB.Home.Bill
         public Func<string, string> GetI18NValue;
         public Action<string> OnSelectBill;
         public Action<string> OnSelectPayment;
+        public string EmptyMessage { set; private get; } = string.Empty;
+
+        //For Filter
         public Action OnShowFilter;
         public bool IsFiltered;
+        public bool NoData { set; private get; }
+
+        //For Refresh
+        public bool IsFailedService { set; private get; } = false;
+        public bool IsPlanned { set; private get; } = false;
+        public string FailMessage { set; private get; } = string.Empty;
+        public Action OnRefresh { set; private get; }
 
         private List<BillPayHistoryModel> _historyResponseList;
         private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
         private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
-        private bool _isLoading;
+        private bool _isLoading, _hideSection;
 
         public BillHistorySource(List<BillPayHistoryModel> historyResponseList, bool isLoading)
         {
             _historyResponseList = historyResponseList;
-            for (int i = 0; i < _historyResponseList.Count; i++)
+            if (_historyResponseList != null)
             {
-                BillPayHistoryModel item = _historyResponseList[i];
-                if (i == 0)
+                for (int i = 0; i < _historyResponseList.Count; i++)
                 {
-                    _historyDictionary.Add(i, item.MonthYear);
-                }
-                else
-                {
-                    _historyDictionary.Add(_historyList.Count, item.MonthYear);
-                }
-                for (int j = 0; j < item.BillPayHistoryData.Count; j++)
-                {
-                    BillPayHistoryDataModel jItem = item.BillPayHistoryData[j];
-                    _historyList.Add(jItem);
+                    BillPayHistoryModel item = _historyResponseList[i];
+                    if (i == 0)
+                    {
+                        _historyDictionary.Add(i, item.MonthYear);
+                    }
+                    else
+                    {
+                        _historyDictionary.Add(_historyList.Count, item.MonthYear);
+                    }
+                    for (int j = 0; j < item.BillPayHistoryData.Count; j++)
+                    {
+                        BillPayHistoryDataModel jItem = item.BillPayHistoryData[j];
+                        _historyList.Add(jItem);
+                    }
                 }
             }
             _isLoading = isLoading;
+            _hideSection = false;
+        }
+
+        public BillHistorySource(bool hideSection)
+        {
+            _hideSection = hideSection;
         }
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return 1;
+            return _hideSection ? 0 : 1;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
+            if (_hideSection)
+            {
+                return 0;
+            }
             int rowCount = 1;//Default to 1 for section view
-            if (IsEmptyHistory || _isLoading)
+            if (_isLoading || IsEmptyHistory || IsFailedService)
             {
                 rowCount++;
             }
             else
             {
-                rowCount += _historyList.Count;
+                rowCount += _historyList != null ? _historyList.Count : 0;
             }
             return rowCount;
         }
@@ -70,6 +94,8 @@ namespace myTNB.Home.Bill
                 cell.filterAction = OnShowFilter;
                 cell.Layer.ZPosition = 1;
                 cell.SetFilterImage(IsFiltered);
+                cell.DisplayFilterIcon = !IsFailedService && !NoData;
+                cell.EnableFilter = !_isLoading;
                 return cell;
             }
             else
@@ -80,11 +106,27 @@ namespace myTNB.Home.Bill
                     cell.ClipsToBounds = false;
                     return cell;
                 }
-                if (IsEmptyHistory)
+                if (IsFailedService)
+                {
+                    RefreshViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_Refresh) as RefreshViewCell;
+                    RefreshComponent refreshComponent = new RefreshComponent(FailMessage
+                        , LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow)
+                        , () => { if (OnRefresh != null) { OnRefresh.Invoke(); } })
+                    {
+                        PageName = "Bill",
+                        IsPlannedDownTime = IsPlanned
+                    };
+                    UIView refreshView = refreshComponent.GetUI(cell._view);
+                    cell._view.AddSubview(refreshView);
+                    cell._view.Frame = new CGRect(new CGPoint(0, 0), new CGSize(tableView.Frame.Width, refreshView.Frame.Height));
+                    cell.Rescale();
+                    return cell;
+                }
+                else if (IsEmptyHistory)
                 {
                     NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
                     cell.Image = BillConstants.IMG_NoHistoryData;
-                    cell.Message = GetI18NValue(BillConstants.I18N_NoHistoryData);
+                    cell.Message = EmptyMessage;
                     return cell;
                 }
                 else
