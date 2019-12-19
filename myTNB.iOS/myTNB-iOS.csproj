@@ -987,8 +987,6 @@
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%402x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%403x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\Contents.json" />
@@ -1266,6 +1264,8 @@
     <ImageAsset Include="Assets.xcassets\Banner-Refresh.imageset\Refresh%403x.png" />
     <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%402x.png" />
     <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

@@ -240,7 +240,8 @@ namespace myTNB
             _tariffSelectionView.UserInteractionEnabled = !isDisable;
             isTariffDisabled = isDisable;
             _tariffIcon.Image = isDisable ? UIImage.FromBundle(Constants.IMG_TariffEyeDisableIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
-            _tariffLabel.TextColor = isDisable ? MyTNBColor.SilverChalice : UIColor.White;
+            _tariffLabel.TextColor = isDisable ? UIColor.White.ColorWithAlpha(0.70F) : UIColor.White;
+            _tariffSelectionView.Layer.BorderColor = (isDisable ? UIColor.White.ColorWithAlpha(0.70F) : UIColor.White).CGColor;
         }
         #endregion
     }
