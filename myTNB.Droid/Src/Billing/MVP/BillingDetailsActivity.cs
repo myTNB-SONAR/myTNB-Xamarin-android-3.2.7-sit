@@ -94,6 +94,13 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.bottomLayout)]
         LinearLayout bottomLayout;
 
+        [BindView(Resource.Id.topLayout)]
+        LinearLayout topLayout;
+
+        [BindView(Resource.Id.detailLayout)]
+        LinearLayout detailLayout;
+        
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 
@@ -207,8 +214,17 @@ namespace myTNB_Android.Src.Billing.MVP
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
-            PopulateCharges();
-            EnablePayBillButtons();
+            if (selectedAccountChargeModel != null)
+            {
+                topLayout.Visibility = ViewStates.Visible;
+                PopulateCharges();
+                EnablePayBillButtons();
+            }
+            else
+            {
+                topLayout.Visibility = ViewStates.Invisible;
+                this.billingDetailsPresenter.ShowBillDetails(selectedAccountData);
+            }
         }
 
         private void EnablePayBillButtons()
@@ -224,6 +240,33 @@ namespace myTNB_Android.Src.Billing.MVP
                 btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             }
         }
+     
+        public void ShowBillDetails(List<AccountChargeModel> accountChargeModelList)
+        {
+            try
+            {
+                topLayout.Visibility = ViewStates.Visible;
+                selectedAccountChargeModel = accountChargeModelList[0];
+                PopulateCharges();
+                EnablePayBillButtons();
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+                    {
+                        OnShowItemizedBillingTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+            }
+            catch (Exception e)
+            {
+                // TODO: Show Refresh Screen
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private void PopulateCharges()
         {
             if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)
@@ -327,16 +370,19 @@ namespace myTNB_Android.Src.Billing.MVP
         protected override void OnResume()
         {
             base.OnResume();
-            Handler h = new Handler();
-            Action myAction = () =>
+            if (selectedAccountChargeModel != null)
             {
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+                Handler h = new Handler();
+                Action myAction = () =>
                 {
-                    OnShowItemizedBillingTutorialDialog();
-                }
-            };
-            h.PostDelayed(myAction, 50);
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+                    {
+                        OnShowItemizedBillingTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+            }
         }
 
         protected override void OnPause()

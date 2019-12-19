@@ -325,7 +325,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
-
+            billFilterIcon.Enabled = false;
             SetHasOptionsMenu(true);
             itemisedBillingScrollView.SetOnScrollChangeListener(new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container));
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
@@ -586,12 +586,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
+                billFilterIcon.Visibility = ViewStates.Visible;
                 billFilterIcon.Enabled = true;
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
             }
             else
             {
+                billFilterIcon.Visibility = ViewStates.Gone;
+                billFilterIcon.Enabled = true;
+                // TODO: Update empty state name
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
                 itemisedBillingList.Visibility = ViewStates.Gone;
             }

@@ -4771,7 +4771,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnViewBillDetails(selectedAccount);
+                Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
+                StartActivity(intent);
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Details Buttom Clicked");
