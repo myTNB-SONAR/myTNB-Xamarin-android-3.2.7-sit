@@ -710,7 +710,7 @@
     "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Self-Service Portal atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   },
   "Onboarding": {
-    "letsStart": "Jom Mulakan!",
+    "letsStart": "Jom mulakan!",
     "skip": "Langkau",
     "title1": "Selamat datang ke myTNB!",
     "title2": "Ketahui penggunaan terkini anda.",
