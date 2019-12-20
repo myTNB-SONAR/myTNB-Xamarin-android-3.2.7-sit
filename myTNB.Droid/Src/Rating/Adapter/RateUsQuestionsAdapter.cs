@@ -110,13 +110,13 @@ namespace myTNB_Android.Src.Rating.Adapter
                             if (char_count > 0)
                             {
                                 int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                                vh.txtInputLayoutComments.Error = char_left + " " + mContext.GetString(Resource.String.feedback_character_left);
+                                vh.txtInputLayoutComments.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);
                                 questions[position].IsQuestionAnswered = true;
                                 question.InputAnswer = feedback;
                             }
                             else
                             {
-                                vh.txtInputLayoutComments.Error = mContext.GetString(Resource.String.feedback_total_character_left);
+                                vh.txtInputLayoutComments.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), "250");
                                 questions[position].IsQuestionAnswered = false;
                             }
                             OnRatingUpdate(vh, position);

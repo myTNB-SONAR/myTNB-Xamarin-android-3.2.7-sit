@@ -80,6 +80,8 @@ namespace myTNB_Android.Src.Rating.Fargment
                 rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
                 btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
 
+                btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
+
                 layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
                 adapter = new RateUsQuestionsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
                 recyclerView.SetLayoutManager(layoutManager);
