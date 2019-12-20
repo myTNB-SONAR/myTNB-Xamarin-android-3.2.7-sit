@@ -86,6 +86,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         public void ShowEmptyEmailError()
         {
             txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_empty_email_error);
+            this.SetIsClicked(false);
         }
 
         public void ShowError(string errorMessage)
@@ -146,6 +147,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         public void ShowInvalidEmailError()
         {
             txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
+            this.SetIsClicked(false);
         }
 
         public void ShowCodeVerifiedSuccess()
