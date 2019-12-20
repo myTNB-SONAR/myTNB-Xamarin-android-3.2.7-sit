@@ -11,6 +11,7 @@ using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
+using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB_Android.Src.Base
 {
@@ -68,6 +69,44 @@ namespace myTNB_Android.Src.Base
             CustomerBillingAccount.RemoveCustomerBillingDetails();
             UpdatedAccountNumberList = new List<string>();
             IsNeeUpdate = true;
+        }
+
+        public void ClearSitecoreItem()
+        {
+            try
+            {
+                TimeStampEntity TimeStampEntityManager = new TimeStampEntity();
+                TimeStampEntityManager.DeleteTable();
+                TimeStampEntityManager.CreateTable();
+
+                NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                NewFAQParentManager.DeleteTable();
+                NewFAQParentManager.CreateTable();
+
+                PromotionsParentEntityV2 PromotionsParentEntityVManager = new PromotionsParentEntityV2();
+                PromotionsParentEntityVManager.DeleteTable();
+                PromotionsParentEntityVManager.CreateTable();
+
+                RewardsParentEntity RewardsParentEntityManager = new RewardsParentEntity();
+                RewardsParentEntityManager.DeleteTable();
+                RewardsParentEntityManager.CreateTable();
+
+                EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                EnergySavingTipsParentManager.DeleteTable();
+                EnergySavingTipsParentManager.CreateTable();
+
+                AppLaunchParentEntity AppLaunchParentEntityManager = new AppLaunchParentEntity();
+                AppLaunchParentEntityManager.DeleteTable();
+                AppLaunchParentEntityManager.CreateTable();
+
+                FAQsParentEntity FAQsParentEntityManager = new FAQsParentEntity();
+                FAQsParentEntityManager.DeleteTable();
+                FAQsParentEntityManager.CreateTable();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void UpdateIsSMROnboardingShown()

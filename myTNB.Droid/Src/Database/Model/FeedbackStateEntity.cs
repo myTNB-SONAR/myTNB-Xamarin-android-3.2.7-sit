@@ -66,10 +66,8 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void SetSelected(string Id)
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
-                db.Execute("UPDATE FeedbackStateEntity SET IsSelected = ? WHERE StateId = ?", true, Id);
-            }
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("UPDATE FeedbackStateEntity SET IsSelected = ? WHERE StateId = ?", true, Id);
         }
 
         public static void ResetSelected()

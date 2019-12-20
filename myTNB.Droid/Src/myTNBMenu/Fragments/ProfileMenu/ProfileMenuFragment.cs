@@ -171,6 +171,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(false);
                     ((DashboardHomeActivity)this.Activity).OnResetSSMRMeterReadingTutorial();
+                    ((DashboardHomeActivity)this.Activity).OnResetPromotionRewards();
                 }
             }
             catch (System.Exception e)

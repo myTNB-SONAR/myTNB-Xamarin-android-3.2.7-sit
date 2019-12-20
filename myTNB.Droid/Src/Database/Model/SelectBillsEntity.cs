@@ -167,10 +167,8 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAccountData(string accNo)
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
-                db.Execute("DELETE FROM SelectBillsEntity where AccountNo = ?", accNo);
-            }
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("DELETE FROM SelectBillsEntity where AccountNo = ?", accNo);
         }
 
     }
