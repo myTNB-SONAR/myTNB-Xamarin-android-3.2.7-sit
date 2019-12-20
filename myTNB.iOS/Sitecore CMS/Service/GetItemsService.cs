@@ -56,25 +56,10 @@ namespace myTNB.SitecoreCMS.Services
             var resp = CheckData(data.ToList<object>());
             return JsonConvert.SerializeObject(resp);
         }
+
         public string GetFAQsTimestampItem()
         {
             FAQsService service = new FAQsService();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
-
-        public string GetAppLaunchImageItem()
-        {
-            AppLaunchImageService service = new AppLaunchImageService();
-            var data = service.GetAppLaunchImageService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-        public string GetAppLaunchImageTimestampItem()
-        {
-            AppLaunchImageService service = new AppLaunchImageService();
             var data = service.GetTimestamp(WebsiteUrl, Language);
             var listData = AddDataToList(data);
             var resp = CheckData(listData);
@@ -171,6 +156,43 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetHelpTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public AppLaunchImageTimestampResponseModel GetAppLaunchImageTimestampItem()
+        {
+            AppLaunchImageTimestampResponseModel respModel = new AppLaunchImageTimestampResponseModel();
+            try
+            {
+                AppLaunchImageService service = new AppLaunchImageService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimestamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<AppLaunchImageTimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchImageTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public AppLaunchImageResponseModel GetAppLaunchImageItem()
+        {
+            AppLaunchImageResponseModel respModel = new AppLaunchImageResponseModel();
+            try
+            {
+                AppLaunchImageService service = new AppLaunchImageService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetAppLaunchImageService();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<AppLaunchImageResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchImageItem: " + e.Message);
             }
             return respModel;
         }

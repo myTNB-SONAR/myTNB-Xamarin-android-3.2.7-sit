@@ -13,18 +13,28 @@ namespace myTNB.SitecoreCMS.Service
 {
     internal class AppLaunchImageService
     {
-        internal List<AppLaunchImageModel> GetAppLaunchImageService(string OS, string imageSize, string websiteUrl = null, string language = "en")
+        private string _os, _imgSize, _websiteURL, _language;
+        internal AppLaunchImageService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        {
+            _os = os;
+            _imgSize = imageSize;
+            _websiteURL = websiteUrl;
+            _language = language;
+        }
+
+        internal List<AppLaunchImageModel> GetAppLaunchImageService()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.AppLaunchImage, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.AppLaunchImage
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateAppLaunchImageChildren(item, OS, imageSize, websiteUrl, language);
+            var list = GenerateAppLaunchImageChildren(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        public async Task<IEnumerable<AppLaunchImageModel>> GenerateAppLaunchImageChildren(ScItemsResponse itemsResponse, string OS, string imageSize, string websiteUrl = null, string language = "en")
+        public async Task<IEnumerable<AppLaunchImageModel>> GenerateAppLaunchImageChildren(ScItemsResponse itemsResponse)
         {
             List<AppLaunchImageModel> list = new List<AppLaunchImageModel>();
 
@@ -40,12 +50,11 @@ namespace myTNB.SitecoreCMS.Service
                     ID = item.Id,
                     Title = item.GetValueFromField(Constants.Sitecore.Fields.Shared.Title),
                     Description = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.Description),
-                    Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, OS, imageSize, websiteUrl, language),
+                    Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, _os, _imgSize, _websiteURL, _language),
                     StartDateTime = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.StartDateTime),
                     EndDateTime = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.EndDateTime),
                     ShowForSeconds = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.ShowForSeconds)
                 };
-                Debug.WriteLine("debug: insert success");
 
                 list.Add(listlItem);
             }
@@ -53,18 +62,19 @@ namespace myTNB.SitecoreCMS.Service
             return list;
         }
 
-        internal AppLaunchImageTimestamp GetTimestamp(string websiteUrl = null, string language = "en")
+        internal AppLaunchImageTimestamp GetTimestamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.AppLaunchImage, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.AppLaunchImage
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateTimestamp(item, websiteUrl, language);
+            var list = GenerateTimestamp(item);
             var itemList = list.Result;
             return itemList;
         }
 
-        private async Task<AppLaunchImageTimestamp> GenerateTimestamp(ScItemsResponse itemsResponse, string websiteUrl = null, string language = "en")
+        private async Task<AppLaunchImageTimestamp> GenerateTimestamp(ScItemsResponse itemsResponse)
         {
             AppLaunchImageTimestamp listlItem = new AppLaunchImageTimestamp();
             try

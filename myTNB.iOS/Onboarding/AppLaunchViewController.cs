@@ -32,10 +32,8 @@ namespace myTNB
     {
         UIImageView imgViewAppLaunch;
         UIImage _imgSplash;
-        string _imageSize = string.Empty;
         string _imageFilePath;
         bool isMaintenance;
-        bool isValidSplashTimestamp;
         string _imgUrl = string.Empty;
         string _startDateStr = string.Empty;
         string _endDateStr = string.Empty;
@@ -330,24 +328,30 @@ namespace myTNB
             GetUserEntity();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                if (NetworkUtility.isReachable)
                 {
-                    if (NetworkUtility.isReachable)
+                    string splashFileName = "SplashImage.png";
+                    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Resources);
+                    _imageFilePath = Path.Combine(documentsPath, splashFileName);
+
+                    InvokeInBackground(async () =>
                     {
-                        _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
-                        string splashFileName = "SplashImage.png";
-                        string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Resources);
-                        _imageFilePath = Path.Combine(documentsPath, splashFileName);
-
-                        InvokeInBackground(async () =>
+                        _isGetDynamicDone = await SitecoreServices.Instance.LoadDynamicSplash();
+                        if (SitecoreServices.Instance.SplashHasNewTimestamp && File.Exists(_imageFilePath))
                         {
-                            _isGetDynamicDone = await GetDynamicSplash();
-                            InvokeOnMainThread(() =>
+                            try
                             {
-                                PrepareDynamicSplash();
-                            });
+                                File.Delete(_imageFilePath);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine("Error deleting splash image: " + e.Message);
+                            }
+                        }
+                        InvokeOnMainThread(() =>
+                        {
+                            PrepareDynamicSplash();
                         });
-
                         var tasks = new List<Task>
                         {
                             Task.Run(DelayTask),
@@ -355,13 +359,13 @@ namespace myTNB
                             Task.Run(LoadLanguage)
                         };
                         await Task.WhenAll(tasks);
-                    }
+                    });
+                }
 
-                    else
-                    {
-                        AlertHandler.DisplayNoDataAlert(this);
-                    }
-                });
+                else
+                {
+                    AlertHandler.DisplayNoDataAlert(this);
+                }
             });
         }
 
@@ -400,7 +404,7 @@ namespace myTNB
         private void PrepareDynamicSplash()
         {
             GetDynamicSplashData();
-            if (isValidSplashTimestamp)
+            if (SitecoreServices.Instance.SplashHasNewTimestamp)
             {
                 if (!string.IsNullOrEmpty(_startDateStr) && !string.IsNullOrEmpty(_endDateStr))
                 {
@@ -417,6 +421,17 @@ namespace myTNB
                     }
                     else
                     {
+                        if (File.Exists(_imageFilePath))
+                        {
+                            try
+                            {
+                                File.Delete(_imageFilePath);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine("Error deleting splash image: " + e.Message);
+                            }
+                        }
                         ShowDefaultSplashImage();
                     }
                 }
@@ -465,6 +480,17 @@ namespace myTNB
                     }
                     else
                     {
+                        if (File.Exists(_imageFilePath))
+                        {
+                            try
+                            {
+                                File.Delete(_imageFilePath);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine("Error deleting splash image: " + e.Message);
+                            }
+                        }
                         ShowDefaultSplashImage();
                     }
                 }
@@ -835,61 +861,6 @@ namespace myTNB
                 Debug.WriteLine("ERROR: " + e.Message);
             }
             return onboardingData;
-        }
-
-        internal async Task<bool> GetDynamicSplash()
-        {
-            bool result = false;
-            await Task.Run(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                bool isValidTimeStamp = false;
-                string appLaunchImageTS = iService.GetAppLaunchImageTimestampItem();
-                TimestampResponseModel timestamp = JsonConvert.DeserializeObject<TimestampResponseModel>(appLaunchImageTS);
-                if (timestamp != null && timestamp.Status.Equals("Success")
-                    && timestamp.Data != null && timestamp.Data.Count > 0
-                    && timestamp.Data[0] != null)
-                {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("AppLaunchImageTimeStamp");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(timestamp.Data[0].Timestamp, "AppLaunchImageTimeStamp");
-                        sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(timestamp.Data[0].Timestamp))
-                        {
-                            isValidTimeStamp = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(timestamp.Data[0].Timestamp, "AppLaunchImageTimeStamp");
-                            sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
-                        }
-                    }
-                }
-                isValidSplashTimestamp = isValidTimeStamp;
-                if (isValidTimeStamp)
-                {
-                    string items = iService.GetAppLaunchImageItem();
-                    AppLaunchImageResponseModel response = JsonConvert.DeserializeObject<AppLaunchImageResponseModel>(items);
-                    if (response != null && response.Status.Equals("Success")
-                        && response.Data != null && response.Data.Count > 0)
-                    {
-                        var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                        var jsonStr = JsonConvert.SerializeObject(response);
-                        sharedPreference.SetString(jsonStr, "AppLaunchImageData");
-                        sharedPreference.Synchronize();
-                    }
-                }
-                result = true;
-            });
-
-            return result;
         }
 
         internal void ShowOnboardingWithNormalLaunch()
