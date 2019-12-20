@@ -25,8 +25,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
     public class MPPaymentWebViewFragment : Android.App.Fragment
     {
-        private string TOOL_BAR_TITLE = "Enter OTP";
-        private string TOOL_BAR_TITLE_FPX = "Online Banking";
         private string PYMT_IND = "tokenization";
         private string PYMT_CRITERIA_REGISTRATION = "registration";
         private string PYMT_CRITERIA_PAYMENT = "payment";
@@ -94,11 +92,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 paymentActivity = ((PaymentActivity)Activity);
                 if (Arguments.ContainsKey("html_fpx"))
                 {
-                    paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE_FPX);
+                    paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "onlineBanking"));
                 }
                 else
                 {
-                    paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE);
+                    paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "enterOTP"));
                 }
 
                 mWebView = rootView.FindViewById<WebView>(Resource.Id.web_view);
@@ -261,11 +259,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             if (Arguments.ContainsKey("html_fpx"))
             {
-                paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE_FPX);
+                paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "onlineBanking"));
             }
             else
             {
-                paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE);
+                paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "enterOTP"));
             }
             base.OnResume();
         }

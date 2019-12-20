@@ -238,7 +238,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             .OnPositive((dialog, which) =>
                             {
                                 this.FragmentManager.PopBackStack();
-                                this.SetToolBarTitle("Select Payment Method");
+                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod","title"));
                             })
                             .NeutralText(Utility.GetLocalizedCommonLabel("no"))
                             .NeutralColor(Resource.Color.black)

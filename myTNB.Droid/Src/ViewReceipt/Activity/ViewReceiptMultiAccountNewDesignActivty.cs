@@ -35,7 +35,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
     [Activity(Label = "Payment Receipt"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Dashboard")]
-    public class ViewReceiptMultiAccountNewDesignActivty : BaseToolbarAppCompatActivity, ViewReceiptMultiAccountNewDesignContract.IView
+    public class ViewReceiptMultiAccountNewDesignActivty : BaseActivityCustom, ViewReceiptMultiAccountNewDesignContract.IView
     {
         private string TAG = "View Receipt Activity";
         private string RECEPT_NO;
@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         LinearLayout accountLayout;
 
         [BindView(Resource.Id.txn_date_text)]
-        TextView txnDSateText;
+        TextView txnDateText;
 
         [BindView(Resource.Id.txn_date_value)]
         TextView txnDateValue;
@@ -108,6 +108,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         AccountReceiptResponse response = null;
         string selectedAccountNumber, detailedInfoNumber;
         bool isOwnedAccount, showAllReceipt;
+        private string PAGE_ID = "Receipt";
 
         private LoadingOverlay loadingOverlay;
 
@@ -137,7 +138,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
 
                 TextViewUtils.SetMuseoSans500Typeface(noteText, totalAmtValue, totalAmtText, txnMethodValue, txnMethodText,
-                                                          txnIdValue, txnIdText, txnDateValue, txnDSateText, referenceNumberValue,
+                                                          txnIdValue, txnIdText, txnDateValue, txnDateText, referenceNumberValue,
                                                           referenceNumberText, pleasedText, thanksText, dearCustomer, receiptTitile);
 
                 mGetReceiptDialog = new AlertDialog.Builder(this)
@@ -145,6 +146,16 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                   .SetMessage("Please wait while we are getting receipt details...")
                   .SetCancelable(false)
                   .Create();
+
+                receiptTitile.Text = GetLabelByLanguage("title");
+                dearCustomer.Text = GetLabelByLanguage("salutation");
+                thanksText.Text = GetLabelByLanguage("messagePartOne");
+                referenceNumberText.Text = GetLabelByLanguage("referenceNumber").ToUpper();
+                txnDateText.Text = GetLabelByLanguage("trnDate").ToUpper();
+                txnIdText.Text = GetLabelByLanguage("trnID").ToUpper();
+                txnMethodText.Text = GetLabelByLanguage("trnMethod").ToUpper();
+                totalAmtText.Text = GetLabelCommonByLanguage("totalAmountRM").ToUpper();
+                noteText.Text = GetLabelByLanguage("note");
 
                 Bundle extras = Intent.Extras;
 
@@ -170,7 +181,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 }
                 else
                 {
-                    ShowErrorMessage(GetString(Resource.String.no_internet_connection));
+                    ShowErrorMessage(Utility.GetLocalizedErrorLabel("noDataConnectionMessage"));
                 }
             }
             catch (Exception e)
@@ -342,19 +353,19 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_title), titleFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("title"), titleFont));
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_dear_customer), detailsFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("salutation"), detailsFont));
                                 document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_payment_thank_you), detailsFont));
-                                document.Add(new Paragraph(string.Format(pleaseTextStr,
+                                document.Add(new Paragraph(GetLabelByLanguage("messagePartOne"), detailsFont));
+                                document.Add(new Paragraph(string.Format(GetLabelByLanguage("messagePartTwo"),
                                                                          response.receipt.receiptDetails.payMethod), detailsFont));
 
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(grayLine);
                                 document.Add(new Paragraph(System.Environment.NewLine, labelFont));
 
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_reference_number), labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("referenceNumber").ToUpper(), labelFont));
                                 document.Add(new Paragraph(response.receipt.receiptDetails.referenceNum, detailsFont));
 
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
@@ -363,13 +374,13 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                                 foreach (var item in response.receipt.receiptDetails.accMultiPay)
                                 {
-                                    document.Add(new Paragraph(GetString(Resource.String.receipt_account_number), labelFont));
+                                    document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
                                     document.Add(new Paragraph(item.accountNum, detailsFont));
                                     document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                                    document.Add(new Paragraph(GetString(Resource.String.receipt_account_holder_name), labelFont));
+                                    document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
                                     document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : System.Environment.NewLine, detailsFont));
                                     document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                                    document.Add(new Paragraph(GetString(Resource.String.receipt_account_amount), labelFont));
+                                    document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
                                     document.Add(new Paragraph(item.itmAmt, detailsFont));
 
                                     document.Add(new Paragraph(System.Environment.NewLine, titleFont));
@@ -377,35 +388,35 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                                     document.Add(new Paragraph(System.Environment.NewLine, labelFont));
                                 }
 
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_date), labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("trnDate").ToUpper(), labelFont));
                                 document.Add(new Paragraph(response.receipt.receiptDetails.payTransDate, detailsFont));
 
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(grayLine);
                                 document.Add(new Paragraph(System.Environment.NewLine, labelFont));
 
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_transcation_id), labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("trnID").ToUpper(), labelFont));
                                 document.Add(new Paragraph(response.receipt.receiptDetails.payTransID, detailsFont));
 
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(grayLine);
                                 document.Add(new Paragraph(System.Environment.NewLine, labelFont));
 
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_transaction_method), labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("trnMethod").ToUpper(), labelFont));
                                 document.Add(new Paragraph(response.receipt.receiptDetails.payMethod, detailsFont));
 
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(grayLine);
                                 document.Add(new Paragraph(System.Environment.NewLine, labelFont));
 
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_total_amount), detailsFont));
+                                document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
                                 document.Add(new Paragraph(response.receipt.receiptDetails.payAmt, totalAmounFont));
 
                                 document.Add(new Paragraph(System.Environment.NewLine, titleFont));
                                 document.Add(grayLine);
                                 document.Add(new Paragraph(System.Environment.NewLine, labelFont));
 
-                                document.Add(new Paragraph(GetString(Resource.String.receipt_note_text), labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("note"), labelFont));
 
 
                                 document.Close();
@@ -555,7 +566,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                         List<AccMultiPay> accounts = receiiptDetails.accMultiPay;
 
-                        pleasedText.Text = string.Format(pleaseTextStr, receiiptDetails.payMethod);
+                        pleasedText.Text = string.Format(GetLabelByLanguage("messagePartTwo"), receiiptDetails.payMethod);
 
                         referenceNumberValue.Text = receiiptDetails.referenceNum;
 
@@ -587,6 +598,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                                 TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue, accNameText,
                                                                       accNameValue, accAmtText, accAmtValue);
+                                accNumberText.Text = GetLabelCommonByLanguage("accountNo").ToUpper();
+                                accNameText.Text = GetLabelByLanguage("accountHolder").ToUpper();
+                                accAmtText.Text = GetLabelCommonByLanguage("amountRM").ToUpper();
 
                                 accNumberValue.Text = acct.accountNum;
                                 accNameValue.Text = acct.accountOwnerName;
@@ -658,5 +672,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }
