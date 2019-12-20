@@ -476,9 +476,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (WeblinkEntity.HasRecord("TNBCLO"))
+                if (WeblinkEntity.HasRecord("TNBCLE"))
                 {
-                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
+                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
                     if (entity.OpenWith.Equals("PHONE"))
                     {
                         var uri = Android.Net.Uri.Parse("tel:" + entity.Url);
@@ -494,9 +494,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (WeblinkEntity.HasRecord("TNBCLE"))
+                if (WeblinkEntity.HasRecord("TNBCLO"))
                 {
-                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
+                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
                     if (entity.OpenWith.Equals("PHONE"))
                     {
                         var uri = Android.Net.Uri.Parse("tel:" + entity.Url);
