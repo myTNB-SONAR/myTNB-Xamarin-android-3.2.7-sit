@@ -245,7 +245,7 @@
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
-    "headerTitle": "Sejarah Bacaan Meter Saya",
+    "headerTitle": "Rekod Bacaan Meter Saya",
     "subTitle": "Saya ingin baca meter sendiri untuk:",
     "disableSSMRCTA": "Hentikan Self Meter Reading",
     "enableSSMRCTA": "Aktifkan Self Meter Reading",
