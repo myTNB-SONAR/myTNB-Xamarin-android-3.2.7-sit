@@ -1,26 +1,23 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.FAQ.Model
 {
-    [Activity(Label = "FAQCacheModel")]
-    public class FAQCacheModel : Activity
+    public class FAQCacheModel
     {
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
-            // Create your application here
-        }
+        [JsonProperty("data")]
+        public List<FAQCacheList> Data { get; set; }
+    }
+
+    public class FAQCacheList
+    {
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("details")]
+        public string Details { get; set; }
     }
 }
