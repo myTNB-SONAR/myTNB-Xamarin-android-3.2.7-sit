@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,21 +9,6 @@
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>PdbOnly</DebugType>
-    <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\</OutputPath>
-    <DefineConstants>TRACE;SIT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
-    <MandroidI18n>West</MandroidI18n>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
@@ -33,37 +18,9 @@
     <Folder Include="Resources\" />
     <Folder Include="Resources\Usage\" />
     <Folder Include="Resources\TnC\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Resources\Notification\NotificationInfo_1001 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001 %28another copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001 %283rd copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001 %284th copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099 %28another copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099 %283rd copy%29.json" />
-    <None Remove="Resources\Language\Language_EN.json" />
-    <None Remove="Resources\Language\Language_MS.json" />
-    <None Remove="Resources\TnC\TermsAndConditions_EN.txt" />
-    <None Remove="Resources\TnC\TermsAndConditions_MS.txt" />
-    <None Remove="Resources\Notification\GetUserNotifications.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10009.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10010.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10011.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1002.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1003.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1004.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1005.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10009 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10050 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10051 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10050.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10051.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10052.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10053.json" />
-    <None Remove="Resources\Usage\AccountUsageSmart.json" />
+    <Folder Include="Resources\FAQ\" />
+    <Folder Include="Resources\Notification\" />
+    <Folder Include="Resources\Language\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -76,8 +33,10 @@
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10051.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
+    <EmbeddedResource Include="Resources\Usage\AccountUsageSmart.json" />
+    <EmbeddedResource Include="Resources\FAQ\FAQ_EN.json" />
+    <EmbeddedResource Include="Resources\FAQ\FAQ_MS.json" />
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_EN.txt" />
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Notification\GetUserNotifications.json" />
@@ -89,11 +48,39 @@
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1003.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1004.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1005.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10050.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10051.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10052.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10053.json" />
-    <EmbeddedResource Include="Resources\Usage\AccountUsageSmart.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
+    <EmbeddedResource Include="Resources\Language\Language_EN.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\FAQ\FAQ_EN.json" />
+    <None Remove="Resources\FAQ\FAQ_MS.json" />
+    <None Remove="Resources\Language\Language_EN.json" />
+    <None Remove="Resources\Language\Language_MS.json" />
+    <None Remove="Resources\TnC\TermsAndConditions_EN.txt" />
+    <None Remove="Resources\TnC\TermsAndConditions_MS.txt" />
+    <None Remove="Resources\Usage\AccountUsageSmart.json" />
+    <None Remove="Resources\Notification\GetUserNotifications.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10009.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1001.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10010.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10011.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1002.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1003.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1004.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1005.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10050.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10051.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10052.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10053.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1099.json" />
+    <None Remove="Resources\Language\Language_MS.json" />
+    <None Remove="Resources\Language\Language_EN.json" />
   </ItemGroup>
 </Project>
