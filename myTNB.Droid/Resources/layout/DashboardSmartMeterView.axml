@@ -44,10 +44,10 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="24dp"
                             android:gravity="center"
-                            android:lineSpacingExtra="4sp"
+                            android:lineSpacingExtra="4dp"
                             android:paddingLeft="18dp"
                             android:paddingRight="18dp"
-                            android:textSize="16sp"
+                            android:textSize="16dp"
                             android:text="@string/text_new_refresh_content"
                             android:textColor="@color/white"/>
                         <Button
@@ -70,7 +70,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="9sp"
+                        android:textSize="9dp"
                         android:textAllCaps="true"
                         android:layout_gravity="center"
                         android:visibility="gone"
@@ -102,7 +102,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/dashboard_chartview_hour"
-                                android:textSize="12sp" />-->
+                                android:textSize="12dp" />-->
                             <RadioButton
                                 android:id="@+id/btnToggleDay"
                                 style="@style/RadioButton"
@@ -110,7 +110,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/dashboard_chartview_day"
-                                android:textSize="12sp" />
+                                android:textSize="12dp" />
                             <RadioButton
                                 android:id="@+id/btnToggleMonth"
                                 style="@style/RadioButton"
@@ -119,7 +119,7 @@
                                 android:layout_weight="1"
                                 android:checked="true"
                                 android:text="@string/dashboard_chartview_month"
-                                android:textSize="12sp" />
+                                android:textSize="12dp" />
                         </info.hoang8f.android.segmented.SegmentedGroup>
                     </RelativeLayout>
                     <LinearLayout
@@ -174,14 +174,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="16dp" />
                         <TextView
                             android:id="@+id/dashboard_chartview_no_data_content"
                             android:text="@string/dashboard_chartview_no_data_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                         <Button
                             android:id="@+id/btnLearnMore"
                             android:text="@string/dashboard_chartview_no_data_learnmore"
@@ -224,7 +224,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:checked="true"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@color/barchartColorHighlighted"
@@ -241,7 +241,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@color/barchartColorHighlighted"
@@ -259,7 +259,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -313,7 +313,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:checked="true"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -330,7 +330,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -348,7 +348,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -391,7 +391,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="14sp"
+                                    android:textSize="14dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/white"
                                     android:text="@string/current_charges"
@@ -401,7 +401,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="12sp"
+                                    android:textSize="12dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/barchartColorHighlighted"
                                     android:text="@string/as_of"
@@ -418,7 +418,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="12dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="RM"
@@ -427,7 +427,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="16sp"
+                                    android:textSize="16dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="00.00"
@@ -435,7 +435,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="14sp"
+                                    android:textSize="14dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="kWh"
@@ -480,7 +480,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="14sp"
+                                    android:textSize="14dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/white"
                                     android:text="@string/projected_cost"
@@ -490,7 +490,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="12sp"
+                                    android:textSize="12dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/barchartColorHighlighted"
                                     android:singleLine="true"
@@ -517,7 +517,7 @@
                                         <TextView
                                             android:layout_height="wrap_content"
                                             android:layout_width="wrap_content"
-                                            android:textSize="12sp"
+                                            android:textSize="12dp"
                                             android:textStyle="normal"
                                             android:textColor="@color/white"
                                             android:text="RM"
@@ -526,7 +526,7 @@
                                         <TextView
                                             android:layout_height="wrap_content"
                                             android:layout_width="wrap_content"
-                                            android:textSize="16sp"
+                                            android:textSize="16dp"
                                             android:textStyle="normal"
                                             android:textColor="@color/white"
                                             android:text="00.00"
@@ -563,7 +563,7 @@
                                 android:layout_width="match_parent"
                                 android:textColor="@color/white"
                                 android:text="@string/note_text_sm"
-                                android:textSize="12sp" />
+                                android:textSize="12dp" />
                         </LinearLayout>
                         <View
                             android:id="@+id/noteDivider"
@@ -586,7 +586,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="12sp"
+                                    android:textSize="12dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/sunGlow"
                                     android:singleLine="true"
@@ -599,7 +599,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:layout_weight="0.6"
-                                android:textSize="12sp"
+                                android:textSize="12dp"
                                 android:textStyle="bold"
                                 android:padding="24dp"
                                 android:layout_gravity="center"
@@ -627,12 +627,12 @@
                                             android:layout_marginTop="12dp"
                                             android:gravity="center"
                                             android:text="Electricity Connection:"
-                                            android:textSize="12sp"
+                                            android:textSize="12dp"
                                             android:visibility="gone"/>
                                             <TextView
                                                     android:layout_height="wrap_content"
                                                     android:layout_width="match_parent"
-                                                    android:textSize="12sp"
+                                                    android:textSize="12dp"
                                                     android:layout_marginTop="4dp"
                                                     android:textColor="@color/sunGlow"
                                                     android:layout_gravity="center"
@@ -731,7 +731,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtTotalPayableTitle"
-                    android:textSize="11sp"
+                    android:textSize="11dp"
                     android:layout_marginTop="9dp"
                     android:paddingTop="@dimen/_1sdp"
                     android:textColor="@color/silverChalice"
@@ -739,7 +739,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:textStyle="normal"
                     android:layout_alignBaseline="@+id/txtDueDate"
                     android:textColor="@color/powerBlue"

@@ -31,14 +31,14 @@
 				android:textColor="@color/tunaGrey"
 				app:layout_constraintStart_toEndOf="@+id/notificationIcon"
 				app:layout_constraintTop_toTopOf="parent"
-				android:textSize="14sp"/>
+				android:textSize="14dp"/>
 		<TextView
 				android:id="@+id/txtNotificationContent"
 				android:layout_width="0dp"
 				android:layout_height="14dp"
 				android:layout_marginLeft="8dp"
 				android:text="Power disruption reported at your nearest "
-				android:textSize="10sp"
+				android:textSize="10dp"
 				android:maxLines="1"
 				android:maxEms="18"
 				android:ellipsize="end"
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="10 Jul 2017"
-        android:textSize="10sp"
+        android:textSize="10dp"
         android:textColor="@color/silverChalice"
         android:layout_marginLeft="5dp"
 				android:layout_marginRight="6dp"

@@ -32,6 +32,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/bills_payment_no_bills_txt_content"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
     </LinearLayout>
 </FrameLayout>

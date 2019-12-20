@@ -29,7 +29,7 @@
                     android:id="@+id/txtMyAccountTitle"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="18sp"
+                    android:textSize="18dp"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp"
                     android:paddingLeft="16dp"
@@ -127,7 +127,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="Update"
                             android:textColor="@color/powerBlue"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </FrameLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -157,7 +157,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="Update"
                             android:textColor="@color/powerBlue"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </FrameLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -187,7 +187,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="Manage"
                             android:textColor="@color/powerBlue"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>-->
@@ -195,7 +195,7 @@
                 android:id="@+id/txtTnBSupplyAccountTitle"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:paddingLeft="16dp"
@@ -229,7 +229,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:gravity="center_vertical" />
                     <TextView
                         android:id="@+id/txtMyAccountNoAccountContent"
@@ -237,7 +237,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         android:gravity="center" />
                     <Button
                         android:id="@+id/btnAddAccount"

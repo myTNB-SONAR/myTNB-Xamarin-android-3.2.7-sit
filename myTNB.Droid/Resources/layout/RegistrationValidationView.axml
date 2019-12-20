@@ -20,7 +20,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:text="@string/registration_validation_pin_info"
                 android:padding="16dp"
                 android:id="@+id/txtInfoTitle" />
@@ -123,7 +123,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textStyle="bold"
                     android:layout_margin="@dimen/_8sdp"
                     android:text="Didn’t receive the SMS?"
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/registration_validation_btn_resend"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:textAllCaps="false"
                         android:drawableLeft="@drawable/ic_button_resend_loaded"
                         android:maxLines="1"
@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/registration_validation_btn_resend"
                         android:textColor="@color/freshGreen"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:visibility="visible"
                         android:textAllCaps="false"
                         android:drawableLeft="@drawable/ic_button_resend_loaded"

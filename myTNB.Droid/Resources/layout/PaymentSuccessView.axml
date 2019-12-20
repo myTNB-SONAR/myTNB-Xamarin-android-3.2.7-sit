@@ -36,7 +36,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/blue"
                     android:text="Payment Successful"
                     android:id="@+id/txtTitleInfo"
@@ -64,7 +64,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:text="TRX Date &amp; Time"
                             android:id="@+id/lblTrxDateTime"
@@ -72,7 +72,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="16sp"
+                            android:textSize="16dp"
                             android:textColor="@color/tunaGrey"
                             android:text="DD-MM-YYYY 00:00"
                             android:id="@+id/txtTrxDateTime"
@@ -86,7 +86,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:text="TRX ID"
                             android:id="@+id/lblTrxID"
@@ -94,7 +94,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="16sp"
+                            android:textSize="16dp"
                             android:textColor="@color/tunaGrey"
                             android:text="T00000000"
                             android:id="@+id/txtTrxId"
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:textColor="@color/tunaGrey"
                         android:text="Total Paid (RM)"
                         android:id="@+id/lblTotalAmount"
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:textSize="24sp"
+                        android:textSize="24dp"
                         android:textColor="@color/tunaGrey"
                         android:text="000.00"
                         android:id="@+id/txtTotalAmount"

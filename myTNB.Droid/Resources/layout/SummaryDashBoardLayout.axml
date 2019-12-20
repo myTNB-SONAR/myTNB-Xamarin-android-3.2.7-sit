@@ -88,7 +88,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:text="downtime message"
@@ -116,10 +116,10 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="14dp"
                         android:gravity="center"
-                        android:lineSpacingExtra="4sp"
+                        android:lineSpacingExtra="4dp"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:maxLines="2"
                         android:text="@string/text_new_refresh_content"
                         android:textColor="@color/white"/>
@@ -191,7 +191,7 @@
                 android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:background="@drawable/white_button_background"
                 android:text="@string/add_another_account" />
         </LinearLayout>

@@ -23,7 +23,7 @@
             android:text="Supply Account Nickname"
             android:layout_centerVertical="true"
             android:textColor="@color/tunaGrey"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
         <ImageView
             android:id="@+id/imageLeaf"
             android:layout_width="20dp"

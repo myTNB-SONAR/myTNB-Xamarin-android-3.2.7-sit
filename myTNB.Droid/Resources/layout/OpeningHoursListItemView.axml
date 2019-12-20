@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_weight="0.5"
         android:gravity="left"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textColor="@color/tunaGrey"
         android:text="title" />
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="0.5"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:gravity="right|center_horizontal"
         android:textColor="@color/tunaGrey"
         android:text="description" />

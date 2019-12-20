@@ -24,7 +24,7 @@
             android:text=""
             android:textColor="@color/tunaGrey"
             android:textSize="16dp"
-            android:lineSpacingExtra="4sp"/>
+            android:lineSpacingExtra="4dp"/>
         <ImageView
             android:id="@+id/imageActionIcon"
             android:layout_width="24dp"

@@ -58,7 +58,7 @@
             android:maxLines="1"
             android:text="Supply Account Nickname"
             android:textColor="@color/tunaGrey"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
         <ImageView
             android:id="@+id/imageActionIcon"
             android:layout_width="24dp"

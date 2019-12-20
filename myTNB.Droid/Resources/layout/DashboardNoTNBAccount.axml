@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:gravity="center_vertical" />
                 <TextView
                     android:id="@+id/dashboard_chartview_no_account_content"
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:gravity="center" />
                 <Button
                     android:id="@+id/btnAddAccount"
