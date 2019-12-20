@@ -12,6 +12,7 @@ using myTNB.Home.More.FindUs;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.FindUs;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -488,26 +489,33 @@ namespace myTNB
         {
             return Task.Factory.StartNew(() =>
             {
-                string locType = "KT";
-                string latt = _locationManager?.Location.Coordinate.Latitude.ToString() ?? string.Empty;
-                string longt = _locationManager?.Location.Coordinate.Longitude.ToString() ?? string.Empty;
+                try
+                {
+                    string locType = "KT";
+                    string latt = _locationManager?.Location.Coordinate.Latitude.ToString() ?? string.Empty;
+                    string longt = _locationManager?.Location.Coordinate.Longitude.ToString() ?? string.Empty;
 
-                if (!isSearch)
-                {
-                    locType = DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle == "All"
-                        ? "KT" : DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle;
+                    if (!isSearch)
+                    {
+                        locType = DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle == "All"
+                            ? "KT" : DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle;
+                    }
+                    ServiceManager serviceManager = new ServiceManager();
+                    object requestParameter = new
+                    {
+                        serviceManager.usrInf,
+                        latitude = latt,//"3.1365952399077304",//
+                        longitude = longt,//"101.69228553771973",/
+                        locationType = locType,
+                        keyword = isSearch ? _searchLoc : string.Empty
+                    };
+                    _locations = serviceManager.OnExecuteAPIV6<GetLocationsResponseModel>(isSearch
+                        ? FindUsConstants.Service_GetLocationsByKeyword : FindUsConstants.Service_GetLocations, requestParameter);
                 }
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
+                catch (Exception e)
                 {
-                    serviceManager.usrInf,
-                    latitude = latt,//"3.1365952399077304",//
-                    longitude = longt,//"101.69228553771973",/
-                    locationType = locType,
-                    keyword = isSearch ? _searchLoc : string.Empty
-                };
-                _locations = serviceManager.OnExecuteAPIV6<GetLocationsResponseModel>(isSearch
-                    ? FindUsConstants.Service_GetLocationsByKeyword : FindUsConstants.Service_GetLocations, requestParameter);
+                    Debug.WriteLine("Error: " + e.Message);
+                }
             });
         }
     }

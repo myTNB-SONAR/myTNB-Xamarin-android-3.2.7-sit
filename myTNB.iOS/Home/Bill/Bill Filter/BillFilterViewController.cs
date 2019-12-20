@@ -90,7 +90,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
-                Text = FilterTypes != null && FilterTypes.Count > 0 && FilterIndex < FilterTypes.Count
+                Text = FilterTypes != null && FilterTypes.Count > 0 && FilterIndex > -1 && FilterIndex < FilterTypes.Count
                     ? FilterTypes[FilterIndex] : string.Empty
             };
             selectorView.AddSubview(_typeValueLabel);
@@ -133,7 +133,10 @@ namespace myTNB
                 if (ApplyFilter != null)
                 {
                     DismissViewController(true, null);
-                    ApplyFilter.Invoke(FilterIndex);
+                    if (FilterIndex > -1)
+                    {
+                        ApplyFilter.Invoke(FilterIndex);
+                    }
                 }
             };
             footerContainer.AddSubview(applyBtn);

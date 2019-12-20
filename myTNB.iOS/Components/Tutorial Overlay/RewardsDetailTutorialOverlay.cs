@@ -250,7 +250,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.Black60
             };
 
-            UIView verticalLine = new UIView(new CGRect(width - GetScaledWidth(49.5F), topView.Frame.GetMaxY() - GetScaledHeight(149F), GetScaledWidth(1F), GetScaledHeight(149F)))
+            UIView verticalLine = new UIView(new CGRect(width - GetScaledWidth(49.5F), topView.Frame.GetMaxY() - GetScaledHeight(169F), GetScaledWidth(1F), GetScaledHeight(169F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
