@@ -796,7 +796,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Response.DisplayMessage);
+                        //Note: Failed response will not be handled.
+                        //ShowErrorMessage(response.Response.DisplayMessage);
                     }
                     else
                     {

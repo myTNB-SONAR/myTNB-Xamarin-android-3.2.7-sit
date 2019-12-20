@@ -233,14 +233,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             .Title(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
                             .Content(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
                             .Cancelable(false)
-                            .PositiveText(Utility.GetLocalizedCommonLabel("abort"))
+                            .PositiveText(Utility.GetLocalizedCommonLabel("yes"))
                             .PositiveColor(Resource.Color.black)
                             .OnPositive((dialog, which) =>
                             {
                                 this.FragmentManager.PopBackStack();
                                 this.SetToolBarTitle("Select Payment Method");
                             })
-                            .NeutralText(Utility.GetLocalizedCommonLabel("cancel"))
+                            .NeutralText(Utility.GetLocalizedCommonLabel("no"))
                             .NeutralColor(Resource.Color.black)
                             .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
                     }
