@@ -21,13 +21,14 @@ using Newtonsoft.Json;
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     [Activity(Label = "Filter", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class SelectItemActivity : BaseToolbarAppCompatActivity
+    public class SelectItemActivity : BaseActivityCustom
     {
         [BindView(Resource.Id.item_liste_view)]
         ListView listItemView;
 
         SelectItemAdapter selectItemAdapter;
         List<Item> itemList;
+        private string PAGE_ID = "";
         public override int ResourceId()
         {
             return Resource.Layout.SelectItemLayout;
@@ -56,6 +57,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 }
             }
 
+            SetToolBarTitle(Utility.GetLocalizedLabel("BillFilter", "selectFilter"));
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
@@ -103,6 +105,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
