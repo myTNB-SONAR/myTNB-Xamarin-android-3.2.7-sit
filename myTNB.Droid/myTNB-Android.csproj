@@ -4234,6 +4234,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\FAQ\Model\FAQCacheModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4623,6 +4624,7 @@
     <Folder Include="Src\ManageCards\Api\" />
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\Rating\Api\" />
+    <Folder Include="Src\FAQ\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
