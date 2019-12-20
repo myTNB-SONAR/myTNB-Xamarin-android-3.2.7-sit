@@ -230,7 +230,7 @@
             android:orientation="vertical"
             android:background="@color/white">
             <ImageView
-                android:layout_height="3dp"
+                android:layout_height="5dp"
                 android:layout_width="match_parent"
                 android:scaleType="fitXY"
                 android:background="@drawable/RewardDetailShadowBG"/>
