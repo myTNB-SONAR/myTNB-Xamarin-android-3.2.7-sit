@@ -779,7 +779,7 @@
     "salutation": "Dear Customer,",
     "trnDate": "TRANSACTION DATE",
     "trnID": "TRANSACTION ID",
-    "trnMethod": "RANSACTION METHOD"
+    "trnMethod": "TRANSACTION METHOD"
   },
   "FeedbackList": {
     "title": "Feedback"
