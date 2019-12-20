@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
+using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -304,6 +305,54 @@ namespace myTNB_Android.Src.Base
                         {
                             NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
                         }
+                    }
+
+                    FeedbackCategoryEntity.RemoveActive();
+                    if (masterDataResponse.GetData().FeedbackCategorysV2 != null && masterDataResponse.GetData().FeedbackCategorysV2.Count > 0)
+                    {
+                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorysV2)
+                        {
+                            int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
+                        }
+                    }
+                    else
+                    {
+                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorys)
+                        {
+                            int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
+                        }
+                    }
+
+                    int ctr = 0;
+                    FeedbackStateEntity.RemoveActive();
+                    foreach (FeedbackState state in masterDataResponse.GetData().States)
+                    {
+                        bool isSelected = ctr == 0 ? true : false;
+                        int newRecord = FeedbackStateEntity.InsertOrReplace(state, isSelected);
+                        ctr++;
+                    }
+
+
+                    FeedbackTypeEntity.RemoveActive();
+                    ctr = 0;
+                    foreach (FeedbackType type in masterDataResponse.GetData().FeedbackTypes)
+                    {
+                        bool isSelected = ctr == 0 ? true : false;
+                        int newRecord = FeedbackTypeEntity.InsertOrReplace(type, isSelected);
+                        Console.WriteLine(string.Format("FeedbackType Id = {0}", newRecord));
+                        ctr++;
+                    }
+
+                    LocationTypesEntity.InsertFristRecord();
+                    foreach (LocationType loc in masterDataResponse.GetData().LocationTypes)
+                    {
+                        int newRecord = LocationTypesEntity.InsertOrReplace(loc);
+                    }
+
+                    DownTimeEntity.RemoveActive();
+                    foreach (DownTime cat in masterDataResponse.GetData().Downtimes)
+                    {
+                        int newRecord = DownTimeEntity.InsertOrReplace(cat);
                     }
                 }
             }

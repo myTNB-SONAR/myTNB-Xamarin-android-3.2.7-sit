@@ -79,6 +79,7 @@
                 public struct Timestamp
                 {
                     public const string TimestampField = "Timestamp";
+                    public const string ShowNeedHelpField = "Show Need Help";
                 }
 
 

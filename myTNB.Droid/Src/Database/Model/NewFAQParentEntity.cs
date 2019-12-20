@@ -16,6 +16,9 @@ namespace myTNB_Android.Src.Database.Model
 		[Column("Timestamp")]
         public string Timestamp { set; get; }
 
+        [Column("ShowNeedHelp")]
+        public bool ShowNeedHelp { set; get; }
+
         public void CreateTable()
         {
             try
@@ -52,6 +55,7 @@ namespace myTNB_Android.Src.Database.Model
                     NewFAQParentEntity item = new NewFAQParentEntity();
                     item.ID = obj.ID;
                     item.Timestamp = obj.Timestamp;
+                    item.ShowNeedHelp = obj.ShowNeedHelp;
                     InsertItem(item);
                 }
             }

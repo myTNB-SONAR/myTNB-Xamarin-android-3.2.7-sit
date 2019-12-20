@@ -164,6 +164,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
             var actionBar = act.SupportActionBar;
             actionBar.Show();
+
+            try
+            {
+                if (SMRPopUpUtils.GetSSMRMeterReadingRefreshNeeded())
+                {
+                    SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(false);
+                    ((DashboardHomeActivity)this.Activity).OnResetSSMRMeterReadingTutorial();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

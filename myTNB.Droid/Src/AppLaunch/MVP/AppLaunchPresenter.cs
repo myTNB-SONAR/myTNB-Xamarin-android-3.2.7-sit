@@ -221,6 +221,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
 
+                                        if (!UserSessions.HasCleanSSMRMeterReadingCache(this.mSharedPref))
+                                        {
+                                            UserSessions.DoCleanSSMRMeterReadingCache(this.mSharedPref);
+                                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                        }
+
                                         //If has Notification
                                         bool hasNotification = UserSessions.HasNotification(mSharedPref);
                                         //If Notification Type is equals to ODN (On-Demand Notification)

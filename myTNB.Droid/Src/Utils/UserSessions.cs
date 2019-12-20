@@ -163,6 +163,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetBoolean("hasWhatNewShown", false);
         }
 
+        public static void DoCleanSSMRMeterReadingCache(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasCleanSSMRMeterReadingCache", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasCleanSSMRMeterReadingCache(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasCleanSSMRMeterReadingCache", false);
+        }
+
         public static void DoWhatNewShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

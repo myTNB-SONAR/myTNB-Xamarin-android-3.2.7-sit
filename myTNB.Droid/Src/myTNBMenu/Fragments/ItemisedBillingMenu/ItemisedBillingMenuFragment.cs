@@ -262,6 +262,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     this.SetIsClicked(true);
                     Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
+                    string filterDescription = "NONRE";
+                    bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
+                    if (isREAccount)
+                    {
+                        filterDescription = "RE";
+                    }
+                    newIntent.PutExtra("FILTER_DESCRIPTION", filterDescription);
                     newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
                     StartActivityForResult(newIntent, 12345);
                 }
@@ -325,7 +332,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
-
+            billFilterIcon.Enabled = false;
             SetHasOptionsMenu(true);
             itemisedBillingScrollView.SetOnScrollChangeListener(new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container));
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
@@ -506,6 +513,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             else
             {
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
+                bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
+                if (isREAccount)
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistoryRE");
+                }
+                else
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistory");
+                }
+                if (historyType.ToUpper() == Constants.ITEMIZED_BILLING_PAYMENT_KEY)
+                {
+                    if (isREAccount)
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyPaymentHistoryRE");
+                    }
+                    else
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyPaymentHistory");
+                    }
+                }
+                else if (historyType.ToUpper() == Constants.ITEMIZED_BILLING_BILL_KEY)
+                {
+                    if (isREAccount)
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistoryRE");
+                    }
+                    else
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistory");
+                    }
+                }
+                else if (historyType.ToUpper() == Constants.ITEMIZED_BILLING_ADVICE_KEY)
+                {
+                    if (isREAccount)
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistoryRE");
+                    }
+                    else
+                    {
+                        emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyBillHistory");
+                    }
+                }
+
                 itemisedBillingList.Visibility = ViewStates.Gone;
             }
         }
@@ -586,12 +636,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
+                billFilterIcon.Visibility = ViewStates.Visible;
                 billFilterIcon.Enabled = true;
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
             }
             else
             {
+                billFilterIcon.Visibility = ViewStates.Gone;
+                billFilterIcon.Enabled = true;
+                bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
+                if (isREAccount)
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistoryRE");
+                }
+                else
+                {
+                    emptyBillingHistoryMessage.Text = GetLabelByLanguage("emptyHistory");
+                }
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
                 itemisedBillingList.Visibility = ViewStates.Gone;
             }

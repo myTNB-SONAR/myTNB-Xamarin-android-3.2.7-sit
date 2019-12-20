@@ -94,7 +94,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                             {
                                 titlekWhMarker.Visibility = ViewStates.Gone;
                                 float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
-                                titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(val);
+                                titleMarker.Text = ((val < 0.00f) ? "- " : "") + UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(Math.Abs(val));
                             }
 
                         }

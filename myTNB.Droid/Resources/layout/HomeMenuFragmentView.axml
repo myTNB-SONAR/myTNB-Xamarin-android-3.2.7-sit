@@ -464,6 +464,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scrollIndicators="none" />
+                        <LinearLayout
+                            android:id="@+id/indicatorContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal" />
                     </LinearLayout>
                 </LinearLayout>
                 </LinearLayout>
