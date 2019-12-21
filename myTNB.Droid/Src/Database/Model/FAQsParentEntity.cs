@@ -72,8 +72,10 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = DBHelper.GetSQLiteConnection();
-                db.DeleteAll<FAQsParentEntity>();
+                using (var db = new SQLiteConnection(Constants.DB_PATH))
+                {
+                    db.DeleteAll<FAQsParentEntity>();
+                }
             }
             catch (Exception e)
             {
