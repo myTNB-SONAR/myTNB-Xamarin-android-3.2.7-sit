@@ -19,8 +19,10 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            return (int)db.CreateTable<NotificationFilterEntity>();
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            {
+                return (int)db.CreateTable<NotificationFilterEntity>();
+            }
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -30,38 +32,44 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(string Id, string Title, bool isSelected)
         {
-            var db = DBHelper.GetSQLiteConnection();
-            var newRecord = new NotificationFilterEntity()
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
             {
-                Id = Id,
-                Title = Title,
-                IsSelected = isSelected
-            };
+                var newRecord = new NotificationFilterEntity()
+                {
+                    Id = Id,
+                    Title = Title,
+                    IsSelected = isSelected
+                };
 
-            int newRecordRow = db.InsertOrReplace(newRecord);
+                int newRecordRow = db.InsertOrReplace(newRecord);
 
-            return newRecordRow;
+                return newRecordRow;
+            }
         }
 
         public static NotificationFilterEntity GetActive()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            //return db.Query<NotificationFilterEntity>("SELECT * FROM NotificationFilterEntity WHERE IsSelected = ?", true)[0];
-            List<NotificationFilterEntity> notificationList = new List<NotificationFilterEntity>();
-            notificationList = db.Query<NotificationFilterEntity>("SELECT * FROM NotificationFilterEntity WHERE IsSelected = ?", true).ToList();
-            if (notificationList != null && notificationList.Count() > 0)
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
             {
-                return notificationList[0];
-            }                
-            return null;
+                //return db.Query<NotificationFilterEntity>("SELECT * FROM NotificationFilterEntity WHERE IsSelected = ?", true)[0];
+                List<NotificationFilterEntity> notificationList = new List<NotificationFilterEntity>();
+                notificationList = db.Query<NotificationFilterEntity>("SELECT * FROM NotificationFilterEntity WHERE IsSelected = ?", true).ToList();
+                if (notificationList != null && notificationList.Count() > 0)
+                {
+                    return notificationList[0];
+                }
+                return null;
+            }
         }
 
         public static void RemoveAll()
         {
             try
             {
-                var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM NotificationFilterEntity");
+                using (var db = new SQLiteConnection(Constants.DB_PATH))
+                {
+                    db.Execute("DELETE FROM NotificationFilterEntity");
+                }
             }
             catch (System.Exception ne)
             {
@@ -71,20 +79,26 @@ namespace myTNB_Android.Src.Database.Model
 
         public static List<NotificationFilterEntity> List()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Query<NotificationFilterEntity>("SELECT * FROM NotificationFilterEntity").ToList();
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            {
+                return db.Query<NotificationFilterEntity>("SELECT * FROM NotificationFilterEntity").ToList();
+            }
         }
 
         public static void UnSelectAll()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("UPDATE NotificationFilterEntity SET IsSelected = ?", false);
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            {
+                db.Execute("UPDATE NotificationFilterEntity SET IsSelected = ?", false);
+            }
         }
 
         public static int SelectItem(string id)
         {
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("UPDATE NotificationFilterEntity SET IsSelected = ? WHERE Id = ?", true, id);
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            {
+                return db.Execute("UPDATE NotificationFilterEntity SET IsSelected = ? WHERE Id = ?", true, id);
+            }
         }
     }
 }
