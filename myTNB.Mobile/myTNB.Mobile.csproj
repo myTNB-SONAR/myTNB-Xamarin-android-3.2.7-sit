@@ -38,39 +38,6 @@
     <Folder Include="Resources\Language\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Resources\Notification\NotificationInfo_1001 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001 %28another copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001 %283rd copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001 %284th copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099 %28another copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099 %283rd copy%29.json" />
-    <None Remove="Resources\Language\Language_EN.json" />
-    <None Remove="Resources\Language\Language_MS.json" />
-    <None Remove="Resources\TnC\TermsAndConditions_EN.txt" />
-    <None Remove="Resources\TnC\TermsAndConditions_MS.txt" />
-    <None Remove="Resources\FAQ\FAQ_EN.json" />
-    <None Remove="Resources\FAQ\FAQ_MS.json" />
-    <None Remove="Resources\Notification\GetUserNotifications.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10009.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10010.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10011.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1002.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1003.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1004.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1005.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10009 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10050 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10051 %28copy%29.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10050.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10051.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10052.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10053.json" />
-    <None Remove="Resources\Usage\AccountUsageSmart.json" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1004.json" />
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1003.json" />
@@ -87,8 +54,6 @@
     <EmbeddedResource Include="Resources\FAQ\FAQ_MS.json" />
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_EN.txt" />
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
-    <EmbeddedResource Include="Resources\FAQ\FAQ_EN.json" />
-    <EmbeddedResource Include="Resources\FAQ\FAQ_MS.json" />
     <EmbeddedResource Include="Resources\Notification\GetUserNotifications.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10009.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1001.json" />
