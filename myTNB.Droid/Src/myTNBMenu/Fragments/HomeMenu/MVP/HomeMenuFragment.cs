@@ -696,56 +696,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    if (list != null && list.Count > 0)
+                    try
                     {
-                        newFAQAdapter = new NewFAQAdapter(list, this.Activity);
-                        newFAQListRecycleView.SetAdapter(newFAQAdapter);
-                        currentNewFAQList.Clear();
-                        currentNewFAQList.AddRange(list);
-                        if (list != null && list.Count > 3)
+                        if (list != null && list.Count > 0)
                         {
-                            indicatorContainer.Visibility = ViewStates.Visible;
-                            newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
-                            int count = 0;
-                            for (int i = 0; i < list.Count; i += 3)
+                            newFAQAdapter = new NewFAQAdapter(list, this.Activity);
+                            newFAQListRecycleView.SetAdapter(newFAQAdapter);
+                            currentNewFAQList.Clear();
+                            currentNewFAQList.AddRange(list);
+                            if (list != null && list.Count > 3)
                             {
-                                ImageView image = new ImageView(this.Activity);
-                                image.Id = i;
-                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                                layoutParams.RightMargin = 9;
-                                layoutParams.LeftMargin = 9;
-                                image.LayoutParameters = layoutParams;
-                                if (i == 0)
+                                indicatorContainer.Visibility = ViewStates.Visible;
+                                newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                                int count = 0;
+                                for (int i = 0; i < list.Count; i += 3)
                                 {
-                                    image.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                                    ImageView image = new ImageView(this.Activity);
+                                    image.Id = i;
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                                    layoutParams.RightMargin = 9;
+                                    layoutParams.LeftMargin = 9;
+                                    image.LayoutParameters = layoutParams;
+                                    if (i == 0)
+                                    {
+                                        image.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                                    }
+                                    else
+                                    {
+                                        image.SetImageResource(Resource.Drawable.faq_indication_inactive);
+                                    }
+                                    indicatorContainer.AddView(image, count);
+                                    count++;
                                 }
-                                else
-                                {
-                                    image.SetImageResource(Resource.Drawable.faq_indication_inactive);
-                                }
-                                indicatorContainer.AddView(image, count);
-                                count++;
                             }
-                        }
-                        else
-                        {
-                            newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
-                            indicatorContainer.Visibility = ViewStates.Gone;
-                        }
+                            else
+                            {
+                                newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                                indicatorContainer.Visibility = ViewStates.Gone;
+                            }
 
-                        newFAQAdapter.ClickChanged += OnFAQClickChanged;
-                        try
-                        {
-                            shimmerFAQView.StopShimmer();
-                            newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
-                            newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                            newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                            try
+                            {
+                                shimmerFAQView.StopShimmer();
+                                newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
+                                newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            newFAQShimmerView.Visibility = ViewStates.Gone;
+                            newFAQView.Visibility = ViewStates.Visible;
                         }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                        newFAQShimmerView.Visibility = ViewStates.Gone;
-                        newFAQView.Visibility = ViewStates.Visible;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        // TODO: To Hide the FAQ
+                        // HideNewFAQ();
+                        Utility.LoggingNonFatalError(ex);
                     }
                 });
             }

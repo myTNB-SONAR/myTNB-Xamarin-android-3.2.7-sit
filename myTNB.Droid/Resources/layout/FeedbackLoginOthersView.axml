@@ -114,7 +114,7 @@
                         android:layout_gravity="bottom"
                         android:visibility="gone"
                         android:text="@string/feedback_others_feedback_max_feedback_characters"
-                        android:textSize="9sp" />
+                        android:textSize="9dp" />
                 </FrameLayout>
                 <TextView
                     android:id="@+id/txtRelatedScreenshotTitle"
@@ -123,7 +123,7 @@
                     android:layout_weight="1"
                     android:text="@string/feedback_others_screenshot_title"
                     android:textAllCaps="true"
-                    android:textSize="9sp" />
+                    android:textSize="9dp" />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/feedback_others_feedback_max_image_hint"
-                    android:textSize="9sp" />
+                    android:textSize="9dp" />
             </LinearLayout>
         </ScrollView>
         <LinearLayout

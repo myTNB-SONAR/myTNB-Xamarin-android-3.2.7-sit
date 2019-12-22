@@ -282,6 +282,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             OnSetupSSMRMeterReadingTutorial();
         }
 
+        public void OnResetPromotionRewards()
+        {
+            this.mPresenter.OnResetRewardPromotionThread();
+        }
+
         private void OnSetupSSMRMeterReadingTutorial()
         {
             savedSSMRMeterReadingTimeStamp = "0000000";

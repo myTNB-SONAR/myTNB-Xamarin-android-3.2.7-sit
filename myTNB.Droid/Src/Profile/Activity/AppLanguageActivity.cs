@@ -147,13 +147,7 @@ namespace myTNB_Android.Src.Profile.Activity
             Utility.ShowChangeLanguageDialog(this, currentLanguage, ()=>
             {
                 ShowProgressDialog();
-                LanguageUtil.SaveAppLanguage(selectedItem.type);
-                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
-                MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                HomeMenuUtils.ResetAll();
-                SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
-                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                UpdateLanguage();
+                _ = RunUpdateLanguage(selectedItem);
             });
         }
 
@@ -213,15 +207,9 @@ namespace myTNB_Android.Src.Profile.Activity
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + savedLanguage))
                         .SetSecondaryCTAaction(() =>
                         {
+                            ShowProgressDialog();
                             Item selectedItem = languageItemList.Find(item => { return item.selected; });
-                            LanguageUtil.SaveAppLanguage(selectedItem.type);
-                            MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
-                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                            HomeMenuUtils.ResetAll();
-                            SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
-                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                            UpdateLanguage();
-                            OnBackProceed();
+                            _ = RunUpdateLanguage(selectedItem);
                         }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
@@ -237,6 +225,25 @@ namespace myTNB_Android.Src.Profile.Activity
             base.OnBackPressed();
         }
 
+        private Task RunUpdateLanguage(Item selectedItem)
+        {
+            return Task.Run(() =>
+            {
+                LanguageUtil.SaveAppLanguage(selectedItem.type);
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                RunOnUiThread(() =>
+                {
+                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                    UpdateLanguage();
+                    OnBackProceed();
+                });
+            });
+        }
+
         public void ShowProgressDialog()
         {
             try
@@ -245,6 +252,7 @@ namespace myTNB_Android.Src.Profile.Activity
                 {
                     loadingOverlay.Dismiss();
                 }
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
                 loadingOverlay.Show();
             }
             catch (Exception e)

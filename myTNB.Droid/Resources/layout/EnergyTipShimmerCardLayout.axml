@@ -29,8 +29,8 @@
             android:textColor="@color/shimmer_color"
             android:background="@color/shimmer_color"
             android:gravity="center"
-            android:textSize="14sp"
-            android:lineSpacingExtra="2sp"/>
+            android:textSize="14dp"
+            android:lineSpacingExtra="2dp"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
       <LinearLayout 
           android:orientation="horizontal"
@@ -70,8 +70,8 @@
                     android:textColor="@color/shimmer_color"
                     android:background="@color/shimmer_color"
                     android:gravity="center"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="2sp"/>
+                    android:textSize="14dp"
+                    android:lineSpacingExtra="2dp"/>
             </com.facebook.shimmer.ShimmerFrameLayout>
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmerTipsTxtView2"
@@ -85,8 +85,8 @@
                     android:textColor="@color/shimmer_color"
                     android:background="@color/shimmer_color"
                     android:gravity="center"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="2sp"/>
+                    android:textSize="14dp"
+                    android:lineSpacingExtra="2dp"/>
             </com.facebook.shimmer.ShimmerFrameLayout>
         </LinearLayout>
       </LinearLayout>

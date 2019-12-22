@@ -1643,7 +1643,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayout.RequestLayout();
 
                         LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
+                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(44f);
                         innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(24f);
                         innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
@@ -1781,35 +1781,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             }
             else if (this.mContext is SubmitMeterReadingActivity)
             {
-                int topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation();
-                if (((SubmitMeterReadingActivity)this.mContext).GetTopLocation() <= 0)
-                {
-                    if (model.ContentShowPosition == ContentType.TopLeft)
-                    {
-                        topHeight = (int)DPUtils.ConvertDPToPx(215f);
-                    }
-                    else
-                    {
-                        int lineCount = ((SubmitMeterReadingActivity)this.mContext).CheckManualTextViewHeight();
-                        topHeight = (int)DPUtils.ConvertDPToPx(135f);
-                        if (lineCount == 1)
-                        {
-                            topHeight = (int)DPUtils.ConvertDPToPx(115f);
-                        }
-                    }
-                }
-                else
-                {
-                    int lineCount = ((SubmitMeterReadingActivity)this.mContext).CheckManualTextViewHeight();
-                    if (lineCount == 1)
-                    {
-                        topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation() - (int)DPUtils.ConvertDPToPx(35f);
-                    }
-                    else
-                    {
-                        topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation() - (int)DPUtils.ConvertDPToPx(18f);
-                    }
-                }
+                int topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation() - (int)GetStatusBarHeight() + (int)DPUtils.ConvertDPToPx(6f);
 
                 int middleHeight = (int)DPUtils.ConvertDPToPx(150f);
 

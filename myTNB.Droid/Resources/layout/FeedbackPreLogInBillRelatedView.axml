@@ -148,7 +148,7 @@
                         android:layout_weight="1"
                         android:visibility="gone"
                         android:text="@string/bill_related_feedback_max_feedback_characters"
-                        android:textSize="9sp" />
+                        android:textSize="9dp" />
                 </FrameLayout>
                 <TextView
                     android:id="@+id/txtRelatedScreenshotTitle"
@@ -160,7 +160,7 @@
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
                     android:layout_marginBottom="8dp"
-                    android:textSize="9sp" />
+                    android:textSize="9dp" />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
@@ -176,7 +176,7 @@
                     android:layout_marginRight="3dp"
                     android:layout_weight="1"
                     android:text="@string/bill_related_feedback_max_image_hint"
-                    android:textSize="9sp" />
+                    android:textSize="9dp" />
             </LinearLayout>
         </ScrollView>
         <LinearLayout

@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -48,7 +48,7 @@
                 android:singleLine="true"
                 android:layout_height="match_parent"
                 android:id="@+id/text_account_address"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -72,7 +72,7 @@
                     android:singleLine="true"
                     android:layout_height="match_parent"
                     android:id="@+id/mandatory_payment_title"
-                    android:textSize="10sp"
+                    android:textSize="10dp"
                     android:textColor="@color/silverChalice"
                     android:text="Other Charges (RM)" />
                 <TextView
@@ -81,7 +81,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="1dp"
                     android:id="@+id/mandatory_payment_content"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/tunaGrey"
                     android:text="0.00" />
             </LinearLayout>

@@ -289,6 +289,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
             Task OnGetSSMRMeterReadingThreePhaseScreens();
+
+            void OnResetRewardPromotionThread();
         }
 	}
 }

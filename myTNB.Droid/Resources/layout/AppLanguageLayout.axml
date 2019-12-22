@@ -22,7 +22,7 @@
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@color/lightGrey"
             android:paddingTop="8dp">
             <Button
                 android:id="@+id/btnSaveChanges"

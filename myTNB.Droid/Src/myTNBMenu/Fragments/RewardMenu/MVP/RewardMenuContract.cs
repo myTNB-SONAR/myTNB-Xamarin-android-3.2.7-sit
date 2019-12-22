@@ -21,6 +21,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             bool CheckTabVisibility();
 
             void SetRefreshView(string buttonText, string messageText);
+
+            void OnGetRewardTimestamp();
         }
 
 		public interface IRewardMenuPresenter
@@ -40,6 +42,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             Task OnGetUserRewardList();
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
+
+            Task OnRecheckRewardsStatus();
         }
 	}
 }

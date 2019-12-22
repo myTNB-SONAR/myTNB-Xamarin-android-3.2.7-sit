@@ -42,7 +42,7 @@
             android:textColor="@color/shimmer_color"
             android:background="@color/shimmer_color"
             android:textSize="12dp"
-            android:lineSpacingExtra="2sp"/>
+            android:lineSpacingExtra="2dp"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmertTxtMessage1"
@@ -58,7 +58,7 @@
             android:textColor="@color/shimmer_color"
             android:background="@color/shimmer_color"
             android:textSize="6dp"
-            android:lineSpacingExtra="2sp" />
+            android:lineSpacingExtra="2dp" />
     </com.facebook.shimmer.ShimmerFrameLayout>
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmertTxtMessage2"
@@ -74,7 +74,7 @@
             android:textColor="@color/shimmer_color"
             android:background="@color/shimmer_color"
             android:textSize="6dp"
-            android:lineSpacingExtra="2sp"/>
+            android:lineSpacingExtra="2dp"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmertTxtMessage3"
@@ -90,7 +90,7 @@
             android:textColor="@color/shimmer_color"
             android:background="@color/shimmer_color"
             android:textSize="6dp"
-            android:lineSpacingExtra="2sp" />
+            android:lineSpacingExtra="2dp" />
     </com.facebook.shimmer.ShimmerFrameLayout>
   </LinearLayout>
 </android.support.v7.widget.CardView>

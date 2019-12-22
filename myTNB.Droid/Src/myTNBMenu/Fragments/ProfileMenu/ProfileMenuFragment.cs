@@ -26,6 +26,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.Profile.Activity;
+using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.UpdatePassword.Activity;
 using myTNB_Android.Src.Utils;
@@ -171,6 +172,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(false);
                     ((DashboardHomeActivity)this.Activity).OnResetSSMRMeterReadingTutorial();
+                    ((DashboardHomeActivity)this.Activity).OnResetPromotionRewards();
                 }
             }
             catch (System.Exception e)
@@ -339,6 +341,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             faq.SetItemActionCall(ShowFAQ);
             helpSupportItems.Add(faq);
 
+            ProfileMenuItemSingleContentComponent TnC = new ProfileMenuItemSingleContentComponent(Context);
+            TnC.SetTitle(GetLabelByLanguage("tnc"));
+            TnC.SetItemActionCall(ShowTnC);
+            helpSupportItems.Add(TnC);
+
             helpSupportItem.AddComponentView(helpSupportItems);
             return helpSupportItem;
         }
@@ -469,9 +476,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (WeblinkEntity.HasRecord("TNBCLO"))
+                if (WeblinkEntity.HasRecord("TNBCLE"))
                 {
-                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
+                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
                     if (entity.OpenWith.Equals("PHONE"))
                     {
                         var uri = Android.Net.Uri.Parse("tel:" + entity.Url);
@@ -487,9 +494,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (WeblinkEntity.HasRecord("TNBCLE"))
+                if (WeblinkEntity.HasRecord("TNBCLO"))
                 {
-                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
+                    WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
                     if (entity.OpenWith.Equals("PHONE"))
                     {
                         var uri = Android.Net.Uri.Parse("tel:" + entity.Url);
@@ -506,6 +513,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 this.SetIsClicked(true);
                 StartActivity(new Intent(this.Activity, typeof(FAQListActivity)));
+            }
+        }
+
+        private void ShowTnC()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                StartActivity(new Intent(this.Activity, typeof(TermsAndConditionActivity)));
             }
         }
 

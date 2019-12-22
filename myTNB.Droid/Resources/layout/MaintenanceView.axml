@@ -26,8 +26,8 @@
             android:layout_marginBottom="22dp"
             android:layout_marginTop="34dp"
             android:gravity="center"
-            android:lineSpacingExtra="10sp"
-            android:textSize="24sp"
+            android:lineSpacingExtra="10dp"
+            android:textSize="24dp"
             android:textColor="@color/sunGlow"/>
         <TextView
             android:id="@+id/maintenance_content"
@@ -37,8 +37,8 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:gravity="center"
-            android:lineSpacingExtra="4sp"
-            android:textSize="16sp"
+            android:lineSpacingExtra="4dp"
+            android:textSize="16dp"
             android:textColor="@color/white"
             />
     </LinearLayout>

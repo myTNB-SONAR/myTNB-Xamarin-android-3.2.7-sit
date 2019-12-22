@@ -105,8 +105,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 }
                 rewardViewPager.OverScrollMode = OverScrollMode.Never;
 
-                this.presenter.GetRewardsTimeStamp();
-
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward, txtRefresh);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
@@ -116,6 +114,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 rewardEmptyLayout.Visibility = ViewStates.Gone;
 
                 rewardRefreshLayout.Visibility = ViewStates.Gone;
+
+                OnGetRewardTimestamp();
             }
             catch (System.Exception e)
             {
@@ -135,6 +135,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             try
             {
                 RewardsMenuUtils.OnResetUpdateList();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnGetRewardTimestamp()
+        {
+            try
+            {
+                if (RewardsMenuUtils.GetRewardLoading())
+                {
+                    _ = this.presenter.OnRecheckRewardsStatus();
+                }
+                else
+                {
+                    this.presenter.GetRewardsTimeStamp();
+                }
             }
             catch (System.Exception e)
             {

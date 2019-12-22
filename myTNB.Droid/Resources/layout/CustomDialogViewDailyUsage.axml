@@ -17,9 +17,9 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center"
           android:gravity="center"
-          android:textSize="14sp"
+          android:textSize="14dp"
           android:textColor="@color/white"
-          android:lineSpacingExtra="6sp"
+          android:lineSpacingExtra="6dp"
           android:text="How do I view my daily usage?"/>
         <FrameLayout  
             android:layout_height="76dp"
@@ -39,11 +39,11 @@
           android:id="@+id/day_zoomout_pinch_txtMsg"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textSize="14sp"
+          android:textSize="14dp"
           android:layout_marginLeft="34dp"
           android:layout_marginRight="34dp"
           android:textColor="@color/white"
-          android:lineSpacingExtra="6sp"
+          android:lineSpacingExtra="6dp"
           android:gravity="center_horizontal"
           android:text="Pinch to zoom in or out! Zoom in to view your daily breakdown."/>
         <Button

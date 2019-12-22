@@ -165,7 +165,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:id="@+id/txtTermsConditions"
                     android:textColorLink="@color/powerBlue"
                     android:gravity="bottom" />

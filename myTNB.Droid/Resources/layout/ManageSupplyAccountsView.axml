@@ -24,13 +24,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="2222222222"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
             <TextView
                 android:id="@+id/txtAccountAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="No. 3 Lot Meulrur 12 Taman Melir, 68000 Ampang, Selangor"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
         </LinearLayout>
         <View
             android:id="@+id/view2"
@@ -55,7 +55,7 @@
                     android:text="@string/manage_supply_update_account_nickname"
                     android:textColor="@color/powerBlue"
                     android:layout_alignParentRight="true"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutNickName"
                     android:layout_width="match_parent"

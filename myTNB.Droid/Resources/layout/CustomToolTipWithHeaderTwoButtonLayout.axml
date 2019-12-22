@@ -65,7 +65,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/itemized_bill_got_it"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
         <View
             android:id="@id/divider"
             android:layout_width="1dp"
@@ -84,7 +84,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/itemized_bill_bring_me_there"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
     </LinearLayout>
   </LinearLayout>

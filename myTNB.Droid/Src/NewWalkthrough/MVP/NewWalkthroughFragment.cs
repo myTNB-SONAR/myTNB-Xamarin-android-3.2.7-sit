@@ -206,6 +206,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("EN");
+                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
                     MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                     ((NewWalkthroughActivity)Activity).UpdateContent();
@@ -229,6 +230,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     LanguageUtil.SaveAppLanguage("MS");
+                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
                     MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                     ((NewWalkthroughActivity)Activity).UpdateContent();

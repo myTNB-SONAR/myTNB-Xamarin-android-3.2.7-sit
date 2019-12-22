@@ -6,13 +6,16 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB.SitecoreCMS.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.FAQ.Adapter;
+using myTNB_Android.Src.FAQ.Model;
 using myTNB_Android.Src.FAQ.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -113,13 +116,61 @@ namespace myTNB_Android.Src.FAQ.Activity
                             mFAQRecyclerView.GetLayoutManager().ScrollToPosition(index);
                         }
                     }
+                    else
+                    {
+                        ReadFallBackFAQ();
+                    }
 
                 }
                 else
                 {
-
+                    ReadFallBackFAQ();
                 }
             });
+        }
+
+        private void ReadFallBackFAQ()
+        {
+            try
+            {
+                string FaQ = "";
+
+                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                {
+                    FaQ = FAQManager.Instance.GetFAQ(FAQManager.Language.MS);
+                }
+                else
+                {
+                    FaQ = FAQManager.Instance.GetFAQ();
+                }
+
+
+                FAQCacheModel FAQs = JsonConvert.DeserializeObject<FAQCacheModel>(FaQ);
+
+                if (FAQs != null && FAQs.Data != null && FAQs.Data.Count > 0)
+                {
+                    List<FAQsEntity> items = new List<FAQsEntity>();
+
+                    foreach(FAQCacheList item in FAQs.Data)
+                    {
+                        items.Add(new FAQsEntity()
+                        {
+                            Question = item.Title,
+                            Answer = item.Details
+                        });
+                    }
+
+                    faqs.AddRange(items);
+
+                    adapter = new FAQListAdapter(this, faqs);
+                    mFAQRecyclerView.SetAdapter(adapter);
+                    adapter.NotifyDataSetChanged();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnResume()

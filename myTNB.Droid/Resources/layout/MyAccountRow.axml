@@ -21,7 +21,7 @@
             android:text="Account Name"
             android:maxWidth="200dp"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:ellipsize="end" />
         <ImageView
             android:id="@+id/imageLeaf"
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Account Number"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtAccountManage"
             android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_alignParentTop="true"
             android:text="Manage"
             android:textColor="@color/powerBlue"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
     </RelativeLayout>
     <TextView
         android:id="@+id/txtAccountUsers"
