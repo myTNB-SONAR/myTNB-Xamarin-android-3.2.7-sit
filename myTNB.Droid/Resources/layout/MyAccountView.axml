@@ -11,9 +11,10 @@
         layout="@layout/toolbar" />
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true"
         android:overScrollMode="never"
+        android:background="@color/white"
         android:layout_marginTop="?attr/actionBarSize">
         <LinearLayout
             android:id="@+id/rootView"

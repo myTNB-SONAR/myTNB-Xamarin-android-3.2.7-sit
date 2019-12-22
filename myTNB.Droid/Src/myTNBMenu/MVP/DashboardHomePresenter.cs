@@ -479,6 +479,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
+        public void OnResetRewardPromotionThread()
+        {
+            try
+            {
+                new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                RewardsMenuUtils.OnSetRewardLoading(true);
+                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 		public void Start()
 		{
 

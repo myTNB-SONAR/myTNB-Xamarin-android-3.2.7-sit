@@ -44,10 +44,10 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="24dp"
                         android:gravity="center"
-                        android:lineSpacingExtra="4sp"
+                        android:lineSpacingExtra="4dp"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:text="@string/text_new_refresh_content"
                         android:textColor="@color/silverChalice"/>
                     <Button
@@ -103,7 +103,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Rental house"
                                     android:textColor="@color/tunaGrey"
-                                    android:textSize="14sp"
+                                    android:textSize="14dp"
                                     android:ellipsize="end"
                                     android:maxEms="20"
                                     android:maxLines="1" />
@@ -113,7 +113,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="220229082203"
                                     android:textColor="@color/tunaGrey"
-                                    android:textSize="12sp" />
+                                    android:textSize="12dp" />
                             </LinearLayout>
                         </RelativeLayout>
                         <TextView
@@ -121,7 +121,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:layout_marginTop="10dp"
                             android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor" />
                     </LinearLayout>
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:text="Bill Details"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
@@ -145,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:text="Current Bill"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
@@ -187,7 +187,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp"
+							android:textSize="14dp"
 							android:text="Other Charges"
 							android:layout_alignParentLeft="true" />
 						<TextView
@@ -197,14 +197,14 @@
 							android:layout_alignBaseline="@+id/txtMandatoryPaymentsTitle"
 							android:layout_toLeftOf="@+id/txtMandatoryPaymentsContent"
 							android:text="RM "
-							android:textSize="14sp"
+							android:textSize="14dp"
 							android:textColor="@color/tunaGrey" />
 						<TextView
 							android:id="@+id/txtMandatoryPaymentsContent"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp"
+							android:textSize="14dp"
 							android:text="0.00"
 							android:layout_alignParentRight="true" />
 					</RelativeLayout>
@@ -231,7 +231,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:textColor="@color/powerBlue"
-							android:textSize="12sp"
+							android:textSize="12dp"
 							android:text="@string/what_is_this"
 							android:layout_alignParentLeft="true"
 							android:textStyle="normal"
@@ -253,7 +253,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:text="Outstanding Charges"
                             android:layout_alignParentLeft="true" />
                         <TextView
@@ -263,14 +263,14 @@
                             android:layout_alignBaseline="@+id/txtOutstandingChargesTitle"
                             android:layout_toLeftOf="@+id/txtOutstandingChargesContent"
                             android:text="RM "
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey" />
                         <TextView
                             android:id="@+id/txtOutstandingChargesContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:text="0.00"
                             android:layout_alignParentRight="true" />
                     </RelativeLayout>
@@ -288,7 +288,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp"
+							android:textSize="14dp"
 							android:text="Current Charges"
 							android:layout_alignParentLeft="true" />
 						<TextView
@@ -298,14 +298,14 @@
 							android:layout_alignBaseline="@+id/txtCurrentChargesTitle"
 							android:layout_toLeftOf="@+id/txtCurrentChargesContent"
 							android:text="RM "
-							android:textSize="14sp"
+							android:textSize="14dp"
 							android:textColor="@color/tunaGrey" />
 						<TextView
 							android:id="@+id/txtCurrentChargesContent"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp"
+							android:textSize="14dp"
 							android:text="0.00"
 							android:layout_alignParentRight="true" />
 					</RelativeLayout> -->
@@ -327,7 +327,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:text="Current Charges"
                             android:layout_alignParentLeft="true" />
                         <TextView
@@ -337,14 +337,14 @@
                             android:layout_alignBaseline="@+id/txtCurrentChargesTitle"
                             android:layout_toLeftOf="@+id/txtCurrentChargesContent"
                             android:text="RM "
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:textColor="@color/tunaGrey" />
                         <TextView
                             android:id="@+id/txtCurrentChargesContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:text="00.00"
                             android:layout_alignParentRight="true" />
                     </RelativeLayout>
@@ -362,7 +362,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:text="Outstanding Charges"
                             android:layout_alignParentLeft="true" />
                         <TextView
@@ -372,14 +372,14 @@
                             android:layout_alignBaseline="@+id/txtOutstandingChargesTitle"
                             android:layout_toLeftOf="@+id/txtOutstandingChargesContent"
                             android:text="RM "
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:textColor="@color/tunaGrey" />
                         <TextView
                             android:id="@+id/txtOutstandingChargesContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:text="0.00"
                             android:layout_alignParentRight="true" />
                     </RelativeLayout>
@@ -397,7 +397,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:text="Total Payable"
                             android:layout_alignParentLeft="true" />
                         <TextView
@@ -407,14 +407,14 @@
                             android:layout_alignBaseline="@+id/txtTotalPayableTitle"
                             android:layout_toLeftOf="@+id/txtTotalPayableContent"
                             android:text="RM "
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:textColor="@color/tunaGrey" />
                         <TextView
                             android:id="@+id/txtTotalPayableContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:text="0.00"
                             android:layout_alignParentRight="true" />
                     </RelativeLayout>
@@ -473,7 +473,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/txtTotalDueTitle"
-                            android:textSize="12sp"
+                            android:textSize="12dp"
                             android:paddingTop="@dimen/_1sdp"
                             android:textColor="@color/silverChalice"
                             android:text="@string/dashboard_chartview_due_date_not_available" />
@@ -500,7 +500,7 @@
                         android:paddingTop="20dp"
                         android:text="@string/bill_menu_payment_history"
                         android:textColor="@color/powerBlue"
-                        android:textSize="16sp" />
+                        android:textSize="16dp" />
                     <RadioGroup
                         android:id="@+id/tabButtonLayout"
                         android:layout_width="match_parent"
@@ -559,7 +559,7 @@
                             android:gravity="center_horizontal"
                             android:text="@string/billing_list_fragment_footer_text"
                             android:textColor="@color/silverChalice"
-                            android:textSize="12sp" />
+                            android:textSize="12dp" />
                         <TextView
                             android:id="@+id/txtFooter1"
                             android:layout_width="wrap_content"
@@ -569,7 +569,7 @@
                             android:text="@string/billing_list_fragment_footer_text1"
                             android:textColor="@color/powerBlue"
                             android:textColorLink="@color/powerBlue"
-                            android:textSize="12sp" />
+                            android:textSize="12dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/onlyAccountOwnersLayout"
@@ -590,7 +590,7 @@
                             android:gravity="center_horizontal"
                             android:text="@string/billing_list_fragment_footer_text2"
                             android:textColor="@color/silverChalice"
-                            android:textSize="12sp" />
+                            android:textSize="12dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

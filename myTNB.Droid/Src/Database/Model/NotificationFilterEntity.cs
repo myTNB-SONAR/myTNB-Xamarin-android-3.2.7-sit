@@ -57,7 +57,8 @@ namespace myTNB_Android.Src.Database.Model
                 if (notificationList != null && notificationList.Count() > 0)
                 {
                     return notificationList[0];
-                }                 return null;
+                }
+                return null;
             }
         }
 

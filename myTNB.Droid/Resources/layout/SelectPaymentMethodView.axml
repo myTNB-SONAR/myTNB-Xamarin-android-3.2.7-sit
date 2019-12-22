@@ -34,7 +34,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:textSize="10sp"
+                        android:textSize="10dp"
                         android:textColor="@color/tunaGrey" />
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/amount_layout"
@@ -48,7 +48,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="6dp"
                             android:gravity="right"
-                            android:textSize="16sp"
+                            android:textSize="16dp"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:singleLine="true"
@@ -75,7 +75,7 @@
                         android:text="@string/credit_debit_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:paddingTop="16dp"
                         android:paddingBottom="16dp"
                         android:textColor="@color/blue" />
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:divider="@android:color/transparent"
-                        android:dividerHeight="4.0sp"
+                        android:dividerHeight="4.0dp"
                         android:visibility="gone" />
                     <Button
                         style="@style/Theme.AddCardButton"
@@ -111,7 +111,7 @@
                         android:text="@string/other_payment_methods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:paddingBottom="16dp"
                         android:textColor="@color/blue" />
                     <Button

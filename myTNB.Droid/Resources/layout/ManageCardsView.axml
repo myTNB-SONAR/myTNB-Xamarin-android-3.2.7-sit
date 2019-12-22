@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/tunaGrey"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:paddingBottom="8dp"
                 android:text="@string/manage_cards_title" />
             <android.support.v7.widget.RecyclerView
@@ -54,7 +54,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@color/tunaGrey"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:text="@string/manage_cards_no_cards" />
         </LinearLayout>
     </FrameLayout>

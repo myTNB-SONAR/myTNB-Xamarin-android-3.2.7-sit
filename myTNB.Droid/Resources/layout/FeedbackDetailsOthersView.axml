@@ -139,7 +139,7 @@
                     android:text="@string/feedback_others_screenshot_detailed_title"
                     android:textAllCaps="true"
                     android:textColor="@color/silverChalice"
-                    android:textSize="9sp" />
+                    android:textSize="9dp" />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"

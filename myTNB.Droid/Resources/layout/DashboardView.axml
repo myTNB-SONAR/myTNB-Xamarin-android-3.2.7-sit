@@ -23,7 +23,7 @@
             android:padding="3dp"
             android:id="@+id/txt_account_name"
             android:drawablePadding="3dp"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:gravity="center"
             android:textColor="@color/white"
             android:maxLines="1"

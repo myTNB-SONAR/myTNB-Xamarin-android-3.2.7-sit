@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:gravity="center_vertical" />
                 <TextView
                     android:id="@+id/dashboard_chartview_no_access_content"
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:gravity="center" />
                 <Button
                     android:id="@+id/btnGetAccess"
@@ -128,13 +128,13 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtTotalPayableTitle"
                     android:text="Due 6 Sep 2017"
-                    android:textSize="11sp"
+                    android:textSize="11dp"
                     android:layout_marginTop="9dp"
                     android:textColor="@color/silverChalice" />
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:textStyle="normal"
                     android:layout_alignBaseline="@+id/txtDueDate"
                     android:textColor="@color/powerBlue"

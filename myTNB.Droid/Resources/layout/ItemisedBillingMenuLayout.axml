@@ -218,12 +218,13 @@
                                     android:id="@+id/itemisedBillingItemTitleShimmer"
                                     android:background="@color/shimmer_color"
                                     android:layout_width="100dp"
-                                    android:layout_height="16dp"/>
+                                    android:layout_height="14dp"/>
                                 <View
                                     android:id="@+id/itemisedBillingItemSubTitleShimmer"
                                     android:background="@color/shimmer_color"
+                                    android:layout_marginTop="8dp"
                                     android:layout_width="84dp"
-                                    android:layout_height="16dp"/>
+                                    android:layout_height="8dp"/>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -253,17 +254,6 @@
                             android:layout_marginBottom="16dp"
                             android:background="@color/platinumGrey"/>
                     </LinearLayout>
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/itemisedBillingListGroupLabelShimmer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <View
-                                android:id="@+id/itemisedBillingGroupLabelShimmer"
-                                android:layout_width="70dp"
-                                android:layout_height="24dp"
-                                android:background="@color/shimmer_color"
-                                android:layout_marginLeft="16dp"/>
-                    </com.facebook.shimmer.ShimmerFrameLayout>
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
@@ -314,6 +304,8 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:text="My House"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="16dp"/>
             </LinearLayout>

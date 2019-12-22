@@ -22,8 +22,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="7dp"
         android:textColor="@color/tunaGrey"
-        android:textSize="14sp"
-        android:lineSpacingExtra="3sp"/>
+        android:textSize="14dp"
+        android:lineSpacingExtra="3dp"/>
     <TextView
         android:id="@+id/txtMessage"
         android:layout_height="wrap_content"
@@ -37,8 +37,8 @@
         android:maxLines="18"
         android:scrollbars="vertical"
         android:text=""
-        android:textSize="14sp"
-        android:lineSpacingExtra="3sp"/>
+        android:textSize="14dp"
+        android:lineSpacingExtra="3dp"/>
     <View
         android:layout_height="1dp"
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
             android:layout_marginTop="16dp"
             android:paddingBottom="16dp"
             android:text="@string/itemized_bill_got_it"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
   </LinearLayout>
 </LinearLayout>

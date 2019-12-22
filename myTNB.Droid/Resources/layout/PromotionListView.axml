@@ -27,7 +27,7 @@
                 android:id="@+id/no_promotion_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:textColor="@color/tunaGrey" />
@@ -36,7 +36,7 @@
                 android:id="@+id/no_promotion_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:textColor="@color/tunaGrey" />

@@ -32,8 +32,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         private RewardsEntity mRewardsEntity;
 
-        private CancellationTokenSource rewardsTokenSource = new CancellationTokenSource();
-
         private RewardServiceImpl mApi;
 
         private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
@@ -129,21 +127,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public void OnCancelTask()
         {
-            rewardsTokenSource.Cancel();
+            // rewardsTokenSource.Cancel();
         }
 
         public Task OnGetRewardsTimeStamp()
         {
-            rewardsTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    rewardsTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     RewardsTimeStampResponseModel responseModel = getItemsService.GetRewardsTimestampItem();
-                    rewardsTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (mRewardsParentEntity == null)
@@ -167,7 +162,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, rewardsTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnGetRewards()
@@ -416,6 +411,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     this.mView.SetEmptyView();
                 }
             }
+        }
+
+        public Task OnRecheckRewardsStatus()
+        {
+            return Task.Delay(500).ContinueWith(_ =>
+            {
+                this.mView.OnGetRewardTimestamp();
+            });
         }
 
         private void ProcessRewardResponse(RewardsResponseModel response)
