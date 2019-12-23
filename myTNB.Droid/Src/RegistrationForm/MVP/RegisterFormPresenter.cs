@@ -273,7 +273,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             }
             finally
             {
-                this.mView.HideRegistrationProgressDialog();
+                this.mView.HideProgressDialog();
             }
         }
 
