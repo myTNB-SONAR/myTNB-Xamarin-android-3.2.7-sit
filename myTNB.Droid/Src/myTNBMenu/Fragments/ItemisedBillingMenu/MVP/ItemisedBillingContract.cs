@@ -15,12 +15,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             void ShowBillPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData);
             void ShowPayPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData);
             void ShowShimmerLoading();
-            void ShowUnavailableBillContent(bool isRefresh);
+            void ShowUnavailableContent(bool isRefresh);
             void ShowAvailableBillContent();
             void ShowEmptyState();
             void ShowDowntimeSnackbar(string message);
             void OnShowItemizedFragmentTutorialDialog();
             void ItemizedBillingCustomScrolling(int yPosition);
+            void ShowUnavailableChargeContent(bool isShowRefresh, string btnText, string contentText);
+            void ShowUnavailableBillContent(bool isShowRefresh, string btnText, string contentText);
         }
     }
 }
