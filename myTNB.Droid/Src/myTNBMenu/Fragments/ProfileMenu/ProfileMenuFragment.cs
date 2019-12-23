@@ -336,12 +336,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             helpSupportItems.Add(findUs);
 
             ProfileMenuItemSingleContentComponent billInquiry = new ProfileMenuItemSingleContentComponent(Context);
-            billInquiry.SetTitle(GetLabelByLanguage("callUsBilling"));
+            if (WeblinkEntity.HasRecord("TNBCLE"))
+            {
+                WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
+                if (entity != null && !string.IsNullOrEmpty(entity.Title))
+                {
+                    billInquiry.SetTitle(entity.Title);
+                }
+                else
+                {
+                    billInquiry.SetTitle(GetLabelByLanguage("callUsBilling"));
+                }
+            }
+            else
+            {
+                billInquiry.SetTitle(GetLabelByLanguage("callUsBilling"));
+            }
             billInquiry.SetItemActionCall(ShowCallUsBilling);
             helpSupportItems.Add(billInquiry);
 
             ProfileMenuItemSingleContentComponent outage = new ProfileMenuItemSingleContentComponent(Context);
-            outage.SetTitle(GetLabelByLanguage("callUsOutagesAndBreakdown"));
+            if (WeblinkEntity.HasRecord("TNBCLO"))
+            {
+                WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
+                if (entity != null && !string.IsNullOrEmpty(entity.Title))
+                {
+                    outage.SetTitle(entity.Title);
+                }
+                else
+                {
+                    outage.SetTitle(GetLabelByLanguage("callUsOutagesAndBreakdown"));
+                }
+            }
+            else
+            {
+                outage.SetTitle(GetLabelByLanguage("callUsOutagesAndBreakdown"));
+            }
             outage.SetItemActionCall(ShowCallUsOutage);
             helpSupportItems.Add(outage);
 

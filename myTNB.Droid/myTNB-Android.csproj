@@ -4235,6 +4235,26 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\FAQ\Model\FAQCacheModel.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

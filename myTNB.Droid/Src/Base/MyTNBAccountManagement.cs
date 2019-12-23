@@ -333,6 +333,15 @@ namespace myTNB_Android.Src.Base
                 if (masterDataResponse.IsSuccessResponse())
                 {
                     SetMasterDataResponse(masterDataResponse);
+
+                    if (masterDataResponse.GetData().WebLinks != null)
+                    {
+                        foreach (Weblink web in masterDataResponse.GetData().WebLinks)
+                        {
+                            int newRecord = WeblinkEntity.InsertOrReplace(web);
+                        }
+                    }
+
                     foreach (NotificationTypes notificationType in GetMasterDataResponse().GetData().NotificationTypes)
                     {
                         int newRecord = NotificationTypesEntity.InsertOrReplace(notificationType);
