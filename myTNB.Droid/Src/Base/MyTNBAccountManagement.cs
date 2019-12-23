@@ -26,6 +26,7 @@ namespace myTNB_Android.Src.Base
         private static AppLaunchMasterDataResponse appMasterDataResponse = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private int appLaunchMasterDataTimeout;
+        private bool IsUpdatedMobileNumber = false;
         private MyTNBAccountManagement()
         {
             appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
@@ -410,6 +411,16 @@ namespace myTNB_Android.Src.Base
                 Utility.LoggingNonFatalError(e);
                 //EvaluateServiceRetry();
             }
+        }
+
+        public void SetIsUpdatedMobile(bool isUpdated)
+        {
+            IsUpdatedMobileNumber = isUpdated;
+        }
+
+        public bool IsUpdatedMobile()
+        {
+            return IsUpdatedMobileNumber;
         }
 	}
 }

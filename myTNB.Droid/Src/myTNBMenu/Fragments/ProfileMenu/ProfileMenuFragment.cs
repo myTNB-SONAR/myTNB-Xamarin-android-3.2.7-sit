@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Java.Lang;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
@@ -148,6 +149,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 btnLogout.Text = GetLabelByLanguage("logout");
                 PopulateActiveAccountDetails();
                 mPresenter.Start();
+                bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
+                if (hasUpdatedMobile)
+                {
+                    UserEntity userEntity = UserEntity.GetActive();
+                    ShowMobileUpdateSuccess(userEntity.MobileNo);
+                    MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(false);
+                }
             }
             catch (System.Exception e)
             {
@@ -193,6 +201,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     {
                         UserEntity userEntity = UserEntity.GetActive();
                         ShowMobileUpdateSuccess(userEntity.MobileNo);
+                        MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(true);
                     }
                 }
                 else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)

@@ -57,11 +57,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
-                //var cardsApiResponse = await api.GetRegisteredCards(new MakePayment.Models.GetRegisteredCardsRequest(
-                //        Constants.APP_CONFIG.API_KEY_ID,
-                //        userEntity.Email
-                //    ));
-
                 var cardsApiResponse = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
 
                 if (mView.IsActive())
