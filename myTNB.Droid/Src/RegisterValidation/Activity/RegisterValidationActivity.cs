@@ -396,6 +396,7 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             Intent LinkAccountIntent = new Intent(this, typeof(LinkAccountActivity));
             LinkAccountIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            LinkAccountIntent.PutExtra("fromDashboard", true);
             StartActivity(LinkAccountIntent);
         }
 

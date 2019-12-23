@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -15,6 +16,7 @@ using myTNB_Android.Src.AddAccount.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
@@ -258,9 +260,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 NewAccount item = additionalAccountList[position];
                 mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle("Remove Account")
-                  .SetMessage("Are you sure! Remove " + item.accountNumber + " from the list ?")
-                  .SetPositiveButton("Remove", (senderAlert, args) =>
+                  .SetTitle(GetLabelByLanguage("removeAcct"))
+                  .SetPositiveButton(GetLabelCommonByLanguage("ok"), (senderAlert, args) =>
                   {
                       additionalAccountList.Remove(item);
                       additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
@@ -278,13 +279,21 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       }
                       mDeleteDialog.Dismiss();
                   })
-
-                 .SetNegativeButton("Cancel", (senderAlert, args) =>
+                 .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
                  {
                      mDeleteDialog.Dismiss();
                  })
                   .SetCancelable(false)
                   .Create();
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
+                }
+                else
+                {
+                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber)));
+                }
                 if (!mDeleteDialog.IsShowing)
                 {
                     mDeleteDialog.Show();
@@ -473,7 +482,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ACCOUNT_COUNT = CustomerBillingAccount.List().Count() + 1;
                     if (response.Count > 0)
                     {
-                        textNoOfAcoount.Text = response.Count + GetLabelByLanguage("supplyAcctCount");
+                        textNoOfAcoount.Text = response.Count + " " + GetLabelByLanguage("supplyAcctCount");
 
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
