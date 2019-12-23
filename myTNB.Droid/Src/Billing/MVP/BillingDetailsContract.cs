@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.Billing.MVP
             void HideProgressDialog();
             void ShowBillErrorSnackBar();
             void ShowBillDetails(List<AccountChargeModel> accountChargeModelList);
+            void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
         }
 
         public interface IPresenter

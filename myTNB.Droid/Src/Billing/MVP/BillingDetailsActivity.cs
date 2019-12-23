@@ -99,7 +99,19 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.detailLayout)]
         LinearLayout detailLayout;
-        
+
+        [BindView(Resource.Id.refreshLayout)]
+        LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.refreshBillingDetailImg)]
+        ImageView refreshBillingDetailImg;
+
+        [BindView(Resource.Id.refreshBillingDetailMessage)]
+        TextView refreshBillingDetailMessage;
+
+        [BindView(Resource.Id.btnBillingDetailefresh)]
+        Button btnBillingDetailefresh;
+
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -177,10 +189,10 @@ namespace myTNB_Android.Src.Billing.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, accountPayAmountValue);
+            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, accountPayAmountValue, refreshBillingDetailMessage);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
-                accountMinChargeLabel, btnPayBill, btnViewBill);
+                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
             accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
@@ -246,6 +258,8 @@ namespace myTNB_Android.Src.Billing.MVP
             try
             {
                 topLayout.Visibility = ViewStates.Visible;
+                detailLayout.Visibility = ViewStates.Visible;
+                refreshLayout.Visibility = ViewStates.Gone;
                 selectedAccountChargeModel = accountChargeModelList[0];
                 PopulateCharges();
                 EnablePayBillButtons();
@@ -262,7 +276,54 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             catch (Exception e)
             {
-                // TODO: Show Refresh Screen
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowBillDetailsError(bool isRefresh, string btnText, string contentText)
+        {
+            try
+            {
+                topLayout.Visibility = ViewStates.Visible;
+                detailLayout.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                if (isRefresh)
+                {
+                    refreshBillingDetailImg.SetImageResource(Resource.Drawable.refresh_1);
+                    if (!string.IsNullOrEmpty(contentText))
+                    {
+                        refreshBillingDetailMessage.TextFormatted = GetFormattedText(contentText);
+                    }
+                    else
+                    {
+                        refreshBillingDetailMessage.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                    }
+                    if (!string.IsNullOrEmpty(btnText))
+                    {
+                        btnBillingDetailefresh.Text = btnText;
+                    }
+                    else
+                    {
+                        btnBillingDetailefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                    }
+                    btnBillingDetailefresh.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    refreshBillingDetailImg.SetImageResource(Resource.Drawable.maintenance_new);
+                    if (!string.IsNullOrEmpty(contentText))
+                    {
+                        refreshBillingDetailMessage.TextFormatted = GetFormattedText(contentText);
+                    }
+                    else
+                    {
+                        refreshBillingDetailMessage.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                    }
+                    btnBillingDetailefresh.Visibility = ViewStates.Gone;
+                }
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -365,6 +426,13 @@ namespace myTNB_Android.Src.Billing.MVP
         void OnTapMinChargeTooltip(object sender, EventArgs eventArgs)
         {
             ShowAccountHasMinCharge();
+        }
+
+        [OnClick(Resource.Id.btnBillingDetailefresh)]
+        void OnTapBillingDetailRefresh(object sender, EventArgs eventArgs)
+        {
+            topLayout.Visibility = ViewStates.Invisible;
+            this.billingDetailsPresenter.ShowBillDetails(selectedAccountData);
         }
 
         protected override void OnResume()

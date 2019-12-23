@@ -107,29 +107,38 @@ namespace myTNB_Android.Src.Billing.MVP
                 }
                 else
                 {
-                    // TODO: Refresh / Maintenance Screen
-                    // this.mView.ShowLoadBillRetryOptions();
+                    string btnText = "";
+                    string contentText = "";
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    {
+                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    {
+                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    this.mView.ShowBillDetailsError(true, btnText, contentText);
                 }
             }
             catch (System.OperationCanceledException e)
             {
                 this.mView.HideProgressDialog();
-                // TODO: Refresh / Maintenance Screen
-                // this.mView.ShowLoadBillRetryOptions();
+                this.mView.ShowBillDetailsError(true, "", "");
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 this.mView.HideProgressDialog();
-                // TODO: Refresh / Maintenance Screen
-                // this.mView.ShowLoadBillRetryOptions();
+                this.mView.ShowBillDetailsError(true, "", "");
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 this.mView.HideProgressDialog();
-                // TODO: Refresh / Maintenance Screen
-                // this.mView.ShowLoadBillRetryOptions();
+                this.mView.ShowBillDetailsError(true, "", "");
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -230,6 +230,43 @@
                             android:drawableLeft="@drawable/smr_why_accounts_info"/>
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp"
+                    android:visibility="gone"
+                    android:id="@+id/refreshLayout"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="69dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:id="@+id/refreshBillingDetailImg"
+                        android:src="@drawable/refresh_1"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="12dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:lineSpacingExtra="2dp"
+                        android:textColor="#8b8b8b"
+                        android:id="@+id/refreshBillingDetailMessage"
+                        android:text="Uh oh, looks like your bill/payment history have been unplugged. Refresh to stay plugged in!"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="Refresh Now"
+                        android:id="@+id/btnBillingDetailefresh"
+                        style="@style/Theme.RefreshButton" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
