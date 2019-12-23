@@ -37,6 +37,12 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "DisplayTitle")]
             public string DisplayTitle { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshMessage")]
+            public string RefreshMessage { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
         }
 
         public class AccountChargesResponseData

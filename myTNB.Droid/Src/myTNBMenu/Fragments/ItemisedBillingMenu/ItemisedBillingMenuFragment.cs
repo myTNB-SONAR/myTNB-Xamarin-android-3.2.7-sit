@@ -112,6 +112,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.bills_list_title_container)]
         LinearLayout bills_list_title_container;
 
+        [BindView(Resource.Id.chargeAvailableContainer)]
+        LinearLayout chargeAvailableContainer;
+
+        [BindView(Resource.Id.unavailableChargeContainer)]
+        LinearLayout unavailableChargeContainer;
+
+        [BindView(Resource.Id.unavailableChargeImg)]
+        ImageView unavailableChargeImg;
+
+        [BindView(Resource.Id.unavailableChargeMsg)]
+        TextView unavailableChargeMsg;
+
+        [BindView(Resource.Id.btnChargeRefresh)]
+        Button btnChargeRefresh;
+
+        [BindView(Resource.Id.refreshItemisedBillingList)]
+        LinearLayout refreshItemisedBillingList;
+
+        [BindView(Resource.Id.refreshItemisedBillingImg)]
+        ImageView refreshItemisedBillingImg;
+
+        [BindView(Resource.Id.refreshBillingHistoryMessage)]
+        TextView refreshBillingHistoryMessage;
+
+        [BindView(Resource.Id.btnBillingHistoryRefresh)]
+        Button btnBillingHistoryRefresh;
+        
+
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
 
@@ -298,6 +326,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        [OnClick(Resource.Id.btnChargeRefresh)]
+        void OnButtonChargeRefresh(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                chargeAvailableContainer.Visibility = ViewStates.Visible;
+                unavailableChargeContainer.Visibility = ViewStates.Gone;
+                mPresenter.GetBillingChargeHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnBillingHistoryRefresh)]
+        void OnButtonBillRefresh(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                itemisedBillingListShimmer.Visibility = ViewStates.Visible;
+                itemisedBillingList.Visibility = ViewStates.Gone;
+                emptyItemisedBillingList.Visibility = ViewStates.Gone;
+                refreshItemisedBillingList.Visibility = ViewStates.Gone;
+                mPresenter.GetBillingBillHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -336,8 +396,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             SetHasOptionsMenu(true);
             itemisedBillingScrollView.SetOnScrollChangeListener(new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container));
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
-                btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh);
-            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg);
+                btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
+                btnChargeRefresh, btnBillingHistoryRefresh);
+            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
+                                            unavailableChargeMsg, refreshBillingHistoryMessage);
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
@@ -760,7 +822,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             StartActivity(viewReceipt);
         }
 
-        public void ShowUnavailableBillContent(bool isShowRefresh)
+        public void ShowUnavailableContent(bool isShowRefresh)
         {
             billingHistoryDetailsContent.Visibility = ViewStates.Gone;
             unavailableBillContainer.Visibility = ViewStates.Visible;
@@ -769,6 +831,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.bg_application_status);
                 unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
                 btnRefresh.Visibility = ViewStates.Visible;
             }
             else
@@ -776,6 +839,90 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.downtime_banner);
                 unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
                 btnRefresh.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void ShowUnavailableChargeContent(bool isShowRefresh, string btnText, string contentText)
+        {
+            chargeAvailableContainer.Visibility = ViewStates.Gone;
+            unavailableChargeContainer.Visibility = ViewStates.Visible;
+            //If not refresh bill, show downtime
+            if (isShowRefresh)
+            {
+                unavailableChargeImg.SetImageResource(Resource.Drawable.refresh_1);
+                if (!string.IsNullOrEmpty(contentText))
+                {
+                    unavailableChargeMsg.TextFormatted = GetFormattedText(contentText);
+                }
+                else
+                {
+                    unavailableChargeMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                }
+                if (!string.IsNullOrEmpty(btnText))
+                {
+                    btnChargeRefresh.Text = btnText;
+                }
+                else
+                {
+                    btnChargeRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                }
+                btnChargeRefresh.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                unavailableChargeImg.SetImageResource(Resource.Drawable.maintenance_new);
+                if (!string.IsNullOrEmpty(contentText))
+                {
+                    unavailableChargeMsg.TextFormatted = GetFormattedText(contentText);
+                }
+                else
+                {
+                    unavailableChargeMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                }
+                btnChargeRefresh.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void ShowUnavailableBillContent(bool isShowRefresh, string btnText, string contentText)
+        {
+            itemisedBillingListShimmer.Visibility = ViewStates.Gone;
+            itemisedBillingList.Visibility = ViewStates.Gone;
+            emptyItemisedBillingList.Visibility = ViewStates.Gone;
+            refreshItemisedBillingList.Visibility = ViewStates.Visible;
+            //If not refresh bill, show downtime
+            if (isShowRefresh)
+            {
+                refreshItemisedBillingImg.SetImageResource(Resource.Drawable.refresh_1);
+                if (!string.IsNullOrEmpty(contentText))
+                {
+                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(contentText);
+                }
+                else
+                {
+                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                }
+                if (!string.IsNullOrEmpty(btnText))
+                {
+                    btnBillingHistoryRefresh.Text = btnText;
+                }
+                else
+                {
+                    btnBillingHistoryRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                }
+                btnBillingHistoryRefresh.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                refreshItemisedBillingImg.SetImageResource(Resource.Drawable.maintenance_new);
+                if (!string.IsNullOrEmpty(contentText))
+                {
+                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(contentText);
+                }
+                else
+                {
+                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                }
+                btnBillingHistoryRefresh.Visibility = ViewStates.Gone;
             }
         }
 
