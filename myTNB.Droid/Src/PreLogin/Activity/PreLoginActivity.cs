@@ -311,6 +311,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 LanguageUtil.SaveAppLanguage(tooltipLanguage);
                 MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
                 SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 UpdateLabels();

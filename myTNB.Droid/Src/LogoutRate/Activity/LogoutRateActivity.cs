@@ -126,7 +126,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -145,7 +145,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -219,7 +219,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
         public void ShowErrorMessage(string message)
         {
             Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                        .SetAction(GetString(Resource.String.logout_rate_btn_close),
+                        .SetAction(Utility.GetLocalizedCommonLabel("save"),
                          (view) =>
                          {
 

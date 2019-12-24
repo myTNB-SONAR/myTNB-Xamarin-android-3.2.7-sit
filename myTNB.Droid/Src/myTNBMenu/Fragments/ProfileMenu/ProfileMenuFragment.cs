@@ -781,7 +781,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             try
             {
                 Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.logout_rate_btn_close),
+                            .SetAction(GetLabelCommonByLanguage("ok"),
                              (view) =>
                              {
 
