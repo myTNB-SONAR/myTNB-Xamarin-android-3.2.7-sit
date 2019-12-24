@@ -23,9 +23,11 @@ using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.PreLogin.Activity
 {
@@ -99,6 +101,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
 
+        private LoadingOverlay loadingOverlay;
+
         private void UpdateLabels()
         {
             txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin", "welcomeTitle");
@@ -118,6 +122,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
             }
+
+            DismissProgressDialog();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -309,12 +315,46 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
             Utility.ShowChangeLanguageDialog(this, tooltipLanguage, ()=>
             {
-                LanguageUtil.SaveAppLanguage(tooltipLanguage);
-                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
-                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                ShowProgressDialog();
+                _ = RunUpdateLanguage(tooltipLanguage);
+            });
+        }
+
+        private Task RunUpdateLanguage(string language)
+        {
+            return Task.Run(() =>
+            {
+                LanguageUtil.SaveAppLanguage(language);
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
-                UpdateLabels();
+                _ = CheckAppMasterDataDone();
+            });
+        }
+
+        private Task CheckAppMasterDataDone()
+        {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+                if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
+                {
+                    if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
+                    {
+                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                        _ = CheckAppMasterDataDone();
+                    }
+                    else
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                            MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                            UpdateLabels();
+                        });
+                    }
+                }
+                else
+                {
+                    _ = CheckAppMasterDataDone();
+                }
             });
         }
 
@@ -543,6 +583,39 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             int scaledInPixel = (int)((float)basePixel * percentageValue);
             return scaledInPixel;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void DismissProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

@@ -427,7 +427,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public Task OnRecheckRewardsStatus()
         {
-            return Task.Delay(500).ContinueWith(_ =>
+            return Task.Delay(Constants.REWARDS_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
             {
                 this.mView.OnGetRewardTimestamp();
             });

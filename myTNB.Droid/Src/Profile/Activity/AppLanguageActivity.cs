@@ -230,18 +230,40 @@ namespace myTNB_Android.Src.Profile.Activity
             {
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
-                RunOnUiThread(() =>
+                _ = CheckAppMasterDataDone();
+            });
+        }
+
+        private Task CheckAppMasterDataDone()
+        {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+                if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
                 {
-                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                    MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
-                    SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
-                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                    UpdateLanguage();
-                    OnBackProceed();
-                    HideShowProgressDialog();
-                });
+                    if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
+                    {
+                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                        _ = CheckAppMasterDataDone();
+                    }
+                    else
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                            MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
+                            SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                            UpdateLanguage();
+                            OnBackProceed();
+                            HideShowProgressDialog();
+                        });
+                    }
+                }
+                else
+                {
+                    _ = CheckAppMasterDataDone();
+                }
             });
         }
 

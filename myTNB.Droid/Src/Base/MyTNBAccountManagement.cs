@@ -27,6 +27,8 @@ namespace myTNB_Android.Src.Base
         private List<string> UpdatedAccountNumberList = new List<string>();
         private int appLaunchMasterDataTimeout;
         private bool IsUpdatedMobileNumber = false;
+        private bool IsAppMasterComplete = false;
+        private bool IsAppMasterFailed = false;
         private MyTNBAccountManagement()
         {
             appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
@@ -332,7 +334,19 @@ namespace myTNB_Android.Src.Base
 
         public void UpdateAppMasterData()
         {
+            IsAppMasterComplete = false;
+            IsAppMasterFailed = false;
             LoadAppMasterData();
+        }
+
+        public bool GetIsAppMasterComplete()
+        {
+            return IsAppMasterComplete;
+        }
+
+        public bool GetIsAppMasterFailed()
+        {
+            return IsAppMasterFailed;
         }
 
         private void LoadAppMasterData()
@@ -416,20 +430,34 @@ namespace myTNB_Android.Src.Base
                     {
                         int newRecord = DownTimeEntity.InsertOrReplace(cat);
                     }
+
+                    IsAppMasterFailed = false;
                 }
+                else
+                {
+                    IsAppMasterFailed = true;
+                }
+
+                IsAppMasterComplete = true;
             }
             catch (ApiException apiException)
             {
+                IsAppMasterComplete = true;
+                IsAppMasterFailed = true;
                 Utility.LoggingNonFatalError(apiException);
                 //EvaluateServiceRetry();
             }
             catch (JsonReaderException e)
             {
+                IsAppMasterComplete = true;
+                IsAppMasterFailed = true;
                 Utility.LoggingNonFatalError(e);
                 //EvaluateServiceRetry();
             }
             catch (Exception e)
             {
+                IsAppMasterComplete = true;
+                IsAppMasterFailed = true;
                 Utility.LoggingNonFatalError(e);
                 //EvaluateServiceRetry();
             }
