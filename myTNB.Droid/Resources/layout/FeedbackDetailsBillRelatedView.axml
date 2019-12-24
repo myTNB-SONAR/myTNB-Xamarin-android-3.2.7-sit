@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
                     <EditText
                         android:id="@+id/txtFeedbackId"
                         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
                     <EditText
                         android:id="@+id/txtFeedbackStatus"
                         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
                     <EditText
                         android:id="@+id/txtFeedbackDateTime"
                         android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
                     <EditText
                         android:id="@+id/txtAccountNo"
                         android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
                     <EditText
                         android:id="@+id/txtFeedback"
                         android:layout_width="match_parent"
