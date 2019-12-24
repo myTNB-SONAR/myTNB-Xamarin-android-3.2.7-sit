@@ -263,8 +263,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
                 TextViewUtils.SetMuseoSans300Typeface(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
-                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
-                lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("Common", "cards");
+                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards"); 
+                lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM");
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
                 btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
