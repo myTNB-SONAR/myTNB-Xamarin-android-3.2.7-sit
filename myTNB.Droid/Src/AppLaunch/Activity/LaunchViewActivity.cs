@@ -75,8 +75,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchLoadSuccessful = false;
         private bool isAppLaunchDone = false;
 
-        private MasterDataResponse cacheResponse = null;
-
         private AppLaunchMasterDataResponse cacheResponseData = null;
 
         private string urlSchemaData = "";
@@ -562,7 +560,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 }
                 else if (currentNavigation == AppLaunchNavigation.Maintenance)
                 {
-                    ShowMaintenance(cacheResponse);
+                    ShowMaintenance(cacheResponseData);
                 }
             }
         }
@@ -795,26 +793,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 updateMobileNo.PutExtra(Constants.FROM_APP_LAUNCH, true);
                 updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
                 StartActivity(updateMobileNo);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowMaintenance(MasterDataResponse masterDataResponse)
-        {
-            try
-            {
-                cacheResponse = masterDataResponse;
-                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
-                {
-                    isAppLaunchDone = true;
-                    Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.DisplayTitle);
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.DisplayMessage);
-                    StartActivity(maintenanceScreen);
-                }
             }
             catch (Exception e)
             {
