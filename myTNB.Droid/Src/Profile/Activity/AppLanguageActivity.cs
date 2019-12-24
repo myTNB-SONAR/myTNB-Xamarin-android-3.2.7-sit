@@ -157,7 +157,6 @@ namespace myTNB_Android.Src.Profile.Activity
             await LanguageUtil.CheckUpdatedLanguage();
             UpdateLabels();
             EnableDisableButton();
-            HideShowProgressDialog();
         }
 
         public void EnableDisableButton()
@@ -234,12 +233,14 @@ namespace myTNB_Android.Src.Profile.Activity
                 RunOnUiThread(() =>
                 {
                     MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                    MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                     UpdateLanguage();
                     OnBackProceed();
+                    HideShowProgressDialog();
                 });
             });
         }

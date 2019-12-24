@@ -110,6 +110,19 @@ namespace myTNB_Android.Src.Base
             }
         }
 
+        public void ClearAppCacheItem()
+        {
+            try
+            {
+                SMUsageHistoryEntity.RemoveAll();
+                UsageHistoryEntity.RemoveAll();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void UpdateIsSMROnboardingShown()
         {
             CustomerBillingAccount.UpdateIsSMROnboardingShown();
