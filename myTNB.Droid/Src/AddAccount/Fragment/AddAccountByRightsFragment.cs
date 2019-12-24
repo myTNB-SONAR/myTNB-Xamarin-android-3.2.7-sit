@@ -66,8 +66,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByRightsMessage");
             txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithICMessage");
             txtNonOwnerRights.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithoutICMessage"));
-            txtYes.Text = Utility.GetLocalizedLabel("Common","yes") + ",";
-            txtNo.Text = Utility.GetLocalizedLabel("Common","no") + ",";
+            txtYes.Text = Utility.GetLocalizedLabel("Common","yes") + ".";
+            txtNo.Text = Utility.GetLocalizedLabel("Common","no") + ".";
 
             txtOutstandingPayment.Text = Utility.GetLocalizedLabel("AddAccount", "outstandingPayment");
             txtCurrentBill.Text = Utility.GetLocalizedLabel("AddAccount", "usageGraph");
