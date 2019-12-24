@@ -1448,13 +1448,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (isSitecoreApiFailed)
                 {
-                    HideProgressDialog();
+                    RewardsParentEntity RewardsParentEntityManager = new RewardsParentEntity();
+                    RewardsParentEntityManager.DeleteTable();
+                    RewardsParentEntityManager.CreateTable();
                     RewardsMenuUtils.OnSetRewardLoading(false);
-                    if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                    RunOnUiThread(() =>
                     {
-                        urlSchemaCalled = false;
-                        ShowSomethingWrongException();
-                    }
+                        HideProgressDialog();
+                        if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                        {
+                            urlSchemaCalled = false;
+                            ShowSomethingWrongException();
+                        }
+                    });
                 }
                 else
                 {
