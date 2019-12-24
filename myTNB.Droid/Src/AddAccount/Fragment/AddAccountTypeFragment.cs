@@ -61,8 +61,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByIDMessage");
             txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsOwnerMessage");
             txtNonOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantMessage");
-            txtYes.Text = Utility.GetLocalizedLabel("Common", "yes") + ",";
-            txtNo.Text = Utility.GetLocalizedLabel("Common", "no") + ",";
+            txtYes.Text = Utility.GetLocalizedLabel("Common", "yes") + ".";
+            txtNo.Text = Utility.GetLocalizedLabel("Common", "no") + ".";
             return rootView;
         }
 
