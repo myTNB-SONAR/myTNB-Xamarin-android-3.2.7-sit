@@ -145,7 +145,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
                 txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
                 txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
-                //txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));
+                txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));
 
                 //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
                 //{

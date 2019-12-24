@@ -166,6 +166,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 refreshMsg.Text = GetLabelCommonByLanguage("refreshDescription");
                 btnRefresh.Text = GetLabelCommonByLanguage("refreshNow");
                 NonSMRNoteContent.Text = GetLabelByLanguage("enableSSMRDescription");
+                btnSubmitMeter.Text = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "title");
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
@@ -374,6 +375,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             else
             {
                 SMRMainContent.Visibility = ViewStates.Gone;
+            }
+
+            if (!string.IsNullOrEmpty(activityInfoResponse.Response.Data.DashboardCTAText))
+            {
+                btnSubmitMeter.Text = activityInfoResponse.Response.Data.DashboardCTAText;
             }
         }
 

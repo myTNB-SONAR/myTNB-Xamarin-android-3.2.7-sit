@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -205,11 +206,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
-                    LanguageUtil.SaveAppLanguage("EN");
-                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                    MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
-                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                    ((NewWalkthroughActivity)Activity).UpdateContent();
+                    _ = RunUpdateLanguage("EN");
                 }, () =>
                 {
                     btnToggleMS.Checked = true;
@@ -221,6 +218,51 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             }
         }
 
+        private Task RunUpdateLanguage(string language)
+        {
+            return Task.Run(() =>
+            {
+                LanguageUtil.SaveAppLanguage(language);
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                _ = CheckAppMasterDataDone();
+            });
+        }
+
+        private Task CheckAppMasterDataDone()
+        {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+                if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
+                {
+                    if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
+                    {
+                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                        _ = CheckAppMasterDataDone();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.Activity.RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                ((NewWalkthroughActivity)Activity).UpdateContent();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                }
+                else
+                {
+                    _ = CheckAppMasterDataDone();
+                }
+            });
+        }
+
         [OnClick(Resource.Id.btnToggleMS)]
         void OnToggleMS(object sender, EventArgs eventArgs)
         {
@@ -229,11 +271,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
-                    LanguageUtil.SaveAppLanguage("MS");
-                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                    MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
-                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                    ((NewWalkthroughActivity)Activity).UpdateContent();
+                    _ = RunUpdateLanguage("MS");
                 }, () =>
                 {
                     btnToggleEN.Checked = true;

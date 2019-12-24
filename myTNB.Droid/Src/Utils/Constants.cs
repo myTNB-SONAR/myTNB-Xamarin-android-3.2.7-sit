@@ -335,6 +335,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ITEMIZED_BILLING_ADVICE_KEY = "ADVICE";
         internal static readonly string ITEMIZED_BILLING_BILL_KEY = "BILL";
         internal static readonly string ITEMIZED_BILLING_PAYMENT_KEY = "PAYMENT";
+
+        internal static readonly int LANGUAGE_MASTER_DATA_CHECK_TIMEOUT = 500;
         
+        internal static readonly int REWARDS_DATA_CHECK_TIMEOUT = 500;
     }
 }
