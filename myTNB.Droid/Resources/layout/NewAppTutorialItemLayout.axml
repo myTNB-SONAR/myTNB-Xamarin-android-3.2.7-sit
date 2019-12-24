@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" 
-    android:layout_width="match_parent" 
-    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppTutorial"
+    android:id="@+id/rootView">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/mainLayout"
         android:orientation="vertical">
         <RelativeLayout
             android:id="@+id/topLayout"
@@ -237,4 +238,4 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

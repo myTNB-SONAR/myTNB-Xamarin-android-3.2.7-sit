@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
 using Android.Support.V7.App;
@@ -51,6 +52,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.NewAppTutorialItemLayout, container, false);
+            LinearLayout mainLayout = rootView.FindViewById(Resource.Id.mainLayout) as LinearLayout;
             RelativeLayout topLayout = rootView.FindViewById(Resource.Id.topLayout) as RelativeLayout;
             LinearLayout middleLayout = rootView.FindViewById(Resource.Id.middleLayout) as LinearLayout;
             LinearLayout highlightedLeftLayout = rootView.FindViewById(Resource.Id.highlightedLeftLayout) as LinearLayout;
@@ -84,6 +86,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
             btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
+            if (Android.OS.Build.VERSION.SdkInt < BuildVersionCodes.M)
+            {
+                CoordinatorLayout.LayoutParams mainLayoutParam = mainLayout.LayoutParameters as CoordinatorLayout.LayoutParams;
+                mainLayoutParam.TopMargin = -GetStatusBarHeight();
+            }
 
             NewAppModel model = list[position];
 
