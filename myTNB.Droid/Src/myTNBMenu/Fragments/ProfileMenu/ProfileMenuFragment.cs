@@ -78,12 +78,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 if (context is DashboardHomeActivity)
                 {
                     var activity = context as DashboardHomeActivity;
-                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                    activity.UnsetToolbarBackground();
-                    ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
                 }
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Profile");
             }
             catch (ClassCastException e)
             {
@@ -156,6 +151,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ShowMobileUpdateSuccess(userEntity.MobileNo);
                     MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(false);
                 }
+
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
+                }
+                catch (System.Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
             }
             catch (System.Exception e)
             {
@@ -182,6 +186,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ((DashboardHomeActivity)this.Activity).OnResetSSMRMeterReadingTutorial();
                     ((DashboardHomeActivity)this.Activity).OnResetPromotionRewards();
                 }
+
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Profile");
             }
             catch (System.Exception e)
             {
@@ -238,28 +244,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         private ProfileMenuItemComponent GetMyTNBAccountItems()
         {
-            ProfileMenuItemComponent myTNBAccountItem = new ProfileMenuItemComponent(Context);
+            Context context = Activity.ApplicationContext;
+
+            ProfileMenuItemComponent myTNBAccountItem = new ProfileMenuItemComponent(context);
 
             List<View> myTNBAccountItems = new List<View>();
 
-            fullName = new ProfileMenuItemContentComponent(Context);
+            fullName = new ProfileMenuItemContentComponent(context);
             fullName.SetTitle(GetLabelCommonByLanguage("fullname").ToUpper());
             fullName.SetValue("");
             myTNBAccountItems.Add(fullName);
 
-            referenceNumber = new ProfileMenuItemContentComponent(Context);
+            referenceNumber = new ProfileMenuItemContentComponent(context);
             referenceNumber.SetTitle(GetLabelCommonByLanguage("idNumber").ToUpper());
             referenceNumber.SetValue("");
             referenceNumber.SetItemActionVisibility(false);
             myTNBAccountItems.Add(referenceNumber);
 
-            email = new ProfileMenuItemContentComponent(Context);
+            email = new ProfileMenuItemContentComponent(context);
             email.SetTitle(GetLabelCommonByLanguage("email").ToUpper());
             email.SetValue("");
             email.SetItemActionVisibility(false);
             myTNBAccountItems.Add(email);
 
-            mobileNumber = new ProfileMenuItemContentComponent(Context);
+            mobileNumber = new ProfileMenuItemContentComponent(context);
             mobileNumber.SetTitle(GetLabelCommonByLanguage("mobileNumber").ToUpper());
             mobileNumber.SetValue("");
             mobileNumber.SetItemActionVisibility(true);
@@ -267,7 +275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             mobileNumber.SetItemActionCall(UpdateMobileNumber);
             myTNBAccountItems.Add(mobileNumber);
 
-            password = new ProfileMenuItemContentComponent(Context);
+            password = new ProfileMenuItemContentComponent(context);
             password.SetTitle(GetLabelCommonByLanguage("password").ToUpper());
             password.SetValue("");
             password.SetItemActionVisibility(true);
@@ -275,7 +283,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             password.SetItemActionCall(UpdatePassword);
             myTNBAccountItems.Add(password);
 
-            cards = new ProfileMenuItemContentComponent(Context);
+            cards = new ProfileMenuItemContentComponent(context);
             cards.SetTitle(GetLabelCommonByLanguage("cards").ToUpper());
             cards.SetValue("");
             cards.SetItemActionVisibility(true);
@@ -283,7 +291,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             cards.SetItemActionCall(ManageCards);
             myTNBAccountItems.Add(cards);
 
-            electricityAccount = new ProfileMenuItemContentComponent(Context);
+            electricityAccount = new ProfileMenuItemContentComponent(context);
             electricityAccount.SetTitle(GetLabelCommonByLanguage("electricityAccounts").ToUpper());
             List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
             electricityAccount.SetValue(customerAccountList.Count().ToString());
@@ -306,16 +314,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         private ProfileMenuItemComponent GetSettingsItems()
         {
-            ProfileMenuItemComponent settingItem = new ProfileMenuItemComponent(Context);
+            Context context = Activity.ApplicationContext;
+
+            ProfileMenuItemComponent settingItem = new ProfileMenuItemComponent(context);
 
             List<View> settingItems = new List<View>();
 
-            ProfileMenuItemSingleContentComponent notification = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent notification = new ProfileMenuItemSingleContentComponent(context);
             notification.SetTitle(GetLabelByLanguage("notifications"));
             notification.SetItemActionCall(ShowNotificationSetting);
             settingItems.Add(notification);
 
-            ProfileMenuItemSingleContentComponent language = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent language = new ProfileMenuItemSingleContentComponent(context);
             language.SetTitle(GetLabelByLanguage("setAppLanguage"));
             language.SetItemActionCall(ShowAppLanguageSetting);
             settingItems.Add(language);
@@ -326,16 +336,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         private ProfileMenuItemComponent GetHelpSupportItems()
         {
-            ProfileMenuItemComponent helpSupportItem = new ProfileMenuItemComponent(Context);
+            Context context = Activity.ApplicationContext;
+
+            ProfileMenuItemComponent helpSupportItem = new ProfileMenuItemComponent(context);
 
             List<View> helpSupportItems = new List<View>();
 
-            ProfileMenuItemSingleContentComponent findUs = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent findUs = new ProfileMenuItemSingleContentComponent(context);
             findUs.SetTitle(GetLabelByLanguage("findUs"));
             findUs.SetItemActionCall(ShowFindUs);
             helpSupportItems.Add(findUs);
 
-            ProfileMenuItemSingleContentComponent billInquiry = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent billInquiry = new ProfileMenuItemSingleContentComponent(context);
             if (WeblinkEntity.HasRecord("TNBCLE"))
             {
                 WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
@@ -355,7 +367,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             billInquiry.SetItemActionCall(ShowCallUsBilling);
             helpSupportItems.Add(billInquiry);
 
-            ProfileMenuItemSingleContentComponent outage = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent outage = new ProfileMenuItemSingleContentComponent(context);
             if (WeblinkEntity.HasRecord("TNBCLO"))
             {
                 WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
@@ -375,12 +387,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             outage.SetItemActionCall(ShowCallUsOutage);
             helpSupportItems.Add(outage);
 
-            ProfileMenuItemSingleContentComponent faq = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent faq = new ProfileMenuItemSingleContentComponent(context);
             faq.SetTitle(GetLabelByLanguage("faq"));
             faq.SetItemActionCall(ShowFAQ);
             helpSupportItems.Add(faq);
 
-            ProfileMenuItemSingleContentComponent TnC = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent TnC = new ProfileMenuItemSingleContentComponent(context);
             TnC.SetTitle(GetLabelByLanguage("tnc"));
             TnC.SetItemActionCall(ShowTnC);
             helpSupportItems.Add(TnC);
@@ -391,16 +403,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         private ProfileMenuItemComponent GetShareItems()
         {
-            ProfileMenuItemComponent shareItem = new ProfileMenuItemComponent(Context);
+            Context context = Activity.ApplicationContext;
+
+            ProfileMenuItemComponent shareItem = new ProfileMenuItemComponent(context);
 
             List<View> shareItems = new List<View>();
 
-            ProfileMenuItemSingleContentComponent share = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent share = new ProfileMenuItemSingleContentComponent(context);
             share.SetTitle(GetLabelByLanguage("shareDescription"));
             share.SetItemActionCall(ShowShareApp);
             shareItems.Add(share);
 
-            ProfileMenuItemSingleContentComponent rate = new ProfileMenuItemSingleContentComponent(Context);
+            ProfileMenuItemSingleContentComponent rate = new ProfileMenuItemSingleContentComponent(context);
             rate.SetTitle(GetLabelByLanguage("rate"));
             rate.SetItemActionCall(ShowRateApp);
             shareItems.Add(rate);
@@ -574,7 +588,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 shareIntent.SetType("text/plain");
                 shareIntent.PutExtra(Intent.ExtraSubject, entity.Title);
                 shareIntent.PutExtra(Intent.ExtraText, entity.Url);
-                StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
             }
         }
 
