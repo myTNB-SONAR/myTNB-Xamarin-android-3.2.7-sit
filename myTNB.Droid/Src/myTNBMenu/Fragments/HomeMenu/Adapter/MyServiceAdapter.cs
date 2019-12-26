@@ -1,5 +1,6 @@
 ﻿using Android.Graphics;
 using Android.Preferences;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
@@ -290,10 +291,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             if (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.bills);
+                                vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
                             }
                             else
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.bills_disabled);
+                                vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.grey_two)));
                             }
                             if (MyTNBAccountManagement.GetInstance().IsHasNonREAccountCount() > 1)
                             {
@@ -326,10 +329,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             if (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill);
+                                vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
                             }
                             else
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill_disabled);
+                                vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.grey_two)));
                             }
 
                             bool isHasNonREAccount = MyTNBAccountManagement.GetInstance().IsHasNonREAccountCount() > 0;
