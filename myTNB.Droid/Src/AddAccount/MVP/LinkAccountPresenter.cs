@@ -37,49 +37,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
             this.mView.ClearAdapter();
         }
 
-        public void GetAccounts(string apiID, string userID)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            GetCustomerAccounts(apiID, userID);
-        }
-
-        private async void GetCustomerAccounts(string apiID, string userId)
-        {
-            if (mView.IsActive())
-            {
-                this.mView.ShowGetAccountsProgressDialog();
-            }
-            var api = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-            try
-            {
-                UserEntity user = UserEntity.GetActive();
-                var newObject = new
-                            {
-                                usrInf = new
-                                {
-                                    eid = user.UserName,
-                                    sspuid = user.UserID,
-                                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                                    sec_auth_k2 = "test",
-                                    ses_param1 = "test",
-                                    ses_param2 = "test"
-                                }
-                            };
-                var result = await api.GetCustomerAccountV6(newObject); //GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetAccountsProgressDialog();
-                }
-                this.mView.ShowAccountList(result.D.AccountListData);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
-        }
-
         public void OnConfirm(List<NewAccount> newList)
         {
             foreach (NewAccount newAccount in newList)

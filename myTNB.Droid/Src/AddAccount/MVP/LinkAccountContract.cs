@@ -13,9 +13,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
         {
             void ShowNoAccountAddedError(string message);
 
-            //show account list with service data
-            void ShowAccountList(List<Models.Account> response);
-
             //navigte user to add another account screen
             void ShowAddAnotherAccountScreen();
 
@@ -86,12 +83,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Get Customer Accounts APi : GetCustomerBillingAccountList
-            /// </summary>
-            /// <param name="exception"></param>
-            void GetAccounts(string userID, string apiID);
-
             /// <summary>
             /// Get Customer Accounts by NRIC/ID APi : GetCustomerAccountsForICNum
             /// </summary>
