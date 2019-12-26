@@ -460,7 +460,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowAccountHasMinCharge()
         {
-            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryCharges");
+            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData();
             if (mandatoryTooltipModel != null)
             {
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
