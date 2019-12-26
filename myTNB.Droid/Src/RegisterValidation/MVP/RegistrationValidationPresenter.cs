@@ -193,6 +193,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     // TODO : ADD REGISTRATION ERROR
                     string message = userRegistrationResponse.Response.DisplayMessage;
                     this.mView.ShowError(message);
+                    this.mView.ShowEmptyErrorPin_4();
                 }
             }
             catch (System.OperationCanceledException e)
