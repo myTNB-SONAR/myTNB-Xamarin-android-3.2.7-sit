@@ -663,6 +663,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            SetStyle(DialogFragment.StyleNormal, Android.Resource.Style.ThemeTranslucentNoTitleBar);
         }
 
         public override void OnPause()
@@ -859,6 +861,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             }
 
         }
+
 
     }
 }

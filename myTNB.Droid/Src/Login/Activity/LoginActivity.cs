@@ -299,7 +299,12 @@ namespace myTNB_Android.Src.Login.Activity
             }
             else
             {
-                mEmptyEmailSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_email_empty_error), Snackbar.LengthIndefinite)
+                string errorText = Utility.GetLocalizedErrorLabel("invalid_email");
+                if (!errorText.Contains("."))
+                {
+                    errorText = errorText + ".";
+                }
+                mEmptyEmailSnackBar = Snackbar.Make(rootView, errorText, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyEmailSnackBar.Dismiss(); }
                 );
                 mEmptyEmailSnackBar.Show();
@@ -320,7 +325,7 @@ namespace myTNB_Android.Src.Login.Activity
             }
             else
             {
-                mEmptyPasswordSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_password_empty_error), Snackbar.LengthIndefinite)
+                mEmptyPasswordSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("invalid_password"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyPasswordSnackBar.Dismiss(); }
                 );
                 mEmptyPasswordSnackBar.Show();
@@ -341,7 +346,13 @@ namespace myTNB_Android.Src.Login.Activity
             }
             else
             {
-                mInvalidEmailSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_email_invalid_error), Snackbar.LengthIndefinite)
+                string errorText = Utility.GetLocalizedErrorLabel("invalid_email");
+                if (!errorText.Contains("."))
+                {
+                    errorText = errorText + ".";
+                }
+
+                mInvalidEmailSnackBar = Snackbar.Make(rootView, errorText, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mInvalidEmailSnackBar.Dismiss(); }
                 );
                 mInvalidEmailSnackBar.Show();

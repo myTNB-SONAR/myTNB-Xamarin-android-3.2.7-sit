@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@null"
-                android:id="@+id/rootView">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:theme="@style/Theme.AppTutorial"
+    android:id="@+id/rootView">
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
       <FrameLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent">
@@ -70,4 +75,5 @@
                 android:lineSpacingExtra="2dp"
                 android:textSize="12dp"/>
     </LinearLayout> 
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

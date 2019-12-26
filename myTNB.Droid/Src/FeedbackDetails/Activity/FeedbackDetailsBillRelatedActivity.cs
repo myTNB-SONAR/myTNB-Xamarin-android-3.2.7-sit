@@ -174,6 +174,24 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 recyclerView.SetAdapter(adapter);
                 adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
+                string feedbackIdTitle = Utility.GetLocalizedLabel("FeedbackDetails", "feedbackID");
+                txtInputLayoutFeedbackId.Hint = feedbackIdTitle;
+
+                string feedbackStatusTitle = Utility.GetLocalizedLabel("FeedbackDetails", "feedbackStatus");
+                txtInputLayoutStatus.Hint = feedbackStatusTitle;
+
+                string feedbackDateTimeTitle = Utility.GetLocalizedLabel("FeedbackDetails", "dateTimeTitle");
+                txtInputLayoutDateTime.Hint = feedbackDateTimeTitle;
+                txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
+                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackDetails", "feedback");
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackDetails", "photoTitle");
+
+                txtFeedbackId.AddTextChangedListener(new InputFilterFormField(txtFeedbackId, txtInputLayoutFeedbackId));
+                txtFeedbackStatus.AddTextChangedListener(new InputFilterFormField(txtFeedbackStatus, txtInputLayoutStatus));
+                txtFeedbackDateTime.AddTextChangedListener(new InputFilterFormField(txtFeedbackDateTime, txtInputLayoutDateTime));
+                txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));
+                txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
+
                 mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback);
                 this.userActionsListener.Start();
             }

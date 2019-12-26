@@ -100,6 +100,7 @@ namespace myTNB_Android.Src.AddAccount
             DeleteView.Click += (sender, e) => listener(base.LayoutPosition);
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
+            textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
             AccountLabel.FocusChange += (sender, e) =>

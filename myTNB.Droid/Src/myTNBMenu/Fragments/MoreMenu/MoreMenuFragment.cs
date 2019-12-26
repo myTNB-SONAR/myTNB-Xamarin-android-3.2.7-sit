@@ -562,7 +562,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             shareIntent.SetType("text/plain");
             shareIntent.PutExtra(Intent.ExtraSubject, entity.Title);
             shareIntent.PutExtra(Intent.ExtraText, entity.Url);
-            StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+            StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
         }
 
         public void ShowRateUs(WeblinkEntity entity)

@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
             Bundle extras = Intent.Extras;
 
-            SetToolBarTitle(Utility.GetLocalizedCommonLabel("selectAccount"));
+            SetToolBarTitle(Utility.GetLocalizedCommonLabel("selectElectricityAccount"));
 
             if (extras != null)
             {

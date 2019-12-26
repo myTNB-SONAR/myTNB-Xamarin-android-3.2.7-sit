@@ -180,11 +180,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
                     else
                     {
+                        if (mRewardsParentEntity == null)
+                        {
+                            mRewardsParentEntity = new RewardsParentEntity();
+                        }
+                        mRewardsParentEntity.DeleteTable();
+                        mRewardsParentEntity.CreateTable();
                         this.mView.SetRefreshView(null, null);
                     }
                 }
                 catch (Exception e)
                 {
+                    if (mRewardsParentEntity == null)
+                    {
+                        mRewardsParentEntity = new RewardsParentEntity();
+                    }
+                    mRewardsParentEntity.DeleteTable();
+                    mRewardsParentEntity.CreateTable();
                     this.mView.SetRefreshView(null, null);
                     Utility.LoggingNonFatalError(e);
                 }
@@ -415,7 +427,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public Task OnRecheckRewardsStatus()
         {
-            return Task.Delay(500).ContinueWith(_ =>
+            return Task.Delay(Constants.REWARDS_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
             {
                 this.mView.OnGetRewardTimestamp();
             });

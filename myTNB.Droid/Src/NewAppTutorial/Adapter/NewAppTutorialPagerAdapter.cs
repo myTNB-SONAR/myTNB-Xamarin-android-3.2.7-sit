@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
 using Android.Support.V7.App;
@@ -51,6 +52,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.NewAppTutorialItemLayout, container, false);
+            LinearLayout mainLayout = rootView.FindViewById(Resource.Id.mainLayout) as LinearLayout;
             RelativeLayout topLayout = rootView.FindViewById(Resource.Id.topLayout) as RelativeLayout;
             LinearLayout middleLayout = rootView.FindViewById(Resource.Id.middleLayout) as LinearLayout;
             LinearLayout highlightedLeftLayout = rootView.FindViewById(Resource.Id.highlightedLeftLayout) as LinearLayout;
@@ -472,11 +474,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
 
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
 
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
@@ -643,11 +645,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
 
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
 
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
@@ -814,11 +816,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
 
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
 
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
@@ -963,11 +965,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
 
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
 
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
@@ -1112,11 +1114,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
 
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(115);
+                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
 
                                 topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
@@ -1227,7 +1229,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
@@ -1238,7 +1240,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
@@ -1437,7 +1439,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
                                         if (model.DisplayMode == "Extra")
                                         {
                                             bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
@@ -1452,7 +1454,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(110f);
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
                                         if (model.DisplayMode == "Extra")
                                         {
                                             bottomHeight = (int)DPUtils.ConvertDPToPx(85f);

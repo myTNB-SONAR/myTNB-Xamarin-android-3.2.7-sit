@@ -288,22 +288,34 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         public void ShowProgressDialog()
         {
-            if (loadingOverlay != null)
+            try
             {
-                loadingOverlay.Show();
-            }
-            else
-            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
                 loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
                 loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void DismissProgressDialog()
         {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }
