@@ -146,7 +146,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowError("Something went wrong, Please try again.");
+                this.mView.ShowError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 this.mView.DisablePayButton();
             }
         }
