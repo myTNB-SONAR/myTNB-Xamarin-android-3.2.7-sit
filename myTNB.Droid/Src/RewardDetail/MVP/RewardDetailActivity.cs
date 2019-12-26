@@ -336,7 +336,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                                     shareIntent.SetType("text/plain");
                                     shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
                                     shareIntent.PutExtra(Intent.ExtraText, generatedLink);
-                                    StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                                    StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
                                     this.SetIsClicked(false);
                                 }
                                 else
@@ -986,7 +986,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                         shareIntent.SetType("text/plain");
                         shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
                         shareIntent.PutExtra(Intent.ExtraText, deepLinkUrl);
-                        StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                        StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
                     }
                 }
             }
@@ -1002,7 +1002,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 shareIntent.SetType("text/plain");
                 shareIntent.PutExtra(Intent.ExtraSubject, LocalItem.Title);
                 shareIntent.PutExtra(Intent.ExtraText, deepLinkUrl);
-                StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
             }
         }
 
