@@ -215,6 +215,8 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             try
             {
+                ClearErrors();
+
                 string txt_1 = txtNumber_1.Text.Trim();
                 string txt_2 = txtNumber_2.Text.Trim();
                 string txt_3 = txtNumber_3.Text.Trim();
