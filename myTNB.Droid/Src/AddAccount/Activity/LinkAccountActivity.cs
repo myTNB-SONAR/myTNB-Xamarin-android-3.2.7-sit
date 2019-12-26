@@ -140,80 +140,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
         }
 
-        public void ShowAccountList(List<Account> response)
-        {
-            try
-            {
-                if (response != null)
-                {
-                    if (response.Count > 0)
-                    {
-                        if (response.Count == 1)
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply account found!";
-                        }
-                        else
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply accounts found!";
-                        }
-
-                        labelAccountLabel.Visibility = ViewStates.Visible;
-                        for (int i = 0; i < response.Count; i++)
-                        {
-                            Account item = response[i];
-                            if (item != null)
-                            {
-                                NewAccount accountDetails = new NewAccount()
-                                {
-                                    isOwner = item.IsOwned,
-                                    accountNumber = item.AccountNumber,
-                                    accountLabel = item.AccDesc,
-                                    accountAddress = item.AccountStAddress,
-                                    amCurrentChg = item.AmCurrentChg,
-                                    icNum = item.IcNum,
-                                    isRegistered = item.IsRegistered,
-                                    isPaid = item.IsPaid,
-                                    type = item.Type,
-                                    userAccountId = item.UserAccountID,
-                                    ownerName = item.OwnerName,
-                                    accountTypeId = item.AccountTypeId,
-                                    accountCategoryId = item.AccountCategoryId
-
-                                };
-                                accountList.Add(accountDetails);
-                            }
-                        }
-                        adapter = new AccountListAdapter(this, accountList);
-                        accountListRecyclerView.SetAdapter(adapter);
-                        adapter.ItemClick += OnItemClick;
-                        adapter.NotifyDataSetChanged();
-                    }
-                }
-                else
-                {
-                    textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
-                    labelAccountLabel.Visibility = ViewStates.Gone;
-                    mNoAccountFoundDialog = new AlertDialog.Builder(this)
-                    .SetTitle("Sorry")
-                    .SetMessage("We could not find any supply accounts for you. Please use Add Account button below, to add accounts")
-                    .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"), (senderAlert, args) =>
-                    {
-                        mNoAccountFoundDialog.Dismiss();
-                    })
-                    .SetCancelable(true)
-                    .Create();
-                    if (!mNoAccountFoundDialog.IsShowing)
-                    {
-                        mNoAccountFoundDialog.Show();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         void OnItemClick(object sender, int position)
         {
             try
@@ -483,7 +409,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     if (response.Count > 0)
                     {
                         textNoOfAcoount.Text = response.Count + " " + GetLabelByLanguage("supplyAcctCount");
-
+                        
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
                         {
