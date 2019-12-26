@@ -9375,39 +9375,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void SetMDMSDownRefreshMessage(SMUsageHistoryResponse response)
         {
             isMDMSPlannedDownTime = false;
-            if (!string.IsNullOrEmpty(response.Data.DisplayTitle))
-            {
-                MDMSUnavailableTitle = response.Data.DisplayTitle;
-            }
-            else
-            {
-                MDMSUnavailableTitle = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
-            }
 
-            if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+            if (response != null && response.Data != null)
             {
-                MDMSUnavailableMessage = response.Data.DisplayMessage;
-            }
+                if (!string.IsNullOrEmpty(response.Data.DisplayTitle))
+                {
+                    MDMSUnavailableTitle = response.Data.DisplayTitle;
+                }
+                else
+                {
+                    MDMSUnavailableTitle = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
+                }
 
-            if (!string.IsNullOrEmpty(response.Data.CTA))
-            {
-                MDMSUnavailableCTA = response.Data.CTA;
-            }
-            else
-            {
-                MDMSUnavailableCTA = this.Activity.GetString(Resource.String.text_new_refresh);
-            }
+                if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                {
+                    MDMSUnavailableMessage = response.Data.DisplayMessage;
+                }
 
-            imgMdmsDayViewDown.SetImageResource(Resource.Drawable.refresh_white);
-            btnMDMSDownRefresh.Visibility = ViewStates.Visible;
-            string txtMdmsDayViewDownMessage = this.Activity.GetString(Resource.String.unavailable_refresh_message);
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-            {
-                txtMdmsDayViewDown.TextFormatted = Html.FromHtml(txtMdmsDayViewDownMessage, FromHtmlOptions.ModeLegacy);
-            }
-            else
-            {
-                txtMdmsDayViewDown.TextFormatted = Html.FromHtml(txtMdmsDayViewDownMessage);
+                if (!string.IsNullOrEmpty(response.Data.CTA))
+                {
+                    MDMSUnavailableCTA = response.Data.CTA;
+                }
+                else
+                {
+                    MDMSUnavailableCTA = this.Activity.GetString(Resource.String.text_new_refresh);
+                }
+
+                imgMdmsDayViewDown.SetImageResource(Resource.Drawable.refresh_white);
+                btnMDMSDownRefresh.Visibility = ViewStates.Visible;
+
+                btnMDMSDownRefresh.Text = !string.IsNullOrEmpty(response.Data.RefreshBtnText) ? response.Data.RefreshBtnText : Utility.GetLocalizedCommonLabel("refreshNow");
+
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(response.Data.ErrorMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtMdmsDayViewDown.TextFormatted = Html.FromHtml(response.Data.ErrorMessage);
+                }
             }
         }
 
