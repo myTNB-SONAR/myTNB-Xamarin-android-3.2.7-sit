@@ -241,7 +241,7 @@
     "ssmrTrackApplication": "Track Application",
     "ssmrBackToUsage": "Back to My Usage",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Back to Reading History"
+    "ssmrViewReadHistory": "View Reading History"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -682,7 +682,7 @@
     "updateMobileNumberTitle": "Update Mobile Number"
   },
   "VerifyPin": {
-    "title": "Verify PIN",
+    "title": "Verify Mobile Number",
     "smsNotReceived": "Didn't receive the SMS?",
     "resendPinMessage": "An SMS containing the activation PIN has been sent to your number.",
     "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",

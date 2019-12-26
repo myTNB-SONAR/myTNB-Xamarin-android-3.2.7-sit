@@ -241,7 +241,7 @@
     "ssmrTrackApplication": "Pantau Permohonan",
     "ssmrBackToUsage": "Kembali ke Penggunaaan",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Kembali ke Sejarah Bacaan"
+    "ssmrViewReadHistory": "Kembali ke Penggunaan"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -682,7 +682,7 @@
     "updateMobileNumberTitle": "Kemaskini Nombor Telefon"
   },
   "VerifyPin": {
-    "title": "Sahkan PIN",
+    "title": "Sahkan Nombor Telefon",
     "smsNotReceived": "Tidak terima SMS?",
     "resendPinMessage": "SMS yang mengandungi kod OTP telah dihantar ke nombor anda.",
     "otpMobileUpdate": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",
