@@ -230,15 +230,20 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 if (!string.IsNullOrEmpty(password))
                 {
-                    textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
-                    textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                    if (!this.mPresenter.CheckPasswordIsValid(password))
+                    {
+                        textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+                    }
+                    else
+                    {
+                        ClearPasswordMinimumOf6CharactersError();
+                    }
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
                 }
                 else
                 {
                     textInputLayoutPassword.Error = "";
-                    textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
                 }
@@ -349,7 +354,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowPasswordMinimumOf6CharactersError()
         {
             textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
-            textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
         }
 
         public void ShowInvalidMobileNoError()
