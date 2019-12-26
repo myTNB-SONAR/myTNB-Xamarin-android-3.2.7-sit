@@ -26,6 +26,9 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/receipt_note_text"
                 android:textSize="12dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="via myTNB App"/>
         </LinearLayout>
         <LinearLayout

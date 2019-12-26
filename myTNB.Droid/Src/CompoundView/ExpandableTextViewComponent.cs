@@ -48,6 +48,7 @@ namespace myTNB_Android.Src.CompoundView
             expandableContainer = FindViewById<LinearLayout>(Resource.Id.expandedContent);
 
             myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, dropdown, null);
+            myApplicationChargesLabel.CompoundDrawablePadding = (int) DPUtils.ConvertDPToPx(4f);
 
             TextViewUtils.SetMuseoSans500Typeface(myApplicationChargesLabel, myApplicationChargesValue);
 
@@ -72,7 +73,8 @@ namespace myTNB_Android.Src.CompoundView
                 dropdown = ContextCompat.GetDrawable(mContext, Resource.Drawable.ic_action_expand_down);
             }
             myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, dropdown, null);
-            
+            myApplicationChargesLabel.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
+
             expandableContainer.Visibility = isExpand ? ViewStates.Visible : ViewStates.Gone;
         }
 
