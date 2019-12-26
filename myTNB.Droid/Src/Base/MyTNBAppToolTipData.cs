@@ -231,7 +231,7 @@ namespace myTNB_Android.Src.Base
             return tooltipModelDataList;
         }
 
-        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData(string tooltipType)
+        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData()
         {
             BillMandatoryChargesTooltipModel tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
             {

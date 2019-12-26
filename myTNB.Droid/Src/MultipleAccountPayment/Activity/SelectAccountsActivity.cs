@@ -847,7 +847,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
                 {
-                    BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryPayment");
+                    BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
                     List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
                     string accountId = string.IsNullOrEmpty(account.accountLabel) ? account.accountNumber : account.accountLabel;
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
