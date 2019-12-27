@@ -20,6 +20,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
@@ -467,10 +468,48 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     {
                         if (status.ContractAccount == accountContractNumber)
                         {
+                            CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(status.ContractAccount);
                             isTaggedSMR = (status.IsTaggedSMR == "true");
+                            if (isTaggedSMR != cbAccount.IsTaggedSMR)
+                            {
+                                CustomerBillingAccount.UpdateIsSMRTagged(status.ContractAccount, isTaggedSMR);
+                            }
                             break;
                         }
                     }
+
+                    List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                    List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                    if (currentSMRBillingAccounts.Count > 0)
+                    {
+                        foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                        {
+                            SMRAccount currentSMRAccount = new SMRAccount();
+                            currentSMRAccount.accountNumber = billingAccount.AccNum;
+                            currentSMRAccount.accountName = billingAccount.AccDesc;
+                            currentSMRAccount.accountAddress = billingAccount.AccountStAddress;
+                            currentSMRAccount.accountSelected = false;
+                            currentSmrAccountList.Add(currentSMRAccount);
+                        }
+                    }
+                    UserSessions.SetSMRAccountList(currentSmrAccountList);
+
+                    List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                    List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+                    if (eligibleSMRBillingAccounts.Count > 0)
+                    {
+                        foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                        {
+                            SMRAccount currentSMRAccount = new SMRAccount();
+                            currentSMRAccount.accountNumber = billingAccount.AccNum;
+                            currentSMRAccount.accountName = billingAccount.AccDesc;
+                            currentSMRAccount.accountAddress = billingAccount.AccountStAddress;
+                            currentSMRAccount.accountSelected = false;
+                            eligibleSmrAccountList.Add(currentSMRAccount);
+                        }
+                    }
+                    UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+                    UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
