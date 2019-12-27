@@ -472,5 +472,25 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             return PAGE_ID;
         }
+
+        public void ShowEmptyErrorPin_1()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin_2()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin_3()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin_4()
+        {
+
+        }
     }
 }

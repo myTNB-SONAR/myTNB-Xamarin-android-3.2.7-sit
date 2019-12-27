@@ -162,6 +162,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 {
                     string errorMessage = forgetPasswordResponse.Response.DisplayMessage;
                     this.mView.ShowError(errorMessage);
+                    this.mView.ShowEmptyErrorPin_4();
                 }
                 else
                 {
@@ -171,7 +172,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     //this.mView.ShowSuccess(message);
                     this.mView.ShowCodeVerifiedSuccess();
                     this.mView.DisableResendButton();
-
                     // TODO : ADD FLAG THAT AFTER LOGIN USER WILL REDIRECT TO RESET PASSWORD
                     UserSessions.DoFlagResetPassword(mSharedPref);
                 }
