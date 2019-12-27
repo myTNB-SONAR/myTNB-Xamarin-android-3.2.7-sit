@@ -1658,6 +1658,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
                     txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 }
                 else
@@ -1665,6 +1666,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_rounded_button_bg);
                     txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 }
 
@@ -4908,6 +4910,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
                     txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
@@ -4937,6 +4940,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_rounded_button_bg);
                     txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
@@ -9188,6 +9192,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
                     txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
