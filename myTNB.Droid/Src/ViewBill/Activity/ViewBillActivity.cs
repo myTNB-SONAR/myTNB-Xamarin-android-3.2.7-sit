@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
         CancellationTokenSource cts;
 
         //17/07/2017
-        SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
 
         //[BindView(Resource.Id.pdfviewercontrol)]
@@ -90,12 +90,12 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
 
             Date d = null;
-            string title = " Bill";
+            string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
             if (selectedAccount != null)
             {
                 if (selectedAccount.AccountCategoryId.Equals("2"))
                 {
-                    title = " Advice";
+                    title = Utility.GetLocalizedLabel("ViewBill", "titleAdvice");
                 }
             }
             try
@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
             if (d != null)
             {
-                title = simpleDateFormat.Format(d) + title;
+                title = simpleDateFormat.Format(d) + " " +  title;
             }
 
             return title;
@@ -644,12 +644,12 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 }
 
                 Date d = null;
-                string title = " Bill";
+                string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
                 if (selectedAccount != null)
                 {
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        title = " Advice";
+                        title = Utility.GetLocalizedLabel("ViewBill", "titleAdvice");
                     }
                 }
                 try
@@ -678,7 +678,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
                 if (d != null)
                 {
-                    title = simpleDateFormat.Format(d) + title;
+                    title = simpleDateFormat.Format(d) + " " + title;
                 }
 
                 RunOnUiThread(() =>
