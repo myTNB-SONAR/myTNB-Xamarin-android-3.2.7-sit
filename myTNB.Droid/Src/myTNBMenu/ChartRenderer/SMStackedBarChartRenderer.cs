@@ -604,7 +604,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 {
                                     if (isStacked)
                                     {
-                                        canvas.DrawPath(GenerateRoundRectangle(left, top, bottom, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
+                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                     }
                                     else
                                     {
