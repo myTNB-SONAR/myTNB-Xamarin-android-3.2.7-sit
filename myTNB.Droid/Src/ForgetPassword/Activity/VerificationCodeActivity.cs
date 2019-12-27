@@ -201,6 +201,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         private void CheckValidPin()
         {
+            ClearErrors();
+
             string txt_1 = txtNumber_1.Text;
             string txt_2 = txtNumber_2.Text;
             string txt_3 = txtNumber_3.Text;
@@ -229,6 +231,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
                 {
+                    ShowEmptyErrorPin_4();
                     return;
                 }
 
@@ -616,6 +619,26 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void ShowEmptyErrorPin_1()
+        {
+            txtInputLayoutNumber_1.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
+        }
+
+        public void ShowEmptyErrorPin_2()
+        {
+            txtInputLayoutNumber_2.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
+        }
+
+        public void ShowEmptyErrorPin_3()
+        {
+            txtInputLayoutNumber_3.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
+        }
+
+        public void ShowEmptyErrorPin_4()
+        {
+            txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
     }
 }

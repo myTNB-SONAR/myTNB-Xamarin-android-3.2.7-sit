@@ -133,6 +133,26 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// <param name="exception"></param>
             void ShowRetryOptionsCodeUnknownException(Exception exception);
 
+            /// <summary>
+            /// Show empty error on pin 1
+            /// </summary>
+            void ShowEmptyErrorPin_1();
+
+            /// <summary>
+            /// Show empty error on pin 2
+            /// </summary>
+            void ShowEmptyErrorPin_2();
+
+            /// <summary>
+            /// Show empty error on pin 3
+            /// </summary>
+            void ShowEmptyErrorPin_3();
+
+            /// <summary>
+            /// Show empty error on pin 4
+            /// </summary>
+            void ShowEmptyErrorPin_4();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
