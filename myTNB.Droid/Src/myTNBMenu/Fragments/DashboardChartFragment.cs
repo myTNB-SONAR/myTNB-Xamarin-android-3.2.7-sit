@@ -9493,44 +9493,73 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                rootView.SetBackgroundResource(0);
-                scrollViewContent.SetBackgroundResource(0);
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                    ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
+                    try
+                    {
+                        newAccountLayout.Visibility = ViewStates.Gone;
+                        allGraphLayout.Visibility = ViewStates.Gone;
+                        smStatisticContainer.Visibility = ViewStates.Gone;
 
-                refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
-                SetMaintenanceLayoutParams();
-                btnNewRefresh.Visibility = ViewStates.Gone;
+                        if (isREAccount || isSMR)
+                        {
 
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    if (string.IsNullOrEmpty(contentTxt))
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage("bcrmDownMessage"), FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            rootView.SetBackgroundResource(0);
+                            scrollViewContent.SetBackgroundResource(0);
+                            try
+                            {
+                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+
+                        refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
+                        SetMaintenanceLayoutParams();
+                        StopAddressShimmer();
+                        StopRangeShimmer();
+                        StopGraphShimmer();
+                        StopSMStatisticShimmer();
+                        energyTipsView.Visibility = ViewStates.Gone;
+                        btnNewRefresh.Visibility = ViewStates.Gone;
+
+                        if (!string.IsNullOrEmpty(contentTxt))
+                        {
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                            }
+                        }
+                        else
+                        {
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("", FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("");
+                            }
+                        }
                     }
-                    else
+                    catch (System.Exception e)
                     {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(contentTxt))
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage("bcrmDownMessage"));
-                    }
-                    else
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
-                    }
-                }
+
+                    isChangeVirtualHeightNeed = true;
+                    SetVirtualHeightParams(6f);
+                });
             }
             catch (System.Exception e)
             {
