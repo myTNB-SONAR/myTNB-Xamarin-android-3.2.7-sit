@@ -104,9 +104,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                     {
-                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                        contentText = accountChargeseResponse.Data.DisplayMessage;
                     }
 
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
@@ -140,9 +140,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                         {
-                            contentText = accountChargeseResponse.Data.RefreshMessage;
+                            contentText = accountChargeseResponse.Data.DisplayMessage;
                         }
 
                         if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
@@ -187,9 +187,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshMessage))
+                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
                         {
-                            contentText = accountBillPayResponse.Data.RefreshMessage;
+                            contentText = accountBillPayResponse.Data.DisplayMessage;
                         }
 
                         if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
@@ -311,9 +311,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshMessage))
+                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
                     {
-                        contentText = accountBillPayResponse.Data.RefreshMessage;
+                        contentText = accountBillPayResponse.Data.DisplayMessage;
                     }
 
                     if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
@@ -427,9 +427,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                     {
-                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                        contentText = accountChargeseResponse.Data.DisplayMessage;
                     }
 
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
