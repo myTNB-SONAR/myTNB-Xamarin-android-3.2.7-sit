@@ -9488,5 +9488,54 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
             }
         }
+
+        public void OnShowPlannedDowntimeScreen(string contentTxt)
+        {
+            try
+            {
+                rootView.SetBackgroundResource(0);
+                scrollViewContent.SetBackgroundResource(0);
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                    ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
+                SetMaintenanceLayoutParams();
+                btnNewRefresh.Visibility = ViewStates.Gone;
+
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    if (string.IsNullOrEmpty(contentTxt))
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage("bcrmDownMessage"), FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(contentTxt))
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage("bcrmDownMessage"));
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
