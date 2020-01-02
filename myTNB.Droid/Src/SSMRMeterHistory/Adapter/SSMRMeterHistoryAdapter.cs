@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
 			TextViewUtils.SetMuseoSans500Typeface(vh.ssmrDate, vh.ssmrKWhValue);
             TextViewUtils.SetMuseoSans300Typeface(vh.ssmrDescription, vh.ssmrForDate);
 
-            if (model.ReadingType.ToUpper() == "Estimated Reading".ToUpper())
+            if (model.ReadingType.Trim().ToUpper() == "Estimated Reading".ToUpper() || model.ReadingType.Trim().ToUpper() == "Bacaan anggaran".ToUpper())
             {
                 vh.ssmrDescription.SetTextColor(Color.ParseColor("#e44b21"));
             }
