@@ -1804,6 +1804,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void SetMyServiceRefreshScreen(string contentTxt, string buttonTxt)
+        {
+            try
+            {
+                this.mView.SetBottomLayoutBackground(true);
+                this.mView.SetMyServiceRefreshView(contentTxt, buttonTxt);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void DoMySerivceLoadMoreAccount()
         {
             try

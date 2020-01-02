@@ -205,6 +205,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
 
+        [BindView(Resource.Id.myServiceRefreshContainer)]
+        LinearLayout myServiceRefreshContainer;
+
+        [BindView(Resource.Id.myServiceRefreshImage)]
+        ImageView myServiceRefreshImage;
+
+        [BindView(Resource.Id.txtMyServiceRefreshMessage)]
+        TextView txtMyServiceRefreshMessage;
+
+        [BindView(Resource.Id.btnMyServiceRefresh)]
+        Button btnMyServiceRefresh;
+
+        [BindView(Resource.Id.myServiceContainer)]
+        LinearLayout myServiceContainer;
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -358,8 +372,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
-                TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel, txtNewLabel);
+                TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel,
+                                                    loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel, txtNewLabel,
+                                                    btnMyServiceRefresh);
 
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");
@@ -572,6 +588,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetupMyServiceView()
         {
+            myServiceContainer.Visibility = ViewStates.Visible;
+            myServiceRefreshContainer.Visibility = ViewStates.Gone;
+
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
@@ -1597,6 +1616,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             HomeMenuUtils.ResetAll();
 
+            myServiceContainer.Visibility = ViewStates.Visible;
+            myServiceRefreshContainer.Visibility = ViewStates.Gone;
+
             isRefreshShown = false;
 
             IsLoadMoreButtonVisible(false, false);
@@ -2298,6 +2320,61 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             );
             mSomethingWrongExceptionSnackBar.Show();
+        }
+
+        public void SetMyServiceRefreshView(string contentTxt, string buttonTxt)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        myServiceContainer.Visibility = ViewStates.Gone;
+                        myServiceRefreshContainer.Visibility = ViewStates.Visible;
+
+                        if (string.IsNullOrEmpty(buttonTxt))
+                        {
+                            btnMyServiceRefresh.Text = GetLabelByLanguage("refreshBtnText");
+                        }
+                        else
+                        {
+                            btnMyServiceRefresh.Text = buttonTxt;
+                        }
+
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            if (string.IsNullOrEmpty(contentTxt))
+                            {
+                                txtMyServiceRefreshMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage("serviceRefreshMessage"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtMyServiceRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                            }
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(contentTxt))
+                            {
+                                txtMyServiceRefreshMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage("serviceRefreshMessage"));
+                            }
+                            else
+                            {
+                                txtMyServiceRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                            }
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public class NewFAQScrollListener : RecyclerView.OnScrollListener

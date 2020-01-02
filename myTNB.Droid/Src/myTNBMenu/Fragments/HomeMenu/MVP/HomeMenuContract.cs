@@ -89,6 +89,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             bool CheckNeedHelp();
 
+            void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
+
         }
 
         public interface IHomeMenuPresenter
