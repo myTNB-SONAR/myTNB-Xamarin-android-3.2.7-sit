@@ -242,6 +242,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
                 if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
                 {
+                    ShowEmptyErrorPin_4();
                     return;
                 }
                 if (ConnectionUtils.HasInternetConnection(this))
