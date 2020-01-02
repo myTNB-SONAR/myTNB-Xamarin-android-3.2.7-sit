@@ -105,6 +105,23 @@ namespace myTNB_Android.Src.Billing.MVP
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(accountChargeModelList);
                 }
+                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400" && !accountChargeseResponse.Data.IsPayEnabled)
+                {
+                    string btnText = "";
+                    string contentText = "";
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    {
+                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    {
+                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    this.mView.ShowBillDetailsError(false, btnText, contentText);
+                }
                 else
                 {
                     string btnText = "";
