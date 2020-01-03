@@ -327,10 +327,5 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceContent());
             StartActivity(maintenanceScreen);
         }
-
-        public async void UpdateLanguage()
-        {
-            await LanguageUtil.CheckUpdatedLanguage();
-        }
     }
 }

@@ -247,7 +247,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                                 MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
                                 MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
                                 SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                ((NewWalkthroughActivity)Activity).UpdateLanguage();
                                 ((NewWalkthroughActivity)Activity).OnMaintenanceProceed();
                             });
                         }
@@ -265,7 +264,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                                 MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
                                 MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
                                 SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                ((NewWalkthroughActivity)Activity).UpdateLanguage();
                                 ((NewWalkthroughActivity)Activity).UpdateContent();
                             });
                         }

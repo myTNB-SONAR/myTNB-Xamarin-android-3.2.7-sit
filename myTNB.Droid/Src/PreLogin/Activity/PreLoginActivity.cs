@@ -127,11 +127,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
             DismissProgressDialog();
         }
 
-        private async void UpdateLanguage()
-        {
-            await LanguageUtil.CheckUpdatedLanguage();
-        }
-
         private void OnMaintenanceProceed()
         {
             DismissProgressDialog();
@@ -364,7 +359,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
                                 MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
                                 MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
                                 SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                UpdateLanguage();
                                 OnMaintenanceProceed();
                             });
                         }
@@ -382,7 +376,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
                                 MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
                                 MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
                                 SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                UpdateLanguage();
                                 UpdateLabels();
                             });
                         }
