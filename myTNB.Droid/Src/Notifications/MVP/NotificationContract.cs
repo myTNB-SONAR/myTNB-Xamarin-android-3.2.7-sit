@@ -199,6 +199,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             void ShowFilteredList();
 
             void OnShowNotificationDetails(UserNotificationData userNotification, int position);
+
+            void InitialSetFilterName();
         }
 
         public interface IApiNotification

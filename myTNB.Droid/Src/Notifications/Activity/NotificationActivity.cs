@@ -487,6 +487,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             selectAllCheckboxButton.SetOnCheckedChangeListener(this);
             ShowEditMode(false);
             notificationRecyclerAdapter.SetClickable(true);
+            this.userActionsListener.InitialSetFilterName();
         }
 
         public void ShowProgress()
