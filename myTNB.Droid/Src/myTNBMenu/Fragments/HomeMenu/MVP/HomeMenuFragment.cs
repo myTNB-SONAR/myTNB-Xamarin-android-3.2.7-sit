@@ -220,6 +220,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceContainer)]
         LinearLayout myServiceContainer;
 
+        [BindView(Resource.Id.myServiceHideView)]
+        LinearLayout myServiceHideView;
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
 
@@ -235,7 +238,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
 
-        private static bool isBCRMDown = false;
+        private bool isBCRMDown = false;
 
         private static bool isFirstInitiate = true;
 
@@ -481,32 +484,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 if (bcrmDownTime != null && bcrmDownTime.IsDown)
                 {
-                    isBCRMDown = true;
-                }
-                else
-                {
-                    isBCRMDown = false;
+
                 }
 
                 OnStartLoadAccount();
-
-                //if (!isBCRMDown)
-                //{
-                //    OnStartLoadAccount();
-                //}
-                //else
-                //{
-                //    IsLoadMoreButtonVisible(false, false);
-
-                //    IsMyServiceLoadMoreButtonVisible(false, false);
-
-                //    IsRearrangeButtonVisible(false);
-
-                //    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
-
-                //    SetBottomLayoutBackground(false);
-                //    this.presenter.InitiateService();
-                //}
             }
             catch (System.Exception e)
             {
@@ -542,6 +523,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetBottmLayoutParams(25f);
         }
 
+        public void SetRefreshLayoutParamsWithMyServiceHide()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.266f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.266f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(36f);
+            refreshImg.RequestLayout();
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
+
+            SetBottmLayoutParams(0);
+        }
+
         public void SetMaintenanceLayoutParams()
         {
             LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
@@ -568,6 +573,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetBottmLayoutParams(57f);
         }
 
+        public void SetMaintenanceLayoutParamsWithMyServiceHide()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.25f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.25f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(68f);
+            refreshImg.RequestLayout();
+            refreshImg.SetImageResource(Resource.Drawable.maintenance_white);
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.TopMargin = (int)DPUtils.ConvertDPToPx(16f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
+
+            SetBottmLayoutParams(0);
+        }
+
         public void SetBottmLayoutParams(float dp)
         {
             RelativeLayout.LayoutParams bottomContainerParams = bottomContainer.LayoutParameters as RelativeLayout.LayoutParams;
@@ -589,6 +620,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void SetupMyServiceView()
         {
             myServiceContainer.Visibility = ViewStates.Visible;
+            myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
 
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
@@ -634,7 +666,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    myServiceAdapter = new MyServiceAdapter(list, this.Activity, isBCRMDown, isRefreshShown);
+                    myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
                     myServiceListRecycleView.SetAdapter(myServiceAdapter);
                     currentMyServiceList.Clear();
                     currentMyServiceList.AddRange(list);
@@ -1356,39 +1388,70 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return accountsAdapter;
         }
 
-        public void ShowRefreshScreen(string contentMsg, string buttonMsg)
+        public void ShowRefreshScreen(bool isRefresh, string contentMsg, string buttonMsg)
         {
             accountListRefreshContainer.Visibility = ViewStates.Visible;
             accountListViewContainer.Visibility = ViewStates.Gone;
-            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
-            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
-            btnRefresh.Text = refreshBtnTxt;
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-            {
-                txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg, FromHtmlOptions.ModeLegacy);
-            }
-            else
-            {
-                txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg);
-            }
-            if (isBCRMDown)
-            {
-                btnRefresh.Visibility = ViewStates.Gone;
-                SetMaintenanceLayoutParams();
-            }
-            else
-            {
-                isRefreshShown = true;
-                btnRefresh.Visibility = ViewStates.Visible;
-                SetRefreshLayoutParams();
-                if (currentMyServiceList.Count > 0)
-                {
-                    myServiceAdapter = new MyServiceAdapter(currentMyServiceList, this.Activity, isBCRMDown, isRefreshShown);
-                    myServiceListRecycleView.SetAdapter(myServiceAdapter);
 
-                    myServiceAdapter.ClickChanged += OnClickChanged;
-                    this.SetIsClicked(false);
+            isRefreshShown = true;
+
+            if (!isRefresh)
+            {
+                isBCRMDown = true;
+                btnRefresh.Visibility = ViewStates.Gone;
+                if (this.presenter.GetIsMyServiceRefreshNeeded())
+                {
+                    SetMaintenanceLayoutParamsWithMyServiceHide();
                 }
+                else
+                {
+                    SetMaintenanceLayoutParams();
+                }
+
+                // TODO: Need to have the bcrmDownMessage for DashboardHome
+                string refreshMaintenanceMsg = string.IsNullOrEmpty(contentMsg) ? Utility.GetLocalizedLabel("Bills", "bcrmDownMessage") : contentMsg;
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
+                }
+            }
+            else
+            {
+                isBCRMDown = false;
+                btnRefresh.Visibility = ViewStates.Visible;
+                if (this.presenter.GetIsMyServiceRefreshNeeded())
+                {
+                    SetRefreshLayoutParamsWithMyServiceHide();
+                }
+                else
+                {
+                    SetRefreshLayoutParams();
+                }
+
+                string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
+                string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
+                btnRefresh.Text = refreshBtnTxt;
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg);
+                }
+            }
+
+            if (currentMyServiceList.Count > 0)
+            {
+                myServiceAdapter = new MyServiceAdapter(currentMyServiceList, this.Activity, isRefreshShown);
+                myServiceListRecycleView.SetAdapter(myServiceAdapter);
+
+                myServiceAdapter.ClickChanged += OnClickChanged;
+                this.SetIsClicked(false);
             }
         }
 
@@ -1617,6 +1680,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             HomeMenuUtils.ResetAll();
 
             myServiceContainer.Visibility = ViewStates.Visible;
+            myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
 
             isRefreshShown = false;
@@ -1703,6 +1767,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             searchEditText.SetQuery("", false);
 
             this.presenter.RefreshAccountSummary();
+
+            currentMyServiceList = new List<MyService>();
+
+            this.presenter.InitiateMyServiceRefresh();
+        }
+
+        [OnClick(Resource.Id.btnMyServiceRefresh)]
+        internal void OnMyServiceRefresh(object sender, EventArgs e)
+        {
+            if (this.presenter.GetIsAccountRefreshNeeded())
+            {
+                if (isBCRMDown)
+                {
+                    SetMaintenanceLayoutParams();
+                }
+                else
+                {
+                    SetRefreshLayoutParams();
+                }
+            }
+
+            HomeMenuUtils.ResetMyService();
+
+            myServiceContainer.Visibility = ViewStates.Visible;
+            myServiceHideView.Visibility = ViewStates.Gone;
+            myServiceRefreshContainer.Visibility = ViewStates.Gone;
+
+            IsMyServiceLoadMoreButtonVisible(false, false);
+
+            SetBottomLayoutBackground(false);
+
+            currentMyServiceList = new List<MyService>();
 
             this.presenter.InitiateMyServiceRefresh();
         }
@@ -2322,6 +2418,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             mSomethingWrongExceptionSnackBar.Show();
         }
 
+        public void SetMyServiceHideView()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        int mHeight = 0;
+                        mHeight = myServiceContainer.Height;
+                        LinearLayout.LayoutParams myServiceHideLayout = myServiceHideView.LayoutParameters as LinearLayout.LayoutParams;
+                        myServiceHideLayout.Height = (mHeight / 4) * 3;
+                        myServiceHideView.Visibility = ViewStates.Visible;
+                        myServiceContainer.Visibility = ViewStates.Gone;
+                        myServiceRefreshContainer.Visibility = ViewStates.Gone;
+
+                        if (isBCRMDown)
+                        {
+                            SetMaintenanceLayoutParamsWithMyServiceHide();
+                        }
+                        else
+                        {
+                            SetRefreshLayoutParamsWithMyServiceHide();
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void SetMyServiceRefreshView(string contentTxt, string buttonTxt)
         {
             try
@@ -2330,6 +2463,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
+                        myServiceHideView.Visibility = ViewStates.Gone;
                         myServiceContainer.Visibility = ViewStates.Gone;
                         myServiceRefreshContainer.Visibility = ViewStates.Visible;
 

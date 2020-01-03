@@ -23,12 +23,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         private Android.App.Activity mActivity;
 
-        private bool isBCRMDown = false;
-
         private bool isRefreshShown = false;
 
 
-        public MyServiceAdapter(List<MyService> data, Android.App.Activity Activity, bool currentBCRM, bool currentRefresh)
+        public MyServiceAdapter(List<MyService> data, Android.App.Activity Activity, bool currentRefresh)
 		{
             if (data == null)
             {
@@ -39,8 +37,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 this.myServiceList = data;
             }
             this.mActivity = Activity;
-
-            this.isBCRMDown = currentBCRM;
 
             this.isRefreshShown = currentRefresh;
         }
