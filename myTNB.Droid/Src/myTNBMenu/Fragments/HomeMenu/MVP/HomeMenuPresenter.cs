@@ -2252,6 +2252,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                 NotificationApiImpl notificationAPI = new NotificationApiImpl();
 				MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
@@ -2278,6 +2279,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
 						MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     }
+                }
+                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                 }
                 else
                 {
