@@ -872,7 +872,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
 
-                tooltipCTA.Text = "Got It!";
+                tooltipCTA.Text = Utility.GetLocalizedCommonLabel("gotIt");
                 tooltipCTA.Click += delegate
                 {
                     materialDialog.Dismiss();

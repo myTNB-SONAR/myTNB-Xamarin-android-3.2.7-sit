@@ -613,6 +613,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
                     rewardEmptyImg.RequestLayout();
 
+                    IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
+                    if (item != null)
+                    {
+                        item.SetVisible(false);
+                    }
+
                     RewardsMenuUtils.OnSetTouchDisable(false);
                 }
                 catch (System.Exception e)

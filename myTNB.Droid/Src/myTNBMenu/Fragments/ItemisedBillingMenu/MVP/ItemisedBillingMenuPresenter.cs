@@ -50,6 +50,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 storedAccountTypeValue = accountTypeValue;
                 bool showChargeRefreshState = false;
                 bool showBillRefreshState = false;
+                bool showChargeMaintenanceState = false;
+                bool showBillMaintenanceState = false;
                 List<string> accountList = new List<string>();
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
                 List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
@@ -66,6 +68,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 {
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                }
+                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400" && !accountChargeseResponse.Data.IsPayEnabled)
+                {
+                    showChargeMaintenanceState = true;
                 }
                 else
                 {
@@ -84,101 +90,159 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
                     billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.Data.ResponseData.BillPayFilterData);
                 }
+                else if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "8400")
+                {
+                    showBillMaintenanceState = true;
+                }
                 else
                 {
                     showBillRefreshState = true;
                 }
 
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                //if (bcrmEntity.IsDown)
-                //{
-                //    mView.ShowUnavailableBillContent(false);
-                //}
-                //else
-                //{
-                    if (showBillRefreshState && showChargeRefreshState)
+                if (showBillMaintenanceState && showChargeMaintenanceState)
+                {
+                    string btnText = "";
+                    string contentText = "";
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                     {
-                        mView.ShowUnavailableContent(true);
+                        contentText = accountChargeseResponse.Data.DisplayMessage;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    {
+                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    mView.ShowUnavailableContent(false, btnText, contentText);
+                }
+                else if (showBillRefreshState && showChargeRefreshState)
+                {
+                    string btnText = "";
+                    string contentText = "";
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    {
+                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    {
+                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    mView.ShowUnavailableContent(true, btnText, contentText);
+                }
+                else
+                {
+                    if (showChargeMaintenanceState)
+                    {
+                        string btnText = "";
+                        string contentText = "";
+
+                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                        {
+                            contentText = accountChargeseResponse.Data.DisplayMessage;
+                        }
+
+                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                        {
+                            btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        }
+
+                        mView.ShowUnavailableChargeContent(false, btnText, contentText);
+                    }
+                    else if (showChargeRefreshState)
+                    {
+                        string btnText = "";
+                        string contentText = "";
+
+                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                        {
+                            contentText = accountChargeseResponse.Data.RefreshMessage;
+                        }
+
+                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                        {
+                            btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        }
+
+                        mView.ShowUnavailableChargeContent(true, btnText, contentText);
                     }
                     else
                     {
-                        if (showChargeRefreshState)
+                        mView.PopulateAccountCharge(accountChargeModelList);
+                        if (accountChargeModelList != null)
                         {
-                            string btnText = "";
-                            string contentText = "";
-
-                            if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
-                            {
-                                contentText = accountChargeseResponse.Data.RefreshMessage;
-                            }
-
-                            if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
-                            {
-                                btnText = accountChargeseResponse.Data.RefreshBtnText;
-                            }
-
-                            mView.ShowUnavailableChargeContent(true, btnText, contentText);
+                            mainAccountChargeModelList = accountChargeModelList;
                         }
                         else
                         {
-                            mView.PopulateAccountCharge(accountChargeModelList);
-                            if (accountChargeModelList != null)
-                            {
-                                mainAccountChargeModelList = accountChargeModelList;
-                            }
-                            else
-                            {
-                                mainAccountChargeModelList = new List<AccountChargeModel>();
-                            }
+                            mainAccountChargeModelList = new List<AccountChargeModel>();
                         }
-
-                        if (showBillRefreshState)
-                        {
-                            string btnText = "";
-                            string contentText = "";
-
-                            if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshMessage))
-                            {
-                                contentText = accountBillPayResponse.Data.RefreshMessage;
-                            }
-
-                            if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
-                            {
-                                btnText = accountBillPayResponse.Data.RefreshBtnText;
-                            }
-
-                            mView.ShowUnavailableBillContent(true, btnText, contentText);
-                        }
-                        else
-                        {
-                            mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
-                            if (billingHistoryList != null)
-                            {
-                                mainBillingHistoryList = billingHistoryList;
-                            }
-                            else
-                            {
-                                mainBillingHistoryList = new List<AccountBillPayHistoryModel>();
-                            }
-                        }
-
-                        if (!showChargeRefreshState && !showBillRefreshState)
-                        {
-                            OnCheckToCallItemizedTutorial();
-                        }
-
-                        OnGetBillTooltipContent();
                     }
-                //}
+
+                    if (showBillMaintenanceState)
+                    {
+                        string btnText = "";
+                        string contentText = "";
+
+                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
+                        {
+                            contentText = accountBillPayResponse.Data.DisplayMessage;
+                        }
+
+                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                        {
+                            btnText = accountBillPayResponse.Data.RefreshBtnText;
+                        }
+
+                        mView.ShowUnavailableBillContent(false, btnText, contentText);
+                    }
+                    else if (showBillRefreshState)
+                    {
+                        string btnText = "";
+                        string contentText = "";
+
+                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshMessage))
+                        {
+                            contentText = accountBillPayResponse.Data.RefreshMessage;
+                        }
+
+                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                        {
+                            btnText = accountBillPayResponse.Data.RefreshBtnText;
+                        }
+
+                        mView.ShowUnavailableBillContent(true, btnText, contentText);
+                    }
+                    else
+                    {
+                        mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
+                        if (billingHistoryList != null)
+                        {
+                            mainBillingHistoryList = billingHistoryList;
+                        }
+                        else
+                        {
+                            mainBillingHistoryList = new List<AccountBillPayHistoryModel>();
+                        }
+                    }
+
+                    if (!showChargeRefreshState && !showBillRefreshState && !showChargeMaintenanceState && !showBillMaintenanceState)
+                    {
+                        OnCheckToCallItemizedTutorial();
+                    }
+
+                    OnGetBillTooltipContent();
+                }
             }
             catch (System.OperationCanceledException e)
             {
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 if (this.mView.IsActive())
                 {
-                    mView.ShowUnavailableContent(true);
+                    mView.ShowUnavailableContent(true, "", "");
                 }
 
                 Utility.LoggingNonFatalError(e);
@@ -189,7 +253,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    mView.ShowUnavailableContent(true);
+                    mView.ShowUnavailableContent(true, "", "");
                 }
 
                 Utility.LoggingNonFatalError(apiException);
@@ -200,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    mView.ShowUnavailableContent(true);
+                    mView.ShowUnavailableContent(true, "", "");
                 }
                 Utility.LoggingNonFatalError(e);
             }
@@ -213,6 +277,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 //Get Account Charges Service Call
                 storedAccountTypeValue = accountTypeValue;
                 bool showBillRefreshState = false;
+                bool showBillMaintenanceState = false;
                 List<string> accountList = new List<string>();
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
                 List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
@@ -232,22 +297,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
                     billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.Data.ResponseData.BillPayFilterData);
                 }
+                else if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "8400")
+                {
+                    showBillMaintenanceState = true;
+                }
                 else
                 {
                     showBillRefreshState = true;
                 }
 
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                //if (bcrmEntity.IsDown)
-                //{
-                //    mView.ShowUnavailableBillContent(false);
-                //}
-                //else
-                //{
+                if (showBillMaintenanceState)
+                {
+                    string btnText = "";
+                    string contentText = "";
 
-                if (showBillRefreshState)
+                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
+                    {
+                        contentText = accountBillPayResponse.Data.DisplayMessage;
+                    }
+
+                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                    {
+                        btnText = accountBillPayResponse.Data.RefreshBtnText;
+                    }
+
+                    mView.ShowUnavailableBillContent(false, btnText, contentText);
+                }
+                else if (showBillRefreshState)
                 {
                     string btnText = "";
                     string contentText = "";
@@ -278,7 +354,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
                     OnCheckToCallItemizedTutorial();
                 }
-                //}
             }
             catch (System.OperationCanceledException e)
             {
@@ -320,6 +395,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 //Get Account Charges Service Call
                 storedAccountTypeValue = accountTypeValue;
                 bool showChargeRefreshState = false;
+                bool showChargeMaintenanceState = false;
                 List<string> accountList = new List<string>();
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
                 List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
@@ -337,22 +413,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }
+                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400" && !accountChargeseResponse.Data.IsPayEnabled)
+                {
+                    showChargeMaintenanceState = true;
+                }
                 else
                 {
                     showChargeRefreshState = true;
                 }
 
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                //if (bcrmEntity.IsDown)
-                //{
-                //    mView.ShowUnavailableBillContent(false);
-                //}
-                //else
-                //{
+                if (showChargeMaintenanceState)
+                {
+                    string btnText = "";
+                    string contentText = "";
 
-                if (showChargeRefreshState)
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    {
+                        contentText = accountChargeseResponse.Data.DisplayMessage;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    {
+                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    mView.ShowUnavailableChargeContent(false, btnText, contentText);
+                }
+                else if (showChargeRefreshState)
                 {
                     string btnText = "";
                     string contentText = "";
@@ -383,7 +470,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
                     OnCheckToCallItemizedTutorial();
                 }
-                //}
             }
             catch (System.OperationCanceledException e)
             {

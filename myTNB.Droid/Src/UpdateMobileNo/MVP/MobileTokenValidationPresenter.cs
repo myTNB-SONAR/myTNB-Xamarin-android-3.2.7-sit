@@ -138,6 +138,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 {
                     // TODO : ADD REGISTRATION ERROR
                     this.mView.ShowError(verifyTokenResponse.Response.DisplayMessage);
+                    this.mView.ShowEmptyErrorPin_4();
                 }
             }
             catch (System.OperationCanceledException e)

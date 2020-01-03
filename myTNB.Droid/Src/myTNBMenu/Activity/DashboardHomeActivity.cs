@@ -252,7 +252,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
                 .SetTitle(bcrmEntity.DowntimeTextMessage)
                 .SetMessage(bcrmEntity.DowntimeMessage)
-                .SetCTALabel("Got It!")
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                 .SetCTAaction(()=>
                 {
                     this.userActionsListener.Start();

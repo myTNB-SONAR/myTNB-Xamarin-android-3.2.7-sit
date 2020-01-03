@@ -822,7 +822,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             StartActivity(viewReceipt);
         }
 
-        public void ShowUnavailableContent(bool isShowRefresh)
+        public void ShowUnavailableContent(bool isShowRefresh, string btnText, string contentText)
         {
             billingHistoryDetailsContent.Visibility = ViewStates.Gone;
             unavailableBillContainer.Visibility = ViewStates.Visible;
@@ -830,14 +830,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (isShowRefresh)
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.bg_application_status);
-                unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
-                btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                
+                if (!string.IsNullOrEmpty(contentText))
+                {
+                    unavailableBillMsg.TextFormatted = GetFormattedText(contentText);
+                }
+                else
+                {
+                    unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                }
+                if (!string.IsNullOrEmpty(btnText))
+                {
+                    btnRefresh.Text = btnText;
+                }
+                else
+                {
+                    btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                }
                 btnRefresh.Visibility = ViewStates.Visible;
             }
             else
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.downtime_banner);
-                unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                if (!string.IsNullOrEmpty(contentText))
+                {
+                    unavailableBillMsg.TextFormatted = GetFormattedText(contentText);
+                }
+                else
+                {
+                    unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                }
                 btnRefresh.Visibility = ViewStates.Gone;
             }
         }

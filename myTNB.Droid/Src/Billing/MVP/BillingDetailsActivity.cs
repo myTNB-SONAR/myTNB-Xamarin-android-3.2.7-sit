@@ -317,7 +317,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     }
                     else
                     {
-                        refreshBillingDetailMessage.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                        refreshBillingDetailMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Bills", "bcrmDownMessage"));
                     }
                     btnBillingDetailefresh.Visibility = ViewStates.Gone;
                 }

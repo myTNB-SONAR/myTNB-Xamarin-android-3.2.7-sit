@@ -572,6 +572,26 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         }
 
+        public void InitialSetFilterName()
+        {
+            try
+            {
+                NotificationFilterEntity filter = new NotificationFilterEntity();
+                filter = NotificationFilterEntity.GetActive();
+                if (filter != null)
+                {
+                    if (!string.IsNullOrEmpty(filter.Title))
+                    {
+                        this.mView.ShowNotificationFilterName(filter.Title);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowFilteredList()
         {
             try
