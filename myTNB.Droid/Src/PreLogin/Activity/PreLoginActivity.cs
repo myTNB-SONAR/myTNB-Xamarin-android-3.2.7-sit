@@ -19,6 +19,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
+using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.SSMR.Util;
@@ -124,6 +125,20 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
 
             DismissProgressDialog();
+        }
+
+        private async void UpdateLanguage()
+        {
+            await LanguageUtil.CheckUpdatedLanguage();
+        }
+
+        private void OnMaintenanceProceed()
+        {
+            DismissProgressDialog();
+            Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceTitle());
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceContent());
+            StartActivity(maintenanceScreen);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -340,15 +355,41 @@ namespace myTNB_Android.Src.PreLogin.Activity
                         MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                         _ = CheckAppMasterDataDone();
                     }
+                    else if (MyTNBAccountManagement.GetInstance().GetIsAppMasterMaintenance())
+                    {
+                        try
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                UpdateLanguage();
+                                OnMaintenanceProceed();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
                     else
                     {
-                        RunOnUiThread(() =>
+                        try
                         {
-                            MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                            MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
-                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                            UpdateLabels();
-                        });
+                            RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                UpdateLanguage();
+                                UpdateLabels();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                     }
                 }
                 else

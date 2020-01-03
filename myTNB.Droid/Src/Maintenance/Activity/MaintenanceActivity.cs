@@ -132,6 +132,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
         public void ShowLaunchViewActivity()
         {
             Intent LaunchViewIntent = new Intent(this, typeof(LaunchViewActivity));
+            LaunchViewActivity.MAKE_INITIAL_CALL = true;
+            LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(LaunchViewIntent);
         }
 

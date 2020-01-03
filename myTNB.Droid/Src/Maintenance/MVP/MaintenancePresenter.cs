@@ -92,15 +92,11 @@ namespace myTNB_Android.Src.Maintenance.MVP
                 else
                 {
                     Console.WriteLine("Excution time enters else");
-                    // TODO : SHOW ERROR
-                    this.mView.ShowRetryOptionApiException(null);
                 }
                 }
                 else
                 {
                     Console.WriteLine("Excution time enters else");
-                    // TODO : SHOW ERROR
-                    this.mView.ShowRetryOptionApiException(null);
                 }
 
 
@@ -109,20 +105,14 @@ namespace myTNB_Android.Src.Maintenance.MVP
             }
             catch (ApiException apiException)
             {
-                //Log.Debug(TAG, "Api Exception " + apiException.GetContentAs<string>());
-                //Log.Debug(TAG, "Api Exception " + apiException.StatusCode);
-                //Log.Debug(TAG, "Api Exception " + apiException);
-                this.mView.ShowRetryOptionApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
-                this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
             catch (Exception e)
             {
-                this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
         }
