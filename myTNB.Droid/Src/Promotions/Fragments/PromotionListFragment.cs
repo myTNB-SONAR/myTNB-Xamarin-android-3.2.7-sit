@@ -36,6 +36,12 @@ namespace myTNB_Android.Src.Promotions.Fragments
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
+        [BindView(Resource.Id.promotionRefreshLayout)]
+        LinearLayout promotionRefreshLayout;
+
+        [BindView(Resource.Id.promotion_main_layout)]
+        FrameLayout promotion_main_layout;
+
         [BindView(Resource.Id.no_promotion_layout)]
         LinearLayout noPromotionLayout;
 
@@ -50,6 +56,13 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         [BindView(Resource.Id.no_promotion_info)]
         public TextView textNoPromotionInfo;
+
+        [BindView(Resource.Id.txtRefresh)]
+        public TextView txtRefresh;
+
+        [BindView(Resource.Id.btnRefresh)]
+        public Button btnRefresh;
+
 
         private string savedTimeStamp = "0000000";
 
@@ -78,18 +91,14 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 adapter = new PromotionListAdapter(Activity, promotions);
                 mPromotionRecyclerView.SetAdapter(adapter);
 
-                TextViewUtils.SetMuseoSans300Typeface(textNoPromotion, textNoPromotionInfo);
+                TextViewUtils.SetMuseoSans300Typeface(textNoPromotion, textNoPromotionInfo, txtRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
+
+                mProgressBar.Visibility = ViewStates.Gone;
+
+                this.userActionsListener.GetSavedPromotionTimeStamp();
 
                 ShowProgressBar();
-                this.userActionsListener.GetSavedPromotionTimeStamp();
-                //ShowPromotion(true);
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
 
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -136,8 +145,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     }
                     else
                     {
-                        noPromotionLayout.Visibility = ViewStates.Visible;
-                        mPromotionRecyclerView.Visibility = ViewStates.Gone;
+                        // TODO: Show Refresh Screen
+                        promotion_main_layout.Visibility = ViewStates.Gone;
+                        promotionRefreshLayout.Visibility = ViewStates.Visible;
+                        btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                        txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
                     }
 
                     try
@@ -156,10 +168,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                         Utility.LoggingNonFatalError(ex);
                     }
 
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
+                    HideProgressBar();
                 }
                 catch (System.Exception ex)
                 {
@@ -218,12 +227,35 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void ShowProgressBar()
         {
-            mProgressBar.Visibility = ViewStates.Gone;
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressBar()
         {
-            mProgressBar.Visibility = ViewStates.Gone;
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSavedTimeStamp(string mSavedTimeStamp)
@@ -297,7 +329,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 }
                 else
                 {
-                    ShowPromotion(false);
+                    this.userActionsListener.OnGetPromotions();
                 }
             }
             catch (System.Exception ex)
@@ -321,22 +353,6 @@ namespace myTNB_Android.Src.Promotions.Fragments
             base.OnResume();
             try
             {
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                if (items != null && items.Count > 0)
-                {
-                    promotions = new List<PromotionsModelV2>();
-                    promotions.AddRange(items);
-                    adapter = new PromotionListAdapter(Activity, promotions);
-                    mPromotionRecyclerView.SetAdapter(adapter);
-                    adapter.ItemClick += OnItemClick;
-                    adapter.NotifyDataSetChanged();
-                }
-                else
-                {
-                    noPromotionLayout.Visibility = ViewStates.Visible;
-                    mPromotionRecyclerView.Visibility = ViewStates.Gone;
-                }
                 var act = this.Activity as AppCompatActivity;
 
                 var actionBar = act.SupportActionBar;

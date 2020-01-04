@@ -44,7 +44,6 @@ namespace myTNB_Android.Src.Promotions.MVP
                         wtManager.CreateTable();
                         wtManager.InsertListOfItems(responseModel.Data);
                         mView.ShowPromotionTimestamp(true);
-                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
                     }
                     else
                     {
@@ -53,7 +52,6 @@ namespace myTNB_Android.Src.Promotions.MVP
                 }
                 catch (Exception e)
                 {
-                    Log.Error("API Exception", e.StackTrace);
                     mView.ShowPromotionTimestamp(false);
                     Utility.LoggingNonFatalError(e);
                 }
@@ -80,17 +78,16 @@ namespace myTNB_Android.Src.Promotions.MVP
                         wtManager.CreateTable();
                         wtManager.InsertListOfItems(responseModel.Data);
                         mView.ShowPromotion(true);
-                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
                     }
                     else
                     {
                         mView.ShowPromotion(false);
+
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Error("API Exception", e.StackTrace);
-                    mView.ShowPromotion(true);
+                    mView.ShowPromotion(false);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -129,7 +126,6 @@ namespace myTNB_Android.Src.Promotions.MVP
             }
             catch (Exception e)
             {
-                Log.Error("DB Exception", e.StackTrace);
                 mView.OnSavedTimeStamp(null);
                 Utility.LoggingNonFatalError(e);
             }

@@ -4,9 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootView">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/promotionRefreshLayout"
+        android:visibility="gone"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/refreshBg"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="-35dp"
+            android:foregroundGravity="center_horizontal|center"
+            android:layout_gravity="bottom"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_smr" />
+        <ImageView
+            android:id="@+id/refreshImg"
+            android:layout_width="177dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="-105dp"
+            android:foregroundGravity="center_horizontal|center"
+            android:layout_gravity="center"
+            android:src="@drawable/refresh_1" />
+        <TextView
+            android:id="@+id/txtRefresh"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="#8b8b8b"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Uh oh, looks like this page is unplugged. Refresh to stay plugged in!"
+            android:textSize="16dp"
+            android:lineSpacingExtra="4dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Refresh Now"
+            android:id="@+id/btnRefresh"
+            style="@style/Theme.RefreshButton" />
+    </LinearLayout>
     <FrameLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:id="@+id/promotion_main_layout"
+        android:visibility="visible"
         android:background="@color/greyBackground">
         <LinearLayout
             android:id="@+id/no_promotion_layout"
