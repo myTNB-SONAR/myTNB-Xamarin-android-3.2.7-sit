@@ -118,7 +118,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
                         PromotionsEntityV2 wtManager = new PromotionsEntityV2();
                         List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                        if (items != null)
+                        if (items != null && items.Count > 0)
                         {
                             promotions = new List<PromotionsModelV2>();
                             promotions.AddRange(items);
@@ -126,6 +126,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
                             mPromotionRecyclerView.SetAdapter(adapter);
                             adapter.ItemClick += OnItemClick;
                             adapter.NotifyDataSetChanged();
+                        }
+                        else
+                        {
+                            noPromotionLayout.Visibility = ViewStates.Visible;
+                            mPromotionRecyclerView.Visibility = ViewStates.Gone;
                         }
 
                     }
@@ -279,6 +284,14 @@ namespace myTNB_Android.Src.Promotions.Fragments
                                 ShowPromotion(true);
                             }
                         }
+                        else
+                        {
+                            this.userActionsListener.OnGetPromotions();
+                        }
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetPromotions();
                     }
 
                 }
@@ -310,7 +323,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
             {
                 PromotionsEntityV2 wtManager = new PromotionsEntityV2();
                 List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
+                if (items != null && items.Count > 0)
                 {
                     promotions = new List<PromotionsModelV2>();
                     promotions.AddRange(items);
@@ -318,6 +331,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     mPromotionRecyclerView.SetAdapter(adapter);
                     adapter.ItemClick += OnItemClick;
                     adapter.NotifyDataSetChanged();
+                }
+                else
+                {
+                    noPromotionLayout.Visibility = ViewStates.Visible;
+                    mPromotionRecyclerView.Visibility = ViewStates.Gone;
                 }
                 var act = this.Activity as AppCompatActivity;
 
