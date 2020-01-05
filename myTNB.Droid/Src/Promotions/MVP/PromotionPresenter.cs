@@ -81,12 +81,17 @@ namespace myTNB_Android.Src.Promotions.MVP
                     }
                     else
                     {
+                        PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
                         mView.ShowPromotion(false);
-
                     }
                 }
                 catch (Exception e)
                 {
+                    PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                    wtManager.DeleteTable();
+                    wtManager.CreateTable();
                     mView.ShowPromotion(false);
                     Utility.LoggingNonFatalError(e);
                 }

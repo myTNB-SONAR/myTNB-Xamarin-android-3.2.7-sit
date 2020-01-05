@@ -230,6 +230,17 @@ namespace myTNB_Android.Src.Login.MVP
 
                         try
                         {
+                            PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
+                        try
+                        {
                             UserEntity.UpdatePhoneNumber(userResponse.GetData().MobileNo);
                             UserSessions.SavePhoneVerified(mSharedPref, true);
                         }
@@ -297,119 +308,6 @@ namespace myTNB_Android.Src.Login.MVP
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                 }
-
-                                // Save promotions
-                                try
-                                {
-                                    PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                                    wtManager.CreateTable();
-                                    List<PromotionsParentEntityV2> saveditems = wtManager.GetAllItems();
-                                    if (saveditems != null && saveditems.Count > 0)
-                                    {
-                                        PromotionsParentEntityV2 entity = saveditems[0];
-                                        if (entity != null)
-                                        {
-                                            savedPromoTimeStamp = entity.Timestamp;
-                                        }
-                                    }
-
-                                    //Get Sitecore promotion timestamp
-                                    bool getSiteCorePromotions = false;
-                                    cts = new CancellationTokenSource();
-                                    await Task.Factory.StartNew(() =>
-                                    {
-                                        try
-                                        {
-                                            string density = DPUtils.GetDeviceDensity(Application.Context);
-                                            GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                                            string json = getItemsService.GetPromotionsV2TimestampItem();
-                                            PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
-                                            if (responseModel.Status.Equals("Success"))
-                                            {
-                                                //PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                                                wtManager.DeleteTable();
-                                                wtManager.CreateTable();
-                                                wtManager.InsertListOfItems(responseModel.Data);
-                                                List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-                                                if (items != null)
-                                                {
-                                                    PromotionsParentEntityV2 entity = items[0];
-                                                    if (entity != null)
-                                                    {
-                                                        if (!entity.Timestamp.Equals(savedPromoTimeStamp))
-                                                        {
-                                                            getSiteCorePromotions = true;
-                                                        }
-                                                        else
-                                                        {
-                                                            getSiteCorePromotions = false;
-                                                        }
-                                                    }
-                                                }
-
-                                                Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
-                                            }
-                                            else
-                                            {
-                                                getSiteCorePromotions = true;
-                                            }
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            if (mView.IsActive())
-                                            {
-                                                this.mView.HideProgressDialog();
-                                            }
-                                            Log.Error("API Exception", e.StackTrace);
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                    }).ContinueWith((Task previous) =>
-                                    {
-                                    }, cts.Token);
-
-
-
-                                    if (getSiteCorePromotions)
-                                    {
-                                        cts = new CancellationTokenSource();
-                                        await Task.Factory.StartNew(() =>
-                                        {
-                                            try
-                                            {
-                                                string density = DPUtils.GetDeviceDensity(Application.Context);
-                                                GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                                                string json = getItemsService.GetPromotionsV2Item();
-                                                PromotionsV2ResponseModel promoResponseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
-                                                if (promoResponseModel.Status.Equals("Success"))
-                                                {
-                                                    PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                                                    wtManager2.DeleteTable();
-                                                    wtManager2.CreateTable();
-                                                    wtManager2.InsertListOfItems(promoResponseModel.Data);
-                                                    Log.Debug("DashboardPresenter", promoResponseModel.Data.ToString());
-                                                }
-
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                Log.Error("API Exception", e.StackTrace);
-                                                Utility.LoggingNonFatalError(e);
-                                            }
-                                        }).ContinueWith((Task previous) =>
-                                        {
-                                        }, cts.Token);
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    if (mView.IsActive())
-                                    {
-                                        this.mView.HideProgressDialog();
-                                    }
-                                    Log.Error("DB Exception", e.StackTrace);
-                                    Utility.LoggingNonFatalError(e);
-                                }
-
 
                                 //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
                                 if (this.mView.IsActive())

@@ -51,9 +51,6 @@ namespace myTNB_Android.Src.Promotions.Fragments
         [BindView(Resource.Id.promotion_list_recycler_view)]
         public RecyclerView mPromotionRecyclerView;
 
-        [BindView(Resource.Id.no_promotion_title)]
-        public TextView textNoPromotion;
-
         [BindView(Resource.Id.no_promotion_info)]
         public TextView textNoPromotionInfo;
 
@@ -91,7 +88,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 adapter = new PromotionListAdapter(Activity, promotions);
                 mPromotionRecyclerView.SetAdapter(adapter);
 
-                TextViewUtils.SetMuseoSans300Typeface(textNoPromotion, textNoPromotionInfo, txtRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(textNoPromotionInfo, txtRefresh);
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
                 mProgressBar.Visibility = ViewStates.Gone;
@@ -139,13 +136,14 @@ namespace myTNB_Android.Src.Promotions.Fragments
                         else
                         {
                             noPromotionLayout.Visibility = ViewStates.Visible;
-                            mPromotionRecyclerView.Visibility = ViewStates.Gone;
+                            promotion_main_layout.Visibility = ViewStates.Gone;
+                            // LinSiong TODO: To update what's new empty image
+                            textNoPromotionInfo.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
                         }
 
                     }
                     else
                     {
-                        // TODO: Show Refresh Screen
                         promotion_main_layout.Visibility = ViewStates.Gone;
                         promotionRefreshLayout.Visibility = ViewStates.Visible;
                         btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
@@ -331,6 +329,30 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 {
                     this.userActionsListener.OnGetPromotions();
                 }
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        // On Press Refresh button action
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            try
+            {
+                promotion_main_layout.Visibility = ViewStates.Visible;
+                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                promotions = new List<PromotionsModelV2>();
+                adapter = new PromotionListAdapter(Activity, promotions);
+                mPromotionRecyclerView.SetAdapter(adapter);
+                adapter.ItemClick += OnItemClick;
+                adapter.NotifyDataSetChanged();
+
+                this.userActionsListener.GetSavedPromotionTimeStamp();
+
+                ShowProgressBar();
             }
             catch (System.Exception ex)
             {

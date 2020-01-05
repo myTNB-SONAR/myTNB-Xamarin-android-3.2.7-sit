@@ -1066,12 +1066,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             ShowPromotion(true);
                         }
                     }
+                    else
+                    {
+                        this.userActionsListener.OnGetPromotions();
+                    }
+                }
+                else
+                {
+                    this.userActionsListener.OnGetPromotions();
                 }
 
             }
             else
             {
-                ShowPromotion(false);
+                this.userActionsListener.OnGetPromotions();
             }
         }
 

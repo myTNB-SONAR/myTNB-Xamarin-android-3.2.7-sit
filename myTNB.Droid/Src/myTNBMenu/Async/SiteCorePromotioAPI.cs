@@ -82,6 +82,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         getSiteCorePromotions = false;
                                     }
                                 }
+                                else
+                                {
+                                    getSiteCorePromotions = true;
+                                }
+                            }
+                            else
+                            {
+                                getSiteCorePromotions = true;
                             }
                         }
                         else
@@ -106,11 +114,25 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         wtManager2.DeleteTable();
                                         wtManager2.CreateTable();
                                         wtManager2.InsertListOfItems(promoResponseModel.Data);
+
+                                        if (mHomeView != null)
+                                        {
+                                            mHomeView.ShowPromotion(true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                                        wtManager3.DeleteTable();
+                                        wtManager3.CreateTable();
                                     }
 
                                 }
                                 catch (System.Exception e)
                                 {
+                                    PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                                    wtManager3.DeleteTable();
+                                    wtManager3.CreateTable();
                                     Utility.LoggingNonFatalError(e);
                                 }
                             }).ContinueWith((Task previous) =>

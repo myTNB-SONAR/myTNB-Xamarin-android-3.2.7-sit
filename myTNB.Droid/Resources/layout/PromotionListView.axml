@@ -50,45 +50,40 @@
             android:id="@+id/btnRefresh"
             style="@style/Theme.RefreshButton" />
     </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_promotion_layout"
+        android:visibility="gone"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/no_promotion_img"
+            android:layout_height="94dp"
+            android:layout_width="102dp"
+            android:layout_marginTop="88dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_reward_empty"/>
+        <TextView
+            android:id="@+id/no_promotion_info"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="#8b8b8b"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
+    </LinearLayout>
     <FrameLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/promotion_main_layout"
         android:visibility="visible"
         android:background="@color/greyBackground">
-        <LinearLayout
-            android:id="@+id/no_promotion_layout"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/no_promotion_img"
-                android:layout_height="120dp"
-                android:layout_width="120dp"
-                android:src="@drawable/ic_empty_promotions"
-                android:scaleType="fitXY" />
-            <TextView
-                android:text="No promotions currently"
-                android:id="@+id/no_promotion_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:textColor="@color/tunaGrey" />
-            <TextView
-                android:text="Check back later!"
-                android:id="@+id/no_promotion_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:textColor="@color/tunaGrey" />
-        </LinearLayout>
       <android.support.v7.widget.RecyclerView
            android:id="@+id/promotion_list_recycler_view"
            android:scrollbars="vertical"
