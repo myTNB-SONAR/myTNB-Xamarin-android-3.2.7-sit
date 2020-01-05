@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         [BindView(Resource.Id.emptyLayout)]
         LinearLayout emptyLayout;
 
-        [BindView(Resource.Id.notificationSelectAll)]
+        [BindView(Resource.Id.notificationSelectAllHeader)]
         LinearLayout notificationSelectAllContainer;
 
         [BindView(Resource.Id.selectAllCheckBox)]
@@ -89,6 +89,10 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.selectAllNotificationLabel)]
         TextView selectAllNotificationLabel;
+
+        [BindView(Resource.Id.refresh_image)]
+        ImageView refresh_image;
+        
 
         private IMenu notificationMenu;
         NotificationRecyclerAdapter notificationRecyclerAdapter;
@@ -145,7 +149,11 @@ namespace myTNB_Android.Src.Notifications.Activity
                 SetInitialNotificationState();
                 if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
                 {
-                    ShowRefreshView(null,null);
+                    ShowRefreshView(true, null,null);
+                }
+                else if (MyTNBAccountManagement.GetInstance().IsNotificationServiceMaintenance())
+                {
+                    ShowRefreshView(false, null, null);
                 }
                 else
                 {
@@ -525,7 +533,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             refreshLayout.Visibility = ViewStates.Gone;
         }
 
-        public void ShowRefreshView(string contentTxt, string btnTxt)
+        public void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt)
         {
             try
             {
@@ -539,13 +547,36 @@ namespace myTNB_Android.Src.Notifications.Activity
                     notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
                     notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                 }
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+
+                if (isRefresh)
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    refresh_image.SetImageResource(Resource.Drawable.refresh_1);
+
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage")) : Html.FromHtml(contentTxt);
+                    }
+
+                    btnNewRefresh.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage")) : Html.FromHtml(contentTxt);
+                    // LinSiong TODO: update bcrmdown to notification
+                    refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Bills", "bcrmDownMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Bills", "bcrmDownMessage")) : Html.FromHtml(contentTxt);
+                    }
+
+                    btnNewRefresh.Visibility = ViewStates.Gone;
                 }
             }
             catch (Exception e)

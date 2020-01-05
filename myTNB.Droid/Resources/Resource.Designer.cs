@@ -9910,8 +9910,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e032b
 			public const int emptyItemisedBillingList = 2131624747;
 			
-			// aapt resource value: 0x7f0e03f8
-			public const int emptyLayout = 2131624952;
+			// aapt resource value: 0x7f0e03f9
+			public const int emptyLayout = 2131624953;
 			
 			// aapt resource value: 0x7f0e04d3
 			public const int empty_smr_history_container = 2131625171;
@@ -10951,8 +10951,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e03d8
 			public const int notification_main_column_container = 2131624920;
 			
-			// aapt resource value: 0x7f0e03f7
-			public const int notification_recyclerView = 2131624951;
+			// aapt resource value: 0x7f0e03f8
+			public const int notification_recyclerView = 2131624952;
 			
 			// aapt resource value: 0x7f0e050f
 			public const int ocrLoadingScreen = 2131625231;
@@ -11227,8 +11227,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e053d
 			public const int reference_number_value = 2131625277;
 			
-			// aapt resource value: 0x7f0e03fa
-			public const int refreshBg = 2131624954;
+			// aapt resource value: 0x7f0e03f7
+			public const int refreshBg = 2131624951;
 			
 			// aapt resource value: 0x7f0e0128
 			public const int refreshBillingDetailImg = 2131624232;
@@ -12721,8 +12721,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e03ed
 			public const int txtNotificationTypeTitle = 2131624941;
 			
-			// aapt resource value: 0x7f0e03f9
-			public const int txtNotificationsContent = 2131624953;
+			// aapt resource value: 0x7f0e03fa
+			public const int txtNotificationsContent = 2131624954;
 			
 			// aapt resource value: 0x7f0e029f
 			public const int txtNumber_1 = 2131624607;

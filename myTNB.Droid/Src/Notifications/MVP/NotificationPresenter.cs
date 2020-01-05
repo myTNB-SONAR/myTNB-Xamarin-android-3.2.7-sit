@@ -408,7 +408,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     }
                                     else
                                     {
-                                        this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                        this.mView.ShowRefreshView(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
@@ -416,11 +416,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen
+                                    this.mView.ShowRefreshView(false, response.Data.DisplayMessage, response.Data.RefreshBtnText);
                                 }
                                 else
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                    this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                    this.mView.ShowRefreshView(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
                                 }
 
                                 this.mView.HideQueryProgress();
@@ -430,14 +431,14 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                                 this.mView.HideQueryProgress();
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                this.mView.ShowRefreshView(null, null);
+                                this.mView.ShowRefreshView(true, null, null);
                                 Utility.LoggingNonFatalError(apiException);
                             }
                             catch (Exception e)
                             {
                                 this.mView.HideQueryProgress();
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                this.mView.ShowRefreshView(null, null);
+                                this.mView.ShowRefreshView(true, null, null);
                                 Utility.LoggingNonFatalError(e);
                             }
                         }
@@ -451,7 +452,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         this.mView.HideQueryProgress();
                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                        this.mView.ShowRefreshView(null, null);
+                        this.mView.ShowRefreshView(true, null, null);
                     }
 
                 }
@@ -459,7 +460,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     this.mView.HideQueryProgress();
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                    this.mView.ShowRefreshView(null, null);
+                    this.mView.ShowRefreshView(true, null, null);
                 }
             }
             catch (ApiException apiException)
@@ -467,7 +468,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                 this.mView.HideQueryProgress();
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                this.mView.ShowRefreshView(null, null);
+                this.mView.ShowRefreshView(true, null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -475,7 +476,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                 this.mView.HideQueryProgress();
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                this.mView.ShowRefreshView(null, null);
+                this.mView.ShowRefreshView(true, null, null);
                 Utility.LoggingNonFatalError(e);
             }
 
