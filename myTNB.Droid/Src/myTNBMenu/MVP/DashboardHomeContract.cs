@@ -291,6 +291,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnGetSSMRMeterReadingThreePhaseScreens();
 
             void OnResetRewardPromotionThread();
+
+            void OnResumeUpdatePromotionUnReadCounter();
         }
 	}
 }
