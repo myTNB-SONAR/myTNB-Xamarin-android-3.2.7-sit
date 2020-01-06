@@ -569,11 +569,11 @@ namespace myTNB_Android.Src.Notifications.Activity
                     refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Bills", "bcrmDownMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Bills", "bcrmDownMessage")) : Html.FromHtml(contentTxt);
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage")) : Html.FromHtml(contentTxt);
                     }
 
                     btnNewRefresh.Visibility = ViewStates.Gone;
