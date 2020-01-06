@@ -165,7 +165,12 @@
 
             public struct ItemPath
             {
+
+#if DEBUG || MASTER
+                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV4";
+#else
                 public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+#endif
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";
