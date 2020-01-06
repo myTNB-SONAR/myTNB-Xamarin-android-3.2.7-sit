@@ -666,23 +666,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
-                    myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                    currentMyServiceList.Clear();
-                    currentMyServiceList.AddRange(list);
-                    myServiceAdapter.ClickChanged += OnClickChanged;
-                    this.SetIsClicked(false);
                     try
                     {
-                        myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
-                        myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                        myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
+                        myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                        currentMyServiceList.Clear();
+                        currentMyServiceList.AddRange(list);
+                        myServiceAdapter.ClickChanged += OnClickChanged;
+                        this.SetIsClicked(false);
+                        try
+                        {
+                            myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
+                            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        myServiceShimmerView.Visibility = ViewStates.Gone;
+                        myServiceView.Visibility = ViewStates.Visible;
                     }
-                    catch (System.Exception e)
+                    catch (System.Exception ex)
                     {
-                        Utility.LoggingNonFatalError(e);
+                        Utility.LoggingNonFatalError(ex);
                     }
-                    myServiceShimmerView.Visibility = ViewStates.Gone;
-                    myServiceView.Visibility = ViewStates.Visible;
                 });
             }
             catch (System.Exception e)
@@ -703,17 +710,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(4), this.Activity);
-                    newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
-
-                    newFAQShimmerView.Visibility = ViewStates.Visible;
-                    newFAQView.Visibility = ViewStates.Gone;
-                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-                    if (shimmerBuilder != null)
+                    try
                     {
-                        shimmerFAQView.SetShimmer(shimmerBuilder?.Build());
+                        newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(4), this.Activity);
+                        newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+
+                        newFAQShimmerView.Visibility = ViewStates.Visible;
+                        newFAQView.Visibility = ViewStates.Gone;
+                        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                        if (shimmerBuilder != null)
+                        {
+                            shimmerFAQView.SetShimmer(shimmerBuilder?.Build());
+                        }
+                        shimmerFAQView.StartShimmer();
                     }
-                    shimmerFAQView.StartShimmer();
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)
@@ -921,8 +935,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     this.presenter.GetUserNotifications();
                     this.presenter.OnCheckMyServiceState();
                 }
-                SetNotificationIndicator();
-                HomeMenuCustomScrolling(0);
+                if (newLabel != null)
+                {
+                    SetNotificationIndicator();
+                }
+                if (summaryNestScrollView != null)
+                {
+                    HomeMenuCustomScrolling(0);
+                }
                 if (HomeMenuUtils.GetIsShowRearrangeAccountSuccessfulNeed())
                 {
                     HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
@@ -2019,64 +2039,78 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void IsMyServiceLoadMoreButtonVisible(bool isVisible, bool isRotate)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                if (isVisible)
+                Activity.RunOnUiThread(() =>
                 {
-                    myServiceLoadMoreContainer.Visibility = ViewStates.Visible;
-                    if (isRotate)
+                    try
                     {
-                        if (!isMyServiceAlreadyRotated)
+                        if (isVisible)
                         {
-                            isMyServiceAlreadyRotated = true;
-                            AnimationSet animSet = new AnimationSet(true);
-                            animSet.Interpolator = new DecelerateInterpolator();
-                            animSet.FillAfter = true;
-                            animSet.FillEnabled = true;
+                            myServiceLoadMoreContainer.Visibility = ViewStates.Visible;
+                            if (isRotate)
+                            {
+                                if (!isMyServiceAlreadyRotated)
+                                {
+                                    isMyServiceAlreadyRotated = true;
+                                    AnimationSet animSet = new AnimationSet(true);
+                                    animSet.Interpolator = new DecelerateInterpolator();
+                                    animSet.FillAfter = true;
+                                    animSet.FillEnabled = true;
 
-                            RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
-                                Dimension.RelativeToSelf, 0.5f,
-                                Dimension.RelativeToSelf, 0.5f);
+                                    RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
+                                        Dimension.RelativeToSelf, 0.5f,
+                                        Dimension.RelativeToSelf, 0.5f);
 
-                            animRotate.Duration = 500;
-                            animRotate.FillAfter = true;
-                            animSet.AddAnimation(animRotate);
+                                    animRotate.Duration = 500;
+                                    animRotate.FillAfter = true;
+                                    animSet.AddAnimation(animRotate);
 
-                            myServiceLoadMoreImg.StartAnimation(animSet);
+                                    myServiceLoadMoreImg.StartAnimation(animSet);
 
-                            myServiceLoadMoreLabel.Text = GetLabelByLanguage("showLess");
+                                    myServiceLoadMoreLabel.Text = GetLabelByLanguage("showLess");
+                                }
+                            }
+                            else
+                            {
+                                if (isMyServiceAlreadyRotated)
+                                {
+                                    isMyServiceAlreadyRotated = false;
+                                    AnimationSet animSet = new AnimationSet(true);
+                                    animSet.Interpolator = new DecelerateInterpolator();
+                                    animSet.FillAfter = true;
+                                    animSet.FillEnabled = true;
+
+                                    RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
+                                        Dimension.RelativeToSelf, 0.5f,
+                                        Dimension.RelativeToSelf, 0.5f);
+
+                                    animRotate.Duration = 500;
+                                    animRotate.FillAfter = true;
+                                    animSet.AddAnimation(animRotate);
+
+                                    myServiceLoadMoreImg.StartAnimation(animSet);
+
+                                    myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
                         }
                     }
-                    else
+                    catch (System.Exception e)
                     {
-                        if (isMyServiceAlreadyRotated)
-                        {
-                            isMyServiceAlreadyRotated = false;
-                            AnimationSet animSet = new AnimationSet(true);
-                            animSet.Interpolator = new DecelerateInterpolator();
-                            animSet.FillAfter = true;
-                            animSet.FillEnabled = true;
-
-                            RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
-                                Dimension.RelativeToSelf, 0.5f,
-                                Dimension.RelativeToSelf, 0.5f);
-
-                            animRotate.Duration = 500;
-                            animRotate.FillAfter = true;
-                            animSet.AddAnimation(animRotate);
-
-                            myServiceLoadMoreImg.StartAnimation(animSet);
-
-                            myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
-
-                        }
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
-                else
-                {
-                    myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
-                }
-            });
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void IsRearrangeButtonVisible(bool isVisible)
@@ -2126,17 +2160,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetBottomLayoutBackground(bool isMyServiceExpand)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                if (isMyServiceExpand)
+                Activity.RunOnUiThread(() =>
                 {
-                    bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg_expanded);
-                }
-                else
-                {
-                    bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg);
-                }
-            });
+                    try
+                    {
+                        if (isMyServiceExpand)
+                        {
+                            bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg_expanded);
+                        }
+                        else
+                        {
+                            bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private Snackbar mLoadBillSnackBar;
@@ -2210,10 +2258,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                Activity.RunOnUiThread(() =>
+                try
                 {
-                    StopScrolling();
-                });
+                    Activity.RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            StopScrolling();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
                 NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
             };
@@ -2226,8 +2288,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    summaryNestScrollView.ScrollTo(0, yPosition);
-                    summaryNestScrollView.RequestLayout();
+                    try
+                    {
+                        summaryNestScrollView.ScrollTo(0, yPosition);
+                        summaryNestScrollView.RequestLayout();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)
@@ -2254,8 +2323,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    LinearLayoutManager layoutManager = newFAQListRecycleView.GetLayoutManager() as LinearLayoutManager;
-                    layoutManager.ScrollToPositionWithOffset(0, 0);
+                    try
+                    {
+                        LinearLayoutManager layoutManager = newFAQListRecycleView.GetLayoutManager() as LinearLayoutManager;
+                        layoutManager.ScrollToPositionWithOffset(0, 0);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)
@@ -2323,7 +2399,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 this.Activity.RunOnUiThread(() =>
                 {
-                    OnSetupNotificationNewLabel(flag, count);
+                    try
+                    {
+                        OnSetupNotificationNewLabel(flag, count);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)

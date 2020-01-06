@@ -120,69 +120,76 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void ShowPromotion(bool success)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    if (success)
-                    {
-                        PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                        List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                        if (items != null && items.Count > 0)
-                        {
-                            noPromotionLayout.Visibility = ViewStates.Gone;
-                            promotionRefreshLayout.Visibility = ViewStates.Gone;
-                            promotionMainLayout.Visibility = ViewStates.Visible;
-                            promotions = new List<PromotionsModelV2>();
-                            promotions.AddRange(items);
-                            adapter = new PromotionListAdapter(Activity, promotions);
-                            mPromotionRecyclerView.SetAdapter(adapter);
-                            adapter.ItemClick += OnItemClick;
-                            adapter.NotifyDataSetChanged();
-                        }
-                        else
-                        {
-                            noPromotionLayout.Visibility = ViewStates.Visible;
-                            promotionRefreshLayout.Visibility = ViewStates.Gone;
-                            promotionMainLayout.Visibility = ViewStates.Gone;
-                            textNoPromotionInfo.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
-                        }
-
-                    }
-                    else
-                    {
-                        noPromotionLayout.Visibility = ViewStates.Gone;
-                        promotionRefreshLayout.Visibility = ViewStates.Visible;
-                        promotionMainLayout.Visibility = ViewStates.Gone;
-                        btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
-                        txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
-                    }
-
-                    HideProgressBar();
-
                     try
                     {
-                        if (PromotionsEntityV2.HasUnread())
+                        if (success)
                         {
-                            ((DashboardHomeActivity)this.Activity).ShowUnreadPromotions(true);
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            List<PromotionsEntityV2> items = wtManager.GetAllItems();
+                            if (items != null && items.Count > 0)
+                            {
+                                noPromotionLayout.Visibility = ViewStates.Gone;
+                                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                                promotionMainLayout.Visibility = ViewStates.Visible;
+                                promotions = new List<PromotionsModelV2>();
+                                promotions.AddRange(items);
+                                adapter = new PromotionListAdapter(Activity, promotions);
+                                mPromotionRecyclerView.SetAdapter(adapter);
+                                adapter.ItemClick += OnItemClick;
+                                adapter.NotifyDataSetChanged();
+                            }
+                            else
+                            {
+                                noPromotionLayout.Visibility = ViewStates.Visible;
+                                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                                promotionMainLayout.Visibility = ViewStates.Gone;
+                                textNoPromotionInfo.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
+                            }
+
                         }
                         else
                         {
-                            ((DashboardHomeActivity)this.Activity).HideUnreadPromotions(true);
+                            noPromotionLayout.Visibility = ViewStates.Gone;
+                            promotionRefreshLayout.Visibility = ViewStates.Visible;
+                            promotionMainLayout.Visibility = ViewStates.Gone;
+                            btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                            txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
                         }
+
+                        HideProgressBar();
+
+                        try
+                        {
+                            if (PromotionsEntityV2.HasUnread())
+                            {
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadPromotions(true);
+                            }
+                            else
+                            {
+                                ((DashboardHomeActivity)this.Activity).HideUnreadPromotions(true);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+
                     }
                     catch (System.Exception ex)
                     {
                         Utility.LoggingNonFatalError(ex);
                     }
-
-
-                }
-                catch (System.Exception ex)
-                {
-                    Utility.LoggingNonFatalError(ex);
-                }
-            });
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void OnItemClick(object sender, int position)

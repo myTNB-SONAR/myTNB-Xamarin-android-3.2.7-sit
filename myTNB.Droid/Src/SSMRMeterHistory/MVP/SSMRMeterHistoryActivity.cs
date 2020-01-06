@@ -793,8 +793,15 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    NestedScrollViewContent.ScrollTo(0, yPosition);
-                    NestedScrollViewContent.RequestLayout();
+                    try
+                    {
+                        NestedScrollViewContent.ScrollTo(0, yPosition);
+                        NestedScrollViewContent.RequestLayout();
+                    }
+                    catch (System.Exception er)
+                    {
+                        Utility.LoggingNonFatalError(er);
+                    }
                 });
             }
             catch (System.Exception e)

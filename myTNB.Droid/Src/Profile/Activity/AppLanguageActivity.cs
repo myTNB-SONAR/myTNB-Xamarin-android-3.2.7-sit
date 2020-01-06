@@ -251,14 +251,21 @@ namespace myTNB_Android.Src.Profile.Activity
                         {
                             RunOnUiThread(() =>
                             {
-                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
-                                MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                                HomeMenuUtils.ResetAll();
-                                SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
-                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                UpdateLanguage();
-                                OnMaintenanceProceed();
+                                try
+                                {
+                                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                    MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                                    HomeMenuUtils.ResetAll();
+                                    SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                    UpdateLanguage();
+                                    OnMaintenanceProceed();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Utility.LoggingNonFatalError(ex);
+                                }
                             });
                         }
                         catch (Exception e)
@@ -272,15 +279,22 @@ namespace myTNB_Android.Src.Profile.Activity
                         {
                             RunOnUiThread(() =>
                             {
-                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
-                                MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                                HomeMenuUtils.ResetAll();
-                                SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
-                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                UpdateLanguage();
-                                OnBackProceed();
-                                HideShowProgressDialog();
+                                try
+                                {
+                                    MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                    MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                                    HomeMenuUtils.ResetAll();
+                                    SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                                    SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                    UpdateLanguage();
+                                    OnBackProceed();
+                                    HideShowProgressDialog();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Utility.LoggingNonFatalError(ex);
+                                }
                             });
                         }
                         catch (Exception e)

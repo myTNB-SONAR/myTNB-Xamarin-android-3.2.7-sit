@@ -433,73 +433,80 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    mAdapter.ClearAll();
-
-                    mTabList = list;
-
-                    for (int i = 0; i < mTabList.Count; i++)
-                    {
-                        Bundle bundle = new Bundle();
-                        bundle.PutInt(Constants.REWARDS_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
-                        bundle.PutString(Constants.REWARDS_ITEM_LIST_SEARCH_STRING_KEY, mTabList[i].FragmentSearchString);
-
-                        mTabList[i].Fragment.Arguments = bundle;
-                        mAdapter.AddFragment(mTabList[i].Fragment, mTabList[i].TabTitle);
-                    }
-
-                    rewardViewPager.Adapter = mAdapter;
-                    rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
-
-                    if (mTabList != null && mTabList.Count > 1)
-                    {
-                        SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
-                        MeasureTabScroll();
-                        HighLightCurrentTab(0);
-                    }
-
-                    if (mTabList == null || (mTabList != null && mTabList.Count <= 1))
-                    {
-                        rewardsSlidingTabs.Visibility = ViewStates.Gone;
-                    }
-                    else
-                    {
-                        rewardsSlidingTabs.Visibility = ViewStates.Visible;
-                    }
-
                     try
                     {
-                        if (RewardsEntity.HasUnread())
+                        mAdapter.ClearAll();
+
+                        mTabList = list;
+
+                        for (int i = 0; i < mTabList.Count; i++)
                         {
-                            ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                            Bundle bundle = new Bundle();
+                            bundle.PutInt(Constants.REWARDS_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
+                            bundle.PutString(Constants.REWARDS_ITEM_LIST_SEARCH_STRING_KEY, mTabList[i].FragmentSearchString);
+
+                            mTabList[i].Fragment.Arguments = bundle;
+                            mAdapter.AddFragment(mTabList[i].Fragment, mTabList[i].TabTitle);
+                        }
+
+                        rewardViewPager.Adapter = mAdapter;
+                        rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
+
+                        if (mTabList != null && mTabList.Count > 1)
+                        {
+                            SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
+                            MeasureTabScroll();
+                            HighLightCurrentTab(0);
+                        }
+
+                        if (mTabList == null || (mTabList != null && mTabList.Count <= 1))
+                        {
+                            rewardsSlidingTabs.Visibility = ViewStates.Gone;
                         }
                         else
                         {
-                            ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                            rewardsSlidingTabs.Visibility = ViewStates.Visible;
                         }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Utility.LoggingNonFatalError(ex);
-                    }
 
-                    RewardsMenuUtils.OnSetTouchDisable(false);
-
-                    try
-                    {
-                        if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                        try
                         {
-                            Handler h = new Handler();
-                            Action myAction = () =>
+                            if (RewardsEntity.HasUnread())
                             {
-                                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                                OnShowRewardMenuTutorial();
-                            };
-                            h.PostDelayed(myAction, 50);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                            }
+                            else
+                            {
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+                        RewardsMenuUtils.OnSetTouchDisable(false);
+
+                        try
+                        {
+                            if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                Handler h = new Handler();
+                                Action myAction = () =>
+                                {
+                                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                                    OnShowRewardMenuTutorial();
+                                };
+                                h.PostDelayed(myAction, 50);
+                            }
+                        }
+                        catch (System.Exception exp)
+                        {
+                            Utility.LoggingNonFatalError(exp);
                         }
                     }
-                    catch (System.Exception exp)
+                    catch (System.Exception err)
                     {
-                        Utility.LoggingNonFatalError(exp);
+                        Utility.LoggingNonFatalError(err);
                     }
                 });
             }
@@ -519,19 +526,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     {
                         Action myAction = () =>
                         {
-                            Activity.RunOnUiThread(() =>
+                            try
                             {
-                                int widthS = DPUtils.GetWidth();
-                                rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
-                                int widthT = rewardsSlidingTabs.MeasuredWidth;
-
-                                if (widthS > widthT)
+                                Activity.RunOnUiThread(() =>
                                 {
-                                    int diff = widthS - widthT;
-                                    int diffOnEachItem = diff / mTabList.Count;
-                                    SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f) + diffOnEachItem / 2, (int)DPUtils.ConvertDPToPx(10f) + diffOnEachItem / 2);
-                                }
-                            });
+                                    try
+                                    {
+                                        int widthS = DPUtils.GetWidth();
+                                        rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
+                                        int widthT = rewardsSlidingTabs.MeasuredWidth;
+
+                                        if (widthS > widthT)
+                                        {
+                                            int diff = widthS - widthT;
+                                            int diffOnEachItem = diff / mTabList.Count;
+                                            SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f) + diffOnEachItem / 2, (int)DPUtils.ConvertDPToPx(10f) + diffOnEachItem / 2);
+                                        }
+                                    }
+                                    catch (Exception er)
+                                    {
+                                        Utility.LoggingNonFatalError(er);
+                                    }
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
                         };
                         rewardsSlidingTabs.Post(myAction);
                     }
@@ -595,98 +616,112 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public void SetEmptyView()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    rewardMainLayout.Visibility = ViewStates.Gone;
-
-                    rewardEmptyLayout.Visibility = ViewStates.Visible;
-
-                    rewardRefreshLayout.Visibility = ViewStates.Gone;
-
-                    txtEmptyReward.Text = Utility.GetLocalizedLabel("Rewards", "noRewards");
-
-                    LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
-                    rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
-                    rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
-                    rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
-                    rewardEmptyImg.RequestLayout();
-
-                    IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
-                    if (item != null)
+                    try
                     {
-                        item.SetVisible(false);
-                    }
+                        rewardMainLayout.Visibility = ViewStates.Gone;
 
-                    RewardsMenuUtils.OnSetTouchDisable(false);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
+                        rewardEmptyLayout.Visibility = ViewStates.Visible;
+
+                        rewardRefreshLayout.Visibility = ViewStates.Gone;
+
+                        txtEmptyReward.Text = Utility.GetLocalizedLabel("Rewards", "noRewards");
+
+                        LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
+                        rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
+                        rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
+                        rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
+                        rewardEmptyImg.RequestLayout();
+
+                        IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
+                        if (item != null)
+                        {
+                            item.SetVisible(false);
+                        }
+
+                        RewardsMenuUtils.OnSetTouchDisable(false);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception er)
+            {
+                Utility.LoggingNonFatalError(er);
+            }
         }
 
         public void SetRefreshView(string buttonText, string messageText)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    rewardMainLayout.Visibility = ViewStates.Gone;
-
-                    rewardEmptyLayout.Visibility = ViewStates.Gone;
-
-                    rewardRefreshLayout.Visibility = ViewStates.Visible;
-
-                    if (!string.IsNullOrEmpty(buttonText))
-                    {
-                        btnRefresh.Text = buttonText;
-                    }
-                    else
-                    {
-                        btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
-                    }
-
-                    if (!string.IsNullOrEmpty(messageText))
-                    {
-                        txtRefresh.Text = messageText;
-                    }
-                    else
-                    {
-                        txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
-                    }
-
-                    IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
-                    if (item != null)
-                    {
-                        item.SetVisible(false);
-                    }
-
-                    RewardsMenuUtils.OnSetTouchDisable(false);
-
                     try
                     {
-                        if (RewardsEntity.HasUnread())
+                        rewardMainLayout.Visibility = ViewStates.Gone;
+
+                        rewardEmptyLayout.Visibility = ViewStates.Gone;
+
+                        rewardRefreshLayout.Visibility = ViewStates.Visible;
+
+                        if (!string.IsNullOrEmpty(buttonText))
                         {
-                            ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                            btnRefresh.Text = buttonText;
                         }
                         else
                         {
-                            ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                            btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                        }
+
+                        if (!string.IsNullOrEmpty(messageText))
+                        {
+                            txtRefresh.Text = messageText;
+                        }
+                        else
+                        {
+                            txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
+                        }
+
+                        IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
+                        if (item != null)
+                        {
+                            item.SetVisible(false);
+                        }
+
+                        RewardsMenuUtils.OnSetTouchDisable(false);
+
+                        try
+                        {
+                            if (RewardsEntity.HasUnread())
+                            {
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                            }
+                            else
+                            {
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (System.Exception e)
                     {
-                        Utility.LoggingNonFatalError(ex);
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
+                });
+            }
+            catch (System.Exception err)
+            {
+                Utility.LoggingNonFatalError(err);
+            }
         }
 
         public void OnShowRewardMenuTutorial()

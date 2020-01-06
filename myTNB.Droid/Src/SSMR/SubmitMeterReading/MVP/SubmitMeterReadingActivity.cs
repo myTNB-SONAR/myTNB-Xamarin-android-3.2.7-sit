@@ -1018,8 +1018,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    meterReadingScrollLayout.ScrollTo(0, yPosition);
-                    meterReadingScrollLayout.RequestLayout();
+                    try
+                    {
+                        meterReadingScrollLayout.ScrollTo(0, yPosition);
+                        meterReadingScrollLayout.RequestLayout();
+                    }
+                    catch (System.Exception er)
+                    {
+                        Utility.LoggingNonFatalError(er);
+                    }
                 });
             }
             catch (System.Exception e)

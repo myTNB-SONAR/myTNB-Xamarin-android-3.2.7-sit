@@ -483,7 +483,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             try
             {
-                WhatNewMenuUtils.OnSetWhatNewLoading(true);
                 new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 RewardsMenuUtils.OnSetRewardLoading(true);
                 new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
@@ -499,7 +498,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
-                WhatNewMenuUtils.OnSetWhatNewLoading(true);
                 new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 RewardsMenuUtils.OnSetRewardLoading(true);
                 new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
