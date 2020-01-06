@@ -11107,17 +11107,23 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e0007
 			public const int progress_horizontal = 2131623943;
 			
-			// aapt resource value: 0x7f0e0431
-			public const int promotionPager = 2131625009;
+			// aapt resource value: 0x7f0e0432
+			public const int promotionPager = 2131625010;
+			
+			// aapt resource value: 0x7f0e043f
+			public const int promotion_campaign_period = 2131625023;
 			
 			// aapt resource value: 0x7f0e0448
 			public const int promotionRefreshLayout = 2131625032;
 			
 			// aapt resource value: 0x7f0e043e
-			public const int promotion_campaign_period = 2131625022;
+			public const int promotion_campaign_period_label = 2131625022;
+			
+			// aapt resource value: 0x7f0e0444
+			public const int promotion_date = 2131625028;
 			
 			// aapt resource value: 0x7f0e043d
-			public const int promotion_campaign_period_label = 2131625021;
+			public const int promotion_description = 2131625021;
 			
 			// aapt resource value: 0x7f0e0443
 			public const int promotion_campaign_period = 2131625027;

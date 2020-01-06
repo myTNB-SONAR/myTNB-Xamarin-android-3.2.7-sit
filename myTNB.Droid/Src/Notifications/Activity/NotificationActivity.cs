@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         [BindView(Resource.Id.emptyLayout)]
         LinearLayout emptyLayout;
 
-        [BindView(Resource.Id.notificationSelectAll)]
+        [BindView(Resource.Id.notificationSelectAllHeader)]
         LinearLayout notificationSelectAllContainer;
 
         [BindView(Resource.Id.selectAllCheckBox)]
@@ -89,6 +89,10 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.selectAllNotificationLabel)]
         TextView selectAllNotificationLabel;
+
+        [BindView(Resource.Id.refresh_image)]
+        ImageView refresh_image;
+        
 
         private IMenu notificationMenu;
         NotificationRecyclerAdapter notificationRecyclerAdapter;
@@ -130,8 +134,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                     .Progress(true, 0)
                     .Build();
 
-                TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel);
-                TextViewUtils.SetMuseoSans300Typeface(btnNewRefresh, txtNewRefreshMessage, txtNotificationsContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel, btnNewRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, txtNotificationsContent);
 
                 selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
                 txtNotificationsContent.Text = GetLabelByLanguage("noNotification");
@@ -145,7 +149,11 @@ namespace myTNB_Android.Src.Notifications.Activity
                 SetInitialNotificationState();
                 if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
                 {
-                    ShowRefreshView(null,null);
+                    ShowRefreshView(true, null,null);
+                }
+                else if (MyTNBAccountManagement.GetInstance().IsNotificationServiceMaintenance())
+                {
+                    ShowRefreshView(false, null, null);
                 }
                 else
                 {
@@ -176,14 +184,22 @@ namespace myTNB_Android.Src.Notifications.Activity
             MenuInflater.Inflate(Resource.Menu.NotificationToolbarMenu, menu);
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            int count = notificationRecyclerAdapter.GetAllNotifications().Count;
-            if (count == 0)
+            if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
             {
-                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
+                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
+                notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             }
             else
             {
-                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
+                int count = notificationRecyclerAdapter.GetAllNotifications().Count;
+                if (count == 0)
+                {
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
+                }
+                else
+                {
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
+                }
             }
             return base.OnCreateOptionsMenu(menu);
         }
@@ -517,7 +533,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             refreshLayout.Visibility = ViewStates.Gone;
         }
 
-        public void ShowRefreshView(string contentTxt, string btnTxt)
+        public void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt)
         {
             try
             {
@@ -526,15 +542,41 @@ namespace myTNB_Android.Src.Notifications.Activity
                 refreshLayout.Visibility = ViewStates.Visible;
                 btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetLabelCommonByLanguage("refreshNow") : btnTxt;
                 ShowSelectAllOption(ViewStates.Gone);
-                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
-                notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                if (notificationMenu != null)
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
+                    notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+                }
+
+                if (isRefresh)
+                {
+                    refresh_image.SetImageResource(Resource.Drawable.refresh_1);
+
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage")) : Html.FromHtml(contentTxt);
+                    }
+
+                    btnNewRefresh.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage")) : Html.FromHtml(contentTxt);
+                    // LinSiong TODO: update bcrmdown to notification
+                    refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage")) : Html.FromHtml(contentTxt);
+                    }
+
+                    btnNewRefresh.Visibility = ViewStates.Gone;
                 }
             }
             catch (Exception e)

@@ -280,7 +280,9 @@ namespace myTNB_Android.Src.Login.MVP
                                     }
                                 }
                                 UserNotificationEntity.RemoveAll();
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                                 NotificationApiImpl notificationAPI = new NotificationApiImpl();
                                 MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
                                 if(response != null && response.Data != null && response.Data.ErrorCode == "7200")
@@ -301,11 +303,17 @@ namespace myTNB_Android.Src.Login.MVP
                                             // tODO : SAVE ALL NOTIFICATIONs
                                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                         }
+
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
                                     }
                                     else
                                     {
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
+                                }
+                                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                                {
+                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                 }
                                 else
                                 {
