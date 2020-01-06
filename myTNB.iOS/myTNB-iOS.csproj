@@ -2214,7 +2214,7 @@
     <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
       <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sitecore CMS\Service\PromotionsV2Service.cs" />
+    <Compile Include="Sitecore CMS\Service\PromotionsService.cs" />
     <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
     <Compile Include="Model\Feedback\QuestionInputOption.cs" />
     <Compile Include="Enums\QuestionTypeEnum.cs" />

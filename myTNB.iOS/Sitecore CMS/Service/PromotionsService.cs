@@ -10,10 +10,10 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 
 namespace myTNB.SitecoreCMS.Service
 {
-    internal class PromotionsV2Service
+    internal class PromotionsService
     {
         private string _os, _imgSize, _websiteURL, _language;
-        internal PromotionsV2Service(string os, string imageSize, string websiteUrl = null, string language = "en")
+        internal PromotionsService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
             _imgSize = imageSize;
@@ -25,7 +25,7 @@ namespace myTNB.SitecoreCMS.Service
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.PromotionsV2, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
             var list = GeneratePromotionChildren(item);
             var itemList = list.Result;
@@ -45,20 +45,20 @@ namespace myTNB.SitecoreCMS.Service
 
                 PromotionsModel listlItem = new PromotionsModel
                 {
-                    GeneralLinkUrl = item.GetItemIdFromLinkField(Constants.Sitecore.Fields.PromotionsV2.GeneralLink),
-                    HeaderContent = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.HeaderContent),
-                    SubText = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.SubText),
-                    Text = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.Text),
-                    Title = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.Title),
-                    BodyContent = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.BodyContent),
-                    FooterContent = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.FooterContent),
-                    PortraitImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.PromotionsV2.PortraitImage, _websiteURL, false),
-                    LandscapeImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.PromotionsV2.LandscapeImage, _websiteURL, false),
-                    PromoStartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.PromotionsV2.PromoStartDate),
-                    PromoEndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.PromotionsV2.PromoEndDate),
-                    PublishedDate = item.GetDateValueFromField(Constants.Sitecore.Fields.PromotionsV2.PublishedDate),
-                    IsPromoExpired = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.PromotionsV2.isPromoExpired),
-                    ShowAtAppLaunch = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.PromotionsV2.ShowAtAppLaunch),
+                    GeneralLinkUrl = item.GetItemIdFromLinkField(Constants.Sitecore.Fields.Promotions.GeneralLink),
+                    HeaderContent = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.HeaderContent),
+                    SubText = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.SubText),
+                    Text = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.Text),
+                    Title = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.Title),
+                    BodyContent = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.BodyContent),
+                    FooterContent = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.FooterContent),
+                    PortraitImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Promotions.PortraitImage, _websiteURL, false),
+                    LandscapeImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Promotions.LandscapeImage, _websiteURL, false),
+                    PromoStartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Promotions.PromoStartDate),
+                    PromoEndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Promotions.PromoEndDate),
+                    PublishedDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Promotions.PublishedDate),
+                    IsPromoExpired = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.Promotions.isPromoExpired),
+                    ShowAtAppLaunch = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.Promotions.ShowAtAppLaunch),
                     ID = item.Id,
                 };
                 Debug.WriteLine("debug: insert success");
@@ -72,7 +72,7 @@ namespace myTNB.SitecoreCMS.Service
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.PromotionsV2, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
             var list = GenerateTimestamp(item);
             var itemList = list.Result;

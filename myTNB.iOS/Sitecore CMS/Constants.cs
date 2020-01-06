@@ -33,7 +33,7 @@
                     public const string PublishedDate = "PublishedDate";
                 }
 
-                public struct PromotionsV2
+                public struct Promotions
                 {
                     public const string GeneralLink = "GeneralLink";
                     public const string SubText = "SubText";
@@ -165,7 +165,7 @@
 
             public struct ItemPath
             {
-                public const string PromotionsV2 = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";

@@ -461,7 +461,7 @@ namespace myTNB.SitecoreCMS.Services
             PromotionsTimestampResponseModel respModel = new PromotionsTimestampResponseModel();
             try
             {
-                PromotionsV2Service service = new PromotionsV2Service(OS, ImageSize, WebsiteUrl, Language);
+                PromotionsService service = new PromotionsService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetTimestamp();
                 var listData = AddDataToList(data);
                 var resp = CheckData(listData);
@@ -480,7 +480,7 @@ namespace myTNB.SitecoreCMS.Services
             PromotionsResponseModel respModel = new PromotionsResponseModel();
             try
             {
-                PromotionsV2Service service = new PromotionsV2Service(OS, ImageSize, WebsiteUrl, Language);
+                PromotionsService service = new PromotionsService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetPromotionsService();
                 var resp = CheckData(data.ToList<object>());
                 string serializedObj = JsonConvert.SerializeObject(resp);
