@@ -25,6 +25,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System.Threading.Tasks;
 using System.Threading;
+using myTNB_Android.Src.Maintenance.Activity;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -244,20 +245,48 @@ namespace myTNB_Android.Src.Profile.Activity
                         MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                         _ = CheckAppMasterDataDone();
                     }
+                    else if (MyTNBAccountManagement.GetInstance().GetIsAppMasterMaintenance())
+                    {
+                        try
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                                HomeMenuUtils.ResetAll();
+                                SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                UpdateLanguage();
+                                OnMaintenanceProceed();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
                     else
                     {
-                        RunOnUiThread(() =>
+                        try
                         {
-                            MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
-                            MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
-                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                            HomeMenuUtils.ResetAll();
-                            SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
-                            SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                            UpdateLanguage();
-                            OnBackProceed();
-                            HideShowProgressDialog();
-                        });
+                            RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                                HomeMenuUtils.ResetAll();
+                                SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                UpdateLanguage();
+                                OnBackProceed();
+                                HideShowProgressDialog();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                     }
                 }
                 else
@@ -265,6 +294,15 @@ namespace myTNB_Android.Src.Profile.Activity
                     _ = CheckAppMasterDataDone();
                 }
             });
+        }
+
+        private void OnMaintenanceProceed()
+        {
+            HideShowProgressDialog();
+            Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceTitle());
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceContent());
+            StartActivity(maintenanceScreen);
         }
 
         public void ShowProgressDialog()
