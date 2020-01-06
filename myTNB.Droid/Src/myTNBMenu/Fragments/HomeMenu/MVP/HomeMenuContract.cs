@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQTimestamp(bool success);
             AccountsRecyclerViewAdapter GetAccountAdapter();
 
-            void ShowRefreshScreen(string contentMsg, string buttonMsg);
+            void ShowRefreshScreen(bool isRefresh, string contentMsg, string buttonMsg);
 
             void UpdateCurrentSMRAccountList();
 
@@ -88,6 +88,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void HideNewFAQ();
 
             bool CheckNeedHelp();
+
+            void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
+
+            void SetMyServiceHideView();
 
         }
 
@@ -145,6 +149,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void RestoreQueryAccounts();
 
             void OnCheckMyServiceState();
+
+            bool GetIsMyServiceRefreshNeeded();
+
+            bool GetIsAccountRefreshNeeded();
         }
 
         public interface IHomeMenuService

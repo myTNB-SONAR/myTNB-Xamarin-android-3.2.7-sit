@@ -23,7 +23,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models
 			[JsonProperty(PropertyName = "DisplayType")]
 			public string DisplayType { get; set; }
 
-			[JsonProperty(PropertyName = "data")]
+            [JsonProperty(PropertyName = "RefreshMessage")]
+            public string RefreshMessage { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
+
+            [JsonProperty(PropertyName = "data")]
 			public Services Data { get; set; }
 		}
 

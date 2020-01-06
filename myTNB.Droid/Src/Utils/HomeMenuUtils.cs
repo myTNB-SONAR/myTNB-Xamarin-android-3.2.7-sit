@@ -23,6 +23,13 @@ namespace myTNB_Android.Src.Utils
             queryString = "";
         }
 
+        public static void ResetMyService()
+        {
+            isLoadedHomeMenu = false;
+            isMyServiceExpanded = false;
+            isRestartHomeMenu = false;
+        }
+
         public static void SetIsShowRearrangeAccountSuccessfulNeed(bool flag)
         {
             isShowRearrangeAccountSuccessfulNeed = flag;
