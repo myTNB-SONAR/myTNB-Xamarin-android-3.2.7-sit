@@ -656,8 +656,13 @@ namespace myTNB
                 Text = titleMsg,
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.SunGlow,
-                Font = MyTNBFont.MuseoSans24_500
+                Font = MyTNBFont.MuseoSans24_500,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = lblTitle.GetLabelHeight(1000);
+            lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(lblTitle.Frame.Width, newTitleHeight));
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -700,8 +705,7 @@ namespace myTNB
             if (response != null &&
                 response.d != null)
             {
-                if (response.d.IsSuccess &&
-                response.d.data != null)
+                if (response.d.IsSuccess && response.d.data != null)
                 {
                     isMaintenance = false;
                     var data = AppLaunchMasterCache.GetAppLaunchMasterData();
