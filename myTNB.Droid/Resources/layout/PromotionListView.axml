@@ -59,12 +59,12 @@
         android:background="@color/white">
         <ImageView
             android:id="@+id/no_promotion_img"
-            android:layout_height="94dp"
-            android:layout_width="102dp"
+            android:layout_height="96dp"
+            android:layout_width="101dp"
             android:layout_marginTop="88dp"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_reward_empty"/>
+            android:src="@drawable/ic_empty_promotions"/>
         <TextView
             android:id="@+id/no_promotion_info"
             android:layout_height="wrap_content"

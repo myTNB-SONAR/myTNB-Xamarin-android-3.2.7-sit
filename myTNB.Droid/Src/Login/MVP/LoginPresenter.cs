@@ -233,6 +233,9 @@ namespace myTNB_Android.Src.Login.MVP
                             PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
                             wtManager.DeleteTable();
                             wtManager.CreateTable();
+                            PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
                         }
                         catch (Exception e)
                         {

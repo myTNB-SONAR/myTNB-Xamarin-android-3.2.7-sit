@@ -125,6 +125,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
                                         wtManager3.DeleteTable();
                                         wtManager3.CreateTable();
+                                        PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                                        wtManager2.DeleteTable();
+                                        wtManager2.CreateTable();
                                     }
 
                                 }
@@ -133,6 +136,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                     PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
                                     wtManager3.DeleteTable();
                                     wtManager3.CreateTable();
+                                    PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                                    wtManager2.DeleteTable();
+                                    wtManager2.CreateTable();
                                     Utility.LoggingNonFatalError(e);
                                 }
                             }).ContinueWith((Task previous) =>
