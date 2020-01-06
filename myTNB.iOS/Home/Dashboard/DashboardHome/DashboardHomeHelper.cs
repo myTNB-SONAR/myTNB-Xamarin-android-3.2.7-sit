@@ -361,7 +361,7 @@ namespace myTNB
             get
             {
                 PromotionsEntity entity = new PromotionsEntity();
-                List<PromotionsModelV2> promotions = entity.GetAllItemsV2();
+                List<PromotionsModel> promotions = entity.GetAllItemsV2();
                 return promotions != null && promotions.Count > 0;
             }
         }

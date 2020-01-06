@@ -475,16 +475,16 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-        public PromotionsV2ResponseModel GetPromotionsItem()
+        public PromotionsResponseModel GetPromotionsItem()
         {
-            PromotionsV2ResponseModel respModel = new PromotionsV2ResponseModel();
+            PromotionsResponseModel respModel = new PromotionsResponseModel();
             try
             {
                 PromotionsV2Service service = new PromotionsV2Service(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetPromotionsService();
                 var resp = CheckData(data.ToList<object>());
                 string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(serializedObj);
+                respModel = JsonConvert.DeserializeObject<PromotionsResponseModel>(serializedObj);
             }
             catch (Exception e)
             {

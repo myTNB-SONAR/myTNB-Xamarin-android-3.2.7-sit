@@ -2345,10 +2345,9 @@
     <Compile Include="Sitecore CMS\Model\Help\HelpModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\HelpEntity.cs" />
     <Compile Include="Sitecore CMS\Model\Promotions\PromotionsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsModelV2.cs" />
-    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsParentV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsParentResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\Promotions\PromotionsTimestampResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\Walkthrough\WalkthroughScreensModel.cs" />
     <Compile Include="Sitecore CMS\Model\Walkthrough\WalkthroughScreensResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\FAQ\FAQsModel.cs" />

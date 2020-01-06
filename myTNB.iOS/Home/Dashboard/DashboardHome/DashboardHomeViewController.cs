@@ -33,7 +33,7 @@ namespace myTNB
         UIStoryboard _usageStoryBoard;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
-        private List<PromotionsModelV2> _promotions;
+        private List<PromotionsModel> _promotions;
         public nfloat _previousScrollOffset;
         internal Dictionary<string, Action> _servicesActionDictionary;
         public bool _accountListIsShimmering = true;

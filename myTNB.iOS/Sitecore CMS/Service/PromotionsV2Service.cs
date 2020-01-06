@@ -21,7 +21,7 @@ namespace myTNB.SitecoreCMS.Service
             _language = language;
         }
 
-        internal List<PromotionsModelV2> GetPromotionsService()
+        internal List<PromotionsModel> GetPromotionsService()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
@@ -32,9 +32,9 @@ namespace myTNB.SitecoreCMS.Service
             return itemList.ToList();
         }
 
-        public async Task<IEnumerable<PromotionsModelV2>> GeneratePromotionChildren(ScItemsResponse itemsResponse)
+        public async Task<IEnumerable<PromotionsModel>> GeneratePromotionChildren(ScItemsResponse itemsResponse)
         {
-            List<PromotionsModelV2> list = new List<PromotionsModelV2>();
+            List<PromotionsModel> list = new List<PromotionsModel>();
 
             for (int i = 0; i < itemsResponse.ResultCount; i++)
             {
@@ -43,7 +43,7 @@ namespace myTNB.SitecoreCMS.Service
                 if (item == null)
                     continue;
 
-                PromotionsModelV2 listlItem = new PromotionsModelV2
+                PromotionsModel listlItem = new PromotionsModel
                 {
                     GeneralLinkUrl = item.GetItemIdFromLinkField(Constants.Sitecore.Fields.PromotionsV2.GeneralLink),
                     HeaderContent = item.GetValueFromField(Constants.Sitecore.Fields.PromotionsV2.HeaderContent),
@@ -68,7 +68,7 @@ namespace myTNB.SitecoreCMS.Service
 
             return list;
         }
-        internal PromotionParentModelV2 GetTimestamp()
+        internal PromotionParentModel GetTimestamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
@@ -79,9 +79,9 @@ namespace myTNB.SitecoreCMS.Service
             return itemList;
         }
 
-        private async Task<PromotionParentModelV2> GenerateTimestamp(ScItemsResponse itemsResponse)
+        private async Task<PromotionParentModel> GenerateTimestamp(ScItemsResponse itemsResponse)
         {
-            PromotionParentModelV2 listlItem = new PromotionParentModelV2();
+            PromotionParentModel listlItem = new PromotionParentModel();
 
             for (int i = 0; i < itemsResponse.ResultCount; i++)
             {

@@ -17,14 +17,14 @@ namespace myTNB
         private List<ServiceItemModel> _services;
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
-        private List<PromotionsModelV2> _promotions;
+        private List<PromotionsModel> _promotions;
         public Action _onReload;
         private Action _onServicesRefresh;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller
             , AccountListViewController accountListViewController
             , List<ServiceItemModel> services
-            , List<PromotionsModelV2> promotions
+            , List<PromotionsModel> promotions
             , List<HelpModel> helpList
             , bool isServicesShimmering
             , bool isHelpShimmering

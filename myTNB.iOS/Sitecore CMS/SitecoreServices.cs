@@ -563,7 +563,7 @@ namespace myTNB.SitecoreCMS
 
                 if (needsUpdate)
                 {
-                    PromotionsV2ResponseModel promotionResponse = iService.GetPromotionsItem();
+                    PromotionsResponseModel promotionResponse = iService.GetPromotionsItem();
                     PromotionsEntity wsManager = new PromotionsEntity();
                     PromotionsEntity.DeleteTable();
                     wsManager.CreateTable();

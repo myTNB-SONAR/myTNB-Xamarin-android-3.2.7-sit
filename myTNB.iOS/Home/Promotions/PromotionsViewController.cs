@@ -50,7 +50,7 @@ namespace myTNB
             if (!isPromoDetailScreen)
             {
                 promotionsTableView.Hidden = true;
-                promotionsTableView.Source = new PromotionsDataSource(this, new List<PromotionsModelV2>());
+                promotionsTableView.Source = new PromotionsDataSource(this, new List<PromotionsModel>());
                 promotionsTableView.ReloadData();
                 if (DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
                 {
@@ -99,10 +99,10 @@ namespace myTNB
         /// </summary>
         /// <returns>The value for null end date.</returns>
         /// <param name="promotions">Promotions.</param>
-        private List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
+        private List<PromotionsModel> SetValueForNullEndDate(List<PromotionsModel> promotions)
         {
-            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
-            foreach (PromotionsModelV2 promo in promotions)
+            List<PromotionsModel> promotionList = new List<PromotionsModel>();
+            foreach (PromotionsModel promo in promotions)
             {
                 if (string.IsNullOrEmpty(promo.PromoEndDate))
                 {
@@ -138,7 +138,7 @@ namespace myTNB
                 _lblDetails.RemoveFromSuperview();
             }
             PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
+            List<PromotionsModel> promotionList = new List<PromotionsModel>();
             promotionList = wsManager.GetAllItemsV2();
             if (promotionList != null && promotionList.Count > 0)
             {
@@ -182,7 +182,7 @@ namespace myTNB
             View.AddSubviews(new UIView[] { _imgViewNoPromotions, _lblDetails });
         }
 
-        internal void OnPromotionItemSelect(PromotionsModelV2 promotion)
+        internal void OnPromotionItemSelect(PromotionsModel promotion)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
             PromotionDetailsViewController viewController =

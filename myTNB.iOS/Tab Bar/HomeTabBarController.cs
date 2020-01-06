@@ -164,12 +164,12 @@ namespace myTNB
         private void ShowPromotionsModal()
         {
             PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModelV2> items = wsManager.GetAllItemsV2();
+            List<PromotionsModel> items = wsManager.GetAllItemsV2();
 
             if (items?.Count > 0)
             {
                 CheckResetPromoShown(items);
-                List<PromotionsModelV2> filtered = items.FindAll(item => ShouldDisplayAppLaunch(item));
+                List<PromotionsModel> filtered = items.FindAll(item => ShouldDisplayAppLaunch(item));
 
                 if (filtered?.Count > 0)
                 {
@@ -200,9 +200,9 @@ namespace myTNB
         /// Checks and resets as needed promo shown date.
         /// </summary>
         /// <param name="promotions">Promotions.</param>
-        private void CheckResetPromoShown(List<PromotionsModelV2> promotions)
+        private void CheckResetPromoShown(List<PromotionsModel> promotions)
         {
-            foreach (PromotionsModelV2 promo in promotions)
+            foreach (PromotionsModel promo in promotions)
             {
                 DateTime shownDate = GetShownDate(promo);
                 if (shownDate != default(DateTime))
@@ -224,7 +224,7 @@ namespace myTNB
         /// </summary>
         /// <returns><c>true</c>, if promo should display on app launch, <c>false</c> otherwise.</returns>
         /// <param name="promo">Promo.</param>
-        private bool ShouldDisplayAppLaunch(PromotionsModelV2 promo)
+        private bool ShouldDisplayAppLaunch(PromotionsModel promo)
         {
             bool res = false || (promo != null && promo.ShowAtAppLaunch && !promo.IsPromoExpired && IsPromoWithinCampaignPeriod(promo)
                 && IsPromoOutsideDisplayInterval(promo));
@@ -236,7 +236,7 @@ namespace myTNB
         /// </summary>
         /// <returns><c>true</c>, if promo outside display interval was ised, <c>false</c> otherwise.</returns>
         /// <param name="promo">Promo.</param>
-        private bool IsPromoOutsideDisplayInterval(PromotionsModelV2 promo)
+        private bool IsPromoOutsideDisplayInterval(PromotionsModel promo)
         {
             bool res = true;
 
@@ -258,7 +258,7 @@ namespace myTNB
         /// </summary>
         /// <returns>The shown date.</returns>
         /// <param name="promo">Promo.</param>
-        private DateTime GetShownDate(PromotionsModelV2 promo)
+        private DateTime GetShownDate(PromotionsModel promo)
         {
             if (!string.IsNullOrEmpty(promo.ID))
             {
@@ -280,7 +280,7 @@ namespace myTNB
         /// </summary>
         /// <returns><c>true</c>, if promo within campaign period was ised, <c>false</c> otherwise.</returns>
         /// <param name="promo">Promo.</param>
-        private bool IsPromoWithinCampaignPeriod(PromotionsModelV2 promo)
+        private bool IsPromoWithinCampaignPeriod(PromotionsModel promo)
         {
             bool res = false;
             DateTime now = DateTime.Today.Date;
@@ -308,10 +308,10 @@ namespace myTNB
         /// </summary>
         /// <returns>The value for null end date.</returns>
         /// <param name="promotions">Promotions.</param>
-        public static List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
+        public static List<PromotionsModel> SetValueForNullEndDate(List<PromotionsModel> promotions)
         {
-            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
-            foreach (PromotionsModelV2 promo in promotions)
+            List<PromotionsModel> promotionList = new List<PromotionsModel>();
+            foreach (PromotionsModel promo in promotions)
             {
                 if (string.IsNullOrEmpty(promo.PromoEndDate))
                 {
@@ -324,7 +324,7 @@ namespace myTNB
             return promotionList;
         }
 
-        private bool HasUnreadPromotion(List<PromotionsModelV2> promotionList)
+        private bool HasUnreadPromotion(List<PromotionsModel> promotionList)
         {
             int index = promotionList.FindIndex(x => x.IsRead == false);
             return index > -1;
@@ -359,7 +359,7 @@ namespace myTNB
             TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 
             PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
+            List<PromotionsModel> promotionList = wsManager.GetAllItemsV2();
             if (!ShowNewIndicator("2") && promotionList != null && promotionList.Count > 0)
             {
                 int unreadCount = promotionList.Where(x => !x.IsRead).Count();

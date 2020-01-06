@@ -13,7 +13,7 @@ namespace myTNB
     {
         public PromotionDetailsViewController(IntPtr handle) : base(handle) { }
 
-        public PromotionsModelV2 Promotion = new PromotionsModelV2();
+        public PromotionsModel Promotion = new PromotionsModel();
         public Action OnDone { get; set; }
 
         public override void ViewDidLoad()

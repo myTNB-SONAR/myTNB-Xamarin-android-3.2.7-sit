@@ -2,9 +2,9 @@
 
 namespace myTNB.SitecoreCMS.Model
 {
-    public class PromotionsParentV2ResponseModel
+    public class PromotionsParentResponseModel
     {
         public string Status { set; get; }
-        public List<PromotionParentModelV2> Data { set; get; }
+        public List<PromotionParentModel> Data { set; get; }
     }
 }
