@@ -1148,38 +1148,55 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowPromotion(bool success)
         {
-            if (success)
-            {
-
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                List<PromotionsEntityV2> items = wtManager.GetAllValidPromotions();
-                List<PromotionsModelV2> promotions = new List<PromotionsModelV2>();
-                if (items != null)
-                {
-                    promotions = new List<PromotionsModelV2>();
-                    promotions.AddRange(items);
-                }
-                if (promotions.Count > 0)
-                {
-                    PromotionDialogFragmnet dialogFragmnet = new PromotionDialogFragmnet(this);
-                    dialogFragmnet.Cancelable = false;
-                    Bundle extras = new Bundle();
-                    extras.PutString("promotions", JsonConvert.SerializeObject(promotions));
-                    dialogFragmnet.Arguments = extras;
-                    dialogFragmnet.Show(SupportFragmentManager, "Promotion Dialog");
-                }
-            }
-
             try
             {
-                if (this.mPresenter != null)
+                RunOnUiThread(() =>
                 {
-                    this.mPresenter.OnResumeUpdatePromotionUnReadCounter();
-                }
+                    try
+                    {
+                        if (success)
+                        {
+
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            List<PromotionsEntityV2> items = wtManager.GetAllValidPromotions();
+                            List<PromotionsModelV2> promotions = new List<PromotionsModelV2>();
+                            if (items != null)
+                            {
+                                promotions = new List<PromotionsModelV2>();
+                                promotions.AddRange(items);
+                            }
+                            if (promotions.Count > 0)
+                            {
+                                PromotionDialogFragmnet dialogFragmnet = new PromotionDialogFragmnet(this);
+                                dialogFragmnet.Cancelable = false;
+                                Bundle extras = new Bundle();
+                                extras.PutString("promotions", JsonConvert.SerializeObject(promotions));
+                                dialogFragmnet.Arguments = extras;
+                                dialogFragmnet.Show(SupportFragmentManager, "Promotion Dialog");
+                            }
+                        }
+
+                        try
+                        {
+                            if (this.mPresenter != null)
+                            {
+                                this.mPresenter.OnResumeUpdatePromotionUnReadCounter();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
