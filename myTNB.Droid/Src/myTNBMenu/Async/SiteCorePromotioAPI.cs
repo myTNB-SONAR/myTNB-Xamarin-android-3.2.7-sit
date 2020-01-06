@@ -79,9 +79,27 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                     }
                                     else
                                     {
-                                        getSiteCorePromotions = false;
+                                        PromotionsEntityV2 mPromoEntity = new PromotionsEntityV2();
+                                        List<PromotionsEntityV2> mCheckList = mPromoEntity.GetAllItems();
+                                        if (mCheckList == null || mCheckList.Count == 0)
+                                        {
+                                            getSiteCorePromotions = true;
+                                        }
+                                        else
+                                        {
+                                            getSiteCorePromotions = false;
+
+                                        }
                                     }
                                 }
+                                else
+                                {
+                                    getSiteCorePromotions = true;
+                                }
+                            }
+                            else
+                            {
+                                getSiteCorePromotions = true;
                             }
                         }
                         else
@@ -106,20 +124,59 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         wtManager2.DeleteTable();
                                         wtManager2.CreateTable();
                                         wtManager2.InsertListOfItems(promoResponseModel.Data);
+
+                                        if (mHomeView != null)
+                                        {
+                                            mHomeView.ShowPromotion(true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                                        wtManager3.DeleteTable();
+                                        wtManager3.CreateTable();
+                                        PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                                        wtManager2.DeleteTable();
+                                        wtManager2.CreateTable();
+                                        if (mHomeView != null)
+                                        {
+                                            mHomeView.ShowPromotion(false);
+                                        }
                                     }
 
                                 }
                                 catch (System.Exception e)
                                 {
+                                    PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                                    wtManager3.DeleteTable();
+                                    wtManager3.CreateTable();
+                                    if (mHomeView != null)
+                                    {
+                                        mHomeView.ShowPromotion(false);
+                                    }
                                     Utility.LoggingNonFatalError(e);
                                 }
                             }).ContinueWith((Task previous) =>
                             {
                             }, cts.Token);
                         }
+                        else
+                        {
+                            if (mHomeView != null)
+                            {
+                                mHomeView.ShowPromotion(true);
+                            }
+                        }
                     }
                     catch (System.Exception e)
                     {
+                        PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                        wtManager3.DeleteTable();
+                        wtManager3.CreateTable();
+                        if (mHomeView != null)
+                        {
+                            mHomeView.ShowPromotion(false);
+                        }
                         Utility.LoggingNonFatalError(e);
                     }
                 }).ContinueWith((Task previous) =>
@@ -129,14 +186,35 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             }
             catch (ApiException apiException)
             {
+                PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                wtManager3.DeleteTable();
+                wtManager3.CreateTable();
+                if (mHomeView != null)
+                {
+                    mHomeView.ShowPromotion(false);
+                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
+                PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                wtManager3.DeleteTable();
+                wtManager3.CreateTable();
+                if (mHomeView != null)
+                {
+                    mHomeView.ShowPromotion(false);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             catch (System.Exception e)
             {
+                PromotionsParentEntityV2 wtManager3 = new PromotionsParentEntityV2();
+                wtManager3.DeleteTable();
+                wtManager3.CreateTable();
+                if (mHomeView != null)
+                {
+                    mHomeView.ShowPromotion(false);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             Console.WriteLine("000 SiteCorePromotioAPI ended");
@@ -146,11 +224,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         protected override void OnPostExecute(Java.Lang.Object result)
         {
             base.OnPostExecute(result);
-
-            if (mHomeView != null)
-            {
-                mHomeView.ShowPromotion(true);
-            }
         }
 
     }

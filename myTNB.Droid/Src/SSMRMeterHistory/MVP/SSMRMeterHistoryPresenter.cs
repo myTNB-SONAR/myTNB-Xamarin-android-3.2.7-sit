@@ -164,6 +164,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 {
                     this.mView.HideProgressDialog();
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
+                    MyTNBAppToolTipData.SetSMRActivityInfo(SMRAccountActivityInfoResponse.Response);
                     this.mView.UpdateUIForSMR(SMRAccountActivityInfoResponse);
                     CheckIsBtnSubmitHide(SMRAccountActivityInfoResponse);
                     this.mView.OnShowSMRMeterReadingDialog();

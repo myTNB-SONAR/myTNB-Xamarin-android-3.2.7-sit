@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
+    android:theme="@style/Theme.Notification"
     android:id="@+id/rootView">
     <LinearLayout
         android:orientation="vertical"
@@ -72,6 +73,53 @@
 				android:background="@color/platinumGrey"/>
 		</LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_api_refresh"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
+                <ImageView
+                    android:id="@+id/refreshBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginTop="-35dp"
+                    android:foregroundGravity="center_horizontal|center"
+                    android:layout_gravity="bottom"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bg_smr" />
+                <ImageView
+                    android:layout_width="177dp"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="-105dp"
+                    android:foregroundGravity="center_horizontal|center"
+                    android:layout_gravity="center"
+                    android:id="@+id/refresh_image"
+                    android:src="@drawable/refresh_1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="#8b8b8b"
+                    android:id="@+id/refresh_content"
+                    android:text="Uh oh, looks like your bill/payment history have been unplugged. Refresh to stay plugged in!"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Refresh Now"
+                    android:id="@+id/btnRefresh"
+                    style="@style/Theme.RefreshButton" />
+        </LinearLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -107,52 +155,6 @@
                     android:gravity="center"
                     android:text="@string/notification_activity_empty_txt_content"
                     android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-				android:id="@+id/layout_api_refresh"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:background="@color/white"
-                android:visibility="gone">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:background="@color/white"
-                    android:layout_marginBottom="80dp">
-                    <ImageView
-                        android:id="@+id/refresh_image"
-                        android:layout_height="96dp"
-                        android:layout_width="96dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/refresh"/>
-                    <TextView
-                        android:id="@+id/refresh_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="24dp"
-                        android:gravity="center"
-                        android:lineSpacingExtra="4dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:textSize="16dp"
-                        android:text="@string/text_new_refresh_content"
-                        android:textColor="@color/silverChalice"/>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:text="@string/text_new_refresh"
-                        android:id="@+id/btnRefresh"
-                        style="@style/Theme.RefreshButton" />
-                </LinearLayout>
             </LinearLayout>
         </FrameLayout>
 

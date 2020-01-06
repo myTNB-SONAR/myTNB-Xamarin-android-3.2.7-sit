@@ -212,17 +212,24 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    if (!isPendingRewardConfirm)
+                    try
                     {
-                        if (string.IsNullOrEmpty(ItemID))
+                        if (!isPendingRewardConfirm)
                         {
-                            this.Finish();
+                            if (string.IsNullOrEmpty(ItemID))
+                            {
+                                this.Finish();
+                            }
+                            else
+                            {
+                                SetupImageParam();
+                                this.presenter.GetActiveReward(ItemID);
+                            }
                         }
-                        else
-                        {
-                            SetupImageParam();
-                            this.presenter.GetActiveReward(ItemID);
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
                     }
                 });
             }
@@ -782,13 +789,27 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                 CountDownTimerSecond = CountDownTimerMinutes * 60;
 
-                RunOnUiThread(() =>
+                try
                 {
-                    btnUseSaveLayout.Visibility = ViewStates.Gone;
-                    rewardRedeemedLayout.Visibility = ViewStates.Gone;
-                    rewardCountDownLayout.Visibility = ViewStates.Visible;
-                    txtRewardRedeemedWord.Text = Utility.GetLocalizedLabel("RewardDetails", "redeemRewardNote");
-                });
+                    RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            btnUseSaveLayout.Visibility = ViewStates.Gone;
+                            rewardRedeemedLayout.Visibility = ViewStates.Gone;
+                            rewardCountDownLayout.Visibility = ViewStates.Visible;
+                            txtRewardRedeemedWord.Text = Utility.GetLocalizedLabel("RewardDetails", "redeemRewardNote");
+                        }
+                        catch (Exception er)
+                        {
+                            Utility.LoggingNonFatalError(er);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
 
                 isPendingRewardConfirm = true;
 
@@ -818,34 +839,62 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 _timer.Stop();
                 _timer.Enabled = false;
-                RunOnUiThread(() =>
+                try
                 {
-                    btnUseSaveLayout.Visibility = ViewStates.Gone;
-                    rewardRedeemedLayout.Visibility = ViewStates.Visible;
-                    rewardCountDownLayout.Visibility = ViewStates.Gone;
-                    IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
-                    if (item != null)
+                    RunOnUiThread(() =>
                     {
-                        item.SetVisible(true);
-                    }
-                    isPendingRewardConfirm = false;
-                    this.presenter.GetActiveReward(ItemID);
-                });
+                        try
+                        {
+                            btnUseSaveLayout.Visibility = ViewStates.Gone;
+                            rewardRedeemedLayout.Visibility = ViewStates.Visible;
+                            rewardCountDownLayout.Visibility = ViewStates.Gone;
+                            IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
+                            if (item != null)
+                            {
+                                item.SetVisible(true);
+                            }
+                            isPendingRewardConfirm = false;
+                            this.presenter.GetActiveReward(ItemID);
+                        }
+                        catch (Exception er)
+                        {
+                            Utility.LoggingNonFatalError(er);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
             }
         }
 
         private void OnUpdateCountDownView()
         {
-            RunOnUiThread(() =>
+            try
             {
-                TimeSpan time = TimeSpan.FromSeconds(CountDownTimerSecond);
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        TimeSpan time = TimeSpan.FromSeconds(CountDownTimerSecond);
 
-                //here backslash is must to tell that colon is
-                //not the part of format, it just a character that we want in output
-                string str = time.ToString(@"mm\:ss");
+                        //here backslash is must to tell that colon is
+                        //not the part of format, it just a character that we want in output
+                        string str = time.ToString(@"mm\:ss");
 
-                txtTimeCounter.Text = str;
-            });
+                        txtTimeCounter.Text = str;
+                    }
+                    catch (Exception er)
+                    {
+                        Utility.LoggingNonFatalError(er);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowRetryPopup()
@@ -854,26 +903,33 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
-                    if (item != null)
+                    try
                     {
-                        item.SetVisible(true);
-                    }
-
-                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                    .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("Error", "redeemRewardFailMsg"))
-                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "illDoItLater"))
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
-                    .SetSecondaryCTAaction(() =>
-                    {
+                        IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
                         if (item != null)
                         {
-                            item.SetVisible(false);
+                            item.SetVisible(true);
                         }
-                        this.presenter.UpdateRewardUsed(LocalItem.ID);
-                    })
-                    .Build().Show();
+
+                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("Error", "redeemRewardFailMsg"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "illDoItLater"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            if (item != null)
+                            {
+                                item.SetVisible(false);
+                            }
+                            this.presenter.UpdateRewardUsed(LocalItem.ID);
+                        })
+                        .Build().Show();
+                    }
+                    catch (Exception er)
+                    {
+                        Utility.LoggingNonFatalError(er);
+                    }
                 });
             }
             catch (System.Exception e)

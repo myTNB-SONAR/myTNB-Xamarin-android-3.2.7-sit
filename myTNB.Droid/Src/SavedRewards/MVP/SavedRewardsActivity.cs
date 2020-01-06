@@ -205,25 +205,32 @@ namespace myTNB_Android.Src.SavedRewards.MVP
 
         public void SetEmptyView()
         {
-            RunOnUiThread(() =>
+            try
             {
-                try
+                RunOnUiThread(() =>
                 {
-                    rewardMainLayout.Visibility = ViewStates.Gone;
+                    try
+                    {
+                        rewardMainLayout.Visibility = ViewStates.Gone;
 
-                    rewardEmptyLayout.Visibility = ViewStates.Visible;
+                        rewardEmptyLayout.Visibility = ViewStates.Visible;
 
-                    LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
-                    rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
-                    rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
-                    rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
-                    rewardEmptyImg.RequestLayout();
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
+                        LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
+                        rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
+                        rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
+                        rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
+                        rewardEmptyImg.RequestLayout();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception er)
+            {
+                Utility.LoggingNonFatalError(er);
+            }
         }
 
     }

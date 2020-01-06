@@ -257,7 +257,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     this.userActionsListener.Start();
                     OnSetupSSMRMeterReadingTutorial();
-                    ShowPromotion(true);
                 })
                 .Build()
                 .Show();
@@ -267,7 +266,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.userActionsListener.Start();
                 OnSetupSSMRMeterReadingTutorial();
-                ShowPromotion(true);
             }
         }
 
@@ -830,220 +828,276 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
         {
-            RunOnUiThread(() =>
+            try
             {
-                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
-                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
-                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
-                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
-                if (isGotRead && count > 0)
+                RunOnUiThread(() =>
                 {
-                    newLabel.Visibility = ViewStates.Visible;
-                    newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
-                    TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
-                    RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
-                    RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                    newLabelParam.TopMargin = 0;
-                    newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
-                    bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
-                    txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
-                    txtNewLabel.Text = count.ToString();
-                    txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
-                    newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
-                    if (count > 0 && count <= 9)
+                    try
                     {
-                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                    }
-                    else
-                    {
-                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
-                        if (count > 99)
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                        LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                        TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        if (isGotRead && count > 0)
                         {
-                            txtNewLabel.Text = "99+";
+                            newLabel.Visibility = ViewStates.Visible;
+                            newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
+                            TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                            RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                            newLabelParam.TopMargin = 0;
+                            newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
+                            bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                            txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
+                            txtNewLabel.Text = count.ToString();
+                            txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                            newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
+                            if (count > 0 && count <= 9)
+                            {
+                                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                            }
+                            else
+                            {
+                                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
+                                if (count > 99)
+                                {
+                                    txtNewLabel.Text = "99+";
+                                }
+                                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
+                            }
+
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                            }
                         }
-                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
-                    }
+                        else
+                        {
+                            newLabel.Visibility = ViewStates.Gone;
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                            }
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
 
-                    if (!flag)
-                    {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        promotionMenuItem.SetIcon(bitmapDrawable);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
-                else
-                {
-                    newLabel.Visibility = ViewStates.Gone;
-                    if (!flag)
-                    {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
-                    }
-                    else
-                    {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
-                    }
-                }
-                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
-                v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
-                Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
-                v.Draw(c);
-
-                var bitmapDrawable = new BitmapDrawable(b);
-                promotionMenuItem.SetIcon(bitmapDrawable);
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void SetNewWhatsNewBottomView(bool flag, string word, IMenuItem promotionMenuItem)
         {
-            RunOnUiThread(() =>
+            try
             {
-                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
-                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
-                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
-                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
-                newLabel.Visibility = ViewStates.Visible;
-                newLabel.SetBackgroundResource(Resource.Drawable.new_label);
-                RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
-                RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
-                newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
-                newLabelParam.TopMargin = 0;
-                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
-                txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
-                txtNewLabel.Text = word;
-                txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
-                if (!flag)
+                RunOnUiThread(() =>
                 {
-                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
-                }
-                else
-                {
-                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
-                }
-                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
-                v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
-                Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
-                v.Draw(c);
+                    try
+                    {
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                        LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                        TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        newLabel.Visibility = ViewStates.Visible;
+                        newLabel.SetBackgroundResource(Resource.Drawable.new_label);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                        newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
+                        newLabelParam.TopMargin = 0;
+                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                        txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
+                        txtNewLabel.Text = word;
+                        txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                        TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                        if (!flag)
+                        {
+                            bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo);
+                        }
+                        else
+                        {
+                            bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
 
-                var bitmapDrawable = new BitmapDrawable(b);
-                promotionMenuItem.SetIcon(bitmapDrawable);
-            });
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        promotionMenuItem.SetIcon(bitmapDrawable);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void SetNewRewardsBottomView(bool flag, string word, IMenuItem rewardMenuItem)
         {
-            RunOnUiThread(() =>
+            try
             {
-                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
-                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
-                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
-                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
-                newLabel.Visibility = ViewStates.Visible;
-                newLabel.SetBackgroundResource(Resource.Drawable.new_label);
-                RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
-                RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
-                newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
-                newLabelParam.TopMargin = 0;
-                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
-                txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
-                txtNewLabel.Text = word;
-                txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
-                if (!flag)
+                RunOnUiThread(() =>
                 {
-                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
-                }
-                else
-                {
-                    bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
-                }
-                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
-                v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
-                Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
-                v.Draw(c);
+                    try
+                    {
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                        LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                        TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        newLabel.Visibility = ViewStates.Visible;
+                        newLabel.SetBackgroundResource(Resource.Drawable.new_label);
+                        RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                        RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                        newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
+                        newLabelParam.TopMargin = 0;
+                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                        txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
+                        txtNewLabel.Text = word;
+                        txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                        TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                        if (!flag)
+                        {
+                            bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                        }
+                        else
+                        {
+                            bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
 
-                var bitmapDrawable = new BitmapDrawable(b);
-                rewardMenuItem.SetIcon(bitmapDrawable);
-            });
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        rewardMenuItem.SetIcon(bitmapDrawable);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void SetReadUnReadRewardNewBottomView(bool flag, bool isGotRead, int count, IMenuItem rewardsMenuItem)
         {
-            RunOnUiThread(() =>
+            try
             {
-                View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
-                LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
-                TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
-                ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
-                if (isGotRead && count > 0)
+                RunOnUiThread(() =>
                 {
-                    newLabel.Visibility = ViewStates.Visible;
-                    newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
-                    TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
-                    RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
-                    RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                    newLabelParam.TopMargin = 0;
-                    newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
-                    bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
-                    txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
-                    txtNewLabel.Text = count.ToString();
-                    txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
-                    newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
-                    if (count > 0 && count <= 9)
+                    try
                     {
-                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                    }
-                    else
-                    {
-                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
-                        if (count > 99)
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayout, null, false);
+                        LinearLayout newLabel = v.FindViewById<LinearLayout>(Resource.Id.newLabel);
+                        TextView txtNewLabel = v.FindViewById<TextView>(Resource.Id.txtNewLabel);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        if (isGotRead && count > 0)
                         {
-                            txtNewLabel.Text = "99+";
+                            newLabel.Visibility = ViewStates.Visible;
+                            newLabel.SetBackgroundResource(Resource.Drawable.bottom_indication_bg);
+                            TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
+                            RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
+                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                            newLabelParam.TopMargin = 0;
+                            newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
+                            bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                            txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
+                            txtNewLabel.Text = count.ToString();
+                            txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                            newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
+                            if (count > 0 && count <= 9)
+                            {
+                                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                            }
+                            else
+                            {
+                                bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(14f);
+                                if (count > 99)
+                                {
+                                    txtNewLabel.Text = "99+";
+                                }
+                                newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
+                            }
+
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                            }
                         }
-                        newLabelParam.Width = (int)DPUtils.ConvertDPToPx(22f);
-                    }
+                        else
+                        {
+                            newLabel.Visibility = ViewStates.Gone;
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                            }
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
 
-                    if (!flag)
-                    {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        rewardsMenuItem.SetIcon(bitmapDrawable);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
-                else
-                {
-                    newLabel.Visibility = ViewStates.Gone;
-                    if (!flag)
-                    {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward);
-                    }
-                    else
-                    {
-                        bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
-                    }
-                }
-                int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
-                v.Measure(specWidth, specWidth);
-                Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
-                Canvas c = new Canvas(b);
-                v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
-                v.Draw(c);
-
-                var bitmapDrawable = new BitmapDrawable(b);
-                rewardsMenuItem.SetIcon(bitmapDrawable);
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ShowPromotionTimestamp(bool success)
@@ -1066,12 +1120,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             ShowPromotion(true);
                         }
                     }
+                    else
+                    {
+                        this.userActionsListener.OnGetPromotions();
+                    }
+                }
+                else
+                {
+                    this.userActionsListener.OnGetPromotions();
                 }
 
             }
             else
             {
-                ShowPromotion(false);
+                this.userActionsListener.OnGetPromotions();
             }
         }
 
@@ -1086,26 +1148,55 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowPromotion(bool success)
         {
-            if (success)
+            try
             {
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        if (success)
+                        {
 
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                List<PromotionsEntityV2> items = wtManager.GetAllValidPromotions();
-                List<PromotionsModelV2> promotions = new List<PromotionsModelV2>();
-                if (items != null)
-                {
-                    promotions = new List<PromotionsModelV2>();
-                    promotions.AddRange(items);
-                }
-                if (promotions.Count > 0)
-                {
-                    PromotionDialogFragmnet dialogFragmnet = new PromotionDialogFragmnet(this);
-                    dialogFragmnet.Cancelable = false;
-                    Bundle extras = new Bundle();
-                    extras.PutString("promotions", JsonConvert.SerializeObject(promotions));
-                    dialogFragmnet.Arguments = extras;
-                    dialogFragmnet.Show(SupportFragmentManager, "Promotion Dialog");
-                }
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            List<PromotionsEntityV2> items = wtManager.GetAllValidPromotions();
+                            List<PromotionsModelV2> promotions = new List<PromotionsModelV2>();
+                            if (items != null)
+                            {
+                                promotions = new List<PromotionsModelV2>();
+                                promotions.AddRange(items);
+                            }
+                            if (promotions.Count > 0)
+                            {
+                                PromotionDialogFragmnet dialogFragmnet = new PromotionDialogFragmnet(this);
+                                dialogFragmnet.Cancelable = false;
+                                Bundle extras = new Bundle();
+                                extras.PutString("promotions", JsonConvert.SerializeObject(promotions));
+                                dialogFragmnet.Arguments = extras;
+                                dialogFragmnet.Show(SupportFragmentManager, "Promotion Dialog");
+                            }
+                        }
+
+                        try
+                        {
+                            if (this.mPresenter != null)
+                            {
+                                this.mPresenter.OnResumeUpdatePromotionUnReadCounter();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -1117,9 +1208,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowHomeDashBoard()
         {
             DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
-            currentFragment = new HomeMenuFragment();
+            HomeMenuFragment homeFragment = new HomeMenuFragment();
+            currentFragment = homeFragment;
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, new HomeMenuFragment())
+                           .Replace(Resource.Id.content_layout, homeFragment)
                            .CommitAllowingStateLoss();
         }
 
@@ -1452,22 +1544,50 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     RewardsParentEntityManager.DeleteTable();
                     RewardsParentEntityManager.CreateTable();
                     RewardsMenuUtils.OnSetRewardLoading(false);
-                    RunOnUiThread(() =>
+                    try
                     {
-                        HideProgressDialog();
-                        if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                        RunOnUiThread(() =>
                         {
-                            urlSchemaCalled = false;
-                            ShowSomethingWrongException();
-                        }
-                    });
+                            try
+                            {
+                                HideProgressDialog();
+                                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                                {
+                                    urlSchemaCalled = false;
+                                    ShowSomethingWrongException();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 }
                 else
                 {
-                    RunOnUiThread(() =>
+                    try
                     {
-                        _ = this.mPresenter.OnGetUserRewardList();
-                    });
+                        RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                _ = this.mPresenter.OnGetUserRewardList();
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 }
             }
             catch (Exception e)

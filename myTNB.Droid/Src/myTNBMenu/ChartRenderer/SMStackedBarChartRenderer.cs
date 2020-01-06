@@ -98,7 +98,14 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             {
                 currentActivity.RunOnUiThread(() =>
                 {
-                    OnDrawExtras(canvas);
+                    try
+                    {
+                        OnDrawExtras(canvas);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (Exception e)
@@ -224,7 +231,14 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             {
                 currentActivity.RunOnUiThread(() =>
                 {
-                    OnDrawDataSet(canvas, dataSet, index);
+                    try
+                    {
+                        OnDrawDataSet(canvas, dataSet, index);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (Exception e)

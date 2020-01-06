@@ -240,8 +240,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    mRewardsRecyclerView.ScrollTo(0, yPosition);
-                    mRewardsRecyclerView.RequestLayout();
+                    try
+                    {
+                        mRewardsRecyclerView.ScrollTo(0, yPosition);
+                        mRewardsRecyclerView.RequestLayout();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)

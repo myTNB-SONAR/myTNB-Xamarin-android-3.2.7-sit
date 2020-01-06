@@ -396,6 +396,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
+                    MyTNBAppToolTipData.SetSMRActivityInfo(SMRAccountActivityInfoResponse.Response);
                     AccountData accountData = new AccountData();
                     accountData.AccountNum = notificationDetails.AccountNum;
                     this.mView.SubmitMeterReading(accountData, SMRAccountActivityInfoResponse);
