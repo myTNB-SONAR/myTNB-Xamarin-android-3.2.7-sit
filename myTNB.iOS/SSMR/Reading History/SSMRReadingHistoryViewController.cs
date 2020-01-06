@@ -719,6 +719,10 @@ namespace myTNB
                 Lines = 0,
                 TextColor = MyTNBColor.BrownGreyThree
             };
+
+            nfloat newLblHeight = lblDescription.GetLabelHeight(GetScaledHeight(1000));
+            lblDescription.Frame = new CGRect(lblDescription.Frame.Location, new CGSize(BaseMarginedWidth, newLblHeight));
+
             CustomUIButtonV2 btnRefresh = new CustomUIButtonV2()
             {
                 Frame = new CGRect(0, GetYLocationFromFrame(lblDescription.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
@@ -734,6 +738,8 @@ namespace myTNB
 
             _viewRefreshContainer.AddSubview(lblDescription);
             _viewRefreshContainer.AddSubview(btnRefresh);
+            _viewRefreshContainer.Frame = new CGRect(_viewRefreshContainer.Frame.Location
+                , new CGSize(_viewRefreshContainer.Frame.Width, btnRefresh.Frame.GetMaxY() + GetScaledHeight(16)));
             View.AddSubview(_viewRefreshContainer);
             View.BackgroundColor = UIColor.White;
         }
