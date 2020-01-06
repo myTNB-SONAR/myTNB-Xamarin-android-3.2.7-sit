@@ -10,11 +10,12 @@ namespace myTNB
 
     public class AppLaunchMasterDataModel : BaseModelV2
     {
-        public MasterDataModel data { get; set; }
-        public bool IsSMRApplyDisabled { get; set; }
-        public bool IsEnergyTipsDisabled { get; set; }
-        public bool IsSMRFeatureDisabled { get; set; }
-        public bool IsOCRDown { get; set; }
+        public MasterDataModel data { set; get; }
+        public bool IsSMRApplyDisabled { set; get; }
+        public bool IsEnergyTipsDisabled { set; get; }
+        public bool IsSMRFeatureDisabled { set; get; }
+        public bool IsOCRDown { set; get; }
+        public bool IsPayEnabled { set; get; }
         [JsonIgnore]
         public bool IsMaintenance
         {
