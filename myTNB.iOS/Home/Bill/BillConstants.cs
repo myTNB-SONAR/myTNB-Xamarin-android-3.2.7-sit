@@ -25,6 +25,7 @@
         public static string Cell_BillHistory = "billHistoryTableViewCell";
         public static string Cell_BillSection = "billSectionTableViewCell";
         public static string Cell_BillHistoryShimmer = "billHistoryShimmerViewCell";
+        public static string Cell_Refresh = "refreshViewCell";
 
         //I18N
         //Bill
@@ -72,9 +73,18 @@
 
         //Bill Filter
         public static string I18N_FilterDescription = "description";
+        public static string I18N_FilterDescriptionRE = "descriptionRE";
         public static string I18N_FilterBy = "filterBy";
         public static string I18N_ApplyFilter = "applyFilter";
         public static string I18N_SelectFilter = "selectFilter";
+
+        //EmptyDataPreffix
+        public static string I18N_EmptyHistory = "emptyHistory";
+        public static string I18N_EmptyPaymentHistory = "emptyPaymentHistory";
+        public static string I18N_EmptyBillHistory = "emptyBillHistory";
+        public static string I18N_EmptyHistoryRE = "emptyHistoryRE";
+        public static string I18N_EmptyPaymentHistoryRE = "emptyPaymentHistoryRE";
+        public static string I18N_EmptyBillHistoryRE = "emptyBillHistoryRE";
 
         //Image
         public static string IMG_NeedToPay = "Bills-NeedToPay-Banner";
@@ -93,6 +103,8 @@
         public static string IMG_LoadingBanner = "Bill-Loading-Banner";
         public static string IMG_Refresh = "SSMR-Refresh";
         public static string IMG_DropdownIcon = "IC-Action-Dropdown";
+        public static string IMG_NavFiltered = "IC-Action-Nav-Filtered";
+        public static string IMG_NavUnfiltered = "IC-Action-Nav-Unfiltered";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

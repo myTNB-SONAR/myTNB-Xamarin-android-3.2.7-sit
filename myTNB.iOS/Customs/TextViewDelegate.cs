@@ -7,6 +7,7 @@ namespace myTNB
     public class TextViewDelegate : UITextViewDelegate
     {
         Action<NSUrl> URLAction;
+        public bool InteractWithURL = true;
         public TextViewDelegate()
         {
 
@@ -21,7 +22,7 @@ namespace myTNB
             {
                 URLAction?.Invoke(URL);
             }
-            return true;
+            return InteractWithURL;
         }
     }
 }

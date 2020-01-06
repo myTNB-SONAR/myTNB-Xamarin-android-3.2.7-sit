@@ -17,7 +17,7 @@
     "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
     "refreshNow": "Refresh Now",
     "bcrmMessage": "BRCM will be down for maintenance purpose",
-    "disconnectionMsg": "Your electricity is currently disconnected.",
+    "disconnectionMsg": "Your electricity is currently unavailable.",
     "months": "Months",
     "days": "Days",
     "viewBill": "View Bill",
@@ -45,9 +45,9 @@
     "manage": "Manage",
     "update": "Update",
     "logout": "Log Out",
-    "idNumber": "IC / ROC / Passport No.",
+    "idNumber": "IC / ROC / Passport Number",
     "password": "Password",
-    "mobileNo": "Mobile No.",
+    "mobileNo": "Mobile Number",
     "email": "Email",
     "addAnotherAcct": "Add Another Account",
     "setAppLanguage": "Set App Language",
@@ -61,9 +61,9 @@
     "resend": "Resend",
     "retry": "Retry",
     "save": "Save",
-    "fullname": "Fullname",
+    "fullname": "Full Name",
     "confirmPassword": "Confirm New Password",
-    "accountNo": "Account No.",
+    "accountNo": "Account Number",
     "accountType": "Account Type",
     "allNotifications": "All Notifications",
     "unitEmission": "kg",
@@ -92,7 +92,8 @@
     "rewardNotAvailableTitle": "Reward not available.",
     "rewardNotAvailableDesc": "Looks like this reward has expired. But that’s okay, we have more for you to check out!",
     "showMoreRewards": "Show More Rewards!",
-    "illDoItLater": "I’ll Do It Later"
+    "illDoItLater": "I’ll Do It Later",
+    "selectBillMaxDesc": "You may select up to <b>5 bills</b> to pay in each transaction. To pay the rest of your bills, complete this transaction first."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -108,7 +109,7 @@
     "minimumMandatoryPayment": "Minimum amount must be at least {0}",
     "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00",
     "emptyNickname": "Account nickname cannot be empty. Please enter valid nickname and try adding your account again.",
-    "invalidNickname": "Invalid characters. Use letters or numbers only.",
+    "invalidNickname": "You can use letters, numbers and special characters for the nickname.",
     "duplicateNickname": "Nickname already used. Please create a new one.",
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, this is not working right now. Please try again later.",
@@ -116,15 +117,15 @@
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Invalid PIN",
     "invalid_password": "Password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword": "Your password and confirmation password do not match.",
+    "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
-    "invalid_idnumber": "Invalid IC, ROC or Passport No.",
+    "invalid_idnumber": "Invalid IC, ROC or Passport Number",
     "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
     "error_duplicateAccountMessage": "This account number has already been added to the list.",
     "error_duplicateAccountTitle": "Duplicate Account",
     "invalid_icNumber": "Invalid IC number.",
     "invalid_rocNumber": "Invalid ROC number.",
-    "accountLength": "Please enter a valid 12-digit account no.",
+    "accountLength": "Please enter a valid 12-digit account number",
     "invalid_accountType": "Invalid Account Type",
     "noDataConnectionTitle": "No Internet Connection",
     "noDataConnectionMessage": "Please check your internet connection and try again.",
@@ -136,7 +137,8 @@
     "refreshBillDetails": "Uh oh, looks like the page with your bill details have been unplugged. Refresh to stay plugged in!",
     "refreshUsageSSMR": "Uh oh, looks like your Self Meter Reading service has been unplugged. Refresh to stay plugged in!",
     "refreshBillPayHistory": "Uh oh, looks like the page with your bill/payment history has been unplugged. Refresh to stay plugged in!",
-    "redeemRewardFailMsg": "Let’s do this one more time."
+    "redeemRewardFailMsg": "Let’s do this one more time.",
+    "plannedDownTimeMessage": "Looks like your page can't be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -239,7 +241,7 @@
     "ssmrTrackApplication": "Track Application",
     "ssmrBackToUsage": "Back to My Usage",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Back to Reading History"
+    "ssmrViewReadHistory": "View Reading History"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -318,7 +320,7 @@
       },
       {
         "Title": "How do I take this photo?",
-        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion. ",
+        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
         "CTA": "Got it!",
         "Type": "Single_TakePhoto"
       },
@@ -349,8 +351,8 @@
   "Usage": {
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
-    "gotIt": "Got it!",
-    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
+    "gotIt": "Got it",
+    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Electricity supply to your premises is currently unavailable. This may be due to a temporary disconnection request by the owner or an overdue bill payment.<br><br>If you've made a payment, please give us some time for this to be reflected.",
     "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "What are these?",
     "missedReadTitle": "What does this mean?",
@@ -362,6 +364,7 @@
     "viewReadHistory": "View Reading History",
     "showTariff": "Show Tariff",
     "hideTariff": "Hide Tariff",
+    "tariffBlock": "Tariff Block",
     "myEarnings": "My Earnings",
     "viewPaymentAdvice": "View Payment Advice",
     "iWillGetBy": "I will get by",
@@ -407,7 +410,13 @@
     "tutorialViewDetailsDesc": "“View Details” to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
     "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
-    "gotIt": "Got it!"
+    "gotIt": "Got it!",
+    "emptyHistory": "Looks like your history is empty at the moment. Your bill and payment history will appear here once you have any.",
+    "emptyPaymentHistory": "Looks like you haven't made any payments through myTNB yet. This will appear here once you have.",
+    "emptyBillHistory": "Looks like you have no bills yet. This will appear here once you have any.",
+    "emptyHistoryRE": "Looks like your history is empty at the moment. The advice and payment history will appear here once you have any.",
+    "emptyPaymentHistoryRE": "Looks like we have not made any payments yet. Once we have, the payment history will appear here.",
+    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -426,8 +435,8 @@
     ]
   },
   "BillDetails": {
-    "title": "Bill Details",
-    "billDetails": "My Bill Details",
+    "title": "Details",
+    "billDetails": "My Charges",
     "outstandingCharges": "My outstanding charges",
     "billThisMonth": "My latest bill",
     "needToPay": "I need to pay",
@@ -448,6 +457,7 @@
   "BillFilter": {
     "title": "Filter Views",
     "description": "View your invoiced bills, payment receipts or both.",
+    "descriptionRE": "View your advices, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
     "selectFilter": "Select Filter"
@@ -523,24 +533,24 @@
     "addAnotherAcct": "Add Another Account",
     "addAccount": "Adding {0} Account",
     "addAccounts": "Adding {0} Accounts",
-    "addAccountMsg": "This may take a while as we are\r\nadding your TNB account.",
-    "addAccountsMsg": "This may take a while as we are\r\nadding your TNB accounts.",
+    "addAccountMsg": "This may take a while as we add your TNB account.",
+    "addAccountsMsg": "This may take a while as we add your TNB accounts.",
     "noAccountsTitle": "No accounts found!",
     "additionalAccts": "Additional account(s)",
     "removeAcct": "Remove Account",
-    "removeAcctMsg": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account.",
+    "removeAcctMsg": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Visit the Self-Service Portal or Kedai Tenaga to close your electricity supply account.",
     "addAcctSuccessMsg": "Add Account(s) Successful",
     "ownerICNumber": "Owner's IC / Passport Number",
-    "rocNumber": "ROC No.",
-    "whereIsMyAccountTitle": "Where is my account no.?",
-    "whereIsMyAccountDetails": "Your 12-digit account no. can be found on the top left corner of your monthly paper bill.",
+    "rocNumber": "ROC Number",
+    "whereIsMyAccountTitle": "Where is my account number?",
+    "whereIsMyAccountDetails": "Your 12-digit account number can be found on the top left corner of your monthly paper bill.",
     "selectAccountType": "Select Account Type",
     "residential": "Residential",
     "commercial": "Commercial",
     "addAccountCTATitle": "Add Account",
     "scanMessage": "Scan the barcode on your bill to retrieve account details.",
     "invalidBarcode": "Invalid barcode.",
-    "addByIDMessage": "Was this electricity supply account registered with your IC / ROC / Passport No.?",
+    "addByIDMessage": "Was this electricity supply account registered with your IC / ROC / Passport Number?",
     "addByRightsMessage": "Do you have the rights to view all information related to this electricity supply account?",
     "addAsOwnerMessage": "I'm the owner of this electricity supply account.",
     "addAsTenantMessage": "I’m renting this place / it belongs to my parents.",
@@ -669,10 +679,10 @@
     "verifyDeviceTitle": "Verify Device",
     "verifyDeviceMessage": "Please take a moment to verify your device.",
     "details": "For security purposes, please enter your mobile number to verify this device.",
-    "updateMobileNumberTitle": "Update Mobile No."
+    "updateMobileNumberTitle": "Update Mobile Number"
   },
   "VerifyPin": {
-    "title": "Verify PIN",
+    "title": "Verify Mobile Number",
     "smsNotReceived": "Didn't receive the SMS?",
     "resendPinMessage": "An SMS containing the activation PIN has been sent to your number.",
     "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",
@@ -697,14 +707,14 @@
     "nicknameUpdateSuccess": "Account nickname has been updated successfully.",
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
-    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Note: This does not close your electricity supply account. Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account."
+    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity supply account. Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account."
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
     "skip": "Skip",
     "title1": "Welcome to myTNB!",
     "title2": "Stay current with your usage.",
-    "title3": "Bills at Your Fingertips.",
+    "title3": "Bills at your fingertips.",
     "title4": "Pay your bills anytime, anywhere.",
     "title5": "Say hi to myTNB Rewards!",
     "title6": "What’s new with myTNB?",
@@ -718,11 +728,11 @@
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
     "noCards": "Looks like you have no credit/debit cards stored. You may add a credit/debit card during payment.",
-    "details": "You may only add a new credit / debit card when making payment.",
-    "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
-    "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
-    "removeCardTitle": "Remove Credit / Debit Card",
-    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+    "details": "You may only add a new credit/debit card when making payment.",
+    "cardRemoveSuccess": "The credit/debit card ending with {0} has been removed successfully.",
+    "removeCardMessage": "You are about to remove the credit/debit card ending with {0}.",
+    "removeCardTitle": "Remove Credit/Debit Card",
+    "cardNotRemovedMessage": "Credit/Debit Card ending with {0} was not removed. Please try again."
   },
   "ViewBill": {
     "titleBill": "Bill",
@@ -769,7 +779,7 @@
     "salutation": "Dear Customer,",
     "trnDate": "TRANSACTION DATE",
     "trnID": "TRANSACTION ID",
-    "trnMethod": "RANSACTION METHOD"
+    "trnMethod": "TRANSACTION METHOD"
   },
   "FeedbackList": {
     "title": "Feedback"
@@ -786,13 +796,13 @@
     "invalidFeedbackType": "Invalid feedback type",
     "selectFeedbackType": "Select Feedback Type",
     "faultyLampTitle": "Reporting faulty street lamps?",
-    "faultyLampMessage": "You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. 17493 8E 1) to specify the lamp.",
+    "faultyLampMessage": "You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole number (e.g. 17493 8E 1) to specify the lamp.",
     "state": "State",
     "invalidState": "Invalid state",
     "selectState": "Select State",
     "location": "Location / Street Name",
     "invalidLocation": "Invalid location / Street name",
-    "poleNumber": "Pole No.",
+    "poleNumber": "Pole Number",
     "invalidPoleNumber": "Invalid pole number",
     "noAccessTitle": "Location Access is not allowed",
     "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
@@ -809,7 +819,7 @@
     "state": "State",
     "feedbackType": "Feedback Type",
     "location": "Location / Street Name",
-    "poleNumber": "Pole No."
+    "poleNumber": "Pole Number"
     //Not Supported by MS Translation End
   },
   "SubmittedFeedback": {
@@ -826,7 +836,7 @@
   },
   "Promotions": {
     "title": "What's New",
-    "noPromotions": "No promotions currently. Check back later!"
+    "noPromotions": "Looks like there's nothing new.. Yet! Check back soon."
   },
   "RearrangeAccount": {
     "title": "Rearrange Accounts",
@@ -840,7 +850,7 @@
     "title": "Rewards",
     "viewAll": "View All",
     "noRewards": "Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!",
-    "tutorialRewardTitle": "Pick a reward, check it out!.",
+    "tutorialRewardTitle": "Pick a reward, check it out!",
     "tutorialRewardDesc": "Tap on a reward to find out more or tap on the heart to save it for later.",
     "tutorialCategoryTitle": "Rewards for you.",
     "tutorialCategoryDesc": "Switch between the categories to explore the different rewards.",
@@ -872,6 +882,19 @@
   "SavedRewards": {
     "title": "My Saved Rewards",
     "emptyDesc": "Your saved rewards will appear here.",
-    "used": "Used"
+    "used": "Used",
+    "rewardPeriod": "Reward Period",
+    "location": "Location(s)",
+    "tnc": "Terms and Conditions",
+    "rewardUsedPrefix": "Reward used ",
+    "rewardUsed": "Reward Used",
+    "useNow": "Use Now",
+    "useNowPopupTitle": "Please make sure you’re at the shop.",
+    "useNowPopupMessage": "This reward can only be used once, please confirm you’re at the shop / merchant.",
+    "useLater": "Use Later",
+    "confirm": "Confirm",
+    "unsave": "Unsave",
+    "save": "Save",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
   }
 }

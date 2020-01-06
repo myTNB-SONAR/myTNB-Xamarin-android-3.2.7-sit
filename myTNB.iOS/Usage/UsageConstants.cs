@@ -46,8 +46,6 @@
         public static string I18N_Day = "day";
         public static string I18N_Month = "month";
         public static string I18N_ViewReadHistory = "viewReadHistory";
-        public static string I18N_ShowTariff = "showTariff";
-        public static string I18N_HideTariff = "hideTariff";
         public static string I18N_MyEarnings = "myEarnings";
         public static string I18N_ViewPaymentAdvice = "viewPaymentAdvice";
         public static string I18N_IWillGetBy = "iWillGetBy";
@@ -66,6 +64,7 @@
         public static string I18N_TariffLegendNote = "tariffLegendNote";
         public static string I18N_PrevReadingEmptyTitle = "prevReadingEmptyTitle";
         public static string I18N_PrevReadingEmptyMsg = "prevReadingEmptyMsg";
+        public static string I18N_TariffBlock = "tariffBlock";
 
         //Preference Key
         public static string Pref_UsageSSMRTutorialOverlay = "UsageSSMRTutorialOverlayV2.0.0";

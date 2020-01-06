@@ -8,6 +8,7 @@ using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS
 {
@@ -22,16 +23,17 @@ namespace myTNB.SitecoreCMS
         {
             _isForcedUpdate = isforcedUpdate;
             List<Task> taskList = new List<Task>
-            {
-                LoadMeterReadSSMRWalkthrough(),
-                LoadMeterReadSSMRWalkthroughV2(),
-                LoadBillDetailsTooltip(),
-                //LoadSSMRWalkthrough(),
-                LoadTermsAndCondition()
-            };
+                {
+                    LoadMeterReadSSMRWalkthrough(),
+                    LoadMeterReadSSMRWalkthroughV2(),
+                    LoadBillDetailsTooltip(),
+                    //LoadSSMRWalkthrough(),
+                    LoadTermsAndCondition()
+                };
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
+                RewardsCache.ClearImages();
             }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
@@ -52,14 +54,21 @@ namespace myTNB.SitecoreCMS
         private string GetDataFromFile(string url)
         {
             string content = string.Empty;
-            WebRequest webRequest = WebRequest.Create(url);
-            using (WebResponse response = webRequest.GetResponse())
-            using (Stream responseStream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(responseStream))
+            try
             {
-                content = reader.ReadToEnd();
+                WebRequest webRequest = WebRequest.Create(url);
+                using (WebResponse response = webRequest.GetResponse())
+                using (Stream responseStream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(responseStream))
+                {
+                    content = reader.ReadToEnd();
+                }
+                //Debug.WriteLine("Content: " + content);
             }
-            //Debug.WriteLine("Content: " + content);
+            catch (Exception e)
+            {
+                Debug.WriteLine("GetDataFromFile: " + e.Message);
+            }
             return content;
         }
 
@@ -525,6 +534,10 @@ namespace myTNB.SitecoreCMS
                         RewardsCache.RewardIsAvailable = false;
                     }
                 }
+                else
+                {
+                    RewardsCache.RewardIsAvailable = true;
+                }
             });
         }
 
@@ -564,5 +577,113 @@ namespace myTNB.SitecoreCMS
                 }
             });
         }
+
+        public Task LoadNeedHelp()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new HelpTimeStampResponseModel();
+                    timeStamp.Data = new List<HelpTimeStamp> { new HelpTimeStamp { Timestamp = string.Empty, ShowNeedHelp = false } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    ShowNeedHelp = timeStamp.Data[0].ShowNeedHelp;
+                    HelpResponseModel needHelpResponse = iService.GetHelpItems();
+                    if (needHelpResponse.Status.IsValid() && needHelpResponse.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
+                    {
+                        HelpEntity wsManager = new HelpEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
+                        {
+                            wsManager.InsertListOfItems(needHelpResponse.Data);
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
+                            Debug.WriteLine("LoadNeedHelp Done");
+                        }
+                    }
+                }
+            });
+        }
+
+        public bool ShowNeedHelp
+        {
+            set
+            {
+                try
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    sharedPreference.SetBool(value, "ShowNeedHelp");
+                    sharedPreference.Synchronize();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error: " + e.Message);
+                }
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey("ShowNeedHelp");
+            }
+        }
+
+        public async Task<bool> LoadDynamicSplash()
+        {
+            bool isDone = false;
+            await Task.Run(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                AppLaunchImageTimestampResponseModel timeStamp = iService.GetAppLaunchImageTimestampItem();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new AppLaunchImageTimestampResponseModel();
+                    timeStamp.Data = new List<AppLaunchImageTimestamp> { new AppLaunchImageTimestamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "AppLaunchImageTimeStamp", ref needsUpdate);
+
+                SplashHasNewTimestamp = needsUpdate;
+                if (needsUpdate)
+                {
+                    AppLaunchImageResponseModel appLaunchImageResponse = iService.GetAppLaunchImageItem();
+                    if (appLaunchImageResponse.Status.IsValid() && appLaunchImageResponse.Status.ToUpper() == "SUCCESS")
+                    {
+                        if (appLaunchImageResponse != null && appLaunchImageResponse.Data != null && appLaunchImageResponse.Data.Count > 0)
+                        {
+                            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                            var jsonStr = JsonConvert.SerializeObject(appLaunchImageResponse);
+                            sharedPreference.SetString(jsonStr, "AppLaunchImageData");
+                            sharedPreference.Synchronize();
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "AppLaunchImageTimeStamp");
+                            Debug.WriteLine("LoadDynamicSplash Done");
+                        }
+                    }
+                }
+                isDone = true;
+            });
+
+            return isDone;
+        }
+
+        public bool SplashHasNewTimestamp { get; set; }
     }
 }

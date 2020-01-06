@@ -226,6 +226,10 @@ namespace myTNB
             };
 
             parentView.AddSubviews(new UIView { topView, bottomView, leftView, rightView, boxView });
+            if (_swipeText != null)
+            {
+                _swipeText.Hidden = false;
+            }
 
             return parentView;
         }
@@ -246,7 +250,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.Black60
             };
 
-            UIView verticalLine = new UIView(new CGRect(width - GetScaledWidth(49.5F), topView.Frame.GetMaxY() - GetScaledHeight(149F), GetScaledWidth(1F), GetScaledHeight(149F)))
+            UIView verticalLine = new UIView(new CGRect(width - GetScaledWidth(49.5F), topView.Frame.GetMaxY() - GetScaledHeight(169F), GetScaledWidth(1F), GetScaledHeight(169F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
@@ -339,6 +343,10 @@ namespace myTNB
 
             parentView.AddSubview(topView);
             parentView.AddSubviews(new UIView { bottomView, leftView, rightView, boxView });
+            if (_swipeText != null)
+            {
+                _swipeText.Hidden = true;
+            }
 
             return parentView;
         }

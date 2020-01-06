@@ -12,6 +12,7 @@ namespace myTNB
         public List<string> FilterTypes = new List<string>();
         public int FilterIndex;
         public Action<int> ApplyFilter;
+        public bool IsREAccount;
 
         public BillFilterViewController(IntPtr handle) : base(handle) { }
 
@@ -27,7 +28,13 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            _typeValueLabel.Text = FilterTypes[FilterIndex];
+            if (_typeValueLabel != null)
+            {
+                if (FilterIndex > -1 && FilterIndex < FilterTypes.Count)
+                {
+                    _typeValueLabel.Text = FilterTypes[FilterIndex];
+                }
+            }
         }
 
         private void CreateSubvies()
@@ -39,7 +46,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
                 Lines = 0,
-                Text = GetI18NValue(BillConstants.I18N_FilterDescription)
+                Text = GetI18NValue(IsREAccount ? BillConstants.I18N_FilterDescriptionRE : BillConstants.I18N_FilterDescription)
             };
             CGSize lblSize = titleLabel.SizeThatFits(new CGSize(lblWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(titleLabel, lblSize.Height);
@@ -83,7 +90,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
-                Text = FilterTypes != null && FilterTypes.Count > 0 && FilterIndex < FilterTypes.Count
+                Text = FilterTypes != null && FilterTypes.Count > 0 && FilterIndex > -1 && FilterIndex < FilterTypes.Count
                     ? FilterTypes[FilterIndex] : string.Empty
             };
             selectorView.AddSubview(_typeValueLabel);
@@ -126,7 +133,10 @@ namespace myTNB
                 if (ApplyFilter != null)
                 {
                     DismissViewController(true, null);
-                    ApplyFilter.Invoke(FilterIndex);
+                    if (FilterIndex > -1)
+                    {
+                        ApplyFilter.Invoke(FilterIndex);
+                    }
                 }
             };
             footerContainer.AddSubview(applyBtn);

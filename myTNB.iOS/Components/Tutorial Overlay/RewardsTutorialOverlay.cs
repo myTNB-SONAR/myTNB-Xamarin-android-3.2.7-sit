@@ -340,6 +340,7 @@ namespace myTNB
 
             bottomView.AddSubviews(new UIView { title, desc });
             parentView.AddSubviews(new UIView { topView, bottomView });
+            _swipeText.Hidden = !_controller.CategoryMenuIsVisible();
             return parentView;
         }
 
@@ -460,7 +461,7 @@ namespace myTNB
             parentView.AddSubview(topView);
             parentView.AddSubview(bottomView);
             parentView.AddSubviews(new UIView { leftView, rightView, boxView });
-
+            _swipeText.Hidden = true;
             return parentView;
         }
         private void CreateFooterView()

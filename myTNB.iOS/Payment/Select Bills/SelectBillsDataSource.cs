@@ -60,7 +60,11 @@ namespace myTNB.Payment.SelectBills
                         && !_accounts[indexPath.Row].IsAccountSelected
                         && _accounts[indexPath.Row].IsValidAmount)
                     {
-                        _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                        int selectedCount = _accounts.FindAll(x => x.IsAccountSelected == true).Count;
+                        if (selectedCount < 5)
+                        {
+                            _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                        }
                     }
                 }
                 else
@@ -69,8 +73,9 @@ namespace myTNB.Payment.SelectBills
                         && !_accounts[indexPath.Row].IsAccountSelected
                         && _accounts[indexPath.Row].IsValidAmount)
                     {
+                        int selectedCount = _accounts.FindAll(x => x.IsAccountSelected == true).Count;
                         bool isExist = _controller._displayedPopup.FindIndex(x => x == acctNumber) > -1;
-                        if (!isExist)
+                        if (!isExist && selectedCount < 5)
                         {
                             _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
                         }
@@ -119,6 +124,10 @@ namespace myTNB.Payment.SelectBills
                     int selectedCount = _accounts.FindAll(x => x.IsAccountSelected == true).Count;
                     if (selectedCount >= 5)
                     {
+                        AlertHandler.DisplayCustomAlert(string.Empty,
+                            LanguageUtility.GetCommonI18NValue(Constants.Common_SelectBillMaxDesc),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null }});
                         return;
                     }
                 }

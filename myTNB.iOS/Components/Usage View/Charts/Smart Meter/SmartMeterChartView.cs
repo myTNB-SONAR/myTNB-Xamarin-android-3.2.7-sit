@@ -474,22 +474,29 @@ namespace myTNB
             _isTariffView = isTariffView;
             if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
-                UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
-                if (scrollview == null) { return; }
-                for (int i = 0; i < scrollview.Subviews.Count(); i++)
+                if (_segmentContainer != null)
                 {
-                    CustomUIView segmentView = scrollview.Subviews[i] as CustomUIView;
-                    if (segmentView == null) { continue; }
-                    UpdateTariffView(segmentView, i);
+                    UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
+                    if (scrollview == null) { return; }
+                    for (int i = 0; i < scrollview.Subviews.Count(); i++)
+                    {
+                        CustomUIView segmentView = scrollview.Subviews[i] as CustomUIView;
+                        if (segmentView == null) { continue; }
+                        UpdateTariffView(segmentView, i);
+                    }
                 }
             }
             else
             {
-                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                if (_segmentContainer != null)
                 {
-                    CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                    if (segmentView == null) { continue; }
-                    UpdateTariffView(segmentView, i);
+                    for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                    {
+                        CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                        if (segmentView == null) { continue; }
+                        UpdateTariffView(segmentView, i);
+
+                    }
                 }
             }
         }

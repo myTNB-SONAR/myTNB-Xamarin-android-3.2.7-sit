@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Timers;
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -14,6 +13,7 @@ namespace myTNB
     {
         public RewardsModel RewardModel;
         public string RedeemedDate;
+        public bool IsFromSavedRewards;
         private UIView _footerView;
         private UIScrollView _scrollView;
         private Timer _useTimer;
@@ -21,10 +21,11 @@ namespace myTNB
         private UILabel _timerLabel;
         private int _currentSeconds;
         private UIView _tutorialContainer;
+        private UIBarButtonItem _btnShareReward;
 
         public override void ViewDidLoad()
         {
-            PageName = RewardsConstants.PageName_RewardDetails;
+            PageName = IsFromSavedRewards ? RewardsConstants.PageName_SavedRewards : RewardsConstants.PageName_RewardDetails;
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
@@ -85,42 +86,37 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
-            if (!RewardModel.IsUsed)
+            _btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                UIBarButtonItem btnShareReward = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_ShareIcon), UIBarButtonItemStyle.Done, (sender, e) =>
+                if (NetworkUtility.isReachable)
                 {
-                    if (NetworkUtility.isReachable)
-                    {
-                        ActivityIndicator.Show();
-                        BaseService baseService = new BaseService();
-                        APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-                        string linkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
+                    ActivityIndicator.Show();
+                    BaseService baseService = new BaseService();
+                    APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                    string linkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
 
-                        var deeplinkUrl = string.Empty;
-                        var components = RewardsServices.GenerateLongURL(linkUrl);
-                        components.GetShortenUrl((shortUrl, warnings, error) =>
-                        {
-                            if (error == null)
-                            {
-                                deeplinkUrl = shortUrl.AbsoluteString;
-                            }
-                            else
-                            {
-                                // error handling goes here...
-                                deeplinkUrl = linkUrl;
-                            }
-                            Debug.WriteLine("deeplinkUrl: " + deeplinkUrl);
-                            ShareAction(deeplinkUrl);
-                            ActivityIndicator.Hide();
-                        });
-                    }
-                    else
+                    var deeplinkUrl = string.Empty;
+                    var components = RewardsServices.GenerateLongURL(linkUrl);
+                    components.GetShortenUrl((shortUrl, warnings, error) =>
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
-                    }
-                });
-                NavigationItem.RightBarButtonItem = btnShareReward;
-            }
+                        if (error == null)
+                        {
+                            deeplinkUrl = shortUrl.AbsoluteString;
+                        }
+                        else
+                        {
+                            deeplinkUrl = linkUrl;
+                        }
+                        ShareAction(deeplinkUrl);
+                        ActivityIndicator.Hide();
+                    });
+                }
+                else
+                {
+                    AlertHandler.DisplayNoDataAlert(this);
+                }
+            });
+            NavigationItem.RightBarButtonItem = _btnShareReward;
         }
 
         private void ShareAction(string deeplinkUrl)
@@ -151,10 +147,13 @@ namespace myTNB
 
         private void PrepareDetailView()
         {
-            UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(180F)))
+            nfloat imgHeight = GetScaledHeight(180F);
+
+            UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
             {
                 BackgroundColor = UIColor.Clear,
             };
+
             UIImageView imageView = new UIImageView(imageContainer.Bounds)
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
@@ -165,8 +164,29 @@ namespace myTNB
             {
                 try
                 {
-                    ActivityIndicatorComponent activityIndicator = new ActivityIndicatorComponent(imageContainer);
-                    activityIndicator.Show();
+                    UIView imgLoadingView = new UIView(imageContainer.Bounds)
+                    {
+                        BackgroundColor = UIColor.Clear
+                    };
+                    _scrollView.AddSubview(imgLoadingView);
+
+                    UIView viewImage = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                    {
+                        BackgroundColor = MyTNBColor.PaleGreyThree
+                    };
+
+                    CustomShimmerView shimmeringView = new CustomShimmerView();
+                    UIView viewShimmerParent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                    { BackgroundColor = UIColor.Clear };
+                    UIView viewShimmerContent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                    { BackgroundColor = UIColor.Clear };
+                    viewShimmerParent.AddSubview(shimmeringView);
+                    shimmeringView.ContentView = viewShimmerContent;
+                    shimmeringView.Shimmering = true;
+                    shimmeringView.SetValues();
+
+                    viewShimmerContent.AddSubview(viewImage);
+                    imgLoadingView.AddSubview(viewShimmerParent);
                     NSUrl url = new NSUrl(RewardModel.Image);
                     NSUrlSession session = NSUrlSession
                         .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
@@ -181,7 +201,8 @@ namespace myTNB
                                 {
                                     imageView.Image = image;
                                 }
-                                activityIndicator.Hide();
+                                if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
+                                imgLoadingView.RemoveFromSuperview();
                             });
                         }
                         else
@@ -189,7 +210,8 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
-                                activityIndicator.Hide();
+                                if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
+                                imgLoadingView.RemoveFromSuperview();
                             });
                         }
                     });
@@ -201,6 +223,7 @@ namespace myTNB
                     InvokeOnMainThread(() =>
                     {
                         imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                        if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
                     });
                 }
             }
@@ -209,6 +232,7 @@ namespace myTNB
                 InvokeOnMainThread(() =>
                 {
                     imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                    if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
                 });
             }
 
@@ -235,7 +259,7 @@ namespace myTNB
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 Image = UIImage.FromBundle(RewardsConstants.Img_RewardPeriodIcon),
-                Tag = RewardsConstants.Tag_DetailRewardImage
+                Tag = RewardsConstants.Tag_DetailRewardPeriodImage
             };
 
             UILabel rpTitle = new UILabel(new CGRect(GetXLocationFromFrame(rpIcon.Frame, 4F), 0, viewWidth - (rpIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
@@ -273,7 +297,7 @@ namespace myTNB
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 Image = UIImage.FromBundle(RewardsConstants.Img_RewardLocationIcon),
-                Tag = RewardsConstants.Tag_DetailRewardImage
+                Tag = RewardsConstants.Tag_DetailLocationImage
             };
 
             UILabel locationTitle = new UILabel(new CGRect(GetXLocationFromFrame(locationIcon.Frame, 4F), 0, viewWidth - (locationIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
@@ -286,23 +310,6 @@ namespace myTNB
             };
 
             UITextView locationTextView = CreateHTMLContent(RewardModel.LocationLabel);
-            locationTextView.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                BrowserViewController viewController =
-                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                if (viewController != null)
-                {
-                    viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
-                    viewController.URL = url.AbsoluteString;
-                    viewController.IsDelegateNeeded = false;
-                    UINavigationController navController = new UINavigationController(viewController)
-                    {
-                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                    };
-                    PresentViewController(navController, true, null);
-                }
-            }));
             CGSize locationTextViewSize = locationTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(locationTextView, locationTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(locationTextView, 0);
@@ -314,7 +321,8 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.VeryLightPinkSeven
             };
 
-            locationView.AddSubviews(new UIView { locationIcon, locationTitle, locationTextView, locationLine });
+            locationView.AddSubviews(new UIView { locationIcon, locationTitle, locationLine });
+            locationView.AddSubview(locationTextView);
 
             ViewHelper.AdjustFrameSetHeight(locationView, locationLine.Frame.GetMaxY());
 
@@ -328,7 +336,7 @@ namespace myTNB
             {
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 Image = UIImage.FromBundle(RewardsConstants.Img_RewardTCIcon),
-                Tag = RewardsConstants.Tag_DetailRewardImage
+                Tag = RewardsConstants.Tag_DetailTCImage
             };
 
             UILabel tandCTitle = new UILabel(new CGRect(GetXLocationFromFrame(tandCIcon.Frame, 4F), 0, viewWidth - (tandCIcon.Frame.GetMaxX() + GetScaledWidth(4F)), GetScaledHeight(24F)))
@@ -341,23 +349,6 @@ namespace myTNB
             };
 
             UITextView tandCTextView = CreateHTMLContent(RewardModel.TandCLabel);
-            tandCTextView.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                BrowserViewController viewController =
-                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                if (viewController != null)
-                {
-                    viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
-                    viewController.URL = url.AbsoluteString;
-                    viewController.IsDelegateNeeded = false;
-                    UINavigationController navController = new UINavigationController(viewController)
-                    {
-                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                    };
-                    PresentViewController(navController, true, null);
-                }
-            }));
             CGSize tandCTextViewSize = tandCTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(tandCTextView, tandCTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(tandCTextView, 0);
@@ -398,8 +389,8 @@ namespace myTNB
             {
                 ForegroundColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_14_500,
-                UnderlineStyle = NSUnderlineStyle.Single,
-                UnderlineColor = MyTNBColor.WaterBlue
+                UnderlineColor = UIColor.Clear,
+                UnderlineStyle = NSUnderlineStyle.None
             };
 
             UITextView textView = new UITextView()
@@ -412,6 +403,31 @@ namespace myTNB
                 TextContainerInset = UIEdgeInsets.Zero
             };
 
+            Action<NSUrl> action = new Action<NSUrl>((url) =>
+            {
+                if (url != null)
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                    BrowserViewController viewController =
+                        storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                    if (viewController != null)
+                    {
+                        viewController.NavigationTitle = GetI18NValue(RewardsConstants.I18N_Title);
+                        viewController.URL = url.AbsoluteString;
+                        viewController.IsDelegateNeeded = false;
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
+                        PresentViewController(navController, true, null);
+                    }
+                }
+            });
+            textView.Delegate = new TextViewDelegate(action)
+            {
+                InteractWithURL = false
+            };
+
             return textView;
         }
 
@@ -422,6 +438,7 @@ namespace myTNB
 
         private void AddFooterView(bool isUsedReward = false)
         {
+            bool isRedeemDateEmpty = false;
             if (_footerView != null)
             {
                 _footerView.RemoveFromSuperview();
@@ -453,7 +470,9 @@ namespace myTNB
                     Text = dateValue
                 };
 
-                UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(usedLabel.Frame, 16F), width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))
+                isRedeemDateEmpty = !dateValue.IsValid();
+                nfloat rewardButtonYPos = dateValue.IsValid() ? GetYLocationFromFrame(usedLabel.Frame, 16F) : GetScaledHeight(16F);
+                UIView rewardUsedBtn = new UIView(new CGRect(BaseMarginWidth16, rewardButtonYPos, width - (BaseMarginWidth16 * 2), GetScaledHeight(48F)))
                 {
                     BackgroundColor = UIColor.White
                 };
@@ -472,6 +491,14 @@ namespace myTNB
 
                 rewardUsedBtn.AddSubview(rewardUsedLbl);
                 _footerView.AddSubviews(new UIView { usedLabel, rewardUsedBtn });
+
+                if (isRedeemDateEmpty)
+                {
+                    nfloat newHeight = GetScaledHeight(80F);
+                    ViewHelper.AdjustFrameSetHeight(_footerView, newHeight + GetBottomPadding);
+                    ViewHelper.AdjustFrameSetY(_footerView, ViewHeight - newHeight);
+                    ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - newHeight);
+                }
             }
             else
             {
@@ -698,14 +725,34 @@ namespace myTNB
                 UpdateRewardsResponseModel response = await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Redeemed, true);
                 InvokeOnMainThread(() =>
                 {
-                    ActivityIndicator.Hide();
                     if (response != null && response.d != null &&
                         response.d.didSucceed)
                     {
+                        ActivityIndicator.Hide();
                         OnUseNowDone();
+                        InvokeInBackground(async () =>
+                        {
+                            await RewardsServices.GetUserRewards();
+                            DateTime? rDate = RewardsCache.GetRedeemedDate(RewardModel.ID);
+                            string rDateStr = string.Empty;
+                            if (rDate != null)
+                            {
+                                try
+                                {
+                                    DateTime? rDateValue = rDate.Value.ToLocalTime();
+                                    rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                }
+                            }
+                            RedeemedDate = rDateStr;
+                        });
                     }
                     else
                     {
+                        ActivityIndicator.Hide();
                         AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
                             LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
                             new Dictionary<string, Action> {
@@ -718,6 +765,7 @@ namespace myTNB
 
         private void OnUseNowDone()
         {
+            _btnShareReward.Enabled = false;
             nfloat height = GetScaledHeight(122F);
             _timerContainerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
             {
@@ -795,6 +843,7 @@ namespace myTNB
                         _timerContainerView = null;
                     }
                     UpdateView();
+                    _btnShareReward.Enabled = true;
                 }
             });
         }
@@ -825,15 +874,21 @@ namespace myTNB
                             {
                                 foreach (var childView in innerSubView.Subviews)
                                 {
-                                    UILabel lbl = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) as UILabel;
-                                    if (lbl != null)
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailRewardTitle) is UILabel lbl)
                                     {
                                         lbl.TextColor = MyTNBColor.GreyishBrown;
                                     }
-                                    UIImageView imageView = childView.ViewWithTag(RewardsConstants.Tag_DetailRewardImage) as UIImageView;
-                                    if (imageView != null)
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailRewardPeriodImage) is UIImageView imgViewPeriod)
                                     {
-                                        imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image);
+                                        imgViewPeriod.Image = UIImage.FromBundle(RewardsConstants.Img_RewardPeriodIconUsed);
+                                    }
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailLocationImage) is UIImageView imgViewLocation)
+                                    {
+                                        imgViewLocation.Image = UIImage.FromBundle(RewardsConstants.Img_RewardLocationIconUsed);
+                                    }
+                                    if (childView.ViewWithTag(RewardsConstants.Tag_DetailTCImage) is UIImageView imgViewTC)
+                                    {
+                                        imgViewTC.Image = UIImage.FromBundle(RewardsConstants.Img_RewardTCIconUsed);
                                     }
                                 }
                             }
@@ -841,6 +896,7 @@ namespace myTNB
                     }
                 }
             }
+
             AddFooterView(true);
 
             nfloat usedWidth = GetScaledWidth(52F);

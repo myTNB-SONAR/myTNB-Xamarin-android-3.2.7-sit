@@ -23,6 +23,11 @@
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
         public static string IMG_ShowPassword = "IC-Action-Show-Password";
         public static string IMG_HidePassword = "IC-Action-Hide-Password";
+        //Refresh Images
+        public static string IMG_BannerRefresh = "Banner-Refresh";
+        public static string IMG_BannerPlannedDownTime = "Banner-PlannedDown";
+        public static string IMG_IconRefresh = "IC-Refresh";
+        public static string IMG_IconPlannedDowntime = "IC-PlannedDownTime";
 
         //Common I18N
         public static string Common_RefreshNow = "refreshNow";
@@ -95,6 +100,7 @@
         public static string Common_IllDoItLater = "illDoItLater";
         public static string Common_RedeemRewardFailMsg = "redeemRewardFailMsg";
         public static string Common_TryAgain = "tryAgain";
+        public static string Common_SelectBillMaxDesc = "selectBillMaxDesc";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -126,6 +132,7 @@
         public static string Error_NumberNotAvailable = "numberNotAvailable";
         public static string Error_RatingNotAvailable = "ratingNotAvailable";
         public static string Error_ShareNotAvailable = "shareNotAvailable";
+        public static string Error_PlannedDownTimeMessage = "plannedDownTimeMessage";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";

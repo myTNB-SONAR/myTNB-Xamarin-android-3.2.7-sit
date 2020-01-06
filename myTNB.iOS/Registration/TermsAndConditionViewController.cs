@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Profile;
@@ -12,9 +11,7 @@ namespace myTNB.Registration
 {
     public partial class TermsAndConditionViewController : CustomUIViewController
     {
-        public TermsAndConditionViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public TermsAndConditionViewController(IntPtr handle) : base(handle) { }
 
         private List<FullRTEPagesModel> _tncItems = new List<FullRTEPagesModel>();
 
@@ -78,20 +75,6 @@ namespace myTNB.Registration
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        private string GetTNCFromFile()
-        {
-            string tncStatement = string.Empty;
-            try
-            {
-                tncStatement = System.IO.File.ReadAllText("TermsAndCondition.txt");
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("ERROR>>>>>> " + e.Message);
-            }
-            return tncStatement;
-        }
-
         private string GetContent()
         {
             if (IsFromSiteCore())
@@ -106,7 +89,7 @@ namespace myTNB.Registration
             }
             else
             {
-                return GetTNCFromFile();
+                return TnCManager.Instance.GetTnC(TNBGlobal.APP_LANGUAGE == "EN" ? TnCManager.Language.EN : TnCManager.Language.MS);
             }
         }
 

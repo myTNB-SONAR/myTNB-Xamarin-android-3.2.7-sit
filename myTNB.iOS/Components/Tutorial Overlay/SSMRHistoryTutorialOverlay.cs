@@ -56,7 +56,7 @@ namespace myTNB
             nfloat height = parentView.Frame.Height;
             UIView topView = new UIView(new CGRect(0, 0, width, TopViewYPos + GetScaledHeight(15F)))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView topLine = new UIView(new CGRect(0, topView.Frame.GetMaxY() - GetScaledHeight(1F), width, GetScaledHeight(1F)))
             {
@@ -130,7 +130,7 @@ namespace myTNB
             nfloat bottomViewYPos = topView.Frame.GetMaxY() + HeaderHeight - GetScaledHeight(15F);
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
-                BackgroundColor = MyTNBColor.Black75
+                BackgroundColor = MyTNBColor.Black60
             };
             UIView bottomLine = new UIView(new CGRect(0, 0, width, GetScaledHeight(1F)))
             {

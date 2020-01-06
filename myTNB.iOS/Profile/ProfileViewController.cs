@@ -73,6 +73,15 @@ namespace myTNB
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _lblAppVersion.Text = Version;
             _btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
+
+            ProfileDataSource dataSource = new ProfileDataSource()
+            {
+                ProfileList = ProfileList,
+                ProfileLabels = ProfileLabels,
+                OnRowSelect = OnRowSelect
+            };
+            _profileTableview.Source = dataSource;
+            _profileTableview.ReloadData();
         }
 
         private void OnGetRegisteredCards()
@@ -163,7 +172,7 @@ namespace myTNB
             get
             {
                 return new List<string> {
-                    GetCommonI18NValue(Constants.Common_Name).ToUpper()
+                    GetCommonI18NValue(Constants.Common_Fullname).ToUpper()
                     , GetCommonI18NValue(Constants.Common_IDNumber).ToUpper()
                     , GetCommonI18NValue(Constants.Common_Email).ToUpper()
                     , GetCommonI18NValue(Constants.Common_MobileNo).ToUpper()
@@ -178,7 +187,7 @@ namespace myTNB
         {
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _profileTableview = new UITableView(new CGRect(0, NavigationController.NavigationBar.Frame.GetMaxY(), View.Frame.Width
-                , ViewHeight + DeviceHelper.GetStatusBarHeight()))
+                , ViewHeight))
             {
                 SeparatorStyle = UITableViewCellSeparatorStyle.None
             };
@@ -237,7 +246,7 @@ namespace myTNB
                     , AppVersionHelper.GetAppShortVersion());
                 if (!TNBGlobal.IsProduction)
                 {
-                    appVersion += string.Format("({0})", AppVersionHelper.GetBuildVersion());
+                    appVersion += string.Format("({0}): {1}", AppVersionHelper.GetBuildVersion(), DataManager.DataManager.SharedInstance.UDID);
                 }
                 return appVersion;
             }

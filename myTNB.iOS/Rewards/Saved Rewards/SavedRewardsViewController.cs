@@ -92,7 +92,7 @@ namespace myTNB
             nfloat iconHeight = GetScaledHeight(94F);
             UIImageView emptyIcon = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth), DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(88F), iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle(RewardsConstants.Img_EmptyRewardIcon)
+                Image = UIImage.FromBundle(RewardsConstants.Img_EmptySavedRewardIcon)
             };
             UITextView emptyDesc = new UITextView(new CGRect(GetScaledWidth(32F), GetYLocationFromFrame(emptyIcon.Frame, 24F), ViewWidth - (GetScaledWidth(32F) * 2), GetScaledHeight(70F)))
             {
@@ -119,13 +119,25 @@ namespace myTNB
                 SavedRewardsList = rewardsList.FindAll(x => x.IsSaved);
                 InvokeOnMainThread(() =>
                 {
-                    _savedRewardsTableView.ClearsContextBeforeDrawing = true;
-                    _savedRewardsTableView.Source = new SavedRewardsDataSource(
-                        this,
-                        SavedRewardsList,
-                        GetI18NValue);
-                    _savedRewardsTableView.ReloadData();
+                    if (SavedRewardsList != null && SavedRewardsList.Count > 0)
+                    {
+                        _savedRewardsTableView.ClearsContextBeforeDrawing = true;
+                        _savedRewardsTableView.Source = new SavedRewardsDataSource(
+                            this,
+                            SavedRewardsList,
+                            GetI18NValue);
+                        _savedRewardsTableView.ReloadData();
+                    }
+                    else
+                    {
+                        SetEmptySavedRewardView();
+                    }
+
                 });
+            }
+            else
+            {
+                SetEmptySavedRewardView();
             }
         }
 
@@ -148,6 +160,7 @@ namespace myTNB
                         Debug.WriteLine("Error in ParseDate: " + e.Message);
                     }
                 }
+                rewardDetailView.IsFromSavedRewards = true;
                 rewardDetailView.RedeemedDate = rDateStr;
                 rewardDetailView.RewardModel = reward;
                 UINavigationController navController = new UINavigationController(rewardDetailView);

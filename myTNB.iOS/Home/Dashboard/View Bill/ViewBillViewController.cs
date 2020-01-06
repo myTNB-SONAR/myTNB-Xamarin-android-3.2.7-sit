@@ -80,7 +80,7 @@ namespace myTNB
 
                 if (IsFromHome && !IsFromHomeForSingleAcct)
                 {
-                    NavigationController.PopViewController(true);
+                    NavigationController?.PopViewController(true);
                 }
                 else
                 {
@@ -107,17 +107,20 @@ namespace myTNB
                             WebClient webClient = new WebClient();
                             webClient.DownloadDataCompleted += (s, args) =>
                             {
-                                byte[] data = args?.Result;
-                                if (data != null)
+                                if (args != null)
                                 {
-                                    File.WriteAllBytes(_pdfFilePath, data);
-                                    InvokeOnMainThread(() =>
+                                    byte[] data = args.Result;
+                                    if (data != null)
                                     {
-                                        ActivityIndicator.Hide();
-                                        UIDocumentInteractionController viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
-                                        UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
-                                        viewer?.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
-                                    });
+                                        File.WriteAllBytes(_pdfFilePath, data);
+                                        InvokeOnMainThread(() =>
+                                        {
+                                            ActivityIndicator.Hide();
+                                            UIDocumentInteractionController viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                                            UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                                            viewer?.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
+                                        });
+                                    }
                                 }
                             };
                             if (!string.IsNullOrEmpty(_url))
@@ -215,7 +218,9 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_billHistory.d.DisplayMessage, (obj) =>
+                        string errMsg = _billHistory?.d?.DisplayMessage ?? string.Empty;
+
+                        DisplayServiceError(errMsg, (obj) =>
                         {
                             if (IsFromHome && !IsFromHomeForSingleAcct)
                             {

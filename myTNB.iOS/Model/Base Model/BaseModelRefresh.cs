@@ -2,8 +2,8 @@
 {
     public class BaseModelRefresh : BaseModelV2
     {
-        public string RefreshTitle { set; get; }
-        public string RefreshMessage { set; get; }
-        public string RefreshBtnText { set; get; }
+        public override string RefreshTitle { set; get; }
+        public override string RefreshMessage { set; get; }
+        public override string RefreshBtnText { set; get; }
     }
 }

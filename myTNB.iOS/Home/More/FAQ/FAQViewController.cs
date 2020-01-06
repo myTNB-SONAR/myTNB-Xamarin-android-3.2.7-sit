@@ -52,6 +52,7 @@ namespace myTNB
                             {
                                 FAQEntity wsManager = new FAQEntity();
                                 List<FAQsModel> faqList = wsManager.GetAllItems();
+                                faqList = null;
                                 if (faqList != null && faqList.Count > 0)
                                 {
                                     tableviewFAQ.Source = new FAQDataSource(faqList, true);
@@ -161,7 +162,7 @@ namespace myTNB
         {
             try
             {
-                string faqContent = System.IO.File.ReadAllText("FAQ.json");
+                string faqContent = FAQManager.Instance.GetFAQ(TNBGlobal.APP_LANGUAGE == "EN" ? FAQManager.Language.EN : FAQManager.Language.MS);
                 _faq = JsonConvert.DeserializeObject<FAQModel>(faqContent);
             }
             catch (Exception e)
