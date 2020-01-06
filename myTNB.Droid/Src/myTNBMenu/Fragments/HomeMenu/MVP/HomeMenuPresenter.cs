@@ -2176,14 +2176,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public async void LoadingBillsHistory(CustomerBillingAccount selectedAccount)
         {
             this.mView.ShowProgressDialog();
-            var cts = new CancellationTokenSource();
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IBillsPaymentHistoryApi>(httpClient);
-#else
-            var api = RestService.For<IBillsPaymentHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
                 var billsHistoryResponse = await ServiceApiImpl.Instance.GetBillHistory(new MyTNBService.Request.GetBillHistoryRequest(selectedAccount.AccNum, selectedAccount.isOwned));

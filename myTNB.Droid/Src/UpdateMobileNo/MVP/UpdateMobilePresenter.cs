@@ -3,7 +3,6 @@ using Android.Text;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.UpdateMobileNo.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -24,105 +23,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
         {
             this.mView = mVIew;
             this.mView.SetPresenter(this);
-        }
-
-        public async void OnSave(string newPhoneNumber, UserAuthenticationRequest request)
-        {
-
-            this.mView.ClearErrors();
-
-            if (TextUtils.IsEmpty(newPhoneNumber))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-            if (!PhoneNumberUtils.IsGlobalPhoneNumber(newPhoneNumber))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-
-            if (!Utility.IsValidMobileNumber(newPhoneNumber))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgress();
-            }
-
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            cts = new CancellationTokenSource();
-
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var updateMobileApi = RestService.For<IUpdateMobileNoApi>(httpClient);
-#else
-            var updateMobileApi = RestService.For<IUpdateMobileNoApi>(Constants.SERVER_URL.END_POINT);
-#endif
-            try
-            {
-
-                var updateMobileResponse = await updateMobileApi.UpdatePhoneNumber(new Request.UpdateMobileRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    UserId = request.UserName,
-                    Email = request.UserName,
-                    OldPhoneNumber = "",
-                    NewPhoneNumber = newPhoneNumber
-                }, cts.Token);
-
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-
-                if (!updateMobileResponse.Data.IsError)
-                {
-                    this.mView.ShowSuccess(newPhoneNumber);
-
-                }
-                else
-                {
-                    this.mView.ShowErrorMessage(updateMobileResponse.Data.Message);
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-                // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-                // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-
-
         }
 
         public async void OnUpdatePhoneNo(string newPhoneNumber, UserAuthenticationRequest request)

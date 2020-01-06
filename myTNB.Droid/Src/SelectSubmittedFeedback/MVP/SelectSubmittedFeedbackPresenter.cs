@@ -37,22 +37,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             {
                 this.mView.ShowProgressDialog();
             }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-#else
 
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-#endif
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             try
             {
-                //var detailsResponse = await feedbackApi.GetSubmittedFeedbackDetails(new Base.Request.SubmittedFeedbackDetailsRequest()
-                //{
-                //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                //    ServiceReqNo = submittedFeedback.FeedbackId
-                //}, cts.Token);
-
                 var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackDetails(new SubmittedFeedbackDetailsRequest(submittedFeedback.FeedbackId));
 
                 if (mView.IsActive())

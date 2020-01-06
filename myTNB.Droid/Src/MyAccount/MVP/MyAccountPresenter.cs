@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Runtime;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.MakePayment.Api;
 using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.ManageCards.Models;

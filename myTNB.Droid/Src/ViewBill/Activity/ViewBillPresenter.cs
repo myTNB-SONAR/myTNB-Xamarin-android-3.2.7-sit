@@ -4,7 +4,6 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.UpdatePassword.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;

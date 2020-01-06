@@ -378,5 +378,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetBillHistory<GetBillHistoryResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call RemoveAccount with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<RemoveAccountResponse> RemoveAccount([Body] Request.BaseRequest request)
+        {
+            return api.RemoveAccount<RemoveAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }
