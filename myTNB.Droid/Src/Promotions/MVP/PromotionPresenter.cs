@@ -71,13 +71,26 @@ namespace myTNB_Android.Src.Promotions.MVP
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetPromotionsV2Item();
                     PromotionsV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
-                    if (responseModel.Status.Equals("Success"))
+                    if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                     {
-                        PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
-                        mView.ShowPromotion(true);
+                        if (responseModel.Status.Equals("Success"))
+                        {
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            wtManager.InsertListOfItems(responseModel.Data);
+                            mView.ShowPromotion(true);
+                        }
+                        else
+                        {
+                            PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            mView.ShowPromotion(true);
+                        }
                     }
                     else
                     {

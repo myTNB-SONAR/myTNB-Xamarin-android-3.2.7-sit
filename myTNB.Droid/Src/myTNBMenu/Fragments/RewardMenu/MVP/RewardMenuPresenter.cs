@@ -174,9 +174,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     RewardsResponseModel responseModel = getItemsService.GetRewardsItems();
-                    if (responseModel.Status.Equals("Success"))
+                    if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                     {
-                        ProcessRewardResponse(responseModel);
+                        if (responseModel.Status.Equals("Success"))
+                        {
+                            ProcessRewardResponse(responseModel);
+                        }
+                        else
+                        {
+                            if (mRewardsParentEntity == null)
+                            {
+                                mRewardsParentEntity = new RewardsParentEntity();
+                            }
+                            mRewardsParentEntity.DeleteTable();
+                            mRewardsParentEntity.CreateTable();
+                            if (mRewardsEntity == null)
+                            {
+                                mRewardsEntity = new RewardsEntity();
+                            }
+                            mRewardsEntity.DeleteTable();
+                            mRewardsEntity.CreateTable();
+                            if (mRewardsCategoryEntity == null)
+                            {
+                                mRewardsCategoryEntity = new RewardsCategoryEntity();
+                            }
+                            mRewardsCategoryEntity.DeleteTable();
+                            mRewardsCategoryEntity.CreateTable();
+                            CheckRewardsCache();
+                        }
                     }
                     else
                     {

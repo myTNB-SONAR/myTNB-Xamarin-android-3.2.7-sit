@@ -564,16 +564,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         }
                         else
                         {
-                            RewardsEntity wtItemManager = new RewardsEntity();
-                            List<RewardsEntity> subItems = wtItemManager.GetAllItems();
-                            if (subItems != null && subItems.Count > 0)
-                            {
-                                _ = this.presenter.OnGetUserRewardList();
-                            }
-                            else
-                            {
-                                this.presenter.OnGetRewards();
-                            }
+                            _ = this.presenter.OnGetUserRewardList();
                         }
                     }
                     else
@@ -665,6 +656,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
 
                     RewardsMenuUtils.OnSetTouchDisable(false);
+
+                    try
+                    {
+                        if (RewardsEntity.HasUnread())
+                        {
+                            ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                        }
+                        else
+                        {
+                            ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 }
                 catch (System.Exception e)
                 {
