@@ -512,6 +512,7 @@ namespace myTNB
 
         private void OnSelectAccount(int index)
         {
+            View.BackgroundColor = MyTNBColor.LightGrayBG;
             if (_imgFilter != null)
             {
                 _imgFilter.Image = UIImage.FromBundle("IC-Action-Nav-Unfiltered");
@@ -564,7 +565,7 @@ namespace myTNB
             {
                 isGetAcctChargesLoading = false;
                 isGetAcctBillPayHistoryLoading = false;
-
+                View.BackgroundColor = MyTNBColor.LightGrayBG;
                 if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
                     && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
                 {
@@ -659,6 +660,8 @@ namespace myTNB
 
                     _historyTableView.Source = new BillHistorySource(true);
                     _historyTableView.ReloadData();
+
+                    View.BackgroundColor = UIColor.White;
                 }
             });
         }
@@ -734,6 +737,7 @@ namespace myTNB
 
             _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
                 , new CGSize(_headerViewContainer.Frame.Width, _refreshView.Frame.GetMaxY()));
+            _historyTableView.ReloadData();
         }
 
         private void EvaluateBillData()
@@ -797,6 +801,7 @@ namespace myTNB
 
         private void OnHistoryRefresh()
         {
+            View.BackgroundColor = MyTNBColor.LightGrayBG;
             isGetAcctBillPayHistoryLoading = true;
             _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
             {
@@ -819,6 +824,7 @@ namespace myTNB
 
         private void OnAccountChagesRefresh()
         {
+            View.BackgroundColor = MyTNBColor.LightGrayBG;
             isGetAcctChargesLoading = true;
             SetHeaderLoading(true);
             OnResetBGRect();
