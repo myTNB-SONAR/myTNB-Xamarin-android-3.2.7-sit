@@ -564,12 +564,12 @@ namespace myTNB.SitecoreCMS
                 if (needsUpdate)
                 {
                     PromotionsV2ResponseModel promotionResponse = iService.GetPromotionsItem();
+                    PromotionsEntity wsManager = new PromotionsEntity();
+                    PromotionsEntity.DeleteTable();
+                    wsManager.CreateTable();
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
                     {
-                        PromotionsEntity wsManager = new PromotionsEntity();
-                        PromotionsEntity.DeleteTable();
-                        wsManager.CreateTable();
                         wsManager.InsertListOfItemsV2(HomeTabBarController.SetValueForNullEndDate(promotionResponse.Data));
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
                         Debug.WriteLine("LoadPromotions Done");

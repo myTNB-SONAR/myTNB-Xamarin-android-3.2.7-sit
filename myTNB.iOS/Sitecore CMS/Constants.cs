@@ -165,7 +165,6 @@
 
             public struct ItemPath
             {
-                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
                 public const string PromotionsV2 = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 

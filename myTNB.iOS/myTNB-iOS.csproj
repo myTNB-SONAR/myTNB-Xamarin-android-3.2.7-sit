@@ -565,9 +565,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%403x.png" />
@@ -1266,6 +1263,8 @@
     <ImageAsset Include="Assets.xcassets\Banner-PlannedDown.imageset\Planned%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\PlannedDown%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\PlannedDown%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
