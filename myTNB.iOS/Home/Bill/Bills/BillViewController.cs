@@ -589,8 +589,8 @@ namespace myTNB
                         NoData = historyList.Count == 0,
                         EmptyMessage = GetEmptyDataMessage()
                     };
-                    _historyTableView.ReloadData();
                     EvaluateChargesData();
+                    _historyTableView.ReloadData();
                 }
                 else
                 {
