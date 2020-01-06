@@ -71,7 +71,7 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
 
 
                 txtFeedbackIdContent.Text = feedbackId;
-
+                SetStaticLabels();
                 Date d = null;
 
                 try
@@ -105,11 +105,21 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
             }
         }
 
+        private void SetStaticLabels()
+        {
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("Status", "feedbackSuccessTitle");
+            txtContentInfo.Text = Utility.GetLocalizedLabel("Status", "feedbackSuccessMessage");
+            txtTransactionScheduleTitle.Text = Utility.GetLocalizedLabel("Status", "feedbackDateTitle");
+            txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("Status", "feedbackReferenceTitle");
+            btnBackToFeedback.Text = Utility.GetLocalizedLabel("Status", "backToFeedback");
+        }
+
         protected override void OnResume()
         {
             base.OnResume();
             try
             {
+                SetStaticLabels();
                 FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback Success");
             }
             catch (Exception e)
