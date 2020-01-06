@@ -75,7 +75,6 @@ namespace myTNB
             }
             else
             {
-
                 btnRefresh.Frame = new CGRect(ScaleUtility.GetScaledWidth(16), lblMessage.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(16)
                 , width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(48));
                 btnRefresh.EventName = Event_Refresh;
@@ -104,11 +103,23 @@ namespace myTNB
             _refreshView.Frame = new CGRect(0, 0, width, btnRefresh.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(16));
         }
 
-        public UIView GetUI(UIView parentView)
+        public UIView GetUI(UIView parentView, bool isBanner = false)
         {
             _parentView = parentView;
-            CreateComponent();
+            if (isBanner)
+            {
+                CreateBannerComponent();
+            }
+            else
+            {
+                CreateComponent();
+            }
             return _refreshView;
+        }
+
+        private void CreateBannerComponent()
+        {
+
         }
     }
 }
