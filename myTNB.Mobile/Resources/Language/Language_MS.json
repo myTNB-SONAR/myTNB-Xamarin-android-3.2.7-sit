@@ -547,7 +547,7 @@
     "selectAccountType": "Pilih Jenis Akaun",
     "residential": "Kediaman",
     "commercial": "Komersil",
-    "addAccountCTATitle": "Tambah Akaun",
+    "addAccountCTATitle": "Tambah Akaun Lain",
     "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "invalidBarcode": "Bar kod tidak sah.",
     "addByIDMessage": "Akaun elektrik ini didaftarkan dengan Nombor KP/ROC/Pasport anda?",
@@ -565,7 +565,7 @@
   "Profile": {
     "title": "Profil",
     "appVersion": "Aplikasi Versi",
-    "callUsBilling": "Hubungi Kami (Pertanyaan Berkaitan Bil)", //Fallback - Service Dependent
+    "callUsBilling": "Hubungi Kami (Pertanyaan Pengebilan)", //Fallback - Service Dependent
     "callUsOutagesAndBreakdown": "Hubungi Kami (Gangguan Bekalan)", //Fallback - Service Dependent
     "faq": "Soalan Lazim",
     "helpAndSupport": "Bantuan & Sokongan",
