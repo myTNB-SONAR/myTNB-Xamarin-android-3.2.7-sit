@@ -148,6 +148,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
                     Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
                 mPinSentInfo.Show();
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -281,11 +282,6 @@ namespace myTNB_Android.Src.UpdateMobileNo
             try
             {
                 base.OnResume();
-                //if (pinDisplayerSMSReceiver != null)
-                //{
-                //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
-                //}
-                this.userActionsListener.Start();
                 FirebaseAnalyticsUtils.SetScreenName(this, "SMS OTP Token Input (Update Mobile Number)");
             }
             catch (Exception e)

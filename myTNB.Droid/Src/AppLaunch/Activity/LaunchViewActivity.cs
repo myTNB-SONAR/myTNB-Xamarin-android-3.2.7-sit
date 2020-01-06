@@ -1005,6 +1005,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 mSomethingWrongExceptionSnackBar.Dismiss();
             }
             );
+            View snackbarView = mSomethingWrongExceptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(3);
             mSomethingWrongExceptionSnackBar.Show();
         }
 
