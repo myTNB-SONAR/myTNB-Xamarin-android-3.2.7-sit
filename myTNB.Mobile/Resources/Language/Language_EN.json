@@ -764,7 +764,8 @@
   },
   "CardScanner": {
     "title": "Add Card",
-    "scanMessage": "Scan the front of your credit / debit card to retrieve card details."
+    "scanMessage": "Scan the front of your credit / debit card to retrieve card details.",
+    "scanInstructions": "Hold card here. It will scan automatically."
   },
   "Receipt": {
     "title": "Payment Receipt",

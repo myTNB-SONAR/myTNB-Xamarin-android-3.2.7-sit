@@ -764,7 +764,8 @@
   },
   "CardScanner": {
     "title": "Tambah kad",
-    "scanMessage": "Imbas bahagian depan kad kredit / debit anda untuk mendapatkan butiran kad."
+    "scanMessage": "Imbas bahagian depan kad kredit / debit anda untuk mendapatkan butiran kad.",
+    "scanInstructions": "Pegang kad di sini. Ia akan mengimbas secara automatik."
   },
   "Receipt": {
     "title": "Resit Pembayaran",

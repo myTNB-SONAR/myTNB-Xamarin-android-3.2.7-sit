@@ -22,6 +22,7 @@
         public static string I18N_EmptyCardNumberMessage = "emptyCardNumberMessage";
         public static string I18N_SavedCardTitle = "savedCardTitle";
         public static string I18N_SavedCardMessage = "savedCardMessage";
+        public static string I18N_ScanInstructions = "scanInstructions";
 
         public static string Service_GetPaymentTransactionId = "GetPaymentTransactionId";
     }
