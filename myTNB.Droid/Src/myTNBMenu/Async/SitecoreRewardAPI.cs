@@ -239,6 +239,15 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                     }
                                     else
                                     {
+                                        RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                                        wtManager2.DeleteTable();
+                                        wtManager2.CreateTable();
+                                        RewardsCategoryEntity mRewardsCategoryEntity2 = new RewardsCategoryEntity();
+                                        RewardsEntity mRewardsEntity2 = new RewardsEntity();
+                                        mRewardsCategoryEntity2.DeleteTable();
+                                        mRewardsEntity2.DeleteTable();
+                                        mRewardsCategoryEntity2.CreateTable();
+                                        mRewardsEntity2.CreateTable();
                                         isSitecoreApiFailed = true;
                                         if (mHomeView != null)
                                         {
@@ -248,6 +257,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 								}
 								catch (System.Exception e)
 								{
+                                    RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                                    wtManager2.DeleteTable();
+                                    wtManager2.CreateTable();
                                     isSitecoreApiFailed = true;
                                     if (mHomeView != null)
                                     {
@@ -269,6 +281,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 					}
 					catch (System.Exception e)
 					{
+                        RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                        wtManager2.DeleteTable();
+                        wtManager2.CreateTable();
                         isSitecoreApiFailed = true;
                         if (mHomeView != null)
                         {
@@ -283,6 +298,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			}
 			catch (ApiException apiException)
 			{
+                RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                wtManager2.DeleteTable();
+                wtManager2.CreateTable();
                 isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
@@ -292,6 +310,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			}
 			catch (Newtonsoft.Json.JsonReaderException e)
 			{
+                RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                wtManager2.DeleteTable();
+                wtManager2.CreateTable();
                 isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
@@ -301,6 +322,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			}
 			catch (System.Exception e)
 			{
+                RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                wtManager2.DeleteTable();
+                wtManager2.CreateTable();
                 isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {

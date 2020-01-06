@@ -4259,6 +4259,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\WhatNewMenuUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

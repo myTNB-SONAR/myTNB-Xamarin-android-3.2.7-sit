@@ -39,14 +39,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
         [BindView(Resource.Id.promotionRefreshLayout)]
         LinearLayout promotionRefreshLayout;
 
-        [BindView(Resource.Id.promotion_main_layout)]
-        FrameLayout promotion_main_layout;
-
         [BindView(Resource.Id.no_promotion_layout)]
         LinearLayout noPromotionLayout;
 
-        [BindView(Resource.Id.progressBar)]
-        public ProgressBar mProgressBar;
+        [BindView(Resource.Id.promotion_main_layout)]
+        LinearLayout promotionMainLayout;
 
         [BindView(Resource.Id.promotion_list_recycler_view)]
         public RecyclerView mPromotionRecyclerView;
@@ -91,11 +88,9 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(textNoPromotionInfo, txtRefresh);
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
-                mProgressBar.Visibility = ViewStates.Gone;
-
-                this.userActionsListener.GetSavedPromotionTimeStamp();
-
                 ShowProgressBar();
+
+                OnGetPromotionTimestamp();
 
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -111,6 +106,18 @@ namespace myTNB_Android.Src.Promotions.Fragments
             return Resource.Layout.PromotionListView;
         }
 
+        public void OnGetPromotionTimestamp()
+        {
+            try
+            {
+                this.userActionsListener.GetSavedPromotionTimeStamp();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowPromotion(bool success)
         {
             Activity.RunOnUiThread(() =>
@@ -119,13 +126,13 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 {
                     if (success)
                     {
-                        noPromotionLayout.Visibility = ViewStates.Gone;
-                        mPromotionRecyclerView.Visibility = ViewStates.Visible;
-
                         PromotionsEntityV2 wtManager = new PromotionsEntityV2();
                         List<PromotionsEntityV2> items = wtManager.GetAllItems();
                         if (items != null && items.Count > 0)
                         {
+                            noPromotionLayout.Visibility = ViewStates.Gone;
+                            promotionRefreshLayout.Visibility = ViewStates.Gone;
+                            promotionMainLayout.Visibility = ViewStates.Visible;
                             promotions = new List<PromotionsModelV2>();
                             promotions.AddRange(items);
                             adapter = new PromotionListAdapter(Activity, promotions);
@@ -136,19 +143,22 @@ namespace myTNB_Android.Src.Promotions.Fragments
                         else
                         {
                             noPromotionLayout.Visibility = ViewStates.Visible;
-                            promotion_main_layout.Visibility = ViewStates.Gone;
-                            // LinSiong TODO: To update what's new empty image
+                            promotionRefreshLayout.Visibility = ViewStates.Gone;
+                            promotionMainLayout.Visibility = ViewStates.Gone;
                             textNoPromotionInfo.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
                         }
 
                     }
                     else
                     {
-                        promotion_main_layout.Visibility = ViewStates.Gone;
+                        noPromotionLayout.Visibility = ViewStates.Gone;
                         promotionRefreshLayout.Visibility = ViewStates.Visible;
+                        promotionMainLayout.Visibility = ViewStates.Gone;
                         btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
                         txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
                     }
+
+                    HideProgressBar();
 
                     try
                     {
@@ -166,7 +176,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                         Utility.LoggingNonFatalError(ex);
                     }
 
-                    HideProgressBar();
+
                 }
                 catch (System.Exception ex)
                 {
@@ -311,7 +321,16 @@ namespace myTNB_Android.Src.Promotions.Fragments
                             }
                             else
                             {
-                                ShowPromotion(true);
+                                PromotionsEntityV2 itemEntity = new PromotionsEntityV2();
+                                List<PromotionsEntityV2> subItems = itemEntity.GetAllItems();
+                                if (subItems != null && subItems.Count > 0)
+                                {
+                                    ShowPromotion(true);
+                                }
+                                else
+                                {
+                                    this.userActionsListener.OnGetPromotions();
+                                }
                             }
                         }
                         else
@@ -342,7 +361,6 @@ namespace myTNB_Android.Src.Promotions.Fragments
         {
             try
             {
-                promotion_main_layout.Visibility = ViewStates.Visible;
                 promotionRefreshLayout.Visibility = ViewStates.Gone;
                 promotions = new List<PromotionsModelV2>();
                 adapter = new PromotionListAdapter(Activity, promotions);

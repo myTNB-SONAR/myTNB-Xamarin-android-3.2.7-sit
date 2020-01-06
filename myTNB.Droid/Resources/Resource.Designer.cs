@@ -10870,14 +10870,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e00c2
 			public const int no_account_layout = 2131624130;
 			
-			// aapt resource value: 0x7f0e0449
-			public const int no_promotion_img = 2131625033;
+			// aapt resource value: 0x7f0e0446
+			public const int no_promotion_img = 2131625030;
 			
-			// aapt resource value: 0x7f0e044a
-			public const int no_promotion_info = 2131625034;
+			// aapt resource value: 0x7f0e0447
+			public const int no_promotion_info = 2131625031;
 			
-			// aapt resource value: 0x7f0e0448
-			public const int no_promotion_layout = 2131625032;
+			// aapt resource value: 0x7f0e0445
+			public const int no_promotion_layout = 2131625029;
 			
 			// aapt resource value: 0x7f0e04cf
 			public const int nonSMRActionContainer = 2131625167;
@@ -11098,8 +11098,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e0431
 			public const int promotionPager = 2131625009;
 			
-			// aapt resource value: 0x7f0e0445
-			public const int promotionRefreshLayout = 2131625029;
+			// aapt resource value: 0x7f0e0448
+			public const int promotionRefreshLayout = 2131625032;
 			
 			// aapt resource value: 0x7f0e043e
 			public const int promotion_campaign_period = 2131625022;
@@ -11230,8 +11230,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e053e
 			public const int reference_number_value = 2131625278;
 			
-			// aapt resource value: 0x7f0e0446
-			public const int refreshBg = 2131625030;
+			// aapt resource value: 0x7f0e0449
+			public const int refreshBg = 2131625033;
 			
 			// aapt resource value: 0x7f0e0128
 			public const int refreshBillingDetailImg = 2131624232;
@@ -12769,8 +12769,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e04c1
 			public const int txtReason = 2131625153;
 			
-			// aapt resource value: 0x7f0e0447
-			public const int txtRefresh = 2131625031;
+			// aapt resource value: 0x7f0e044a
+			public const int txtRefresh = 2131625034;
 			
 			// aapt resource value: 0x7f0e034b
 			public const int txtRegisterAccount = 2131624779;

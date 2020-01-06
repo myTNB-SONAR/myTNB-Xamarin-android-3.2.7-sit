@@ -18,7 +18,6 @@ namespace myTNB_Android.Src.Promotions.MVP
     {
 
         private PromotionContract.IView mView;
-        private CancellationTokenSource cts;
 
         public PromotionPresenter(PromotionContract.IView mView)
         {
@@ -26,9 +25,16 @@ namespace myTNB_Android.Src.Promotions.MVP
             this.mView.SetPresenter(this);
         }
 
+        public Task OnRecheckPromotionStatus()
+        {
+            return Task.Delay(Constants.REWARDS_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
+                this.mView.OnGetPromotionTimestamp();
+            });
+        }
+
         public Task OnGetPromotionsTimeStamp()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -57,12 +63,11 @@ namespace myTNB_Android.Src.Promotions.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnGetPromotions()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -87,8 +92,8 @@ namespace myTNB_Android.Src.Promotions.MVP
                             wtManager.DeleteTable();
                             wtManager.CreateTable();
                             PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
+                            wtManager2.DeleteTable();
+                            wtManager2.CreateTable();
                             mView.ShowPromotion(true);
                         }
                     }
@@ -98,7 +103,7 @@ namespace myTNB_Android.Src.Promotions.MVP
                         wtManager.DeleteTable();
                         wtManager.CreateTable();
                         PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                        wtManager.DeleteTable();
+                        wtManager2.DeleteTable();
                         wtManager.CreateTable();
                         mView.ShowPromotion(false);
                     }
@@ -109,14 +114,14 @@ namespace myTNB_Android.Src.Promotions.MVP
                     wtManager.DeleteTable();
                     wtManager.CreateTable();
                     PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                    wtManager.DeleteTable();
-                    wtManager.CreateTable();
+                    wtManager2.DeleteTable();
+                    wtManager2.CreateTable();
                     mView.ShowPromotion(false);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void Start()

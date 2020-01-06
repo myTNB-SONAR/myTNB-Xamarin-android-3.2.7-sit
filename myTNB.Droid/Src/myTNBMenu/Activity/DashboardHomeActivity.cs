@@ -257,7 +257,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     this.userActionsListener.Start();
                     OnSetupSSMRMeterReadingTutorial();
-                    ShowPromotion(true);
                 })
                 .Build()
                 .Show();
@@ -267,7 +266,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.userActionsListener.Start();
                 OnSetupSSMRMeterReadingTutorial();
-                ShowPromotion(true);
             }
         }
 
@@ -1114,6 +1112,27 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     dialogFragmnet.Arguments = extras;
                     dialogFragmnet.Show(SupportFragmentManager, "Promotion Dialog");
                 }
+            }
+
+            try
+            {
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnResumeUpdatePromotionUnReadCounter();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                WhatNewMenuUtils.OnSetWhatNewLoading(false);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

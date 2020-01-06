@@ -564,7 +564,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         }
                         else
                         {
-                            _ = this.presenter.OnGetUserRewardList();
+                            RewardsEntity wtItemManager = new RewardsEntity();
+                            List<RewardsEntity> subItems = wtItemManager.GetAllItems();
+                            if (subItems != null && subItems.Count > 0)
+                            {
+                                _ = this.presenter.OnGetUserRewardList();
+                            }
+                            else
+                            {
+                                this.presenter.OnGetRewards();
+                            }
                         }
                     }
                     else
