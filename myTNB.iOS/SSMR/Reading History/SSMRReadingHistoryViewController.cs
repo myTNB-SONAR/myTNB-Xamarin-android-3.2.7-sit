@@ -674,6 +674,7 @@ namespace myTNB
                         UpdateTable();
                         _readingHistoryTableView.Hidden = false;
                         IsLoading = false;
+                        View.BackgroundColor = MyTNBColor.LightGrayBG;
                     }
                     else
                     {
@@ -734,6 +735,7 @@ namespace myTNB
             _viewRefreshContainer.AddSubview(lblDescription);
             _viewRefreshContainer.AddSubview(btnRefresh);
             View.AddSubview(_viewRefreshContainer);
+            View.BackgroundColor = UIColor.White;
         }
         #endregion
     }
