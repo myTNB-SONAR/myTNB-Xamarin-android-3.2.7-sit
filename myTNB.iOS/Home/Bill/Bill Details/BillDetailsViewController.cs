@@ -464,8 +464,8 @@ namespace myTNB
         private UIView GetPaymentDetails(nfloat yLoc)
         {
             bool isOverPaid = _charges.AmountDue < 0;
-            UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(32)));
-            nfloat statusYLoc = _charges.AmountDue <= 0 ? GetScaledHeight(6) : GetScaledHeight(-4);
+            UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(40)));
+            nfloat statusYLoc = _charges.AmountDue <= 0 ? GetScaledHeight(10) : GetScaledHeight(-4);
             string statusString;
             if (_charges.AmountDue == 0)
             {
@@ -539,7 +539,20 @@ namespace myTNB
 
             viewPayment.AddSubviews(new UIView[] { lblStatus, lblDue, viewAmount });
 
+            bool isOverlap = IsWidgetOverlap(lblStatus.Frame.Width, lblDue.Frame.Width, viewAmount.Frame.Width);
+            if (isOverlap)
+            {
+                viewPayment.Frame = new CGRect(viewPayment.Frame.Location, new CGSize(viewPayment.Frame.Width, GetScaledHeight(72)));
+                nfloat viewAmtYLoc = lblDue.Hidden ? lblStatus.Frame.GetMaxY() : lblDue.Frame.GetMaxY();
+                viewAmount.Frame = new CGRect(new CGPoint(BaseMargin, viewAmtYLoc), viewAmount.Frame.Size);
+            }
             return viewPayment;
+        }
+
+        private bool IsWidgetOverlap(nfloat statusWidth, nfloat dueWidth, nfloat amtWidth)
+        {
+            nfloat refWidth = statusWidth > dueWidth ? statusWidth : dueWidth;
+            return (refWidth + amtWidth) > BaseMarginedWidth;
         }
 
         private CustomUIView GetMandatoryView(nfloat yLoc)
