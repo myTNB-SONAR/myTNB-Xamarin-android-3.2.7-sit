@@ -500,7 +500,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 else
                 {
-                    ShowErrorMessage("Please enter valid account label.");
+                    ShowErrorMessage(Utility.GetLocalizedErrorLabel("emptyNickname"));
                 }
             }
             catch (Exception e)
