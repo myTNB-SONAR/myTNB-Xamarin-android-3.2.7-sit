@@ -464,51 +464,6 @@ namespace myTNB
         private UIView GetPaymentDetails(nfloat yLoc)
         {
             bool isOverPaid = _charges.AmountDue < 0;
-            UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(40)));
-            nfloat statusYLoc = _charges.AmountDue <= 0 ? GetScaledHeight(10) : GetScaledHeight(-4);
-            string statusString;
-            if (_charges.AmountDue == 0)
-            {
-                statusString = BillConstants.I18N_ClearedBills;
-            }
-            else
-            {
-                statusString = _charges.AmountDue < 0 ? BillConstants.I18N_PaidExtra : BillConstants.I18N_NeedToPay;
-            }
-            UILabel lblStatus = new UILabel(new CGRect(BaseMargin, statusYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
-            {
-                TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.GreyishBrown,
-                Text = GetI18NValue(statusString)
-            };
-            nfloat statusWidth = lblStatus.GetLabelWidth(ViewWidth);
-            lblStatus.Frame = new CGRect(lblStatus.Frame.Location, new CGSize(statusWidth, lblStatus.Frame.Height));
-
-            string result = string.Empty;
-            if (_charges.DueDate != null)
-            {
-                try
-                {
-                    result = DateTime.ParseExact(_charges.DueDate
-                   , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date, DateHelper.DateCultureInfo);
-                }
-                catch (FormatException)
-                {
-                    Debug.WriteLine("Unable to parse '{0}'", _charges.DueDate);
-                }
-            }
-            UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(20)))
-            {
-                TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_14_300,
-                TextColor = MyTNBColor.GreyishBrown,
-                Text = string.Format(BillConstants.Format_Default, GetI18NValue(BillConstants.I18N_By), result),
-                Hidden = _charges.AmountDue <= 0
-            };
-            nfloat dueWidth = lblDue.GetLabelWidth(ViewWidth);
-            lblDue.Frame = new CGRect(lblDue.Frame.Location, new CGSize(dueWidth, lblDue.Frame.Height));
-
             UIView viewAmount = new UIView();
             UILabel lblCurrency = new UILabel(new CGRect(0, GetScaledHeight(11), GetScaledWidth(100), GetScaledHeight(18)))
             {
@@ -537,22 +492,64 @@ namespace myTNB
             viewAmount.Frame = new CGRect(ViewWidth - (BaseMargin + currencyWidth + GetScaledWidth(6) + amountWidth)
                 , 0, currencyWidth + amountWidth + GetScaledWidth(6), GetScaledHeight(32));
 
-            viewPayment.AddSubviews(new UIView[] { lblStatus, lblDue, viewAmount });
+            nfloat maxWidth = BaseMarginedWidth - viewAmount.Frame.Width - GetScaledWidth(4);
 
-            bool isOverlap = IsWidgetOverlap(lblStatus.Frame.Width, lblDue.Frame.Width, viewAmount.Frame.Width);
-            if (isOverlap)
+            UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(40)));
+            nfloat statusYLoc = _charges.AmountDue <= 0 ? GetScaledHeight(10) : GetScaledHeight(-4);
+            string statusString;
+            if (_charges.AmountDue == 0)
             {
-                viewPayment.Frame = new CGRect(viewPayment.Frame.Location, new CGSize(viewPayment.Frame.Width, GetScaledHeight(72)));
-                nfloat viewAmtYLoc = lblDue.Hidden ? lblStatus.Frame.GetMaxY() : lblDue.Frame.GetMaxY();
-                viewAmount.Frame = new CGRect(new CGPoint(BaseMargin, viewAmtYLoc), viewAmount.Frame.Size);
+                statusString = BillConstants.I18N_ClearedBills;
             }
-            return viewPayment;
-        }
+            else
+            {
+                statusString = _charges.AmountDue < 0 ? BillConstants.I18N_PaidExtra : BillConstants.I18N_NeedToPay;
+            }
+            UILabel lblStatus = new UILabel(new CGRect(BaseMargin, statusYLoc, maxWidth, GetScaledHeight(20)))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.GreyishBrown,
+                Text = GetI18NValue(statusString),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+            nfloat statusHeight = lblStatus.GetLabelHeight(1000);
+            lblStatus.Frame = new CGRect(lblStatus.Frame.Location, new CGSize(lblStatus.Frame.Width, statusHeight));
 
-        private bool IsWidgetOverlap(nfloat statusWidth, nfloat dueWidth, nfloat amtWidth)
-        {
-            nfloat refWidth = statusWidth > dueWidth ? statusWidth : dueWidth;
-            return (refWidth + amtWidth) > BaseMarginedWidth;
+            string result = string.Empty;
+            if (_charges.DueDate != null)
+            {
+                try
+                {
+                    result = DateTime.ParseExact(_charges.DueDate
+                   , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date, DateHelper.DateCultureInfo);
+                }
+                catch (FormatException)
+                {
+                    Debug.WriteLine("Unable to parse '{0}'", _charges.DueDate);
+                }
+            }
+            UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), maxWidth, GetScaledHeight(20)))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.GreyishBrown,
+                Text = string.Format(BillConstants.Format_Default, GetI18NValue(BillConstants.I18N_By), result),
+                Hidden = _charges.AmountDue <= 0,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+            nfloat dueHeight = lblDue.GetLabelHeight(1000);
+            lblDue.Frame = new CGRect(lblDue.Frame.Location, new CGSize(lblDue.Frame.Width, dueHeight));
+
+            viewPayment.AddSubviews(new UIView[] { lblStatus, lblDue, viewAmount });
+            nfloat viewPaymentHeigt = (lblDue.Hidden ? lblStatus.Frame.GetMaxY() : lblDue.Frame.GetMaxY());
+            viewPayment.Frame = new CGRect(viewPayment.Frame.Location, new CGSize(viewPayment.Frame.Width, viewPaymentHeigt));
+
+            viewAmount.Frame = new CGRect(new CGPoint(viewAmount.Frame.X
+                , (viewPayment.Frame.Height - viewAmount.Frame.Height) / 2), viewAmount.Frame.Size);
+            return viewPayment;
         }
 
         private CustomUIView GetMandatoryView(nfloat yLoc)
