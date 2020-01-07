@@ -56,29 +56,11 @@ namespace myTNB.Model
             }
         }
 
-        public bool IsReAccount
-        {
-            get;
-            set;
-        }
-
-        public bool IsNormalAccount
-        {
-            get;
-            set;
-        }
-
-        public bool IsSSMR
-        {
-            get;
-            set;
-        }
-
-        public bool IsOwnedAccount
-        {
-            get;
-            set;
-        }
+        public bool IsReAccount { set; get; }
+        public bool IsNormalAccount { set; get; }
+        public bool IsSSMR { set; get; }
+        public bool IsOwnedAccount { set; get; }
+        public bool IsPayEnabled { set; get; }
 
         public List<ItemisedBilling> ItemizedBillings { set; get; }
         public double OpenChargesTotal { set; get; }

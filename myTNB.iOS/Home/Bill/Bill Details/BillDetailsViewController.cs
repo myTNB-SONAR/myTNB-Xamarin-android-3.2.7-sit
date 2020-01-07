@@ -160,6 +160,11 @@ namespace myTNB
             AddBreakdown();
             SetEvents();
             IsLoading = false;
+            if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -711,7 +716,7 @@ namespace myTNB
             _btnPay.SetTitle(GetI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
 
-            if (AppLaunchMasterCache.IsPayDisabled)
+            if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
             {
                 _btnPay.Enabled = false;
                 _btnPay.BackgroundColor = MyTNBColor.SilverChalice;

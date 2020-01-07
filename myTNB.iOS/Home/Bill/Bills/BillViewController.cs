@@ -411,12 +411,6 @@ namespace myTNB
                 });
             }));
 
-            if (AppLaunchMasterCache.IsPayDisabled)
-            {
-                _btnPay.Enabled = false;
-                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
-            }
-
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
             _shimmerView = GetShimmerView();
@@ -765,6 +759,11 @@ namespace myTNB
         private void EvaluateBillData()
         {
             OnResetBGRect();
+            if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+            {
+                _btnPay.Enabled = false;
+                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+            }
             if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                 && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
             {
