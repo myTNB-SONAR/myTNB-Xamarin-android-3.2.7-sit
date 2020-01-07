@@ -5619,86 +5619,64 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         newAccountLayout.Visibility = ViewStates.Gone;
                         allGraphLayout.Visibility = ViewStates.Gone;
                         smStatisticContainer.Visibility = ViewStates.Gone;
-                        //if (isBCRMDown)
-                        //{
-                        //    rootView.SetBackgroundResource(0);
-                        //    scrollViewContent.SetBackgroundResource(0);
-                        //    try
-                        //    {
-                        //        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                        //        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
-                        //    }
-                        //    catch (System.Exception e)
-                        //    {
-                        //        Utility.LoggingNonFatalError(e);
-                        //    }
+                        if (isREAccount || isSMR)
+                        {
 
-                        //    refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
-                        //    SetMaintenanceLayoutParams();
-                        //    btnNewRefresh.Visibility = ViewStates.Gone;
-
-                        //}
-                        //else
-                        //{
-                            if (isREAccount || isSMR)
+                        }
+                        else
+                        {
+                            rootView.SetBackgroundResource(0);
+                            scrollViewContent.SetBackgroundResource(0);
+                            try
                             {
+                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
 
+                        refresh_image.SetImageResource(Resource.Drawable.refresh_white);
+                        SetRefreshLayoutParams();
+                        StopAddressShimmer();
+                        StopRangeShimmer();
+                        StopGraphShimmer();
+                        StopSMStatisticShimmer();
+                        btnNewRefresh.Visibility = ViewStates.Visible;
+                        energyTipsView.Visibility = ViewStates.Gone;
+                        if (string.IsNullOrEmpty(buttonTxt))
+                        {
+                            btnNewRefresh.Text = txtBtnRefreshTitle;
+                        }
+                        else
+                        {
+                            btnNewRefresh.Text = buttonTxt;
+                        }
+
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            if (string.IsNullOrEmpty(contentTxt))
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
                             }
                             else
                             {
-                                rootView.SetBackgroundResource(0);
-                                scrollViewContent.SetBackgroundResource(0);
-                                try
-                                {
-                                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                                    ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
-                                }
-                                catch (System.Exception e)
-                                {
-                                    Utility.LoggingNonFatalError(e);
-                                }
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                             }
-
-                            refresh_image.SetImageResource(Resource.Drawable.refresh_white);
-                            SetRefreshLayoutParams();
-                            StopAddressShimmer();
-                            StopRangeShimmer();
-                            StopGraphShimmer();
-                            StopSMStatisticShimmer();
-                            btnNewRefresh.Visibility = ViewStates.Visible;
-                            energyTipsView.Visibility = ViewStates.Gone;
-                            if (string.IsNullOrEmpty(buttonTxt))
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(contentTxt))
                             {
-                                btnNewRefresh.Text = txtBtnRefreshTitle;
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
                             }
                             else
                             {
-                                btnNewRefresh.Text = buttonTxt;
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
                             }
-
-                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                            {
-                                if (string.IsNullOrEmpty(contentTxt))
-                                {
-                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
-                                }
-                                else
-                                {
-                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
-                                }
-                            }
-                            else
-                            {
-                                if (string.IsNullOrEmpty(contentTxt))
-                                {
-                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                                }
-                                else
-                                {
-                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
-                                }
-                            }
-                        //}
+                        }
 
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
@@ -8645,6 +8623,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
                 refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(16f);
+                if (isREAccount)
+                {
+                    refreshTxtParams.BottomMargin = (int)DPUtils.ConvertDPToPx(42f);
+                }
+                else if (isSMR)
+                {
+                    refreshTxtParams.BottomMargin = (int)DPUtils.ConvertDPToPx(58f);
+                }
                 txtNewRefreshMessage.RequestLayout();
             }
             catch (System.Exception e)
@@ -9621,6 +9607,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     try
                     {
+                        refreshLayout.Visibility = ViewStates.Visible;
                         newAccountLayout.Visibility = ViewStates.Gone;
                         allGraphLayout.Visibility = ViewStates.Gone;
                         smStatisticContainer.Visibility = ViewStates.Gone;
