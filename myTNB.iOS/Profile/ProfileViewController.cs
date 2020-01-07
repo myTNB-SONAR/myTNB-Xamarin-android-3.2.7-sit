@@ -126,10 +126,10 @@ namespace myTNB
                 });
                 profileList.Add(GetI18NValue(ProfileConstants.I18N_HelpAndSupport), new List<string>{
                     GetI18NValue(ProfileConstants.I18N_FindUs)
-                    , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
-                    , GetI18NValue(ProfileConstants.I18N_CallUsBilling)
-                    , GetI18NValue(ProfileConstants.I18N_FAQ)
-                    , GetI18NValue(ProfileConstants.I18N_TNC)});
+                     , GetI18NValue(ProfileConstants.I18N_CallUsBilling)
+                     , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
+                     , GetI18NValue(ProfileConstants.I18N_FAQ)
+                     , GetI18NValue(ProfileConstants.I18N_TNC)});
                 profileList.Add(GetI18NValue(ProfileConstants.I18N_Share), new List<string>{
                     GetI18NValue(ProfileConstants.I18N_ShareDescription)
                     , GetI18NValue(ProfileConstants.I18N_Rate)});
@@ -149,8 +149,8 @@ namespace myTNB
                     List<string> helpAndSupportList = new List<string>
                     {
                         GetI18NValue(ProfileConstants.I18N_FindUs)
-                        , DataManager.DataManager.SharedInstance.WebLinks[cloIndex].Title
                         , DataManager.DataManager.SharedInstance.WebLinks[cleIndex].Title
+                        , DataManager.DataManager.SharedInstance.WebLinks[cloIndex].Title
                         , GetI18NValue(ProfileConstants.I18N_FAQ)
                         , GetI18NValue(ProfileConstants.I18N_TNC)
                     };
