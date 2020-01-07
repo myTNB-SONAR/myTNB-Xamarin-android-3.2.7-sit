@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
             void ShowView();
 
-            void ShowRefreshView(string contentTxt, string btnTxt);
+            void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt);
 
 
             /// <summary>

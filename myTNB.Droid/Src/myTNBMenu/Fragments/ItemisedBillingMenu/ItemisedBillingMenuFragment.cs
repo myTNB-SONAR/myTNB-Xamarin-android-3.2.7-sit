@@ -864,7 +864,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                    unavailableBillMsg.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"));
                 }
                 btnRefresh.Visibility = ViewStates.Gone;
             }
@@ -905,7 +905,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    unavailableChargeMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                    unavailableChargeMsg.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"));
                 }
                 btnChargeRefresh.Visibility = ViewStates.Gone;
             }
@@ -948,7 +948,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
+                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"));
                 }
                 btnBillingHistoryRefresh.Visibility = ViewStates.Gone;
             }
@@ -1053,11 +1053,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public void OnShowItemizedFragmentTutorialDialog()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                StopScrolling();
-            });
-            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        StopScrolling();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ItemizedBillingCustomScrolling(int yPosition)
@@ -1066,8 +1080,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    itemisedBillingScrollView.ScrollTo(0, yPosition);
-                    itemisedBillingScrollView.RequestLayout();
+                    try
+                    {
+                        itemisedBillingScrollView.ScrollTo(0, yPosition);
+                        itemisedBillingScrollView.RequestLayout();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception e)

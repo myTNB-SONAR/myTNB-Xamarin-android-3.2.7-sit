@@ -62,46 +62,53 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             {
                 RunOnUiThread(() =>
                 {
-                    progressBar.Visibility = ViewStates.Gone;
-                    if (success)
+                    try
                     {
-                        FullRTEPagesEntity wtManager = new FullRTEPagesEntity();
-                        List<FullRTEPagesEntity> items = wtManager.GetAllItems();
-                        if (items != null)
+                        progressBar.Visibility = ViewStates.Gone;
+                        if (success)
                         {
-                            if (items.Count == 0)
+                            FullRTEPagesEntity wtManager = new FullRTEPagesEntity();
+                            List<FullRTEPagesEntity> items = wtManager.GetAllItems();
+                            if (items != null)
                             {
-                                GetDataFromSiteCore();
+                                if (items.Count == 0)
+                                {
+                                    GetDataFromSiteCore();
+                                }
+                                else
+                                {
+                                    foreach (FullRTEPagesEntity obj in items)
+                                    {
+                                        if (!string.IsNullOrEmpty(obj.GeneralText) && !string.IsNullOrEmpty(obj.PublishedDate))
+                                        {
+                                            string replacedString = obj.GeneralText.Replace("\\", string.Empty);
+                                            Console.WriteLine("ReplaceStringOne::" + replacedString);
+                                            replacedString = obj.GeneralText.Replace("\\n", string.Empty);
+                                            Console.WriteLine("ReplaceStringTwo::" + replacedString);
+                                            tncWebView.LoadData(replacedString, "text/html", "UTF-8");
+                                            txtVersion.Text = "Version [" + obj.PublishedDate + "]";
+                                            txtTitle.Text = "" + obj.Title;
+                                        }
+                                        else
+                                        {
+                                            SetDefaultData();
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
-                                foreach (FullRTEPagesEntity obj in items)
-                                {
-                                    if (!string.IsNullOrEmpty(obj.GeneralText) && !string.IsNullOrEmpty(obj.PublishedDate))
-                                    {
-                                        string replacedString = obj.GeneralText.Replace("\\", string.Empty);
-                                        Console.WriteLine("ReplaceStringOne::" + replacedString);
-                                        replacedString = obj.GeneralText.Replace("\\n", string.Empty);
-                                        Console.WriteLine("ReplaceStringTwo::" + replacedString);
-                                        tncWebView.LoadData(replacedString, "text/html", "UTF-8");
-                                        txtVersion.Text = "Version [" + obj.PublishedDate + "]";
-                                        txtTitle.Text = "" + obj.Title;
-                                    }
-                                    else
-                                    {
-                                        SetDefaultData();
-                                    }
-                                }
+                                GetDataFromSiteCore();
                             }
                         }
                         else
                         {
-                            GetDataFromSiteCore();
+                            SetDefaultData();
                         }
                     }
-                    else
+                    catch (System.Exception er)
                     {
-                        SetDefaultData();
+                        Utility.LoggingNonFatalError(er);
                     }
                 });
             }

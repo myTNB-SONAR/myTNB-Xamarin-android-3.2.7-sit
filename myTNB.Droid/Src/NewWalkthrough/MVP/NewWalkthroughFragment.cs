@@ -238,6 +238,23 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                         _ = CheckAppMasterDataDone();
                     }
+                    else if (MyTNBAccountManagement.GetInstance().GetIsAppMasterMaintenance())
+                    {
+                        try
+                        {
+                            this.Activity.RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                ((NewWalkthroughActivity)Activity).OnMaintenanceProceed();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
                     else
                     {
                         try

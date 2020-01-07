@@ -5592,14 +5592,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
 
+                        isChangeVirtualHeightNeed = true;
+                        SetVirtualHeightParams(6f);
                     }
                     catch (System.Exception e)
                     {
                         Utility.LoggingNonFatalError(e);
                     }
-
-                    isChangeVirtualHeightNeed = true;
-                    SetVirtualHeightParams(6f);
                 });
             }
             catch (System.Exception e)
@@ -5700,14 +5699,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         //}
+
+                        isChangeVirtualHeightNeed = true;
+                        SetVirtualHeightParams(6f);
                     }
                     catch (System.Exception e)
                     {
                         Utility.LoggingNonFatalError(e);
                     }
-
-                    isChangeVirtualHeightNeed = true;
-                    SetVirtualHeightParams(6f);
                 });
             }
             catch (System.Exception e)
@@ -6658,50 +6657,92 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void EnableViewBillButton()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                btnViewBill.Enabled = true;
-                btnReView.Enabled = true;
-                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-            });
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        btnViewBill.Enabled = true;
+                        btnReView.Enabled = true;
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void DisableViewBillButton()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                btnViewBill.Enabled = false;
-                btnReView.Enabled = false;
-                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-            });
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        btnViewBill.Enabled = false;
+                        btnReView.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowAmountDueFailed()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                StopAmountDueShimmer();
-                re_img.Visibility = ViewStates.Visible;
-                rePayableLayout.Visibility = ViewStates.Visible;
-                totalPayableLayout.Visibility = ViewStates.Visible;
-                txtDueDate.Text = "- -";
-                reDueDate.Text = "- -";
-                txtTotalPayable.Text = "- -";
-                reTotalPayable.Text = "- -";
-                DisablePayButton();
-                btnViewBill.Enabled = false;
-                btnReView.Enabled = false;
-                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-            });
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        StopAmountDueShimmer();
+                        re_img.Visibility = ViewStates.Visible;
+                        rePayableLayout.Visibility = ViewStates.Visible;
+                        totalPayableLayout.Visibility = ViewStates.Visible;
+                        txtDueDate.Text = "- -";
+                        reDueDate.Text = "- -";
+                        txtTotalPayable.Text = "- -";
+                        reTotalPayable.Text = "- -";
+                        DisablePayButton();
+                        btnViewBill.Enabled = false;
+                        btnReView.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         protected override Android.App.Activity GetActivityObject()
@@ -6784,71 +6825,84 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     MyTNBAccountManagement.GetInstance().SetAccountActivityInfo(new SMRAccountActivityInfo(selectedAccount.AccountNum, smrResponse));
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
                     MyTNBAppToolTipData.SetSMRActivityInfo(response.Response);
-                    Activity.RunOnUiThread(() =>
+                    try
                     {
-                        if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
+                        Activity.RunOnUiThread(() =>
                         {
-                            isSubmitMeter = true;
-                            if (response.Response.Data.showReadingHistoryLink == "true")
+                            try
                             {
-                                btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
-                                if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
+                                if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                                 {
-                                    btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                                    isSubmitMeter = true;
+                                    if (response.Response.Data.showReadingHistoryLink == "true")
+                                    {
+                                        btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
+                                        if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
+                                        {
+                                            btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                                    }
+                                }
+                                else
+                                {
+                                    isSubmitMeter = false;
+                                }
+
+                                if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
+                                {
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                                    {
+                                        ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
+                                    }
+                                }
+
+                                if (response.Response.Data.isDashboardCTADisabled == "true")
+                                {
+                                    btnReadingHistory.Enabled = false;
+                                    btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                                    btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                                }
+                                else
+                                {
+                                    btnReadingHistory.Enabled = true;
+                                    btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                                    btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                                }
+
+                                if (!string.IsNullOrEmpty(response.Response.Data.DashboardCTAText))
+                                {
+                                    btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
+                                }
+                                else
+                                {
+                                    if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
+                                    {
+                                        btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                                    }
+                                    else
+                                    {
+                                        btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                                    }
                                 }
                             }
-                            else
+                            catch (System.Exception ex)
                             {
-                                btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                                Utility.LoggingNonFatalError(ex);
                             }
-                        }
-                        else
-                        {
-                            isSubmitMeter = false;
-                        }
-
-                        if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
-                        {
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                            {
-                                ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
-                            }
-                            else
-                            {
-                                ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
-                            }
-                        }
-
-                        if (response.Response.Data.isDashboardCTADisabled == "true")
-                        {
-                            btnReadingHistory.Enabled = false;
-                            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                        }
-                        else
-                        {
-                            btnReadingHistory.Enabled = true;
-                            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-                        }
-
-                        if (!string.IsNullOrEmpty(response.Response.Data.DashboardCTAText))
-                        {
-                            btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
-                        }
-                        else
-                        {
-                            if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
-                            {
-                                btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
-                            }
-                            else
-                            {
-                                btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
-                            }
-                        }
-                    });
-
+                        });
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
                 else
                 {
@@ -7306,18 +7360,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideEnergyTipsShimmerView()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    energyTipsShimmerView.Visibility = ViewStates.Gone;
-                    OnSetEnergyTipsShimmerAdapter(null);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
+                    try
+                    {
+                        energyTipsShimmerView.Visibility = ViewStates.Gone;
+                        OnSetEnergyTipsShimmerAdapter(null);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void OnSetEnergyTipsShimmerAdapter(List<EnergySavingTipsModel> list)
@@ -7328,20 +7389,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowEnergyTipsView(List<EnergySavingTipsModel> list)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    energyTipsView.Visibility = ViewStates.Visible;
-                    energyTipsAdapter = new EnergySavingTipsAdapter(list, this.Activity);
-                    energyTipsList.SetAdapter(energyTipsAdapter);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
-            HideEnergyTipsShimmerView();
+                    try
+                    {
+                        energyTipsView.Visibility = ViewStates.Visible;
+                        energyTipsAdapter = new EnergySavingTipsAdapter(list, this.Activity);
+                        energyTipsList.SetAdapter(energyTipsAdapter);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+                HideEnergyTipsShimmerView();
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
@@ -7618,7 +7686,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    DoNothingSelected();
+                    try
+                    {
+                        DoNothingSelected();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception err)
@@ -7661,7 +7736,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    DoValueSelected(e, h);
+                    try
+                    {
+                        DoValueSelected(e, h);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (System.Exception err)
@@ -8680,7 +8762,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     currentFragment.Activity.RunOnUiThread(() =>
                     {
-                        OnStopDeceleration();
+                        try
+                        {
+                            OnStopDeceleration();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                     });
                 }
                 catch (System.Exception e)
@@ -8790,7 +8879,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     currentFragment.Activity.RunOnUiThread(() =>
                     {
-                        OnEndAction(p0);
+                        try
+                        {
+                            OnEndAction(p0);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                     });
                 }
                 catch (System.Exception e)
@@ -8902,7 +8998,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     currentFragment.Activity.RunOnUiThread(() =>
                     {
-                        OnComputeScroll();
+                        try
+                        {
+                            OnComputeScroll();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                     });
                 }
                 catch (System.Exception e)
@@ -9170,10 +9273,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void OnShowDashboardFragmentTutorialDialog()
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                StopScrolling();
-            });
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        StopScrolling();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
 
             if (ChartDataType != ChartDataType.RM)
             {
@@ -9229,8 +9346,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    scrollView.ScrollTo(0, yPosition);
-                    scrollView.RequestLayout();
+                    try
+                    {
+                        scrollView.ScrollTo(0, yPosition);
+                        scrollView.RequestLayout();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 });
             }
             catch (System.Exception e)

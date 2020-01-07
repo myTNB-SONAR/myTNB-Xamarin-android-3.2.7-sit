@@ -498,7 +498,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
-				new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 RewardsMenuUtils.OnSetRewardLoading(true);
                 new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 LaunchViewActivity.MAKE_INITIAL_CALL = false;
@@ -633,6 +633,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
             isPromoClicked = false;
+        }
+
+        public void OnResumeUpdatePromotionUnReadCounter()
+        {
+            if (PromotionsEntityV2.HasUnread())
+            {
+                this.mView.ShowUnreadPromotions();
+
+            }
+            else
+            {
+                this.mView.HideUnreadPromotions();
+
+            }
         }
 
         private void OnResumeUpdatePromotionUnRead()

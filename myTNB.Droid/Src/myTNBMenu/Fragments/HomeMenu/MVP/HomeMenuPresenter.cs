@@ -60,6 +60,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isMyServiceExpanded = false;
 
+        private bool isMyServiceRefreshNeeded = false;
+
+        private bool isAccountRefreshNeeded = false;
+
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private CancellationTokenSource FAQTokenSource = new CancellationTokenSource();
@@ -123,11 +127,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request, normalTokenSource.Token);
                 if (response != null)
                 {
-                    if (response.Data != null && response.Data.ErrorCode != "7200")
-                    {
-                        this.mView.ShowRefreshScreen(response.Data.RefreshMessage, response.Data.RefreshBtnText);
-                    }
-                    else if (response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
+                    if (response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
                     {
 
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
@@ -179,32 +179,62 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         isSummaryDone = true;
                         OnCheckToCallHomeMenuTutorial();
                     }
+                    else if (response.Data != null && response.Data.ErrorCode == "8400")
+                    {
+                        string contentTxt = "";
+
+                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                        {
+                            contentTxt = response.Data.DisplayMessage;
+                        }
+
+                        this.mView.ShowRefreshScreen(false, contentTxt, "");
+                        isAccountRefreshNeeded = true;
+                    }
                     else
                     {
-                        this.mView.ShowRefreshScreen(null, null);
+                        string contentTxt = "";
+                        string buttonTxt = "";
+
+                        if (!string.IsNullOrEmpty(response.Data.RefreshMessage))
+                        {
+                            contentTxt = response.Data.RefreshMessage;
+                        }
+
+                        if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                        {
+                            buttonTxt = response.Data.RefreshBtnText;
+                        }
+
+                        this.mView.ShowRefreshScreen(true, contentTxt, buttonTxt);
+                        isAccountRefreshNeeded = true;
                     }
                 }
                 else
                 {
-                    this.mView.ShowRefreshScreen(null, null);
+                    this.mView.ShowRefreshScreen(true, null, null);
+                    isAccountRefreshNeeded = true;
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
                 if (isAllDone() && !isHomeMenuTutorialShown || UserSessions.HasHomeTutorialShown(mPref))
                 {
-                    this.mView.ShowRefreshScreen(null, null);
+                    this.mView.ShowRefreshScreen(true, null, null);
+                    isAccountRefreshNeeded = true;
                 }
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                this.mView.ShowRefreshScreen(null, null);
+                this.mView.ShowRefreshScreen(true, null, null);
+                isAccountRefreshNeeded = true;
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                this.mView.ShowRefreshScreen(null, null);
+                this.mView.ShowRefreshScreen(true, null, null);
+                isAccountRefreshNeeded = true;
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -216,11 +246,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfoQuery(request, queryTokenSource.Token);
                 if (response != null)
                 {
-                    if (response.Data != null && response.Data.ErrorCode != "7200")
-                    {
-                        this.mView.ShowRefreshScreen(response.Data.RefreshMessage, response.Data.RefreshBtnText);
-                    }
-                    else if (response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
+                    if (response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
                     {
 
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
@@ -270,14 +296,41 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
 
                     }
+                    else if (response.Data != null && response.Data.ErrorCode == "8400")
+                    {
+                        string contentTxt = "";
+
+                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                        {
+                            contentTxt = response.Data.DisplayMessage;
+                        }
+
+                        this.mView.ShowRefreshScreen(false, contentTxt, "");
+                        isAccountRefreshNeeded = true;
+                    }
                     else
                     {
-                        this.mView.ShowRefreshScreen(null, null);
+                        string contentTxt = "";
+                        string buttonTxt = "";
+
+                        if (!string.IsNullOrEmpty(response.Data.RefreshMessage))
+                        {
+                            contentTxt = response.Data.RefreshMessage;
+                        }
+
+                        if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                        {
+                            buttonTxt = response.Data.RefreshBtnText;
+                        }
+
+                        this.mView.ShowRefreshScreen(true, contentTxt, buttonTxt);
+                        isAccountRefreshNeeded = true;
                     }
                 }
                 else
                 {
-                    this.mView.ShowRefreshScreen(null, null);
+                    this.mView.ShowRefreshScreen(true, null, null);
+                    isAccountRefreshNeeded = true;
                 }
             }
             catch (System.OperationCanceledException cancelledException)
@@ -286,12 +339,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (ApiException apiException)
             {
-                this.mView.ShowRefreshScreen(null, null);
+                this.mView.ShowRefreshScreen(true, null, null);
+                isAccountRefreshNeeded = true;
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                this.mView.ShowRefreshScreen(null, null);
+                this.mView.ShowRefreshScreen(true, null, null);
+                isAccountRefreshNeeded = true;
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -1043,6 +1098,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             isSummaryDone = false;
             isMyServiceDone = false;
             isHomeMenuTutorialShown = false;
+            isAccountRefreshNeeded = false;
+            if (isMyServiceRefreshNeeded)
+            {
+                this.mView.SetBottomLayoutBackground(false);
+            }
+            isMyServiceRefreshNeeded = false;
 
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
@@ -1669,19 +1730,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     usrInf = currentUsrInf
                 });
 
-                if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.CurrentServices.Count > 0)
+                if (getServicesResponse != null && getServicesResponse.Data != null && getServicesResponse.Data.ErrorCode == "7200")
                 {
                     MyServiceEntity.RemoveAll();
                     currentMyServiceList.Clear();
-                    List<MyService> fetchList = new List<MyService>();
-                    foreach (MyService service in getServicesResponse.Data.Data.CurrentServices)
+                    if (getServicesResponse.Data.Data.CurrentServices.Count > 0)
                     {
-                        fetchList.Add(service);
-                        currentMyServiceList.Add(service);
+                        List<MyService> fetchList = new List<MyService>();
+                        foreach (MyService service in getServicesResponse.Data.Data.CurrentServices)
+                        {
+                            fetchList.Add(service);
+                            currentMyServiceList.Add(service);
+                        }
+                        OnProcessMyServiceCards();
+                        FirstTimeMyServiceInitiate = false;
                     }
-                    // this.mView.SetMyServiceResult(fetchList);
-                    OnProcessMyServiceCards();
-                    FirstTimeMyServiceInitiate = false;
+                    else
+                    {
+                        SetMyServiceHideScreen();
+                    }
+                }
+                else
+                {
+                    string contentTxt = "";
+                    string buttonTxt = "";
+
+                    if (getServicesResponse != null && getServicesResponse.Data != null && !string.IsNullOrEmpty(getServicesResponse.Data.RefreshMessage))
+                    {
+                        contentTxt = getServicesResponse.Data.RefreshMessage;
+                    }
+
+                    if (getServicesResponse != null && getServicesResponse.Data != null && !string.IsNullOrEmpty(getServicesResponse.Data.RefreshBtnText))
+                    {
+                        buttonTxt = getServicesResponse.Data.RefreshBtnText;
+                    }
+
+                    isMyServiceRefreshNeeded = true;
+                    SetMyServiceRefreshScreen(contentTxt, buttonTxt);
                 }
 
             }
@@ -1691,10 +1776,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (ApiException apiException)
             {
+                isMyServiceRefreshNeeded = true;
+                SetMyServiceRefreshScreen("", "");
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
+                isMyServiceRefreshNeeded = true;
+                SetMyServiceRefreshScreen("", "");
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -1801,6 +1890,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isMyServiceDone = false;
                 isHomeMenuTutorialShown = false;
                 RestoreCurrentMyServiceState();
+            }
+        }
+
+        public bool GetIsMyServiceRefreshNeeded()
+        {
+            return isMyServiceRefreshNeeded;
+        }
+
+        public bool GetIsAccountRefreshNeeded()
+        {
+            return isAccountRefreshNeeded;
+        }
+
+        public void SetMyServiceRefreshScreen(string contentTxt, string buttonTxt)
+        {
+            try
+            {
+                if (isAccountRefreshNeeded)
+                {
+                    this.mView.SetMyServiceHideView();
+                }
+                else
+                {
+                    this.mView.SetBottomLayoutBackground(true);
+                    this.mView.SetMyServiceRefreshView(contentTxt, buttonTxt);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetMyServiceHideScreen()
+        {
+            try
+            {
+                this.mView.SetMyServiceHideView();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -2244,6 +2375,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                 NotificationApiImpl notificationAPI = new NotificationApiImpl();
 				MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
@@ -2270,6 +2402,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
 						MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     }
+                }
+                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                 }
                 else
                 {

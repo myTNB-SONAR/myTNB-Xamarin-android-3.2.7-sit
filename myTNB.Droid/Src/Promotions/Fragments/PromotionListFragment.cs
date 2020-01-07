@@ -36,20 +36,27 @@ namespace myTNB_Android.Src.Promotions.Fragments
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
+        [BindView(Resource.Id.promotionRefreshLayout)]
+        LinearLayout promotionRefreshLayout;
+
         [BindView(Resource.Id.no_promotion_layout)]
         LinearLayout noPromotionLayout;
 
-        [BindView(Resource.Id.progressBar)]
-        public ProgressBar mProgressBar;
+        [BindView(Resource.Id.promotion_main_layout)]
+        LinearLayout promotionMainLayout;
 
         [BindView(Resource.Id.promotion_list_recycler_view)]
         public RecyclerView mPromotionRecyclerView;
 
-        [BindView(Resource.Id.no_promotion_title)]
-        public TextView textNoPromotion;
-
         [BindView(Resource.Id.no_promotion_info)]
         public TextView textNoPromotionInfo;
+
+        [BindView(Resource.Id.txtRefresh)]
+        public TextView txtRefresh;
+
+        [BindView(Resource.Id.btnRefresh)]
+        public Button btnRefresh;
+
 
         private string savedTimeStamp = "0000000";
 
@@ -78,18 +85,12 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 adapter = new PromotionListAdapter(Activity, promotions);
                 mPromotionRecyclerView.SetAdapter(adapter);
 
-                TextViewUtils.SetMuseoSans300Typeface(textNoPromotion, textNoPromotionInfo);
+                TextViewUtils.SetMuseoSans300Typeface(textNoPromotionInfo, txtRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
                 ShowProgressBar();
-                this.userActionsListener.GetSavedPromotionTimeStamp();
-                //ShowPromotion(true);
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
 
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                OnGetPromotionTimestamp();
 
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -105,62 +106,90 @@ namespace myTNB_Android.Src.Promotions.Fragments
             return Resource.Layout.PromotionListView;
         }
 
+        public void OnGetPromotionTimestamp()
+        {
+            try
+            {
+                this.userActionsListener.GetSavedPromotionTimeStamp();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowPromotion(bool success)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    if (success)
-                    {
-                        noPromotionLayout.Visibility = ViewStates.Gone;
-                        mPromotionRecyclerView.Visibility = ViewStates.Visible;
-
-                        PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                        List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                        if (items != null)
-                        {
-                            promotions = new List<PromotionsModelV2>();
-                            promotions.AddRange(items);
-                            adapter = new PromotionListAdapter(Activity, promotions);
-                            mPromotionRecyclerView.SetAdapter(adapter);
-                            adapter.ItemClick += OnItemClick;
-                            adapter.NotifyDataSetChanged();
-                        }
-
-                    }
-                    else
-                    {
-                        noPromotionLayout.Visibility = ViewStates.Visible;
-                        mPromotionRecyclerView.Visibility = ViewStates.Gone;
-                    }
-
                     try
                     {
-                        if (PromotionsEntityV2.HasUnread())
+                        if (success)
                         {
-                            ((DashboardHomeActivity)this.Activity).ShowUnreadPromotions(true);
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            List<PromotionsEntityV2> items = wtManager.GetAllItems();
+                            if (items != null && items.Count > 0)
+                            {
+                                noPromotionLayout.Visibility = ViewStates.Gone;
+                                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                                promotionMainLayout.Visibility = ViewStates.Visible;
+                                promotions = new List<PromotionsModelV2>();
+                                promotions.AddRange(items);
+                                adapter = new PromotionListAdapter(Activity, promotions);
+                                mPromotionRecyclerView.SetAdapter(adapter);
+                                adapter.ItemClick += OnItemClick;
+                                adapter.NotifyDataSetChanged();
+                            }
+                            else
+                            {
+                                noPromotionLayout.Visibility = ViewStates.Visible;
+                                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                                promotionMainLayout.Visibility = ViewStates.Gone;
+                                textNoPromotionInfo.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
+                            }
+
                         }
                         else
                         {
-                            ((DashboardHomeActivity)this.Activity).HideUnreadPromotions(true);
+                            noPromotionLayout.Visibility = ViewStates.Gone;
+                            promotionRefreshLayout.Visibility = ViewStates.Visible;
+                            promotionMainLayout.Visibility = ViewStates.Gone;
+                            btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                            txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
                         }
+
+                        HideProgressBar();
+
+                        try
+                        {
+                            if (PromotionsEntityV2.HasUnread())
+                            {
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadPromotions(true);
+                            }
+                            else
+                            {
+                                ((DashboardHomeActivity)this.Activity).HideUnreadPromotions(true);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+
                     }
                     catch (System.Exception ex)
                     {
                         Utility.LoggingNonFatalError(ex);
                     }
-
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    Utility.LoggingNonFatalError(ex);
-                }
-            });
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void OnItemClick(object sender, int position)
@@ -213,12 +242,35 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void ShowProgressBar()
         {
-            mProgressBar.Visibility = ViewStates.Gone;
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressBar()
         {
-            mProgressBar.Visibility = ViewStates.Gone;
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSavedTimeStamp(string mSavedTimeStamp)
@@ -276,16 +328,56 @@ namespace myTNB_Android.Src.Promotions.Fragments
                             }
                             else
                             {
-                                ShowPromotion(true);
+                                PromotionsEntityV2 itemEntity = new PromotionsEntityV2();
+                                List<PromotionsEntityV2> subItems = itemEntity.GetAllItems();
+                                if (subItems != null && subItems.Count > 0)
+                                {
+                                    ShowPromotion(true);
+                                }
+                                else
+                                {
+                                    this.userActionsListener.OnGetPromotions();
+                                }
                             }
                         }
+                        else
+                        {
+                            this.userActionsListener.OnGetPromotions();
+                        }
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetPromotions();
                     }
 
                 }
                 else
                 {
-                    ShowPromotion(false);
+                    this.userActionsListener.OnGetPromotions();
                 }
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        // On Press Refresh button action
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            try
+            {
+                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                promotions = new List<PromotionsModelV2>();
+                adapter = new PromotionListAdapter(Activity, promotions);
+                mPromotionRecyclerView.SetAdapter(adapter);
+                adapter.ItemClick += OnItemClick;
+                adapter.NotifyDataSetChanged();
+
+                this.userActionsListener.GetSavedPromotionTimeStamp();
+
+                ShowProgressBar();
             }
             catch (System.Exception ex)
             {
@@ -308,17 +400,6 @@ namespace myTNB_Android.Src.Promotions.Fragments
             base.OnResume();
             try
             {
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
-                {
-                    promotions = new List<PromotionsModelV2>();
-                    promotions.AddRange(items);
-                    adapter = new PromotionListAdapter(Activity, promotions);
-                    mPromotionRecyclerView.SetAdapter(adapter);
-                    adapter.ItemClick += OnItemClick;
-                    adapter.NotifyDataSetChanged();
-                }
                 var act = this.Activity as AppCompatActivity;
 
                 var actionBar = act.SupportActionBar;
