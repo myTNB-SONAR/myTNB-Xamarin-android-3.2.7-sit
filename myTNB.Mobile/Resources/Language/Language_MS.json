@@ -110,14 +110,14 @@
     "minimumPayAmount": "Amaun minimum perlu melebihi RM 1.00",
     "emptyNickname": "Nama ringkas akaun tidak boleh kosong. Sila masukkan nama ringkas yang sah dan tambah akaun anda sekali lagi.",
     "invalidNickname": "Anda boleh guna huruf, nombor dan aksara khas untuk nama aksara.",
-    "duplicateNickname": "Nama ringkas sudah digunakan. Sila buat yang baru.",
+    "duplicateNickname": "Nama ringkas sudah digunakan. Sila guna nama ringkas yang lain.",
     "refreshMessage": "Halaman ini terputus sambungan. Refresh untuk sambung semula!",
     "serviceErrorDefaultMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba lagi kemudian.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Kod tidak sah",
     "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
-    "invalid_mismatchedPassword": "Kata laluan baru anda tidak sepadan.",
+    "invalid_mismatchedPassword": "Kata laluan baharu anda tidak sepadan.",
     "invalid_fullname": "Nama penuh tidak sah",
     "invalid_idnumber": "Nombor IC, ROC atau Pasport tidak sah",
     "invalid_mismatchedEmail": "Kedua-dua e-mel tidak padan",
@@ -138,7 +138,7 @@
     "refreshUsageSSMR": "Alamak! Nampaknya perkhidmatan Self Meter Reading terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "refreshBillPayHistory": "Alamak! Nampaknya laman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
-    "plannedDownTimeMessage": "Halaman anda tidak dapat dimuatkan buat masa ini. Cuba semula sebentar lagi."
+    "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -508,7 +508,7 @@
     "deleteAllMessage": "Anda pasti mahu membuang semua pemberitahuan?",
     "deleteAllTitle": "Buang Semua Pemberitahuan",
     "deleteMessageMultiple": "Anda pasti mahu membuang pemberitahuan ini?",
-    "deleteTitleMultiple": "Buang Pelbagai Pemberitahuan",
+    "deleteTitleMultiple": "Buang Pemberitahuan yang Dipilih",
     "noNotification": "Anda tiada Pemberitahuan baharu pada masa ini.",
     "notificationDeleted": "Pemberitahuan telah dibuang.",
     "notificationsDeleted": "Pemberitahuan telah dibuang.",
@@ -528,7 +528,7 @@
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
-    "noAcctFoundMsg": "Sila tekan butang di bawah untuk menambah akaun elektrik TNB anda.",
+    "noAcctFoundMsg": "Sila tekan butang di bawah untuk tambah akaun elektrik TNB anda.",
     "supplyAcctCount": "akaun bekalan elektrik ditemui!",
     "addAnotherAcct": "Tambah Akaun Lain",
     "addAccount": "Akaun Sedang Ditambah",
@@ -538,7 +538,7 @@
     "noAccountsTitle": "Tiada Akaun Ditemui!",
     "additionalAccts": "Akaun tambahan",
     "removeAcct": "Keluarkan Akaun",
-    "removeAcctMsg": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Layari Self-Service Portal atau kunjungi Kedai Tenaga untuk menutup akaun bekalan elektrik anda.",
+    "removeAcctMsg": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Layari Self-Service Portal atau kunjungi Kedai Tenaga untuk menutup akaun bekalan elektrik anda.",
     "addAcctSuccessMsg": "Akaun Berjaya Ditambah",
     "ownerICNumber": "Nombor KP / Pasport Pemilik",
     "rocNumber": "ROC Nombor",
@@ -727,12 +727,12 @@
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
-    "noCards": "Tiada kad kedit/debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
-    "details": "Anda hanya boleh menambah kad kredit/debit baru semasa membuat pembayaran.",
-    "cardRemoveSuccess": "Kad kredit/debit yang berakhir dengan {0} telah berjaya dikeluarkan.",
-    "removeCardMessage": "Anda akan mengeluarkan kad kredit/debit yang berakhir dengan {0}.",
-    "removeCardTitle": "Keluarkan Kad Kredit/Debit",
-    "cardNotRemovedMessage": "Kad Kredit/Debit yang berakhir dengan {0} tidak berjaya dikeluarkan. Sila cuba lagi."
+    "noCards": "Tiada kad kedit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
+    "details": "Anda hanya boleh menambah kad kredit / debit baharu semasa membuat pembayaran.",
+    "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
+    "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
+    "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
+    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula."
   },
   "ViewBill": {
     "titleBill": "Bil",
@@ -758,13 +758,13 @@
     "invalidCVV": "CVV Tidak Sah",
     "saveCardMessage": "Saya ingin menyimpan kad ini untuk kegunaan masa hadapan.",
     "emptyCardNumberTitle": "Nombor Kad Tidak Sah",
-    "emptyCardNumberMessage": "Sila masukkan nombor kad yang sah dan cuba lagi.",
-    "savedCardTitle": "Kad ini telah ditambah sebelum ini.",
+    "emptyCardNumberMessage": "Sila masukkan nombor kad yang sah dan cuba semula.",
+    "savedCardTitle": "Kad ini telah disimpan sebelum ini.",
     "savedCardMessage": "Anda membayar dengan Kad Kredit / Debit yang telah disimpan. Adakah anda mahu meneruskan?"
   },
   "CardScanner": {
     "title": "Tambah kad",
-    "scanMessage": "Imbas bahagian depan kad kredit / debit anda untuk mendapatkan butiran kad.",
+    "scanMessage": "Imbas muka hadapan kad kredit / debit anda untuk mendapatkan butiran kad.",
     "scanInstructions": "Pegang kad di sini. Ia akan mengimbas secara automatik."
   },
   "Receipt": {
