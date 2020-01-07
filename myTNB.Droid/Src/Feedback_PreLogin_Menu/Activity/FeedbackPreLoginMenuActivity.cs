@@ -302,6 +302,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 this.userActionsListener.OnRetry();
             }
             );
+            View snackbarView = mCancelledExceptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(3);
             mCancelledExceptionSnackBar.Show();
             this.SetIsClicked(false);
 
@@ -323,6 +326,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 this.userActionsListener.OnRetry();
             }
             );
+            View snackbarView = mApiExcecptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(3);
             mApiExcecptionSnackBar.Show();
             this.SetIsClicked(false);
 
@@ -344,6 +350,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 this.userActionsListener.OnRetry();
             }
             );
+            View snackbarView = mUknownExceptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(3);
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
 
