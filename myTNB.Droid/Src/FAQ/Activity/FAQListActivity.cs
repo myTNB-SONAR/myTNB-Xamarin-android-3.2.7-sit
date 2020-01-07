@@ -87,46 +87,60 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         public void ShowFAQ(bool success)
         {
-            RunOnUiThread(() =>
+            try
             {
-                HideProgressBar();
-                if (success)
+                RunOnUiThread(() =>
                 {
-                    FAQsEntity wtManager = new FAQsEntity();
-                    List<FAQsEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    try
                     {
-
-                        faqs.AddRange(items);
-                        adapter = new FAQListAdapter(this, faqs);
-                        mFAQRecyclerView.SetAdapter(adapter);
-                        adapter.NotifyDataSetChanged();
-
-                        if (!string.IsNullOrEmpty(FAQ_ID))
+                        HideProgressBar();
+                        if (success)
                         {
-                            int index = 0;
-                            foreach (FAQsEntity entity in items)
+                            FAQsEntity wtManager = new FAQsEntity();
+                            List<FAQsEntity> items = wtManager.GetAllItems();
+                            if (items != null)
                             {
-                                if (entity.ID.Equals(FAQ_ID))
+
+                                faqs.AddRange(items);
+                                adapter = new FAQListAdapter(this, faqs);
+                                mFAQRecyclerView.SetAdapter(adapter);
+                                adapter.NotifyDataSetChanged();
+
+                                if (!string.IsNullOrEmpty(FAQ_ID))
                                 {
-                                    break;
+                                    int index = 0;
+                                    foreach (FAQsEntity entity in items)
+                                    {
+                                        if (entity.ID.Equals(FAQ_ID))
+                                        {
+                                            break;
+                                        }
+                                        index++;
+                                    }
+                                    mFAQRecyclerView.GetLayoutManager().ScrollToPosition(index);
                                 }
-                                index++;
                             }
-                            mFAQRecyclerView.GetLayoutManager().ScrollToPosition(index);
+                            else
+                            {
+                                ReadFallBackFAQ();
+                            }
+
+                        }
+                        else
+                        {
+                            ReadFallBackFAQ();
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        ReadFallBackFAQ();
+                        Utility.LoggingNonFatalError(ex);
                     }
-
-                }
-                else
-                {
-                    ReadFallBackFAQ();
-                }
-            });
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void ReadFallBackFAQ()

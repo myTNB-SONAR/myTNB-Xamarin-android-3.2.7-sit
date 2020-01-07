@@ -21,7 +21,8 @@ namespace myTNB_Android.Src.Base
         private bool IsNeeUpdate = false;
         private bool IsMaintenanceShown = false;
         private bool IsNotificationFailed = false;
-		private bool IsNotificationComplete = false;
+        private bool IsNotificationMaintenance = false;
+        private bool IsNotificationComplete = false;
         private static MasterDataResponse currentMasterDataRes = null;
         private static AppLaunchMasterDataResponse appMasterDataResponse = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
@@ -29,6 +30,9 @@ namespace myTNB_Android.Src.Base
         private bool IsUpdatedMobileNumber = false;
         private bool IsAppMasterComplete = false;
         private bool IsAppMasterFailed = false;
+        private string MaintenanceTitle = "";
+        private string MaintenanceContent = "";
+        private bool IsAppMasterMaintenance = false;
         private MyTNBAccountManagement()
         {
             appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
@@ -322,7 +326,17 @@ namespace myTNB_Android.Src.Base
             IsNotificationFailed = isShown;
         }
 
-		public bool IsNotificationServiceCompleted()
+        public bool IsNotificationServiceMaintenance()
+        {
+            return IsNotificationMaintenance;
+        }
+
+        public void SetIsNotificationServiceMaintenance(bool isShown)
+        {
+            IsNotificationMaintenance = isShown;
+        }
+
+        public bool IsNotificationServiceCompleted()
 		{
 			return IsNotificationComplete;
 		}
@@ -336,6 +350,7 @@ namespace myTNB_Android.Src.Base
         {
             IsAppMasterComplete = false;
             IsAppMasterFailed = false;
+            IsAppMasterMaintenance = false;
             LoadAppMasterData();
         }
 
@@ -349,6 +364,21 @@ namespace myTNB_Android.Src.Base
             return IsAppMasterFailed;
         }
 
+        public bool GetIsAppMasterMaintenance()
+        {
+            return IsAppMasterMaintenance;
+        }
+
+        public string GetMaintenanceTitle()
+        {
+            return MaintenanceTitle;
+        }
+
+        public string GetMaintenanceContent()
+        {
+            return MaintenanceContent;
+        }
+
         private void LoadAppMasterData()
         {
             try
@@ -357,7 +387,7 @@ namespace myTNB_Android.Src.Base
                     (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout)));
                 //appLaunchMasterDataTask.Wait();
                 AppLaunchMasterDataResponse masterDataResponse = appLaunchMasterDataTask.Result;
-                if (masterDataResponse.IsSuccessResponse())
+                if (masterDataResponse != null && masterDataResponse.Response != null && masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SetMasterDataResponse(masterDataResponse);
 
@@ -432,6 +462,19 @@ namespace myTNB_Android.Src.Base
                     }
 
                     IsAppMasterFailed = false;
+                }
+                else if (masterDataResponse != null && masterDataResponse.Response != null && masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_MAINTENANCE)
+                {
+                    if (masterDataResponse.Response.DisplayMessage != null && masterDataResponse.Response.DisplayTitle != null)
+                    {
+                        IsAppMasterMaintenance = true;
+                        MaintenanceTitle = masterDataResponse.Response.DisplayTitle;
+                        MaintenanceContent = masterDataResponse.Response.DisplayMessage;
+                    }
+                    else
+                    {
+                        IsAppMasterFailed = true;
+                    }
                 }
                 else
                 {

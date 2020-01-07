@@ -66,11 +66,18 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    string env = Constants.APP_CONFIG.ENV;
+                    try
+                    {
+                        string env = Constants.APP_CONFIG.ENV;
 
-                    items = AccountSortingEntity.GetRearrangeList(UserEntity.GetActive().Email, env);
+                        items = AccountSortingEntity.GetRearrangeList(UserEntity.GetActive().Email, env);
 
-                    listView.Adapter = new RearrangeAccountListAdapter(this, items);
+                        listView.Adapter = new RearrangeAccountListAdapter(this, items);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                 });
             }
             catch (Exception e)
@@ -126,35 +133,49 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         private Snackbar mRearrangeSnackbar;
         private void OnSave()
         {
-            RunOnUiThread(() =>
+            try
             {
-                ShowProgressDialog();
-                List<CustomerBillingAccount> sortedList = ((RearrangeAccountListAdapter)listView.Adapter).Items;
-
-                int rowChange = AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, sortedList);
-                if (rowChange != 0)
+                RunOnUiThread(() =>
                 {
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
-                    SetResult(Result.Ok);
-                    Finish();
-                    HideProgressDialog();
-                }
-                else
-                {
-                    if (mRearrangeSnackbar != null && mRearrangeSnackbar.IsShown)
+                    try
                     {
-                        mRearrangeSnackbar.Dismiss();
-                    }
+                        ShowProgressDialog();
+                        List<CustomerBillingAccount> sortedList = ((RearrangeAccountListAdapter)listView.Adapter).Items;
 
-                    mRearrangeSnackbar = Snackbar.Make(rootView,
-                        GetLabelByLanguage("rearrangeToastFailMsg"),
-                        Snackbar.LengthLong);
-                    mRearrangeSnackbar.Show();
-                    this.SetIsClicked(false);
-                    HideProgressDialog();
-                }
-            });
+                        int rowChange = AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, sortedList);
+                        if (rowChange != 0)
+                        {
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
+                            SetResult(Result.Ok);
+                            Finish();
+                            HideProgressDialog();
+                        }
+                        else
+                        {
+                            if (mRearrangeSnackbar != null && mRearrangeSnackbar.IsShown)
+                            {
+                                mRearrangeSnackbar.Dismiss();
+                            }
+
+                            mRearrangeSnackbar = Snackbar.Make(rootView,
+                                GetLabelByLanguage("rearrangeToastFailMsg"),
+                                Snackbar.LengthLong);
+                            mRearrangeSnackbar.Show();
+                            this.SetIsClicked(false);
+                            HideProgressDialog();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ShowProgressDialog()

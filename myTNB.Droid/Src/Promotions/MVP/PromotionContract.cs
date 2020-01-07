@@ -37,6 +37,8 @@ namespace myTNB_Android.Src.Promotions.MVP
             /// <param name="success"></param>
             void ShowPromotion(bool success);
 
+            void OnGetPromotionTimestamp();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -57,6 +59,8 @@ namespace myTNB_Android.Src.Promotions.MVP
             /// </summary>
             /// <returns></returns>
             Task OnGetPromotions();
+
+            Task OnRecheckPromotionStatus();
 
         }
     }

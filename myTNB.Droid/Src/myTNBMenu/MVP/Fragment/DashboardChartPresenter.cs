@@ -274,6 +274,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
+                    MyTNBAppToolTipData.SetSMRActivityInfo(SMRAccountActivityInfoResponse.Response);
                     this.mView.ShowSSMRDashboardView(SMRAccountActivityInfoResponse);
                     isSMRReady = true;
                     OnCheckToCallDashboardTutorial();

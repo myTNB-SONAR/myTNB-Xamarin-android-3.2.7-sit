@@ -135,6 +135,7 @@ namespace myTNB_Android.Src.RegisterValidation
                     Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
                 mPinSentInfo.Show();
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -269,11 +270,6 @@ namespace myTNB_Android.Src.RegisterValidation
             base.OnResume();
             try
             {
-                //if (pinDisplayerSMSReceiver != null)
-                //{
-                //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
-                //}
-                this.userActionsListener.Start();
                 FirebaseAnalyticsUtils.SetScreenName(this, "SMS OTP Token Input (Registration)");
             }
             catch (Exception e)

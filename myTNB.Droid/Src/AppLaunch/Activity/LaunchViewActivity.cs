@@ -890,7 +890,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         RunOnUiThread(() =>
                         {
-                            this.Window.SetBackgroundDrawable(GetDrawable(Resource.Drawable.launch_screen));
+                            try
+                            {
+                                this.Window.SetBackgroundDrawable(GetDrawable(Resource.Drawable.launch_screen));
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
                         });
                     }
                     catch (Exception ne)
@@ -953,7 +960,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
                                     RunOnUiThread(() =>
                                     {
-                                        this.Window.SetBackgroundDrawable(bitmapDrawable);
+                                        try
+                                        {
+                                            this.Window.SetBackgroundDrawable(bitmapDrawable);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Utility.LoggingNonFatalError(ex);
+                                        }
                                     });
 
                                     this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
@@ -1005,6 +1019,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 mSomethingWrongExceptionSnackBar.Dismiss();
             }
             );
+            View snackbarView = mSomethingWrongExceptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(3);
             mSomethingWrongExceptionSnackBar.Show();
         }
 

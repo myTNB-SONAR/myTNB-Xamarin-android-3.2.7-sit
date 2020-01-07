@@ -122,9 +122,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     MaxCounter = 30
 
                 };
-
-
-
                 this.userActionsListener.Start();
             }
             catch (Exception e)

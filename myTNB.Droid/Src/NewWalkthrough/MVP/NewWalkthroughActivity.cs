@@ -318,5 +318,14 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void OnMaintenanceProceed()
+        {
+            DismissProgressDialog();
+            Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceTitle());
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceContent());
+            StartActivity(maintenanceScreen);
+        }
     }
 }
