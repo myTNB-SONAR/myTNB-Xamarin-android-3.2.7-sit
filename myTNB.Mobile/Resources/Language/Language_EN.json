@@ -176,7 +176,7 @@
     "tutorialQuickAccessTitle": "Quick account access.",
     "tutorialQuickActionTitle": "Quick actions.",
     "tutorialNeedHelpTitle": "Need help?",
-    "tutorialNoAcctDesc": "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.",
+    "tutorialNoAcctDesc": "Add an electricity account to myTNB and you'll have access to your usage and all services offered.",
     "tutorialSingleAcctDesc": "This is a summary of your linked electricity account. Tap on the account to view your Usage. Tap <b>“Add”</b> to link another account to myTNB.",
     "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap on your preferred account to view your Usage. Tap <b>“Add”</b> to link another account to myTNB.",
     "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here. Tap on your preferred account to view your Usage.",
@@ -223,15 +223,15 @@
     "feedbackDateTitle": "Feedback Date & Time",
     "ssmrApplySuccessTitle": "Application Submitted",
     "ssmrApplyFailTitle": "Try Again",
-    "ssmrApplySuccessMessage": "We have received your request to starting the Self Meter Reading service. You’ll receive a notification when your request is successful!",
+    "ssmrApplySuccessMessage": "We have received your request to start the Self Meter Reading service. You'll receive a notification when your request is successful!",
     "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
-    "ssmrApplyReferenceTitle": "Service Request number",
+    "ssmrApplyReferenceTitle": "REFRENCE NUMBER",
     "ssmrApplyDateTitle": "Applied on",
     "ssmrDiscontinueSuccessTitle": "Application Submitted",
     "ssmrDiscontinueFailTitle": "Try Again",
     "ssmrDiscontinueSuccessMessage": "We have received your request to stop this service. For your reference you may keep the service request number below.",
     "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
-    "ssmrDiscontinueReferenceTitle": "Service Request number",
+    "ssmrDiscontinueReferenceTitle": "REFRENCE NUMBER",
     "ssmrDiscontinueDateTitle": "Applied on",
     "ssmrReadingSuccessTitle": "Reading Submitted",
     "ssmrReadingFailTitle": "Try Again",
@@ -275,7 +275,7 @@
     "tooltipTitle3": "How do I enter these values?",
     "tooltipDescription1": "You'll need to read 3 reading values (kWh, kVARh, kW). Your meter will automatically flash one after the other.",
     "tooltipDescription2": "You can enter each reading manually or just take/upload a photo, and we’ll do the reading for you.",
-    "tooltipDescription3": "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.",
+    "tooltipDescription3": "Enter the numbers according to its unit in the input. You'll see your previous month's reading as a reference.",
     "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
     "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
     "headerDescription": "<b>Take or upload photos</b>, or <b>manually enter</b> your meter reading for each respective unit.",
@@ -356,7 +356,7 @@
     "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "What are these?",
     "missedReadTitle": "What does this mean?",
-    "missedReadMsg": "Your full usage for this particular day has not been retrieved yet. Check back in a while.",
+    "missedReadMsg": "Your usage could not be retrieved at the moment. You may refresh to try again.",
     "emptyDataMsg": "Welcome to your usage view! Your usage will be shown here after you receive your first bill.",
     "SMOverlayTitle": "How do I view my daily usage?",
     "SMOverlayMsg": "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
@@ -414,7 +414,7 @@
     "emptyHistory": "Looks like your history is empty at the moment. Your bill and payment history will appear here once you have any.",
     "emptyPaymentHistory": "Looks like you haven't made any payments through myTNB yet. This will appear here once you have.",
     "emptyBillHistory": "Looks like you have no bills yet. This will appear here once you have any.",
-    "emptyHistoryRE": "Looks like your history is empty at the moment. The advice and payment history will appear here once you have any.",
+    "emptyHistoryRE": "Looks like you haven't received any payments yet. Once you do, your advices and payment history will appear here.",
     "emptyPaymentHistoryRE": "Looks like we have not made any payments yet. Once we have, the payment history will appear here.",
     "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here."
   },
@@ -665,12 +665,12 @@
     "title": "Password Reset Successful",
     "details": "Log in using the 8 digit temporary password that was sent to {0}.\r\n\r\nYou may change your password after logging in.",
     "proceedToLogin": "Proceed to Log In",
-    "resetSuccessMessage": "Your password has been changed successfully. You may proceed to login with the new password."
+    "resetSuccessMessage": "Your password has been successfully reset. You may proceed to login with the new password."
   },
   "ResetPassword": {
     "title": "Reset Password",
     "subTitle": "Please enter your new password.",
-    "details": "This will replace your current one. All your account details will remain unchanged.",
+    "details": "This new password will replace your current one. All other account details remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
     "confirmPassword": "Confirm Password"
@@ -837,7 +837,7 @@
   },
   "Promotions": {
     "title": "What's New",
-    "noPromotions": "Looks like there's nothing new.. Yet! Check back soon."
+    "noPromotions": "Looks like there's nothing new... Yet! Check back soon."
   },
   "RearrangeAccount": {
     "title": "Rearrange Accounts",
