@@ -63,5 +63,30 @@ namespace myTNB_Android.Src.CompoundView
             View viewSeparator = FindViewById<View>(Resource.Id.itemisedBillingGroupSeparator);
             viewSeparator.Visibility = isShown ? ViewStates.Visible : ViewStates.Gone;
         }
+
+        public void ShowContentSeparators()
+        {
+            LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.itemisedBillingGroupContent);
+            if (linearLayout.ChildCount > 1)
+            {
+                for (int i = 0; i < linearLayout.ChildCount; i++)
+                {
+                    ItemisedBillingGroupContentComponent content = (ItemisedBillingGroupContentComponent)linearLayout.GetChildAt(i);
+                    if (i == (linearLayout.ChildCount - 1))
+                    {
+                        content.ShowSeparator(false);
+                    }
+                    else
+                    {
+                        content.ShowSeparator(true);
+                    }
+                }
+            }
+            else
+            {
+                ItemisedBillingGroupContentComponent content = (ItemisedBillingGroupContentComponent)linearLayout.GetChildAt(0);
+                content.ShowSeparator(false);
+            }
+        }
     }
 }
