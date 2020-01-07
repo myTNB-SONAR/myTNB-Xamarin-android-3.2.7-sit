@@ -157,6 +157,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void CheckSMRAccountValidaty();
 
             void SetMDMSDownRefreshMessage(SMUsageHistoryResponse response);
+
+            void OnShowPlannedDowntimeScreen(string contentTxt);
         }
 
         public interface IUserActionsListener : IBasePresenter

@@ -9612,5 +9612,83 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
             }
         }
+
+        public void OnShowPlannedDowntimeScreen(string contentTxt)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        newAccountLayout.Visibility = ViewStates.Gone;
+                        allGraphLayout.Visibility = ViewStates.Gone;
+                        smStatisticContainer.Visibility = ViewStates.Gone;
+
+                        if (isREAccount || isSMR)
+                        {
+
+                        }
+                        else
+                        {
+                            rootView.SetBackgroundResource(0);
+                            scrollViewContent.SetBackgroundResource(0);
+                            try
+                            {
+                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+
+                        refresh_image.SetImageResource(Resource.Drawable.maintenance_white);
+                        SetMaintenanceLayoutParams();
+                        StopAddressShimmer();
+                        StopRangeShimmer();
+                        StopGraphShimmer();
+                        StopSMStatisticShimmer();
+                        energyTipsView.Visibility = ViewStates.Gone;
+                        btnNewRefresh.Visibility = ViewStates.Gone;
+
+                        if (!string.IsNullOrEmpty(contentTxt))
+                        {
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                            }
+                        }
+                        else
+                        {
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("", FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("");
+                            }
+                        }
+                        
+                        isChangeVirtualHeightNeed = true;
+                        SetVirtualHeightParams(6f);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
