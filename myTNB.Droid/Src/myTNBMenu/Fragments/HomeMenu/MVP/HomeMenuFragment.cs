@@ -865,7 +865,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountActionDivider.Visibility = ViewStates.Gone;
                 searchEditText.OnActionViewExpanded();
                 searchEditText.RequestFocus();
-                searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                try
+                {
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.M)
+                    {
+                        searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                    }
+                    else
+                    {
+                        searchEditText.SetBackgroundDrawable(null);
+                    }
+                }
+                catch (System.Exception cex)
+                {
+                    Utility.LoggingNonFatalError(cex);
+                }
                 if (closeImageView != null)
                 {
                     closeImageView.Visibility = ViewStates.Visible;
@@ -890,9 +904,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             accountHeaderTitle.Text = GetLabelByLanguage("myAccounts");
+            searchEditText.SetIconifiedByDefault(false);
             searchEditText.SetQueryHint(GetLabelByLanguage("searchPlaceholder"));
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
             searchEditText.SetOnQueryTextFocusChangeListener(this);
+
+            try
+            {
+                if (Android.OS.Build.VERSION.SdkInt < Android.OS.Build.VERSION_CODES.N)
+                {
+                    LinearLayout.LayoutParams searchParam = (LinearLayout.LayoutParams)searchEditText.LayoutParameters;
+                    searchParam.LeftMargin = -(int)DPUtils.ConvertDPToPx(32f);
+                }
+            }
+            catch (System.Exception cex)
+            {
+                Utility.LoggingNonFatalError(cex);
+            }
 
             try
             {
@@ -901,7 +929,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchText.SetHintTextColor(Resources.GetColor(Resource.Color.sixty_opacity_white));
                 searchText.SetTextSize(ComplexUnitType.Dip, 12f);
                 TextViewUtils.SetMuseoSans500Typeface(searchText);
-                searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
+                }
+                else
+                {
+                    searchText.SetPadding(0, (int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(16f), 0);
+                }
             }
             catch (System.Exception cex)
             {
@@ -922,18 +957,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
-                int searchMagId = searchEditText.Context.Resources.GetIdentifier("android:id/search_mag_icon", null, null);
-                ImageView mSearchHintIcon = searchEditText.FindViewById<ImageView>(searchMagId);
-                mSearchHintIcon.SetImageResource(0);
-            }
-            catch (System.Exception cex)
-            {
-                Utility.LoggingNonFatalError(cex);
-            }
-
-            try
-            {
-                searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                }
+                else
+                {
+                    searchEditText.SetBackgroundDrawable(null);
+                }
             }
             catch (System.Exception cex)
             {
@@ -1424,7 +1455,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                     if (string.IsNullOrEmpty(searchEditText.Query))
                     {
-                        closeImageView.Visibility = ViewStates.Visible;
+                        if (closeImageView != null)
+                        {
+                            closeImageView.Visibility = ViewStates.Visible;
+                        }
                     }
                 }
             }
@@ -1697,8 +1731,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     searchEditText.OnActionViewExpanded();
                     isInitiate = false;
                     searchEditText.SetQuery(HomeMenuUtils.GetQueryWord(), false);
-                    searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
-                    closeImageView.Visibility = ViewStates.Visible;
+                    try
+                    {
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.M)
+                        {
+                            searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                        }
+                        else
+                        {
+                            searchEditText.SetBackgroundDrawable(null);
+                        }
+                    }
+                    catch (System.Exception cex)
+                    {
+                        Utility.LoggingNonFatalError(cex);
+                    }
+                    if (closeImageView != null)
+                    {
+                        closeImageView.Visibility = ViewStates.Visible;
+                    }
                 }
                 else
                 {
@@ -1984,7 +2035,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                closeImageView.Visibility = ViewStates.Visible;
+                if (closeImageView != null)
+                {
+                    closeImageView.Visibility = ViewStates.Visible;
+                }
             }
 
             if (!isInitiate && HomeMenuUtils.GetIsQuery())
@@ -2012,7 +2066,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     if (string.IsNullOrEmpty(searchEditText.Query))
                     {
-                        closeImageView.Visibility = ViewStates.Visible;
+                        if (closeImageView != null)
+                        {
+                            closeImageView.Visibility = ViewStates.Visible;
+                        }
                     }
                 }
             }
@@ -2209,7 +2266,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (string.IsNullOrEmpty(searchEditText.Query))
             {
-                closeImageView.Visibility = ViewStates.Visible;
+                if (closeImageView != null)
+                {
+                    closeImageView.Visibility = ViewStates.Visible;
+                }
             }
         }
 
