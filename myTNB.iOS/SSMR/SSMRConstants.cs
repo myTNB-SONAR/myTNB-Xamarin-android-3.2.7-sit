@@ -101,7 +101,6 @@ namespace myTNB.SSMR
 
         //Reading History
         public static string I18N_SectionTitle = "headerTitle";
-        public static string STR_EstimatedReading = "estimated";
         public static string I18N_SubTitle = "subTitle";
         public static string I18N_DisableSSMRCTA = "disableSSMRCTA";
         public static string I18N_EnableSSMRCTA = "enableSSMRCTA";

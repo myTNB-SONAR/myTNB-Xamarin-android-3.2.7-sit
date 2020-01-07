@@ -148,6 +148,16 @@ namespace myTNB.Model
         public string Consumption { set; get; }
         public string ReadingReason { set; get; }
         public string ReadingForMonth { set; get; }
+        public string ReadingTypeCode { set; get; }
+        private List<string> EstimatedCodeList = new List<string> { "03", "53", "73", "83", "93" };
+        [JsonIgnore]
+        public bool IsEstimatedReading
+        {
+            get
+            {
+                return EstimatedCodeList.Contains(ReadingTypeCode);
+            }
+        }
     }
 
     public class MoreOptionsItemModel
