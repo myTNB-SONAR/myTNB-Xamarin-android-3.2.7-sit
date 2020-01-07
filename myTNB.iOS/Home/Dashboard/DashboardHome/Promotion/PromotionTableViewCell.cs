@@ -41,7 +41,7 @@ namespace myTNB
             ClipsToBounds = true;
         }
 
-        public void AddCards(List<PromotionsModelV2> promotions)
+        public void AddCards(List<PromotionsModel> promotions)
         {
             for (int i = _scrollView.Subviews.Length; i-- > 0;)
             {
@@ -93,12 +93,12 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
-        private void AddContentData(List<PromotionsModelV2> promotions)
+        private void AddContentData(List<PromotionsModel> promotions)
         {
             nfloat xLoc = ScaleUtility.BaseMarginWidth16;
             for (int i = 0; i < promotions.Count; i++)
             {
-                PromotionsModelV2 promotion = promotions[i];
+                PromotionsModel promotion = promotions[i];
                 UIView viewParent = new UIView(new CGRect(xLoc, 8, cardWidth, cardHeight)) { BackgroundColor = UIColor.White };
                 AddCardShadow(ref viewParent);
                 UIImageView imgView = new UIImageView(new CGRect(0, 0, viewParent.Frame.Width, cardHeight * 0.50F))
@@ -142,17 +142,17 @@ namespace myTNB
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
 
-        private List<PromotionsModelV2> GetStaticPromotionList()
+        private List<PromotionsModel> GetStaticPromotionList()
         {
-            return new List<PromotionsModelV2>
+            return new List<PromotionsModel>
             {
-                new PromotionsModelV2
+                new PromotionsModel
                 {
                     Title="TNB Energy Night Run",
                     Text = "Join some excited 3,500 runners to raise awareness towards energy conservation.",
                     LandscapeImage = "Stub-Promotion-1"
                 },
-                new PromotionsModelV2
+                new PromotionsModel
                 {
                     Title="Maevi - Celcom Bonanza 2019",
                     Text = "Get 15% discount off all MAEVI devices and extra 30% discount off MAEVI Gateway.",

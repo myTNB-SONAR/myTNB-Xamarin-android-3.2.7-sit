@@ -65,11 +65,12 @@ namespace myTNB
             UITableViewCell cell = tableView.DequeueReusableCell("genericViewCell", indexPath);
             string text = _controller.Items[indexPath.Row] ?? string.Empty;
             cell.TextLabel.Text = text;
-            cell.TextLabel.Font = TNBFont.MuseoSans_16_500;
+            cell.TextLabel.Font = TNBFont.MuseoSans_16_300;
             cell.TextLabel.TextColor = MyTNBColor.CharcoalGrey;
             cell.TextLabel.Lines = 0;
             cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
             cell.TextLabel.BackgroundColor = UIColor.Clear;
+
             cell.BackgroundColor = UIColor.White;
             nfloat accWidth = ScaleUtility.GetScaledWidth(24);
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
@@ -144,7 +145,19 @@ namespace myTNB
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return ScaleUtility.GetScaledHeight(57);
+            string text = _controller.Items[indexPath.Row] ?? string.Empty;
+            UILabel lblTitle = new UILabel
+            {
+                Text = text,
+                Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                BackgroundColor = UIColor.Clear,
+                Frame = new CGRect(0, 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(62), 1000)
+            };
+            nfloat newLblSize = lblTitle.GetLabelHeight(1000);
+            return ScaleUtility.GetScaledHeight(32) + newLblSize;
         }
 
         private void RemoveAccessory(UITableViewCell cell)

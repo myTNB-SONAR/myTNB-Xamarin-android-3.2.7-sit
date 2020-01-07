@@ -6,7 +6,7 @@ using SQLite;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
-    public class PromotionsEntity : PromotionsModelV2
+    public class PromotionsEntity : PromotionsModel
     {
         /// <summary>
         /// Creates the table.
@@ -181,13 +181,13 @@ namespace myTNB.SQLite.SQLiteDataManager
         /// Inserts the list of items.
         /// </summary>
         /// <param name="itemList">Item list.</param>
-        public void InsertListOfItemsV2(List<PromotionsModelV2> itemList)
+        public void InsertListOfItemsV2(List<PromotionsModel> itemList)
         {
             if (itemList != null)
             {
                 try
                 {
-                    foreach (PromotionsModelV2 obj in itemList)
+                    foreach (PromotionsModel obj in itemList)
                     {
                         PromotionsEntity item = new PromotionsEntity();
                         item.Title = obj.Title;
@@ -221,14 +221,14 @@ namespace myTNB.SQLite.SQLiteDataManager
         /// Gets all items.
         /// </summary>
         /// <returns>The all items.</returns>
-        public List<PromotionsModelV2> GetAllItemsV2()
+        public List<PromotionsModel> GetAllItemsV2()
         {
-            List<PromotionsModelV2> itemList = new List<PromotionsModelV2>();
+            List<PromotionsModel> itemList = new List<PromotionsModel>();
             List<PromotionsEntity> entityItems = GetAllEntityItems();
-            PromotionsModelV2 promotionItem;
+            PromotionsModel promotionItem;
             foreach (var item in entityItems)
             {
-                promotionItem = new PromotionsModelV2();
+                promotionItem = new PromotionsModel();
                 promotionItem.Title = item.Title;
                 promotionItem.Text = item.Text;
                 promotionItem.SubText = item.SubText;

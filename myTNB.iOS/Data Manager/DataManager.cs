@@ -719,7 +719,7 @@ namespace myTNB.DataManager
         /// Updates the promos database.
         /// </summary>
         /// <param name="promotions">Promotions.</param>
-        public void UpdatePromosDb(List<PromotionsModelV2> promotions)
+        public void UpdatePromosDb(List<PromotionsModel> promotions)
         {
             if (promotions == null)
                 return;

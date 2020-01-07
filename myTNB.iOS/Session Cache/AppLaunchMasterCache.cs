@@ -128,6 +128,18 @@ namespace myTNB
             }
         }
 
+        public static bool IsPayEnabled
+        {
+            get
+            {
+                if (dataModel != null)
+                {
+                    return dataModel.IsPayEnabled;
+                }
+                return true;
+            }
+        }
+
         public static bool IsSuccess
         {
             private set;

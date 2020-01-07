@@ -11,8 +11,8 @@ namespace myTNB.Home.Promotions
     public class PromotionsDataSource : UITableViewSource
     {
         PromotionsViewController _controller;
-        List<PromotionsModelV2> _promotionList = new List<PromotionsModelV2>();
-        public PromotionsDataSource(PromotionsViewController controller, List<PromotionsModelV2> promotionList)
+        List<PromotionsModel> _promotionList = new List<PromotionsModel>();
+        public PromotionsDataSource(PromotionsViewController controller, List<PromotionsModel> promotionList)
         {
             _controller = controller;
             _promotionList = promotionList;

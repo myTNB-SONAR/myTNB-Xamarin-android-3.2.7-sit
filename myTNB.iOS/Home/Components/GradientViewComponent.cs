@@ -1,4 +1,5 @@
-﻿using CoreAnimation;
+﻿using System;
+using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -8,11 +9,10 @@ namespace myTNB.Dashboard.DashboardComponents
     public class GradientViewComponent
     {
         readonly UIView _parentView;
-        UIView _gradientView;
-        float _screenPercentage;
-        bool _isFixedHeight = false;
-        float _viewHeight = 0;
-        bool _isHorizontal = false;
+        private UIView _gradientView;
+        private float _screenPercentage, _viewHeight;
+        private bool _isHorizontal, _isFixedHeight;
+        private CAGradientLayer _gradientLayer;
 
         public GradientViewComponent(UIView view, float screenPercentage)
         {
@@ -52,27 +52,32 @@ namespace myTNB.Dashboard.DashboardComponents
             _gradientView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, viewHeight));
             var startColor = MyTNBColor.GradientPurpleDarkElement;
             var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer
+            _gradientLayer = new CAGradientLayer
             {
                 Colors = new[] { startColor.CGColor, endColor.CGColor }
             };
             if (_isHorizontal)
             {
-                gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
-                gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+                _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+                _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
             }
             else
             {
-                gradientLayer.Locations = new NSNumber[] { 0, 1 };
+                _gradientLayer.Locations = new NSNumber[] { 0, 1 };
             }
-            gradientLayer.Frame = _gradientView.Bounds;
-            _gradientView.Layer.InsertSublayer(gradientLayer, 0);
+            _gradientLayer.Frame = _gradientView.Bounds;
+            _gradientView.Layer.InsertSublayer(_gradientLayer, 0);
         }
 
         public UIView GetUI()
         {
             CreateComponent();
             return _gradientView;
+        }
+
+        public void SetOpacity(float opacity)
+        {
+            _gradientLayer.Opacity = opacity;
         }
     }
 }

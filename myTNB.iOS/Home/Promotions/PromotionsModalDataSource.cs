@@ -11,14 +11,14 @@ namespace myTNB
 {
     public class PromotionsModalDataSource : iCarouselDataSource
     {
-        List<PromotionsModelV2> promotions;
+        List<PromotionsModel> promotions;
         UIView parentView;
 
         public EventHandler OnTapSkip { get; set; }
         public EventHandler OnTapDetails { get; set; }
         public Action OnTapExit { get; set; }
 
-        public PromotionsModalDataSource(UIView parent, List<PromotionsModelV2> promos)
+        public PromotionsModalDataSource(UIView parent, List<PromotionsModel> promos)
         {
             parentView = parent;
             promotions = promos;

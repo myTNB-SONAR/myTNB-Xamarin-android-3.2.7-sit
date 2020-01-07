@@ -11,12 +11,12 @@ namespace myTNB
     public partial class PromotionsModalViewController : UIViewController
     {
         iCarousel promoCarousel;
-        private List<PromotionsModelV2> promoCache = new List<PromotionsModelV2>();
-        private List<PromotionsModelV2> promos;
+        private List<PromotionsModel> promoCache = new List<PromotionsModel>();
+        private List<PromotionsModel> promos;
 
         public Action OnModalDone { get; set; }
 
-        public List<PromotionsModelV2> Promotions
+        public List<PromotionsModel> Promotions
         {
             get
             {
@@ -150,7 +150,7 @@ namespace myTNB
         /// Handles the promotion item select.
         /// </summary>
         /// <param name="promotion">Promotion.</param>
-        private void ShowDetails(PromotionsModelV2 promotion)
+        private void ShowDetails(PromotionsModel promotion)
         {
             ActivityIndicator.Show();
             UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);

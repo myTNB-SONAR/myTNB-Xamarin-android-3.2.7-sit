@@ -35,6 +35,8 @@ namespace myTNB.PushNotification
         private RefreshViewComponent _refreshViewComponent;
         private UIView _headerView, _titleBarView;
 
+        private GradientViewComponent _gradientViewComponent;
+
         public override void ViewDidLoad()
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationList;
@@ -105,7 +107,9 @@ namespace myTNB.PushNotification
         private void ValidateResponse()
         {
             userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
-            if (userNotificationResponse != null && userNotificationResponse?.d != null && userNotificationResponse.d.IsSuccess
+            bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+
+            if (isBRCRMAvailable && userNotificationResponse != null && userNotificationResponse?.d != null && userNotificationResponse.d.IsSuccess
                 && userNotificationResponse.d.data != null && userNotificationResponse.d.data.UserNotificationList != null)
             {
                 UpdateNotificationDisplay();
@@ -265,8 +269,8 @@ namespace myTNB.PushNotification
         private void SetNavigationBar()
         {
             NavigationController?.SetNavigationBarHidden(true, false);
-            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, (float)GetScaledHeight(88), true);
-            _headerView = gradientViewComponent.GetUI();
+            _gradientViewComponent = new GradientViewComponent(View, true, (float)GetScaledHeight(88), true);
+            _headerView = _gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponentV2(_headerView);
 
             _titleBarView = _titleBarComponent.GetUI();

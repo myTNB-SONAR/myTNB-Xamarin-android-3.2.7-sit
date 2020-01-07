@@ -53,7 +53,8 @@ namespace myTNB.Payment
             {
                 Frame = new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 130),
                 HideCardIOLogo = true,
-                Delegate = new CardIODelegate(this)
+                Delegate = new CardIODelegate(this),
+                ScanInstructions = GetI18NValue(AddCardConstants.I18N_ScanInstructions)
             };
             View.AddSubview(cardIOView);
         }

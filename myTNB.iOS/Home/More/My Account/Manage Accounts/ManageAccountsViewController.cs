@@ -150,8 +150,6 @@ namespace myTNB
                             });
                         });
                     } } }
-                , UITextAlignment.Center
-                , UITextAlignment.Center
             );
         }
 

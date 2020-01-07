@@ -281,6 +281,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblAccountNumber.Text = string.Format("{0} - {1}", DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum
                 , DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accDesc);
+            _lblAccountNoTitle.Hidden = false;
         }
 
         public string GetAccountNumber()

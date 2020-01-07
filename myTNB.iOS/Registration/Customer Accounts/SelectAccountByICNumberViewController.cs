@@ -54,7 +54,7 @@ namespace myTNB
             lblYes = new UILabel
             {
                 Frame = new CGRect(margin, margin, viewYes.Frame.Width - (margin * 2), 18),
-                AttributedText = new NSAttributedString(string.Format("{0},", GetCommonI18NValue(Constants.Common_Yes))
+                AttributedText = new NSAttributedString(string.Format("{0}.", GetCommonI18NValue(Constants.Common_Yes))
                     , font: MyTNBFont.MuseoSans16_500
                     , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -88,7 +88,7 @@ namespace myTNB
             lblNo = new UILabel
             {
                 Frame = new CGRect(margin, margin, viewNo.Frame.Width - (margin * 2), 18),
-                AttributedText = new NSAttributedString(string.Format("{0},", GetCommonI18NValue(Constants.Common_No))
+                AttributedText = new NSAttributedString(string.Format("{0}.", GetCommonI18NValue(Constants.Common_No))
                     , font: MyTNBFont.MuseoSans16_500
                     , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0

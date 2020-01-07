@@ -30,8 +30,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
-                Text = GetI18NValue(UsageConstants.I18N_SMOverlayTitle)
+                Text = GetI18NValue(UsageConstants.I18N_SMOverlayTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = _title.GetLabelHeight(1000);
+            _title.Frame = new CGRect(_title.Frame.Location, new CGSize(_title.Frame.Width, newTitleHeight));
+
             _contentView.AddSubview(_title);
             nfloat animationWidth = GetScaledWidth(76F);
             nfloat animationHeight = GetScaledWidth(76F);
