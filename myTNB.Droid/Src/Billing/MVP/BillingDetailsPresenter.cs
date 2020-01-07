@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(accountChargeModelList);
                 }
-                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400" && !accountChargeseResponse.Data.IsPayEnabled)
+                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400")
                 {
                     string btnText = "";
                     string contentText = "";
