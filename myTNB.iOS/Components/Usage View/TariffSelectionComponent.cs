@@ -243,6 +243,13 @@ namespace myTNB
             _tariffLabel.TextColor = isDisable ? UIColor.White.ColorWithAlpha(0.70F) : UIColor.White;
             _tariffSelectionView.Layer.BorderColor = (isDisable ? UIColor.White.ColorWithAlpha(0.70F) : UIColor.White).CGColor;
         }
+
+        public void SetRMKwHButtonDisable(bool isDisable)
+        {
+            _rmKwhSelectionView.UserInteractionEnabled = !isDisable;
+            _rmKwhLabel.TextColor = isDisable ? MyTNBColor.SilverChalice : MyTNBColor.WaterBlue;
+            _rmKwhIcon.Image = isDisable ? UIImage.FromBundle(Constants.IMG_RMKwHDropdownIconDisabled) : UIImage.FromBundle(Constants.IMG_RMKwHDropdownIcon);
+        }
         #endregion
     }
 }

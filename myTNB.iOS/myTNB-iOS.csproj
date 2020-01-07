@@ -1265,6 +1265,9 @@
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\eye%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\PlannedDown%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\PlannedDown%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\RmKwh-Dropdown-Icon-Disabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\RmKwh-Dropdown-Icon-Disabled%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1774,6 +1777,7 @@
     <Folder Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Banner-PlannedDown.imageset\" />
     <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
+    <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -559,7 +559,10 @@ namespace myTNB
                     GetI18NValue = GetI18NValue,
                     OnMDMSIconTap = OnMDMSIconTap,
                     SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown,
-                    OnMDMSRefresh = OnMDMSRefresh
+                    OnMDMSRefresh = OnMDMSRefresh,
+                    DisableTariffButton = DisableTariffButton,
+                    SetTariffButtonState = SetTariffButtonState,
+                    SetRMKwHButtonState = SetRMKwHButtonState
                 };
             }
 
@@ -1266,7 +1269,7 @@ namespace myTNB
                 if (isSmartMeterAccount)
                 {
                     tariffList = new List<LegendItemModel>(AccountUsageSmartCache.GetTariffLegendList());
-                    isDisable = AccountUsageSmartCache.IsMDMSDown || AccountUsageSmartCache.IsMonthlyTariffDisable
+                    isDisable = AccountUsageSmartCache.IsMonthlyTariffDisable
                         || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
                 }
                 else
@@ -1277,6 +1280,25 @@ namespace myTNB
                 }
                 bool areAllTariffEmpty = isSmartMeterAccount ? AccountUsageSmartCache.AreAllTariffEmpty : AccountUsageCache.AreAllTariffEmpty;
                 _tariffSelectionComponent.SetTariffButtonDisable(isDisable || areAllTariffEmpty);
+                _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+            }
+        }
+
+        private void DisableTariffButton()
+        {
+            if (_tariffSelectionComponent != null)
+            {
+                _tariffSelectionComponent.UpdateTariffButton(false);
+                _tariffSelectionComponent.SetTariffButtonDisable(true);
+            }
+            ShowHideTariffLegends(false);
+        }
+
+        private void SetRMKwHButtonState(bool isDisable)
+        {
+            if (_tariffSelectionComponent != null)
+            {
+                _tariffSelectionComponent.SetRMKwHButtonDisable(isDisable);
             }
         }
 
