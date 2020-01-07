@@ -348,7 +348,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             );
             View snackbarView = mCancelledExceptionSnackBar.View;
             TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(3);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
             this.SetIsClicked(false);
 
@@ -372,7 +372,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             );
             View snackbarView = mApiExcecptionSnackBar.View;
             TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(3);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
             this.SetIsClicked(false);
 
@@ -396,7 +396,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             );
             View snackbarView = mUknownExceptionSnackBar.View;
             TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(3);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
 
