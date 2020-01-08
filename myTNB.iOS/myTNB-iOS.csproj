@@ -2394,7 +2394,6 @@
     <Compile Include="Session Cache\SSMRAccounts.cs" />
     <Compile Include="Model\GetCARegisteredContactInfo\CARegisteredContactInfoResponseModel.cs" />
     <Compile Include="Model\SSMRApplicationStatus\SSMRApplicationStatus.cs" />
-    <Compile Include="SSMR\SSMRHelper.cs" />
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
     <Compile Include="Customs\CustomUISlider.cs" />

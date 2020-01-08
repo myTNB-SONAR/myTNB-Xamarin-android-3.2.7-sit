@@ -17,7 +17,7 @@
     "refreshDescription": "Halaman ini terputus sambungan. Refresh untuk sambung semula!",
     "refreshNow": "'Refresh' Sekarang",
     "bcrmMessage": "BRCM will be down for maintenance purpose",
-    "disconnectionMsg": "Bekalan elektrik anda telah dipotong.",
+    "disconnectionMsg": "Bekalan elektrik anda dipotong buat masa ini.",
     "months": "Bulan",
     "days": "Hari",
     "viewBill": "Lihat Bil",
@@ -112,7 +112,7 @@
     "invalidNickname": "Anda boleh guna huruf, nombor dan aksara khas untuk nama aksara.",
     "duplicateNickname": "Nama ringkas sudah digunakan. Sila guna nama ringkas yang lain.",
     "refreshMessage": "Halaman ini terputus sambungan. Refresh untuk sambung semula!",
-    "serviceErrorDefaultMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba lagi kemudian.",
+    "serviceErrorDefaultMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_pin": "Kod tidak sah",
@@ -128,15 +128,15 @@
     "accountLength": "Sila masukkan nombor akaun 12 digit yang sah.",
     "invalid_accountType": "Jenis Akaun tidak sah",
     "noDataConnectionTitle": "Tiada sambungan internet",
-    "noDataConnectionMessage": "Sila periksa sambungan internet anda dan cuba lagi.",
+    "noDataConnectionMessage": "Sila periksa sambungan internet anda dan cuba semula.",
     "defaultErrorTitle": "Ada sesuatu yang tidak kena.",
-    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba lagi kemudian.",
-    "numberNotAvailable": "Maaf, nombor tersebut tidak ditemui. Sila cuba sebentar lagi.",
-    "ratingNotAvailable": "Maaf, tindakan ini tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi.",
-    "shareNotAvailable": "Maaf, perkongsian tidak dapat dibuat pada masa ini. Sila cuba sebentar lagi.",
-    "refreshBillDetails": "Alamak! Nampaknya laman yang mengandungi butiran bil anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
-    "refreshUsageSSMR": "Alamak! Nampaknya perkhidmatan Self Meter Reading terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
-    "refreshBillPayHistory": "Alamak! Nampaknya laman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
+    "numberNotAvailable": "Maaf, nombor tersebut tidak ditemui. Sila cuba semula sebentar lagi.",
+    "ratingNotAvailable": "Maaf, tindakan ini tidak dapat dibuat pada masa ini. Sila cuba semula sebentar lagi.",
+    "shareNotAvailable": "Kami minta maaf tetapi perkongsian tidak tersedia pada masa ini. Sila cuba semula sebentar lagi.",
+    "refreshBillDetails": "Halaman yang mengandungi butiran bil anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+    "refreshUsageSSMR": "Perkhidmatan Self Meter Reading terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+    "refreshBillPayHistory": "Halaman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
     "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
   },
@@ -184,7 +184,7 @@
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "Faham!",
-    "serviceRefreshMessage": "Alamak! Rasanya seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan!"
+    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! "
   },
   "Tabbar": {
     "home": "Utama",
@@ -382,7 +382,7 @@
     "tutorialSMRDesc": "Dapatkan status bacaan anda di sini. Kami juga akan memaklumkan apabila tiba masanya untuk menghantar bacaan.",
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
-    "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Sekiranya masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda."
+    "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda."
   },
   "Bills": {
     "title": "Bil",
@@ -414,7 +414,7 @@
     "emptyHistory": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistory": "Anda belum lagi membuat pembayaran melalui myTNB. Setelah dibuat, ini akan dipaparkan di sini.",
     "emptyBillHistory": "Anda belum lagi ada bil. Setelah ada, sejarah bil anda akan dipaparkan di sini.",
-    "emptyHistoryRE": "Anda belum menerima sebarang bayaran. Setelah diterima, makluman dan sejarah pembayaran akan dipaparkan di sini.",
+    "emptyHistoryRE": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistoryRE": "Kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini."
   },
@@ -529,7 +529,7 @@
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
     "noAcctFoundMsg": "Sila tekan butang di bawah untuk tambah akaun elektrik TNB anda.",
-    "supplyAcctCount": "akaun bekalan elektrik ditemui!",
+    "supplyAcctCount": "akaun elektrik ditemui!",
     "addAnotherAcct": "Tambah Akaun Lain",
     "addAccount": "Akaun Sedang Ditambah",
     "addAccounts": "Akaun Sedang Ditambah",
@@ -717,7 +717,7 @@
     "title3": "Bil di hujung jari anda.",
     "title4": "Bayar bil anda bila-bila masa, di mana sahaja.",
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
-    "title6": "Apa yang baru dengan myTNB?",
+    "title6": "Apa yang baharu dengan myTNB?",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -732,7 +732,7 @@
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
     "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
-    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula."
+    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi."
   },
   "ViewBill": {
     "titleBill": "Bil",
@@ -831,7 +831,7 @@
     "pay": "Bayar"
   },
   "RatingResults": {
-    "description": "Penarafan anda akan membantu anda menerima perkhidmatan yang lebih baik.",
+    "description": "Penarafan anda akan membantu kami meningkatkan mutu perkhidmatan kepada anda.",
     "thankyou": "Terima Kasih.",
     "backToHome": "Kembali ke Laman Utama"
   },
@@ -844,13 +844,13 @@
     "btnTitle": "Simpan Perubahan",
     "rearrangeTitle": "Perubahan yang anda buat masih belum disimpan. Teruskan?",
     "rearrangeMsg": "Adakah anda ingin menyimpan perubahan yang telah dibuat untuk susunan akaun anda?",
-    "rearrangeToastFailMsg": "Alamak, perubahan yang anda telah buat tidak berjaya disimpan. Sila cuba lagi.",
+    "rearrangeToastFailMsg": "Perubahan yang anda telah buat tidak berjaya disimpan. Sila cuba semula sebentar lagi.",
     "rearrangeToastSuccessMsg": "Perubahan untuk susunan akaun anda berjaya!"
   },
   "Rewards": {
     "title": "Ganjaran",
     "viewAll": "Lihat Semua",
-    "noRewards": "Nampaknya tidak ada ganjaran buat masa ini. Datang kembali untuk menikmati tawaran yang hebat!",
+    "noRewards": "Tidak ada ganjaran tersedia buat masa ini. Datang kembali untuk menikmati tawaran yang hebat!",
     "tutorialRewardTitle": "Pilih ganjaran yang anda gemari!",
     "tutorialRewardDesc": "Sila tekan pada ganjaran yang dipilih untuk mengetahui lebih lanjut atau tekan pada hati untuk menyimpannya.",
     "tutorialCategoryTitle": "Ganjaran untuk anda.",
@@ -873,7 +873,7 @@
     "confirm": "Teruskan",
     "rewardUsedPrefix": "Telah digunakan ",
     "rewardUsed": "Telah Digunakan",
-    "redeemRewardNote": "Ganjaran ditebus. Sila tunjukkan peniaga skrin ini sebelum pemasa tamat.",
+    "redeemRewardNote": "Ganjaran telah ditebus. Sila tunjukkan skrin ini kepada peniaga sebelum pemasa tamat.",
     "used": "Telah Digunakan",
     "tutorialSaveTitle": "Jangan terlepas ganjaran.",
     "tutorialSaveDesc": "Anda boleh simpan ganjaran untuk digunakan kemudian.",
@@ -882,7 +882,7 @@
   },
   "SavedRewards": {
     "title": "Ganjaran Yang Disimpan",
-    "emptyDesc": "Ganjaran yang anda simpan akan muncul di sini.",
+    "emptyDesc": "Ganjaran yang anda simpan akan dipaparkan di sini.",
     "used": "Telah Digunakan",
     "rewardPeriod": "Tempoh Ganjaran",
     "location": "Lokasi",
@@ -896,6 +896,6 @@
     "confirm": "Sahkan",
     "unsave": "Alih Keluar",
     "save": "Simpan",
-    "redeemRewardNote": "Ganjaran ditebus. Sila tunjukkan peniaga skrin ini sebelum pemasa tamat."
+    "redeemRewardNote": "Ganjaran telah ditebus. Sila tunjukkan skrin ini kepada peniaga sebelum pemasa tamat."
   }
 }

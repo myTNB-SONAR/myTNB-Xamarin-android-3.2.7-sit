@@ -463,6 +463,7 @@ namespace myTNB.PushNotification
                                     if (viewController != null)
                                     {
                                         viewController.NotificationInfo = _detailedInfo?.d?.data?.UserNotification;
+                                        viewController.IsPayEnabled = _detailedInfo.d.IsPayEnabled;
                                         NavigationController?.PushViewController(viewController, true);
                                     }
                                     UpdateNotificationDisplay();
@@ -496,7 +497,7 @@ namespace myTNB.PushNotification
                     dataModel.NotificationType
                 };
                 //_detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
-                _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>("GetNotificationDetailedInfo", requestParameter);
+                _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetailedInfo, requestParameter);
             });
         }
 

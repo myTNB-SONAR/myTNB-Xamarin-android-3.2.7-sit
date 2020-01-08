@@ -11,6 +11,7 @@ namespace myTNB
     public class GetAccountBillPayHistoryModel : BaseModelV2
     {
         public BillPayHistoriesDataModel data { set; get; }
+        public bool IsPayEnabled { set; get; }
     }
 
     public class BillPayHistoriesDataModel

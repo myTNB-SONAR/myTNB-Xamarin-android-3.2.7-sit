@@ -371,11 +371,18 @@ namespace myTNB
                 }
             };
 
-            UILabel lblCheckBoxTitle = new UILabel(new CGRect(51, 324, View.Frame.Width - 69, 18));
-            lblCheckBoxTitle.TextColor = MyTNBColor.TunaGrey();
-            lblCheckBoxTitle.Font = MyTNBFont.MuseoSans14;
-            lblCheckBoxTitle.TextAlignment = UITextAlignment.Left;
-            lblCheckBoxTitle.Text = GetI18NValue(AddCardConstants.I18N_SaveCardMessage);
+            UILabel lblCheckBoxTitle = new UILabel(new CGRect(51, 320, View.Frame.Width - 69, 18))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14,
+                TextAlignment = UITextAlignment.Left,
+                Text = GetI18NValue(AddCardConstants.I18N_SaveCardMessage),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+            nfloat newLblCheckBoxTitleHeight = lblCheckBoxTitle.GetLabelHeight(100);
+            lblCheckBoxTitle.Frame = new CGRect(lblCheckBoxTitle.Frame.Location, new CGSize(lblCheckBoxTitle.Frame.Width, newLblCheckBoxTitleHeight));
+
             ScrollView.AddSubview(lblCheckBoxTitle);
             //lblCheckBoxTitle.Hidden = true;
 

@@ -25,17 +25,12 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
-            _containerView.Layer.CornerRadius = GetScaledHeight(12f);
 
             nfloat iconXPos = GetScaledWidth(4f);
             nfloat iconYPos = GetScaledHeight(4f);
             nfloat iconWidth = GetScaledWidth(16f);
-            nfloat iconHeight = GetScaledHeight(16f);
-            UIImageView iconView = new UIImageView(new CGRect(iconXPos, iconYPos, iconWidth, iconHeight))
-            {
-                Image = UIImage.FromBundle(Constants.IMG_InfoBlackIcon)
-            };
-            _containerView.AddSubview(iconView);
+            nfloat iconHeight = GetScaledWidth(16f);
+
 
             nfloat labelXPos = GetScaledWidth(28f);
             nfloat labelYPos = GetScaledHeight(4f);
@@ -48,8 +43,23 @@ namespace myTNB
                 Text = !string.IsNullOrEmpty(_accountStatusData?.AccountStatusMessage) &&
                     !string.IsNullOrWhiteSpace(_accountStatusData?.AccountStatusMessage) ?
                     _accountStatusData?.AccountStatusMessage :
-                    LanguageUtility.GetCommonI18NValue(Constants.Common_DisconnectionMsg)
+                    LanguageUtility.GetCommonI18NValue(Constants.Common_DisconnectionMsg),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
             };
+
+            nfloat newLableHeight = label.GetLabelHeight(labelHeight * 3);
+            label.Frame = new CGRect(label.Frame.Location, new CGSize(label.Frame.Width, newLableHeight));
+            _containerView.Frame = new CGRect(_containerView.Frame.Location
+                , new CGSize(_containerView.Frame.Width, newLableHeight + GetScaledHeight(8)));
+
+            UIImageView iconView = new UIImageView(new CGRect(iconXPos, (_containerView.Frame.Height - iconHeight) / 2, iconWidth, iconHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_InfoBlackIcon)
+            };
+            _containerView.AddSubview(iconView);
+
+            _containerView.Layer.CornerRadius = _containerView.Frame.Height / 2;
             _containerView.AddSubview(label);
         }
 

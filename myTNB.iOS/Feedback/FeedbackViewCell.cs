@@ -8,7 +8,9 @@ using System; using UIKit; using CoreGraphics;  namespace myTNB {   
             };              lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
                 TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans12_300
+                Font = MyTNBFont.MuseoSans12_300,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };              lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
                 TextColor = MyTNBColor.PowerBlue,
@@ -19,4 +21,12 @@ using System; using UIKit; using CoreGraphics;  namespace myTNB {   
             {
                 BackgroundColor = MyTNBColor.SectionGrey,
                 Hidden = false
-            };              AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });             SelectionStyle = UITableViewCellSelectionStyle.None;         }     } }
+            };              AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });             SelectionStyle = UITableViewCellSelectionStyle.None;         }          public string Subtitle
+        {
+            set
+            {
+                lblSubtTitle.Text = value ?? string.Empty;
+                nfloat newHeight = lblSubtTitle.GetLabelHeight(50);
+                lblSubtTitle.Frame = new CGRect(lblSubtTitle.Frame.Location, new CGSize(lblSubtTitle.Frame.Width, newHeight));
+            }
+        }     } }
