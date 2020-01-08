@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    /*if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                     {
                         contentText = accountChargeseResponse.Data.DisplayMessage;
                     }
@@ -119,7 +119,9 @@ namespace myTNB_Android.Src.Billing.MVP
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
                     {
                         btnText = accountChargeseResponse.Data.RefreshBtnText;
-                    }*/
+                    }
+
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
 
                     this.mView.ShowBillDetailsError(false, btnText, contentText);
                 }
@@ -136,6 +138,11 @@ namespace myTNB_Android.Src.Billing.MVP
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
                     {
                         btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null)
+                    {
+                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
                     }
 
                     this.mView.ShowBillDetailsError(true, btnText, contentText);

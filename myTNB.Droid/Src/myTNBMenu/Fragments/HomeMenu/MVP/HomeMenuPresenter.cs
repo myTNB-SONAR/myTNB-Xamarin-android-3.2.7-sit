@@ -183,10 +183,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         string contentTxt = "";
 
-                        /*if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
                         {
                             contentTxt = response.Data.DisplayMessage;
-                        }*/
+                        }
 
                         this.mView.ShowRefreshScreen(false, contentTxt, "");
                         isAccountRefreshNeeded = true;
@@ -300,10 +300,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         string contentTxt = "";
 
-                        /*if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
                         {
                             contentTxt = response.Data.DisplayMessage;
-                        }*/
+                        }
 
                         this.mView.ShowRefreshScreen(false, contentTxt, "");
                         isAccountRefreshNeeded = true;
