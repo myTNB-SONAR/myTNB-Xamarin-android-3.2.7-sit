@@ -424,6 +424,8 @@ namespace myTNB_Android.Src.AddCard.Activity
             intent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
             intent.PutExtra(CardIOActivity.ExtraKeepApplicationTheme, true);
             intent.PutExtra(CardIOActivity.ExtraCapturedCardImage, false);
+            string txt = Utility.GetLocalizedLabel("CardScanner", "scanInstructions");
+            intent.PutExtra(CardIOActivity.ExtraScanInstructions, txt);
             intent.PutExtra(CardIOActivity.ExtraScanResult, true);
             StartActivityForResult(intent, REQUEST_SCAN);
 
