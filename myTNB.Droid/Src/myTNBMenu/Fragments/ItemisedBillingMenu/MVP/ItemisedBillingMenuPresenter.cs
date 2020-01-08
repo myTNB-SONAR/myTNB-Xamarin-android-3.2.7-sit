@@ -66,6 +66,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }
@@ -410,6 +411,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }

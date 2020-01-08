@@ -21,6 +21,8 @@ namespace myTNB_Android.Src.Utils
 {
     public class Utility
     {
+        private static bool IsPayDisableNotFromAppLaunch = false;
+
         public Utility()
         {
         }
@@ -255,27 +257,41 @@ namespace myTNB_Android.Src.Utils
             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
         }
 
+        public static void SetIsPayDisableNotFromAppLaunch(bool flag)
+        {
+            IsPayDisableNotFromAppLaunch = flag;
+        }
+
         public static bool IsEnablePayment()
         {
             bool isPaymentEnable = true;
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-            DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
 
-            if (bcrmEntity != null && bcrmEntity.IsDown)
+            if (IsPayDisableNotFromAppLaunch)
             {
                 isPaymentEnable = false;
             }
             else
             {
-                if (pgCCEntity != null && pgFPXEntity != null)
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
-                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    isPaymentEnable = false;
+                }
+                else
+                {
+                    if (pgCCEntity != null && pgFPXEntity != null)
                     {
-                        isPaymentEnable = false;
+                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                        {
+                            isPaymentEnable = false;
+                        }
                     }
                 }
             }
+
             return isPaymentEnable;
         }
 

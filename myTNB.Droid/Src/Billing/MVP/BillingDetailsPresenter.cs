@@ -101,6 +101,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.mView.HideProgressDialog();
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(accountChargeModelList);
