@@ -205,7 +205,11 @@
 
                 public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
+#if DEBUG || STUB || DEVELOP || SIT
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
+#else
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
+#endif
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
 
                 public const string EnergySavingTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
