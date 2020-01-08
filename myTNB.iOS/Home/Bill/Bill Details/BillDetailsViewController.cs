@@ -119,22 +119,29 @@ namespace myTNB
                                     InitializeTooltip();
                                     AddDetails();
                                     AddSectionTitle();
+                                    SetEvents();
+                                    if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+                                    {
+                                        _btnPay.Enabled = false;
+                                        _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                                    }
                                     if (_refreshViewContainer == null)
                                     {
                                         _refreshViewContainer = new UIView(new CGRect(0
                                            , _viewTitleSection.Frame.GetMaxY(), ViewWidth, ScaleUtility.GetScaledHeight(220)));
                                         _uiScrollView.AddSubview(_refreshViewContainer);
 
-                                        string message = _accountCharges != null && _accountCharges.d != null && _accountCharges.d.RefreshMessage.IsValid()
-                                            ? _accountCharges.d.RefreshMessage : GetErrorI18NValue(Constants.Refresh_BillDetails);
+                                        bool isPlannedDowntime = _accountCharges != null && _accountCharges.d != null ? _accountCharges.d.IsPlannedDownTime : false;
+
+                                        string message = isPlannedDowntime ? _accountCharges?.d?.DisplayMessage ?? string.Empty : _accountCharges?.d?.RefreshMessage ?? string.Empty;
+                                        message = message.IsValid() ? message : isPlannedDowntime ? GetI18NValue(UsageConstants.I18N_BcrmDownMessage) : GetErrorI18NValue(Constants.Refresh_BillDetails);
 
                                         RefreshComponent refreshComponent = new RefreshComponent(message
                                             , GetCommonI18NValue(Constants.Common_RefreshNow)
                                             , OnRefreshCall)
                                         {
                                             PageName = PageName,
-                                            IsPlannedDownTime = _accountCharges != null && _accountCharges.d != null ? _accountCharges.d.IsPlannedDownTime
-                                                : false
+                                            IsPlannedDownTime = isPlannedDowntime
                                         };
                                         _refreshViewContainer.AddSubview(refreshComponent.GetUI(_refreshViewContainer));
                                     }

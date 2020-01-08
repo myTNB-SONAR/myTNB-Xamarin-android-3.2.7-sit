@@ -559,7 +559,10 @@ namespace myTNB
                     GetI18NValue = GetI18NValue,
                     OnMDMSIconTap = OnMDMSIconTap,
                     SetDPCNoteForMDMSDown = SetDPCNoteForMDMSDown,
-                    OnMDMSRefresh = OnMDMSRefresh
+                    OnMDMSRefresh = OnMDMSRefresh,
+                    DisableTariffButton = DisableTariffButton,
+                    SetTariffButtonState = SetTariffButtonState,
+                    SetRMKwHButtonState = SetRMKwHButtonState
                 };
             }
 
@@ -1266,7 +1269,7 @@ namespace myTNB
                 if (isSmartMeterAccount)
                 {
                     tariffList = new List<LegendItemModel>(AccountUsageSmartCache.GetTariffLegendList());
-                    isDisable = AccountUsageSmartCache.IsMDMSDown || AccountUsageSmartCache.IsMonthlyTariffDisable
+                    isDisable = AccountUsageSmartCache.IsMonthlyTariffDisable
                         || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
                 }
                 else
@@ -1277,6 +1280,25 @@ namespace myTNB
                 }
                 bool areAllTariffEmpty = isSmartMeterAccount ? AccountUsageSmartCache.AreAllTariffEmpty : AccountUsageCache.AreAllTariffEmpty;
                 _tariffSelectionComponent.SetTariffButtonDisable(isDisable || areAllTariffEmpty);
+                _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+            }
+        }
+
+        private void DisableTariffButton()
+        {
+            if (_tariffSelectionComponent != null)
+            {
+                _tariffSelectionComponent.UpdateTariffButton(false);
+                _tariffSelectionComponent.SetTariffButtonDisable(true);
+            }
+            ShowHideTariffLegends(false);
+        }
+
+        private void SetRMKwHButtonState(bool isDisable)
+        {
+            if (_tariffSelectionComponent != null)
+            {
+                _tariffSelectionComponent.SetRMKwHButtonDisable(isDisable);
             }
         }
 
@@ -1741,7 +1763,7 @@ namespace myTNB
                 {
                     var view = _footerViewComponent.GetView();
                     AddFooterViewShadow(ref view, true);
-                    UpdateFooterUI(false);
+                    //UpdateFooterUI(false);
                 }
             }
             else
@@ -1892,23 +1914,53 @@ namespace myTNB
             {
                 _refreshScrollView.Hidden = false;
             }
-            var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-            var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.Common_BCRMMessage);
-            var refreshMsg = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty;
-            var refreshBtnTxt = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty;
-            string desc = isBcrmAvailable ? refreshMsg : bcrmMsg;
+
+            string refreshMsg = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel().RefreshMessage : AccountUsageCache.GetRefreshDataModel().RefreshMessage;
+            refreshMsg = refreshMsg.IsValid() ? refreshMsg : GetCommonI18NValue(Constants.Common_RefreshMessage);
+
+            string refreshBtnTxt = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel().RefreshBtnText : AccountUsageCache.GetRefreshDataModel().RefreshBtnText;
+            refreshBtnTxt = refreshBtnTxt.IsValid() ? refreshBtnTxt : GetCommonI18NValue(Constants.Common_RefreshBtnText);
 
             if (_refresh != null)
             {
                 _refresh.RemoveFromSuperview();
             }
+
             RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(32F));
-            refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
-            refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
+            refreshScreenComponent.SetIsBCRMDown(false);
+            refreshScreenComponent.SetRefreshButtonHidden(false);
             refreshScreenComponent.SetButtonText(refreshBtnTxt);
-            refreshScreenComponent.SetDescription(desc);
+            refreshScreenComponent.SetDescription(refreshMsg);
             refreshScreenComponent.CreateComponent();
             refreshScreenComponent.OnButtonTap = RefreshButtonOnTap;
+            _refresh = refreshScreenComponent.GetView();
+            _viewRefresh.AddSubview(_refresh);
+            ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height);
+        }
+        internal void SetDowntimeScreen()
+        {
+            SetFooterView(true);
+            if (_scrollViewContent != null)
+            {
+                _scrollViewContent.Hidden = true;
+            }
+            if (_refreshScrollView != null)
+            {
+                _refreshScrollView.Hidden = false;
+            }
+            string downtimeMsg = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel().DisplayMessage : AccountUsageCache.GetRefreshDataModel().DisplayMessage;
+            downtimeMsg = downtimeMsg.IsValid() ? downtimeMsg : GetI18NValue(UsageConstants.I18N_BcrmDownMessage);
+
+            if (_refresh != null)
+            {
+                _refresh.RemoveFromSuperview();
+            }
+
+            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(64F));
+            refreshScreenComponent.SetIsBCRMDown(true);
+            refreshScreenComponent.SetRefreshButtonHidden(true);
+            refreshScreenComponent.SetDescription(downtimeMsg);
+            refreshScreenComponent.CreateComponent();
             _refresh = refreshScreenComponent.GetView();
             _viewRefresh.AddSubview(_refresh);
             ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height);

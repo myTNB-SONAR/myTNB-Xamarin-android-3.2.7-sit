@@ -65,6 +65,7 @@
         public static string I18N_PrevReadingEmptyTitle = "prevReadingEmptyTitle";
         public static string I18N_PrevReadingEmptyMsg = "prevReadingEmptyMsg";
         public static string I18N_TariffBlock = "tariffBlock";
+        public static string I18N_BcrmDownMessage = "bcrmDownMessage";
 
         //Preference Key
         public static string Pref_UsageSSMRTutorialOverlay = "UsageSSMRTutorialOverlayV2.0.0";

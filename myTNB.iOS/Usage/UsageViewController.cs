@@ -250,6 +250,19 @@ namespace myTNB
                                         {
                                             SetEmptyDataComponent(AccountUsageCache.EmptyDataMessage);
                                         }
+                                        else if (AccountUsageCache.IsPlannedDownTime)
+                                        {
+                                            SetDowntimeScreen();
+                                            if (isREAccount)
+                                            {
+                                                SetREAmountViewForRefresh();
+                                            }
+                                            else
+                                            {
+                                                HideREAmountView();
+                                            }
+                                            SetContentViewForRefresh();
+                                        }
                                         else
                                         {
                                             SetRefreshScreen();
@@ -261,6 +274,7 @@ namespace myTNB
                                             {
                                                 HideREAmountView();
                                             }
+                                            SetContentViewForRefresh();
                                         }
                                         NormalChartIsLoading = false;
                                     }
@@ -327,6 +341,13 @@ namespace myTNB
                                         {
                                             HideSmartMeterComponent();
                                             SetEmptyDataComponent(AccountUsageSmartCache.EmptyDataMessage);
+                                        }
+                                        else if (AccountUsageCache.IsPlannedDownTime)
+                                        {
+                                            SetDowntimeScreen();
+                                            SetContentViewForRefresh();
+                                            HideREAmountView();
+                                            HideSSMRViewForRefresh();
                                         }
                                         else
                                         {
@@ -589,6 +610,12 @@ namespace myTNB
                                 SetEmptyDataComponent(AccountUsageCache.EmptyDataMessage);
                                 SetSSMRComponent(false, false);
                                 CheckTutorialOverlay();
+                            }
+                            else if (AccountUsageCache.IsPlannedDownTime)
+                            {
+                                SetDowntimeScreen();
+                                SetSSMRComponent(false, true);
+                                HideREAmountView();
                             }
                             else
                             {

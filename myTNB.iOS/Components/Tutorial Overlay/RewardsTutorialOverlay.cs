@@ -49,7 +49,7 @@ namespace myTNB
             };
             _containerView.AddGestureRecognizer(doubleTap);
 
-            _totalViews = 3;
+            _totalViews = _controller != null && _controller.CategoryMenuIsVisible() ? 3 : 2;
 
             for (int i = 1; i <= _totalViews; i++)
             {

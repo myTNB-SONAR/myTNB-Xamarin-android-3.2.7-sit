@@ -20,6 +20,9 @@ namespace myTNB
         public Action OnMDMSIconTap { set; private get; }
         public Action<bool> SetDPCNoteForMDMSDown { set; private get; }
         public Action OnMDMSRefresh { set; private get; }
+        public Action DisableTariffButton { set; private get; }
+        public Action SetTariffButtonState { set; private get; }
+        public Action<bool> SetRMKwHButtonState { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -124,6 +127,19 @@ namespace myTNB
                         {
                             SetDPCNoteForMDMSDown.Invoke(true);
                         }
+
+                        if (AccountUsageSmartCache.IsMDMSDown)
+                        {
+                            if (DisableTariffButton != null)
+                            {
+                                DisableTariffButton.Invoke();
+                            }
+                        }
+
+                        if (SetRMKwHButtonState != null)
+                        {
+                            SetRMKwHButtonState.Invoke(AccountUsageSmartCache.IsMDMSDown);
+                        }
                     }
                     else
                     {
@@ -131,6 +147,14 @@ namespace myTNB
                         if (SetDPCNoteForMDMSDown != null)
                         {
                             SetDPCNoteForMDMSDown.Invoke(false);
+                        }
+                        if (SetTariffButtonState != null)
+                        {
+                            SetTariffButtonState.Invoke();
+                        }
+                        if (SetRMKwHButtonState != null)
+                        {
+                            SetRMKwHButtonState.Invoke(false);
                         }
                     }
                     CreateSegment(smartMeterViewType);
@@ -225,7 +249,7 @@ namespace myTNB
             SetDateRange(_viewType);
             if (_pinchIcon != null)
             {
-                _pinchIcon.Hidden = _viewType == SmartMeterConstants.SmartMeterViewType.Month;
+                _pinchIcon.Hidden = AccountUsageSmartCache.IsMDMSDown || _viewType == SmartMeterConstants.SmartMeterViewType.Month;
             }
             if (_viewLine != null)
             {

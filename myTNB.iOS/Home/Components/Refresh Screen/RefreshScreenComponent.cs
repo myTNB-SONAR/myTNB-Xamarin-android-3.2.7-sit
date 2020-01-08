@@ -36,8 +36,8 @@ namespace myTNB.Home.Components
                 BackgroundColor = UIColor.Clear
             };
 
-            nfloat iconWidth = _isBCRMDown ? GetScaledWidth(80f) : GetScaledWidth(85f);
-            nfloat iconHeight = _isBCRMDown ? GetScaledHeight(78f) : GetScaledHeight(80f);
+            nfloat iconWidth = _isBCRMDown ? GetScaledWidth(98F) : GetScaledWidth(103F);
+            nfloat iconHeight = _isBCRMDown ? GetScaledHeight(98F) : GetScaledHeight(96F);
             _iconView = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth, _viewContainer), _iconYPos, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(_isBCRMDown ? Constants.IMG_BCRMDownIcon : Constants.IMG_RefreshIcon)
