@@ -563,6 +563,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetBottmLayoutParams(0);
         }
 
+        public void SetRefreshLayoutParamsWithAllDown()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.266f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.266f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(60f);
+            refreshImg.RequestLayout();
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
+
+            SetBottmLayoutParams(0);
+        }
+
         public void SetMaintenanceLayoutParams()
         {
             LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
@@ -615,6 +639,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetBottmLayoutParams(0);
         }
 
+        public void SetMaintenanceLayoutParamsWithAllDown()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.25f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.25f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(76f);
+            refreshImg.RequestLayout();
+            refreshImg.SetImageResource(Resource.Drawable.maintenance_white);
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.TopMargin = (int)DPUtils.ConvertDPToPx(16f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
+
+            SetBottmLayoutParams(0);
+        }
+
         public void SetBottmLayoutParams(float dp)
         {
             RelativeLayout.LayoutParams bottomContainerParams = bottomContainer.LayoutParameters as RelativeLayout.LayoutParams;
@@ -635,6 +685,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetupMyServiceView()
         {
+            topRootView.Visibility = ViewStates.Visible;
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
@@ -781,6 +832,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         newFAQShimmerView.Visibility = ViewStates.Gone;
                         newFAQTitle.Visibility = ViewStates.Gone;
                         newFAQView.Visibility = ViewStates.Gone;
+
+                        OnHideBottomView(); 
                     }
                     catch (System.Exception ex)
                     {
@@ -1949,6 +2002,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             HomeMenuUtils.ResetAll();
 
+            bottomContainer.Visibility = ViewStates.Visible;
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
@@ -2801,6 +2855,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             SetRefreshLayoutParamsWithMyServiceHide();
                         }
+
+                        OnHideBottomView();
                     }
                     catch (System.Exception ex)
                     {
@@ -2855,6 +2911,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             else
                             {
                                 txtMyServiceRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                            }
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnHideBottomView()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        if (myServiceHideView.Visibility == ViewStates.Visible && newFAQTitle.Visibility == ViewStates.Gone)
+                        {
+                            bottomContainer.Visibility = ViewStates.Gone;
+                            if (isBCRMDown)
+                            {
+                                SetMaintenanceLayoutParamsWithAllDown();
+                            }
+                            else
+                            {
+                                SetRefreshLayoutParamsWithAllDown();
                             }
                         }
                     }

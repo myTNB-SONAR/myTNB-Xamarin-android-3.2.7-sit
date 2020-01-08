@@ -93,6 +93,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void SetMyServiceHideView();
 
+            void OnHideBottomView();
+
         }
 
         public interface IHomeMenuPresenter
