@@ -63,6 +63,9 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
                 txtTitleInfo.Text = response.DisplayTitle;
                 txtMessageInfo.Text = response.DisplayMessage;
             }
+
+            btnBackToHomeSuccess.Text = Utility.GetLocalizedLabel("Status", "ssmrBackToUsage");
+            btnTrackApplication.Text = Utility.GetLocalizedLabel("Status", "ssmrViewReadHistory");
         }
 
         [OnClick(Resource.Id.btnBackToHomeSuccess)]

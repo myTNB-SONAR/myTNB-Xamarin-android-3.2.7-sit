@@ -80,6 +80,9 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
                 txtTitleInfoError.Text = "Please Try Again";
                 txtMessageInfoError.Text = "It looks like we can't process your application at the moment.";
             }
+
+            btnBackToHomeFailed.Text = Utility.GetLocalizedLabel("Status", "ssmrBackToUsage");
+            btnTryAgainFailed.Text = Utility.GetLocalizedLabel("Common", "tryAgain");
         }
 
         [OnClick(Resource.Id.btnBackToHomeFailed)]
