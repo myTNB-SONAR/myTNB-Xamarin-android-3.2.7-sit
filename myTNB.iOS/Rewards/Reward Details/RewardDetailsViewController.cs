@@ -22,10 +22,14 @@ namespace myTNB
         private int _currentSeconds;
         private UIView _tutorialContainer;
         private UIBarButtonItem _btnShareReward;
+        private DateTime _exitTime;
+        private int _exitSeconds;
 
         public override void ViewDidLoad()
         {
             PageName = IsFromSavedRewards ? RewardsConstants.PageName_SavedRewards : RewardsConstants.PageName_RewardDetails;
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver(UIApplication.DidEnterBackgroundNotification, OnEnterBackground);
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
@@ -74,6 +78,46 @@ namespace myTNB
         public override void DidReceiveMemoryWarning()
         {
             base.DidReceiveMemoryWarning();
+        }
+
+        private void OnEnterForeground(NSNotification notification)
+        {
+            var timeNow = DateTime.Now;
+            var diffInSeconds = (timeNow - _exitTime).TotalSeconds;
+            var remainingSeconds = _exitSeconds - diffInSeconds;
+            if (remainingSeconds > 0)
+            {
+                ResumeTimer((int)Math.Ceiling(remainingSeconds));
+            }
+            else
+            {
+                if (_useTimer != null)
+                {
+                    _useTimer.Enabled = false;
+                }
+                ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - GetScaledHeight(116F));
+                if (_timerContainerView != null)
+                {
+                    _timerContainerView.RemoveFromSuperview();
+                    _timerContainerView = null;
+                }
+                UpdateView();
+                if (_btnShareReward != null)
+                {
+                    _btnShareReward.Enabled = true;
+                }
+            }
+        }
+
+        private void OnEnterBackground(NSNotification notification)
+        {
+            Debug.WriteLine("OnEnterBackground");
+            if (_useTimer != null)
+            {
+                _useTimer.Enabled = false;
+            }
+            _exitSeconds = _currentSeconds;
+            _exitTime = DateTime.Now;
         }
 
         private void SetNavigationBar()
@@ -806,6 +850,20 @@ namespace myTNB
         private void StartTimer()
         {
             _currentSeconds = RewardModel.RewardUseWithinTime * 60;
+            TimeSpan time = TimeSpan.FromSeconds(_currentSeconds);
+            _timerLabel.Text = time.ToString(@"mm\:ss");
+            _useTimer = new Timer
+            {
+                Interval = 1000F,
+                AutoReset = true,
+                Enabled = true
+            };
+            _useTimer.Elapsed += TimerElapsed;
+        }
+
+        private void ResumeTimer(int remainingSeconds)
+        {
+            _currentSeconds = remainingSeconds;
             TimeSpan time = TimeSpan.FromSeconds(_currentSeconds);
             _timerLabel.Text = time.ToString(@"mm\:ss");
             _useTimer = new Timer
