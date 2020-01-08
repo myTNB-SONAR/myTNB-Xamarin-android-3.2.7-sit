@@ -101,6 +101,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.mView.HideProgressDialog();
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(accountChargeModelList);
@@ -120,6 +121,8 @@ namespace myTNB_Android.Src.Billing.MVP
                         btnText = accountChargeseResponse.Data.RefreshBtnText;
                     }
 
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+
                     this.mView.ShowBillDetailsError(false, btnText, contentText);
                 }
                 else
@@ -135,6 +138,11 @@ namespace myTNB_Android.Src.Billing.MVP
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
                     {
                         btnText = accountChargeseResponse.Data.RefreshBtnText;
+                    }
+
+                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null)
+                    {
+                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
                     }
 
                     this.mView.ShowBillDetailsError(true, btnText, contentText);

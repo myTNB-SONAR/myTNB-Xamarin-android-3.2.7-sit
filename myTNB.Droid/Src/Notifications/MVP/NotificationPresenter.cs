@@ -184,6 +184,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
                 if (response.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Data.IsPayEnabled);
                     UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
                     this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
                 }
@@ -337,7 +338,15 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen
-                                    this.mView.ShowRefreshView(false, response.Data.DisplayMessage, response.Data.RefreshBtnText);
+                                    string contentTxt = "";
+                                    if (response != null && response.Data != null)
+                                    {
+                                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                                        {
+                                            contentTxt = response.Data.DisplayMessage;
+                                        }
+                                    }
+                                    this.mView.ShowRefreshView(false, contentTxt, "");
                                 }
                                 else
                                 {

@@ -1490,95 +1490,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 currentNewFAQList.Clear();
 
+                List<NewFAQParentEntity> items = NewFAQParentManager.GetAllItems();
 
-                List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
-                cachedDBList = NewFAQManager.GetAll();
-                if (cachedDBList.Count > 0)
-                {
-                    for (int i = 0; i < cachedDBList.Count; i++)
-                    {
-                        if (cachedDBList[i].Tags == "SM")
-                        {
-                            if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
-                            {
-                                currentNewFAQList.Add(new NewFAQ()
-                                {
-                                    ID = cachedDBList[i].ID,
-                                    Image = cachedDBList[i].Image,
-                                    BGStartColor = cachedDBList[i].BGStartColor,
-                                    BGEndColor = cachedDBList[i].BGEndColor,
-                                    BGDirection = cachedDBList[i].BGDirection,
-                                    Title = cachedDBList[i].Title,
-                                    Description = cachedDBList[i].Description,
-                                    TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                                    TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                                    CTA = cachedDBList[i].CTA,
-                                    Tags = cachedDBList[i].Tags,
-                                    TargetItem = cachedDBList[i].TargetItem
-                                });
-                            }
-                        }
-                        else
-                        {
-                            currentNewFAQList.Add(new NewFAQ()
-                            {
-                                ID = cachedDBList[i].ID,
-                                Image = cachedDBList[i].Image,
-                                BGStartColor = cachedDBList[i].BGStartColor,
-                                BGEndColor = cachedDBList[i].BGEndColor,
-                                BGDirection = cachedDBList[i].BGDirection,
-                                Title = cachedDBList[i].Title,
-                                Description = cachedDBList[i].Description,
-                                TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                                TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                                CTA = cachedDBList[i].CTA,
-                                Tags = cachedDBList[i].Tags,
-                                TargetItem = cachedDBList[i].TargetItem
-                            });
-                        }
-                    }
-                    this.mView.SetNewFAQResult(currentNewFAQList);
+                bool loadNeedHelpFromCache = false;
 
-                    isNeedHelpDone = true;
-                    OnCheckToCallHomeMenuTutorial();
-                }
-
-
-                /*List<NewFAQParentEntity> items = NewFAQParentManager.GetAllItems();
-                if (items != null)
+                if (items != null && items.Count > 0)
                 {
                     NewFAQParentEntity entity = items[0];
-                    if (entity != null) // && entity.ShowNeedHelp)
+                    if (entity != null && !entity.ShowNeedHelp)
                     {
+                        this.mView.HideNewFAQ();
+                        UpdateNewFAQCompleteState();
+                    }
+                    else
+                    {
+                        loadNeedHelpFromCache = true;
+                    }
+                }
+                else
+                {
+                    loadNeedHelpFromCache = true;
+                }
 
-                        List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
-                        cachedDBList = NewFAQManager.GetAll();
-                        if (cachedDBList.Count > 0)
+                if (loadNeedHelpFromCache)
+                {
+                    List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
+                    cachedDBList = NewFAQManager.GetAll();
+                    if (cachedDBList != null && cachedDBList.Count > 0)
+                    {
+                        for (int i = 0; i < cachedDBList.Count; i++)
                         {
-                            for (int i = 0; i < cachedDBList.Count; i++)
+                            if (cachedDBList[i].Tags == "SM")
                             {
-                                if (cachedDBList[i].Tags == "SM")
-                                {
-                                    if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
-                                    {
-                                        currentNewFAQList.Add(new NewFAQ()
-                                        {
-                                            ID = cachedDBList[i].ID,
-                                            Image = cachedDBList[i].Image,
-                                            BGStartColor = cachedDBList[i].BGStartColor,
-                                            BGEndColor = cachedDBList[i].BGEndColor,
-                                            BGDirection = cachedDBList[i].BGDirection,
-                                            Title = cachedDBList[i].Title,
-                                            Description = cachedDBList[i].Description,
-                                            TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                                            TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                                            CTA = cachedDBList[i].CTA,
-                                            Tags = cachedDBList[i].Tags,
-                                            TargetItem = cachedDBList[i].TargetItem
-                                        });
-                                    }
-                                }
-                                else
+                                if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
                                 {
                                     currentNewFAQList.Add(new NewFAQ()
                                     {
@@ -1597,34 +1541,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     });
                                 }
                             }
-                            this.mView.SetNewFAQResult(currentNewFAQList);
-
-                            isNeedHelpDone = true;
-                            OnCheckToCallHomeMenuTutorial();
+                            else
+                            {
+                                currentNewFAQList.Add(new NewFAQ()
+                                {
+                                    ID = cachedDBList[i].ID,
+                                    Image = cachedDBList[i].Image,
+                                    BGStartColor = cachedDBList[i].BGStartColor,
+                                    BGEndColor = cachedDBList[i].BGEndColor,
+                                    BGDirection = cachedDBList[i].BGDirection,
+                                    Title = cachedDBList[i].Title,
+                                    Description = cachedDBList[i].Description,
+                                    TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                    TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                    CTA = cachedDBList[i].CTA,
+                                    Tags = cachedDBList[i].Tags,
+                                    TargetItem = cachedDBList[i].TargetItem
+                                });
+                            }
                         }
-                    }
-                    else
-                    {
-                        // TODO: Hide Need Help
-                        this.mView.HideNewFAQ();
+
+                        if (currentNewFAQList != null && currentNewFAQList.Count > 0)
+                        {
+                            this.mView.SetNewFAQResult(currentNewFAQList);
+                        }
+                        else
+                        {
+                            this.mView.HideNewFAQ();
+                        }
+
                         isNeedHelpDone = true;
                         OnCheckToCallHomeMenuTutorial();
                     }
+                    else
+                    {
+                        this.mView.HideNewFAQ();
+                        UpdateNewFAQCompleteState();
+                    }
                 }
-                else
-                {
-                    // TODO: Hide Need Help
-                    this.mView.HideNewFAQ();
-                    isNeedHelpDone = true;
-                    OnCheckToCallHomeMenuTutorial();
-                }*/
             }
             catch (Exception e)
             {
-                // TODO: Hide Need Help
-                /*this.mView.HideNewFAQ();
-                isNeedHelpDone = true;
-                OnCheckToCallHomeMenuTutorial();*/
+                this.mView.HideNewFAQ();
+                UpdateNewFAQCompleteState();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1883,14 +1842,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             OnCheckToCallHomeMenuTutorial();
         }
 
-        public void OnCheckMyServiceState()
+        public void OnCheckMyServiceNewFAQState()
         {
-            if (HomeMenuUtils.GetIsLoadedHomeMenu())
-            {
-                isMyServiceDone = false;
-                isHomeMenuTutorialShown = false;
-                RestoreCurrentMyServiceState();
-            }
+            isMyServiceDone = false;
+            isNeedHelpDone = false;
+            isHomeMenuTutorialShown = false;
+            RestoreCurrentMyServiceState();
+            GetSavedNewFAQTimeStamp();
         }
 
         public bool GetIsMyServiceRefreshNeeded()
@@ -2124,7 +2082,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 catch (Exception e)
                 {
-                    ReadNewFAQFromCache();
+                    mView.ShowFAQTimestamp(false);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -2141,30 +2099,93 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     HelpResponseModel responseModel = getItemsService.GetHelpItems();
-                    if (responseModel.Status.Equals("Success"))
+                    if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                     {
-                        if (NewFAQManager == null)
+                        if (responseModel.Status.Equals("Success"))
                         {
-                            NewFAQManager = new NewFAQEntity();
+                            if (NewFAQManager == null)
+                            {
+                                NewFAQManager = new NewFAQEntity();
+                            }
+                            NewFAQManager.DeleteTable();
+                            NewFAQManager.CreateTable();
+                            NewFAQManager.InsertListOfItems(responseModel.Data);
+                            if (responseModel.Data.Count > 0)
+                            {
+                                ReadNewFAQFromCache();
+                            }
+                            else
+                            {
+                                this.mView.HideNewFAQ();
+                                isNeedHelpDone = true;
+                                OnCheckToCallHomeMenuTutorial();
+                            }
                         }
-                        NewFAQManager.DeleteTable();
-                        NewFAQManager.CreateTable();
-                        NewFAQManager.InsertListOfItems(responseModel.Data);
-                        ReadNewFAQFromCache();
+                        else
+                        {
+                            if (NewFAQParentManager == null)
+                            {
+                                NewFAQParentManager = new NewFAQParentEntity();
+                            }
+                            NewFAQParentManager.DeleteTable();
+                            NewFAQParentManager.CreateTable();
+                            if (NewFAQManager == null)
+                            {
+                                NewFAQManager = new NewFAQEntity();
+                            }
+                            NewFAQManager.DeleteTable();
+                            NewFAQManager.CreateTable();
+
+                            this.mView.HideNewFAQ();
+                            isNeedHelpDone = true;
+                            OnCheckToCallHomeMenuTutorial();
+                        }
                     }
                     else
                     {
-                        ReadNewFAQFromCache();
+                        if (NewFAQParentManager == null)
+                        {
+                            NewFAQParentManager = new NewFAQParentEntity();
+                        }
+                        NewFAQParentManager.DeleteTable();
+                        NewFAQParentManager.CreateTable();
+                        this.mView.HideNewFAQ();
                     }
                 }
                 catch (Exception e)
                 {
-                    ReadNewFAQFromCache();
+                    try
+                    {
+                        if (NewFAQParentManager == null)
+                        {
+                            NewFAQParentManager = new NewFAQParentEntity();
+                        }
+                        NewFAQParentManager.DeleteTable();
+                        NewFAQParentManager.CreateTable();
+                        this.mView.HideNewFAQ();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
             {
             }, new CancellationTokenSource().Token);
+        }
+
+        public void UpdateNewFAQCompleteState()
+        {
+            try
+            {
+                isNeedHelpDone = true;
+                OnCheckToCallHomeMenuTutorial();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void GetEnergySavingTipsTimeStamp()
@@ -2425,6 +2446,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return isSummaryDone && isMyServiceDone && isNeedHelpDone;
         }
 
+        public bool GetIsLoadedHomeDone()
+        {
+            return HomeMenuUtils.GetIsLoadedHomeMenu();
+        }
+
         public void OnCheckToCallHomeMenuTutorial()
         {
             if (isAllDone() && !isHomeMenuTutorialShown)
@@ -2460,6 +2486,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
+            bool isNeedHelpHide = false;
+
+            if (this.mView.CheckNeedHelpHide())
+            {
+                isNeedHelpHide = true;
+            }
+
             if (CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count > 3)
             {
                 newList.Add(new NewAppModel()
@@ -2468,6 +2501,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialAccountTitle"),//"Your Accounts at a glance.",
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialMoreAcctsDesc"),//"View a summary of all your<br/>linked electricity accounts here.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false
                 });
 
@@ -2477,6 +2511,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickAccessTitle"),
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickAccessDesc"),//"Tap <strong>“Add”</strong> to link an account to<br/>myTNB. Use <strong>“Search”</strong> to look for a<br/>specific one! Just type in the<br/>nickname or account number.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false
                 });
             }
@@ -2488,6 +2523,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialAccountTitle"),//"Your Accounts at a glance.",
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialThreeAcctsDesc"),//"View a summary of all your linked<br/>electricity accounts here. Tap “Add”<br/>to link an account to myTNB.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false
                 });
             }
@@ -2499,6 +2535,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialSingleAcctTitle"),//"Your Accounts at a glance.",
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialSingleAcctDesc"),//"View a summary of all your linked<br/>electricity accounts here.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false
                 });
             }
@@ -2510,28 +2547,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialAccountTitle"),//"Your Accounts at a glance.",
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNoAcctDesc"),//"Add an electricity account to myTNB<br/>and you’ll have access to your usage<br/>and all services offered.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false
                 });
             }
 
-            newList.Add(new NewAppModel()
+            if (isNeedHelpHide)
             {
-                ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
-                ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
-                ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                IsButtonShow = false
-            });
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = true
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = false
+                });
 
-            // TODO: Don't Popular this if Need Help is hiding
-            newList.Add(new NewAppModel()
-            {
-                ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
-                ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
-                ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                IsButtonShow = true
-            });
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = true
+                });
+            }
 
             return newList;
         }

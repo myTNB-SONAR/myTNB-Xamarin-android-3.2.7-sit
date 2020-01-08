@@ -391,14 +391,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode != "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!dueResponse.Data.IsPayEnabled);
                     this.mView.ShowAmountDueFailed();
                 }
                 else if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!dueResponse.Data.IsPayEnabled);
                     this.mView.ShowAmountDue(dueResponse.Data.Data.AmountDueData);
                 }
                 else
                 {
+                    if (dueResponse != null && dueResponse.Data != null)
+                    {
+                        Utility.SetIsPayDisableNotFromAppLaunch(!dueResponse.Data.IsPayEnabled);
+                    }
                     this.mView.ShowAmountDueFailed();
                 }
             }

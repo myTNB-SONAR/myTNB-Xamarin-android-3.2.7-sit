@@ -584,6 +584,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool isMDMSPlannedDownTime = false;
 
+        private bool isGoToBillingDetail = false;
+
 
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00");
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0");
@@ -866,32 +868,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
                     isBCRMDown = true;
-                    isPaymentDown = true;
                 }
                 else
                 {
                     isBCRMDown = false;
+                }
 
-                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
-                    {
-                        isPaymentDown = true;
+                isPaymentDown = false;
 
-                        DisablePayButton();
-                        //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                        //        bcrmEntity.DowntimeTextMessage,
-                        //        Snackbar.LengthLong);
-                        //View v = downtimeSnackBar.View;
-                        //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        //tv.SetMaxLines(5);
-                        //if (!selectedAccount.AccountCategoryId.Equals("2"))
-                        //{
-                        //    downtimeSnackBar.Show();
-                        //}
-                    }
-                    else
-                    {
-                        isPaymentDown = false;
-                    }
+                if (!Utility.IsEnablePayment())
+                {
+                    isPaymentDown = true;
                 }
 
                 try
@@ -4799,6 +4786,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
+                isGoToBillingDetail = true;
                 Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                 StartActivity(intent);
@@ -6209,6 +6197,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             };
             h.PostDelayed(myAction, 50);
+
+            try
+            {
+                if (isGoToBillingDetail)
+                {
+                    isGoToBillingDetail = false;
+                    if (!Utility.IsEnablePayment())
+                    {
+                        isPaymentDown = true;
+                    }
+                    else
+                    {
+                        isPaymentDown = false;
+                    }
+
+                    if (isPaymentDown)
+                    {
+                        DisablePayButton();
+                    }
+                    else
+                    {
+                        EnablePayButton();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -6312,18 +6329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (isPaymentDown)
                                     {
-                                        DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                                         DisablePayButton();
-                                        //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                        //        bcrmEntity.DowntimeTextMessage,
-                                        //        Snackbar.LengthLong);
-                                        //View v = downtimeSnackBar.View;
-                                        //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                        //tv.SetMaxLines(5);
-                                        //if (!selectedAccount.AccountCategoryId.Equals("2"))
-                                        //{
-                                        //    downtimeSnackBar.Show();
-                                        //}
                                     }
                                     else
                                     {
@@ -6433,18 +6439,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (isPaymentDown)
                                     {
-                                        DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                                         DisablePayButton();
-                                        //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                        //        bcrmEntity.DowntimeTextMessage,
-                                        //        Snackbar.LengthLong);
-                                        //View v = downtimeSnackBar.View;
-                                        //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                        //tv.SetMaxLines(5);
-                                        //if (!selectedAccount.AccountCategoryId.Equals("2"))
-                                        //{
-                                        //    downtimeSnackBar.Show();
-                                        //}
                                     }
                                     else
                                     {
@@ -6927,7 +6922,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             btnReadingHistory.Enabled = false;
             btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
             btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+            btnReadingHistory.Text = Utility.GetLocalizedLabel("Usage", "viewReadHistory");
             // Start SSMR Shimmer
             var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
             if (shimmerBuilder != null)
@@ -9655,11 +9650,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                             {
-                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("", FromHtmlOptions.ModeLegacy);
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"), FromHtmlOptions.ModeLegacy);
                             }
                             else
                             {
-                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("");
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"));
                             }
                         }
                         

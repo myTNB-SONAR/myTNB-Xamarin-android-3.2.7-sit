@@ -37,6 +37,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "DisplayTitle")]
             public string DisplayTitle { get; set; }
 
+            [JsonProperty(PropertyName = "IsPayEnabled")]
+            public bool IsPayEnabled { get; set; }
+
             [JsonProperty(PropertyName = "data")]
             public AccountDueAmount Data { get; set; }
         }

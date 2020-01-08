@@ -321,6 +321,8 @@ namespace myTNB_Android.Src.Billing.MVP
                     }
                     btnBillingDetailefresh.Visibility = ViewStates.Gone;
                 }
+
+                EnablePayBillButtons();
             }
             catch (Exception e)
             {

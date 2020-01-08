@@ -139,6 +139,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.btnBillingHistoryRefresh)]
         Button btnBillingHistoryRefresh;
 
+        [BindView(Resource.Id.accountSelectionRefresh)]
+        TextView accountSelectionRefresh;
+
 
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
@@ -284,6 +287,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        [OnClick(Resource.Id.accountSelectionRefresh)]
+        void OnSelectSupplyAccountRefresh(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).OnSelectAccount();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private void ShowSelectFilter()
         {
             try
@@ -401,7 +417,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
-                btnChargeRefresh, btnBillingHistoryRefresh);
+                btnChargeRefresh, btnBillingHistoryRefresh, accountSelectionRefresh);
             TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
                                             unavailableChargeMsg, refreshBillingHistoryMessage);
             RenderUI();
@@ -423,6 +439,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public void RenderUI()
         {
             accountSelection.Text = mSelectedAccountData.AccountNickName;
+            accountSelectionRefresh.Text = mSelectedAccountData.AccountNickName;
             myBillHistoryTitle.Text = GetLabelByLanguage("myHistory");
             emptyBillingHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
             btnViewDetails.Text = GetLabelByLanguage("viewMore");
@@ -435,10 +452,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
                 transparentDropDown.Alpha = 0;
                 accountSelection.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                accountSelectionRefresh.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
             }
             else
             {
                 accountSelection.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                accountSelectionRefresh.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
         }
 

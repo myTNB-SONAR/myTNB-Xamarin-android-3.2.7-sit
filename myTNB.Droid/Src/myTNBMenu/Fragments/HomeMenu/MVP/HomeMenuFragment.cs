@@ -225,6 +225,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
+        private NewFAQScrollListener mListener;
+
 
         private string mSavedTimeStamp = "0000000";
 
@@ -561,6 +563,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetBottmLayoutParams(0);
         }
 
+        public void SetRefreshLayoutParamsWithAllDown()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.266f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.266f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(60f);
+            refreshImg.RequestLayout();
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
+
+            SetBottmLayoutParams(0);
+        }
+
         public void SetMaintenanceLayoutParams()
         {
             LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
@@ -613,6 +639,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetBottmLayoutParams(0);
         }
 
+        public void SetMaintenanceLayoutParamsWithAllDown()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.25f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.25f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(76f);
+            refreshImg.RequestLayout();
+            refreshImg.SetImageResource(Resource.Drawable.maintenance_white);
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.TopMargin = (int)DPUtils.ConvertDPToPx(16f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
+
+            SetBottmLayoutParams(0);
+        }
+
         public void SetBottmLayoutParams(float dp)
         {
             RelativeLayout.LayoutParams bottomContainerParams = bottomContainer.LayoutParameters as RelativeLayout.LayoutParams;
@@ -633,6 +685,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetupMyServiceView()
         {
+            topRootView.Visibility = ViewStates.Visible;
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
@@ -714,7 +767,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetNewFAQRecycleView()
         {
-            SetupNewFAQShimmerEffect();
+            NewFAQParentEntity wtManager = new NewFAQParentEntity();
+            List<NewFAQParentEntity> items = wtManager.GetAllItems();
+            if (items != null && items.Count > 0)
+            {
+                NewFAQParentEntity entity = items[0];
+                if (entity != null && !entity.ShowNeedHelp)
+                {
+                    HideNewFAQ();
+                }
+                else
+                {
+                    SetupNewFAQShimmerEffect();
+                }
+            }
+            else
+            {
+                SetupNewFAQShimmerEffect();
+            }
             this.presenter.GetSavedNewFAQTimeStamp();
         }
 
@@ -726,6 +796,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
+                        newFAQTitle.Visibility = ViewStates.Visible;
                         newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(4), this.Activity);
                         newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
 
@@ -754,9 +825,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                newFAQShimmerView.Visibility = ViewStates.Gone;
-                newFAQTitle.Visibility = ViewStates.Gone;
-                newFAQView.Visibility = ViewStates.Gone;
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        newFAQShimmerView.Visibility = ViewStates.Gone;
+                        newFAQTitle.Visibility = ViewStates.Gone;
+                        newFAQView.Visibility = ViewStates.Gone;
+
+                        OnHideBottomView(); 
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
             }
             catch (System.Exception e)
             {
@@ -764,9 +847,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public bool CheckNeedHelp()
+        public bool CheckNeedHelpHide()
         {
-            return newFAQView.Visibility == ViewStates.Gone && newFAQTitle.Visibility == ViewStates.Gone;
+            return newFAQTitle.Visibility == ViewStates.Gone;
         }
 
         public void SetNewFAQResult(List<NewFAQ> list)
@@ -783,10 +866,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             newFAQListRecycleView.SetAdapter(newFAQAdapter);
                             currentNewFAQList.Clear();
                             currentNewFAQList.AddRange(list);
+
+                            if (indicatorContainer != null && indicatorContainer.ChildCount > 0)
+                            {
+                                indicatorContainer.RemoveAllViews();
+                            }
+
                             if (list != null && list.Count > 3)
                             {
                                 indicatorContainer.Visibility = ViewStates.Visible;
-                                newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                                if (mListener == null)
+                                {
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
+                                else
+                                {
+                                    newFAQListRecycleView.RemoveOnScrollListener(mListener);
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
+
                                 int count = 0;
                                 for (int i = 0; i < list.Count; i += 3)
                                 {
@@ -810,7 +910,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             else
                             {
-                                newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                                if (mListener == null)
+                                {
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
+                                else
+                                {
+                                    newFAQListRecycleView.RemoveOnScrollListener(mListener);
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
                                 indicatorContainer.Visibility = ViewStates.Gone;
                             }
 
@@ -1020,6 +1130,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
+                if (this.presenter != null)
+                {
+                    if (this.presenter.GetIsLoadedHomeDone())
+                    {
+                        this.presenter.OnCheckMyServiceNewFAQState();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
                 var act = this.Activity as AppCompatActivity;
 
                 var actionBar = act.SupportActionBar;
@@ -1029,7 +1154,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (this.presenter != null)
                 {
                     this.presenter.GetUserNotifications();
-                    this.presenter.OnCheckMyServiceState();
                 }
 
                 if (newLabel != null)
@@ -1318,22 +1442,57 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                if (success)
+                NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                List<NewFAQParentEntity> items = wtManager.GetAllItems();
+
+                if (items != null && items.Count > 0)
                 {
-                    NewFAQParentEntity wtManager = new NewFAQParentEntity();
-                    List<NewFAQParentEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    NewFAQParentEntity entity = items[0];
+                    if (entity != null && !entity.ShowNeedHelp)
                     {
-                        NewFAQParentEntity entity = items[0];
-                        if (entity != null)
+                        HideNewFAQ();
+                        this.presenter.UpdateNewFAQCompleteState();
+                    }
+                    else
+                    {
+                        try
                         {
-                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            Activity.RunOnUiThread(() =>
                             {
-                                this.presenter.OnGetFAQs();
+                                try
+                                {
+                                    if (newFAQTitle.Visibility == ViewStates.Gone)
+                                    {
+                                        SetupNewFAQShimmerEffect();
+                                    }
+                                }
+                                catch (System.Exception exp)
+                                {
+                                    Utility.LoggingNonFatalError(exp);
+                                }
+                            });
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+                        if (success)
+                        {
+                            if (entity != null)
+                            {
+                                if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                                {
+                                    this.presenter.OnGetFAQs();
+                                }
+                                else
+                                {
+                                    this.presenter.ReadNewFAQFromCache();
+                                }
                             }
                             else
                             {
-                                this.presenter.ReadNewFAQFromCache();
+                                this.presenter.OnGetFAQs();
                             }
                         }
                         else
@@ -1341,20 +1500,59 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             this.presenter.OnGetFAQs();
                         }
                     }
-                    else
-                    {
-                        this.presenter.OnGetFAQs();
-                    }
-
                 }
                 else
                 {
-                    this.presenter.ReadNewFAQFromCache();
+                    try
+                    {
+                        Activity.RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                if (newFAQTitle.Visibility == ViewStates.Gone)
+                                {
+                                    SetupNewFAQShimmerEffect();
+                                }
+                            }
+                            catch (System.Exception exp)
+                            {
+                                Utility.LoggingNonFatalError(exp);
+                            }
+                        });
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
+                    this.presenter.OnGetFAQs();
                 }
             }
             catch (System.Exception e)
             {
-                this.presenter.ReadNewFAQFromCache();
+                try
+                {
+                    Activity.RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            if (newFAQTitle.Visibility == ViewStates.Gone)
+                            {
+                                SetupNewFAQShimmerEffect();
+                            }
+                        }
+                        catch (System.Exception exp)
+                        {
+                            Utility.LoggingNonFatalError(exp);
+                        }
+                    });
+                }
+                catch (System.Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+
+                this.presenter.OnGetFAQs();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1804,6 +2002,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             HomeMenuUtils.ResetAll();
 
+            bottomContainer.Visibility = ViewStates.Visible;
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
@@ -2370,31 +2569,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnShowHomeMenuFragmentTutorialDialog()
         {
-            Handler h = new Handler();
-            Action myAction = () =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    Activity.RunOnUiThread(() =>
+                    try
                     {
-                        try
+                        Handler h = new Handler();
+                        Action myAction = () =>
                         {
-                            StopScrolling();
-                        }
-                        catch (System.Exception ex)
-                        {
-                            Utility.LoggingNonFatalError(ex);
-                        }
-                    });
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
-            };
-            h.PostDelayed(myAction, 50);
+                            try
+                            {
+                                Activity.RunOnUiThread(() =>
+                                {
+                                    try
+                                    {
+                                        StopScrolling();
+                                    }
+                                    catch (System.Exception ex)
+                                    {
+                                        Utility.LoggingNonFatalError(ex);
+                                    }
+                                });
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                        };
+                        h.PostDelayed(myAction, 50);
+                    }
+                    catch (System.Exception exep)
+                    {
+                        Utility.LoggingNonFatalError(exep);
+                    }
+                });
+            }
+            catch (System.Exception exe)
+            {
+                Utility.LoggingNonFatalError(exe);
+            }
         }
 
         public void HomeMenuCustomScrolling(int yPosition)
@@ -2639,6 +2855,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             SetRefreshLayoutParamsWithMyServiceHide();
                         }
+
+                        OnHideBottomView();
                     }
                     catch (System.Exception ex)
                     {
@@ -2693,6 +2911,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             else
                             {
                                 txtMyServiceRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                            }
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnHideBottomView()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        if (myServiceHideView.Visibility == ViewStates.Visible && newFAQTitle.Visibility == ViewStates.Gone)
+                        {
+                            bottomContainer.Visibility = ViewStates.Gone;
+                            if (isBCRMDown)
+                            {
+                                SetMaintenanceLayoutParamsWithAllDown();
+                            }
+                            else
+                            {
+                                SetRefreshLayoutParamsWithAllDown();
                             }
                         }
                     }

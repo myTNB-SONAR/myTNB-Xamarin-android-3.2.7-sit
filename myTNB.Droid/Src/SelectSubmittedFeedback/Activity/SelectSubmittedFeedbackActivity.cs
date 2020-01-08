@@ -212,6 +212,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 this.userActionsListener.OnStartShowLoading(this.DeviceId());
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
             this.SetIsClicked(false);
         }
@@ -232,6 +235,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 this.userActionsListener.OnStartShowLoading(this.DeviceId());
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
             this.SetIsClicked(false);
         }
@@ -252,6 +258,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 this.userActionsListener.OnStartShowLoading(this.DeviceId());
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
         }

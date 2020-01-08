@@ -286,7 +286,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 if (this.mFragment is HomeMenuFragment)
                 {
-                    if (list.Count == 4)
+                    if ((list.Count == 4 && !model.NeedHelpHide) || (list.Count == 3 && model.NeedHelpHide))
                     {
                         if (position == 0)
                         {
@@ -437,7 +437,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            if (model.NeedHelpHide)
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                            }
+                            else
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
@@ -608,7 +615,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            if (model.NeedHelpHide)
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                            }
+                            else
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
@@ -779,7 +793,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            if (model.NeedHelpHide)
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                            }
+                            else
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
@@ -928,7 +949,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            if (model.NeedHelpHide)
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                            }
+                            else
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
@@ -1077,7 +1105,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            if (model.NeedHelpHide)
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                            }
+                            else
+                            {
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();

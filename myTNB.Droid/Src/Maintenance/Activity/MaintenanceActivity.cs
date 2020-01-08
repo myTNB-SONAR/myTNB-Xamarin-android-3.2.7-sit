@@ -43,6 +43,10 @@ namespace myTNB_Android.Src.Maintenance.Activity
 
         bool firstInitiated = false;
 
+        private string title = "";
+
+        private string message = "";
+
         public override int ResourceId()
         {
             return Resource.Layout.MaintenanceView;
@@ -57,17 +61,36 @@ namespace myTNB_Android.Src.Maintenance.Activity
         {
             base.OnCreate(savedInstanceState);
 
+            try
+            {
+                TextViewUtils.SetMuseoSans300Typeface(txtContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtHeading);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey(Constants.MAINTENANCE_TITLE_KEY) && Intent.Extras.ContainsKey(Constants.MAINTENANCE_MESSAGE_KEY))
             {
                 try
                 {
-                    string title = Intent.Extras.GetString(Constants.MAINTENANCE_TITLE_KEY);
-                    string message = Intent.Extras.GetString(Constants.MAINTENANCE_MESSAGE_KEY);
+                    title = Intent.Extras.GetString(Constants.MAINTENANCE_TITLE_KEY);
+                    message = Intent.Extras.GetString(Constants.MAINTENANCE_MESSAGE_KEY);
                     txtHeading.Text = title;
                     txtContent.Text = message;
-
-                    TextViewUtils.SetMuseoSans300Typeface(txtContent);
-                    TextViewUtils.SetMuseoSans500Typeface(txtHeading);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                try
+                {
+                    txtHeading.Text = "";
+                    txtContent.Text = "";
                 }
                 catch (Exception e)
                 {
@@ -77,19 +100,12 @@ namespace myTNB_Android.Src.Maintenance.Activity
 
             try
             {
-                if (ConnectionUtils.HasInternetConnection(this))
-                {
-                    mPresenter = new MaintenancePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                mPresenter = new MaintenancePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
-                    if (!hasBeenCalled)
-                    {
-                        userActionsListener.Start();
-                        hasBeenCalled = true;
-                    }
-                }
-                else
+                if (!hasBeenCalled)
                 {
-                    ShowNoInternetSnackbar();
+                    userActionsListener.Start();
+                    hasBeenCalled = true;
                 }
             }
             catch (Exception e)
@@ -103,6 +119,28 @@ namespace myTNB_Android.Src.Maintenance.Activity
             base.OnStart();
 
 
+        }
+
+        public void OnUpdateMaintenanceWord(string mTitle, string mMessage)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(mTitle))
+                {
+                    title = mTitle;
+                    txtHeading.Text = title;
+                }
+
+                if (!string.IsNullOrEmpty(mMessage))
+                {
+                    message = mMessage;
+                    txtContent.Text = message;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnResume()
