@@ -337,7 +337,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen
-                                    this.mView.ShowRefreshView(false, response.Data.DisplayMessage, response.Data.RefreshBtnText);
+                                    this.mView.ShowRefreshView(false, "", "");
                                 }
                                 else
                                 {

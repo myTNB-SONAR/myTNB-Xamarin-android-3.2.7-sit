@@ -9650,11 +9650,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                             {
-                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("", FromHtmlOptions.ModeLegacy);
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"), FromHtmlOptions.ModeLegacy);
                             }
                             else
                             {
-                                txtNewRefreshMessage.TextFormatted = Html.FromHtml("");
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"));
                             }
                         }
                         

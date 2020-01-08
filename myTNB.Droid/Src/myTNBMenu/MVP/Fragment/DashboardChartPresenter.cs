@@ -488,10 +488,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     isBillAvailable = true;
                     string contentTxt = "";
-                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.DisplayMessage))
+                    /*if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.DisplayMessage))
                     {
                         contentTxt = usageHistoryResponse.Data.DisplayMessage;
-                    }
+                    }*/
 
                     this.mView.OnShowPlannedDowntimeScreen(contentTxt);
                 }
@@ -613,10 +613,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     isBillAvailable = true;
                     string contentTxt = "";
-                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.DisplayMessage))
+                    /*if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.DisplayMessage))
                     {
                         contentTxt = usageHistoryResponse.Data.DisplayMessage;
-                    }
+                    }*/
 
                     this.mView.OnShowPlannedDowntimeScreen(contentTxt);
                 }

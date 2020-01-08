@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    /*if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                     {
                         contentText = accountChargeseResponse.Data.DisplayMessage;
                     }
@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
                     {
                         btnText = accountChargeseResponse.Data.RefreshBtnText;
-                    }
+                    }*/
 
                     mView.ShowUnavailableContent(false, btnText, contentText);
                 }
@@ -141,7 +141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                        /*if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                         {
                             contentText = accountChargeseResponse.Data.DisplayMessage;
                         }
@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
                         {
                             btnText = accountChargeseResponse.Data.RefreshBtnText;
-                        }
+                        }*/
 
                         mView.ShowUnavailableChargeContent(false, btnText, contentText);
                     }
@@ -188,7 +188,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
+                        /*if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
                         {
                             contentText = accountBillPayResponse.Data.DisplayMessage;
                         }
@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
                         {
                             btnText = accountBillPayResponse.Data.RefreshBtnText;
-                        }
+                        }*/
 
                         mView.ShowUnavailableBillContent(false, btnText, contentText);
                     }
@@ -312,7 +312,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
+                    /*if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
                     {
                         contentText = accountBillPayResponse.Data.DisplayMessage;
                     }
@@ -320,7 +320,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
                     {
                         btnText = accountBillPayResponse.Data.RefreshBtnText;
-                    }
+                    }*/
 
                     mView.ShowUnavailableBillContent(false, btnText, contentText);
                 }
@@ -429,7 +429,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    /*if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
                     {
                         contentText = accountChargeseResponse.Data.DisplayMessage;
                     }
@@ -437,7 +437,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
                     {
                         btnText = accountChargeseResponse.Data.RefreshBtnText;
-                    }
+                    }*/
 
                     mView.ShowUnavailableChargeContent(false, btnText, contentText);
                 }
