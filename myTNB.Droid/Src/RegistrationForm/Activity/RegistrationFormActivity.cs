@@ -147,33 +147,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 textInputLayoutConfirmPassword.Hint = Utility.GetLocalizedLabel("ResetPassword", "confirmNewPassword");
 
                 txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
-                ClickSpan clickableSpan = new ClickSpan();
-                clickableSpan.Click += delegate
-                {
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-                        this.userActionsListener.NavigateToTermsAndConditions();
-                    }
-                };
-                txtTermsConditions.TextFormatted = Utility.GetFormattedURLString(clickableSpan, txtTermsConditions.TextFormatted);
-                txtTermsConditions.MovementMethod = new LinkMovementMethod();
+                StripUnderlinesFromLinks(txtTermsConditions);
                 btnRegister.Text = GetLabelByLanguage("ctaTitle");
-
-                //var inputFilter = new InputFilterPhoneNumber();
-                //txtMobileNumber.AddTextChangedListener(inputFilter);
-                //txtMobileNumber.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-                //{
-                //    if (e.HasFocus)
-                //    {
-                //        if (string.IsNullOrEmpty(txtMobileNumber.Text))
-                //        {
-                //            txtMobileNumber.Append("+60");
-                //        }
-
-                //    }
-
-                //};
 
                 ClearFields();
 
@@ -796,23 +771,33 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-    }
 
-    class ClickSpan : ClickableSpan
-    {
-        public Action<View> Click;
-        public override void OnClick(View widget)
+        public void StripUnderlinesFromLinks(TextView textView)
         {
-            if (Click != null)
+            var spannable = new SpannableStringBuilder(textView.TextFormatted);
+            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            foreach (URLSpan span in spans)
             {
-                Click(widget);
+                var start = spannable.GetSpanStart(span);
+                var end = spannable.GetSpanEnd(span);
+                spannable.RemoveSpan(span);
+                var newSpan = new URLSpanNoUnderline(span.URL);
+                spannable.SetSpan(newSpan, start, end, 0);
             }
+            textView.TextFormatted = spannable;
         }
 
-        public override void UpdateDrawState(TextPaint ds)
+        class URLSpanNoUnderline : URLSpan
         {
-            base.UpdateDrawState(ds);
-            ds.UnderlineText = false;
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
     }
 }
