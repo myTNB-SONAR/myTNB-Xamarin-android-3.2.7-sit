@@ -157,6 +157,7 @@ namespace myTNB
                 {
                     Editable = false,
                     ScrollEnabled = true,
+                    UserInteractionEnabled = false,
                     AttributedText = attributedString,
                     ContentInset = new UIEdgeInsets(-5, 0, -5, 0),
                     BackgroundColor = UIColor.Clear
