@@ -1,7 +1,6 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
-using myTNB.Dashboard.DashboardComponents;
 using UIKit;
 
 namespace myTNB.Home.Components
