@@ -13,6 +13,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [AliasAs("ReadingType")]
         public string ReadingType { get; set; }
 
+        [JsonProperty(PropertyName = "ReadingReason")]
+        [AliasAs("ReadingReason")]
+        public string ReadingReason { get; set; }
+
         [JsonProperty(PropertyName = "ReadingValue")]
         [AliasAs("ReadingValue")]
         public string ReadingValue { get; set; }
@@ -21,9 +25,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [AliasAs("Consumption")]
         public string Consumption { get; set; }
 
-        [JsonProperty(PropertyName = "ReadingReason")]
-        [AliasAs("ReadingReason")]
-        public string ReadingReason { get; set; }
+        [JsonProperty(PropertyName = "ReadingTypeCode")]
+        [AliasAs("ReadingTypeCode")]
+        public string ReadingTypeCode { get; set; }
 
         [JsonProperty(PropertyName = "ReadingForMonth")]
         [AliasAs("ReadingForMonth")]
