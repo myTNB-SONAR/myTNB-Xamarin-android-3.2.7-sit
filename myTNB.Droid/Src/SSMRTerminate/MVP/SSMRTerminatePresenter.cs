@@ -220,7 +220,6 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 {
                     if (TextUtils.IsEmpty(otherReason))
                     {
-                        this.mView.ShowEmptyReasonError();
                         this.mView.DisableSubmitButton();
                         this.mView.DisableSubmitButton();
                     }
