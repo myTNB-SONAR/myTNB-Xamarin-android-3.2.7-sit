@@ -184,6 +184,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
                 if (response.Data.ErrorCode == "7200")
                 {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Data.IsPayEnabled);
                     UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
                     this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
                 }

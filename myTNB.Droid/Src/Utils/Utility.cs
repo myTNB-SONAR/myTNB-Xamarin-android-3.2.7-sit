@@ -266,28 +266,30 @@ namespace myTNB_Android.Src.Utils
         {
             bool isPaymentEnable = true;
 
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-            DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-
-            if (bcrmEntity != null && bcrmEntity.IsDown)
+            if (IsPayDisableNotFromAppLaunch)
             {
                 isPaymentEnable = false;
             }
             else
             {
-                if (pgCCEntity != null && pgFPXEntity != null)
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
-                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    isPaymentEnable = false;
+                }
+                else
+                {
+                    if (pgCCEntity != null && pgFPXEntity != null)
                     {
-                        isPaymentEnable = false;
+                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                        {
+                            isPaymentEnable = false;
+                        }
                     }
                 }
-            }
-
-            if (isPaymentEnable && IsPayDisableNotFromAppLaunch)
-            {
-                isPaymentEnable = false;
             }
 
             return isPaymentEnable;
