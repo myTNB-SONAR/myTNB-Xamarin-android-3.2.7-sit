@@ -53,7 +53,7 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 3;
+            return !_isHelpShimmering && _helpList != null && _helpList.Count == 0 ? 2 : 3;
         }
 
         public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)

@@ -323,21 +323,27 @@ namespace myTNB
                 _rewardsList = rewardsEntity.GetAllItems();
                 if (_rewardsList != null && _rewardsList.Count > 0)
                 {
+                    SetRightBarItem(false);
                     _categoryList = new List<RewardsModel>();
-                    RewardsModel viewAllModel = new RewardsModel()
-                    {
-                        CategoryID = "1001",
-                        CategoryName = GetI18NValue(RewardsConstants.I18N_ViewAll)
-                    };
                     _categoryList = _rewardsList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
-                    _categoryList.Insert(0, viewAllModel);
+
+                    if (_categoryList.Count > 1)
+                    {
+                        RewardsModel viewAllModel = new RewardsModel()
+                        {
+                            CategoryID = "1001",
+                            CategoryName = GetI18NValue(RewardsConstants.I18N_ViewAll)
+                        };
+                        _categoryList.Insert(0, viewAllModel);
+                        CreateCategoryTopBar();
+                    }
                     _selectedCategoryIndex = 0;
-                    CreateCategoryTopBar();
                     AddRewardsScrollView();
                     CheckTutorialOverlay();
                 }
                 else
                 {
+                    SetRightBarItem(true);
                     SetEmptyRewardView();
                 }
             });
@@ -347,20 +353,31 @@ namespace myTNB
         {
             NavigationItem.HidesBackButton = true;
             Title = GetI18NValue(RewardsConstants.I18N_Title);
-            UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
+        }
+
+        private void SetRightBarItem(bool isEmptyReward = false)
+        {
+            if (!isEmptyReward)
             {
-                if (RewardsCache.RewardIsAvailable && !DataManager.DataManager.SharedInstance.IsRewardsLoading && _rewardsList != null)
+                UIBarButtonItem btnSavedRewards = new UIBarButtonItem(UIImage.FromBundle(RewardsConstants.Img_HeartIcon), UIBarButtonItemStyle.Done, (sender, e) =>
                 {
-                    SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
+                    if (RewardsCache.RewardIsAvailable && !DataManager.DataManager.SharedInstance.IsRewardsLoading && _rewardsList != null)
                     {
-                        SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
-                    };
-                    UINavigationController navController = new UINavigationController(savedRewardsView);
-                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    PresentViewController(navController, true, null);
-                }
-            });
-            NavigationItem.RightBarButtonItem = btnSavedRewards;
+                        SavedRewardsViewController savedRewardsView = new SavedRewardsViewController
+                        {
+                            SavedRewardsList = _rewardsList.FindAll(x => x.IsSaved)
+                        };
+                        UINavigationController navController = new UINavigationController(savedRewardsView);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                        PresentViewController(navController, true, null);
+                    }
+                });
+                NavigationItem.RightBarButtonItem = btnSavedRewards;
+            }
+            else
+            {
+                NavigationItem.RightBarButtonItem = null;
+            }
         }
 
         private void SetSkeletonLoading()
@@ -497,9 +514,10 @@ namespace myTNB
         #region REWARDS SCROLL VIEW
         private void AddRewardsScrollView()
         {
+            var categoryHeight = _categoryList != null && _categoryList.Count > 1 ? GetScaledHeight(44F) : 0;
             _rewardsScrollView = new UIScrollView(new CGRect(0
-                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(44F)
-                , ViewWidth, ViewHeight - GetScaledHeight(44F)))
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + categoryHeight
+                , ViewWidth, ViewHeight - categoryHeight))
             {
                 Delegate = new ScrollViewDelegate(this),
                 PagingEnabled = true,
@@ -996,7 +1014,7 @@ namespace myTNB
 
         public bool CategoryMenuIsVisible()
         {
-            return _categoryList != null && _categoryList.Count > 0;
+            return _categoryList != null && _categoryList.Count > 2;
         }
         #endregion
     }

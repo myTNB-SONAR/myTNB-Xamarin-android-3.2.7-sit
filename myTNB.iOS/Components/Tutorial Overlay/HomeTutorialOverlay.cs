@@ -19,6 +19,7 @@ namespace myTNB
         public Action ScrollTableToTheTop;
         public Action ScrollTableToTheBottom;
         public HomeTutorialEnum TutorialType;
+        public bool isNeedHelpAvailable;
 
         public enum HomeTutorialEnum
         {
@@ -61,8 +62,8 @@ namespace myTNB
                 NumberOfTapsRequired = 2
             };
             _containerView.AddGestureRecognizer(doubleTap);
-
-            for (int i = 1; i <= 3; i++)
+            var totalViews = isNeedHelpAvailable ? 3 : 2;
+            for (int i = 1; i <= totalViews; i++)
             {
                 UIView view = new UIView(_parentView.Bounds);
                 if (i == 1)
@@ -81,7 +82,7 @@ namespace myTNB
             if (TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS)
             {
                 UIView fourthView = new UIView(_parentView.Bounds);
-                fourthView.Tag = 4;
+                fourthView.Tag = isNeedHelpAvailable ? 4 : 3;
                 fourthView.Alpha = 0F;
                 _totalViews++;
                 _containerView.AddSubview(fourthView);
@@ -473,7 +474,8 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.Black60
             };
-            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), topView.Frame.GetMaxY() - GetScaledHeight(1F) - GetScaledHeight(121.7F), GetScaledWidth(1F), GetScaledHeight(121.7F)))
+            nfloat lineHeight = isNeedHelpAvailable ? GetScaledHeight(121.7F) : GetScaledHeight(184F);
+            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), topView.Frame.GetMaxY() - GetScaledHeight(1F) - lineHeight, GetScaledWidth(1F), lineHeight))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
@@ -521,6 +523,27 @@ namespace myTNB
             CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(90F)));
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
             topView.AddSubviews(new UIView { title, desc });
+
+            if (!isNeedHelpAvailable)
+            {
+                UIButton btnGotIt = new UIButton(UIButtonType.Custom)
+                {
+                    Frame = new CGRect(textXPos, GetYLocationFromFrame(desc.Frame, 16F), GetScaledWidth(142F), GetScaledHeight(48F)),
+                    Font = TNBFont.MuseoSans_16_500,
+                    BackgroundColor = UIColor.White,
+                    UserInteractionEnabled = true
+                };
+                btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
+                btnGotIt.SetTitle(GetCommonI18NValue(Constants.Common_GotIt), UIControlState.Normal);
+                btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
+                btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
+                btnGotIt.TouchUpInside += (sender, e) =>
+                {
+                    OnDismissAction?.Invoke();
+                };
+                topView.AddSubview(btnGotIt);
+            }
+
             UIView bottomView = new UIView(new CGRect(0, GetYLocationFromFrame(topView.Frame, 83F), width, height - GetYLocationFromFrame(topView.Frame, 83F)))
             {
                 BackgroundColor = MyTNBColor.Black60
@@ -541,7 +564,8 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.Black60
             };
-            parentView.AddSubviews(new UIView { topView, bottomView, leftView, rightView, boxView });
+            parentView.AddSubview(topView);
+            parentView.AddSubviews(new UIView { bottomView, leftView, rightView, boxView });
             _swipeText.Hidden = false;
             return parentView;
         }

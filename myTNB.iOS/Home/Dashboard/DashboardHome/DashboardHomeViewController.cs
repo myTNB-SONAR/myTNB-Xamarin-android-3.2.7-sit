@@ -13,7 +13,6 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
-using Newtonsoft.Json;
 using myTNB.DataManager;
 using static myTNB.HomeTutorialOverlay;
 using myTNB.SitecoreCMS;
@@ -38,7 +37,7 @@ namespace myTNB
         internal Dictionary<string, Action> _servicesActionDictionary;
         public bool _accountListIsShimmering = true;
         private bool _servicesIsShimmering = true;
-        private bool _helpIsShimmering = true;
+        private bool _helpIsShimmering = false;
         public bool _isRefreshScreenEnabled, _isGetServicesFailed;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
@@ -46,6 +45,7 @@ namespace myTNB
         private bool _isBCRMAvailable, _isBCRMPopupDisplayed;
         public string RearrangeSuccessMsg;
         public bool IsRearrangeSaved;
+        public bool IsNeedHelpCallDone;
 
         public override void ViewDidLoad()
         {
@@ -148,6 +148,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
             }
             //SSMRAccounts.SetEligibleAccounts();
+            IsNeedHelpCallDone = false;
             OnLoadHomeData();
         }
 
@@ -217,7 +218,7 @@ namespace myTNB
 
             if (tutorialOverlayHasShown) { return; }
 
-            if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && !_helpIsShimmering)
+            if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && IsNeedHelpCallDone)
             {
                 InvokeOnMainThread(() =>
                 {
@@ -279,7 +280,8 @@ namespace myTNB
                 OnDismissAction = HideTutorialOverlay,
                 ScrollTableToTheTop = ScrollTableToTheTop,
                 ScrollTableToTheBottom = ScrollTableToTheBottom,
-                GetI18NValue = GetI18NValue
+                GetI18NValue = GetI18NValue,
+                isNeedHelpAvailable = SitecoreServices.Instance.ShowNeedHelp
             };
             var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
             var topVc = AppDelegate.GetTopViewController(baseRootVc);
@@ -329,7 +331,8 @@ namespace myTNB
 
         public void ScrollTableToTheBottom()
         {
-            _homeTableView.ScrollToRow(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Help), UITableViewScrollPosition.Bottom, false);
+            int indx = SitecoreServices.Instance.ShowNeedHelp ? DashboardHomeConstants.CellIndex_Help : DashboardHomeConstants.CellIndex_Services;
+            _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
         }
 
         public void ScrollTableToTheTop()
@@ -460,32 +463,82 @@ namespace myTNB
                         CheckTutorialOverlay();
                     }
 
-                    if (DataManager.DataManager.SharedInstance.HelpList == null ||
-                        DataManager.DataManager.SharedInstance.HelpList.Count == 0)
+                    InvokeInBackground(() =>
                     {
-                        _helpList = new List<HelpModel>();
-                        InvokeOnMainThread(() =>
+                        IsNeedHelpCallDone = false;
+                        SitecoreServices.Instance.LoadNeedHelpTimeStamp().ContinueWith(taskTimeStamp =>
                         {
-                            _helpIsShimmering = true;
-                            OnUpdateTable();
-                            SitecoreServices.Instance.LoadNeedHelp().ContinueWith(task =>
+                            InvokeOnMainThread(() =>
                             {
-                                InvokeOnMainThread(() =>
+                                if (SitecoreServices.Instance.NeedHelpTimeStampChanged)
                                 {
-                                    _helpList = new HelpEntity().GetAllItems();
-                                    DataManager.DataManager.SharedInstance.HelpList = _helpList;
-                                    _helpIsShimmering = false;
-                                    OnUpdateTable();
-                                    CheckTutorialOverlay();
-                                });
+                                    if (SitecoreServices.Instance.ShowNeedHelp)
+                                    {
+                                        _helpIsShimmering = true;
+                                        OnUpdateTable();
+                                        InvokeInBackground(() =>
+                                        {
+                                            SitecoreServices.Instance.LoadNeedHelp().ContinueWith(taskItems =>
+                                            {
+                                                InvokeOnMainThread(() =>
+                                                {
+                                                    _helpIsShimmering = false;
+                                                    IsNeedHelpCallDone = true;
+                                                    _helpList = new List<HelpModel>();
+                                                    _helpList = new HelpEntity().GetAllItems();
+                                                    DataManager.DataManager.SharedInstance.HelpList = _helpList;
+                                                    OnUpdateTable();
+                                                    CheckTutorialOverlay();
+                                                });
+                                            });
+                                        });
+                                    }
+                                    else
+                                    {
+                                        _helpIsShimmering = false;
+                                        IsNeedHelpCallDone = true;
+                                        _helpList = new List<HelpModel>();
+                                        DataManager.DataManager.SharedInstance.HelpList = new List<HelpModel>();
+                                        OnUpdateTable();
+                                        CheckTutorialOverlay();
+                                    }
+                                    SitecoreServices.Instance.NeedHelpTimeStampChanged = false;
+                                }
+                                else
+                                {
+                                    if (SitecoreServices.Instance.ShowNeedHelp)
+                                    {
+                                        if (DataManager.DataManager.SharedInstance.HelpList == null ||
+                                            DataManager.DataManager.SharedInstance.HelpList.Count == 0)
+                                        {
+                                            _helpIsShimmering = false;
+                                            IsNeedHelpCallDone = true;
+                                            _helpList = new List<HelpModel>();
+                                            _helpList = new HelpEntity().GetAllItems();
+                                            DataManager.DataManager.SharedInstance.HelpList = _helpList;
+                                            OnUpdateTable();
+                                            CheckTutorialOverlay();
+                                        }
+                                        else
+                                        {
+                                            _helpIsShimmering = false;
+                                            IsNeedHelpCallDone = true;
+                                            CheckTutorialOverlay();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        _helpIsShimmering = false;
+                                        IsNeedHelpCallDone = true;
+                                        _helpList = new List<HelpModel>();
+                                        DataManager.DataManager.SharedInstance.HelpList = new List<HelpModel>();
+                                        OnUpdateTable();
+                                        CheckTutorialOverlay();
+                                    }
+                                }
                             });
                         });
-                    }
-                    else
-                    {
-                        _helpIsShimmering = false;
-                        CheckTutorialOverlay();
-                    }
+                    });
                     OnUpdateNotification();
                 }
                 else
@@ -516,6 +569,10 @@ namespace myTNB
             {
                 yPos = 0;
                 addtlHeight = DeviceHelper.GetStatusBarHeight();
+            }
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                addtlHeight = -32F;
             }
             _homeTableView = new UITableView(new CGRect(0, yPos
                 , ViewWidth, ViewHeight + addtlHeight))
