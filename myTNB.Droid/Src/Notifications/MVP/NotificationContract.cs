@@ -154,13 +154,6 @@ namespace myTNB_Android.Src.Notifications.MVP
         public interface IUserActionsListener : IBasePresenter
         {
             /// <summary>
-            /// Action to navigate to selected notification
-            /// </summary>
-            /// <param name="userNotification">UserNotificationData</param>
-            /// <param name="position">integer</param>
-            void OnSelectedNotificationItem(UserNotificationData userNotification, int position);
-
-            /// <summary>
             /// The returned result from another activity
             /// </summary>
             /// <param name="requestCode">integer</param>

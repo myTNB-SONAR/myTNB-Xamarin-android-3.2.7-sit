@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.btnBillingHistoryRefresh)]
         Button btnBillingHistoryRefresh;
-        
+
 
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
@@ -159,8 +159,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
         const string PAGE_ID = "Bills";
         private bool isFiltered = false;
-		private string myHistoryTitle = "";
-		private string billTitle = "";
+        private string myHistoryTitle = "";
+        private string billTitle = "";
 
 		public override void OnCreate(Bundle savedInstanceState)
         {
@@ -192,18 +192,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public void ShowBillFilterToolbar(bool isShow)
         {
-			if (isShow)
-			{
-				((DashboardHomeActivity)this.Activity).SetToolBarTitle(myHistoryTitle);
-				billFilterMenuItem.SetVisible(true);
-				UpdateFilterIcon();
-			}
-			else
-			{
-				((DashboardHomeActivity)this.Activity).SetToolBarTitle(billTitle);
-				billFilterMenuItem.SetVisible(false);
-			}
-		}
+            if (isShow)
+            {
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(myHistoryTitle);
+                billFilterMenuItem.SetVisible(true);
+                UpdateFilterIcon();
+            }
+            else
+            {
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(billTitle);
+                billFilterMenuItem.SetVisible(false);
+            }
+        }
 
         class BillOnScrollChangeListener : Java.Lang.Object, NestedScrollView.IOnScrollChangeListener
         {
@@ -397,7 +397,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
             SetHasOptionsMenu(true);
-            itemisedBillingScrollView.SetOnScrollChangeListener(new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container));
+            BillOnScrollChangeListener billOnScrollChangeListener = new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container);
+            itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
                 btnChargeRefresh, btnBillingHistoryRefresh);
@@ -426,9 +427,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             emptyBillingHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
             btnViewDetails.Text = GetLabelByLanguage("viewMore");
             btnPayBill.Text = GetLabelByLanguage("pay");
-			myHistoryTitle = GetLabelByLanguage("myHistory");
-			billTitle = GetLabelByLanguage("title");
-			if (mPresenter.IsEnableAccountSelection())
+            myHistoryTitle = GetLabelByLanguage("myHistory");
+            billTitle = GetLabelByLanguage("title");
+            if (mPresenter.IsEnableAccountSelection())
             {
                 Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
                 Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
@@ -817,7 +818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (isShowRefresh)
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.bg_application_status);
-                
+
                 if (!string.IsNullOrEmpty(contentText))
                 {
                     unavailableBillMsg.TextFormatted = GetFormattedText(contentText);

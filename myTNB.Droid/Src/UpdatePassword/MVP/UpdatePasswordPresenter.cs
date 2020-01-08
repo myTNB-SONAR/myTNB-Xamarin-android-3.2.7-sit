@@ -2,7 +2,6 @@
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.UpdatePassword.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;

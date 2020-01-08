@@ -425,10 +425,8 @@
     <Compile Include="Src\AddAccount\Adapter\AccountTypeAdapter.cs" />
     <Compile Include="Src\AddAccount\Adapter\AddedAccountsAdapter.cs" />
     <Compile Include="Src\AddAccount\Adapter\AdditionalAccountListAdapter.cs" />
-    <Compile Include="Src\AddAccount\Api\AddAccountToCustomer.cs" />
     <Compile Include="Src\AddAccount\Api\AddMultipleAccountsToUserApi.cs" />
     <Compile Include="Src\AddAccount\Api\GetCustomerAccounts.cs" />
-    <Compile Include="Src\AddAccount\Api\GetCustomerAccountsForICNumApi.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountByRightsFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountFormFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountTypeFragment.cs" />
@@ -464,7 +462,6 @@
     <Compile Include="Src\AppLaunch\Activity\LaunchViewActivity.cs" />
     <Compile Include="Src\AppLaunch\Api\GetAccounts.cs" />
     <Compile Include="Src\AppLaunch\Api\GetMasterDataApi.cs" />
-    <Compile Include="Src\AppLaunch\Api\IWeblinksApi.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountType.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountTypesResponse.cs" />
     <Compile Include="Src\AppLaunch\Models\AppVersionList.cs" />
@@ -601,9 +598,6 @@
     <Compile Include="Src\FindUs\Adapter\ServiceListAdapter.cs" />
     <Compile Include="Src\FindUs\Api\GetGoogleLocationApi.cs" />
     <Compile Include="Src\FindUs\Api\GetGoogleLocationDetailsApi.cs" />
-    <Compile Include="Src\FindUs\Api\GetLocationsApi.cs" />
-    <Compile Include="Src\FindUs\Api\GetLocationsByKeywordApi.cs" />
-    <Compile Include="Src\FindUs\Api\GetLocationTypseApi.cs" />
     <Compile Include="Src\FindUs\Fragment\MapViewFragment.cs" />
     <Compile Include="Src\FindUs\Maps\MapLocationListener.cs" />
     <Compile Include="Src\FindUs\Maps\MapMarkers.cs" />
@@ -630,7 +624,6 @@
     <Compile Include="Src\Feedback_Login_BillRelated\MVP\FeedbackLoginBillRelatedPresenter.cs" />
     <Compile Include="Src\Feedback_PreLogIn_BillRelated\Activity\FeedbackPreLoginBillRelatedActivity.cs" />
     <Compile Include="Src\Feedback_PreLogIn_BillRelated\Adapter\FeedbackPreLoginBillRelatedImageRecyclerAdapter.cs" />
-    <Compile Include="Src\Base\Api\IFeedbackApi.cs" />
     <Compile Include="Src\Base\Models\AttachedImage.cs" />
     <Compile Include="Src\Base\Models\BaseFeedback.cs" />
     <Compile Include="Src\Base\Models\BaseFeedbackResponse.cs" />
@@ -643,7 +636,6 @@
     <Compile Include="Src\ForgetPassword\Activity\VerificationCodeActivity.cs" />
     <Compile Include="Src\LogoutEnd\Activity\LogoutEndActivity.cs" />
     <Compile Include="Src\LogoutRate\Activity\LogoutRateActivity.cs" />
-    <Compile Include="Src\LogoutRate\Api\ILogoutApi.cs" />
     <Compile Include="Src\LogoutRate\Models\LogoutResponse.cs" />
     <Compile Include="Src\LogoutRate\MVP\LogoutRateContract.cs" />
     <Compile Include="Src\LogoutRate\MVP\LogoutRatePresenter.cs" />
@@ -671,7 +663,6 @@
     <Compile Include="Src\ManageCards\MVP\ManageCardsPresenter.cs" />
     <Compile Include="Src\ManageCards\Request\RemoveRegisteredCardRequest.cs" />
     <Compile Include="Src\ManageSupplyAccount\Activity\ManageSupplyAccountActivity.cs" />
-    <Compile Include="Src\ManageSupplyAccount\Api\IManageSupplyAccountApi.cs" />
     <Compile Include="Src\ManageSupplyAccount\Models\CustomerAccount.cs" />
     <Compile Include="Src\ManageSupplyAccount\Models\RemoveTNBAccountForUserFavResponse.cs" />
     <Compile Include="Src\ManageSupplyAccount\MVP\ManageSupplyAccountContract.cs" />
@@ -681,8 +672,6 @@
     <Compile Include="Src\MultipleAccountPayment\Activity\SelectAccountsActivity.cs" />
     <Compile Include="Src\MultipleAccountPayment\Adapter\MPAddCardAdapter.cs" />
     <Compile Include="Src\MultipleAccountPayment\Adapter\SelectAccountListAdapter.cs" />
-    <Compile Include="Src\MultipleAccountPayment\Api\MPGetAccountsDueAmountApi.cs" />
-    <Compile Include="Src\MultipleAccountPayment\Api\MPRequestPaymentApi.cs" />
     <Compile Include="Src\MultipleAccountPayment\Fragment\MPPaymentWebViewFragment.cs" />
     <Compile Include="Src\MultipleAccountPayment\Fragment\MPSelectPaymentMethodFragment.cs" />
     <Compile Include="Src\MultipleAccountPayment\Model\MPAccount.cs" />
@@ -712,8 +701,6 @@
     <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\PaymentListAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\REPaymentListAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Api\IAmountDueApi.cs" />
-    <Compile Include="Src\myTNBMenu\Api\IBillsPaymentHistoryApi.cs" />
-    <Compile Include="Src\myTNBMenu\Api\IDetailedCustomerAccount.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsDayFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsHourFormatter.cs" />
@@ -757,13 +744,10 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
-    <Compile Include="Src\NotificationDetails\Activity\Base\BaseNotificationDetailActivity.cs" />
-    <Compile Include="Src\NotificationDetails\Api\INotificationDetailsApi.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />
     <Compile Include="Src\NotificationDetails\MVP\NotificationDetailContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPresenter.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequest.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequestV2.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsRequest.cs" />
@@ -880,7 +864,6 @@
     <Compile Include="Src\Database\Model\UserEntity.cs" />
     <Compile Include="Src\ForgetPassword\Requests\ForgetPasswordVerificationCodeRequest.cs" />
     <Compile Include="Src\ResetPassword\Activity\ResetPasswordActivity.cs" />
-    <Compile Include="Src\ResetPassword\Api\IResetPassword.cs" />
     <Compile Include="Src\ResetPassword\Model\ResetPassword.cs" />
     <Compile Include="Src\ResetPassword\Model\ResetPasswordResponse.cs" />
     <Compile Include="Src\ResetPassword\MVP\ResetPasswordContract.cs" />
@@ -941,7 +924,6 @@
     <Compile Include="Src\TermsAndConditions\MVP\TermsAndConditionPresenter.cs" />
     <Compile Include="Src\UpdateMobileNo\Activity\MobileTokenValidationActivity.cs" />
     <Compile Include="Src\UpdateMobileNo\Activity\UpdateMobileActivity.cs" />
-    <Compile Include="Src\UpdateMobileNo\Api\IUpdateMobileNoApi.cs" />
     <Compile Include="Src\UpdateMobileNo\Models\UpdateMobileResponse.cs" />
     <Compile Include="Src\UpdateMobileNo\Models\UpdatePhoneTokenSMSResponse.cs" />
     <Compile Include="Src\UpdateMobileNo\MVP\MobileTokenValidationContract.cs" />
@@ -957,7 +939,6 @@
     <Compile Include="Src\UpdateNickname\MVP\UpdateNicknamePresenter.cs" />
     <Compile Include="Src\UpdateNickname\Request\UpdateLinkedAccountNickNameRequest.cs" />
     <Compile Include="Src\UpdatePassword\Activity\UpdatePasswordActivity.cs" />
-    <Compile Include="Src\UpdatePassword\Api\IUpdatePasswordApi.cs" />
     <Compile Include="Src\UpdatePassword\Models\UpdatePasswordResponse.cs" />
     <Compile Include="Src\UpdatePassword\MVP\UpdatePasswordContract.cs" />
     <Compile Include="Src\UpdatePassword\MVP\UpdatePasswordPresenter.cs" />
@@ -1067,8 +1048,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_Select.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_mark_read.png" />
-    <Compile Include="Src\Notifications\Api\INotificationApi.cs" />
-    <Compile Include="Src\Notifications\Api\NotificationApiImpl.cs" />
     <Compile Include="Src\Notifications\Api\NotificationApiResponse.cs" />
     <Compile Include="Src\Notifications\Api\NotificationDeleteRequest.cs" />
     <Compile Include="Src\Notifications\Api\NotificationReadRequest.cs" />
@@ -4259,6 +4238,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Response\RemoveAccountResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\RemoveAccountRequest.cs" />
     <Compile Include="Src\Utils\WhatNewMenuUtils.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\refresh_grey.png">
       <SubType></SubType>
@@ -4280,6 +4261,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\GetLocationListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetLocationListResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetLocationListByKeywordResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetLocationListByKeywordRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4670,6 +4655,14 @@
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\Rating\Api\" />
     <Folder Include="Src\FAQ\Model\" />
+    <Folder Include="Src\MultipleAccountPayment\Api\" />
+    <Folder Include="Src\ResetPassword\Api\" />
+    <Folder Include="Src\UpdatePassword\Api\" />
+    <Folder Include="Src\LogoutRate\Api\" />
+    <Folder Include="Src\NotificationDetails\Activity\Base\" />
+    <Folder Include="Src\NotificationDetails\Api\" />
+    <Folder Include="Src\UpdateMobileNo\Api\" />
+    <Folder Include="Src\ManageSupplyAccount\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
