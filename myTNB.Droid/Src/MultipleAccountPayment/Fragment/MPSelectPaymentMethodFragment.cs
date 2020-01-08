@@ -12,6 +12,7 @@ using Java.Text;
 using myTNB_Android.Src.AddCard.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
@@ -1013,15 +1014,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             try
             {
-                if (response != null)
+                if (response != null && response.requestPayBill != null)
                 {
                     Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
-                    if (response.requestPayBill.ErrorCode != "7200")
-                    {
-                        ShowErrorMessage(response.requestPayBill.DisplayMessage);
-                    }
-                    else
-                    {
+                    if (response.requestPayBill.ErrorCode == "7200")
+                    { 
                         if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
                         {
                             InitiateSubmitPayment(response, cardDetails);
@@ -1031,7 +1028,41 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             InitiateFPXPayment(response);
                         }
                     }
+                    else if (response.requestPayBill.ErrorCode == "7000")
+                    {
+                        string title = "";
+                        string message = "";
+                        if (!string.IsNullOrEmpty(response.requestPayBill.DisplayTitle))
+                        {
+                            title = response.requestPayBill.DisplayTitle;
+                        }
+                        if (!string.IsNullOrEmpty(response.requestPayBill.DisplayMessage))
+                        {
+                            message = response.requestPayBill.DisplayMessage;
+                        }
+                        Intent maintenanceScreen = new Intent(this.Activity, typeof(MaintenanceActivity));
+                        maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, title);
+                        maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, message);
+                        StartActivity(maintenanceScreen);
+                    }
+                    else
+                    {
+                        string txt = "";
+                        if (!string.IsNullOrEmpty(response.requestPayBill.DisplayMessage))
+                        {
+                            txt = response.requestPayBill.DisplayMessage;
+                        }
+                        else
+                        {
+                            txt = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+                        }
+                        ShowErrorMessage(response.requestPayBill.DisplayMessage);
+                    }
 
+                }
+                else
+                {
+                    ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 }
             }
             catch (Exception e)

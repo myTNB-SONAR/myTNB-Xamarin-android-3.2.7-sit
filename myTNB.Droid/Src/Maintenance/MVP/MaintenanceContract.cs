@@ -30,6 +30,8 @@ namespace myTNB_Android.Src.Maintenance.MVP
             /// Launch AppLaunch
             /// </summary>
             void ShowLaunchViewActivity();
+
+            void OnUpdateMaintenanceWord(string mTitle, string mMessage);
         }
 
         public interface IUserActionsListener : IBasePresenter

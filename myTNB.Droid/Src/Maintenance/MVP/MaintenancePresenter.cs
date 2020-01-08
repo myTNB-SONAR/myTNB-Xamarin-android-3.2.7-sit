@@ -80,28 +80,28 @@ namespace myTNB_Android.Src.Maintenance.MVP
 
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
+                    if (masterDataResponse.Data.ErrorCode == "7200")
+                    {
+                        this.mView.ShowLaunchViewActivity();
+                    }
+                    else if (masterDataResponse.Data.ErrorCode == "7000")
+                    {
+                        string title = "";
+                        string message = "";
 
-                if (masterDataResponse.Data.ErrorCode != "7000" && masterDataResponse.Data.ErrorCode == "7200")
-                {
-                    this.mView.ShowLaunchViewActivity();
+                        if (!string.IsNullOrEmpty(masterDataResponse.Data.DisplayTitle))
+                        {
+                            title = masterDataResponse.Data.DisplayTitle;
+                        }
+
+                        if (!string.IsNullOrEmpty(masterDataResponse.Data.DisplayMessage))
+                        {
+                            message = masterDataResponse.Data.DisplayMessage;
+                        }
+
+                        this.mView.OnUpdateMaintenanceWord(title, message);
+                    }
                 }
-                else if (masterDataResponse.Data.ErrorCode == "7000")
-                {
-
-                }
-                else
-                {
-                    Console.WriteLine("Excution time enters else");
-                }
-                }
-                else
-                {
-                    Console.WriteLine("Excution time enters else");
-                }
-
-
-
-
             }
             catch (ApiException apiException)
             {

@@ -27,6 +27,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("ErrorMessage")]
             public string ErrorMessage { get; set; }
 
+            [JsonProperty(PropertyName = "DisplayTitle")]
+            [AliasAs("DisplayTitle")]
+            public string DisplayTitle { get; set; }
+
             [JsonProperty(PropertyName = "DisplayMessage")]
             [AliasAs("DisplayMessage")]
             public string DisplayMessage { get; set; }

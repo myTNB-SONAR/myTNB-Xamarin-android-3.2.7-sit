@@ -7,6 +7,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 //MPInitiatePaymentResponse result = await api.InitiatePayment(new MPInitiatePaymentRequestV3(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, totalAmount, paymentItems));
                 //this.mView.SaveInitiatePaymentResponse(result);
                 //this.mView.HidePaymentRequestDialog();
+                var dump = JsonConvert.SerializeObject(paymentTransactionIdRequest);
                 PaymentTransactionIdResponse response = await newApi.GetPaymentTransactionId<PaymentTransactionIdResponse>(paymentTransactionIdRequest);
                 this.mView.SetInitiatePaymentResponse(response);
                 this.mView.HidePaymentRequestDialog();
