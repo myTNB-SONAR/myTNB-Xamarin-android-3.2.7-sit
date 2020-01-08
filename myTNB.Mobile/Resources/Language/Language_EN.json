@@ -241,7 +241,8 @@
     "ssmrTrackApplication": "Track Application",
     "ssmrBackToUsage": "Back to My Usage",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "View Reading History"
+    "ssmrViewReadHistory": "View Reading History",
+    "ssmrBackToReadingHistory": "Back to Reading History"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",

@@ -492,6 +492,5 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
-
     }
 }

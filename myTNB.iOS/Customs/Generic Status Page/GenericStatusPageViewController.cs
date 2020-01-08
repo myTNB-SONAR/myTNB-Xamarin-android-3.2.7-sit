@@ -286,7 +286,7 @@ namespace myTNB
                 }
                 else
                 {
-                    GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRViewReadHistory), false, _actions.ViewReadingHistory);
+                    GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBackToReadingHistory), false, _actions.ViewReadingHistory);
                     GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain, true);
                 }
             }

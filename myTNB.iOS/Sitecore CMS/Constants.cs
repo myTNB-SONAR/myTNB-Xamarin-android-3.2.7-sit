@@ -168,15 +168,16 @@
 
 #if DEBUG || MASTER
                 public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV4";
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
 #else
                 public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
 #endif
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";
                 public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
                 public const string MeterReadSSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
                 public const string MeterReadSSMRWalkthroughV2 = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";

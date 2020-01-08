@@ -637,7 +637,7 @@ namespace myTNB
                     {
                         Debug.WriteLine("Display Full Planned");
                         _bgImageView.Image = UIImage.FromBundle(Constants.IMG_BannerPlannedDownTime);
-                        lblMessage.Text = GetErrorI18NValue(Constants.Error_PlannedDownTimeMessage);
+                        lblMessage.Text = _accountCharges.d.DisplayMessage.IsValid() ? _accountCharges.d.DisplayMessage : GetErrorI18NValue(Constants.Error_PlannedDownTimeMessage);
                         nfloat lblHeight = lblMessage.GetLabelHeight(1000);
                         lblMessage.Frame = new CGRect(lblMessage.Frame.Location, new CGSize(lblMessage.Frame.Width, lblHeight));
                         _refreshView.Frame = new CGRect(_refreshView.Frame.Location

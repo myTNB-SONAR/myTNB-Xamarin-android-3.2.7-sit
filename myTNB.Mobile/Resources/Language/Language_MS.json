@@ -6,7 +6,7 @@
     "submit": "Hantar",
     "selectAccounts": "Pilih Akaun",
     "selectAccount": "Pilih Akaun",
-    "backToHome": "Kembali ke Laman Utama",
+    "backToHome": "Kembali ke Utama",
     "tryAgain": "Cuba Semula",
     "settings": "Tetapan",
     "cancel": "Batal",
@@ -241,7 +241,8 @@
     "ssmrTrackApplication": "Pantau Permohonan",
     "ssmrBackToUsage": "Kembali ke Penggunaaan",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Kembali ke Penggunaan"
+    "ssmrViewReadHistory": "Lihat Sejarah Bacaan",
+    "ssmrBackToReadingHistory": "Kembali ke Rekod Bacaan"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -833,7 +834,7 @@
   "RatingResults": {
     "description": "Penarafan anda akan membantu kami meningkatkan mutu perkhidmatan kepada anda.",
     "thankyou": "Terima Kasih.",
-    "backToHome": "Kembali ke Laman Utama"
+    "backToHome": "Kembali ke Utama"
   },
   "Promotions": {
     "title": "Terkini",
