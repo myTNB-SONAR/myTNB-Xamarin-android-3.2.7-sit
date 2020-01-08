@@ -194,8 +194,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 }
 
 
-                TextViewUtils.SetMuseoSans300Typeface(textTotalPayable, textTotalPayableTitle);
-                TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency);
+                TextViewUtils.SetMuseoSans300Typeface(textTotalPayable);
+                TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency, textTotalPayableTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnPayBill);
 
                 btnPayBill.Text = GetLabelByLanguage("paySingle");
