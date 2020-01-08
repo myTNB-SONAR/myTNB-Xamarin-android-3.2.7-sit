@@ -134,6 +134,9 @@ namespace myTNB_Android.Src.RegisterValidation
                 Snackbar mPinSentInfo = Snackbar.Make(rootView,
                     Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
+                    View v = mPinSentInfo.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
                 mPinSentInfo.Show();
                 this.userActionsListener.Start();
             }
@@ -495,6 +498,9 @@ namespace myTNB_Android.Src.RegisterValidation
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }

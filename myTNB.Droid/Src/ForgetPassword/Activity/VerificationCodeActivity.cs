@@ -297,6 +297,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
+            View v = mSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mSnackBar.Show();
 
         }
@@ -447,6 +450,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -473,6 +479,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
         }
 
@@ -498,6 +507,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
         }
 

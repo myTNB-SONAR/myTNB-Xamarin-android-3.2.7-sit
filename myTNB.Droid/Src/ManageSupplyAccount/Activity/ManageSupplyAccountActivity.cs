@@ -226,14 +226,17 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.accountData = accountData;
                 txtNickName.Text = accountData.AccountNickName;
 
-                Snackbar.Make(rootView, GetLabelByLanguage("nicknameUpdateSuccess"), Snackbar.LengthIndefinite)
+                Snackbar updateSnackbar = Snackbar.Make(rootView, GetLabelByLanguage("nicknameUpdateSuccess"), Snackbar.LengthIndefinite)
                 .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
-
                  // EMPTY WILL CLOSE SNACKBAR
-             }
-                ).Show();
+               }
+               );
+            View v = updateSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)

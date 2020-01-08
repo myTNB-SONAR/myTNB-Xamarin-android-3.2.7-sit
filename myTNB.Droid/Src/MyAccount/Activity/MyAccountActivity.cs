@@ -144,6 +144,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     mCancelledExceptionSnackBar.Dismiss();
                 }
                 );
+                View v = mCancelledExceptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mCancelledExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -171,6 +174,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     mApiExcecptionSnackBar.Dismiss();
                 }
                 );
+                View v = mApiExcecptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mApiExcecptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -199,6 +205,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     mUknownExceptionSnackBar.Dismiss();
                 }
                 );
+                View v = mUknownExceptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mUknownExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -380,14 +389,18 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 adapter.Remove(position);
-                Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_remove_supply_account), Snackbar.LengthIndefinite)
+                Snackbar removeSupplySnackbar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_remove_supply_account), Snackbar.LengthIndefinite)
                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
                             (view) =>
                             {
 
                             // EMPTY WILL CLOSE SNACKBAR
                         }
-                           ).Show();
+                           );
+                           View v = removeSupplySnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            removeSupplySnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (Exception e)

@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.refresh_image)]
         ImageView refresh_image;
-        
+
 
         private IMenu notificationMenu;
         NotificationRecyclerAdapter notificationRecyclerAdapter;
@@ -672,6 +672,9 @@ namespace myTNB_Android.Src.Notifications.Activity
                 mCancelledErrorSnackBar.Dismiss();
             }
             );
+            View v = mCancelledErrorSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledErrorSnackBar.Show();
             this.SetIsClicked(false);
         }
@@ -693,6 +696,9 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
             this.SetIsClicked(false);
         }
@@ -715,6 +721,9 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
             this.SetIsClicked(false);
         }
@@ -735,6 +744,9 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
         }
@@ -763,6 +775,9 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             }
             );
+            View v = mNotificationRemoved.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mNotificationRemoved.Show();
             this.SetIsClicked(false);
         }

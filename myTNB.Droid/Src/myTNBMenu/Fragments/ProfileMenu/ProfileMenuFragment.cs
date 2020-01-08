@@ -723,6 +723,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     mCancelledExceptionSnackBar.Dismiss();
                 }
                 );
+                View v = mCancelledExceptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mCancelledExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -751,6 +754,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 }
                 );
+                View v = mApiExcecptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mApiExcecptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -780,6 +786,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 }
                 );
+                View v = mUknownExceptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mUknownExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -794,14 +803,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                Snackbar logoutErrorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("ok"),
                              (view) =>
                              {
 
                                  // EMPTY WILL CLOSE SNACKBAR
                              }
-                            ).Show();
+                            );
+                            View v = logoutErrorSnackbar.View;
+                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        tv.SetMaxLines(5);
+                        logoutErrorSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -911,13 +924,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 string lastDigits = creditCard.LastDigits.Substring(creditCard.LastDigits.Length - 4);
                 cards.SetValue(string.Format("{0}", numOfCards));
-                Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
+                Snackbar removeCardSnackbar = Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
                             (view) =>
                             {
                                 // EMPTY WILL CLOSE SNACKBAR
                             }
-                           ).Show();
+                           );
+                           View v = removeCardSnackbar.View;
+                       TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                       tv.SetMaxLines(5);
+                       removeCardSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)

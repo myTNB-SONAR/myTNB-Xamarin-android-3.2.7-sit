@@ -161,14 +161,18 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowError(string exception)
         {
-            Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
+            Snackbar showErrorSnackbar = Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                 (view) =>
                 {
 
                     // EMPTY WILL CLOSE SNACKBAR
                 }
-            ).Show();
+            );
+            View v = showErrorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            showErrorSnackbar.Show();
         }
 
         public void ShowGetQuestionSuccess(GetRateUsQuestionResponse response)

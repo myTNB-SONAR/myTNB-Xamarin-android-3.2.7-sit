@@ -262,6 +262,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -282,6 +285,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -302,6 +308,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
         }
