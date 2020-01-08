@@ -119,6 +119,12 @@ namespace myTNB
                                     InitializeTooltip();
                                     AddDetails();
                                     AddSectionTitle();
+                                    SetEvents();
+                                    if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+                                    {
+                                        _btnPay.Enabled = false;
+                                        _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                                    }
                                     if (_refreshViewContainer == null)
                                     {
                                         _refreshViewContainer = new UIView(new CGRect(0

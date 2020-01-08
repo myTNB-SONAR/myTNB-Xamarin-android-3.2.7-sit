@@ -18,6 +18,8 @@ namespace myTNB
 
         public static bool IsSuccess { set; get; }
         public static bool IsDataEmpty { set; get; }
+        public static bool IsPlannedDownTime { set; get; }
+        public static bool IsUnplannedDownTime { set; get; }
 
         public static void ClearTariffLegendList()
         {
@@ -46,6 +48,8 @@ namespace myTNB
         {
             IsSuccess = response?.d?.IsSuccess ?? false;
             IsDataEmpty = response?.d?.IsDataEmpty ?? false;
+            IsPlannedDownTime = response?.d?.IsPlannedDownTime ?? false;
+            IsUnplannedDownTime = response?.d?.IsUnplannedDownTime ?? false;
             if (response != null && response.d != null
                 && response.d.IsSuccess && response.d.data != null)
             {
