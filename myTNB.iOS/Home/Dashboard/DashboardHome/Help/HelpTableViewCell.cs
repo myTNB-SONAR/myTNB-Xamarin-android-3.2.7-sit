@@ -151,11 +151,13 @@ namespace myTNB
                     ParagraphStyle = new NSMutableParagraphStyle { HyphenationFactor = 1 }
                 }, new NSRange(0, htmlBody.Length));
 
-                UITextView lblHelp = new UITextView(new CGRect(GetScaledWidth(6F), GetScaledHeight(12F)
-                    , helpCardView.Frame.Width - GetScaledWidth(12F), helpCardView.Frame.Height - GetScaledHeight(24F)))
+                nfloat xRef = TNBGlobal.APP_LANGUAGE == "EN" ? 8 : 6;
+                UITextView lblHelp = new UITextView(new CGRect(GetScaledWidth(xRef), GetScaledHeight(12F)
+                    , helpCardView.Frame.Width - GetScaledWidth(xRef * 2), helpCardView.Frame.Height - GetScaledHeight(24F)))
                 {
                     Editable = false,
                     ScrollEnabled = true,
+                    UserInteractionEnabled = false,
                     AttributedText = attributedString,
                     ContentInset = new UIEdgeInsets(-5, 0, -5, 0),
                     BackgroundColor = UIColor.Clear

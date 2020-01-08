@@ -16,13 +16,5 @@ namespace myTNB
         public bool IsSMRFeatureDisabled { set; get; }
         public bool IsOCRDown { set; get; }
         public bool IsPayEnabled { set; get; }
-        [JsonIgnore]
-        public bool IsMaintenance
-        {
-            get
-            {
-                return ErrorCode == "7000";
-            }
-        }
     }
 }

@@ -33,7 +33,7 @@ namespace myTNB.PushNotification
         private UILabel _lblTitle;
 
         private RefreshViewComponent _refreshViewComponent;
-        private UIView _headerView, _titleBarView;
+        private UIView _headerView, _titleBarView, _refreshView;
 
         private GradientViewComponent _gradientViewComponent;
 
@@ -106,25 +106,57 @@ namespace myTNB.PushNotification
 
         private void ValidateResponse()
         {
-            userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
-            bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
-
-            if (isBRCRMAvailable && userNotificationResponse != null && userNotificationResponse?.d != null && userNotificationResponse.d.IsSuccess
-                && userNotificationResponse.d.data != null && userNotificationResponse.d.data.UserNotificationList != null)
+            pushNotificationTableView.Hidden = true;
+            if (_refreshView != null)
             {
-                UpdateNotificationDisplay();
+                _refreshView.RemoveFromSuperview();
+            }
+            _gradientViewComponent.SetOpacity(0);
+            _titleBarComponent.SetPrimaryVisibility(true);
+            _titleBarComponent.SetSecondaryVisibility(true);
+
+            userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
+
+            if (userNotificationResponse != null && userNotificationResponse.d != null)
+            {
+                UserNotificationModel response = userNotificationResponse.d;
+                if (response.IsSuccess && response.data != null)
+                {
+                    _gradientViewComponent.SetOpacity(1);
+                    UpdateNotificationDisplay();
+                }
+                else
+                {
+                    if (response.IsPlannedDownTime)
+                    {
+                        RefreshComponent refreshComponent = new RefreshComponent(response.DisplayMessage)
+                        {
+                            IsPlannedDownTime = true,
+                            PageName = PageName,
+                            IsAutoAddView = true
+                        };
+                        _refreshView = refreshComponent.GetUI(View, true);
+                    }
+                    else
+                    {
+                        ShowRefresh(response.RefreshMessage, response.RefreshBtnText);
+                    }
+                }
             }
             else
             {
-                string msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage)
-                    ? userNotificationResponse?.d?.RefreshMessage : GetErrorI18NValue(Constants.Error_RefreshMessage);
-                string btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText)
-                    ? userNotificationResponse?.d?.RefreshBtnText : GetCommonI18NValue(Constants.Common_RefreshNow);
-                DisplayRefreshScreen(msg, btnText);
-                _titleBarComponent.SetPrimaryVisibility(true);
-                _titleBarComponent.SetSecondaryVisibility(true);
-                pushNotificationTableView.Hidden = true;
+                ShowRefresh(GetCommonI18NValue(Constants.Common_RefreshMessage), GetCommonI18NValue(Constants.Common_RefreshNow));
             }
+        }
+
+        private void ShowRefresh(string msg, string btnText)
+        {
+            RefreshComponent refreshComponent = new RefreshComponent(msg, btnText, OnRefreshTap)
+            {
+                PageName = PageName,
+                IsAutoAddView = true
+            };
+            _refreshView = refreshComponent.GetUI(View, true);
         }
 
         private void OnRefreshTap()
@@ -268,6 +300,12 @@ namespace myTNB.PushNotification
 
         private void SetNavigationBar()
         {
+            if (_headerView != null)
+            {
+                _headerView.RemoveFromSuperview();
+                _headerView = null;
+            }
+
             NavigationController?.SetNavigationBarHidden(true, false);
             _gradientViewComponent = new GradientViewComponent(View, true, (float)GetScaledHeight(88), true);
             _headerView = _gradientViewComponent.GetUI();

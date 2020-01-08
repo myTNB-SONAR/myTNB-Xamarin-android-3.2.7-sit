@@ -5,7 +5,7 @@
         public AccountStatusResponseDataModel d { set; get; }
     }
 
-    public class AccountStatusResponseDataModel : BaseModelRefresh
+    public class AccountStatusResponseDataModel : BaseModelV2
     {
         public AccountStatusDataModel data { set; get; }
     }

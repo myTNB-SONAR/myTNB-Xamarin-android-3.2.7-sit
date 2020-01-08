@@ -241,7 +241,8 @@
     "ssmrTrackApplication": "Track Application",
     "ssmrBackToUsage": "Back to My Usage",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "View Reading History"
+    "ssmrViewReadHistory": "View Reading History",
+    "ssmrBackToReadingHistory": "Back to Reading History"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -766,7 +767,7 @@
   "CardScanner": {
     "title": "Add Card",
     "scanMessage": "Scan the front of your credit / debit card to retrieve card details.",
-    "scanInstructions": "Hold card here. It will scan automatically."
+    "scanInstructions": "Hold card here.\r\nIt will scan automatically."
   },
   "Receipt": {
     "title": "Payment Receipt",

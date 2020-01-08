@@ -6,7 +6,7 @@
     "submit": "Hantar",
     "selectAccounts": "Pilih Akaun",
     "selectAccount": "Pilih Akaun",
-    "backToHome": "Kembali ke Laman Utama",
+    "backToHome": "Kembali ke Utama",
     "tryAgain": "Cuba Semula",
     "settings": "Tetapan",
     "cancel": "Batal",
@@ -241,7 +241,8 @@
     "ssmrTrackApplication": "Pantau Permohonan",
     "ssmrBackToUsage": "Kembali ke Penggunaaan",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Kembali ke Penggunaan"
+    "ssmrViewReadHistory": "Lihat Sejarah Bacaan",
+    "ssmrBackToReadingHistory": "Kembali ke Rekod Bacaan"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -680,7 +681,7 @@
     "verifyDeviceTitle": "Sahkan Nombor Telefon",
     "verifyDeviceMessage": "Sila sahkan no. telefon anda.",
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
-    "updateMobileNumberTitle": "Kemaskini Nombor Telefon"
+    "updateMobileNumberTitle": "Kemas kini Nombor Telefon"
   },
   "VerifyPin": {
     "title": "Sahkan Nombor Telefon",
@@ -701,7 +702,7 @@
     "confirmNewPassword": "Sahkan Kata Laluan Baharu"
   },
   "UpdateNickname": {
-    "title": "Kemaskini Nama Ringkas"
+    "title": "Kemas kini Nama Ringkas"
   },
   "ManageAccount": {
     "title": "Uruskan Akaun Elektrik",
@@ -766,7 +767,7 @@
   "CardScanner": {
     "title": "Tambah kad",
     "scanMessage": "Imbas muka hadapan kad kredit / debit anda untuk mendapatkan butiran kad.",
-    "scanInstructions": "Pegang kad di sini. Ia akan mengimbas secara automatik."
+    "scanInstructions": "Pegang kad di sini.\r\nIa akan mengimbas secara automatik."
   },
   "Receipt": {
     "title": "Resit Pembayaran",
@@ -834,7 +835,7 @@
   "RatingResults": {
     "description": "Penarafan anda akan membantu kami meningkatkan mutu perkhidmatan kepada anda.",
     "thankyou": "Terima Kasih.",
-    "backToHome": "Kembali ke Laman Utama"
+    "backToHome": "Kembali ke Utama"
   },
   "Promotions": {
     "title": "Terkini",

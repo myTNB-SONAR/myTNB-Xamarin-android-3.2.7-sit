@@ -7,7 +7,6 @@ using Cirrious.FluentLayouts.Touch;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SQLite;
 using myTNB.DataManager;
@@ -648,8 +647,8 @@ namespace myTNB
             var titleMsg = response?.DisplayTitle;
             var descMsg = response?.DisplayMessage;
 
-            titleMsg = !string.IsNullOrEmpty(titleMsg) ? titleMsg : LanguageUtility.GetCommonI18NValue(AppLaunchConstants.I18N_MaintenanceTitle);
-            descMsg = !string.IsNullOrEmpty(descMsg) ? descMsg : LanguageUtility.GetCommonI18NValue(AppLaunchConstants.I18N_MaintenanceMsg);
+            titleMsg = !string.IsNullOrEmpty(titleMsg) ? titleMsg : LanguageUtility.GetCommonI18NValue(Constants.Common_MaintenanceTitle);
+            descMsg = !string.IsNullOrEmpty(descMsg) ? descMsg : LanguageUtility.GetCommonI18NValue(Constants.Common_MaintenanceMsg);
 
             UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 24f, labelWidth, 44f))
             {

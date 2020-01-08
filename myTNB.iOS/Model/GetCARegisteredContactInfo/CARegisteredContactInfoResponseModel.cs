@@ -5,7 +5,7 @@
         public ContactDetailsDataModel d { set; get; }
     }
 
-    public class ContactDetailsDataModel : BaseModelRefresh
+    public class ContactDetailsDataModel : BaseModelV2
     {
         public ContactDetailsModel data { set; get; }
         public bool IsBusinessFail

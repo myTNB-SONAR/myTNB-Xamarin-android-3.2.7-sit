@@ -7,7 +7,7 @@ namespace myTNB.Model
         public AmountDueStatusDataModel d { set; get; }
     }
 
-    public class AmountDueStatusDataModel : BaseModelRefresh
+    public class AmountDueStatusDataModel : BaseModelV2
     {
         public List<DueAmountDataModel> data { set; get; }
     }

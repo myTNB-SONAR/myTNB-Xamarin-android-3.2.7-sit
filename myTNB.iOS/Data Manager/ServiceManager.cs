@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System;
+using UIKit;
+using myTNB.Maintenance;
+using CoreFoundation;
 
 namespace myTNB
 {
@@ -28,16 +31,30 @@ namespace myTNB
                 RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, version, env);
                 try
                 {
-                    if (rawResponse != null && rawResponse.Content.IsValid())
+                    if (suffix != "GetAppLaunchMasterData") //Note: Allow AppLaunch to have old implementation
                     {
-                        JObject jsonData = JObject.Parse(rawResponse.Content);
-                        JToken contentData = jsonData["d"];
-                        if (contentData != null)
+                        if (rawResponse != null && rawResponse.Content.IsValid())
                         {
-                            BaseModelV2 baseModel = JsonConvert.DeserializeObject<BaseModelV2>(contentData.ToString());
-                            if (baseModel != null && baseModel.IsMaintenance)
+                            JObject jsonData = JObject.Parse(rawResponse.Content);
+                            JToken contentData = jsonData["d"];
+                            if (contentData != null)
                             {
-                                //Todo: Intercept Screen
+                                BaseModelV2 baseModel = JsonConvert.DeserializeObject<BaseModelV2>(contentData.ToString());
+                                if (baseModel != null && baseModel.IsMaintenance)
+                                {
+                                    var main = DispatchQueue.MainQueue;
+                                    main.DispatchAsync(() =>
+                                    {
+                                        var currentVC = UIApplication.SharedApplication.KeyWindow.RootViewController;
+                                        var topVC = AppDelegate.GetTopViewController(currentVC);
+                                        if (topVC != null)
+                                        {
+                                            MaintenanceViewController maintenanceVc = new MaintenanceViewController();
+                                            maintenanceVc.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                            topVC.PresentViewController(maintenanceVc, true, null);
+                                        }
+                                    });
+                                }
                             }
                         }
                     }

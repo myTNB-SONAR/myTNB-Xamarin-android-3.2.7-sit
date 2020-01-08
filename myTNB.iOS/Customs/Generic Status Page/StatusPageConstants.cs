@@ -61,6 +61,7 @@ namespace myTNB.Customs.GenericStatusPage
         public static string I18N_SSMRViewReadHistory = "ssmrViewReadHistory";
         public static string I18N_BacktoHome = "backToHome";
         public static string I18N_TryAgain = "tryAgain";
+        public static string I18N_SSMRBackToReadingHistory = "ssmrBackToReadingHistory";
 
         public static string PageName = "Status";
     }

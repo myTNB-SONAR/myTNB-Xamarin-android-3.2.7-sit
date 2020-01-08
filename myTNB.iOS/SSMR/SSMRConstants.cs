@@ -109,6 +109,8 @@ namespace myTNB.SSMR
         public static string I18N_TutorialHeaderTitle = "tutorialHeaderTitle";
         public static string I18N_TutorialHeaderDesc = "tutorialHeaderDesc";
         public static string I18N_TutorialGotIt = "tutorialGotIt";
+        public static string I18N_PrevReadingEmptyTitle = "prevReadingEmptyTitle";
+        public static string I18N_PrevReadingEmptyMsg="prevReadingEmptyMsg";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
