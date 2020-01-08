@@ -1842,14 +1842,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             OnCheckToCallHomeMenuTutorial();
         }
 
-        public void OnCheckMyServiceState()
+        public void OnCheckMyServiceNewFAQState()
         {
-            if (HomeMenuUtils.GetIsLoadedHomeMenu())
-            {
-                isMyServiceDone = false;
-                isHomeMenuTutorialShown = false;
-                RestoreCurrentMyServiceState();
-            }
+            isMyServiceDone = false;
+            isNeedHelpDone = false;
+            isHomeMenuTutorialShown = false;
+            RestoreCurrentMyServiceState();
+            GetSavedNewFAQTimeStamp();
         }
 
         public bool GetIsMyServiceRefreshNeeded()
@@ -2445,6 +2444,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private bool isAllDone()
         {
             return isSummaryDone && isMyServiceDone && isNeedHelpDone;
+        }
+
+        public bool GetIsLoadedHomeDone()
+        {
+            return HomeMenuUtils.GetIsLoadedHomeMenu();
         }
 
         public void OnCheckToCallHomeMenuTutorial()

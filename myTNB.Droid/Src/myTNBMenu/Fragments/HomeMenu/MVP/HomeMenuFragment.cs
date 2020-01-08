@@ -225,6 +225,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
+        private NewFAQScrollListener mListener;
+
 
         private string mSavedTimeStamp = "0000000";
 
@@ -811,10 +813,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             newFAQListRecycleView.SetAdapter(newFAQAdapter);
                             currentNewFAQList.Clear();
                             currentNewFAQList.AddRange(list);
+
+                            if (indicatorContainer != null && indicatorContainer.ChildCount > 0)
+                            {
+                                indicatorContainer.RemoveAllViews();
+                            }
+
                             if (list != null && list.Count > 3)
                             {
                                 indicatorContainer.Visibility = ViewStates.Visible;
-                                newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                                if (mListener == null)
+                                {
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
+                                else
+                                {
+                                    newFAQListRecycleView.RemoveOnScrollListener(mListener);
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
+
                                 int count = 0;
                                 for (int i = 0; i < list.Count; i += 3)
                                 {
@@ -838,7 +857,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             else
                             {
-                                newFAQListRecycleView.AddOnScrollListener(new NewFAQScrollListener(list, indicatorContainer));
+                                if (mListener == null)
+                                {
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
+                                else
+                                {
+                                    newFAQListRecycleView.RemoveOnScrollListener(mListener);
+                                    mListener = new NewFAQScrollListener(list, indicatorContainer);
+                                    newFAQListRecycleView.AddOnScrollListener(mListener);
+                                }
                                 indicatorContainer.Visibility = ViewStates.Gone;
                             }
 
@@ -1048,6 +1077,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
+                if (this.presenter != null)
+                {
+                    if (this.presenter.GetIsLoadedHomeDone())
+                    {
+                        this.presenter.OnCheckMyServiceNewFAQState();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
                 var act = this.Activity as AppCompatActivity;
 
                 var actionBar = act.SupportActionBar;
@@ -1057,7 +1101,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (this.presenter != null)
                 {
                     this.presenter.GetUserNotifications();
-                    this.presenter.OnCheckMyServiceState();
                 }
 
                 if (newLabel != null)
@@ -2472,31 +2515,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnShowHomeMenuFragmentTutorialDialog()
         {
-            Handler h = new Handler();
-            Action myAction = () =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    Activity.RunOnUiThread(() =>
+                    try
                     {
-                        try
+                        Handler h = new Handler();
+                        Action myAction = () =>
                         {
-                            StopScrolling();
-                        }
-                        catch (System.Exception ex)
-                        {
-                            Utility.LoggingNonFatalError(ex);
-                        }
-                    });
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-                NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
-            };
-            h.PostDelayed(myAction, 50);
+                            try
+                            {
+                                Activity.RunOnUiThread(() =>
+                                {
+                                    try
+                                    {
+                                        StopScrolling();
+                                    }
+                                    catch (System.Exception ex)
+                                    {
+                                        Utility.LoggingNonFatalError(ex);
+                                    }
+                                });
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                        };
+                        h.PostDelayed(myAction, 50);
+                    }
+                    catch (System.Exception exep)
+                    {
+                        Utility.LoggingNonFatalError(exep);
+                    }
+                });
+            }
+            catch (System.Exception exe)
+            {
+                Utility.LoggingNonFatalError(exe);
+            }
         }
 
         public void HomeMenuCustomScrolling(int yPosition)

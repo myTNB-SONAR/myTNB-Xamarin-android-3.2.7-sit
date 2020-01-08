@@ -148,13 +148,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void RestoreQueryAccounts();
 
-            void OnCheckMyServiceState();
+            void OnCheckMyServiceNewFAQState();
 
             bool GetIsMyServiceRefreshNeeded();
 
             bool GetIsAccountRefreshNeeded();
 
             void UpdateNewFAQCompleteState();
+
+            bool GetIsLoadedHomeDone();
         }
 
         public interface IHomeMenuService
