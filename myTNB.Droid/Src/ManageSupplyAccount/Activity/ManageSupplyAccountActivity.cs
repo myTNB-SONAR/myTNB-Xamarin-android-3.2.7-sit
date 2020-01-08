@@ -298,6 +298,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
             );
+            View snackbarView = mCancelledExceptionSnackBar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -317,6 +320,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
             );
+            View snackbarView = mApiExcecptionSnackBar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -337,20 +343,27 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             }
             );
+            View snackbarView = mUknownExceptionSnackBar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
             mUknownExceptionSnackBar.Show();
 
         }
 
         public void ShowErrorMessageResponse(string error)
         {
+            Snackbar errorMessageSnackbar =
             Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
                         .SetAction(Utility.GetLocalizedCommonLabel("close"),
                          (view) =>
                          {
-
                              // EMPTY WILL CLOSE SNACKBAR
                          }
-                        ).Show();
+                        );//.Show();
+            View snackbarView = errorMessageSnackbar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
+            errorMessageSnackbar.Show();
         }
 
         public void ShowNickname(string nickname)
