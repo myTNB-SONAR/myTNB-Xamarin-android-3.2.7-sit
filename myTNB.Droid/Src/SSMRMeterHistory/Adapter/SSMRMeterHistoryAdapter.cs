@@ -56,7 +56,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
 			TextViewUtils.SetMuseoSans500Typeface(vh.ssmrDate, vh.ssmrKWhValue);
             TextViewUtils.SetMuseoSans300Typeface(vh.ssmrDescription, vh.ssmrForDate);
 
-            if (model.ReadingType.Trim().ToUpper() == "Estimated Reading".ToUpper() || model.ReadingType.Trim().ToUpper() == "Bacaan anggaran".ToUpper())
+            if (model.ReadingTypeCode.Trim() == "03" || model.ReadingTypeCode.Trim() == "53" ||
+                model.ReadingTypeCode.Trim() == "73" || model.ReadingTypeCode.Trim() == "83" ||
+                model.ReadingTypeCode.Trim() == "93")
             {
                 vh.ssmrDescription.SetTextColor(Color.ParseColor("#e44b21"));
             }

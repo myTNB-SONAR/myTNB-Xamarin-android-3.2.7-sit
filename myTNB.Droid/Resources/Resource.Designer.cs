@@ -12730,11 +12730,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e03f5
 			public const int txtNotificationChannelTitle = 2131624949;
 			
-			// aapt resource value: 0x7f0e03ef
-			public const int txtNotificationContent = 2131624943;
-			
 			// aapt resource value: 0x7f0e03f0
-			public const int txtNotificationDate = 2131624944;
+			public const int txtNotificationContent = 2131624944;
+			
+			// aapt resource value: 0x7f0e03ef
+			public const int txtNotificationDate = 2131624943;
 			
 			// aapt resource value: 0x7f0e03e9
 			public const int txtNotificationTitle = 2131624937;
