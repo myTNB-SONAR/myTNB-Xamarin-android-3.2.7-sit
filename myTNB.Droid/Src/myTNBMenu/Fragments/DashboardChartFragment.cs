@@ -6922,7 +6922,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             btnReadingHistory.Enabled = false;
             btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
             btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+            btnReadingHistory.Text = Utility.GetLocalizedLabel("Usage", "viewReadHistory");
             // Start SSMR Shimmer
             var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
             if (shimmerBuilder != null)

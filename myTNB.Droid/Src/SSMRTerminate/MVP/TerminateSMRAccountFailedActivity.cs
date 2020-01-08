@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     }
                     else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
                     {
-                        btnBackToHomeFailed.Text = Utility.GetLocalizedLabel("Status", "ssmrViewReadHistory");
+                        btnBackToHomeFailed.Text = Utility.GetLocalizedLabel("Status", "ssmrBackToReadingHistory");
                         btnTryAgainFailed.Text = Utility.GetLocalizedLabel("Common", "tryAgain");
                     }
                 }
