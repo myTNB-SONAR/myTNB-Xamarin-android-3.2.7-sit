@@ -578,7 +578,7 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        public Task LoadNeedHelp()
+        public Task LoadNeedHelpTimeStamp()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -597,26 +597,37 @@ namespace myTNB.SitecoreCMS
                 }
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp", ref needsUpdate);
+                NeedHelpTimeStamp = timeStamp.Data[0].Timestamp;
+                NeedHelpTimeStampChanged = needsUpdate;
+                ShowNeedHelp = timeStamp.Data[0].ShowNeedHelp;
+                Debug.WriteLine("LoadNeedHelpTimeStamp Done");
+            });
+        }
 
-                if (needsUpdate)
+        public Task LoadNeedHelp()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                HelpResponseModel needHelpResponse = iService.GetHelpItems();
+                if (needHelpResponse.Status.IsValid() && needHelpResponse.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
                 {
-                    ShowNeedHelp = timeStamp.Data[0].ShowNeedHelp;
-                    HelpResponseModel needHelpResponse = iService.GetHelpItems();
-                    if (needHelpResponse.Status.IsValid() && needHelpResponse.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
+                    HelpEntity wsManager = new HelpEntity();
+                    wsManager.DeleteTable();
+                    wsManager.CreateTable();
+                    if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
                     {
-                        HelpEntity wsManager = new HelpEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
-                        {
-                            wsManager.InsertListOfItems(needHelpResponse.Data);
-                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
-                            Debug.WriteLine("LoadNeedHelp Done");
-                        }
+                        wsManager.InsertListOfItems(needHelpResponse.Data);
+                        UpdateSharedPreference(NeedHelpTimeStamp, "SiteCoreHelpTimeStamp");
+                        Debug.WriteLine("LoadNeedHelp Done");
                     }
                 }
             });
         }
+
+        public bool NeedHelpTimeStampChanged { set; get; }
+        public string NeedHelpTimeStamp { set; get; }
 
         public bool ShowNeedHelp
         {
