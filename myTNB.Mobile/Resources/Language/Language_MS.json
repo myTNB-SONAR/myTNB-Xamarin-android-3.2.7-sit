@@ -680,7 +680,7 @@
     "verifyDeviceTitle": "Sahkan Nombor Telefon",
     "verifyDeviceMessage": "Sila sahkan no. telefon anda.",
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
-    "updateMobileNumberTitle": "Kemaskini Nombor Telefon"
+    "updateMobileNumberTitle": "Kemas kini Nombor Telefon"
   },
   "VerifyPin": {
     "title": "Sahkan Nombor Telefon",
@@ -701,7 +701,7 @@
     "confirmNewPassword": "Sahkan Kata Laluan Baharu"
   },
   "UpdateNickname": {
-    "title": "Kemaskini Nama Ringkas"
+    "title": "Kemas kini Nama Ringkas"
   },
   "ManageAccount": {
     "title": "Uruskan Akaun Elektrik",
