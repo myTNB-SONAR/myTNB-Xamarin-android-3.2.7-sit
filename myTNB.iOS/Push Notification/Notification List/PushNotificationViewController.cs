@@ -129,7 +129,7 @@ namespace myTNB.PushNotification
                 {
                     if (response.IsPlannedDownTime)
                     {
-                        RefreshComponent refreshComponent = new RefreshComponent
+                        RefreshComponent refreshComponent = new RefreshComponent(response.DisplayMessage)
                         {
                             IsPlannedDownTime = true,
                             PageName = PageName,

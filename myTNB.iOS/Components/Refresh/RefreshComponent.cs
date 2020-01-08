@@ -39,8 +39,8 @@ namespace myTNB
             UIImageView imgView = new UIImageView(new CGRect((width - imgWidth) / 2
                 , ScaleUtility.GetScaledHeight(24), imgWidth, imgHeight))
             {
-                Image = UIImage.FromBundle(string.IsNullOrEmpty(_image) || string.IsNullOrWhiteSpace(_image)
-                    ? IsPlannedDownTime ? Constants.IMG_IconPlannedDowntime : Constants.IMG_IconRefresh
+                Image = UIImage.FromBundle(_image.IsValid()
+                    ? (IsPlannedDownTime ? Constants.IMG_IconPlannedDowntime : Constants.IMG_IconRefresh)
                     : _image)
             };
 
