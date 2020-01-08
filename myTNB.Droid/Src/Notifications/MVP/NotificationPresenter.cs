@@ -6,7 +6,6 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.NotificationDetails.Api;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -39,7 +38,6 @@ namespace myTNB_Android.Src.Notifications.MVP
     public class NotificationPresenter : NotificationContract.IUserActionsListener
     {
         private NotificationContract.IView mView;
-        NotificationContract.IApiNotification notificationApi;
         CancellationTokenSource cts;
         List<UserNotificationData> selectedNotificationList;
         NotificationApiImpl notificationAPI;
@@ -227,83 +225,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        public async void OnSelectedNotificationItem(UserNotificationData userNotification, int position)
-        {
-            cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgress();
-            }
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var detailNotificationApi = RestService.For<INotificationDetailsApi>(httpClient);
-#else
-            var detailNotificationApi = RestService.For<INotificationDetailsApi>(Constants.SERVER_URL.END_POINT);
-#endif
-            try
-            {
-                var detailNotificationResponse = await detailNotificationApi.GetNotificationDetailedInfoV2(new NotificationDetails.Requests.NotificationDetailsRequestV2()
-                {
-                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                    NotificationId = userNotification.Id,
-                    NotificationType = userNotification.NotificationType,
-                    Email = UserEntity.GetActive().Email,
-                    DeviceId = this.mView.GetDeviceId(),
-                    SSPUserId = UserEntity.GetActive().UserID
-                }, cts.Token);
-
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-
-                if (!detailNotificationResponse.Data.IsError)
-                {
-                    UserNotificationEntity.UpdateIsRead(detailNotificationResponse.Data.Data.Id, true);
-                    NotificationTypesEntity entity = NotificationTypesEntity.GetById(userNotification.NotificationTypeId);
-
-                    if (entity != null)
-                    {
-                        this.mView.ShowDetails(detailNotificationResponse.Data.Data, userNotification, position);
-                    }
-
-                }
-
-            }
-            catch (System.OperationCanceledException e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-                // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-                // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-
         }
 
         public void OnShowNotificationFilter()
@@ -583,9 +504,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public void Start()
         {
-            notificationApi = new NotificationApiCall();
             ShowFilteredList();
-
         }
 
         public void InitialSetFilterName()

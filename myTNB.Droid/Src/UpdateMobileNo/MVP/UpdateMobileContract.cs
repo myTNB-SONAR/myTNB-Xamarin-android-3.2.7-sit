@@ -78,12 +78,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
         public interface IUserActionsListener : IBasePresenter
         {
             /// <summary>
-            /// Action to save new phone number
-            /// </summary>
-            /// <param name="newPhoneNumber">string</param>
-            void OnSave(string newPhoneNumber, UserAuthenticationRequest request);
-
-            /// <summary>
             /// Action to verify mobile no
             /// </summary>
             /// <param name="mobileNo">string</param>

@@ -150,6 +150,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
         private Snackbar mNoInternetSnackbar;
 
+        private DateTime RewardUsedEndDateTime;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -292,11 +294,75 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            try
+            {
+                if (isPendingRewardConfirm)
+                {
+                    DateTime currentTime = DateTime.UtcNow;
+
+                    TimeSpan diff = RewardUsedEndDateTime.Subtract(currentTime);
+
+                    if (diff.TotalSeconds > 0)
+                    {
+                        CountDownTimerSecond = (int) diff.TotalSeconds;
+
+                        OnUpdateCountDownView();
+
+                        _timer = new System.Timers.Timer();
+                        _timer.Interval = 1000;
+                        _timer.Elapsed += OnTimedEvent;
+
+                        _timer.Enabled = true;
+                    }
+                    else
+                    {
+                        isPendingRewardConfirm = false;
+                        try
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                try
+                                {
+                                    btnUseSaveLayout.Visibility = ViewStates.Gone;
+                                    rewardRedeemedLayout.Visibility = ViewStates.Visible;
+                                    rewardCountDownLayout.Visibility = ViewStates.Gone;
+                                    IMenuItem item = this.menu.FindItem(Resource.Id.action_share_promotion);
+                                    if (item != null)
+                                    {
+                                        item.SetVisible(true);
+                                    }
+                                    isPendingRewardConfirm = false;
+                                    this.presenter.GetActiveReward(ItemID);
+                                }
+                                catch (Exception er)
+                                {
+                                    Utility.LoggingNonFatalError(er);
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnPause()
         {
             base.OnPause();
+            if (isPendingRewardConfirm)
+            {
+                _timer.Stop();
+                _timer.Enabled = false;
+                _timer = null;
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -788,6 +854,10 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 }
 
                 CountDownTimerSecond = CountDownTimerMinutes * 60;
+
+                RewardUsedEndDateTime = DateTime.UtcNow;
+
+                RewardUsedEndDateTime = RewardUsedEndDateTime.AddSeconds(CountDownTimerSecond);
 
                 try
                 {

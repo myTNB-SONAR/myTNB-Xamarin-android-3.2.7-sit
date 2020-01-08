@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }
-                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400" && !accountChargeseResponse.Data.IsPayEnabled)
+                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400")
                 {
                     showChargeMaintenanceState = true;
                 }
@@ -415,7 +415,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
                     MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }
-                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400" && !accountChargeseResponse.Data.IsPayEnabled)
+                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400")
                 {
                     showChargeMaintenanceState = true;
                 }

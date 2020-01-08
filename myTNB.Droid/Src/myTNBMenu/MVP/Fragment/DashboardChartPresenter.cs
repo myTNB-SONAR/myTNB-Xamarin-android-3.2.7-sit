@@ -454,12 +454,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     userInterface = currentUsrInf
                 }, cts.Token);
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200" && usageHistoryResponse.Data.ErrorCode != "7201")
-                {
-                    isBillAvailable = true;
-                    this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
-                }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
                     this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
@@ -489,10 +484,32 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     isDashboardReady = true;
                     OnCheckToCallDashboardTutorial();
                 }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8400")
+                {
+                    isBillAvailable = true;
+                    string contentTxt = "";
+                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.DisplayMessage))
+                    {
+                        contentTxt = usageHistoryResponse.Data.DisplayMessage;
+                    }
+
+                    this.mView.OnShowPlannedDowntimeScreen(contentTxt);
+                }
                 else
                 {
                     isBillAvailable = true;
-                    this.mView.ShowNoInternet(null, null);
+                    string contentTxt = "";
+                    string buttonTxt = "";
+                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.RefreshMessage))
+                    {
+                        contentTxt = usageHistoryResponse.Data.RefreshMessage;
+                    }
+                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.RefreshBtnText))
+                    {
+                        buttonTxt = usageHistoryResponse.Data.RefreshBtnText;
+                    }
+
+                    this.mView.ShowNoInternet(contentTxt, buttonTxt);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -549,16 +566,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     userInterface = currentUsrInf
                 }, cts.Token);
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null
-                    && usageHistoryResponse.Data.ErrorCode != "7200"
-                    && usageHistoryResponse.Data.ErrorCode != "7204"
-                    && usageHistoryResponse.Data.ErrorCode != "8304"
-                    && usageHistoryResponse.Data.ErrorCode != "7201")
-                {
-                    isBillAvailable = true;
-                    this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
-                }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
@@ -601,10 +609,33 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8400")
+                {
+                    isBillAvailable = true;
+                    string contentTxt = "";
+                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.DisplayMessage))
+                    {
+                        contentTxt = usageHistoryResponse.Data.DisplayMessage;
+                    }
+
+                    this.mView.OnShowPlannedDowntimeScreen(contentTxt);
+                }
                 else
                 {
                     isBillAvailable = true;
-                    this.mView.ShowNoInternet(null, null);
+
+                    string contentTxt = "";
+                    string buttonTxt = "";
+                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.RefreshMessage))
+                    {
+                        contentTxt = usageHistoryResponse.Data.RefreshMessage;
+                    }
+                    if (usageHistoryResponse != null && usageHistoryResponse.Data != null && !string.IsNullOrEmpty(usageHistoryResponse.Data.RefreshBtnText))
+                    {
+                        buttonTxt = usageHistoryResponse.Data.RefreshBtnText;
+                    }
+
+                    this.mView.ShowNoInternet(contentTxt, buttonTxt);
                 }
             }
             catch (System.OperationCanceledException e)

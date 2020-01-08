@@ -232,9 +232,11 @@ namespace myTNB_Android.Src.SSMR.Util
                 tooltipCTA.Text = this.ctaLabel;
                 LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
 
+                LinearSnapHelper snapTooltipHelper = new LinearSnapHelper();
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this.mContext, LinearLayoutManager.Horizontal, false);
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(this.adapter);
+                snapTooltipHelper.AttachToRecyclerView(recyclerView);
                 recyclerView.AddOnScrollListener(new ToolTipRecyclerViewOnScrollListener(layoutManager, indicatorContainer));
 
                 try

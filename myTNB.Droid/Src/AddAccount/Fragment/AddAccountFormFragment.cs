@@ -82,6 +82,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         private bool isClicked = false;
 
+        private InputFilterFormField mFormField;
+
         public void ClearText()
         {
             edtAccountNo.Text = "";
@@ -234,7 +236,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 edtAccountNo.AddTextChangedListener(new InputFilterFormField(edtAccountNo, textInputLayoutAccountNo));
                 edtAccountLabel.AddTextChangedListener(new InputFilterFormField(edtAccountLabel, textInputLayoutAccountLabel));
-                edtOwnersIC.AddTextChangedListener(new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC));
+                mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
+                edtOwnersIC.AddTextChangedListener(mFormField);
 
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
@@ -317,12 +320,36 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             if (selectedAccountType.Id.Equals("1"))
                             {
                                 edtOwnerMotherName.Visibility = ViewStates.Visible;
-                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedCommonLabel("idNumber");
+                                edtOwnersIC.RemoveTextChangedListener(mFormField);
+                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
+                                mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
+                                edtOwnersIC.AddTextChangedListener(mFormField);
+                                if (edtOwnersIC.HasFocus)
+                                {
+                                    edtOwnersIC.RequestFocus();
+                                }
+                                else
+                                {
+                                    edtOwnersIC.RequestFocus();
+                                    edtOwnersIC.ClearFocus();
+                                }
                             }
                             else
                             {
                                 edtOwnerMotherName.Visibility = ViewStates.Gone;
-                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_roc_no);
+                                edtOwnersIC.RemoveTextChangedListener(mFormField);
+                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumber");
+                                mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
+                                edtOwnersIC.AddTextChangedListener(mFormField);
+                                if (edtOwnersIC.HasFocus)
+                                {
+                                    edtOwnersIC.RequestFocus();
+                                }
+                                else
+                                {
+                                    edtOwnersIC.RequestFocus();
+                                    edtOwnersIC.ClearFocus();
+                                }
                             }
                         }
                     }

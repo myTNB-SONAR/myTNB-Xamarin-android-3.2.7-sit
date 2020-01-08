@@ -10,7 +10,6 @@ using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.ResetPassword.Api;
 using myTNB_Android.Src.ResetPassword.Request;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;

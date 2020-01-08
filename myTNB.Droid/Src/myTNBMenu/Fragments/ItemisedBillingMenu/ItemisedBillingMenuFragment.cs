@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.btnBillingHistoryRefresh)]
         Button btnBillingHistoryRefresh;
-        
+
 
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
@@ -159,8 +159,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
         const string PAGE_ID = "Bills";
         private bool isFiltered = false;
+        private string myHistoryTitle = "";
+        private string billTitle = "";
 
-        public override void OnCreate(Bundle savedInstanceState)
+		public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new ItemisedBillingMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
@@ -192,13 +194,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             if (isShow)
             {
-                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(GetLabelByLanguage("myHistory"));
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(myHistoryTitle);
                 billFilterMenuItem.SetVisible(true);
                 UpdateFilterIcon();
             }
             else
             {
-                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(GetLabelByLanguage("title"));
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(billTitle);
                 billFilterMenuItem.SetVisible(false);
             }
         }
@@ -368,6 +370,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     if (resultCode == Result.Ok)
                     {
                         UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
+                        itemisedBillingScrollView.ScrollTo(0,0);
                     }
                 }
             }
@@ -394,7 +397,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
             SetHasOptionsMenu(true);
-            itemisedBillingScrollView.SetOnScrollChangeListener(new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container));
+            BillOnScrollChangeListener billOnScrollChangeListener = new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container);
+            itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
                 btnChargeRefresh, btnBillingHistoryRefresh);
@@ -408,7 +412,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
+                ((DashboardHomeActivity)Activity).SetToolBarTitle(billTitle);
             }
             catch (System.Exception e)
             {
@@ -423,6 +427,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             emptyBillingHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
             btnViewDetails.Text = GetLabelByLanguage("viewMore");
             btnPayBill.Text = GetLabelByLanguage("pay");
+            myHistoryTitle = GetLabelByLanguage("myHistory");
+            billTitle = GetLabelByLanguage("title");
             if (mPresenter.IsEnableAccountSelection())
             {
                 Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
@@ -525,18 +531,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             {
                                 content.SetShowBillingDetailsListener(null);
                             }
-
-                            if (j == (model.BillingHistoryDataList.Count - 1))
-                            {
-                                content.ShowSeparator(false);
-                            }
-                            else
-                            {
-                                content.ShowSeparator(true);
-                            }
-
                             itemisedBillingGroupComponent.AddContent(content);
-                        }
+							itemisedBillingGroupComponent.ShowContentSeparators();
+						}
                         //Rendering Filtered History Type
                         else
                         {
@@ -555,20 +552,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 {
                                     content.SetShowBillingDetailsListener(null);
                                 }
-
-                                if (j == (model.BillingHistoryDataList.Count - 1))
-                                {
-                                    content.ShowSeparator(false);
-                                }
-                                else
-                                {
-                                    content.ShowSeparator(true);
-                                }
-
                                 itemisedBillingGroupComponent.AddContent(content);
-                            }
+								itemisedBillingGroupComponent.ShowContentSeparators();
+							}
                         }
-                    }
+					}
                     itemisedBillingList.AddView(itemisedBillingGroupComponent);
                 }
             }
@@ -830,7 +818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (isShowRefresh)
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.bg_application_status);
-                
+
                 if (!string.IsNullOrEmpty(contentText))
                 {
                     unavailableBillMsg.TextFormatted = GetFormattedText(contentText);
