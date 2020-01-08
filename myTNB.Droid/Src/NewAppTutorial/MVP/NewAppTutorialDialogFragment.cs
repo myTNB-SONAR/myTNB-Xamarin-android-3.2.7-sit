@@ -283,7 +283,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mFragment != null && this.mFragment is HomeMenuFragment)
                     {
-                        if (NewAppTutorialList.Count == 4)
+                        if ((NewAppTutorialList.Count == 4 && !NewAppTutorialList[0].NeedHelpHide) || (NewAppTutorialList.Count == 3 && NewAppTutorialList[0].NeedHelpHide))
                         {
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
@@ -391,7 +391,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 {
                                     if (NewAppTutorialList.Count > 0)
                                     {
-                                        if (e.Position == NewAppTutorialList.Count - 1)
+                                        if (e.Position == NewAppTutorialList.Count - 1 && !NewAppTutorialList[0].NeedHelpHide)
                                         {
                                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                             {

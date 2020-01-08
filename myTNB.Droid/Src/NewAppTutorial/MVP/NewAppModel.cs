@@ -16,5 +16,6 @@
         public int ItemCount { get; set; }
         public bool IsButtonShow { get; set; }
         public string DisplayMode { get; set; }
+        public bool NeedHelpHide { get; set; }
     }
 }

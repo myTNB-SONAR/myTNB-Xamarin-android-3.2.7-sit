@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void HideNewFAQ();
 
-            bool CheckNeedHelp();
+            bool CheckNeedHelpHide();
 
             void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
 
@@ -153,6 +153,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             bool GetIsMyServiceRefreshNeeded();
 
             bool GetIsAccountRefreshNeeded();
+
+            void UpdateNewFAQCompleteState();
         }
 
         public interface IHomeMenuService

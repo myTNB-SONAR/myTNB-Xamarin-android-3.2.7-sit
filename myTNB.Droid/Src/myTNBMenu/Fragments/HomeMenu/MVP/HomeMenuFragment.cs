@@ -714,7 +714,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetNewFAQRecycleView()
         {
-            SetupNewFAQShimmerEffect();
+            NewFAQParentEntity wtManager = new NewFAQParentEntity();
+            List<NewFAQParentEntity> items = wtManager.GetAllItems();
+            if (items != null && items.Count > 0)
+            {
+                NewFAQParentEntity entity = items[0];
+                if (entity != null && !entity.ShowNeedHelp)
+                {
+                    HideNewFAQ();
+                }
+                else
+                {
+                    SetupNewFAQShimmerEffect();
+                }
+            }
+            else
+            {
+                SetupNewFAQShimmerEffect();
+            }
             this.presenter.GetSavedNewFAQTimeStamp();
         }
 
@@ -726,6 +743,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
+                        newFAQTitle.Visibility = ViewStates.Visible;
                         newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(4), this.Activity);
                         newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
 
@@ -754,9 +772,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                newFAQShimmerView.Visibility = ViewStates.Gone;
-                newFAQTitle.Visibility = ViewStates.Gone;
-                newFAQView.Visibility = ViewStates.Gone;
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        newFAQShimmerView.Visibility = ViewStates.Gone;
+                        newFAQTitle.Visibility = ViewStates.Gone;
+                        newFAQView.Visibility = ViewStates.Gone;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
             }
             catch (System.Exception e)
             {
@@ -764,9 +792,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public bool CheckNeedHelp()
+        public bool CheckNeedHelpHide()
         {
-            return newFAQView.Visibility == ViewStates.Gone && newFAQTitle.Visibility == ViewStates.Gone;
+            return newFAQTitle.Visibility == ViewStates.Gone;
         }
 
         public void SetNewFAQResult(List<NewFAQ> list)
@@ -1318,22 +1346,57 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                if (success)
+                NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                List<NewFAQParentEntity> items = wtManager.GetAllItems();
+
+                if (items != null && items.Count > 0)
                 {
-                    NewFAQParentEntity wtManager = new NewFAQParentEntity();
-                    List<NewFAQParentEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    NewFAQParentEntity entity = items[0];
+                    if (entity != null && !entity.ShowNeedHelp)
                     {
-                        NewFAQParentEntity entity = items[0];
-                        if (entity != null)
+                        HideNewFAQ();
+                        this.presenter.UpdateNewFAQCompleteState();
+                    }
+                    else
+                    {
+                        try
                         {
-                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            Activity.RunOnUiThread(() =>
                             {
-                                this.presenter.OnGetFAQs();
+                                try
+                                {
+                                    if (newFAQTitle.Visibility == ViewStates.Gone)
+                                    {
+                                        SetupNewFAQShimmerEffect();
+                                    }
+                                }
+                                catch (System.Exception exp)
+                                {
+                                    Utility.LoggingNonFatalError(exp);
+                                }
+                            });
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+                        if (success)
+                        {
+                            if (entity != null)
+                            {
+                                if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                                {
+                                    this.presenter.OnGetFAQs();
+                                }
+                                else
+                                {
+                                    this.presenter.ReadNewFAQFromCache();
+                                }
                             }
                             else
                             {
-                                this.presenter.ReadNewFAQFromCache();
+                                this.presenter.OnGetFAQs();
                             }
                         }
                         else
@@ -1341,20 +1404,59 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             this.presenter.OnGetFAQs();
                         }
                     }
-                    else
-                    {
-                        this.presenter.OnGetFAQs();
-                    }
-
                 }
                 else
                 {
-                    this.presenter.ReadNewFAQFromCache();
+                    try
+                    {
+                        Activity.RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                if (newFAQTitle.Visibility == ViewStates.Gone)
+                                {
+                                    SetupNewFAQShimmerEffect();
+                                }
+                            }
+                            catch (System.Exception exp)
+                            {
+                                Utility.LoggingNonFatalError(exp);
+                            }
+                        });
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
+                    this.presenter.OnGetFAQs();
                 }
             }
             catch (System.Exception e)
             {
-                this.presenter.ReadNewFAQFromCache();
+                try
+                {
+                    Activity.RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            if (newFAQTitle.Visibility == ViewStates.Gone)
+                            {
+                                SetupNewFAQShimmerEffect();
+                            }
+                        }
+                        catch (System.Exception exp)
+                        {
+                            Utility.LoggingNonFatalError(exp);
+                        }
+                    });
+                }
+                catch (System.Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+
+                this.presenter.OnGetFAQs();
                 Utility.LoggingNonFatalError(e);
             }
         }
