@@ -192,6 +192,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             terminationReasonTitle.Text = GetLabelByLanguage("terminateTitle");
             txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason");
             btnDisconnectionSubmit.Text = GetLabelCommonByLanguage("submit");
+            txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
