@@ -1774,6 +1774,7 @@
     <Folder Include="Assets.xcassets\Reward-TC-Icon-Used.imageset\" />
     <Folder Include="Assets.xcassets\Banner-PlannedDown.imageset\" />
     <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
+    <Folder Include="Maintenance\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1815,6 +1816,7 @@
     <InterfaceDefinition Include="Home\Dashboard\DashboardHome\Rearrange Account\RearrangeAccountViewController.xib" />
     <InterfaceDefinition Include="Rewards\Reward Details\RewardDetailsViewController.xib" />
     <InterfaceDefinition Include="Rewards\Saved Rewards\SavedRewardsViewController.xib" />
+    <InterfaceDefinition Include="Maintenance\MaintenanceViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2659,6 +2661,10 @@
     <Compile Include="Components\Tutorial Overlay\RewardsDetailTutorialOverlay.cs" />
     <Compile Include="Components\Refresh\RefreshComponent.cs" />
     <Compile Include="Home\Bill\Bills\RefreshViewCell.cs" />
+    <Compile Include="Maintenance\MaintenanceViewController.cs" />
+    <Compile Include="Maintenance\MaintenanceViewController.designer.cs">
+      <DependentUpon>MaintenanceViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

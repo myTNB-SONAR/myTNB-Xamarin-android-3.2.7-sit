@@ -101,6 +101,8 @@
         public static string Common_RedeemRewardFailMsg = "redeemRewardFailMsg";
         public static string Common_TryAgain = "tryAgain";
         public static string Common_SelectBillMaxDesc = "selectBillMaxDesc";
+        public static string Common_MaintenanceTitle = "maintenanceTitle";
+        public static string Common_MaintenanceMsg = "maintenanceMsg";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
