@@ -388,5 +388,25 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.RemoveAccount<RemoveAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetLocations with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetLocationListResponse> GetLocations([Body] Request.BaseRequest request)
+        {
+            return api.GetLocations<GetLocationListResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetLocationsByKeyword with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetLocationListByKeywordResponse> GetLocationsByKeyword([Body] Request.BaseRequest request)
+        {
+            return api.GetLocationsByKeyword<GetLocationListByKeywordResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

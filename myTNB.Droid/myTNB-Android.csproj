@@ -598,8 +598,6 @@
     <Compile Include="Src\FindUs\Adapter\ServiceListAdapter.cs" />
     <Compile Include="Src\FindUs\Api\GetGoogleLocationApi.cs" />
     <Compile Include="Src\FindUs\Api\GetGoogleLocationDetailsApi.cs" />
-    <Compile Include="Src\FindUs\Api\GetLocationsApi.cs" />
-    <Compile Include="Src\FindUs\Api\GetLocationsByKeywordApi.cs" />
     <Compile Include="Src\FindUs\Fragment\MapViewFragment.cs" />
     <Compile Include="Src\FindUs\Maps\MapLocationListener.cs" />
     <Compile Include="Src\FindUs\Maps\MapMarkers.cs" />
@@ -4263,6 +4261,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\GetLocationListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetLocationListResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetLocationListByKeywordResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetLocationListByKeywordRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
