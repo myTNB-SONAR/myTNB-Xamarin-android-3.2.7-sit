@@ -1763,6 +1763,7 @@ namespace myTNB
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     if (dueData != null)
                     {
+                        _footerViewComponent.IsPayEnable = dueData.IsPayEnabled;
                         _footerViewComponent.SetAmount(dueData.amountDue);
                         _footerViewComponent.SetDate(dueData.billDueDate);
                     }

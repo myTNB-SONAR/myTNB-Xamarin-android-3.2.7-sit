@@ -32,6 +32,7 @@ namespace myTNB
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private bool _isCTAEnabled = false;
         public UserNotificationDataModel NotificationInfo { set; private get; } = new UserNotificationDataModel();
+        public bool IsPayEnabled { set; private get; }
 
         public override void ViewDidLoad()
         {
@@ -399,7 +400,7 @@ namespace myTNB
                 {
                     Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
                 };
-                UpdateCTA(ref _btnSecondary, true, !AppLaunchMasterCache.IsPayDisabled);
+                UpdateCTA(ref _btnSecondary, true, IsPayEnabled);
                 _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Paynow), UIControlState.Normal);
                 _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {

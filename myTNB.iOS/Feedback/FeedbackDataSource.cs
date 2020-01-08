@@ -70,7 +70,7 @@ namespace myTNB.Home.Feedback
             FeedbackViewCell cell = tableView.DequeueReusableCell("FeedbackViewCell", indexPath) as FeedbackViewCell;
 
             cell.lblTitle.Text = feedBack.Name;
-            cell.lblSubtTitle.Text = feedBack.Subtitle;
+            cell.Subtitle = feedBack.Subtitle;
             cell.imgViewIcon.Image = UIImage.FromBundle(feedBack.Icon ?? string.Empty);
             if (indexPath.Section == 1)
             {

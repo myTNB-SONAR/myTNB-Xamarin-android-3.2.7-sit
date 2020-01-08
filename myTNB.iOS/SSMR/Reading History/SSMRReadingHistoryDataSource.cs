@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
@@ -13,7 +12,6 @@ namespace myTNB
     {
         private EventHandler _onScroll;
         private List<MeterReadingHistoryItemModel> _readingHistoryList;
-        private SSMRHelper _sSMRHelper = new SSMRHelper();
         private readonly Dictionary<string, string> I18NDictionary = new Dictionary<string, string>();
         private bool _isEmptyHistory;
         private bool _isSSMR;
@@ -44,7 +42,7 @@ namespace myTNB
                 cell._descLabel.Text = readingHistory?.ReadingType ?? string.Empty;
                 cell._kwhLabel.Text = readingHistory?.ReadingValue ?? string.Empty;
                 cell._monthYearLabel.Text = readingHistory?.ReadingForMonth ?? string.Empty;
-                cell.UpdateCell(_sSMRHelper.IsEstimatedReading(readingHistory.ReadingType));
+                cell.UpdateCell(readingHistory.IsEstimatedReading);
                 return cell;
             }
         }

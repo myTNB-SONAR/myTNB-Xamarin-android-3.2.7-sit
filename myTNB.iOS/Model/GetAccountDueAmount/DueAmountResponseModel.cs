@@ -8,7 +8,7 @@
     public class DueAmountModel : BaseModelRefresh
     {
         public DueAmountData data { set; get; }
-        public bool isPayEnabled { set; get; }
+        public bool IsPayEnabled { set; get; }
     }
 
     public class DueAmountData

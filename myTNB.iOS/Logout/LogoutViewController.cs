@@ -48,18 +48,29 @@ namespace myTNB
                 TextColor = MyTNBColor.PowerBlue,
                 Font = MyTNBFont.MuseoSans16,
                 Text = GetI18NValue(LogoutConstants.I18N_Title),
-                TextAlignment = UITextAlignment.Center
+                TextAlignment = UITextAlignment.Center,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
             };
 
-            UILabel lblSubTitle = new UILabel(new CGRect(24, 200, viewContent.Frame.Width - 48, 16))
+            nfloat newLblThankyouHeight = lblThankYou.GetLabelHeight(50);
+            lblThankYou.Frame = new CGRect(lblThankYou.Frame.Location, new CGSize(lblThankYou.Frame.Width, newLblThankyouHeight));
+
+            UILabel lblSubTitle = new UILabel(new CGRect(16, lblThankYou.Frame.GetMaxY(), viewContent.Frame.Width - 32, 16))
             {
                 Font = MyTNBFont.MuseoSans12,
                 TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Center,
-                Text = GetI18NValue(LogoutConstants.I18N_Message)
+                Text = GetI18NValue(LogoutConstants.I18N_Message),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
             };
 
+            nfloat newLblSubHeight = lblSubTitle.GetLabelHeight(50);
+            lblSubTitle.Frame = new CGRect(lblSubTitle.Frame.Location, new CGSize(lblSubTitle.Frame.Width, newLblSubHeight));
+
             viewContent.AddSubviews(new UIView[] { imgLogo, lblThankYou, lblSubTitle });
+            viewContent.Frame = new CGRect(viewContent.Frame.Location, new CGSize(viewContent.Frame.Width, lblSubTitle.Frame.GetMaxY() + 24));
             View.AddSubview(viewContent);
         }
 

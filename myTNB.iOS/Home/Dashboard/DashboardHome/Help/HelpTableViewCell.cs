@@ -140,15 +140,29 @@ namespace myTNB
                 gradientBG.Layer.InsertSublayer(gradientLayer, 0);
 
                 AddCardShadow(ref helpCardView);
-                UILabel lblHelp = new UILabel(new CGRect(GetScaledWidth(6F), GetScaledHeight(12F), helpCardView.Frame.Width - GetScaledWidth(12F), helpCardView.Frame.Height - GetScaledHeight(24F)))
+
+                NSError htmlBodyError = null;
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(helpList[i]?.Title ?? string.Empty + "<br>"
+               , ref htmlBodyError, TNBFont.FONTNAME_500, (float)TNBFont.GetFontSize(12F));
+                NSMutableAttributedString attributedString = new NSMutableAttributedString(htmlBody);
+                attributedString.AddAttributes(new UIStringAttributes
                 {
-                    TextColor = UIColor.White,
-                    Font = TNBFont.MuseoSans_12_500,
-                    TextAlignment = UITextAlignment.Left,
-                    Lines = 2,
-                    LineBreakMode = UILineBreakMode.WordWrap,
-                    Text = helpList[i]?.Title ?? string.Empty
+                    ForegroundColor = UIColor.White,
+                    ParagraphStyle = new NSMutableParagraphStyle { HyphenationFactor = 1 }
+                }, new NSRange(0, htmlBody.Length));
+
+                UITextView lblHelp = new UITextView(new CGRect(GetScaledWidth(6F), GetScaledHeight(12F)
+                    , helpCardView.Frame.Width - GetScaledWidth(12F), helpCardView.Frame.Height - GetScaledHeight(24F)))
+                {
+                    Editable = false,
+                    ScrollEnabled = true,
+                    AttributedText = attributedString,
+                    ContentInset = new UIEdgeInsets(-5, 0, -5, 0),
+                    BackgroundColor = UIColor.Clear
                 };
+                lblHelp.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+                lblHelp.TextContainer.LineFragmentPadding = 0F;
+
                 helpCardView.AddSubviews(new UIView[] { gradientBG, lblHelp });
                 _scrollView.Add(helpCardView);
                 xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;

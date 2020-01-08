@@ -8,7 +8,7 @@
     public class NotificationDetailedInfoModel : BaseModelV2
     {
         public NotificationDetailedInfoData data { set; get; } = new NotificationDetailedInfoData();
-        public bool isPayEnabled { set; get; }
+        public bool IsPayEnabled { set; get; }
     }
 
     public class NotificationDetailedInfoData
