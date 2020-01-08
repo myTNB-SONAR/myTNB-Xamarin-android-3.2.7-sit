@@ -25,6 +25,7 @@ using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using static Android.Views.View;
+using Android.Text.Style;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -291,8 +292,26 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 {
                     txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"));
                 }
+
+                StripUnderlinesFromLinks(txtTermsConditions);
+
                 EnableSubmitButton();
             }
+        }
+
+        public void StripUnderlinesFromLinks(TextView textView)
+        {
+            var spannable = new SpannableStringBuilder(textView.TextFormatted);
+            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            foreach (URLSpan span in spans)
+            {
+                var start = spannable.GetSpanStart(span);
+                var end = spannable.GetSpanEnd(span);
+                spannable.RemoveSpan(span);
+                var newSpan = new URLSpanNoUnderline(span.URL);
+                spannable.SetSpan(newSpan, start, end, 0);
+            }
+            textView.TextFormatted = spannable;
         }
 
         private void ShowContactDetails()
@@ -762,6 +781,19 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
     }
 }

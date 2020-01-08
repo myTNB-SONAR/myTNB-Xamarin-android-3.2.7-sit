@@ -247,6 +247,7 @@
                 android:textSize="12dp"
                 android:lineSpacingExtra="2dp"
                 android:id="@+id/txtTermsConditions"
+                android:textColorLink="@color/powerBlue"
                 android:gravity="bottom" />
             <Button
                 android:layout_width="fill_parent"
