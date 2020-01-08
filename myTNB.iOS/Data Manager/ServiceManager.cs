@@ -31,7 +31,7 @@ namespace myTNB
                 RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, version, env);
                 try
                 {
-                    if (suffix != "GetAppLaunchMasterData") //Allow AppLaunch to have old implementation
+                    if (suffix != "GetAppLaunchMasterData") //Note: Allow AppLaunch to have old implementation
                     {
                         if (rawResponse != null && rawResponse.Content.IsValid())
                         {

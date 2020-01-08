@@ -9,7 +9,7 @@ namespace myTNB.Model
         public UserNotificationModel d { set; get; } = new UserNotificationModel();
     }
 
-    public class UserNotificationModel : BaseModelRefresh
+    public class UserNotificationModel : BaseModelV2
     {
         public UserNotificationsDataModel data { set; get; } = new UserNotificationsDataModel();
     }

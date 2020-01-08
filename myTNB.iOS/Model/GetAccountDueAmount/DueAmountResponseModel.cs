@@ -5,7 +5,7 @@
         public DueAmountModel d { set; get; }
     }
 
-    public class DueAmountModel : BaseModelRefresh
+    public class DueAmountModel : BaseModelV2
     {
         public DueAmountData data { set; get; }
         public bool IsPayEnabled { set; get; }
