@@ -2,8 +2,6 @@ using Foundation;
 using System;
 using UIKit;
 using myTNB.DataManager;
-using System.Threading.Tasks;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
@@ -18,7 +16,6 @@ namespace myTNB
     {
         public HomeTabBarController(IntPtr handle) : base(handle) { }
 
-        private string _imageSize = string.Empty;
         private Dictionary<string, string> I18NDictionary;
         private UIColor _badgeColor = MyTNBColor.WaterBlue;
         private UIStringAttributes _badgeAttributes = new UIStringAttributes { Font = MyTNBFont.MuseoSans10_500 };
@@ -43,7 +40,7 @@ namespace myTNB
 
         public void LanguageDidChange(NSNotification notification)
         {
-            Debug.WriteLine("DEBUG >>> HOME TAB BAR LanguageDidChange");
+            Debug.WriteLine("DEBUG >>> LanguageDidChange: HOME TAB BAR");
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             SetTabbarTitle();
             FetchRewards();
@@ -332,8 +329,6 @@ namespace myTNB
 
         private void UpdatePromotions()
         {
-            _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
-
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>

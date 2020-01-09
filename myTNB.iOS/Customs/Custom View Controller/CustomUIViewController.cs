@@ -64,6 +64,11 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
+        public override void DidReceiveMemoryWarning()
+        {
+            base.DidReceiveMemoryWarning();
+        }
+
         protected virtual void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> LanguageDidChange: " + PageName);

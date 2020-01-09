@@ -68,6 +68,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            BtnPayBill.SetTitle(GetI18NValue(PaymentConstants.I18N_PaySingle), UIControlState.Normal);
             if (_isViewDidLoad)
             {
                 SetDefaultTableFrame();

@@ -68,7 +68,6 @@ namespace myTNB
 
         protected override void LanguageDidChange(NSNotification notification)
         {
-            Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
             base.LanguageDidChange(notification);
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _lblAppVersion.Text = Version;
@@ -314,10 +313,10 @@ namespace myTNB
                                             GoToFindUs();
                                             break;
                                         case 1:
-                                            CallCustomerService("tnbclo");
+                                            CallCustomerService("tnbcle");
                                             break;
                                         case 2:
-                                            CallCustomerService("tnbcle");
+                                            CallCustomerService("tnbclo");
                                             break;
                                         case 3:
                                             GoToFAQ();
@@ -410,17 +409,19 @@ namespace myTNB
                 .InstantiateViewController("GenericSelectorViewController");
             if (languageViewController != null)
             {
-                languageViewController.Title = LanguageSettings.Title;
-                languageViewController.Items = LanguageSettings.SupportedLanguage;
+                languageViewController.Title = LanguageUtility.LanguageTitle;
+                languageViewController.Items = LanguageUtility.SupportedLanguageList;
                 languageViewController.HasSectionTitle = true;
-                languageViewController.SectionTitle = LanguageSettings.SectionTitle;
+                languageViewController.SectionTitle = LanguageUtility.LanguageSectionTitle;
                 languageViewController.HasCTA = true;
-                languageViewController.CTATitle = LanguageSettings.CTATitle;
+                languageViewController.CTATitle = LanguageUtility.LanguageCTATitle;
                 languageViewController.OnSelect = OnSelectLanguage;
                 languageViewController.OnBack = OnLanguageBack;
-                languageViewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
-                UINavigationController navController = new UINavigationController(languageViewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                languageViewController.SelectedIndex = LanguageUtility.CurrentLanguageIndex;
+                UINavigationController navController = new UINavigationController(languageViewController)
+                {
+                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                };
                 PresentViewController(navController, true, null);
             }
         }
@@ -491,18 +492,28 @@ namespace myTNB
         {
             if (_isMasterDataDone && _isSitecoreDone)
             {
-                LanguageUtility.SaveLanguagePreference().ContinueWith(langTask =>
+                if (SitecoreServices.IsForcedUpdate)
                 {
-                    InvokeOnMainThread(() =>
+                    Task.Factory.StartNew(() =>
                     {
-                        //Todo: Check success and fail States
-                        ClearCache();
-                        languageViewController.DismissViewController(true, null);
-                        Debug.WriteLine("Change Language Done");
-                        NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
-                        ActivityIndicator.Hide();
+                        ChangeLanguageCallback();
                     });
-                });
+                }
+                else
+                {
+                    LanguageUtility.SaveLanguagePreference().ContinueWith(langTask =>
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            //Todo: Check success and fail States
+                            ClearCache();
+                            languageViewController.DismissViewController(true, null);
+                            Debug.WriteLine("Change Language Done");
+                            NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                            ActivityIndicator.Hide();
+                        });
+                    });
+                }
             }
         }
 
@@ -536,20 +547,12 @@ namespace myTNB
 
         private void GoToMyAccount()
         {
-            //ActivityIndicator.Show();
-            /* ServiceCall.GetRegisteredCards().ContinueWith(task =>
-             {
-                 InvokeOnMainThread(() =>
-                 {*/
             UIStoryboard storyBoard = UIStoryboard.FromName("MyAccount", null);
             MyAccountViewController viewController =
                 storyBoard.InstantiateViewController("MyAccountViewController") as MyAccountViewController;
             UINavigationController navController = new UINavigationController(viewController);
             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
-            //ActivityIndicator.Hide();
-            /*});
-        });*/
         }
 
         private void GoToTermsAndCondition()

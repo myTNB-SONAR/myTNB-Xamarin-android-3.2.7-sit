@@ -19,6 +19,11 @@ namespace myTNB.SitecoreCMS
 
         private static bool _isForcedUpdate;
 
+        public bool SplashHasNewTimestamp { get; set; }
+        public bool NeedHelpTimeStampChanged { set; get; }
+        public string NeedHelpTimeStamp { set; get; }
+        public static bool IsForcedUpdate { get { return _isForcedUpdate; } }
+
         public async Task OnExecuteSitecoreCall(bool isforcedUpdate = false)
         {
             _isForcedUpdate = isforcedUpdate;
@@ -39,7 +44,7 @@ namespace myTNB.SitecoreCMS
             {
                 taskList.Add(LoadEnergyTips());
             }
-            await Task.WhenAll(taskList.ToArray());
+            Task.WaitAll(taskList.ToArray());
             _isForcedUpdate = false;
         }
 
@@ -100,61 +105,61 @@ namespace myTNB.SitecoreCMS
                 Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
             }
         }
-        /*
-                private Task LoadSSMRWalkthrough()
+
+        /*private Task LoadSSMRWalkthrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
                 {
-                    return Task.Factory.StartNew(() =>
-                    {
-                        GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                            , DataManager.DataManager.SharedInstance.ImageSize
-                            , TNBGlobal.SITECORE_URL
-                            , TNBGlobal.APP_LANGUAGE);
-
-                        ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
-                        bool needsUpdate = true;
-
-                        if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
-                             || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
-                             || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
-                        {
-                            timeStamp = new ApplySSMRTimeStampResponseModel();
-                            timeStamp.Data = new List<ApplySSMRTimeStamp> { new ApplySSMRTimeStamp { Timestamp = string.Empty } };
-                        }
-
-                        UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp", ref needsUpdate);
-
-                        if (needsUpdate)
-                        {
-                            ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
-                            if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
-                            {
-                                List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
-                                for (int i = 0; i < applySSMrWalkthroughItems.Data.Count; i++)
-                                {
-                                    ApplySSMRModel item = applySSMrWalkthroughItems.Data[i];
-                                    GetImagesTask.Add(GetImageFromURL(item.Image));
-                                }
-
-                                Task.WaitAll(GetImagesTask.ToArray());
-
-                                for (int j = 0; j < GetImagesTask.Count; j++)
-                                {
-                                    if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
-                                    byte[] data = GetImagesTask[j].Result.ToByteArray();
-                                    applySSMrWalkthroughItems.Data[j].ImageByteArray = data;
-                                }
-
-                                ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
-                                wsManager.DeleteTable();
-                                wsManager.CreateTable();
-                                wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
-                                UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
-                                Debug.WriteLine("LoadSSMRWalkthrough Done");
-                            }
-                        }
-                    });
+                    timeStamp = new ApplySSMRTimeStampResponseModel();
+                    timeStamp.Data = new List<ApplySSMRTimeStamp> { new ApplySSMRTimeStamp { Timestamp = string.Empty } };
                 }
-        */
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
+                    if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
+                        for (int i = 0; i < applySSMrWalkthroughItems.Data.Count; i++)
+                        {
+                            ApplySSMRModel item = applySSMrWalkthroughItems.Data[i];
+                            GetImagesTask.Add(GetImageFromURL(item.Image));
+                        }
+
+                        Task.WaitAll(GetImagesTask.ToArray());
+
+                        for (int j = 0; j < GetImagesTask.Count; j++)
+                        {
+                            if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
+                            byte[] data = GetImagesTask[j].Result.ToByteArray();
+                            applySSMrWalkthroughItems.Data[j].ImageByteArray = data;
+                        }
+
+                        ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
+                        Debug.WriteLine("LoadSSMRWalkthrough Done");
+                    }
+                }
+            });
+        }*/
+
         private Task LoadMeterReadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
@@ -623,9 +628,6 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        public bool NeedHelpTimeStampChanged { set; get; }
-        public string NeedHelpTimeStamp { set; get; }
-
         public bool ShowNeedHelp
         {
             set
@@ -691,7 +693,5 @@ namespace myTNB.SitecoreCMS
 
             return isDone;
         }
-
-        public bool SplashHasNewTimestamp { get; set; }
     }
 }

@@ -32,7 +32,6 @@ namespace myTNB
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             Debug.WriteLine("PROMOTION DID LOAD");
-            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetNavigationBar();
             promotionsTableView.Frame = new CGRect(0, _navbarView.Frame.GetMaxY()
                 , View.Frame.Width, ViewHeight - _navbarView.Frame.Height + DeviceHelper.GetStatusBarHeight());
@@ -40,7 +39,6 @@ namespace myTNB
 
         protected override void LanguageDidChange(NSNotification notification)
         {
-            Debug.WriteLine("DEBUG >>> PROMOTIONS LanguageDidChange");
             base.LanguageDidChange(notification);
             if (_lblNavTitle != null)
             {

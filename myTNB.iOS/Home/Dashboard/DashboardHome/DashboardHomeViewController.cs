@@ -368,7 +368,6 @@ namespace myTNB
 
         protected override void LanguageDidChange(NSNotification notification)
         {
-            Debug.WriteLine("DEBUG >>> Home LanguageDidChange");
             base.LanguageDidChange(notification);
             if (_homeTableView != null && _dashboardHomeHeader != null)
             {

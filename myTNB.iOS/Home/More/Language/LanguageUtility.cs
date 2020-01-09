@@ -233,6 +233,42 @@ namespace myTNB
             }
         }
 
+        public static string LanguageCTATitle
+        {
+            get
+            {
+                return GetCommonI18NValue(Constants.Common_SaveChanges);
+            }
+        }
+
+        public static string LanguageSectionTitle
+        {
+            get
+            {
+                return GetCommonI18NValue(Constants.Common_SetAppLanguageDescription);
+            }
+        }
+
+        public static string LanguageTitle
+        {
+            get
+            {
+                return GetCommonI18NValue(Constants.Common_SetAppLanguage);
+            }
+        }
+
+        public static List<string> SupportedLanguageList
+        {
+            get
+            {
+                //This arrangement should be the same as SupportedLanguage in LanguageUtility
+                return new List<string>{
+                    GetCommonI18NValue(Constants.Common_English)
+                    , GetCommonI18NValue(Constants.Common_Bahasa)
+                };
+            }
+        }
+
         public static string ServiceLanguage
         {
             get
