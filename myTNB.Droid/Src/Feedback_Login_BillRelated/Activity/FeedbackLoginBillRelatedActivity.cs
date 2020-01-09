@@ -555,7 +555,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback);
-            txtInputLayoutFeedback.Error = GetString(Resource.String.bill_related_feedback_empty_feedback_error);
+            txtInputLayoutFeedback.Error = Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");
         }
 
 
