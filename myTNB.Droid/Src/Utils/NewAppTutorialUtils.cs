@@ -17,62 +17,85 @@ namespace myTNB_Android.Src.Utils
 
         public static void OnShowNewAppTutorial(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
-            if (mDialog != null)
+            try
             {
-                mDialog.CloseDialog();
-                mDialog = null;
-            }
+                if (mDialog != null)
+                {
+                    mDialog.CloseDialog();
+                    mDialog = null;
+                }
 
-            if (fragment != null)
-            {
-                if (fragment is HomeMenuFragment)
+                if (fragment != null)
                 {
-                    ((HomeMenuFragment)fragment).StopScrolling();
+                    if (fragment is HomeMenuFragment)
+                    {
+                        ((HomeMenuFragment)fragment).StopScrolling();
+                    }
+                    else if (fragment is ItemisedBillingMenuFragment)
+                    {
+                        ((ItemisedBillingMenuFragment)fragment).StopScrolling();
+                    }
+                    else if (fragment is DashboardChartFragment)
+                    {
+                        ((DashboardChartFragment)fragment).StopScrolling();
+                    }
+                    else if (fragment is RewardMenuFragment)
+                    {
+                        ((RewardMenuFragment)fragment).StopScrolling();
+                    }
                 }
-                else if (fragment is ItemisedBillingMenuFragment)
+                else
                 {
-                    ((ItemisedBillingMenuFragment)fragment).StopScrolling();
+                    if (ctx is SSMRMeterHistoryActivity)
+                    {
+                        ((SSMRMeterHistoryActivity)ctx).StopScrolling();
+                    }
+                    else if (ctx is SubmitMeterReadingActivity)
+                    {
+                        ((SubmitMeterReadingActivity)ctx).StopScrolling();
+                    }
                 }
-                else if (fragment is DashboardChartFragment)
-                {
-                    ((DashboardChartFragment)fragment).StopScrolling();
-                }
-                else if (fragment is RewardMenuFragment)
-                {
-                    ((RewardMenuFragment)fragment).StopScrolling();
-                }
-            }
-            else
-            {
-                if (ctx is SSMRMeterHistoryActivity)
-                {
-                    ((SSMRMeterHistoryActivity)ctx).StopScrolling();
-                }
-                else if (ctx is SubmitMeterReadingActivity)
-                {
-                    ((SubmitMeterReadingActivity)ctx).StopScrolling();
-                }
-            }
 
-            mDialog = new NewAppTutorialDialogFragment(ctx, fragment, pref, list, mIndicationShowTop);
-            mDialog.Cancelable = false;
-            mDialog.Show(((AppCompatActivity)ctx).SupportFragmentManager, "NewAppTutorial Dialog");
+                mDialog = new NewAppTutorialDialogFragment(ctx, fragment, pref, list, mIndicationShowTop);
+                mDialog.Cancelable = false;
+                mDialog.Show(((AppCompatActivity)ctx).SupportFragmentManager, "NewAppTutorial Dialog");
+            }
+            catch (System.Exception e)
+            {
+                ForceCloseNewAppTutorial();
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public static void ForceCloseNewAppTutorial()
         {
-            if (mDialog != null)
+            try
             {
-                mDialog.CloseDialog();
-                mDialog = null;
+                if (mDialog != null)
+                {
+                    mDialog.CloseDialog();
+                    mDialog = null;
+                }
+            }
+            catch (System.Exception e)
+            {
+                CloseNewAppTutorial();
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public static void CloseNewAppTutorial()
         {
-            if (mDialog != null)
+            try
             {
-                mDialog = null;
+                if (mDialog != null)
+                {
+                    mDialog = null;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowErrorMessage("Something went wrong! Please try again later");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -93,7 +93,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowErrorMessage("Please check your internet connection.");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowErrorMessage("Please check your internet connection.");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(e);
             }
         }

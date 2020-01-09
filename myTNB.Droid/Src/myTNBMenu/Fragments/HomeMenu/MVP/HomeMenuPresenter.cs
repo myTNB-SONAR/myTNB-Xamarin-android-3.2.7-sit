@@ -1851,6 +1851,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GetSavedNewFAQTimeStamp();
         }
 
+        public void OnCheckNewFAQState()
+        {
+            if (isNeedHelpDone)
+            {
+                isNeedHelpDone = false;
+                GetSavedNewFAQTimeStamp();
+            }
+            else
+            {
+                isNeedHelpDone = false;
+                this.mView.SetNewFAQRecycleView();
+            }
+        }
+
         public bool GetIsMyServiceRefreshNeeded()
         {
             return isMyServiceRefreshNeeded;

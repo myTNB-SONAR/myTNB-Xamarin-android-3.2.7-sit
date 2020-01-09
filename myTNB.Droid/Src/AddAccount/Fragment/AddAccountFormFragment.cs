@@ -548,12 +548,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             }
 
-            string msg = "Something went wrong, Please try again.";
-            if (IsAdded)
-            {
-                msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
-            }
-
+            string msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+            
             mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {

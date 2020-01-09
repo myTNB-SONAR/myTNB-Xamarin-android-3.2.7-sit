@@ -775,8 +775,13 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             string feedback = txtFeedback.Text.Trim();
             try
             {
-                if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(account_no))
+                if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(account_no) || TextUtils.IsEmpty(feedback))
                 {
+                    if (TextUtils.IsEmpty(feedback))
+                    {
+                        ShowEmptyFeedbackError();
+                    }
+
                     DisableSubmitButton();
                     return;
                 }

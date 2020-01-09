@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
                     this.mView.HideGetReceiptDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again latern");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
 
         }

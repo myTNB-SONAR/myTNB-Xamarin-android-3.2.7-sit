@@ -90,9 +90,7 @@ namespace myTNB_Android.Src.Barcode.Activity
                         scanFragment = new ZXingScannerFragment();
                         SupportFragmentManager.BeginTransaction()
                             .Replace(Resource.Id.barCodeView, scanFragment)
-
-                            .Commit()
-                            ;
+                            .CommitAllowingStateLoss();
                         SupportFragmentManager.ExecutePendingTransactions();
                     }
 
@@ -126,6 +124,7 @@ namespace myTNB_Android.Src.Barcode.Activity
             if (scanFragment != null)
             {
                 scanFragment?.StopScanning();
+                scanFragment = null;
             }
 
 
@@ -200,11 +199,37 @@ namespace myTNB_Android.Src.Barcode.Activity
                 return;
             }
 
-            Task.Run(async () =>
+            try
             {
-                await Task.Delay(2000);
-                RunOnUiThread(() => scanFragment.AutoFocus());
-            });
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await Task.Delay(2000);
+                        RunOnUiThread(() => {
+                            try
+                            {
+                                if (scanFragment != null)
+                                {
+                                    scanFragment.AutoFocus();
+                                }
+                            }
+                            catch (System.Exception exe)
+                            {
+                                Utility.LoggingNonFatalError(exe);
+                            }
+                        });
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
         private Snackbar mSnackbarMessage;
         public void ShowInvalidBarCodeError()
@@ -215,8 +240,8 @@ namespace myTNB_Android.Src.Barcode.Activity
                 mSnackbarMessage.Dismiss();
             }
 
-            scanFragment.SetErrorMessage(GetString(Resource.String.barcode_form_invalid_barcode));
-            mSnackbarMessage = Snackbar.Make(rootView, GetString(Resource.String.barcode_form_invalid_barcode), Snackbar.LengthIndefinite)
+            scanFragment.SetErrorMessage(GetLabelByLanguage("invalidBarcode"));
+            mSnackbarMessage = Snackbar.Make(rootView, GetLabelByLanguage("invalidBarcode"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 

@@ -2101,6 +2101,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             currentMyServiceList = new List<MyService>();
 
             this.presenter.InitiateMyServiceRefresh();
+
+            if (newFAQTitle.Visibility == ViewStates.Gone)
+            {
+                this.presenter.OnCheckNewFAQState();
+            }
         }
 
         [OnClick(Resource.Id.btnMyServiceRefresh)]

@@ -514,8 +514,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     mErrorNoInternet.Dismiss();
                 }
 
-                mErrorNoInternet = Snackbar.Make(baseView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-                .SetAction("Try Again", delegate
+                mErrorNoInternet = Snackbar.Make(baseView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
                 {
                 //webView.LoadUrl(failingUrl);
                 mErrorNoInternet.Dismiss();
