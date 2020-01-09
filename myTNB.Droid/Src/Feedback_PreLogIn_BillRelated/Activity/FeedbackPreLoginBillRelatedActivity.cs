@@ -895,5 +895,18 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     break;
             }
         }
+
+        public void ReplaceAccountNum(string account_no)
+        {
+            try
+            {
+                txtAccountNo.Text = account_no;
+                txtAccountNo.SetSelection(account_no.Length);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

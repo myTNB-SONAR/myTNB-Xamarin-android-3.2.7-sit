@@ -178,6 +178,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
             void ShowNameError();
             void OnSubmitError(string message = null);
 
+            void ReplaceAccountNum(string account_no);
         }
 
 

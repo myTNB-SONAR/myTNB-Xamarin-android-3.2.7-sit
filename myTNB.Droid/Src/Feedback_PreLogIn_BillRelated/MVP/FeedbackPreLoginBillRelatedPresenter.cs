@@ -404,7 +404,17 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                         isError = true;
                     }
 
-                    if (!Utility.AccountNumberValidation(account_no.Length))
+                    if (account_no.Length > 12)
+                    {
+                        string account_no_limit = "";
+                        for (int i = 0; i < 12; i++)
+                        {
+                            account_no_limit += account_no[i];
+                        }
+
+                        this.mView.ReplaceAccountNum(account_no_limit);
+                    }
+                    else if (!Utility.AccountNumberValidation(account_no.Length))
                     {
                         this.mView.ShowInvalidAccountNoError();
                         isError = true;
