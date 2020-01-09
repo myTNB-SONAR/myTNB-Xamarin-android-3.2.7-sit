@@ -395,14 +395,16 @@ namespace myTNB
                     timeStamp.Data = new List<RewardsTimestamp> { new RewardsTimestamp { Timestamp = string.Empty } };
                 }
 
+                RewardsEntity rewardsEntity = new RewardsEntity();
+                rewardsEntity.DeleteTable();
+                rewardsEntity.CreateTable();
+
                 RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
-                if (rewardsResponse != null && rewardsResponse.Status != null &&
-                    rewardsResponse.Status.Equals("Success"))
+                if (rewardsResponse != null)
                 {
                     RewardsCache.RewardIsAvailable = true;
                     if (rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                     {
-                        RewardsEntity rewardsEntity = new RewardsEntity();
                         List<RewardsModel> rewardsData = new List<RewardsModel>();
                         List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
                         foreach (var category in categoryList)
@@ -421,8 +423,6 @@ namespace myTNB
                                 }
                             }
                         }
-                        rewardsEntity.DeleteTable();
-                        rewardsEntity.CreateTable();
                         rewardsEntity.InsertListOfItems(rewardsData);
                     }
                     try

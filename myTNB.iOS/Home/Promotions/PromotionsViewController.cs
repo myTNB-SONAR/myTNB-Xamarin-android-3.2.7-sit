@@ -34,8 +34,8 @@ namespace myTNB
             Debug.WriteLine("PROMOTION DID LOAD");
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetNavigationBar();
-            promotionsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
-                , View.Frame.Width, View.Frame.Height - 49 - (DeviceHelper.IsIphoneXUpResolution() ? 88 : 64));
+            promotionsTableView.Frame = new CGRect(0, _navbarView.Frame.GetMaxY()
+                , View.Frame.Width, ViewHeight - _navbarView.Frame.Height + DeviceHelper.GetStatusBarHeight());
         }
 
         protected override void LanguageDidChange(NSNotification notification)
