@@ -131,20 +131,30 @@ namespace myTNB
         {
             if (_isMasterDataDone && _isSitecoreDone)
             {
-                InvokeOnMainThread(() =>
+                if (SitecoreServices.IsForcedUpdate)
                 {
-                    //Todo: Check success and fail States
-                    ClearCache();
-                    Debug.WriteLine("Change Language Done");
-                    NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
-                    I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
-                    if (_component != null)
+                    Task.Factory.StartNew(() =>
                     {
-                        _component.RefreshContent();
-                    }
-                    LanguageUtility.DidUserChangeLanguage = true;
-                    ActivityIndicator.Hide();
-                });
+                        ChangeLanguageCallback();
+                    });
+                }
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        //Todo: Check success and fail States
+                        ClearCache();
+                        Debug.WriteLine("Change Language Done");
+                        NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                        I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
+                        if (_component != null)
+                        {
+                            _component.RefreshContent();
+                        }
+                        LanguageUtility.DidUserChangeLanguage = true;
+                        ActivityIndicator.Hide();
+                    });
+                }
             }
         }
 

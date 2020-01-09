@@ -103,7 +103,6 @@ namespace myTNB
         protected override void LanguageDidChange(NSNotification notification)
         {
             base.LanguageDidChange(notification);
-
             if (_lblNavTitle != null)
             {
                 _lblNavTitle.Text = GetI18NValue(BillConstants.I18N_NavTitle);
@@ -117,7 +116,6 @@ namespace myTNB
                 _btnMore.SetTitle(GetI18NValue(BillConstants.I18N_ViewMore), UIControlState.Normal);
             }
         }
-
         #endregion
 
         #region Tutorial Overlay Methods

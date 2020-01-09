@@ -22,6 +22,7 @@ namespace myTNB.SitecoreCMS
         public bool SplashHasNewTimestamp { get; set; }
         public bool NeedHelpTimeStampChanged { set; get; }
         public string NeedHelpTimeStamp { set; get; }
+        public static bool IsForcedUpdate { get { return _isForcedUpdate; } }
 
         public async Task OnExecuteSitecoreCall(bool isforcedUpdate = false)
         {
@@ -43,7 +44,7 @@ namespace myTNB.SitecoreCMS
             {
                 taskList.Add(LoadEnergyTips());
             }
-            await Task.WhenAll(taskList.ToArray());
+            Task.WaitAll(taskList.ToArray());
             _isForcedUpdate = false;
         }
 
