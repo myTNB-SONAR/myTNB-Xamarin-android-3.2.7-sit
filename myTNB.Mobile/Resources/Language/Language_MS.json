@@ -626,7 +626,7 @@
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
-    "accountDeleteSuccess": "Akaun elektrik anda telah dikeluarkan daripada akaun myTNB.",
+    "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "Masukkan Akaun Bekalan Elektrik TNB sedia ada anda untuk melihat butiran penggunaan dan transaksi."
@@ -708,7 +708,7 @@
     "title": "Uruskan Akaun Elektrik",
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Alih Keluar Akaun Ini",
-    "popupremoveAccountTitle": "Keluarkan Akaun",
+    "popupremoveAccountTitle": "Alih Keluar Akaun",
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
   },
   "Onboarding": {
