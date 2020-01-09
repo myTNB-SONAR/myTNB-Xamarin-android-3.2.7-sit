@@ -459,10 +459,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                     }
 
                 }
-                else
-                {
-                    Toast.MakeText(this, "Unable to scan card! Please try again...", ToastLength.Long).Show();
-                }
             }
             catch (Exception ex)
             {
