@@ -68,7 +68,6 @@ namespace myTNB
 
         protected override void LanguageDidChange(NSNotification notification)
         {
-            Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
             base.LanguageDidChange(notification);
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             _lblAppVersion.Text = Version;

@@ -1917,10 +1917,6 @@
     <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
       <DependentUpon>PromotionsViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\More\MoreViewController.cs" />
-    <Compile Include="Home\More\MoreViewController.designer.cs">
-      <DependentUpon>MoreViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Components\AccountSelectionComponent.cs" />
     <Compile Include="Home\Components\AddressComponent.cs" />
     <Compile Include="Home\Components\BillAndPaymentComponent.cs" />
@@ -1965,7 +1961,6 @@
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="UserInfoViewController.cs" />
     <Compile Include="Model\RegisteredCardsResponseModel.cs" />
-    <Compile Include="Home\More\MoreDataSource.cs" />
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.cs" />
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.designer.cs">
       <DependentUpon>NotificationSettingsViewController.cs</DependentUpon>
