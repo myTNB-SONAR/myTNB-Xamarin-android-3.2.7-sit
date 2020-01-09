@@ -159,6 +159,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void UpdateNewFAQCompleteState();
 
             bool GetIsLoadedHomeDone();
+
+            void OnCheckNewFAQState();
         }
 
         public interface IHomeMenuService
