@@ -25,7 +25,8 @@ namespace myTNB
             {
                 //Handle Firebase Log Event
                 Debug.WriteLine("Tapped");
-                Analytics.LogEvent(string.Format(EventFormat, PageName, EventName), null);
+                string pName = PageName.IsValid() ? PageName : "NoPage";
+                Analytics.LogEvent(string.Format(EventFormat, pName, EventName), null);
             }));
             base.AddGestureRecognizer(gestureRecognizer);
         }
