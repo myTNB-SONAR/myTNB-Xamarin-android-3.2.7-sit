@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 {
                     this.mView.HideGetLocationsDialog();
                 }
-                this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                this.mView.ShowGetLocationsError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
@@ -97,7 +97,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 {
                     this.mView.HideGetLocationsDialog();
                 }
-                this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                this.mView.ShowGetLocationsError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 {
                     this.mView.HideGetLocationsDialog();
                 }
-                this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                this.mView.ShowGetLocationsError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(unknownException);
             }
         }

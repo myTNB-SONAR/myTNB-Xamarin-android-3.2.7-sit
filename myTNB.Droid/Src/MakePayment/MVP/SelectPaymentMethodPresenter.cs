@@ -60,38 +60,30 @@ namespace myTNB_Android.Src.MakePayment.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                Log.Debug(TAG, "Cancelled Exception");
-                // ADD OPERATION CANCELLED HERE
-                //this.mView.ShowRetryOptionsCancelledException(e);
                 if (mView.IsActive())
                 {
                     this.mView.HidePaymentRequestDialog();
                 }
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
-                Log.Debug(TAG, "Stack " + apiException.StackTrace);
                 if (mView.IsActive())
                 {
                     this.mView.HidePaymentRequestDialog();
                 }
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                // ADD UNKNOWN EXCEPTION HERE
-                Log.Debug(TAG, "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (mView.IsActive())
                 {
                     this.mView.HidePaymentRequestDialog();
                 }
                 Utility.LoggingNonFatalError(e);
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
 
         }

@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		private bool smDataError = false;
 		private string smErrorCode = "204";
-		private string smErrorMessage = "Sorry, Something went wrong. Please try again later";
+		private string smErrorMessage = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
 
 		private string preSelectedAccount;
 		private UsageHistoryResponse usageHistoryResponse;

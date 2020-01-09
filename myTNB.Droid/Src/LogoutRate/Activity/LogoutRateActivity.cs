@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
         public void ShowErrorMessage(string message)
         {
             Snackbar errorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                        .SetAction(Utility.GetLocalizedCommonLabel("save"),
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
                          (view) =>
                          {
 

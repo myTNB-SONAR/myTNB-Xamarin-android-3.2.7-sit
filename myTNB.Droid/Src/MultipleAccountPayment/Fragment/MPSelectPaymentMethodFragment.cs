@@ -729,7 +729,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         isValid = false;
                         //txtTotalAmount.Error = "For payments more than RM 5000, please use FPX payment mode.";
-                        ShowErrorMessage("For payments more than RM 5000, please use FPX payment mode.");
+                        ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
                     }
 
                 }

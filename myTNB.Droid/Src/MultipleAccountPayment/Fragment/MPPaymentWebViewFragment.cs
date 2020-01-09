@@ -514,8 +514,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 mErrorMessageSnackBar.Dismiss();
             }
 
-            mErrorMessageSnackBar = Snackbar.Make(mainView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate
+            mErrorMessageSnackBar = Snackbar.Make(mainView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
             {
                 if (!failingUrl.ToLower().Contains("statusreceipt.aspx") || !failingUrl.ToLower().Contains("paystatusreceipt"))
                 {

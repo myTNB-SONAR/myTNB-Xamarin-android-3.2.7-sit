@@ -44,45 +44,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             // NO IMPL
         }
 
-        //public async void InitiatePaymentRequestAsync(string apiKeyID, string custName, string custEmail, string custPhone, string sspUserID, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItems> paymentItems)
-        //{
-
-        //    try
-        //    {
-        //        this.mView.ShowPaymentRequestDialog();
-
-        //        var api = RestService.For<MPRequestPaymentApi>(Constants.SERVER_URL.END_POINT);
-
-        //        MPInitiatePaymentResponse result = await api.InitiatePayment(new MPInitiatePaymentRequestV3(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, totalAmount, paymentItems));
-        //        this.mView.SaveInitiatePaymentResponse(result);
-        //        this.mView.HidePaymentRequestDialog();
-        //    }
-        //    catch (System.OperationCanceledException e)
-        //    {
-        //        Log.Debug(TAG, "Cancelled Exception");
-        //        // ADD OPERATION CANCELLED HERE
-        //        this.mView.HidePaymentRequestDialog();
-        //        Utility.LoggingNonFatalError(e);
-        //        this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
-        //    }
-        //    catch (ApiException apiException)
-        //    {
-        //        // ADD HTTP CONNECTION EXCEPTION HERE
-        //        Log.Debug(TAG, "Stack " + apiException.StackTrace);
-        //        this.mView.HidePaymentRequestDialog();
-        //        Utility.LoggingNonFatalError(apiException);
-        //        this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        // ADD UNKNOWN EXCEPTION HERE
-        //        Log.Debug(TAG, "Stack " + e.StackTrace);
-        //        this.mView.HidePaymentRequestDialog();
-        //        Utility.LoggingNonFatalError(e);
-        //    }
-
-        //}
-
         public async void GetPaymentTransactionId(string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems)
         {
 
@@ -103,26 +64,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                Log.Debug(TAG, "Cancelled Exception");
-                // ADD OPERATION CANCELLED HERE
                 this.mView.HidePaymentRequestDialog();
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
             catch (ApiException apiException)
             {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                Log.Debug(TAG, "Stack " + apiException.StackTrace);
                 this.mView.HidePaymentRequestDialog();
                 Utility.LoggingNonFatalError(apiException);
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
             catch (Exception e)
             {
-                // ADD UNKNOWN EXCEPTION HERE
-                Log.Debug(TAG, "Stack " + e.StackTrace);
                 this.mView.HidePaymentRequestDialog();
                 Utility.LoggingNonFatalError(e);
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
 
         }

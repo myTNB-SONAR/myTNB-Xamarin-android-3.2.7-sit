@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
                 this.mView.HideGetReceiptDialog();
                 Log.Debug(TAG, e.StackTrace);
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later.");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
         }
 
