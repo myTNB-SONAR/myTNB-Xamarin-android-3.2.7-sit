@@ -161,6 +161,9 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                             mRearrangeSnackbar = Snackbar.Make(rootView,
                                 GetLabelByLanguage("rearrangeToastFailMsg"),
                                 Snackbar.LengthLong);
+                                View v = mRearrangeSnackbar.View;
+                                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                                tv.SetMaxLines(5);
                             mRearrangeSnackbar.Show();
                             this.SetIsClicked(false);
                             HideProgressDialog();

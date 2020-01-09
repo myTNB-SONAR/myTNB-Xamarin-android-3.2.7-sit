@@ -6256,6 +6256,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mNoInternetSnackbar.Dismiss();
                 }
                 );
+                View v = mNoInternetSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mNoInternetSnackbar.Show();
                 this.SetIsClicked(false);
             }
@@ -6281,6 +6284,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mLoadBillSnackBar.Dismiss();
                 }
                 );
+                View v = mLoadBillSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mLoadBillSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -6552,6 +6558,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mSmartMeterError.Dismiss();
                 }
                 );
+                View v = mSmartMeterError.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mSmartMeterError.Show();
                 this.SetIsClicked(false);
             }
@@ -6578,6 +6587,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mDisconnectionSnackbar.Dismiss();
                 }
                 );
+                View v = mDisconnectionSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mDisconnectionSnackbar.Show();
                 this.SetIsClicked(false);
             }
@@ -6605,6 +6617,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mSMRSnackbar.Dismiss();
                 }
                 );
+                View v = mSMRSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mSMRSnackbar.Show();
                 this.SetIsClicked(false);
             }
@@ -9657,7 +9672,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 txtNewRefreshMessage.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"));
                             }
                         }
-                        
+
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
                     }

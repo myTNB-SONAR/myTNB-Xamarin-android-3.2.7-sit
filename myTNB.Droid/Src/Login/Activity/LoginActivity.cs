@@ -307,6 +307,9 @@ namespace myTNB_Android.Src.Login.Activity
                 mEmptyEmailSnackBar = Snackbar.Make(rootView, errorText, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyEmailSnackBar.Dismiss(); }
                 );
+                View v = mEmptyEmailSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mEmptyEmailSnackBar.Show();
             }
 
@@ -328,6 +331,9 @@ namespace myTNB_Android.Src.Login.Activity
                 mEmptyPasswordSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("invalid_password"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyPasswordSnackBar.Dismiss(); }
                 );
+                View v = mEmptyPasswordSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mEmptyPasswordSnackBar.Show();
             }
 
@@ -355,6 +361,9 @@ namespace myTNB_Android.Src.Login.Activity
                 mInvalidEmailSnackBar = Snackbar.Make(rootView, errorText, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mInvalidEmailSnackBar.Dismiss(); }
                 );
+                View v = mInvalidEmailSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mInvalidEmailSnackBar.Show();
             }
 
@@ -375,6 +384,9 @@ namespace myTNB_Android.Src.Login.Activity
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mSnackBar.Dismiss(); }
                 );
+                View v = mSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mSnackBar.Show();
             }
 
@@ -472,6 +484,9 @@ namespace myTNB_Android.Src.Login.Activity
                 this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
             this.SetIsClicked(false);
@@ -496,6 +511,9 @@ namespace myTNB_Android.Src.Login.Activity
                 this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
             this.SetIsClicked(false);
@@ -520,6 +538,9 @@ namespace myTNB_Android.Src.Login.Activity
                 this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
             this.SetIsClicked(false);

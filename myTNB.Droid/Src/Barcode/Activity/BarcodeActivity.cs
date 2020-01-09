@@ -224,6 +224,9 @@ namespace myTNB_Android.Src.Barcode.Activity
 
             }
             );
+            View v = mSnackbarMessage.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mSnackbarMessage.Show();
         }
 

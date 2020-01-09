@@ -1143,6 +1143,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mNoInternetSnackbar.Dismiss();
             }
             );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
         }
     }

@@ -252,7 +252,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             }
         }
-     
+
         public void ShowBillDetails(List<AccountChargeModel> accountChargeModelList)
         {
             try
@@ -535,6 +535,9 @@ namespace myTNB_Android.Src.Billing.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
                 );
+                View v = mLoadBillSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mLoadBillSnackBar.Show();
                 this.SetIsClicked(false);
             }

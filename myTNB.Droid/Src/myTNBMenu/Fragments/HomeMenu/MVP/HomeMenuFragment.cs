@@ -833,7 +833,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         newFAQTitle.Visibility = ViewStates.Gone;
                         newFAQView.Visibility = ViewStates.Gone;
 
-                        OnHideBottomView(); 
+                        OnHideBottomView();
                     }
                     catch (System.Exception ex)
                     {
@@ -1369,6 +1369,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 RetryMyService();
             }
             );
+            View v = mMyServiceRetrySnakebar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mMyServiceRetrySnakebar.Show();
         }
 
@@ -1383,6 +1386,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             mRearrangeSnackbar = Snackbar.Make(rootView,
                 Utility.GetLocalizedLabel("RearrangeAccount", "rearrangeToastSuccessMsg"),
                 Snackbar.LengthLong);
+                View v = mRearrangeSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
             mRearrangeSnackbar.Show();
         }
 
@@ -2518,6 +2524,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
                 );
+                View v = mLoadBillSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mLoadBillSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -2828,6 +2837,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 mSomethingWrongExceptionSnackBar.Dismiss();
             }
             );
+            View v = mSomethingWrongExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mSomethingWrongExceptionSnackBar.Show();
         }
 

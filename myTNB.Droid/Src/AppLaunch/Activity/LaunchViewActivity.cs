@@ -204,6 +204,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         this.userActionsListener.Start();
                     }
                     );
+                    View v = mApiExcecptionSnackBar.View;
+                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                    tv.SetMaxLines(5);
                     mApiExcecptionSnackBar.Show();
                 }
             }
@@ -236,6 +239,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         this.userActionsListener.Start();
                     }
                     );
+                    View v = mUnknownExceptionSnackBar.View;
+                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                    tv.SetMaxLines(5);
                     mUnknownExceptionSnackBar.Show();
                 }
             }
@@ -861,6 +867,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 mNoInternetSnackbar.Dismiss();
             }
             );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
         }
 

@@ -283,6 +283,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -303,6 +306,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -323,20 +329,27 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
         }
 
         public void ShowErrorMessage(string message)
         {
-            Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            Snackbar errorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
                         .SetAction(GetLabelCommonByLanguage("close"),
                          (view) =>
                          {
 
                              // EMPTY WILL CLOSE SNACKBAR
                          }
-                        ).Show();
+                        );
+            View v = errorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            errorSnackbar.Show();
         }
 
         public void ShowSnackbarRemovedSuccess(CreditCardData RemovedCard, int position)
@@ -345,14 +358,18 @@ namespace myTNB_Android.Src.ManageCards.Activity
             creditCard.PutExtra(Constants.REMOVED_CREDIT_CARD, JsonConvert.SerializeObject(RemovedCard));
             SetResult(Result.Ok, creditCard);
             string lastDigits = RemovedCard.LastDigits.Substring(RemovedCard.LastDigits.Length - 4);
-            Snackbar.Make(rootView, string.Format(GetLabelByLanguage("cardRemoveSuccess"), lastDigits), Snackbar.LengthIndefinite)
+            Snackbar removeSnackbar = Snackbar.Make(rootView, string.Format(GetLabelByLanguage("cardRemoveSuccess"), lastDigits), Snackbar.LengthIndefinite)
                        .SetAction(GetLabelCommonByLanguage("close"),
                         (view) =>
                         {
 
                             // EMPTY WILL CLOSE SNACKBAR
                         }
-                       ).Show();
+                       );
+            View v = removeSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            removeSnackbar.Show();
         }
 
 
