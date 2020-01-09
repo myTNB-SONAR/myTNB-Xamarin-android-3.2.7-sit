@@ -497,14 +497,16 @@ namespace myTNB.SitecoreCMS
 
                 if (needsUpdate)
                 {
+                    RewardsEntity rewardsEntity = new RewardsEntity();
+                    rewardsEntity.DeleteTable();
+                    rewardsEntity.CreateTable();
+
                     RewardsResponseModel rewardsResponse = iService.GetRewardsItems();
-                    if (rewardsResponse != null && rewardsResponse.Status != null &&
-                        rewardsResponse.Status.Equals("Success"))
+                    if (rewardsResponse != null)
                     {
                         RewardsCache.RewardIsAvailable = true;
                         if (rewardsResponse.Data != null && rewardsResponse.Data.Count > 0)
                         {
-                            RewardsEntity rewardsEntity = new RewardsEntity();
                             List<RewardsModel> rewardsData = new List<RewardsModel>();
                             List<RewardsCategoryModel> categoryList = new List<RewardsCategoryModel>(rewardsResponse.Data);
                             foreach (var category in categoryList)
@@ -523,8 +525,6 @@ namespace myTNB.SitecoreCMS
                                     }
                                 }
                             }
-                            rewardsEntity.DeleteTable();
-                            rewardsEntity.CreateTable();
                             rewardsEntity.InsertListOfItems(rewardsData);
                         }
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
@@ -610,18 +610,15 @@ namespace myTNB.SitecoreCMS
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
                     , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                HelpEntity wsManager = new HelpEntity();
+                wsManager.DeleteTable();
+                wsManager.CreateTable();
                 HelpResponseModel needHelpResponse = iService.GetHelpItems();
-                if (needHelpResponse.Status.IsValid() && needHelpResponse.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
+                if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
                 {
-                    HelpEntity wsManager = new HelpEntity();
-                    wsManager.DeleteTable();
-                    wsManager.CreateTable();
-                    if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
-                    {
-                        wsManager.InsertListOfItems(needHelpResponse.Data);
-                        UpdateSharedPreference(NeedHelpTimeStamp, "SiteCoreHelpTimeStamp");
-                        Debug.WriteLine("LoadNeedHelp Done");
-                    }
+                    wsManager.InsertListOfItems(needHelpResponse.Data);
+                    UpdateSharedPreference(NeedHelpTimeStamp, "SiteCoreHelpTimeStamp");
+                    Debug.WriteLine("LoadNeedHelp Done");
                 }
             });
         }
