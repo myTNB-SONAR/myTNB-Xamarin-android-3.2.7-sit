@@ -409,17 +409,19 @@ namespace myTNB
                 .InstantiateViewController("GenericSelectorViewController");
             if (languageViewController != null)
             {
-                languageViewController.Title = LanguageSettings.Title;
-                languageViewController.Items = LanguageSettings.SupportedLanguage;
+                languageViewController.Title = LanguageUtility.LanguageTitle;
+                languageViewController.Items = LanguageUtility.SupportedLanguageList;
                 languageViewController.HasSectionTitle = true;
-                languageViewController.SectionTitle = LanguageSettings.SectionTitle;
+                languageViewController.SectionTitle = LanguageUtility.LanguageSectionTitle;
                 languageViewController.HasCTA = true;
-                languageViewController.CTATitle = LanguageSettings.CTATitle;
+                languageViewController.CTATitle = LanguageUtility.LanguageCTATitle;
                 languageViewController.OnSelect = OnSelectLanguage;
                 languageViewController.OnBack = OnLanguageBack;
-                languageViewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
-                UINavigationController navController = new UINavigationController(languageViewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                languageViewController.SelectedIndex = LanguageUtility.CurrentLanguageIndex;
+                UINavigationController navController = new UINavigationController(languageViewController)
+                {
+                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                };
                 PresentViewController(navController, true, null);
             }
         }
@@ -535,20 +537,12 @@ namespace myTNB
 
         private void GoToMyAccount()
         {
-            //ActivityIndicator.Show();
-            /* ServiceCall.GetRegisteredCards().ContinueWith(task =>
-             {
-                 InvokeOnMainThread(() =>
-                 {*/
             UIStoryboard storyBoard = UIStoryboard.FromName("MyAccount", null);
             MyAccountViewController viewController =
                 storyBoard.InstantiateViewController("MyAccountViewController") as MyAccountViewController;
             UINavigationController navController = new UINavigationController(viewController);
             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
-            //ActivityIndicator.Hide();
-            /*});
-        });*/
         }
 
         private void GoToTermsAndCondition()
