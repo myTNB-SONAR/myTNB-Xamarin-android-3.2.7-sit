@@ -313,10 +313,10 @@ namespace myTNB
                                             GoToFindUs();
                                             break;
                                         case 1:
-                                            CallCustomerService("tnbclo");
+                                            CallCustomerService("tnbcle");
                                             break;
                                         case 2:
-                                            CallCustomerService("tnbcle");
+                                            CallCustomerService("tnbclo");
                                             break;
                                         case 3:
                                             GoToFAQ();
