@@ -30,12 +30,23 @@ namespace myTNB
             TabBar.BackgroundColor = UIColor.White;
             SetTabbarTitle();
             ShouldSelectViewController += ShouldSelectTab;
+
+            if (AppLaunchMasterCache.IsRewardsDisabled)
+            {
+                List<UIViewController> vcs = ViewControllers.ToList();
+                vcs.RemoveAt(3);
+                ViewControllers = vcs.ToArray();
+            }
+            else
+            {
+                FetchRewards();
+            }
+
             if (!DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
             {
                 UpdatePromotions();
                 DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
             }
-            FetchRewards();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -73,17 +84,20 @@ namespace myTNB
                 return;
             }
 
-            UITabBarItem[] tabbarItem = TabBar.Items;
-            tabbarItem[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
-            tabbarItem[1].Title = GetI18NValue(TabbarConstants.Tab_Bill);
-            tabbarItem[2].Title = GetI18NValue(TabbarConstants.Tab_Promotion);
-            tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
-            tabbarItem[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
+            UITabBarItem[] tabbarItems = TabBar.Items;
+            tabbarItems[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
+            tabbarItems[1].Title = GetI18NValue(TabbarConstants.Tab_Bill);
+            tabbarItems[2].Title = GetI18NValue(TabbarConstants.Tab_Promotion);
+            tabbarItems[3].Title = GetI18NValue(AppLaunchMasterCache.IsRewardsDisabled ? TabbarConstants.Tab_Profile : TabbarConstants.Tab_Rewards);
 
-            UpdateTabBar(tabbarItem);
+            UpdateTabBar(tabbarItems);
 
-            tabbarItem[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-            tabbarItem[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            if (!AppLaunchMasterCache.IsRewardsDisabled)
+            {
+                tabbarItems[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                tabbarItems[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                tabbarItems[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
+            }
         }
 
         private void UpdateTabBar(UITabBarItem[] tabbarItems)
@@ -149,7 +163,7 @@ namespace myTNB
                 {
                     UpdatePromotionTabBarIcon();
                 }
-                if (!ShowNewIndicator("3"))
+                if (!AppLaunchMasterCache.IsRewardsDisabled && !ShowNewIndicator("3"))
                 {
                     UpdateRewardsTabBarIcon();
                 }
@@ -164,7 +178,7 @@ namespace myTNB
                 {
                     SetNewIndicator("2");
                 }
-                else if (tabbar.SelectedItem.Tag == 3)
+                else if (!AppLaunchMasterCache.IsRewardsDisabled && tabbar.SelectedItem.Tag == 3)
                 {
                     SetNewIndicator("3");
                 }
@@ -480,6 +494,10 @@ namespace myTNB
 
         private void UpdateRewardsTabBarIcon()
         {
+            if (AppLaunchMasterCache.IsRewardsDisabled)
+            {
+                return;
+            }
             TabBar.Items[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             TabBar.Items[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 
