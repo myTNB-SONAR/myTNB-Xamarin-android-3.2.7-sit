@@ -1079,17 +1079,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
         }
 
 
-        public void ShowBCRMDownException(String msg)
+        public void ShowServiceError(string title, string message)
         {
-            MaterialDialog bcrmDownDialog;
-            bcrmDownDialog = new MaterialDialog.Builder(this)
-                .Title("Error")
-                .Content(msg)
+            string dialogTitle = string.IsNullOrEmpty(title) ? Utility.GetLocalizedErrorLabel("defaultErrorTitle") : title;
+            string dialogMessage = string.IsNullOrEmpty(message) ? Utility.GetLocalizedErrorLabel("defaultErrorMessage") : message;
+            MaterialDialog serviceErrorDialog = new MaterialDialog.Builder(this)
+                .Title(dialogTitle)
+                .Content(dialogMessage)
                 .PositiveText(Utility.GetLocalizedCommonLabel("ok"))
                 .OnPositive((dialog, which) => NavigateToDashboard())
                 .Cancelable(false)
                 .Build();
-            bcrmDownDialog.Show();
+            serviceErrorDialog.Show();
         }
 
 

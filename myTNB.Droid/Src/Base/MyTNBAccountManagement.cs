@@ -28,6 +28,7 @@ namespace myTNB_Android.Src.Base
         private List<string> UpdatedAccountNumberList = new List<string>();
         private int appLaunchMasterDataTimeout;
         private bool IsUpdatedMobileNumber = false;
+        private bool IsUpdatedPassword = false;
         private bool IsAppMasterComplete = false;
         private bool IsAppMasterFailed = false;
         private string MaintenanceTitle = "";
@@ -515,5 +516,15 @@ namespace myTNB_Android.Src.Base
         {
             return IsUpdatedMobileNumber;
         }
-	}
+
+        public void SetIsPasswordUpdated(bool isUpdated)
+        {
+            IsUpdatedPassword = isUpdated;
+        }
+
+        public bool IsPasswordUpdated()
+        {
+            return IsUpdatedPassword;
+        }
+    }
 }

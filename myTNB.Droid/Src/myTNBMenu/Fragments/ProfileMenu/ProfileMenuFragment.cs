@@ -145,11 +145,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 PopulateActiveAccountDetails();
                 mPresenter.Start();
                 bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
+                bool hasUpdatedPassword = MyTNBAccountManagement.GetInstance().IsPasswordUpdated();
                 if (hasUpdatedMobile)
                 {
                     UserEntity userEntity = UserEntity.GetActive();
                     ShowMobileUpdateSuccess(userEntity.MobileNo);
                     MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(false);
+                }
+
+                if (hasUpdatedPassword)
+                {
+                    ShowPasswordUpdateSuccess();
+                    MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(false);
                 }
 
                 try
@@ -214,7 +221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     if (resultCode == Result.Ok)
                     {
-                        ShowPasswordUpdateSuccess();
+                        MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(true);
                     }
                 }
                 else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
@@ -898,7 +905,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_password), Snackbar.LengthIndefinite)
+                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetLabelByLanguage("passwordUpdateSuccess"), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {

@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// 
             /// </summary>
             /// <param name="message"></param>
-            void ShowBCRMDownException(String msg);
+            void ShowServiceError(string title, string message);
 
             string GetDeviceId();
         }

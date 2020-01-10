@@ -65,19 +65,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 var result = await ServiceApiImpl.Instance.CustomerAccountsForICNum(new CustomerAccountsForICNumRequest(currentAccountList, identificationNo));
 
-                if (result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
+                if (!result.IsSuccessResponse())
                 {
                     this.mView.HideGetAccountsProgressDialog();
-
-                    if (result.Response.Status.Equals("failed"))
-                    {
-                        this.mView.ShowBCRMDownException(result.Response.DisplayMessage);
-                    }
-                    else
-                    {
-                        Exception e = new Exception();
-                        this.mView.ShowRetryOptionsUnknownException(e);
-                    }
+                    this.mView.ShowServiceError(result.Response.DisplayTitle, result.Response.DisplayMessage);
                 }
                 else
                 {

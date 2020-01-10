@@ -135,7 +135,6 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                 if (TextUtils.IsEmpty(newAccountNickname))
                 {
                     this.mView.DisableSaveButton();
-                    this.mView.ShowEmptyNickNameError();
                     return;
                 }
 
