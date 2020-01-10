@@ -324,6 +324,7 @@ namespace myTNB
                                         AccountUsageSmartCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageSmartResponse);
                                         if (AccountUsageSmartCache.IsSuccess || AccountUsageSmartCache.IsMDMSDown)
                                         {
+                                            _smartMeterIsAvailable = true;
                                             OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
                                             if (AccountUsageSmartCache.IsMDMSDown)
                                             {
@@ -339,11 +340,13 @@ namespace myTNB
                                         }
                                         else if (AccountUsageSmartCache.IsDataEmpty)
                                         {
+                                            _smartMeterIsAvailable = false;
                                             HideSmartMeterComponent();
                                             SetEmptyDataComponent(AccountUsageSmartCache.EmptyDataMessage);
                                         }
-                                        else if (AccountUsageCache.IsPlannedDownTime)
+                                        else if (AccountUsageSmartCache.IsPlannedDownTime)
                                         {
+                                            _smartMeterIsAvailable = false;
                                             SetDowntimeScreen();
                                             SetContentViewForRefresh();
                                             HideREAmountView();
@@ -351,6 +354,7 @@ namespace myTNB
                                         }
                                         else
                                         {
+                                            _smartMeterIsAvailable = false;
                                             SetRefreshScreen();
                                             SetContentViewForRefresh();
                                             HideREAmountView();
@@ -364,6 +368,7 @@ namespace myTNB
                         }
                         else
                         {
+                            _smartMeterIsAvailable = true;
                             AccountUsageSmartCache.ClearTariffLegendList();
                             AccountUsageSmartCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                             OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
@@ -376,6 +381,7 @@ namespace myTNB
                     }
                     else
                     {
+                        _smartMeterIsAvailable = false;
                         DisplayNoDataAlert();
                     }
                 });
@@ -440,6 +446,7 @@ namespace myTNB
                                         }
                                         else
                                         {
+                                            UpdateFooterUI(false);
                                             UpdateFooterForRefreshState();
                                         }
                                     }
@@ -490,38 +497,54 @@ namespace myTNB
                                             {
                                                 if (response != null &&
                                                     response.d != null &&
-                                                    response.d.IsSuccess &&
-                                                    response.d.data != null &&
-                                                    response.d.data.Count > 0)
+                                                    response.d.IsSuccess)
                                                 {
-                                                    SMRAccountStatusModel statusDetails = response.d.data[0];
-                                                    if (statusDetails != null)
+                                                    if (response.d.data != null && response.d.data.Count > 0)
                                                     {
-                                                        string accountNo = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-                                                        if (accountNo.Equals(statusDetails.ContractAccount))
+                                                        SMRAccountStatusModel statusDetails = response.d.data[0];
+                                                        if (statusDetails != null)
                                                         {
-                                                            DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(accountNo, statusDetails.IsTaggedSMR);
-                                                            if (statusDetails.isTaggedSMR)
+                                                            string accountNo = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+                                                            if (accountNo.Equals(statusDetails.ContractAccount))
                                                             {
-                                                                SSMRUsageParallelAPICalls();
+                                                                DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(accountNo, statusDetails.IsTaggedSMR);
+                                                                if (statusDetails.isTaggedSMR)
+                                                                {
+                                                                    _smrIsAvailable = true;
+                                                                    SSMRUsageParallelAPICalls();
+                                                                }
+                                                                else
+                                                                {
+                                                                    _smrIsAvailable = false;
+                                                                    CallGetAccountUsageAPI(accNum);
+                                                                }
                                                             }
                                                             else
                                                             {
+                                                                _smrIsAvailable = false;
                                                                 CallGetAccountUsageAPI(accNum);
                                                             }
                                                         }
                                                         else
                                                         {
+                                                            _smrIsAvailable = false;
                                                             CallGetAccountUsageAPI(accNum);
                                                         }
                                                     }
                                                     else
                                                     {
+                                                        _smrIsAvailable = false;
                                                         CallGetAccountUsageAPI(accNum);
                                                     }
                                                 }
+                                                else if (response.d.IsPlannedDownTime || response.d.IsUnplannedDownTime)
+                                                {
+                                                    _smrIsAvailable = false;
+                                                    CallGetAccountUsageAPI(accNum);
+                                                }
                                                 else
                                                 {
+                                                    _smrIsAvailable = false;
                                                     CallGetAccountUsageAPI(accNum);
                                                 }
                                             });
@@ -529,11 +552,13 @@ namespace myTNB
                                     }
                                     else
                                     {
+                                        _smrIsAvailable = false;
                                         CallGetAccountUsageAPI(accNum);
                                     }
                                 }
                                 else if (isNormalChart && !isSmartMeterAccount && !isREAccount)
                                 {
+                                    _smrIsAvailable = false;
                                     CallGetAccountUsageAPI(accNum);
                                 }
                             });

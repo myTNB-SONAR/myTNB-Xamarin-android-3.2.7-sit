@@ -30,7 +30,7 @@ namespace myTNB
         internal UIImageView _footerRefreshBGImage, _footerBGImage, _scrollIndicatorView;
         internal UIView _smOverlayParentView;
 
-        internal bool _rmkWhFlag, _tariffIsVisible;
+        internal bool _rmkWhFlag, _tariffIsVisible, _smrIsAvailable, _smartMeterIsAvailable;
         internal RMkWhEnum _rMkWhEnum;
         internal SmartMeterViewEnum _smViewEnum;
         internal nfloat _lastContentOffset, _footerYPos, _scrollViewYPos;
@@ -1699,7 +1699,7 @@ namespace myTNB
         }
         #endregion
         #region FOOTER Methods
-        internal void SetFooterView(bool isRefreshScreen = false)
+        internal void SetFooterView()
         {
             if (!isREAccount)
             {
@@ -1708,7 +1708,7 @@ namespace myTNB
                     _viewFooter.RemoveFromSuperview();
                 }
                 nfloat componentHeight = GetScaledHeight(136F);
-                nfloat indicatorHeight = !isRefreshScreen || (isRefreshScreen && accountIsSSMR) ? GetScaledHeight(33F) : 0;
+                nfloat indicatorHeight = GetScaledHeight(33F);
                 nfloat footerHeight = indicatorHeight + componentHeight;
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
                 _footerYPos = footerYPos + GetScaledHeight(33F);
@@ -1718,6 +1718,11 @@ namespace myTNB
                 };
                 _origViewFrame = _viewFooter.Frame;
                 View.AddSubview(_viewFooter);
+                if (_footerViewComponent != null && _footerViewComponent.GetView() != null)
+                {
+                    _footerViewComponent.GetView().RemoveFromSuperview();
+                }
+                _footerViewComponent = null;
                 _footerViewComponent = new UsageFooterViewComponent(View, footerHeight, indicatorHeight)
                 {
                     GetI18NValue = GetI18NValue
@@ -1738,7 +1743,47 @@ namespace myTNB
                         OnPayButtonTap(dueData != null ? dueData.amountDue : 0);
                     };
                 }
-                if (!isRefreshScreen || (isRefreshScreen && accountIsSSMR))
+
+                if (_scrollIndicatorView != null)
+                {
+                    _scrollIndicatorView.RemoveFromSuperview();
+                }
+                _scrollIndicatorView = new UIImageView(new CGRect(0, 0, ViewWidth, GetScaledHeight(33F)))
+                {
+                    UserInteractionEnabled = true
+                };
+                _scrollIndicatorView.Image = UIImage.FromBundle(UsageConstants.IMG_ScrollIndicator);
+                _scrollIndicatorView.ContentMode = UIViewContentMode.ScaleAspectFill;
+                _scrollIndicatorView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    if (!_footerIsDocked)
+                    {
+                        AnimateFooterToHideAndShow(true);
+                    }
+                }));
+                _viewFooter.AddSubview(_scrollIndicatorView);
+            }
+            else
+            {
+                if (_viewFooter != null)
+                {
+                    _viewFooter.RemoveFromSuperview();
+                }
+            }
+        }
+
+        internal void UpdateFooterForRefresh()
+        {
+            if (accountIsSSMR || isSmartMeterAccount)
+            {
+                if ((accountIsSSMR && !_smrIsAvailable) || (isSmartMeterAccount && !_smartMeterIsAvailable))
+                {
+                    if (_scrollIndicatorView != null)
+                    {
+                        _scrollIndicatorView.RemoveFromSuperview();
+                    }
+                }
+                else
                 {
                     if (_scrollIndicatorView != null)
                     {
@@ -1759,18 +1804,16 @@ namespace myTNB
                     }));
                     _viewFooter.AddSubview(_scrollIndicatorView);
                 }
-                else
-                {
-                    var view = _footerViewComponent.GetView();
-                    AddFooterViewShadow(ref view, true);
-                    //UpdateFooterUI(false);
-                }
             }
             else
             {
-                if (_viewFooter != null)
+                if (!isREAccount)
                 {
-                    _viewFooter.RemoveFromSuperview();
+                    if (_footerViewComponent != null)
+                    {
+                        var view = _footerViewComponent.GetView();
+                        AddFooterViewShadow(ref view, true);
+                    }
                 }
             }
         }
@@ -1795,19 +1838,9 @@ namespace myTNB
 
         internal void UpdateFooterForRefreshState()
         {
-            if (isSmartMeterAccount)
+            if (_footerViewComponent != null)
             {
-                if (_viewFooter != null)
-                {
-                    _viewFooter.RemoveFromSuperview();
-                }
-            }
-            else
-            {
-                if (_footerViewComponent != null)
-                {
-                    _footerViewComponent.SetRefreshState();
-                }
+                _footerViewComponent.SetRefreshState();
             }
         }
 
@@ -1905,7 +1938,7 @@ namespace myTNB
         #region Refresh Methods
         internal void SetRefreshScreen()
         {
-            SetFooterView(true);
+            UpdateFooterForRefresh();
             if (_scrollViewContent != null)
             {
                 _scrollViewContent.Hidden = true;
@@ -1939,7 +1972,7 @@ namespace myTNB
         }
         internal void SetDowntimeScreen()
         {
-            SetFooterView(true);
+            UpdateFooterForRefresh();
             if (_scrollViewContent != null)
             {
                 _scrollViewContent.Hidden = true;
