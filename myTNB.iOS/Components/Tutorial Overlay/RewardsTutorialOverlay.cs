@@ -14,15 +14,19 @@ namespace myTNB
         int _totalViews;
         UITextView _swipeText;
         public Action OnDismissAction;
+        bool _hotspotIsOn;
+        nfloat _addtlYPos = 0;
 
-        public RewardsTutorialOverlay(UIView parent, RewardsViewController controller)
+        public RewardsTutorialOverlay(UIView parent, RewardsViewController controller, bool hotspotIsOn)
         {
             _parentView = parent;
             _controller = controller;
+            _hotspotIsOn = hotspotIsOn;
         }
 
         private void CreateView()
         {
+            _addtlYPos = _hotspotIsOn ? 20F : 0F;
             nfloat width = _parentView.Frame.Width;
             nfloat height = _parentView.Frame.Height;
             _containerView = new UIView(new CGRect(0, 0, width, height))
@@ -171,7 +175,7 @@ namespace myTNB
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
 
-            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFirstRewardYPos()))
+            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFirstRewardYPos() + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -264,7 +268,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetNavigationMaxYPos()))
+            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetNavigationMaxYPos() + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -358,12 +362,12 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.Black60
             };
 
-            UIView bottomView = new UIView(new CGRect(0, _controller.GetNavigationMaxYPos(), width, height - _controller.GetNavigationMaxYPos()))
+            UIView bottomView = new UIView(new CGRect(0, _controller.GetNavigationMaxYPos() + _addtlYPos, width, height - _controller.GetNavigationMaxYPos() - _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
 
-            nfloat boxSize = _controller.GetNavigationMaxYPos() - DeviceHelper.GetStatusBarHeight();
+            nfloat boxSize = _controller.GetNavigationMaxYPos() + _addtlYPos - DeviceHelper.GetStatusBarHeight();
             //nfloat iconCenterPos = _controller.GetSavedRewardFrame().GetMaxY() - (_controller.GetSavedRewardFrame().Width / 2);
             //nfloat iconCenterPos = width - boxSize - GetScaledWidth(5F);
             nfloat boxXPos = width - boxSize - GetScaledWidth(5F);

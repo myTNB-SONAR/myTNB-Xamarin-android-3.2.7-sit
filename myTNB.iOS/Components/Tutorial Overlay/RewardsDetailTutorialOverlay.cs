@@ -14,15 +14,19 @@ namespace myTNB
         int _totalViews;
         UITextView _swipeText;
         public Action OnDismissAction;
+        bool _hotspotIsOn;
+        nfloat _addtlYPos = 0;
 
-        public RewardsDetailTutorialOverlay(UIView parent, RewardDetailsViewController controller)
+        public RewardsDetailTutorialOverlay(UIView parent, RewardDetailsViewController controller, bool hotspotIsOn)
         {
             _parentView = parent;
             _controller = controller;
+            _hotspotIsOn = hotspotIsOn;
         }
 
         private void CreateView()
         {
+            _addtlYPos = _hotspotIsOn ? 20F : 0F;
             nfloat width = _parentView.Frame.Width;
             nfloat height = _parentView.Frame.Height;
             _containerView = new UIView(new CGRect(0, 0, width, height))
@@ -148,7 +152,7 @@ namespace myTNB
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
 
-            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFooterButtonXPos() - padding))
+            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFooterButtonXPos() - padding + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -245,7 +249,7 @@ namespace myTNB
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
 
-            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFooterButtonXPos() - padding))
+            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFooterButtonXPos() - padding + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };

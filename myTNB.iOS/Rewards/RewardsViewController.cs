@@ -23,6 +23,7 @@ namespace myTNB
         private bool _isViewDidLoad;
         private List<RewardsModel> props_rewardsList;
         private UIView _tutorialContainer;
+        private bool _hotspotIsOn;
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 
@@ -32,6 +33,8 @@ namespace myTNB
             base.ViewDidLoad();
             _isViewDidLoad = true;
             NotifCenterUtility.AddObserver((NSString)"OnReceivedRewardsNotification", OnReceivedRewards);
+            NotifCenterUtility.AddObserver(UIApplication.WillChangeStatusBarFrameNotification, OnChangeStatusBarFrame);
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             View.BackgroundColor = MyTNBColor.VeryLightPinkEight;
             InitiateView();
         }
@@ -55,6 +58,33 @@ namespace myTNB
         {
             base.ViewDidDisappear(animated);
             OnTableReload();
+        }
+
+        private void OnEnterForeground(NSNotification notification)
+        {
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is RewardsViewController)
+                {
+                    OnChangeStatusBarFrame(null);
+                }
+            }
+        }
+
+        private void OnChangeStatusBarFrame(NSNotification notification)
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+                return;
+
+            SetFrames();
+            _hotspotIsOn = DeviceHelper.GetStatusBarHeight() > 20;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            CheckTutorialOverlay();
         }
 
         protected override void LanguageDidChange(NSNotification notification)
@@ -339,6 +369,7 @@ namespace myTNB
                     }
                     _selectedCategoryIndex = 0;
                     AddRewardsScrollView();
+                    _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                     CheckTutorialOverlay();
                 }
                 else
@@ -383,7 +414,9 @@ namespace myTNB
         private void SetSkeletonLoading()
         {
             ResetViews();
-            _skeletonLoadingView = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height, ViewWidth, ViewHeight))
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
+            var addtl = _hotspotIsOn ? 20F : 0F;
+            _skeletonLoadingView = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height - addtl, ViewWidth, ViewHeight))
             {
                 BackgroundColor = UIColor.White
             };
@@ -514,10 +547,12 @@ namespace myTNB
         #region REWARDS SCROLL VIEW
         private void AddRewardsScrollView()
         {
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
+            var addtl = _hotspotIsOn ? 20F : 0F;
             var categoryHeight = _categoryList != null && _categoryList.Count > 1 ? GetScaledHeight(44F) : 0;
             _rewardsScrollView = new UIScrollView(new CGRect(0
-                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + categoryHeight
-                , ViewWidth, ViewHeight - categoryHeight))
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + categoryHeight - addtl
+                , ViewWidth, ViewHeight - categoryHeight + addtl))
             {
                 Delegate = new ScrollViewDelegate(this),
                 PagingEnabled = true,
@@ -600,8 +635,10 @@ namespace myTNB
         #region CATEGORY TOP BAR MENU
         private void CreateCategoryTopBar()
         {
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
+            var addtl = _hotspotIsOn ? 20F : 0F;
             _topBarScrollView = new UIScrollView(new CGRect(0
-                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height
+                , DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height - addtl
                 , ViewWidth, GetScaledHeight(44F)))
             {
                 BackgroundColor = UIColor.White,
@@ -926,7 +963,7 @@ namespace myTNB
                 Tag = 1001
             };
 
-            RewardsTutorialOverlay tutorialView = new RewardsTutorialOverlay(_tutorialContainer, this)
+            RewardsTutorialOverlay tutorialView = new RewardsTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 OnDismissAction = HideTutorialOverlay,
                 GetI18NValue = GetI18NValue
