@@ -573,8 +573,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard.png" />
@@ -1066,10 +1064,6 @@
     <ImageAsset Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\Services-Pay-Bills-Disabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Services-View-Bills-Disabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Services-View-Bills-Disabled%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%402x.png" />
     <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\TNB-Logo%402x.png" />
     <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\TNB-Logo%403x.png" />
@@ -1122,14 +1116,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\whatSNewNotificationNew%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\whatSNewNotificationNew%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\whatSNewNotificationNewSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\whatSNewNotificationNewSelected%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\rewardsNew%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\rewardsNew%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\rewardsNewSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\rewardsNewSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\filterCopy1%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\filterCopy1%403x.png" />
@@ -1268,6 +1254,14 @@
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\RmKwh-Dropdown-Icon-Disabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\RmKwh-Dropdown-Icon-Disabled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\long%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\long%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\long%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\long%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\long%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\long%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\long%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\long%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

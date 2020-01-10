@@ -95,10 +95,7 @@ namespace myTNB
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(SSMRConstants.Pref_SSMRReadTutorialOverlay);
-
-            if (tutorialOverlayHasShown)
-                return;
-
+            if (tutorialOverlayHasShown) { return; }
             ShowTutorialOverlay();
         }
 

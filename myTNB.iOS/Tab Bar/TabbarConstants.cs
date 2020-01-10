@@ -17,8 +17,6 @@
         public static string Controller_Promotion = "PromotionsModalViewController";
 
         //Image
-        public static string Img_ActivePromotionsUnread = "Tab-Promotions-Unread-Active";
-        public static string Img_InactivePromotionsUnread = "Tab-Promotions-Unread-Inactive";
         public static string Img_Promotions = "Tab-Promotions";
         public static string Img_PromotionsSelected = "Tab-Promotions-Selected";
         public static string Img_Rewards = "Tab-Rewards";
