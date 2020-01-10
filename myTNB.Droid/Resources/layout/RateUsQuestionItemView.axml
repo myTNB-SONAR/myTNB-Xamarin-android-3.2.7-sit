@@ -44,7 +44,7 @@
         app:counterEnabled="false"
         app:counterMaxLength="250"
         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
         <EditText
             android:id="@+id/txtComments"
             android:layout_width="256dp"
