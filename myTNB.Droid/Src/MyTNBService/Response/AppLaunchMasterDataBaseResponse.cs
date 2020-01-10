@@ -18,6 +18,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "IsSMRFeatureDisabled")]
             public bool IsSMRFeatureDisabled { get; set; }
+
+            [JsonProperty(PropertyName = "IsRewardsDisabled")]
+            public bool IsRewardsDisabled { get; set; }
         }
     }
 }

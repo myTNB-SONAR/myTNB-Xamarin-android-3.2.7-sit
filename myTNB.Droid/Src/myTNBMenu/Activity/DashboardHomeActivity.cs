@@ -171,7 +171,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
 
                 item = bottomMenu.FindItem(Resource.Id.menu_reward);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                if (item != null)
+                {
+                    item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                }
 
                 item = bottomMenu.FindItem(Resource.Id.menu_more);
                 item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "profile"));
@@ -189,6 +192,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
+
+            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+            if (IsRewardsDisabled)
+            {
+                if (bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
+                {
+                    bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
+                }
+            }
 
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
@@ -556,31 +568,41 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else if (urlSchemaData.Contains("rewards") && !string.IsNullOrEmpty(urlSchemaPath))
                         {
-                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                            if (!string.IsNullOrEmpty(rewardID))
+                            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+
+                            if (!IsRewardsDisabled && bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
                             {
-                                rewardID = "{" + rewardID + "}";
+                                string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                                if (!string.IsNullOrEmpty(rewardID))
+                                {
+                                    rewardID = "{" + rewardID + "}";
 
-                                RewardsEntity wtManager = new RewardsEntity();
+                                    RewardsEntity wtManager = new RewardsEntity();
 
-                                RewardsEntity item = wtManager.GetItem(rewardID);
+                                    RewardsEntity item = wtManager.GetItem(rewardID);
 
-                                this.mPresenter.OnStartRewardThread();
+                                    this.mPresenter.OnStartRewardThread();
+                                }
                             }
                         }
                         else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("rewards"))
                         {
-                            urlSchemaData = "rewards";
-                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                            if (!string.IsNullOrEmpty(rewardID))
+                            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+
+                            if (!IsRewardsDisabled && bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
                             {
-                                rewardID = "{" + rewardID + "}";
+                                urlSchemaData = "rewards";
+                                string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                                if (!string.IsNullOrEmpty(rewardID))
+                                {
+                                    rewardID = "{" + rewardID + "}";
 
-                                RewardsEntity wtManager = new RewardsEntity();
+                                    RewardsEntity wtManager = new RewardsEntity();
 
-                                RewardsEntity item = wtManager.GetItem(rewardID);
+                                    RewardsEntity item = wtManager.GetItem(rewardID);
 
-                                this.mPresenter.OnStartRewardThread();
+                                    this.mPresenter.OnStartRewardThread();
+                                }
                             }
                         }
                     }

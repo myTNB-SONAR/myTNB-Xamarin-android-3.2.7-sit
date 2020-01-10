@@ -26,6 +26,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         private static string TITLE = "slide_title";
         private static string DESCRIPTION = "slide_description";
         private static string IMAGE = "image";
+        private static string IS_LAST_ITEM = "islastitem";
         private string appLanguage;
         const string PAGE_ID = "";
 
@@ -50,6 +51,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         [BindView(Resource.Id.btnToggleContainer)]
         RelativeLayout btnToggleContainer;
 
+        [BindView(Resource.Id.walkthroughBottomView)]
+        LinearLayout walkthroughBottomView;
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -58,13 +62,14 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             // Create your fragment here
         }
 
-        public static NewWalkthroughFragment Instance(NewWalkthroughModel model)
+        public static NewWalkthroughFragment Instance(NewWalkthroughModel model, bool isLastItem)
         {
             NewWalkthroughFragment fragment = new NewWalkthroughFragment();
             Bundle args = new Bundle();
             args.PutString(IMAGE, model.Image);
             args.PutString(TITLE, model.Title);
             args.PutString(DESCRIPTION, model.Description);
+            args.PutBoolean(IS_LAST_ITEM, isLastItem);
             fragment.Arguments = args;
             return fragment;
         }
@@ -77,6 +82,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             string imageUrl = Arguments.GetString(IMAGE, "");
             string title = Arguments.GetString(TITLE, "");
             string description = Arguments.GetString(DESCRIPTION, "");
+            bool isLastItem = Arguments.GetBoolean(IS_LAST_ITEM, false);
 
             TextViewUtils.SetMuseoSans500Typeface(titleView);
             TextViewUtils.SetMuseoSans300Typeface(descriptionView, btnToggleEN, btnToggleMS);
@@ -196,6 +202,44 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
             titleView.Text = title;
             descriptionView.TextFormatted = GetFormattedText(description);
+
+            if (bgLayout.MeasuredHeight <= 0)
+            {
+                bgLayout.Measure(0, 0);
+            }
+
+            float diff = ((float) (DPUtils.GetHeight() - bgLayout.MeasuredHeight) / (float) DPUtils.GetHeight());
+
+            if (isLastItem)
+            {
+                if (diff < 0.26f)
+                {
+                    int totalHeight = (int)(DPUtils.GetHeight() * 0.74f);
+                    if (titleView.MeasuredHeight <= 0)
+                    {
+                        titleView.Measure(0, 0);
+                    }
+                    int leftHeight = totalHeight - titleView.MeasuredHeight - imgHeight - (int) DPUtils.ConvertDPToPx(48f);
+
+                    LinearLayout.LayoutParams bottomParam = walkthroughBottomView.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomParam.Height = leftHeight;
+                }
+            }
+            else
+            {
+                if (diff < 0.20f)
+                {
+                    int totalHeight = (int) (DPUtils.GetHeight() * 0.8f);
+                    if (titleView.MeasuredHeight <= 0)
+                    {
+                        titleView.Measure(0, 0);
+                    }
+                    int leftHeight = totalHeight - titleView.MeasuredHeight - imgHeight - (int)DPUtils.ConvertDPToPx(48f);
+
+                    LinearLayout.LayoutParams bottomParam = walkthroughBottomView.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomParam.Height = leftHeight;
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnToggleEN)]

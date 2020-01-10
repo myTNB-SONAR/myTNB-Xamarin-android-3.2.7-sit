@@ -467,15 +467,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         public void OnStartRewardThread()
         {
-            if (!RewardsMenuUtils.GetRewardLoading())
+            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+
+            if (!IsRewardsDisabled)
             {
-                this.mView.ShowProgressDialog();
-                RewardsMenuUtils.OnSetRewardLoading(true);
-                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
-            }
-            else
-            {
-                this.mView.ShowProgressDialog();
+                if (!RewardsMenuUtils.GetRewardLoading())
+                {
+                    this.mView.ShowProgressDialog();
+                    RewardsMenuUtils.OnSetRewardLoading(true);
+                    new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                }
+                else
+                {
+                    this.mView.ShowProgressDialog();
+                }
             }
         }
 
@@ -484,8 +489,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             try
             {
                 new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
-                RewardsMenuUtils.OnSetRewardLoading(true);
-                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+                if (!IsRewardsDisabled)
+                {
+                    RewardsMenuUtils.OnSetRewardLoading(true);
+                    new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                }
             }
             catch (Exception e)
             {
@@ -499,8 +508,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
                 new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
-                RewardsMenuUtils.OnSetRewardLoading(true);
-                new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+                if (!IsRewardsDisabled)
+                {
+                    RewardsMenuUtils.OnSetRewardLoading(true);
+                    new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                }
                 LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
 
