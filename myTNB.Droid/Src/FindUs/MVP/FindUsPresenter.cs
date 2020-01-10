@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                         {
                             this.mView.HideGetLocationsDialog();
                         }
-                        this.mView.ShowGetLocationsError(locationListResponse.Response.DisplayMessage);
+                        this.mView.ShowZeroLocationFoundDialog();
                     }
                     else
                     {
@@ -144,6 +144,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                         {
                             this.mView.HideGetLocationsDialog();
                         }
+                        this.mView.ShowZeroLocationFoundDialog();
                     }
                     else
                     {

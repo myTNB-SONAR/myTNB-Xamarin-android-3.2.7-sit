@@ -338,8 +338,8 @@ namespace myTNB_Android.Src.FindUs.Activity
             //   .Create();
 
             mNoLocationsDialog = new AlertDialog.Builder(this)
-               .SetTitle("Locations")
-               .SetMessage("No records found!")
+               .SetTitle(GetLabelByLanguage("zeroLocations"))
+               .SetMessage(GetLabelByLanguage("noKTFound"))
                .SetCancelable(true)
                 .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"), (senderAlert, args) =>
                 {
@@ -802,6 +802,11 @@ namespace myTNB_Android.Src.FindUs.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void ShowZeroLocationFoundDialog()
+        {
+            mNoLocationsDialog.Show();
         }
     }
 }
