@@ -874,6 +874,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             {
                                 bottomImg.SetImageResource(Resource.Drawable.ic_menu_promo_toggled);
                             }
+                            newLabel.SetPadding(0, 0, 0, 0);
                         }
                         else
                         {
@@ -928,7 +929,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
                         newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
                         newLabelParam.TopMargin = 0;
-                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                        newLabelParam.Width = ViewGroup.LayoutParams.WrapContent;
+                        newLabel.SetPadding((int)DPUtils.ConvertDPToPx(6f), 0, (int)DPUtils.ConvertDPToPx(6f), 0);
+                        if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
+                        {
+                            bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                        }
+                        else
+                        {
+                            bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(20f);
+                        }
+
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
                         txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
@@ -943,13 +954,26 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
                         v.Measure(specWidth, specWidth);
-                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
-                        Canvas c = new Canvas(b);
-                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
-                        v.Draw(c);
+                        if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
+                        {
+                            Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                            Canvas c = new Canvas(b);
+                            v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                            v.Draw(c);
 
-                        var bitmapDrawable = new BitmapDrawable(b);
-                        promotionMenuItem.SetIcon(bitmapDrawable);
+                            var bitmapDrawable = new BitmapDrawable(b);
+                            promotionMenuItem.SetIcon(bitmapDrawable);
+                        }
+                        else
+                        {
+                            Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(70f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                            Canvas c = new Canvas(b);
+                            v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(70f), (int)DPUtils.ConvertDPToPx(28f));
+                            v.Draw(c);
+
+                            var bitmapDrawable = new BitmapDrawable(b);
+                            promotionMenuItem.SetIcon(bitmapDrawable);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -982,7 +1006,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
                         newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
                         newLabelParam.TopMargin = 0;
-                        bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                        newLabelParam.Width = ViewGroup.LayoutParams.WrapContent;
+                        newLabel.SetPadding((int)DPUtils.ConvertDPToPx(4f), 0, (int)DPUtils.ConvertDPToPx(4f), 0);
+                        if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
+                        {
+                            bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                        }
+                        else
+                        {
+                            bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(20f);
+                        }
+
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
                         txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
@@ -997,13 +1031,26 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
                         v.Measure(specWidth, specWidth);
-                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
-                        Canvas c = new Canvas(b);
-                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
-                        v.Draw(c);
+                        if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
+                        {
+                            Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                            Canvas c = new Canvas(b);
+                            v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(50f), (int)DPUtils.ConvertDPToPx(28f));
+                            v.Draw(c);
 
-                        var bitmapDrawable = new BitmapDrawable(b);
-                        rewardMenuItem.SetIcon(bitmapDrawable);
+                            var bitmapDrawable = new BitmapDrawable(b);
+                            rewardMenuItem.SetIcon(bitmapDrawable);
+                        }
+                        else
+                        {
+                            Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(70f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                            Canvas c = new Canvas(b);
+                            v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(70f), (int)DPUtils.ConvertDPToPx(28f));
+                            v.Draw(c);
+
+                            var bitmapDrawable = new BitmapDrawable(b);
+                            rewardMenuItem.SetIcon(bitmapDrawable);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -1065,6 +1112,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             {
                                 bottomImg.SetImageResource(Resource.Drawable.ic_menu_reward_toggled);
                             }
+                            newLabel.SetPadding(0, 0, 0, 0);
                         }
                         else
                         {

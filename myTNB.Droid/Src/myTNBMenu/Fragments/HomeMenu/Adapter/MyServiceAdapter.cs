@@ -406,6 +406,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                     RelativeLayout.LayoutParams currentNewLabel = vh.newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                     currentNewLabel.LeftMargin = imgHeight;
+                    currentNewLabel.Width = ViewGroup.LayoutParams.WrapContent;
+                    vh.newLabel.SetPadding((int)DPUtils.ConvertDPToPx(4f), 0, (int)DPUtils.ConvertDPToPx(4f), 0);
 
                     TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle, vh.txtNewLabel);
                     vh.txtNewLabel.Text = Utility.GetLocalizedCommonLabel("new");
