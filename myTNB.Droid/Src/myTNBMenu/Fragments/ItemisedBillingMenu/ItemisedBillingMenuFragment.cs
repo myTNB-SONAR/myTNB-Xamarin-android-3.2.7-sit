@@ -844,7 +844,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                    unavailableBillMsg.TextFormatted = GetFormattedText(Utility.GetLocalizedErrorLabel("refreshBillDetails"));
                 }
                 if (!string.IsNullOrEmpty(btnText))
                 {
@@ -885,7 +885,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    unavailableChargeMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                    unavailableChargeMsg.TextFormatted = GetFormattedText(Utility.GetLocalizedErrorLabel("refreshBillDetails"));
                 }
                 if (!string.IsNullOrEmpty(btnText))
                 {
@@ -928,7 +928,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
+                    refreshBillingHistoryMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedErrorLabel("refreshBillPayHistory"));
                 }
                 if (!string.IsNullOrEmpty(btnText))
                 {
