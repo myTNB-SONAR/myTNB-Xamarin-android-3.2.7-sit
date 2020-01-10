@@ -588,7 +588,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
                 rootView.OffsetDescendantRectToMyCoords(bottomLayout, offsetViewBounds);
 
-                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(6f);
+                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(14f);
 
             }
             catch (System.Exception e)
