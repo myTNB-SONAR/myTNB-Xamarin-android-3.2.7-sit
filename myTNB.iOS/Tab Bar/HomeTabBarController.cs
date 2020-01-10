@@ -127,6 +127,7 @@ namespace myTNB
         {
             if (item != null && item.Tag == 2)
             {
+                NotifCenterUtility.PostNotificationName("WhatsNewWillChange", new NSObject());
                 InvokeInBackground(async () =>
                 {
                     await SitecoreServices.Instance.LoadPromotions();

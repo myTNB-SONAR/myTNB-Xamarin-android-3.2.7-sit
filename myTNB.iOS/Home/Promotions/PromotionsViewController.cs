@@ -31,6 +31,7 @@ namespace myTNB
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             NotifCenterUtility.AddObserver((NSString)"WhatsNewDidChange", WhatsNewDidChange);
+            NotifCenterUtility.AddObserver((NSString)"WhatsNewWillChange", WhatsNewWillChange);
             Debug.WriteLine("PROMOTION DID LOAD");
             SetNavigationBar();
             promotionsTableView.Frame = new CGRect(0, _navbarView.Frame.GetMaxY()
@@ -65,6 +66,15 @@ namespace myTNB
             InvokeOnMainThread(() =>
             {
                 ViewWillAppear(true);
+                ActivityIndicator.Hide();
+            });
+        }
+
+        private void WhatsNewWillChange(NSNotification notification)
+        {
+            InvokeOnMainThread(() =>
+            {
+                ActivityIndicator.Show();
             });
         }
 

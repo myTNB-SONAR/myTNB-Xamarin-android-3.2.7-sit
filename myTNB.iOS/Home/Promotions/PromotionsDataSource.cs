@@ -37,6 +37,7 @@ namespace myTNB.Home.Promotions
             {
                 ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(cell.viewBanner);
                 _activityIndicator.Show();
+                cell.imgBanner.Image = UIImage.FromBundle(string.Empty);
                 NSUrl url = new NSUrl(promotion.LandscapeImage);
                 NSUrlSession session = NSUrlSession
                     .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
