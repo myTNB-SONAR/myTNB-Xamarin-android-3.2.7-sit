@@ -125,29 +125,49 @@ namespace myTNB
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
-            if (!ShowNewIndicator("2"))
+            if (item != null && item.Tag == 2)
             {
-                UpdatePromotionTabBarIcon();
-            }
-            if (!ShowNewIndicator("3"))
-            {
-                UpdateRewardsTabBarIcon();
+                InvokeInBackground(async () =>
+                {
+                    await SitecoreServices.Instance.LoadPromotions();
+                    NotifCenterUtility.PostNotificationName("WhatsNewDidChange", new NSObject());
+                    Debug.WriteLine("LoadPromotions Done home tab bar");
+                    InvokeOnMainThread(() =>
+                    {
+                        if (!ShowNewIndicator("2"))
+                        {
+                            UpdatePromotionTabBarIcon();
+                        }
+                    });
+                });
             }
 
-            if (tabbar.SelectedItem.Tag == 1)
+            InvokeOnMainThread(() =>
             {
-                UINavigationController navigationController = ChildViewControllers[1] as UINavigationController;
-                BillViewController viewController = navigationController.ViewControllers[0] as BillViewController;
-                viewController.NeedsUpdate = true;
-            }
-            else if (tabbar.SelectedItem.Tag == 2)
-            {
-                SetNewIndicator("2");
-            }
-            else if (tabbar.SelectedItem.Tag == 3)
-            {
-                SetNewIndicator("3");
-            }
+                if (!ShowNewIndicator("2"))
+                {
+                    UpdatePromotionTabBarIcon();
+                }
+                if (!ShowNewIndicator("3"))
+                {
+                    UpdateRewardsTabBarIcon();
+                }
+
+                if (tabbar.SelectedItem.Tag == 1)
+                {
+                    UINavigationController navigationController = ChildViewControllers[1] as UINavigationController;
+                    BillViewController viewController = navigationController.ViewControllers[0] as BillViewController;
+                    viewController.NeedsUpdate = true;
+                }
+                else if (tabbar.SelectedItem.Tag == 2)
+                {
+                    SetNewIndicator("2");
+                }
+                else if (tabbar.SelectedItem.Tag == 3)
+                {
+                    SetNewIndicator("3");
+                }
+            });
         }
 
         public bool ShouldSelectTab(UITabBarController tabBarController, UIViewController viewController)

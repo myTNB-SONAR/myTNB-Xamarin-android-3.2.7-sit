@@ -830,20 +830,6 @@ namespace myTNB
             });
         }
 
-        private void UpdatePromotions()
-        {
-            InvokeInBackground(async () =>
-            {
-                await SitecoreServices.Instance.LoadPromotions();
-                PromotionsEntity entity = new PromotionsEntity();
-                _promotions = entity.GetAllItemsV2();
-                InvokeOnMainThread(() =>
-                {
-                    OnUpdateTable();
-                });
-            });
-        }
-
         private async Task<ServicesResponseModel> GetServices()
         {
             ServiceManager serviceManager = new ServiceManager();
