@@ -251,6 +251,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mErrorSnackbar.Dismiss();
             }
             );
+            View v = mErrorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mErrorSnackbar.Show();
         }
 
@@ -296,6 +299,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -315,6 +321,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -335,6 +344,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
         }
@@ -455,6 +467,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mNoInternetSnackbar.Dismiss();
             }
             );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
         }
     }
