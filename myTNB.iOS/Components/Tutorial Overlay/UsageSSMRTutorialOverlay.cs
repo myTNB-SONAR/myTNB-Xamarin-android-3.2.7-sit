@@ -8,7 +8,6 @@ namespace myTNB
     public class UsageSSMRTutorialOverlay : BaseComponent
     {
         UIView _parentView, _containerView;
-        public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
         public nfloat NavigationHeight, SSMRCardYPos, SSMRCardHeight;
 
@@ -102,8 +101,13 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(UsageConstants.I18N_TutorialSMRTitle)
+                Text = GetI18NValue(UsageConstants.I18N_TutorialSMRTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
+
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(UsageConstants.I18N_TutorialSMRDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));

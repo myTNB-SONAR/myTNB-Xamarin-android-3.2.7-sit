@@ -9,7 +9,6 @@ namespace myTNB
     public class BillDetailsTutorialOverlay : BaseComponent
     {
         UIView _parentView, _containerView;
-        public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
         public nfloat NavigationHeight, ViewCTAContainerYPos, ButtonHeight;
 
@@ -78,8 +77,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(BillConstants.I18N_TutorialTitle)
+                Text = GetI18NValue(BillConstants.I18N_TutorialTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
+
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));

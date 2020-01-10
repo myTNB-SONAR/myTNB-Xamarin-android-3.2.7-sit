@@ -14,7 +14,6 @@ namespace myTNB
         int _totalViews;
         nfloat _descMaxYPos;
         UITextView _swipeText;
-        public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
         public Action ScrollTableToTheTop;
         public Action ScrollTableToTheBottom;
@@ -418,8 +417,13 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Right,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickAccessTitle)
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickAccessTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickAccessDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
@@ -495,8 +499,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickActionTitle)
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickActionTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
+
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickActionDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
@@ -610,8 +620,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialNeedHelpTitle)
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialNeedHelpTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
+
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(DashboardHomeConstants.I18N_TutorialNeedHelpDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
