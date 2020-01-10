@@ -85,35 +85,38 @@ namespace myTNB.Registration
             double timerRef = (double)timerCtr - diffInSeconds;
             timerCtr = (int)timerRef;
 
-            if (timerRef > 0)
+            InvokeOnMainThread(() =>
             {
-                _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
-                double pauseTimer = timerRef;
-                double factor = pauseTimer / 30;
-                nfloat totalWidith = 140 + margin;
-                nfloat pauseWidth = (nfloat)(factor * totalWidith);
-                _segment.Frame = new CGRect(0, 0, totalWidith - pauseWidth, 48);
-                _loadingImage.Frame = new CGRect(14, 13, 24, 24);
-                _resendLabel.Frame = new CGRect(41, 15, 100 + margin, 20);
-                //Fresh green with 24% opacity
-                _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
-                _resendLabel.TextColor = MyTNBColor.FreshGreen;
-                _segment.Layer.CornerRadius = 5.0f;
-                _loadingView.Layer.CornerRadius = 5.0f;
-
-                UIView.Animate(timerRef, 0, UIViewAnimationOptions.CurveEaseOut, () =>
+                if (timerRef > 0)
                 {
-                    _segment.Frame = new CGRect(0, 0, totalWidith, 48);
-                    _loadingImage.Image = _loadingImg;
-                }, () =>
+                    _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
+                    double pauseTimer = timerRef;
+                    double factor = pauseTimer / 30;
+                    nfloat totalWidith = 140 + margin;
+                    nfloat pauseWidth = (nfloat)(factor * totalWidith);
+                    _segment.Frame = new CGRect(0, 0, totalWidith - pauseWidth, 48);
+                    _loadingImage.Frame = new CGRect(14, 13, 24, 24);
+                    _resendLabel.Frame = new CGRect(41, 15, 100 + margin, 20);
+                    //Fresh green with 24% opacity
+                    _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
+                    _resendLabel.TextColor = MyTNBColor.FreshGreen;
+                    _segment.Layer.CornerRadius = 5.0f;
+                    _loadingView.Layer.CornerRadius = 5.0f;
+
+                    UIView.Animate(timerRef, 0, UIViewAnimationOptions.CurveEaseOut, () =>
+                    {
+                        _segment.Frame = new CGRect(0, 0, totalWidith, 48);
+                        _loadingImage.Image = _loadingImg;
+                    }, () =>
+                    {
+                        DisplayResend();
+                    });
+                }
+                else
                 {
                     DisplayResend();
-                });
-            }
-            else
-            {
-                DisplayResend();
-            }
+                }
+            });
         }
 
         private void OnEnterBackground(NSNotification notification)
