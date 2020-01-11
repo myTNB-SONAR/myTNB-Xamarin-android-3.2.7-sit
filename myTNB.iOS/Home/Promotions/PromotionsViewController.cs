@@ -7,7 +7,6 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.SitecoreCMS;
 using CoreAnimation;
 
 namespace myTNB
@@ -31,6 +30,8 @@ namespace myTNB
             PageName = PromotionConstants.Pagename_Promotion;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
+            NotifCenterUtility.AddObserver((NSString)"WhatsNewDidChange", WhatsNewDidChange);
+            NotifCenterUtility.AddObserver((NSString)"WhatsNewWillChange", WhatsNewWillChange);
             Debug.WriteLine("PROMOTION DID LOAD");
             SetNavigationBar();
             promotionsTableView.Frame = new CGRect(0, _navbarView.Frame.GetMaxY()
@@ -52,52 +53,29 @@ namespace myTNB
             Debug.WriteLine("PROMOTION WILL APPEAR");
             RemoveRefresh();
             RemoveNoPromotionView();
-            if (!isPromoDetailScreen)
-            {
-                promotionsTableView.Hidden = true;
-                promotionsTableView.Source = new PromotionsDataSource(this, new List<PromotionsModel>());
-                promotionsTableView.ReloadData();
-
-                if (DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
-                {
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                ActivityIndicator.Show();
-                                SitecoreServices.Instance.LoadPromotions().ContinueWith(task =>
-                                {
-                                    InvokeOnMainThread(() =>
-                                    {
-                                        SetSubViews();
-                                        ActivityIndicator.Hide();
-                                    });
-                                });
-                            }
-                            else
-                            {
-                                DisplayRefresh();
-                            }
-                        });
-                    });
-                }
-                else
-                {
-                    SetSubViews();
-                }
-            }
-            else
-            {
-                SetSubViews();
-                isPromoDetailScreen = false;
-            }
+            SetSubViews();
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+        }
+
+        private void WhatsNewDidChange(NSNotification notification)
+        {
+            InvokeOnMainThread(() =>
+            {
+                ViewWillAppear(true);
+                ActivityIndicator.Hide();
+            });
+        }
+
+        private void WhatsNewWillChange(NSNotification notification)
+        {
+            InvokeOnMainThread(() =>
+            {
+                ActivityIndicator.Show();
+            });
         }
 
         private void SetNavigationBar()

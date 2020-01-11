@@ -50,7 +50,7 @@ namespace myTNB
         public static string CustomerNamePattern = @"^[A-Za-z0-9 ]*$"; //@"(?i)^[a-z0-9]+(?:[ ]?[a-z0-9]+)*$"; 
         public static string MobileNoPattern = @"^[0-9]*$";
         public static string NumbersOnlyPattern = @"^[0-9]*$";
-        public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
+        public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12}$";
         public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
 
         /// <summary>

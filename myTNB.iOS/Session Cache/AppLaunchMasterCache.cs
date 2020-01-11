@@ -140,6 +140,18 @@ namespace myTNB
             }
         }
 
+        public static bool IsRewardsDisabled
+        {
+            get
+            {
+                if (dataModel != null)
+                {
+                    return dataModel.IsRewardsDisabled;
+                }
+                return true;
+            }
+        }
+
         public static bool IsSuccess
         {
             private set;

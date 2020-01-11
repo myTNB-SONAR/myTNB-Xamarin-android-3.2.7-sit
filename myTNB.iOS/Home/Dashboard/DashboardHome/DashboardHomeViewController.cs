@@ -379,6 +379,11 @@ namespace myTNB
                     lblGreeting.Text = greeting;
                 }
             }
+            if (_refreshScreenComponent != null)
+            {
+                ShowRefreshScreen(true);
+            }
+
             if (_accountListViewController != null)
             {
                 DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -963,18 +968,23 @@ namespace myTNB
             }
         }
 
+        public void ClearRefreshScreen()
+        {
+            if (_refreshScreenComponent != null)
+            {
+                if (_refreshScreenComponent.GetView() != null)
+                {
+                    _refreshScreenComponent.GetView().RemoveFromSuperview();
+                    _refreshScreenComponent = null;
+                }
+            }
+        }
+
         public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
         {
             InvokeOnMainThread(() =>
             {
-                if (_refreshScreenComponent != null)
-                {
-                    if (_refreshScreenComponent.GetView() != null)
-                    {
-                        _refreshScreenComponent.GetView().RemoveFromSuperview();
-                        _refreshScreenComponent = null;
-                    }
-                }
+                ClearRefreshScreen();
                 _isRefreshScreenEnabled = isFail;
                 if (_isRefreshScreenEnabled)
                 {

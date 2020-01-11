@@ -864,6 +864,14 @@ namespace myTNB
                 string jsonFilename = onboardingEnum == OnboardingEnum.FreshInstall ? "JSON/FreshInstallOnboarding.json" : "JSON/AppUpdateOnboarding.json";
                 string dataJson = File.ReadAllText(jsonFilename);
                 OnboardingResponseModel respModel = JsonConvert.DeserializeObject<OnboardingResponseModel>(dataJson);
+                if (AppLaunchMasterCache.IsRewardsDisabled)
+                {
+                    int index = respModel.Data.FindIndex(x => x.Title == "title5");
+                    if (index > -1)
+                    {
+                        respModel.Data.RemoveAt(index);
+                    }
+                }
                 onboardingData = respModel?.Data;
             }
             catch (Exception e)

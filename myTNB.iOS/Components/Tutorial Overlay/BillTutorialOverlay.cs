@@ -14,7 +14,6 @@ namespace myTNB
         int _currentPageIndex = 1;
         int _totalViews;
         UITextView _swipeText;
-        public Func<string, string> GetI18NValue;
         public Action OnDismissAction, ScrollTableToTheTop, ScrollToHistorySection;
         public nfloat NavigationHeight, HeaderViewHeight, TabBarHeight, ViewCTAMinY;
         public UIView ViewCTA;
@@ -386,8 +385,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Right,
-                Text = GetI18NValue(BillConstants.I18N_TutorialPayTitle)
+                Text = GetI18NValue(BillConstants.I18N_TutorialPayTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
+
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialPayDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
@@ -474,8 +479,13 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(BillConstants.I18N_TutorialViewDetailsTitle)
+                Text = GetI18NValue(BillConstants.I18N_TutorialViewDetailsTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialViewDetailsDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
@@ -567,8 +577,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialHistoryNormalTitle) : GetI18NValue(BillConstants.I18N_TutorialHistoryTitle)
+                Text = IsREAccount ? GetI18NValue(BillConstants.I18N_TutorialHistoryNormalTitle) : GetI18NValue(BillConstants.I18N_TutorialHistoryTitle),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(60F));
+            title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
+
             string desc;
             if (IsREAccount)
             {
