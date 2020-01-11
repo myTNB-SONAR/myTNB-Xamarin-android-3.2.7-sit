@@ -34,6 +34,9 @@ namespace myTNB_Android.Src.AppLaunch.Models
             [JsonProperty("IsSMRFeatureDisabled")]
             public bool IsSMRFeatureDisabled { get; set; }
 
+            [JsonProperty("IsRewardsDisabled")]
+            public bool IsRewardsDisabled { get; set; }
+
             [JsonProperty(PropertyName = "DisplayTitle")]
             public string DisplayTitle { get; set; }
 
