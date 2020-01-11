@@ -34,13 +34,18 @@ namespace myTNB
         private const double INTERVAL = 1000f;
         private int timerCtr = 30;
         private int margin = 0;
+        private DateTime _exitTime;
 
         public override void ViewDidLoad()
         {
             PageName = ForgotPasswordConstants.Pagename_EnterCode;
             base.ViewDidLoad();
-            timer = new Timer();
-            timer.Interval = INTERVAL;
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver(UIApplication.DidEnterBackgroundNotification, OnEnterBackground);
+            timer = new Timer
+            {
+                Interval = INTERVAL
+            };
             timer.Elapsed += TimerElapsed;
             timer.AutoReset = true;
             if (TNBGlobal.APP_LANGUAGE == "MS")
@@ -55,6 +60,63 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
             InitializeVerifyPinSentView();
+        }
+
+        private void OnEnterForeground(NSNotification notification)
+        {
+            DateTime timeNow = DateTime.Now;
+            double diffInSeconds = (timeNow - _exitTime).TotalSeconds;
+            double timerRef = (double)timerCtr - diffInSeconds;
+            timerCtr = (int)timerRef;
+            InvokeOnMainThread(() =>
+            {
+                if (timerRef > 0)
+                {
+                    _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
+                    double pauseTimer = timerRef;
+                    double factor = pauseTimer / 30;
+                    nfloat totalWidith = 140 + margin;
+                    nfloat pauseWidth = (nfloat)(factor * totalWidith);
+                    _segment.Frame = new CGRect(0, 0, totalWidith - pauseWidth, 48);
+                    _loadingImage.Frame = new CGRect(14, 13, 24, 24);
+                    _resendLabel.Frame = new CGRect(41, 15, 100 + margin, 20);
+                    //Fresh green with 24% opacity
+                    _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
+                    _resendLabel.TextColor = MyTNBColor.FreshGreen;
+                    _segment.Layer.CornerRadius = 5.0f;
+                    _loadingView.Layer.CornerRadius = 5.0f;
+
+                    UIView.Animate(timerRef, 0, UIViewAnimationOptions.CurveEaseOut, () =>
+                    {
+                        _segment.Frame = new CGRect(0, 0, totalWidith, 48);
+                        _loadingImage.Image = _loadingImg;
+                    }, () =>
+                    {
+                        DisplayResend();
+                    });
+                }
+                else
+                {
+                    DisplayResend();
+                }
+            });
+        }
+
+        private void OnEnterBackground(NSNotification notification)
+        {
+            _exitTime = DateTime.Now;
+        }
+
+        private void DisplayResend()
+        {
+            _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
+            _segment.BackgroundColor = MyTNBColor.FreshGreen;
+            _loadingImage.Frame = new CGRect(25, 13, 24, 24);
+            _resendLabel.Frame = new CGRect(55, 15, 85 + margin, 20);
+            _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
+            _resendLabel.TextColor = UIColor.White;
+            _loadingImage.Image = _loadedImg;
+            _loadingView.AddGestureRecognizer(_onResendPin);
         }
 
         private void AddBackButton()
@@ -211,14 +273,7 @@ namespace myTNB
                 _loadingImage.Image = _loadingImg;
             }, () =>
             {
-                _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
-                _segment.BackgroundColor = MyTNBColor.FreshGreen;
-                _loadingImage.Frame = new CGRect(25, 13, 24, 24);
-                _resendLabel.Frame = new CGRect(55, 15, 85 + margin, 20);
-                _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
-                _resendLabel.TextColor = UIColor.White;
-                _loadingImage.Image = _loadedImg;
-                _loadingView.AddGestureRecognizer(_onResendPin);
+                DisplayResend();
             });
         }
 
@@ -307,14 +362,6 @@ namespace myTNB
             {
                 _viewPinSent.Hidden = true;
             });
-        }
-
-        private void DisplayAlertView(string title, string message)
-        {
-            UIAlertController alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         /// <summary>

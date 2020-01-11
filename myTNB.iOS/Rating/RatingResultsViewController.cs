@@ -51,23 +51,36 @@ namespace myTNB
             };
             viewContainer.AddSubview(imgViewCheck);
 
-            UILabel lblFeedback = new UILabel(new CGRect(0, imgViewCheck.Frame.GetMaxY() + 5, viewContainer.Frame.Width, 18))
+            UILabel lblFeedback = new UILabel(new CGRect(16, imgViewCheck.Frame.GetMaxY() + 5, viewContainer.Frame.Width - 32, 18))
             {
                 Font = MyTNBFont.MuseoSans16,
                 TextColor = MyTNBColor.PowerBlue,
                 Text = GetI18NValue(RatingConstants.I18N_Thankyou),
-                TextAlignment = UITextAlignment.Center
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newThankyouHeight = lblFeedback.GetLabelHeight(GetScaledHeight(60F));
+            lblFeedback.Frame = new CGRect(lblFeedback.Frame.Location, new CGSize(lblFeedback.Frame.Width, newThankyouHeight));
+
             viewContainer.AddSubview(lblFeedback);
 
-            UILabel lblDetail = new UILabel(new CGRect(0, lblFeedback.Frame.GetMaxY() + 1, viewContainer.Frame.Width, 16))
+            UILabel lblDetail = new UILabel(new CGRect(16, lblFeedback.Frame.GetMaxY() + 1, viewContainer.Frame.Width - 32, 16))
             {
                 Font = MyTNBFont.MuseoSans12,
                 TextColor = MyTNBColor.TunaGrey(),
                 Text = GetI18NValue(RatingConstants.I18N_Description),
-                TextAlignment = UITextAlignment.Center
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
+
+            nfloat newTitleHeight = lblDetail.GetLabelHeight(GetScaledHeight(60F));
+            lblDetail.Frame = new CGRect(lblDetail.Frame.Location, new CGSize(lblDetail.Frame.Width, newTitleHeight));
             viewContainer.AddSubview(lblDetail);
+
+            viewContainer.Frame = new CGRect(viewContainer.Frame.Location, new CGSize(viewContainer.Frame.Width, lblDetail.Frame.GetMaxY() + 16));
 
             //Back to Dashboard Button
             _btnDashBoard = new UIButton(UIButtonType.Custom)

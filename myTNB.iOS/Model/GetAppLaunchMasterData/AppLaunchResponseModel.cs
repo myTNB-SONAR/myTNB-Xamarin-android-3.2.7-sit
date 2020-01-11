@@ -1,5 +1,4 @@
 ﻿using myTNB.Model;
-using Newtonsoft.Json;
 
 namespace myTNB
 {
@@ -16,5 +15,6 @@ namespace myTNB
         public bool IsSMRFeatureDisabled { set; get; }
         public bool IsOCRDown { set; get; }
         public bool IsPayEnabled { set; get; }
+        public bool IsRewardsDisabled { set; get; }
     }
 }
