@@ -24,12 +24,14 @@ namespace myTNB
         private UIBarButtonItem _btnShareReward;
         private DateTime _exitTime;
         private int _exitSeconds;
+        private bool _hotspotIsOn;
 
         public override void ViewDidLoad()
         {
             PageName = IsFromSavedRewards ? RewardsConstants.PageName_SavedRewards : RewardsConstants.PageName_RewardDetails;
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             NotifCenterUtility.AddObserver(UIApplication.DidEnterBackgroundNotification, OnEnterBackground);
+            NotifCenterUtility.AddObserver(UIApplication.WillChangeStatusBarFrameNotification, OnChangeStatusBarFrame);
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
@@ -71,6 +73,7 @@ namespace myTNB
             base.ViewDidAppear(animated);
             if (RewardModel != null && !RewardModel.IsUsed)
             {
+                _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                 CheckTutorialOverlay();
             }
         }
@@ -82,29 +85,38 @@ namespace myTNB
 
         private void OnEnterForeground(NSNotification notification)
         {
-            var timeNow = DateTime.Now;
-            var diffInSeconds = (timeNow - _exitTime).TotalSeconds;
-            var remainingSeconds = _exitSeconds - diffInSeconds;
-            if (remainingSeconds > 0)
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
             {
-                ResumeTimer((int)Math.Ceiling(remainingSeconds));
-            }
-            else
-            {
-                if (_useTimer != null)
+                if (topVc is RewardDetailsViewController)
                 {
-                    _useTimer.Enabled = false;
-                }
-                ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - GetScaledHeight(116F));
-                if (_timerContainerView != null)
-                {
-                    _timerContainerView.RemoveFromSuperview();
-                    _timerContainerView = null;
-                }
-                UpdateView();
-                if (_btnShareReward != null)
-                {
-                    _btnShareReward.Enabled = true;
+                    OnChangeStatusBarFrame(null);
+                    var timeNow = DateTime.Now;
+                    var diffInSeconds = (timeNow - _exitTime).TotalSeconds;
+                    var remainingSeconds = _exitSeconds - diffInSeconds;
+                    if (remainingSeconds > 0)
+                    {
+                        ResumeTimer((int)Math.Ceiling(remainingSeconds));
+                    }
+                    else
+                    {
+                        if (_useTimer != null)
+                        {
+                            _useTimer.Enabled = false;
+                        }
+                        ViewHelper.AdjustFrameSetHeight(_scrollView, ViewHeight - GetScaledHeight(116F));
+                        if (_timerContainerView != null)
+                        {
+                            _timerContainerView.RemoveFromSuperview();
+                            _timerContainerView = null;
+                        }
+                        UpdateView();
+                        if (_btnShareReward != null)
+                        {
+                            _btnShareReward.Enabled = true;
+                        }
+                    }
                 }
             }
         }
@@ -118,6 +130,20 @@ namespace myTNB
             }
             _exitSeconds = _currentSeconds;
             _exitTime = DateTime.Now;
+        }
+
+        private void OnChangeStatusBarFrame(NSNotification notification)
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+                return;
+            Debug.WriteLine("OnChangeStatusBarFrame...");
+            SetFrames();
+            _hotspotIsOn = DeviceHelper.GetStatusBarHeight() > 20;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            CheckTutorialOverlay();
         }
 
         private void SetNavigationBar()
@@ -696,7 +722,7 @@ namespace myTNB
                 Tag = 1001
             };
 
-            RewardsDetailTutorialOverlay tutorialView = new RewardsDetailTutorialOverlay(_tutorialContainer, this)
+            RewardsDetailTutorialOverlay tutorialView = new RewardsDetailTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 OnDismissAction = HideTutorialOverlay,
                 GetI18NValue = GetI18NValue

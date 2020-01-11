@@ -8,7 +8,6 @@ using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
 using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
@@ -46,6 +45,7 @@ namespace myTNB
         public string RearrangeSuccessMsg;
         public bool IsRearrangeSaved;
         public bool IsNeedHelpCallDone;
+        private bool _hotspotIsOn;
 
         public override void ViewDidLoad()
         {
@@ -212,6 +212,7 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             if (_isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
@@ -274,7 +275,7 @@ namespace myTNB
                 tutorialType = HomeTutorialEnum.LESSTHANFOURACCOUNTS;
             }
 
-            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this)
+            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 TutorialType = tutorialType,
                 OnDismissAction = HideTutorialOverlay,
@@ -399,20 +400,20 @@ namespace myTNB
 
         private void OnEnterForeground(NSNotification notification)
         {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
             {
-                if (NetworkUtility.isReachable)
+                if (topVc is DashboardHomeViewController)
                 {
-                    InvokeOnMainThread(() =>
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
-                        if (topVc != null)
+                        if (NetworkUtility.isReachable)
                         {
-                            if (topVc is DashboardHomeViewController)
+                            InvokeOnMainThread(() =>
                             {
-                                UpdateGreeting(GetGreeting());
                                 OnChangeStatusBarFrame(null);
+                                UpdateGreeting(GetGreeting());
                                 if (_accountListViewController != null)
                                 {
                                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -420,18 +421,18 @@ namespace myTNB
                                     _accountListViewController.PrepareAccountList();
                                 }
                                 OnLoadHomeData();
-                            }
+                            });
+                        }
+                        else
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                DisplayNoDataAlert();
+                            });
                         }
                     });
                 }
-                else
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        DisplayNoDataAlert();
-                    });
-                }
-            });
+            }
         }
 
         private void OnChangeStatusBarFrame(NSNotification notification)
@@ -440,13 +441,20 @@ namespace myTNB
                 return;
 
             nfloat yPos = DeviceHelper.GetStatusBarHeight();
-            if (DeviceHelper.GetStatusBarHeight() > 20)
+            _hotspotIsOn = DeviceHelper.GetStatusBarHeight() > 20;
+            if (_hotspotIsOn)
             {
                 yPos = 0;
             }
-
             ViewHelper.AdjustFrameSetY(_homeTableView, yPos);
             UpdateFooterBG();
+
+            SetFrames();
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            CheckTutorialOverlay();
         }
         #endregion
         private void OnLoadHomeData()
@@ -780,58 +788,6 @@ namespace myTNB
                         });
                     }
                 });
-            });
-        }
-
-        private Task OnGetHelpInfo()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
-                bool needsUpdate = true;
-                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
-                {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCoreHelpTimeStamp");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
-                        sharedPreference.Synchronize();
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
-                        {
-                            needsUpdate = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
-                            sharedPreference.Synchronize();
-                        }
-                    }
-                }
-                else
-                {
-                    //Todo: Handle fail scenario
-                }
-                if (needsUpdate)
-                {
-                    HelpResponseModel helpItems = iService.GetHelpItems();
-                    if (!string.IsNullOrEmpty(helpItems.Status) && helpItems.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
-                    {
-                        HelpEntity wsManager = new HelpEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
-                        {
-                            wsManager.InsertListOfItems(helpItems.Data);
-                        }
-                    }
-                }
             });
         }
 

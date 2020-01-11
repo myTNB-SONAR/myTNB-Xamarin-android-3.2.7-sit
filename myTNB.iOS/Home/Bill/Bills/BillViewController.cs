@@ -41,6 +41,7 @@ namespace myTNB
 
         private CGRect DefaultBannerRect;
         private CGRect FailBannerRect;
+        private bool _hotspotIsOn;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -64,6 +65,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
             }
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver(UIApplication.WillChangeStatusBarFrameNotification, OnChangeStatusBarFrame);
             View.BackgroundColor = UIColor.White;
 
             DefaultBannerRect = new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F);
@@ -96,8 +98,17 @@ namespace myTNB
 
         private void OnEnterForeground(NSNotification notification)
         {
-            NeedsUpdate = true;
-            ViewWillAppear(true);
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is BillViewController)
+                {
+                    NeedsUpdate = true;
+                    ViewWillAppear(true);
+                    OnChangeStatusBarFrame(null);
+                }
+            }
         }
 
         protected override void LanguageDidChange(NSNotification notification)
@@ -116,11 +127,27 @@ namespace myTNB
                 _btnMore.SetTitle(GetI18NValue(BillConstants.I18N_ViewMore), UIControlState.Normal);
             }
         }
+
+        private void OnChangeStatusBarFrame(NSNotification notification)
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+                return;
+
+            _hotspotIsOn = DeviceHelper.GetStatusBarHeight() > 20;
+            SetFrames();
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+                _tutorialContainer = null;
+            }
+            CheckTutorialOverlay();
+        }
         #endregion
 
         #region Tutorial Overlay Methods
         private void CheckTutorialOverlay()
         {
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             bool isRE = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             string keyString = isRE ? BillConstants.Pref_BillTutorialRElOverlay : BillConstants.Pref_BillTutorialNormalOverlay;
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -165,11 +192,12 @@ namespace myTNB
             };
             currentWindow.AddSubview(_tutorialContainer);
 
-            BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this)
+            BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 GetI18NValue = GetI18NValue,
                 TabBarHeight = TabBarController.TabBar.Frame.Height,
-                NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight,
+                //NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight,
+                NavigationHeight = _navbarView.Frame.GetMaxY(),
                 HeaderViewHeight = _headerViewContainer.Frame.Height,
                 ViewCTA = _viewCTA,
                 ViewCTAMinY = _headerView.Frame.GetMinY() + _viewCTA.Frame.GetMinY(),

@@ -615,12 +615,13 @@ namespace myTNB.SitecoreCMS
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
                     , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                HelpEntity wsManager = new HelpEntity();
-                wsManager.DeleteTable();
-                wsManager.CreateTable();
+
                 HelpResponseModel needHelpResponse = iService.GetHelpItems();
                 if (needHelpResponse != null && needHelpResponse.Data != null && needHelpResponse.Data.Count > 0)
                 {
+                    HelpEntity wsManager = new HelpEntity();
+                    wsManager.DeleteTable();
+                    wsManager.CreateTable();
                     wsManager.InsertListOfItems(needHelpResponse.Data);
                     UpdateSharedPreference(NeedHelpTimeStamp, "SiteCoreHelpTimeStamp");
                     Debug.WriteLine("LoadNeedHelp Done");

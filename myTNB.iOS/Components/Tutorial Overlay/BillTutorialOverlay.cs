@@ -18,15 +18,19 @@ namespace myTNB
         public nfloat NavigationHeight, HeaderViewHeight, TabBarHeight, ViewCTAMinY;
         public UIView ViewCTA;
         public bool IsREAccount;
+        bool _hotspotIsOn;
+        nfloat _addtlYPos = 0;
 
-        public BillTutorialOverlay(UIView parent, BillViewController controller)
+        public BillTutorialOverlay(UIView parent, BillViewController controller, bool hotspotIsOn)
         {
             _parentView = parent;
             _controller = controller;
+            _hotspotIsOn = hotspotIsOn;
         }
 
         private void CreateView()
         {
+            _addtlYPos = _hotspotIsOn ? 20F : 0F;
             nfloat width = _parentView.Frame.Width;
             nfloat height = _parentView.Frame.Height;
             _containerView = new UIView(new CGRect(0, 0, width, height))
@@ -229,7 +233,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -356,7 +360,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4)))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4) + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -450,7 +454,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4)))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4) + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -544,7 +548,7 @@ namespace myTNB
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
             CGRect historyRect = _controller._historyTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
-            UIView topView = new UIView(new CGRect(0, 0, width, historyRect.Y + NavigationHeight - tableViewContentOffsetY))
+            UIView topView = new UIView(new CGRect(0, 0, width, historyRect.Y + NavigationHeight - tableViewContentOffsetY + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
