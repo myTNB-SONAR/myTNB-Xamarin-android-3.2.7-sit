@@ -20,7 +20,12 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         public override Fragment GetItem(int position)
         {
             NewWalkthroughModel model = this.newWalkthroughModelList[position];
-            return NewWalkthroughFragment.Instance(model);
+            bool isLastItem = false;
+            if (position == this.newWalkthroughModelList.Count - 1)
+            {
+                isLastItem = true;
+            }
+            return NewWalkthroughFragment.Instance(model, isLastItem);
         }
 
         public override int GetItemPosition(Object @object)

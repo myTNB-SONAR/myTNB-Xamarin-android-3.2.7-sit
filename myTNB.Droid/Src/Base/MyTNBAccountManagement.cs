@@ -307,6 +307,11 @@ namespace myTNB_Android.Src.Base
             return appMasterDataResponse.Response.IsOCRDown;
         }
 
+        public bool IsRewardsDisabled()
+        {
+            return appMasterDataResponse.Response.IsRewardsDisabled;
+        }
+
         public bool IsMaintenanceDialogShown()
         {
             return IsMaintenanceShown;

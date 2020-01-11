@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
@@ -48,12 +49,16 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_3"
                 });
 
-                newWalkthroughList.Add(new NewWalkthroughModel()
+                bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+                if (!IsRewardsDisabled)
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
-                    Image = "walkthrough_img_install_4"
-                });
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
+                        Image = "walkthrough_img_install_4"
+                    });
+                }
             }
             else
             {
@@ -64,12 +69,16 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_0"
                 });
 
-                newWalkthroughList.Add(new NewWalkthroughModel()
+                bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+                if (!IsRewardsDisabled)
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
-                    Image = "walkthrough_img_update_1"
-                });
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
+                        Image = "walkthrough_img_update_1"
+                    });
+                }
             }
 
             return newWalkthroughList;
