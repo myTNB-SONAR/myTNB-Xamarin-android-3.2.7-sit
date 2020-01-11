@@ -8,7 +8,6 @@ using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
 using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
@@ -46,6 +45,7 @@ namespace myTNB
         public string RearrangeSuccessMsg;
         public bool IsRearrangeSaved;
         public bool IsNeedHelpCallDone;
+        private bool _hotspotIsOn;
 
         public override void ViewDidLoad()
         {
@@ -212,6 +212,7 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             if (_isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
@@ -274,7 +275,7 @@ namespace myTNB
                 tutorialType = HomeTutorialEnum.LESSTHANFOURACCOUNTS;
             }
 
-            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this)
+            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 TutorialType = tutorialType,
                 OnDismissAction = HideTutorialOverlay,
@@ -394,20 +395,20 @@ namespace myTNB
 
         private void OnEnterForeground(NSNotification notification)
         {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
             {
-                if (NetworkUtility.isReachable)
+                if (topVc is DashboardHomeViewController)
                 {
-                    InvokeOnMainThread(() =>
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
-                        if (topVc != null)
+                        if (NetworkUtility.isReachable)
                         {
-                            if (topVc is DashboardHomeViewController)
+                            InvokeOnMainThread(() =>
                             {
-                                UpdateGreeting(GetGreeting());
                                 OnChangeStatusBarFrame(null);
+                                UpdateGreeting(GetGreeting());
                                 if (_accountListViewController != null)
                                 {
                                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
@@ -415,18 +416,18 @@ namespace myTNB
                                     _accountListViewController.PrepareAccountList();
                                 }
                                 OnLoadHomeData();
-                            }
+                            });
+                        }
+                        else
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                DisplayNoDataAlert();
+                            });
                         }
                     });
                 }
-                else
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        DisplayNoDataAlert();
-                    });
-                }
-            });
+            }
         }
 
         private void OnChangeStatusBarFrame(NSNotification notification)
@@ -435,13 +436,20 @@ namespace myTNB
                 return;
 
             nfloat yPos = DeviceHelper.GetStatusBarHeight();
-            if (DeviceHelper.GetStatusBarHeight() > 20)
+            _hotspotIsOn = DeviceHelper.GetStatusBarHeight() > 20;
+            if (_hotspotIsOn)
             {
                 yPos = 0;
             }
-
             ViewHelper.AdjustFrameSetY(_homeTableView, yPos);
             UpdateFooterBG();
+
+            SetFrames();
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            CheckTutorialOverlay();
         }
         #endregion
         private void OnLoadHomeData()

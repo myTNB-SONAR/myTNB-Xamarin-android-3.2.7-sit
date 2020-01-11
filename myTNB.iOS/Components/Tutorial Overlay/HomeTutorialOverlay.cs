@@ -20,6 +20,8 @@ namespace myTNB
         public Action ScrollTableToTheBottom;
         public HomeTutorialEnum TutorialType;
         public bool isNeedHelpAvailable;
+        bool _hotspotIsOn;
+        nfloat _addtlYPos = 0;
 
         public enum HomeTutorialEnum
         {
@@ -29,14 +31,16 @@ namespace myTNB
             LESSTHANFOURACCOUNTS,
         }
 
-        public HomeTutorialOverlay(UIView parent, DashboardHomeViewController controller)
+        public HomeTutorialOverlay(UIView parent, DashboardHomeViewController controller, bool hotspotIsOn)
         {
             _parentView = parent;
             _controller = controller;
+            _hotspotIsOn = hotspotIsOn;
         }
 
         private void CreateView()
         {
+            _addtlYPos = _hotspotIsOn ? 20F : 0F;
             nfloat width = _parentView.Frame.Width;
             nfloat height = _parentView.Frame.Height;
             _containerView = new UIView(new CGRect(0, 0, width, height))
@@ -258,7 +262,7 @@ namespace myTNB
 
         private UIView GetFirstView()
         {
-            nfloat searchViewYPos = DeviceHelper.GetStatusBarHeight() + _controller._homeTableView.TableHeaderView.Frame.Height + GetScaledHeight(12F);
+            nfloat searchViewYPos = DeviceHelper.GetStatusBarHeight() + _controller._homeTableView.TableHeaderView.Frame.Height + GetScaledHeight(12F) - _addtlYPos;
             UIView parentView = new UIView(_parentView.Bounds)
             {
                 BackgroundColor = UIColor.Clear
@@ -375,7 +379,7 @@ namespace myTNB
 
         private UIView GetSecondViewForMorethan3Accounts()
         {
-            nfloat searchViewYPos = DeviceHelper.GetStatusBarHeight() + _controller._homeTableView.TableHeaderView.Frame.Height + GetScaledHeight(12F);
+            nfloat searchViewYPos = DeviceHelper.GetStatusBarHeight() + _controller._homeTableView.TableHeaderView.Frame.Height + GetScaledHeight(12F) - _addtlYPos;
             UIView parentView = new UIView(_parentView.Bounds)
             {
                 BackgroundColor = UIColor.Clear
@@ -470,7 +474,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, quickActionsYPos - tableViewContentOffsetY))
+            UIView topView = new UIView(new CGRect(0, 0, width, quickActionsYPos - tableViewContentOffsetY - _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -581,7 +585,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, needHelpYPos - tableViewContentOffsetY))
+            UIView topView = new UIView(new CGRect(0, 0, width, needHelpYPos - tableViewContentOffsetY - _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
