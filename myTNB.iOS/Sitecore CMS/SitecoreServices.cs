@@ -33,7 +33,8 @@ namespace myTNB.SitecoreCMS
                     LoadMeterReadSSMRWalkthroughV2(),
                     LoadBillDetailsTooltip(),
                     //LoadSSMRWalkthrough(),
-                    LoadTermsAndCondition()
+                    LoadTermsAndCondition(),
+                    LoadFAQs()
                 };
             if (_isForcedUpdate)
             {
@@ -400,6 +401,42 @@ namespace myTNB.SitecoreCMS
                         tncEntity.InsertListOfItems(tncResponse.Data);
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreTimeStamp");
                         Debug.WriteLine("LoadTermsAndCondition Done");
+                    }
+                }
+            });
+        }
+
+        public Task LoadFAQs()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                FAQTimestampResponseModel timeStamp = iService.GetFAQsTimestampItem();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new FAQTimestampResponseModel();
+                    timeStamp.Data = new List<FAQsParentModel> { new FAQsParentModel { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreFAQTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    FAQsResponseModel faqResponse = iService.GetFAQsItems();
+                    if (faqResponse != null && faqResponse.Data != null && faqResponse.Data.Count > 0)
+                    {
+                        FAQEntity wsManager = new FAQEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(faqResponse.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreFAQTimeStamp");
+                        Debug.WriteLine("LoadFAQs Done");
                     }
                 }
             });

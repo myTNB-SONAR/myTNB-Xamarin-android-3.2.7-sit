@@ -32,6 +32,7 @@ namespace myTNB
         public string AccountNumber { set; private get; } = string.Empty;
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public bool IsFromBillSelection { set; private get; }
+        public bool IsPayBtnEnabled = true;
         private UIView _tutorialContainer;
         private bool IsLoading = true;
         private Timer tutorialOverlayTimer;
@@ -167,10 +168,21 @@ namespace myTNB
             AddBreakdown();
             SetEvents();
             IsLoading = false;
-            if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+            if (IsFreshCall)
             {
-                _btnPay.Enabled = false;
-                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+                {
+                    _btnPay.Enabled = false;
+                    _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                }
+            }
+            else
+            {
+                if (_btnPay != null && !IsPayBtnEnabled)
+                {
+                    _btnPay.Enabled = false;
+                    _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                }
             }
         }
 
@@ -723,10 +735,21 @@ namespace myTNB
             _btnPay.SetTitle(GetI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
 
-            if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+            if (IsFreshCall)
             {
-                _btnPay.Enabled = false;
-                _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
+                {
+                    _btnPay.Enabled = false;
+                    _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                }
+            }
+            else
+            {
+                if (_btnPay != null && !IsPayBtnEnabled)
+                {
+                    _btnPay.Enabled = false;
+                    _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                }
             }
 
             _viewCTAContainer.AddSubviews(new UIView[] { _btnViewBill, _btnPay });
