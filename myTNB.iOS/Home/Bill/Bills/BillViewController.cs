@@ -41,7 +41,7 @@ namespace myTNB
 
         private CGRect DefaultBannerRect;
         private CGRect FailBannerRect;
-        private bool _hotspotIsOn;
+        private bool _hotspotIsOn, _isPayBtnEnabled = true;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -94,6 +94,11 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+                _tutorialContainer = null;
+            }
         }
 
         private void OnEnterForeground(NSNotification notification)
@@ -147,7 +152,6 @@ namespace myTNB
         #region Tutorial Overlay Methods
         private void CheckTutorialOverlay()
         {
-            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             bool isRE = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             string keyString = isRE ? BillConstants.Pref_BillTutorialRElOverlay : BillConstants.Pref_BillTutorialNormalOverlay;
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -168,6 +172,13 @@ namespace myTNB
                         {
                             ShowTutorialOverlay();
                         }
+                        else
+                        {
+                            if (_tutorialContainer != null)
+                            {
+                                _tutorialContainer.RemoveFromSuperview();
+                            }
+                        }
                     }
                 });
             }
@@ -175,28 +186,26 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
-            if (_tutorialContainer != null)
-            {
-                return;
-            }
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            if (_tutorialContainer != null && _tutorialContainer.IsDescendantOfView(currentWindow)) { return; }
 
             ScrollTableToTheTop();
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
 
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
 
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = 1002
             };
             currentWindow.AddSubview(_tutorialContainer);
 
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 GetI18NValue = GetI18NValue,
                 TabBarHeight = TabBarController.TabBar.Frame.Height,
-                //NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight,
                 NavigationHeight = _navbarView.Frame.GetMaxY(),
                 HeaderViewHeight = _headerViewContainer.Frame.Height,
                 ViewCTA = _viewCTA,
@@ -210,9 +219,27 @@ namespace myTNB
             UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
             if (topVc != null)
             {
-                if (topVc is BillViewController)
+                if (topVc is BillViewController && _tutorialContainer != null)
                 {
+                    foreach (UIView view in currentWindow.Subviews)
+                    {
+                        if (view.Tag == 1002)
+                        {
+                            view.RemoveFromSuperview();
+                            break;
+                        }
+                    }
+
                     _tutorialContainer.AddSubview(tutorialView.GetView());
+                    currentWindow.AddSubview(_tutorialContainer);
+                }
+                else
+                {
+                    if (_tutorialContainer != null)
+                    {
+                        _tutorialContainer.RemoveFromSuperview();
+                        _tutorialContainer = null;
+                    }
                 }
             }
         }
@@ -396,6 +423,7 @@ namespace myTNB
                 if (viewController != null)
                 {
                     viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+                    viewController.IsPayBtnEnabled = _isPayBtnEnabled;
                     UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
@@ -788,6 +816,7 @@ namespace myTNB
             {
                 _btnPay.Enabled = false;
                 _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
+                _isPayBtnEnabled = false;
             }
             if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                 && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
@@ -1204,6 +1233,7 @@ namespace myTNB
                 accounts = new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty },
                 isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
             };
+            _isPayBtnEnabled = true;
             GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
             _accountCharges = response;
             return response;

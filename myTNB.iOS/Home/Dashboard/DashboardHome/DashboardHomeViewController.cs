@@ -152,6 +152,16 @@ namespace myTNB
             OnLoadHomeData();
         }
 
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+                _tutorialContainer = null;
+            }
+        }
+
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
@@ -212,7 +222,6 @@ namespace myTNB
         #region Tutorial Overlay Methods
         public void CheckTutorialOverlay()
         {
-            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             if (_isBCRMPopupDisplayed) { return; }
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
@@ -275,6 +284,7 @@ namespace myTNB
                 tutorialType = HomeTutorialEnum.LESSTHANFOURACCOUNTS;
             }
 
+            _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
             {
                 TutorialType = tutorialType,
