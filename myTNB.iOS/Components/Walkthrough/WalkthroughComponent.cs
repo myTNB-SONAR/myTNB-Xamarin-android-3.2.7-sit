@@ -387,7 +387,10 @@ namespace myTNB
                     }
                 }
             }
-            _skipLabel.Text = GetI18NValue(OnboardingConstants.I18N_Skip);
+            if (_skipLabel != null)
+            {
+                _skipLabel.Text = GetI18NValue(OnboardingConstants.I18N_Skip);
+            }
         }
         #endregion
         private class WalkthroughDelegate : UIScrollViewDelegate
