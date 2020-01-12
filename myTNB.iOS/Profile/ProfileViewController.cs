@@ -519,6 +519,7 @@ namespace myTNB
 
         private void ClearCache()
         {
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
             AccountUsageCache.ClearCache();
             AccountUsageSmartCache.ClearCache();
         }
