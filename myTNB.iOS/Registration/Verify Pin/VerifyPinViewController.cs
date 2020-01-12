@@ -18,6 +18,7 @@ namespace myTNB.Registration
     public partial class VerifyPinViewController : CustomUIViewController
     {
         public VerifyPinViewController(IntPtr handle) : base(handle) { }
+        public string Email { set; get; } = string.Empty;
 
         private NewUserResponseModel _registerAccountList = new NewUserResponseModel();
         private UserAuthenticationResponseModel _authenticationList = new UserAuthenticationResponseModel();
@@ -38,15 +39,18 @@ namespace myTNB.Registration
 
         private Timer timer;
         const double INTERVAL = 1000f;
-        private int timerCtr = 30;
+        private int timerCtr;
         private int margin = 0;
         private DateTime _exitTime;
+
+        private const int DURATION = 30;
 
         public override void ViewDidLoad()
         {
             PageName = VerifyPinConstants.Pagename_VerifyPin;
             base.ViewDidLoad();
             // Perform any dditional setup after loading the view, typically from a nib.
+            timerCtr = DURATION;
             NavigationController.NavigationBar.Hidden = false;
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             NotifCenterUtility.AddObserver(UIApplication.DidEnterBackgroundNotification, OnEnterBackground);
@@ -91,7 +95,7 @@ namespace myTNB.Registration
                 {
                     _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
                     double pauseTimer = timerRef;
-                    double factor = pauseTimer / 30;
+                    double factor = pauseTimer / DURATION;
                     nfloat totalWidith = 140 + margin;
                     nfloat pauseWidth = (nfloat)(factor * totalWidith);
                     _segment.Frame = new CGRect(0, 0, totalWidith - pauseWidth, 48);
@@ -130,6 +134,8 @@ namespace myTNB.Registration
             _segment.BackgroundColor = MyTNBColor.FreshGreen;
             _loadingImage.Frame = new CGRect(25, 13, 24, 24);
             _resendLabel.Frame = new CGRect(55, 15, 85 + margin, 20);
+            _segment.Layer.CornerRadius = 5.0f;
+            _loadingView.Layer.CornerRadius = 5.0f;
             _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
             _resendLabel.TextColor = UIColor.White;
             _loadingImage.Image = _loadedImg;
@@ -529,39 +535,42 @@ namespace myTNB.Registration
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                   ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    usrInf = new
+                    {
+                        eid = DataManager.DataManager.SharedInstance.User.Email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    deviceInf = new
+                    {
+                        DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                        AppVersion = AppVersionHelper.GetAppShortVersion(),
+                        OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                        OsVersion = DeviceHelper.GetOSVersion(),
+                        DeviceDesc = TNBGlobal.APP_LANGUAGE
+                    },
                     ipAddress = TNBGlobal.API_KEY_ID,
                     clientType = TNBGlobal.API_KEY_ID,
                     activeUserName = TNBGlobal.API_KEY_ID,
                     devicePlatform = TNBGlobal.API_KEY_ID,
                     deviceVersion = TNBGlobal.API_KEY_ID,
                     deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = DataManager.DataManager.SharedInstance.User.Email,
-                    userEmail = DataManager.DataManager.SharedInstance.User.Email,
-                    mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo
+                    username = Email,
+                    userEmail = Email,
+                    mobileNo = _mobileNo
                 };
-                _smsToken = serviceManager.OnExecuteAPI<RegistrationTokenSMSResponseModel>("SendRegistrationTokenSMS_V2", requestParameter);
+                _smsToken = serviceManager.OnExecuteAPIV6<RegistrationTokenSMSResponseModel>(RegisterConstants.Service_SendRegistrationTokenSMS, requestParameter);
             });
-        }
-
-        private void DisplayRegistrationAlertView(string title, string message)
-        {
-            UIAlertController alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, (obj) =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                UIViewController viewController =
-                    storyBoard.InstantiateViewController("RegistrationViewController") as UIViewController;
-                NavigationController?.PushViewController(viewController, true);
-            }));
-            alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Retry), UIAlertActionStyle.Default, (obj) =>
-            {
-                ValidateFields(_isKeyboardDismissed);
-            }));
-            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         private void CreateResendView()
@@ -569,9 +578,12 @@ namespace myTNB.Registration
             _segment.RemoveFromSuperview();
             _loadingImage.RemoveFromSuperview();
             _resendLabel.RemoveFromSuperview();
+
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
             _resendLabel = new UILabel(new CGRect(41, 15, 100 + margin, 20));
             _segment = new UIView(new CGRect(0, 0, 0, 48));
+            _segment.Layer.CornerRadius = 5.0f;
+            _loadingView.Layer.CornerRadius = 5.0f;
             _loadingView.AddSubview(_segment);
             _loadingView.AddSubview(_loadingImage);
             _loadingView.AddSubview(_resendLabel);
@@ -595,16 +607,20 @@ namespace myTNB.Registration
             else
             {
                 timer.Enabled = false;
+                InvokeOnMainThread(() =>
+                {
+                    DisplayResend();
+                });
             }
         }
 
         private void AnimateResendView()
         {
-            timerCtr = 30;
+            timerCtr = DURATION;
             _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
             _resendLabel.TextColor = MyTNBColor.FreshGreen;
             timer.Enabled = true;
-            UIView.Animate(30, 0, UIViewAnimationOptions.CurveEaseOut, () =>
+            UIView.Animate(DURATION, 0, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
                 //Fresh green with 24% opacity

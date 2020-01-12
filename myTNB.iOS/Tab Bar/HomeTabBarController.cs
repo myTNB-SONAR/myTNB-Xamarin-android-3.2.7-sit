@@ -28,7 +28,6 @@ namespace myTNB
             NotifCenterUtility.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
-            SetTabbarTitle();
             ShouldSelectViewController += ShouldSelectTab;
 
             if (AppLaunchMasterCache.IsRewardsDisabled)
@@ -41,6 +40,7 @@ namespace myTNB
             {
                 FetchRewards();
             }
+            SetTabbarTitle();
 
             if (!DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
             {

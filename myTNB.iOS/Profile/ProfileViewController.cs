@@ -55,7 +55,7 @@ namespace myTNB
             }
             if (DataManager.DataManager.SharedInstance.IsPasswordUpdated)
             {
-                _lblNotificationDetails.Text = GetI18NValue(ProfileConstants.I18N_MobileNumberVerified);
+                _lblNotificationDetails.Text = GetI18NValue(ProfileConstants.I18N_PasswordUpdateSuccess);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
@@ -519,6 +519,7 @@ namespace myTNB
 
         private void ClearCache()
         {
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
             AccountUsageCache.ClearCache();
             AccountUsageSmartCache.ClearCache();
         }

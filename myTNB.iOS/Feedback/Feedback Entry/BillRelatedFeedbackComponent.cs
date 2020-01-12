@@ -239,6 +239,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
             textField.ShouldChangeCharacters += (txtField, range, replacementString) =>
             {
+                if (txtField == _txtFieldAccountNo)
+                {
+                    return !(range.Location == 12);
+                }
                 return true;
             };
             textField.EditingDidEnd += (sender, e) =>

@@ -625,7 +625,11 @@ namespace myTNB.Registration
                     {
                         UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                         VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
-                        NavigationController.PushViewController(viewController, true);
+                        if (viewController != null)
+                        {
+                            viewController.Email = _eMail;
+                            NavigationController.PushViewController(viewController, true);
+                        }
                     }
                     else
                     {
