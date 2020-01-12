@@ -241,6 +241,7 @@ namespace myTNB
                 _lblPaymentTitle.Hidden = false;
                 _lblPaymentTitle.Text = GetI18NValue(UsageConstants.I18N_NeedToPay);
                 _lblDate.Hidden = false;
+                _lblCommon.Hidden = true;
                 _lblAmount.Hidden = false;
                 _shimmerParent.Hidden = true;
 

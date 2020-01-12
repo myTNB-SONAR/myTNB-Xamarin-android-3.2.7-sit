@@ -49,21 +49,41 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-        public string GetFAQsItem()
+        public FAQsResponseModel GetFAQsItems()
         {
-            FAQsService service = new FAQsService();
-            var data = service.GetFAQsService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            FAQsResponseModel respModel = new FAQsResponseModel();
+            try
+            {
+                FAQsService service = new FAQsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetFAQsItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FAQsResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFAQsItems: " + e.Message);
+            }
+            return respModel;
         }
 
-        public string GetFAQsTimestampItem()
+        public FAQTimestampResponseModel GetFAQsTimestampItem()
         {
-            FAQsService service = new FAQsService();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
+            FAQTimestampResponseModel responseModel = new FAQTimestampResponseModel();
+            try
+            {
+                FAQsService service = new FAQsService(OS, ImageSize, WebsiteUrl, Language);
+                FAQsParentModel data = service.GetTimestamp();
+                List<object> listData = AddDataToList(data);
+                BaseModel resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                responseModel = JsonConvert.DeserializeObject<FAQTimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+            }
+            return responseModel;
         }
 
         public string GetTimestampItem()

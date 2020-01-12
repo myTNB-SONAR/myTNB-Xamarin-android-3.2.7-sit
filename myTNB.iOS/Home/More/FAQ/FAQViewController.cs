@@ -12,6 +12,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
 using System.Diagnostics;
 using myTNB.Profile;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -46,13 +47,12 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        GetFAQs().ContinueWith(task =>
+                        SitecoreServices.Instance.LoadFAQs().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
                                 FAQEntity wsManager = new FAQEntity();
                                 List<FAQsModel> faqList = wsManager.GetAllItems();
-                                faqList = null;
                                 if (faqList != null && faqList.Count > 0)
                                 {
                                     tableviewFAQ.Source = new FAQDataSource(faqList, true);
@@ -105,57 +105,6 @@ namespace myTNB
                 DismissViewController(true, null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
-        }
-
-        private Task GetFAQs()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                bool isValidTimeStamp = false;
-                string faqTS = iService.GetFAQsTimestampItem();
-                FAQTimestampResponseModel faqTimeStamp = JsonConvert.DeserializeObject<FAQTimestampResponseModel>(faqTS);
-                if (faqTimeStamp != null && faqTimeStamp.Status.Equals("Success")
-                    && faqTimeStamp.Data != null && faqTimeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(faqTimeStamp.Data[0].Timestamp)
-                    && !string.IsNullOrWhiteSpace(faqTimeStamp.Data[0].Timestamp))
-                {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCoreFAQTimeStamp");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(faqTimeStamp.Data[0].Timestamp, "SiteCoreFAQTimeStamp");
-                        sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(faqTimeStamp.Data[0].Timestamp))
-                        {
-                            isValidTimeStamp = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(faqTimeStamp.Data[0].Timestamp, "SiteCoreFAQTimeStamp");
-                            sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
-                        }
-                    }
-                }
-                if (isValidTimeStamp)
-                {
-                    string faqItems = iService.GetFAQsItem();
-                    FAQsResponseModel faqResponse = JsonConvert.DeserializeObject<FAQsResponseModel>(faqItems);
-                    if (faqResponse != null && faqResponse.Status.Equals("Success")
-                        && faqResponse.Data != null && faqResponse.Data.Count > 0)
-                    {
-                        FAQEntity wsManager = new FAQEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItems(faqResponse.Data);
-                    }
-                }
-            });
         }
 
         private void GetFAQContent()
