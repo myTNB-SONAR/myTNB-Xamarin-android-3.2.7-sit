@@ -584,6 +584,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     this.mPresenter.OnStartRewardThread();
                                 }
                             }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                                    .Build().Show();
+                            }
                         }
                         else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("rewards"))
                         {
@@ -603,6 +611,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                     this.mPresenter.OnStartRewardThread();
                                 }
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                                    .Build().Show();
                             }
                         }
                     }
