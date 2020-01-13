@@ -428,12 +428,12 @@ namespace myTNB.SitecoreCMS
 
                 if (needsUpdate)
                 {
+                    FAQEntity wsManager = new FAQEntity();
+                    wsManager.DeleteTable();
+                    wsManager.CreateTable();
                     FAQsResponseModel faqResponse = iService.GetFAQsItems();
                     if (faqResponse != null && faqResponse.Data != null && faqResponse.Data.Count > 0)
                     {
-                        FAQEntity wsManager = new FAQEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
                         wsManager.InsertListOfItems(faqResponse.Data);
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreFAQTimeStamp");
                         Debug.WriteLine("LoadFAQs Done");
