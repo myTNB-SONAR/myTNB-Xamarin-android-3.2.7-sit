@@ -32,11 +32,11 @@ namespace myTNB_Android.Src.FindUs.Adapter
                 if (numbers.Count > 1)
                 {
                     int count = position + 1;
-                    h.PhoneLabel.Hint = "PHONE" + count;
+                    h.PhoneLabel.Hint = Utility.GetLocalizedLabel("LocationDetails", "phone").ToUpper() + count;
                 }
                 else
                 {
-                    h.PhoneLabel.Hint = "PHONE";
+                    h.PhoneLabel.Hint = Utility.GetLocalizedLabel("LocationDetails", "phone").ToUpper();
                 }
                 TextViewUtils.SetMuseoSans300Typeface(h.PhoneLabel);
                 h.PhoneNumber.Text = numbers[position];
