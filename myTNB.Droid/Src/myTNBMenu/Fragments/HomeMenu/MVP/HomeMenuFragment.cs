@@ -381,7 +381,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
-                UpdateGreetingsHeader(this.presenter.GetGreeting());
                 accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
                 SetNotificationIndicator();
                 SetAccountsRecyclerView();
@@ -1154,6 +1153,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (this.presenter != null)
                 {
                     this.presenter.GetUserNotifications();
+                    UpdateGreetingsHeader(this.presenter.GetGreeting());
                 }
 
                 if (newLabel != null)

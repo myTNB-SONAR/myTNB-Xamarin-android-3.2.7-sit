@@ -299,7 +299,7 @@ namespace myTNB_Android.Src.Login.Activity
             }
             else
             {
-                string errorText = Utility.GetLocalizedErrorLabel("invalid_email");
+                string errorText = GetLabelByLanguage("emailRequired");
                 if (!errorText.Contains("."))
                 {
                     errorText = errorText + ".";
@@ -328,7 +328,7 @@ namespace myTNB_Android.Src.Login.Activity
             }
             else
             {
-                mEmptyPasswordSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("invalid_password"), Snackbar.LengthIndefinite)
+                mEmptyPasswordSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("passwordRequired"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyPasswordSnackBar.Dismiss(); }
                 );
                 View v = mEmptyPasswordSnackBar.View;
