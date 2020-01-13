@@ -218,6 +218,8 @@ namespace myTNB_Android.Src.Promotions.Fragments
                         Read = true
                     };
                     wtManager.UpdateItem(wtManager);
+                    promotions[position].Read = true;
+                    adapter.NotifyDataSetChanged();
                     Intent details_activity = new Intent(Activity, typeof(PromotionsActivity));
                     details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
                     //Activity.StartActivity(details_activity);
@@ -369,6 +371,8 @@ namespace myTNB_Android.Src.Promotions.Fragments
             try
             {
                 promotionRefreshLayout.Visibility = ViewStates.Gone;
+                noPromotionLayout.Visibility = ViewStates.Gone;
+                promotionMainLayout.Visibility = ViewStates.Visible;
                 promotions = new List<PromotionsModelV2>();
                 adapter = new PromotionListAdapter(Activity, promotions);
                 mPromotionRecyclerView.SetAdapter(adapter);
