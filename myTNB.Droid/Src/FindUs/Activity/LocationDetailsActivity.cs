@@ -121,15 +121,6 @@ namespace myTNB_Android.Src.FindUs.Activity
 
                 Bundle extras = Intent.Extras;
 
-                TextViewUtils.SetMuseoSans500Typeface(txtTitle);
-                TextViewUtils.SetMuseoSans300Typeface(txtAddress);
-                TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOepningHours, lblServices);
-
-                lblAddress.Text = Utility.GetLocalizedLabel("LocationDetails", "address").ToUpper();
-                lblPhone.Text = Utility.GetLocalizedLabel("LocationDetails", "phone").ToUpper();
-                lblOepningHours.Text = Utility.GetLocalizedLabel("LocationDetails", "openingHours").ToUpper();
-                lblServices.Text = Utility.GetLocalizedLabel("LocationDetails", "services").ToUpper();
-
                 if (extras != null)
                 {
                     string KT = extras.GetString("KT");
@@ -161,6 +152,15 @@ namespace myTNB_Android.Src.FindUs.Activity
                     }
 
                 }
+
+                TextViewUtils.SetMuseoSans500Typeface(txtTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtAddress);
+                TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOepningHours, lblServices);
+
+                lblAddress.Text = Utility.GetLocalizedLabel("LocationDetails", "address").ToUpper();
+                lblPhone.Text = Utility.GetLocalizedLabel("LocationDetails", "phone").ToUpper();
+                lblOepningHours.Text = Utility.GetLocalizedLabel("LocationDetails", "openingHours").ToUpper();
+                lblServices.Text = Utility.GetLocalizedLabel("LocationDetails", "services").ToUpper();
 
                 rootView.RequestFocus();
 
