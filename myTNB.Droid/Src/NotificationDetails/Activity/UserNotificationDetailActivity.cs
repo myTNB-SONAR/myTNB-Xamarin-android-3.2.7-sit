@@ -13,6 +13,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
@@ -372,6 +373,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
+            MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(true);
             StartActivity(DashboardIntent);
         }
 

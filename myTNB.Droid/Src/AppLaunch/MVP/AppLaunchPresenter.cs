@@ -237,6 +237,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
                                             this.mView.ShowNotification();
                                         }
                                         else

@@ -28,6 +28,7 @@ using Android.Support.V7.Widget.Helper;
 using static Android.Widget.CompoundButton;
 using Android.Graphics;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -1031,6 +1032,38 @@ namespace myTNB_Android.Src.Notifications.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public override void OnBackPressed()
+        {
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsUsageFromNotification())
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(false);
+                    if (MyTNBAccountManagement.GetInstance().IsNotificationsFromLaunch())
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(false);
+                        base.OnBackPressed();
+                    }
+                    else
+                    {
+                        Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
+                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(DashboardIntent);
+                    }
+                }
+                else
+                {
+                    base.OnBackPressed();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
