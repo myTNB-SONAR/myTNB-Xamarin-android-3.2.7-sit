@@ -371,6 +371,8 @@ namespace myTNB_Android.Src.Promotions.Fragments
             try
             {
                 promotionRefreshLayout.Visibility = ViewStates.Gone;
+                noPromotionLayout.Visibility = ViewStates.Gone;
+                promotionMainLayout.Visibility = ViewStates.Visible;
                 promotions = new List<PromotionsModelV2>();
                 adapter = new PromotionListAdapter(Activity, promotions);
                 mPromotionRecyclerView.SetAdapter(adapter);

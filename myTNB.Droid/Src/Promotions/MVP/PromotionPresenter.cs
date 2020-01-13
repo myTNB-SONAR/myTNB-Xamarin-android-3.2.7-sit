@@ -139,7 +139,7 @@ namespace myTNB_Android.Src.Promotions.MVP
                 if (items != null && items.Count() > 0)
                 {
                     PromotionsParentEntityV2 entity = items[0];
-                    if (entity != null && !string.IsNullOrEmpty(entity.Timestamp))
+                    if (entity != null && entity.Timestamp != null)
                     {
                         mView.OnSavedTimeStamp(entity.Timestamp);
                     }
