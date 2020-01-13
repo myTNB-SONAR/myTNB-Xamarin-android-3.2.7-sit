@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             }
         }
 
-        private Bitmap ToGrayscale(Bitmap srcImage)
+        public Bitmap ToGrayscale(Bitmap srcImage)
         {
             Bitmap bmpGrayscale = Bitmap.CreateBitmap(srcImage.Width, srcImage.Height, Bitmap.Config.Argb8888);
 

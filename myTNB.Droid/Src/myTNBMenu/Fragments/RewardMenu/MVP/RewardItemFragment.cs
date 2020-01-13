@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             mRewardsRecyclerView.SetLayoutManager(linearLayoutManager);
             ((SimpleItemAnimator)mRewardsRecyclerView.GetItemAnimator()).SupportsChangeAnimations = false;
 
-            mRewardsRecyclerAdapter = new RewardsRecyclerAdapter(mRewardList, this.Activity);
+            mRewardsRecyclerAdapter = new RewardsRecyclerAdapter(mRewardList, this.Activity, mListMode);
             mRewardsRecyclerView.SetAdapter(mRewardsRecyclerAdapter);
             mRewardsRecyclerView.OverScrollMode = OverScrollMode.Never;
             mRewardsRecyclerAdapter.SavedClickChanged += MRewardsRecyclerAdapter_SavedClickChanged;

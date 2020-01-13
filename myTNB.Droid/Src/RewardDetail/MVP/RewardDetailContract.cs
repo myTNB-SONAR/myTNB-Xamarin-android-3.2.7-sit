@@ -42,6 +42,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
 
+            Bitmap ToGrayscale(Bitmap srcImage);
+
         }
 	}
 }
