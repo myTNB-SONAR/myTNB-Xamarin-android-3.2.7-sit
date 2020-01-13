@@ -133,6 +133,15 @@ namespace myTNB_Android.Src.Promotions.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            try
+            {
+                SetToolBarTitle(Utility.GetLocalizedLabel("Promotions", "title"));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
