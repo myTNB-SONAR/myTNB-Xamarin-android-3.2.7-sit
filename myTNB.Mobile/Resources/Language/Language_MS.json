@@ -138,7 +138,9 @@
     "refreshUsageSSMR": "Perkhidmatan Self Meter Reading terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "refreshBillPayHistory": "Halaman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
-    "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    "rewardsUnavailableTitle" : "Ganjaran tidak tersedia buat masa ini.",
+    "rewardsUnavailableMsg" : "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",

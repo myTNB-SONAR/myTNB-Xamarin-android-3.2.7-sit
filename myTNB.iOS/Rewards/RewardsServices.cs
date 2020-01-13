@@ -130,46 +130,54 @@ namespace myTNB
 
         public static void OpenRewardDetails(string rewardId, UIViewController topView)
         {
-            if (AppLaunchMasterCache.IsRewardsDisabled) { return; }
-
-            if (rewardId.IsValid() && topView != null && !(topView is RewardDetailsViewController))
+            if (!AppLaunchMasterCache.IsRewardsDisabled)
             {
-                var reward = RewardsEntity.GetItem(rewardId);
-                if (reward != null)
+                if (rewardId.IsValid() && topView != null && !(topView is RewardDetailsViewController))
                 {
-                    if (!RewardHasExpired(reward))
+                    var reward = RewardsEntity.GetItem(rewardId);
+                    if (reward != null)
                     {
-                        RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
-                        DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
-                        string rDateStr = string.Empty;
-                        if (rDate != null)
+                        if (!RewardHasExpired(reward))
                         {
-                            try
+                            RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
+                            DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
+                            string rDateStr = string.Empty;
+                            if (rDate != null)
                             {
-                                DateTime? rDateValue = rDate.Value.ToLocalTime();
-                                rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                try
+                                {
+                                    DateTime? rDateValue = rDate.Value.ToLocalTime();
+                                    rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                }
                             }
-                            catch (Exception e)
+                            rewardDetailView.RedeemedDate = rDateStr;
+                            rewardDetailView.RewardModel = reward;
+                            UINavigationController navController = new UINavigationController(rewardDetailView)
                             {
-                                Debug.WriteLine("Error in ParseDate: " + e.Message);
-                            }
+                                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                            };
+                            topView.PresentViewController(navController, true, null);
                         }
-                        rewardDetailView.RedeemedDate = rDateStr;
-                        rewardDetailView.RewardModel = reward;
-                        UINavigationController navController = new UINavigationController(rewardDetailView)
+                        else
                         {
-                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                        };
-                        topView.PresentViewController(navController, true, null);
-                    }
-                    else
-                    {
-                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
-                            LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
-                            new Dictionary<string, Action> {
+                            AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
+                                LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
+                                new Dictionary<string, Action> {
                         {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () => topView.TabBarController.SelectedIndex = 3} });
+                        }
                     }
                 }
+            }
+            else
+            {
+                AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableTitle),
+                    LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableMsg),
+                    new Dictionary<string, Action> {
+                        { LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null} });
             }
         }
 
