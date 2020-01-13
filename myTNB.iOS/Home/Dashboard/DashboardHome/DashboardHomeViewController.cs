@@ -46,6 +46,7 @@ namespace myTNB
         public bool IsRearrangeSaved;
         public bool IsNeedHelpCallDone;
         private bool _hotspotIsOn;
+        private bool _isLanguageChanged;
 
         public override void ViewDidLoad()
         {
@@ -380,6 +381,7 @@ namespace myTNB
         protected override void LanguageDidChange(NSNotification notification)
         {
             base.LanguageDidChange(notification);
+            _isLanguageChanged = true;
             if (_homeTableView != null && _dashboardHomeHeader != null)
             {
                 string greeting = GetGreeting();
@@ -492,7 +494,7 @@ namespace myTNB
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (SitecoreServices.Instance.NeedHelpTimeStampChanged)
+                                if (SitecoreServices.Instance.NeedHelpTimeStampChanged || _isLanguageChanged)
                                 {
                                     if (SitecoreServices.Instance.ShowNeedHelp)
                                     {
@@ -525,6 +527,7 @@ namespace myTNB
                                         CheckTutorialOverlay();
                                     }
                                     SitecoreServices.Instance.NeedHelpTimeStampChanged = false;
+                                    _isLanguageChanged = false;
                                 }
                                 else
                                 {
