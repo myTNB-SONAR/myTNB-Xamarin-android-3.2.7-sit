@@ -93,7 +93,8 @@
     "rewardNotAvailableDesc": "Ganjaran ini telah tamat tempoh. Tidak mengapa, kami mempunyai lebih banyak untuk anda meneroka!",
     "showMoreRewards": "Ganjaran Selebihnya",
     "illDoItLater": "Kemudian",
-    "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu."
+    "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu.",
+    "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
