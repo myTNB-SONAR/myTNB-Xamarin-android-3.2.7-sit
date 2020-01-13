@@ -136,6 +136,8 @@
         public static string Error_RatingNotAvailable = "ratingNotAvailable";
         public static string Error_ShareNotAvailable = "shareNotAvailable";
         public static string Error_PlannedDownTimeMessage = "plannedDownTimeMessage";
+        public static string Error_RewardsUnavailableTitle = "rewardsUnavailableTitle";
+        public static string Error_RewardsUnavailableMsg = "rewardsUnavailableMsg";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
