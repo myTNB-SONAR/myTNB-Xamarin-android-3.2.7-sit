@@ -130,6 +130,8 @@ namespace myTNB
 
         public static void OpenRewardDetails(string rewardId, UIViewController topView)
         {
+            if (AppLaunchMasterCache.IsRewardsDisabled) { return; }
+
             if (rewardId.IsValid() && topView != null && !(topView is RewardDetailsViewController))
             {
                 var reward = RewardsEntity.GetItem(rewardId);

@@ -88,7 +88,8 @@ namespace myTNB
                 Frame = new CGRect(BaseMarginWidth16, 0, width - GetScaledWidth(32F), GetScaledHeight(48F)),
                 Enabled = true,
                 BackgroundColor = MyTNBColor.FreshGreen,
-                Font = TNBFont.MuseoSans_16_500
+                Font = TNBFont.MuseoSans_16_500,
+                Tag = 2004
             };
             btnStart.SetTitle(GetI18NValue(OnboardingConstants.I18N_LetsStart), UIControlState.Normal);
             btnStart.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -380,7 +381,7 @@ namespace myTNB
                             , new CGSize(txtViewDescription.Frame.Width, size.Height));
                     }
 
-                    UIButton ctaButton = view.ViewWithTag(2004) as UIButton;
+                    CustomUIButtonV2 ctaButton = view.ViewWithTag(2004) as CustomUIButtonV2;
                     if (ctaButton != null)
                     {
                         ctaButton.SetTitle(GetI18NValue(OnboardingConstants.I18N_LetsStart), UIControlState.Normal);
@@ -390,6 +391,14 @@ namespace myTNB
             if (_skipLabel != null)
             {
                 _skipLabel.Text = GetI18NValue(OnboardingConstants.I18N_Skip);
+            }
+            if (_footerButtonView != null)
+            {
+                CustomUIButtonV2 ctaButton = _footerButtonView.ViewWithTag(2004) as CustomUIButtonV2;
+                if (ctaButton != null)
+                {
+                    ctaButton.SetTitle(GetI18NValue(OnboardingConstants.I18N_LetsStart), UIControlState.Normal);
+                }
             }
         }
         #endregion
