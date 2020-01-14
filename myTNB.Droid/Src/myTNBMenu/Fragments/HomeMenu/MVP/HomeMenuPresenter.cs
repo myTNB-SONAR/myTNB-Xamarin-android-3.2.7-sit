@@ -2467,7 +2467,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnCheckToCallHomeMenuTutorial()
         {
-            if (isAllDone() && !isHomeMenuTutorialShown)
+            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown())
             {
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
