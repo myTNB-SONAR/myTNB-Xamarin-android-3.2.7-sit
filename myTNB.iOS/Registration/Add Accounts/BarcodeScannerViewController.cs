@@ -13,13 +13,11 @@ namespace myTNB.Registration
     {
         public BarcodeScannerViewController(IntPtr handle) : base(handle) { }
 
-        private UIStatusBarStyle originalStatusBarStyle = UIStatusBarStyle.Default;
         private ZXingScannerView scannerView;
         private UIView scanLayerView;
         private UILabel lblScanStatus;
 
         private MobileBarcodeScanningOptions ScanningOptions { get; set; }
-        private MobileBarcodeScanner Scanner { get; set; }
         private bool ContinuousScanning { get; set; }
 
         public UIViewController AsViewController()
@@ -38,6 +36,7 @@ namespace myTNB.Registration
             base.ViewDidLoad();
             NavigationItem.Title = GetI18NValue(AddAccountConstants.I18N_NavTitle);
             ActivityIndicator.Show();
+            UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.LightContent;
             UIApplication.SharedApplication.StatusBarOrientation = UIInterfaceOrientation.Portrait;
             NavigationItem.HidesBackButton = true;
             AddBackButton();
@@ -93,7 +92,6 @@ namespace myTNB.Registration
             scanLayerView = new UIView(new CGRect(18, (overlayHeight / 2) - 120, overlayWidth - 36, 120));
             scanLayerView.Layer.BorderWidth = 2.0f;
             scanLayerView.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
-            //scanLayerView.Layer.CornerRadius = 10.0f;
 
             UIView rightLayer = new UIView(new CGRect(scanOverlayView.Frame.Width - 18, (overlayHeight / 2) - 120, 18, 120))
             {
@@ -173,19 +171,6 @@ namespace myTNB.Registration
             try
             {
                 scannerView.OnScannerSetupComplete += HandleOnScannerSetupComplete;
-
-                originalStatusBarStyle = UIApplication.SharedApplication.StatusBarStyle;
-
-                if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
-                {
-                    UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.Default;
-                    SetNeedsStatusBarAppearanceUpdate();
-                }
-                else
-                {
-                    UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.BlackTranslucent, false);
-                }
-
                 Task.Factory.StartNew(() =>
                 {
                     BeginInvokeOnMainThread(() => scannerView.StartScanning(result =>
@@ -238,11 +223,6 @@ namespace myTNB.Registration
                 scannerView.StopScanning();
             }
             scannerView.OnScannerSetupComplete -= HandleOnScannerSetupComplete;
-        }
-
-        public override void ViewWillDisappear(bool animated)
-        {
-            UIApplication.SharedApplication.SetStatusBarStyle(originalStatusBarStyle, false);
         }
 
         public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
