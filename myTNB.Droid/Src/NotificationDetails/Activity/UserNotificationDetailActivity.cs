@@ -86,9 +86,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 case Resource.Id.action_delete_notification:
                     removeDialog = new AlertDialog.Builder(this)
 
-                        .SetTitle(Resource.String.notification_detail_remove_notification_dialog_title)
-                        .SetMessage(GetString(Resource.String.notification_detail_remove_notification_dialog_content))
-                        .SetNegativeButton(Resource.String.notification_detail_remove_notification_negative_btn,
+                        .SetTitle(Utility.GetLocalizedLabel("PushNotificationList", "deleteTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("PushNotificationList", "deleteMessage"))
+                        .SetNegativeButton(Utility.GetLocalizedCommonLabel("cancel"),
                         delegate
                         {
                             removeDialog.Dismiss();

@@ -28,7 +28,9 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 
 		private Android.App.Activity mActivity;
 
-		public SavedRewardsRecyclerAdapter(List<RewardsModel> data, Android.App.Activity Activity)
+        private Bitmap mDefaultBitmap;
+
+        public SavedRewardsRecyclerAdapter(List<RewardsModel> data, Android.App.Activity Activity)
 		{
 			if (data == null)
 			{
@@ -39,7 +41,12 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 				this.rewardsList = data;
 			}
 			this.mActivity = Activity;
-		}
+
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.InMutable = true;
+
+            this.mDefaultBitmap = BitmapFactory.DecodeResource(this.mActivity.Resources, Resource.Drawable.ic_image_reward_empty, opt);
+        }
 
 		public void RefreshList(List<RewardsModel> data)
 		{
@@ -121,33 +128,31 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 
 				try
 				{
-					if (string.IsNullOrEmpty(rewardsList[position].Image) || string.IsNullOrEmpty(rewardsList[position].ImageB64))
+                    if (string.IsNullOrEmpty(rewardsList[position].Image) || string.IsNullOrEmpty(rewardsList[position].ImageB64))
 					{
-						// Image Shimmer Start
+						// Image Shimmer Start / Show Default Image
 						if (string.IsNullOrEmpty(rewardsList[position].Image))
 						{
-							// Just Shimmer
-							vh.rewardMainImgLayout.Visibility = ViewStates.Gone;
-							vh.rewardMainShimmerImgLayout.Visibility = ViewStates.Visible;
+                            // Show Default Image
 
-							try
-							{
-								if (vh.shimmerRewardImageLayout.IsShimmerStarted)
-								{
-									vh.shimmerRewardImageLayout.StopShimmer();
-								}
-								var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-								if (shimmerBuilder != null)
-								{
-									vh.shimmerRewardImageLayout.SetShimmer(shimmerBuilder?.Build());
-								}
-								vh.shimmerRewardImageLayout.StartShimmer();
-							}
-							catch (Exception e)
-							{
-								Utility.LoggingNonFatalError(e);
-							}
-						}
+                            vh.rewardUsedLayout.Visibility = ViewStates.Gone;
+
+                            if (rewardsList[position].IsUsed)
+                            {
+                                vh.rewardUsedLayout.Visibility = ViewStates.Visible;
+                                vh.rewardImg.SetImageBitmap(ToGrayscale(this.mDefaultBitmap));
+                            }
+                            else
+                            {
+                                vh.rewardImg.SetImageBitmap(this.mDefaultBitmap);
+                            }
+
+                            vh.btnRewardSaveImg.Visibility = ViewStates.Gone;
+
+                            vh.rewardMainShimmerImgLayout.Visibility = ViewStates.Gone;
+
+                            vh.rewardMainImgLayout.Visibility = ViewStates.Visible;
+                        }
 						else
 						{
 							// Shimmer, Pull Image, then update back the image here
@@ -319,7 +324,23 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 			}
 			else
 			{
-                viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+                viewHolder.rewardUsedLayout.Visibility = ViewStates.Gone;
+
+                if (item.IsUsed)
+                {
+                    viewHolder.rewardUsedLayout.Visibility = ViewStates.Visible;
+                    viewHolder.rewardImg.SetImageBitmap(ToGrayscale(this.mDefaultBitmap));
+                }
+                else
+                {
+                    viewHolder.rewardImg.SetImageBitmap(this.mDefaultBitmap);
+                }
+
+                viewHolder.btnRewardSaveImg.Visibility = ViewStates.Gone;
+
+                viewHolder.rewardMainShimmerImgLayout.Visibility = ViewStates.Gone;
+
+                viewHolder.rewardMainImgLayout.Visibility = ViewStates.Visible;
             }
 		}
 
@@ -354,7 +375,15 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
 				}
 				else
 				{
-                    viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+                    if (item.IsUsed)
+                    {
+                        viewHolder.rewardUsedLayout.Visibility = ViewStates.Visible;
+                        viewHolder.rewardImg.SetImageBitmap(ToGrayscale(this.mDefaultBitmap));
+                    }
+                    else
+                    {
+                        viewHolder.rewardImg.SetImageBitmap(this.mDefaultBitmap);
+                    }
                 }
 
                 viewHolder.btnRewardSaveImg.Visibility = ViewStates.Gone;

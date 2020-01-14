@@ -428,7 +428,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                                     mErrorMessageSnackBar.Dismiss();
                                 }
 
-                                mErrorMessageSnackBar = Snackbar.Make(baseView, "File has been downloaded to location :" + path, Snackbar.LengthIndefinite)
+                                string downloadLinkLocation = string.Format(Utility.GetLocalizedCommonLabel("pdfDownloadMessage"), path);
+
+                                mErrorMessageSnackBar = Snackbar.Make(baseView, downloadLinkLocation, Snackbar.LengthIndefinite)
                                 .SetAction("Open", delegate
                                 {
                                     Java.IO.File file = new Java.IO.File(path);

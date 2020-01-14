@@ -17,6 +17,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using static myTNB_Android.Src.Utils.Constants;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 {
@@ -30,7 +31,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
         private Android.App.Activity mActivity;
 
-		public RewardsRecyclerAdapter(List<RewardsModel> data, Android.App.Activity Activity)
+        private REWARDSITEMLISTMODE mListMode;
+
+        private Bitmap mDefaultBitmap;
+
+        public RewardsRecyclerAdapter(List<RewardsModel> data, Android.App.Activity Activity, REWARDSITEMLISTMODE listMode)
 		{
 			if (data == null)
 			{
@@ -41,7 +46,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 				this.rewardsList = data;
 			}
 			this.mActivity = Activity;
-		}
+
+            this.mListMode = listMode;
+
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.InMutable = true;
+
+            this.mDefaultBitmap = BitmapFactory.DecodeResource(this.mActivity.Resources, Resource.Drawable.ic_image_reward_empty, opt);
+
+        }
 
         public void RefreshList(List<RewardsModel> data)
         {
@@ -123,31 +136,61 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 
 				try
 				{
-					if (string.IsNullOrEmpty(rewardsList[position].Image) || string.IsNullOrEmpty(rewardsList[position].ImageB64))
+                    if (string.IsNullOrEmpty(rewardsList[position].Image) || string.IsNullOrEmpty(rewardsList[position].ImageB64))
                     {
                         // Image Shimmer Start
                         if (string.IsNullOrEmpty(rewardsList[position].Image))
                         {
-                            // Just Shimmer
-                            vh.rewardMainImgLayout.Visibility = ViewStates.Gone;
-                            vh.rewardMainShimmerImgLayout.Visibility = ViewStates.Visible;
+                            if (mListMode == REWARDSITEMLISTMODE.INITIATE)
+                            {
+                                // Just Shimmer
+                                vh.rewardMainImgLayout.Visibility = ViewStates.Gone;
+                                vh.rewardMainShimmerImgLayout.Visibility = ViewStates.Visible;
 
-                            try
-                            {
-                                if (vh.shimmerRewardImageLayout.IsShimmerStarted)
+                                try
                                 {
-                                    vh.shimmerRewardImageLayout.StopShimmer();
+                                    if (vh.shimmerRewardImageLayout.IsShimmerStarted)
+                                    {
+                                        vh.shimmerRewardImageLayout.StopShimmer();
+                                    }
+                                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                                    if (shimmerBuilder != null)
+                                    {
+                                        vh.shimmerRewardImageLayout.SetShimmer(shimmerBuilder?.Build());
+                                    }
+                                    vh.shimmerRewardImageLayout.StartShimmer();
                                 }
-                                var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-                                if (shimmerBuilder != null)
+                                catch (Exception e)
                                 {
-                                    vh.shimmerRewardImageLayout.SetShimmer(shimmerBuilder?.Build());
+                                    Utility.LoggingNonFatalError(e);
                                 }
-                                vh.shimmerRewardImageLayout.StartShimmer();
                             }
-                            catch (Exception e)
+                            else
                             {
-                                Utility.LoggingNonFatalError(e);
+                                vh.rewardUsedLayout.Visibility = ViewStates.Gone;
+
+                                if (rewardsList[position].IsUsed)
+                                {
+                                    vh.rewardUsedLayout.Visibility = ViewStates.Visible;
+                                    vh.rewardImg.SetImageBitmap(ToGrayscale(this.mDefaultBitmap));
+                                }
+                                else
+                                {
+                                    vh.rewardImg.SetImageBitmap(this.mDefaultBitmap);
+                                }
+
+                                if (rewardsList[position].IsSaved)
+                                {
+                                    vh.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
+                                }
+                                else
+                                {
+                                    vh.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
+                                }
+
+                                vh.rewardMainShimmerImgLayout.Visibility = ViewStates.Gone;
+
+                                vh.rewardMainImgLayout.Visibility = ViewStates.Visible;
                             }
                         }
                         else
@@ -348,7 +391,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             }
             else
             {
-                viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+                viewHolder.rewardUsedLayout.Visibility = ViewStates.Gone;
+
+                if (item.IsUsed)
+                {
+                    viewHolder.rewardUsedLayout.Visibility = ViewStates.Visible;
+                    viewHolder.rewardImg.SetImageBitmap(ToGrayscale(this.mDefaultBitmap));
+                }
+                else
+                {
+                    viewHolder.rewardImg.SetImageBitmap(this.mDefaultBitmap);
+                }
+
+                if (item.IsSaved)
+                {
+                    viewHolder.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_saved);
+                }
+                else
+                {
+                    viewHolder.btnRewardSaveImg.SetImageResource(Resource.Drawable.ic_card_reward_unsaved);
+                }
+
+                viewHolder.rewardMainShimmerImgLayout.Visibility = ViewStates.Gone;
+
+                viewHolder.rewardMainImgLayout.Visibility = ViewStates.Visible;
             }
         }
 
@@ -383,7 +449,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                 }
                 else
                 {
-                    viewHolder.rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+                    if (item.IsUsed)
+                    {
+                        viewHolder.rewardUsedLayout.Visibility = ViewStates.Visible;
+                        viewHolder.rewardImg.SetImageBitmap(ToGrayscale(this.mDefaultBitmap));
+                    }
+                    else
+                    {
+                        viewHolder.rewardImg.SetImageBitmap(this.mDefaultBitmap);
+                    }
                 }
 
                 if (item.IsSaved)
