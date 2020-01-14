@@ -4,6 +4,9 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -193,6 +196,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 txtEmailLinkInfo.Text = GetLabelByLanguage("details");
                 txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
                 btnSubmit.Text = GetLabelCommonByLanguage("submit");
+
+                txtEmail.TextChanged += EmailTextChange;
+                DisableSubmitButton();
             }
             catch (Exception e)
             {
@@ -222,11 +228,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         public void EnableSubmitButton()
         {
             btnSubmit.Enabled = true;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
         public void DisableSubmitButton()
         {
             btnSubmit.Enabled = false;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         public void ShowProgressDialog()
@@ -512,6 +520,37 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         public void ShowEmptyErrorPin_4()
         {
 
+        }
+
+        private void EmailTextChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                string email = txtEmail.Text;
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    if (!Patterns.EmailAddress.Matcher(email).Matches())
+                    {
+                        ShowInvalidEmailError();
+                        DisableSubmitButton();
+                    }
+                    else
+                    {
+                        EnableSubmitButton();
+                        ClearErrorMessages();
+                    }
+                }
+                else
+                {
+                    DisableSubmitButton();
+                    ClearErrorMessages();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
     }
 }
