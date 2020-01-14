@@ -6,7 +6,7 @@
     "submit": "Hantar",
     "selectAccounts": "Pilih Akaun",
     "selectAccount": "Pilih Akaun",
-    "backToHome": "Kembali ke Laman Utama",
+    "backToHome": "Kembali ke Utama",
     "tryAgain": "Cuba Semula",
     "settings": "Tetapan",
     "cancel": "Batal",
@@ -14,7 +14,7 @@
     "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
     "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
     "delete": "Padam",
-    "refreshDescription": "Halaman ini terputus sambungan. Refresh untuk sambung semula!",
+    "refreshDescription": "Halaman ini terputus sambungan. 'Refresh' untuk sambung semula!",
     "refreshNow": "'Refresh' Sekarang",
     "bcrmMessage": "BRCM will be down for maintenance purpose",
     "disconnectionMsg": "Bekalan elektrik anda dipotong buat masa ini.",
@@ -72,7 +72,7 @@
     "close": "Tutup",
     "characterLeft": "{0} baki aksara",
     "charactersLeft": "{0} baki aksara",
-    "comments": "Komen",
+    "comments": "Saya ingin mencadangkan...",
     "accountHolder": "Nama Pemegang Akaun",
     "skip": "Langkau",
     "details": "Butiran",
@@ -85,7 +85,7 @@
     "saveLanguageMessage": "Adakah anda ingin menyimpan perubahan yang anda buat ke bahasa anda?",
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
-    "new": "Baru",
+    "new": "Baharu",
     "tutorialSwipeText": "Leret untuk lihat lebih lagi,<br>tekan dua kali untuk mengabaikannya.",
     "wellBeBack": "Kami akan kembali sebentar lagi!",
     "electricityAccounts": "Akaun Elektrik",
@@ -93,7 +93,8 @@
     "rewardNotAvailableDesc": "Ganjaran ini telah tamat tempoh. Tidak mengapa, kami mempunyai lebih banyak untuk anda meneroka!",
     "showMoreRewards": "Ganjaran Selebihnya",
     "illDoItLater": "Kemudian",
-    "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu."
+    "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu.",
+    "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -111,7 +112,7 @@
     "emptyNickname": "Nama ringkas akaun tidak boleh kosong. Sila masukkan nama ringkas yang sah dan tambah akaun anda sekali lagi.",
     "invalidNickname": "Anda boleh guna huruf, nombor dan aksara khas untuk nama aksara.",
     "duplicateNickname": "Nama ringkas sudah digunakan. Sila guna nama ringkas yang lain.",
-    "refreshMessage": "Halaman ini terputus sambungan. Refresh untuk sambung semula!",
+    "refreshMessage": "Halaman ini terputus sambungan. 'Refresh' untuk sambung semula!",
     "serviceErrorDefaultMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
@@ -134,11 +135,13 @@
     "numberNotAvailable": "Maaf, nombor tersebut tidak ditemui. Sila cuba semula sebentar lagi.",
     "ratingNotAvailable": "Maaf, tindakan ini tidak dapat dibuat pada masa ini. Sila cuba semula sebentar lagi.",
     "shareNotAvailable": "Kami minta maaf tetapi perkongsian tidak tersedia pada masa ini. Sila cuba semula sebentar lagi.",
-    "refreshBillDetails": "Halaman yang mengandungi butiran bil anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+    "refreshBillDetails": "Halaman yang mengandungi butiran bil anda terputus sambungan. 'Refresh' untuk memuatkan semula kandungan!",
     "refreshUsageSSMR": "Perkhidmatan Self Meter Reading terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "refreshBillPayHistory": "Halaman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
-    "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    "rewardsUnavailableTitle" : "Ganjaran tidak tersedia buat masa ini.",
+    "rewardsUnavailableMsg" : "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -150,7 +153,7 @@
     "promotions": "Terkini",
     "addElectricityAcct": "Tambah Akaun Elektrik",
     "searchPlaceholder": "Cari mengikut nama ringkas atau nombor",
-    "refreshMessage": "Nampaknya sambungan bagi skrin ini telah terputus. 'Refresh' untuk sambung semula!",
+    "refreshMessage": "Halaman ini terputus sambungan. 'Refresh' untuk sambung semula!",
     "refreshBtnText": "'Refresh' Sekarang",
     "paidExtra": "ada ekstra",
     "allCleared": "telah dijelaskan",
@@ -241,7 +244,8 @@
     "ssmrTrackApplication": "Pantau Permohonan",
     "ssmrBackToUsage": "Kembali ke Penggunaaan",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Kembali ke Penggunaan"
+    "ssmrViewReadHistory": "Lihat Sejarah Bacaan",
+    "ssmrBackToReadingHistory": "Kembali ke Rekod Bacaan"
   },
   "SSMRReadingHistory": {
     "title": "Self Meter Reading",
@@ -356,7 +360,7 @@
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "Apakah ini?",
     "missedReadTitle": "Apakah maksudnya?",
-    "missedReadMsg": "Maklumat penggunaan anda tidak dapat diperolehi pada masa ini. Anda boleh refresh untuk cuba semula.",
+    "missedReadMsg": "Maklumat penggunaan anda tidak dapat diperolehi pada masa ini. Anda boleh 'refresh' untuk cuba semula.",
     "emptyDataMsg": "Selamat datang! Penggunaan anda akan dipaparkan setelah bil pertama dikeluarkan.",
     "SMOverlayTitle": "Bagaimana cara untuk melihat penggunaan harian saya?",
     "SMOverlayMsg": "Cubit untuk zum masuk atau keluar! Zum masuk untuk melihat penggunaan harian anda.",
@@ -382,7 +386,8 @@
     "tutorialSMRDesc": "Dapatkan status bacaan anda di sini. Kami juga akan memaklumkan apabila tiba masanya untuk menghantar bacaan.",
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
-    "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda."
+    "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
   },
   "Bills": {
     "title": "Bil",
@@ -543,18 +548,18 @@
     "ownerICNumber": "Nombor KP / Pasport Pemilik",
     "rocNumber": "ROC Nombor",
     "whereIsMyAccountTitle": "Di mana nombor akaun saya?",
-    "whereIsMyAccountDetails": "Nombor akaun 12 digit berada di bahagian atas sebelah kiri bil bulanan anda.",
+    "whereIsMyAccountDetails": "Nombor akaun 12 digit boleh didapati di bahagian atas sebelah kiri bil elektrik anda.",
     "selectAccountType": "Pilih Jenis Akaun",
     "residential": "Kediaman",
     "commercial": "Komersil",
-    "addAccountCTATitle": "Tambah Akaun Lain",
-    "scanMessage": "Imbas muka hadapan kad kredit / debit anda untuk mendapatkan butiran kad.",
+    "addAccountCTATitle": "Tambah Akaun",
+    "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "invalidBarcode": "Bar kod tidak sah.",
     "addByIDMessage": "Akaun elektrik ini didaftarkan dengan Nombor KP/ROC/Pasport anda?",
     "addByRightsMessage": "Adakah anda berhak untuk melihat semua maklumat berkaitan dengan akaun elektrik ini?",
     "addAsOwnerMessage": "Saya pemilik akaun elektrik ini.",
     "addAsTenantMessage": "Saya menyewa rumah ini/milik ibu bapa saya.",
-    "addAsTenantWithICMessage": "Saya berhak melihat semua maklumat yang berkaitan dengan akaun bekalan elektrik ini.",
+    "addAsTenantWithICMessage": "Saya berhak melihat semua maklumat yang berkaitan dengan akaun elektrik ini.",
     "addAsTenantWithoutICMessage": "Saya mungkin tidak berhak untuk melihat semua maklumat  berkaitan dengan akaun elektrik ini.<br><br>Saya hanya berhak melihat:",
     "outstandingPayment": "Tunggakan bayaran",
     "usageGraph": "Graf penggunaan",
@@ -608,7 +613,7 @@
   "LocationDetails": {
     "address": "ALAMAT",
     "phone": "Nombor Telefon",
-    "openingHours": "MASA OPERASI",
+    "openingHours": "WAKTU OPERASI",
     "services": "PERKHIDMATAN",
     "mapSelection": "Pemilihan Peta",
     "selectApplication": "Pilik Aplikasi Navigasi",
@@ -624,7 +629,7 @@
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
-    "accountDeleteSuccess": "Akaun bekalan elektrik anda telah dikeluarkan daripada akaun myTNB.",
+    "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "Masukkan Akaun Bekalan Elektrik TNB sedia ada anda untuk melihat butiran penggunaan dan transaksi."
@@ -679,7 +684,7 @@
     "verifyDeviceTitle": "Sahkan Nombor Telefon",
     "verifyDeviceMessage": "Sila sahkan no. telefon anda.",
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
-    "updateMobileNumberTitle": "Kemaskini Nombor Telefon"
+    "updateMobileNumberTitle": "Kemas kini Nombor Telefon"
   },
   "VerifyPin": {
     "title": "Sahkan Nombor Telefon",
@@ -700,13 +705,13 @@
     "confirmNewPassword": "Sahkan Kata Laluan Baharu"
   },
   "UpdateNickname": {
-    "title": "Kemaskini Nama Ringkas"
+    "title": "Kemas kini Nama Ringkas"
   },
   "ManageAccount": {
     "title": "Uruskan Akaun Elektrik",
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Alih Keluar Akaun Ini",
-    "popupremoveAccountTitle": "Keluarkan Akaun",
+    "popupremoveAccountTitle": "Alih Keluar Akaun",
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
   },
   "Onboarding": {
@@ -765,7 +770,7 @@
   "CardScanner": {
     "title": "Tambah kad",
     "scanMessage": "Imbas muka hadapan kad kredit / debit anda untuk mendapatkan butiran kad.",
-    "scanInstructions": "Pegang kad di sini. Ia akan mengimbas secara automatik."
+    "scanInstructions": "Pegang kad di sini.\r\nIa akan mengimbas secara automatik."
   },
   "Receipt": {
     "title": "Resit Pembayaran",
@@ -833,7 +838,7 @@
   "RatingResults": {
     "description": "Penarafan anda akan membantu kami meningkatkan mutu perkhidmatan kepada anda.",
     "thankyou": "Terima Kasih.",
-    "backToHome": "Kembali ke Laman Utama"
+    "backToHome": "Kembali ke Utama"
   },
   "Promotions": {
     "title": "Terkini",
