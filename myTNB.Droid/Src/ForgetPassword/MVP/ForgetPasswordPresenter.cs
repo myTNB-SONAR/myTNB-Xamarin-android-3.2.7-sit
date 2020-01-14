@@ -120,28 +120,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public async void Submit(string apiKeyId, string email, string username, string code)
         {
-
-            this.mView.ClearErrorMessages();
-            if (TextUtils.IsEmpty(email))
-            {
-                this.mView.ShowEmptyEmailError();
-                return;
-            }
-
-            if (!Patterns.EmailAddress.Matcher(email).Matches())
-            {
-                this.mView.ShowInvalidEmailError();
-                return;
-            }
-
-            if (TextUtils.IsEmpty(code))
-            {
-                this.mView.ShowEmptyCodeError();
-                return;
-            }
-
-            this.mView.DisableSubmitButton();
-
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
