@@ -19,7 +19,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             api = RestService.For<IAccountAPI>(httpClient);
 #else
-            api = RestService.For<IBillingAPI>(Constants.SERVER_URL.END_POINT);
+            api = RestService.For<IAccountAPI>(Constants.SERVER_URL.END_POINT);
 #endif
         }
 
