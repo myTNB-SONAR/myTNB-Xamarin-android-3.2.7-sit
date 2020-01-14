@@ -30,19 +30,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public async void GetCode(string apiKeyId, string email)
         {
-            mView.ClearErrorMessages();
-            if (TextUtils.IsEmpty(email))
-            {
-                this.mView.ShowEmptyEmailError();
-                return;
-            }
-
-            if (!Patterns.EmailAddress.Matcher(email).Matches())
-            {
-                this.mView.ShowInvalidEmailError();
-                return;
-            }
-
             if (mView.IsActive())
             {
                 this.mView.ShowGetCodeProgressDialog();
@@ -101,8 +88,12 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.mView.ShowRetryOptionsCodeUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
+        }
 
-
+        public void ResendCode(string email)
+        {
+            this.mView.StartProgress();
+            GetCode(null,email);
         }
 
         public void OnComplete()

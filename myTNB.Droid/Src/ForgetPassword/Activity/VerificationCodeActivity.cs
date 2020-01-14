@@ -245,7 +245,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         void OnResend(object sender, EventArgs eventArgs)
         {
             resendCalled = true;
-            this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+            mPresenter.ResendCode(email);
         }
 
         public void ClearErrors()

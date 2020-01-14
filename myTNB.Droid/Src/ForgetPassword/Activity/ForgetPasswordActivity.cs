@@ -114,22 +114,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowSuccess(string message)
         {
-            //if (mSnackBar != null && mSnackBar.IsShown)
-            //{
-            //    mSnackBar.Dismiss();
-            //    mSnackBar.Show();
-            //}
-            //else
-            //{
-            //    mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            //    .SetAction(GetString(Resource.String.forget_password_btn_close), delegate { mSnackBar.Dismiss(); }
-            //    );
-            //    View v = mSnackBar.View;
-            //    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            //    tv.SetMaxLines(5);
-            //    mSnackBar.Show();
-            //}
-
             Intent nextInent = new Intent(this, typeof(VerificationCodeActivity));
             nextInent.PutExtra("email", txtEmail.Text);
             StartActivity(nextInent);
