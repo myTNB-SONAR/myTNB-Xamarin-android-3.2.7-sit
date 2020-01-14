@@ -622,7 +622,19 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             {
                 if (imgSrc == null)
                 {
-                    rewardImg.SetImageResource(Resource.Drawable.ic_image_reward_empty);
+                    BitmapFactory.Options opt = new BitmapFactory.Options();
+                    opt.InMutable = true;
+
+                    Bitmap mDefaultBitmap = BitmapFactory.DecodeResource(this.Resources, Resource.Drawable.ic_image_reward_empty, opt);
+
+                    if (LocalItem.IsUsed)
+                    {
+                        rewardImg.SetImageBitmap(this.presenter.ToGrayscale(mDefaultBitmap));
+                    }
+                    else
+                    {
+                        rewardImg.SetImageBitmap(mDefaultBitmap);
+                    }
                 }
                 else if (imgSrc != null)
                 {
