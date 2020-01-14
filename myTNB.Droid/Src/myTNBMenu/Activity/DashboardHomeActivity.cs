@@ -112,6 +112,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private bool isSetToolbarClick = false;
 
+        private bool IsRootTutorialShown = false;
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown && !IsFinishing;
@@ -201,6 +203,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
                 }
             }
+
+            IsRootTutorialShown = false;
 
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
@@ -586,10 +590,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                             else
                             {
+                                IsRootTutorialShown = true;
                                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
                                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                                    .SetCTAaction(() =>
+                                    {
+                                        IsRootTutorialShown = false;
+                                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                                        {
+                                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                                            fragment.CallOnCheckShowHomeTutorial();
+                                        }
+                                    })
                                     .Build().Show();
                             }
                         }
@@ -614,10 +628,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                             else
                             {
+                                IsRootTutorialShown = true;
                                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
                                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                                    .SetCTAaction(() =>
+                                    {
+                                        IsRootTutorialShown = false;
+                                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                                        {
+                                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                                            fragment.CallOnCheckShowHomeTutorial();
+                                        }
+                                    })
                                     .Build().Show();
                             }
                         }
@@ -1640,7 +1664,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
                                 {
                                     urlSchemaCalled = false;
-                                    ShowSomethingWrongException();
+                                    ShowRewardFailedTooltip();
                                 }
                             }
                             catch (Exception e)
@@ -1692,7 +1716,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     HideProgressDialog();
                     urlSchemaCalled = false;
-                    ShowSomethingWrongException();
+                    ShowRewardFailedTooltip();
                 }
             }
             catch (Exception e)
@@ -1752,12 +1776,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 }
                                 else
                                 {
+                                    IsRootTutorialShown = true;
                                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
                                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
                                     .SetCTAaction(() =>
                                     {
+                                        IsRootTutorialShown = false;
                                         OnSelectReward();
                                     })
                                     .Build().Show();
@@ -1779,21 +1805,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SetBottomNavigationLabels();
         }
 
+        public bool GetIsRootTutorialShown()
+        {
+            return IsRootTutorialShown;
+        }
+
         private void OnSelectReward()
         {
             bottomNavigationView.SelectedItemId = Resource.Id.menu_reward;
             SetBottomNavigationLabels();
         }
 
-        public void ShowSomethingWrongException()
+        public void ShowRewardFailedTooltip()
         {
             try
             {
-                if (currentFragment.GetType() == typeof(HomeMenuFragment))
-                {
-                    HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
-                    fragment.ShowSomethingWrongException();
-                }
+                IsRootTutorialShown = true;
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                    .SetCTAaction(() =>
+                    {
+                        IsRootTutorialShown = false;
+                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                        {
+                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            fragment.CallOnCheckShowHomeTutorial();
+                        }
+                    })
+                    .Build().Show();
             }
             catch (Exception e)
             {
