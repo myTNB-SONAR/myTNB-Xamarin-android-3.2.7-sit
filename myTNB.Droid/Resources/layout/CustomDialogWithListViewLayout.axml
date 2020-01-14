@@ -1,48 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-  <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="284dp"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:id="@+id/rootView"
-      android:background="@color/white">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/dialogRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"/>
-    <LinearLayout
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:id="@+id/dialoagListViewIndicatorContainer"/>
-    <LinearLayout
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:clickable="true"
-          android:id="@+id/btnFirst">
-        <View
-            android:layout_height="1dp"
+    <android.support.v7.widget.CardView
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="6dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="0dp">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:alpha="0.2"
-            android:background="@color/tunaGrey" />
-        <TextView
-            android:id="@+id/txtToolTipCTA"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:textColor="@color/powerBlue"
-            android:layout_marginTop="16dp"
-            android:paddingBottom="18dp"
-            android:text="Got it!"
-            android:textSize="16dp" />
-    </LinearLayout>
-  </LinearLayout>
+            android:layout_gravity="center"
+            android:id="@+id/rootView">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dialogRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:id="@+id/dialoagListViewIndicatorContainer"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:clickable="true"
+                    android:id="@+id/btnFirst">
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:alpha="0.2"
+                android:background="@color/tunaGrey" />
+            <TextView
+                android:id="@+id/txtToolTipCTA"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textColor="@color/powerBlue"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="18dp"
+                android:text="Got it!"
+                android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>
