@@ -124,7 +124,7 @@ namespace myTNB.DataManager
         public bool IsPromotionFirstLoad = false;
 
         //Rewards
-        public bool IsRewardsLoading = true;
+        public bool IsRewardsLoading = false;
         public bool IsFromRewardsDeeplink;
 
         //Payment
@@ -242,7 +242,7 @@ namespace myTNB.DataManager
             isLocationSearch = false;
 
             IsPromotionFirstLoad = false;
-            IsRewardsLoading = true;
+            IsRewardsLoading = false;
             IsFromRewardsDeeplink = false;
 
             //Account Related
