@@ -95,6 +95,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void OnHideBottomView();
 
+            bool OnGetIsRootTooltipShown();
+
         }
 
         public interface IHomeMenuPresenter

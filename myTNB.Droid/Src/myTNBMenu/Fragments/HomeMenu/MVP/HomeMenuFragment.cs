@@ -1176,6 +1176,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void CallOnCheckShowHomeTutorial()
+        {
+            try
+            {
+                this.presenter.OnCheckToCallHomeMenuTutorial();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnUpdateAccountListChanged(bool isSearchSubmit)
 		{
             if (isSearchSubmit)
@@ -2941,6 +2953,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public bool OnGetIsRootTooltipShown()
+        {
+            try
+            {
+                return ((DashboardHomeActivity)this.Activity).GetIsRootTutorialShown();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return false;
         }
 
         public void OnHideBottomView()
