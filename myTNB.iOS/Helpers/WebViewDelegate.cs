@@ -69,8 +69,7 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
                         if (storyBoard.InstantiateViewController("RatingViewController") is RatingViewController viewController)
                         {
-                            //viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
-                            viewController.Rating = 0;
+                            viewController.Rating = rateString.IsValid() ? int.Parse(rateString) : 0;
                             viewController.TransId = transId;
                             UINavigationController navController = new UINavigationController(viewController);
                             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;

@@ -257,6 +257,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.Tomato,
                 Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
                 TextAlignment = UITextAlignment.Left,
                 Hidden = false
             };
@@ -295,6 +296,8 @@ namespace myTNB
             if (isError)
             {
                 _errorLabel.Text = errorMessage ?? string.Empty;
+                nfloat newHeight = _errorLabel.GetLabelHeight(1000);
+                _errorLabel.Frame = new CGRect(_errorLabel.Frame.Location, new CGSize(_errorLabel.Frame.Width, newHeight));
                 ViewHelper.AdjustFrameSetY(_txtViewNote, _errorLabel.Frame.GetMaxY() + GetScaledHeight(24f));
             }
             else

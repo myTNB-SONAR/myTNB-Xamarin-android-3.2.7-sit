@@ -14,6 +14,7 @@ namespace myTNB
         private static List<RewardsItemModel> rewardsList = new List<RewardsItemModel>();
 
         public static bool RewardIsAvailable { set; get; }
+        public static bool RefreshReward { set; get; } = false;
 
         public static void AddGetUserRewardsResponseData(GetUserRewardsResponseModel resp)
         {

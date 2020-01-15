@@ -389,10 +389,12 @@ namespace myTNB
 
         private void InitializedSubViews()
         {
+            BottomContainerView.BackgroundColor = UIColor.White;
+
             BtnPayBill.BackgroundColor = MyTNBColor.SilverChalice;
             BtnPayBill.Layer.CornerRadius = 4.0f;
             BtnPayBill.SetTitleColor(UIColor.White, UIControlState.Normal);
-            BtnPayBill.TitleLabel.Font = MyTNBFont.MuseoSans16_500;
+            BtnPayBill.TitleLabel.Font = TNBFont.MuseoSans_16_500;
             BtnPayBill.TouchUpInside += (sender, e) =>
             {
                 _accountsForPayment = new List<CustomerAccountRecordModel>();
@@ -415,29 +417,27 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             };
 
-            BottomContainerView.BackgroundColor = MyTNBColor.LightGrayBG;
-
             _viewAmount = new UIView(new CGRect(18, 20, View.Frame.Width - 36, 24));
 
             UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, _viewAmount.Frame.Width / 2, 18))
             {
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Font = TNBFont.MuseoSans_14_500,
                 Text = GetCommonI18NValue(Constants.Common_TotalAmount)
             };
 
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18))
             {
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Font = TNBFont.MuseoSans_12_500,
                 Text = TNBGlobal.UNIT_CURRENCY,
                 TextAlignment = UITextAlignment.Right
             };
 
             _lblTotalAmountValue = new UILabel(new CGRect(0, 0, (View.Frame.Width - 36) / 2, 24))
             {
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans24_500,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Font = TNBFont.MuseoSans_24_300,
                 Text = TNBGlobal.DEFAULT_VALUE,
                 TextAlignment = UITextAlignment.Right
             };
@@ -446,7 +446,7 @@ namespace myTNB
             AdjustAmountFrame();
             BottomContainerView.AddSubview(_viewAmount);
 
-            _viewFooter = new UIView(new CGRect(0, 0, View.Frame.Width, 40))
+            _viewFooter = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(32)))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -454,10 +454,10 @@ namespace myTNB
             {
                 OnLoadMore();
             }));
-            UILabel lblLoadMore = new UILabel(new CGRect(0, 0, _viewFooter.Frame.Width, 16));
+            UILabel lblLoadMore = new UILabel(new CGRect(0, 0, _viewFooter.Frame.Width, GetScaledHeight(16)));
             lblLoadMore.TextAlignment = UITextAlignment.Center;
             lblLoadMore.AttributedText = new NSAttributedString(GetI18NValue(PaymentConstants.I18N_LoadMore)
-                , font: MyTNBFont.MuseoSans12_300
+                , font: TNBFont.MuseoSans_12_300
                 , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
                 , underlineStyle: NSUnderlineStyle.Single
