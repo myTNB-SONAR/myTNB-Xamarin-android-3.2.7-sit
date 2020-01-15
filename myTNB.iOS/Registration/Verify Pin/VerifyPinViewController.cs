@@ -26,9 +26,10 @@ namespace myTNB.Registration
         private UIView _viewTokenFieldContainer, _loadingView, _segment, _viewPinSent, _commonView, _headerView;
         private UIImage _loadingImg = UIImage.FromBundle("Loading");
         private UIImage _loadedImg = UIImage.FromBundle("Loaded");
-        private UILabel _lblError, _resendLabel;
+        private UILabel _lblError, _resendLabel, _lblPinSent;
         private UIImageView _loadingImage;
         private UITapGestureRecognizer _onResendPin;
+        private BaseResponseModelV2 _resetCodeList;
 
         private bool _isKeyboardDismissed, _isTokenInvalid;
         private string _token = string.Empty;
@@ -479,8 +480,8 @@ namespace myTNB.Registration
                     if (!string.IsNullOrEmpty(mobileNo))
                     {
                         ClearTokenField();
-                        BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMS(mobileNo);
-                        if (response != null && response.d != null && response.d.IsSuccess)
+                        _resetCodeList = await ServiceCall.SendUpdatePhoneTokenSMS(mobileNo);
+                        if (_resetCodeList != null && _resetCodeList.d != null && _resetCodeList.d.IsSuccess)
                         {
                             ShowViewPinSent();
                             CreateResendView();
@@ -509,7 +510,7 @@ namespace myTNB.Registration
                             {
                                 if (_smsToken != null && _smsToken?.d != null && _smsToken.d.IsSuccess)
                                 {
-                                    ShowViewPinSent();
+                                    ShowViewPinSent(true);
                                     CreateResendView();
                                     AnimateResendView();
                                 }
@@ -898,7 +899,7 @@ namespace myTNB.Registration
             _viewPinSent.Layer.CornerRadius = 2.0f;
             _viewPinSent.Hidden = true;
 
-            UILabel lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32))
+            _lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans12_300,
@@ -908,16 +909,42 @@ namespace myTNB.Registration
                 LineBreakMode = UILineBreakMode.WordWrap
             };
 
-            _viewPinSent.AddSubview(lblPinSent);
+            _viewPinSent.AddSubview(_lblPinSent);
 
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(_viewPinSent);
         }
 
-        private void ShowViewPinSent()
+        private void ShowViewPinSent(bool isSMS = false)
         {
             _viewPinSent.Hidden = false;
             _viewPinSent.Alpha = 1.0f;
+            if (_lblPinSent != null)
+            {
+                string message = string.Empty;
+                if (isSMS)
+                {
+                    if (_smsToken != null && _smsToken.d != null && _smsToken.d.IsSuccess
+                        && _smsToken.d.DisplayMessage.IsValid())
+                    {
+                        message = _smsToken.d.DisplayMessage;
+                    }
+                }
+                else
+                {
+                    if (_resetCodeList != null && _resetCodeList.d != null && _resetCodeList.d.IsSuccess
+                        && _resetCodeList.d.DisplayMessage.IsValid())
+                    {
+                        message = _resetCodeList.d.DisplayMessage;
+                    }
+                }
+                if (message.IsValid())
+                {
+                    _lblPinSent.Text = message;
+                }
+            }
+            nfloat newHeight = _lblPinSent.GetLabelHeight(64);
+            _lblPinSent.Frame = new CGRect(_lblPinSent.Frame.X, (64 - newHeight) / 2, _lblPinSent.Frame.Width, newHeight);
             UIView.Animate(5, 0, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _viewPinSent.Alpha = 0.0f;
