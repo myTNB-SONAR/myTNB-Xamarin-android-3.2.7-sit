@@ -476,6 +476,43 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
+        public WhatsNewTimestampResponseModel GetWhatsNewTimestampItem()
+        {
+            WhatsNewTimestampResponseModel respModel = new WhatsNewTimestampResponseModel();
+            try
+            {
+                WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhatsNewTimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhatsNewTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public WhatsNewResponseModel GetWhatsNewItems()
+        {
+            WhatsNewResponseModel respModel = new WhatsNewResponseModel();
+            try
+            {
+                WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetCategoryItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhatsNewItems: " + e.Message);
+            }
+            return respModel;
+        }
+
         public PromotionsTimestampResponseModel GetPromotionsTimestampItem()
         {
             PromotionsTimestampResponseModel respModel = new PromotionsTimestampResponseModel();

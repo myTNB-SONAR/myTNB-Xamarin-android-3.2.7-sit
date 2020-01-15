@@ -1770,6 +1770,7 @@
     <Folder Include="Maintenance\" />
     <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\" />
     <Folder Include="WhatsNew\" />
+    <Folder Include="Sitecore CMS\Model\Whats New\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2638,6 +2639,9 @@
     <Compile Include="WhatsNew\WhatsNewViewController.designer.cs">
       <DependentUpon>WhatsNewViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sitecore CMS\Model\Whats New\WhatsNewResponseModel.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\WhatsNewEntity.cs" />
+    <Compile Include="Sitecore CMS\Service\WhatsNewService.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
