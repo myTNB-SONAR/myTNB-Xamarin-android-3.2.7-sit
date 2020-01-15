@@ -343,6 +343,7 @@ namespace myTNB
 
             if (tariffCount > 0)
             {
+                baseHeigt -= ((GetTariffWithValueCount(tariffList) - 1) * GetHeightByScreenSize(1));
                 for (int i = 0; i < tariffList.Count; i++)
                 {
                     TariffItemModel item = tariffList[i];
