@@ -276,13 +276,7 @@
     <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%403x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded.png" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%403x.png" />
     <ImageAsset Include="Assets.xcassets\Loading.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading.png" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%403x.png" />
     <ImageAsset Include="Assets.xcassets\Email.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Email.imageset\Email%402x.png" />
     <ImageAsset Include="Assets.xcassets\Email.imageset\Email%403x.png" />
@@ -1262,6 +1256,10 @@
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\long%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\long%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\long%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\icButtonResendLoadedGreen%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\icButtonResendLoadedGreen%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

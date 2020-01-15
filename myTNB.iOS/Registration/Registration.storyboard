@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Register-->
+        <!--Registration View Controller-->
         <scene sceneID="198">
             <objects>
                 <viewController storyboardIdentifier="RegistrationViewController" id="199" customClass="RegistrationViewController" sceneMemberID="viewController">
@@ -24,7 +24,7 @@
             </objects>
             <point key="canvasLocation" x="510" y="-78"/>
         </scene>
-        <!--Verify Pin-->
+        <!--Verify Pin View Controller-->
         <scene sceneID="216">
             <objects>
                 <viewController storyboardIdentifier="VerifyPinViewController" id="217" customClass="VerifyPinViewController" sceneMemberID="viewController">
@@ -43,7 +43,7 @@
             </objects>
             <point key="canvasLocation" x="520" y="-924"/>
         </scene>
-        <!--Add Supply Account-->
+        <!--Add Account View Controller-->
         <scene sceneID="237">
             <objects>
                 <viewController storyboardIdentifier="AddAccountViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="238" customClass="AddAccountViewController" sceneMemberID="viewController">
@@ -128,7 +128,7 @@
             </objects>
             <point key="canvasLocation" x="1031" y="-81"/>
         </scene>
-        <!--Add Supply Account-->
+        <!--Barcode Scanner View Controller-->
         <scene sceneID="52219">
             <objects>
                 <viewController storyboardIdentifier="BarcodeScannerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="52220" customClass="BarcodeScannerViewController" sceneMemberID="viewController">
@@ -163,7 +163,7 @@
             </objects>
             <point key="canvasLocation" x="1032" y="739"/>
         </scene>
-        <!--Terms & Condition-->
+        <!--Terms And Condition View Controller-->
         <scene sceneID="53144">
             <objects>
                 <viewController storyboardIdentifier="TermsAndConditionViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="53145" customClass="TermsAndConditionViewController" sceneMemberID="viewController">
@@ -236,7 +236,7 @@
                                                     <rect key="frame" x="16" y="54" width="314" height="52"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="26" id="56434">
-                                                            <variation key="heightClass=regular-widthClass=compact" constant="55"/>
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="60"/>
                                                         </constraint>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
