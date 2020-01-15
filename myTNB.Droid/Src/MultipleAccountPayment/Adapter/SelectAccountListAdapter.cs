@@ -30,6 +30,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         private List<MPAccount> orgAccountList = new List<MPAccount>();
         public event EventHandler<int> CheckChanged;
         private SparseBooleanArray selectedItems;
+        private bool IsShowMoreEnable = true;
+        private static Action ShowMoreAction = null;
 
         private DecimalFormat payableFormatter = new DecimalFormat("###############0.00");
 
@@ -46,7 +48,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             try
             {
                 accountList = accountList.Concat(_accountList).ToList();
-                this.NotifyItemRangeInserted(accountList.Count, _accountList.Count);
+                NotifyDataSetChanged();
             }
             catch (System.Exception e)
             {
@@ -62,13 +64,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             SelectAccountListViewHolder vh = holder as SelectAccountListViewHolder;
             try
             {
-                TextViewUtils.SetMuseoSans300Typeface(vh.AccountLabel, vh.AccountNumber, vh.AccountAddress);
+                TextViewUtils.SetMuseoSans300Typeface(vh.AccountNumber, vh.AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(vh.AmountLabel);
-                TextViewUtils.SetMuseoSans300Typeface(vh.Amount, vh.MandatoryPaymentContent);
-                TextViewUtils.SetMuseoSans500Typeface(vh.MandatoryPaymentTite);
+                TextViewUtils.SetMuseoSans300Typeface(vh.Amount);
+                TextViewUtils.SetMuseoSans500Typeface(vh.AccountLabel);
                 MPAccount item = accountList[position];
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
+                if (string.IsNullOrEmpty(item.accountAddress))
+                {
+                    vh.AccountAddress.Visibility = ViewStates.Gone;
+                }
                 vh.AccountLabel.Text = item.accountLabel;
 
                 if (item.amount <= 0f)
@@ -80,19 +86,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     vh.Amount.Text = payableFormatter.Format(item.amount);
                 }
 
-#if STUB
-                if(item.OpenChargeTotal != 0)
-                {
-                    vh.MandatoryPaymentContent.Text = payableFormatter.Format(item.OpenChargeTotal);
-                }
-                else
-                {
-                    vh.MandatoryPaymentDetailView.Visibility = ViewStates.Gone;
-                }
-#else
-                vh.MandatoryPaymentDetailView.Visibility = ViewStates.Gone;
-#endif
-
                 if (item.amount < 1)
                 {
                     item.isValidAmount = false;
@@ -102,6 +95,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     item.isValidAmount = true;
                 }
                 vh.AmountLabel.Error = "";
+                vh.AmountLabel.ErrorEnabled = false;
                 vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                 vh.Amount.AfterTextChanged += (sender, args) =>
                 {
@@ -117,6 +111,20 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 if (vh.SelectAccountView.Checked)
                 {
                     ValidateHolder(item, position, vh, false);
+                }
+                if (position == (ItemCount-1) && IsShowMoreEnable)
+                {
+                    string htmlText = "<html><u>" + Utility.GetLocalizedLabel("SelectBills", "loadMore") + "</u></html>";
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        vh.ShowMore.TextFormatted = Html.FromHtml(htmlText, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        vh.ShowMore.TextFormatted = Html.FromHtml(htmlText);
+                    }
+                    TextViewUtils.SetMuseoSans300Typeface(vh.ShowMore);
+                    vh.ShowMore.Visibility = ViewStates.Visible;
                 }
             }
             catch (System.Exception e)
@@ -135,6 +143,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     if (newAmount < 1)
                     {
                         vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
+                        vh.AmountLabel.ErrorEnabled = true;
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity,Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
@@ -147,6 +156,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     else
                     {
                         vh.AmountLabel.Error = "";
+                        vh.AmountLabel.ErrorEnabled = false;
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tunaGrey)));
                         item.isValidAmount = true;
@@ -166,6 +176,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 else
                 {
                     vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
+                    vh.AmountLabel.ErrorEnabled = true;
                     vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     vh.Amount.RequestFocus();
                     item.isValidAmount = false;
@@ -224,9 +235,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             public TextInputLayout AmountLabel { get; private set; }
             public EditText Amount { get; private set; }
             public CheckBox SelectAccountView { get; private set; }
-            public LinearLayout MandatoryPaymentDetailView { get; private set; }
-            public TextView MandatoryPaymentTite { get; private set; }
-            public TextView MandatoryPaymentContent { get; private set; }
+            public TextView ShowMore { get; private set; }
 
             public SelectAccountListViewHolder(View itemView, Action<SelectAccountListViewHolder, int> listener) : base(itemView)
             {
@@ -235,18 +244,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 AccountAddress = itemView.FindViewById<TextView>(Resource.Id.text_account_address);
                 AmountLabel = itemView.FindViewById<TextInputLayout>(Resource.Id.account_amount_layout);
                 Amount = itemView.FindViewById<EditText>(Resource.Id.account_amount_edittext);
-                MandatoryPaymentDetailView = itemView.FindViewById<LinearLayout>(Resource.Id.mandatory_payment_detail);
-                MandatoryPaymentTite = itemView.FindViewById<TextView>(Resource.Id.mandatory_payment_title);
-                MandatoryPaymentContent = itemView.FindViewById<TextView>(Resource.Id.mandatory_payment_content);
-
+                ShowMore = itemView.FindViewById<TextView>(Resource.Id.show_more_btn);
 
                 SelectAccountView = itemView.FindViewById<CheckBox>(Resource.Id.select_account);
                 SelectAccountView.Click += (s, e) => listener((this), base.LayoutPosition);
+                ShowMore.Click += (s, e) => ShowMoreAction();
 
                 TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(AmountLabel);
-                TextViewUtils.SetMuseoSans300Typeface(Amount, MandatoryPaymentContent);
-                TextViewUtils.SetMuseoSans500Typeface(AccountLabel, MandatoryPaymentTite);
 
                 Amount.AddTextChangedListener(new RestrictAmountChangeListener(Amount, AmountLabel, 2));
             }
@@ -309,5 +314,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             return flag;
         }
 
+        public void EnableShowMoreButton(bool isEnable)
+        {
+            IsShowMoreEnable = isEnable;
+        }
+
+        public void SetShowMoreAction(Action showMoreAction)
+        {
+            ShowMoreAction = showMoreAction;
+        }
     }
 }

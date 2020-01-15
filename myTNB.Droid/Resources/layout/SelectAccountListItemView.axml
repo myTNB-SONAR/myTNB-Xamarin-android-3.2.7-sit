@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_marginBottom="16dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:background="@color/white"
+        android:padding="16dp"
         android:weightSum="1">
         <LinearLayout
             android:orientation="vertical"
@@ -24,8 +24,6 @@
                 android:singleLine="true"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="@color/tunaGrey"
                 android:id="@+id/text_account_lable"
@@ -37,59 +35,30 @@
                 android:singleLine="true"
                 android:textSize="14dp"
                 android:textStyle="bold"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="@color/tunaGrey"
                 android:id="@+id/text_account_number"
                 android:text="2000000100001" />
             <TextView
                 android:layout_width="match_parent"
-                android:singleLine="true"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/text_account_address"
                 android:textSize="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="8dp"
+                android:maxLines="10"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="32dp"
-                android:maxLines="4"
-                android:inputType="textMultiLine"
-                android:lines="3"
                 android:textColor="@color/tunaGrey"
                 android:text="Account Address" />
-               <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="32dp"
-                    android:id="@+id/mandatory_payment_detail">
-               <TextView
-                    android:layout_width="match_parent"
-                    android:singleLine="true"
-                    android:layout_height="match_parent"
-                    android:id="@+id/mandatory_payment_title"
-                    android:textSize="10dp"
-                    android:textColor="@color/silverChalice"
-                    android:text="Other Charges (RM)" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:singleLine="true"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="1dp"
-                    android:id="@+id/mandatory_payment_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/tunaGrey"
-                    android:text="0.00" />
-            </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/account_amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/AmountHint.TextInputLayout.TextAppearance.LightBackground"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginStart="-4dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="4dp"
+                android:layout_marginBottom="14dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="32dp">
                 <android.support.design.widget.TextInputEditText
@@ -102,12 +71,27 @@
                     android:id="@+id/account_amount_edittext" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
-        <CheckBox
-            android:id="@+id/select_account"
-            android:layout_weight="0.1"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/select_account_container"
             android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:gravity="right"
+            android:layout_height="match_parent">
+            <CheckBox
+            android:id="@+id/select_account"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_gravity="center|right"
             android:button="@drawable/checkbox_selector" />
+        </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/show_more_btn"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/tunaGrey"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+    android:text="@string/load_more"/>
 </LinearLayout>
