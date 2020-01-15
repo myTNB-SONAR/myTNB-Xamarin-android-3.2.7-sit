@@ -159,7 +159,7 @@ namespace myTNB
             if (response != null && response.d != null && response.d.IsSuccess && response.d.data != null)
             {
                 displayedQuestions = response.d.data.FindAll(x => x.Active);
-                tableViewRating.Source = new RatingDataSource(displayedQuestions, Rating);
+                tableViewRating.Source = new RatingDataSource(displayedQuestions, Rating, this);
                 tableViewRating.ReloadData();
                 AddSubmitButton();
             }

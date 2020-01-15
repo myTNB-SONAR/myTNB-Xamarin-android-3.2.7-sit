@@ -54,7 +54,7 @@ namespace myTNB
             Debug.WriteLine("DEBUG >>> LanguageDidChange: HOME TAB BAR");
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             SetTabbarTitle();
-            FetchRewards();
+            if (!AppLaunchMasterCache.IsRewardsDisabled) { FetchRewards(); }
         }
 
         public override void ViewWillAppear(bool animated)

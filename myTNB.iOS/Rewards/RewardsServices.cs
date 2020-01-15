@@ -132,53 +132,93 @@ namespace myTNB
         {
             if (!AppLaunchMasterCache.IsRewardsDisabled)
             {
-                if (rewardId.IsValid() && topView != null && !(topView is RewardDetailsViewController))
+                if (topView != null && !(topView is RewardDetailsViewController))
                 {
-                    var reward = RewardsEntity.GetItem(rewardId);
-                    if (reward != null)
+                    if (rewardId.IsValid())
                     {
-                        if (!RewardHasExpired(reward))
+                        var reward = RewardsEntity.GetItem(rewardId);
+                        if (reward != null)
                         {
-                            RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
-                            DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
-                            string rDateStr = string.Empty;
-                            if (rDate != null)
+                            if (!RewardHasExpired(reward))
                             {
-                                try
+                                RewardsCache.RefreshReward = true;
+                                RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
+                                DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
+                                string rDateStr = string.Empty;
+                                if (rDate != null)
                                 {
-                                    DateTime? rDateValue = rDate.Value.ToLocalTime();
-                                    rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                    try
+                                    {
+                                        DateTime? rDateValue = rDate.Value.ToLocalTime();
+                                        rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                    }
                                 }
-                                catch (Exception e)
+                                rewardDetailView.RedeemedDate = rDateStr;
+                                rewardDetailView.RewardModel = reward;
+                                UINavigationController navController = new UINavigationController(rewardDetailView)
                                 {
-                                    Debug.WriteLine("Error in ParseDate: " + e.Message);
-                                }
+                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                };
+                                topView.PresentViewController(navController, true, null);
                             }
-                            rewardDetailView.RedeemedDate = rDateStr;
-                            rewardDetailView.RewardModel = reward;
-                            UINavigationController navController = new UINavigationController(rewardDetailView)
+                            else
                             {
-                                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                            };
-                            topView.PresentViewController(navController, true, null);
+                                ShowRewardExpired(topView);
+                            }
                         }
                         else
                         {
-                            AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
-                                LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
-                                new Dictionary<string, Action> {
-                        {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () => topView.TabBarController.SelectedIndex = 3} });
+                            ShowRewardExpired(topView);
                         }
+                    }
+                    else
+                    {
+                        ShowRewardExpired(topView);
                     }
                 }
             }
             else
             {
-                AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableTitle),
+                ShowRewardUnavailable();
+            }
+        }
+
+        public static void ShowRewardExpired(UIViewController topView)
+        {
+            if (topView != null)
+            {
+                topView.InvokeOnMainThread(() =>
+                {
+                    AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
+                LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
+                new Dictionary<string, Action> {
+                {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () =>
+                {
+                    if (topView is HomeTabBarController)
+                    {
+                        HomeTabBarController tabBar = topView as HomeTabBarController;
+                        tabBar.SelectedIndex = 3;
+                    }
+                    else if (topView.TabBarController != null)
+                    {
+                        topView.TabBarController.SelectedIndex = 3;
+                    }
+                    RewardsCache.RefreshReward = true;
+                }}});
+                });
+            }
+        }
+
+        public static void ShowRewardUnavailable()
+        {
+            AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableTitle),
                     LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableMsg),
                     new Dictionary<string, Action> {
                         { LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null} });
-            }
         }
 
         private static string GetDynamicLinkDomain(APIEnvironment environment)
@@ -238,18 +278,6 @@ namespace myTNB
             object requestParameter = new
             {
                 serviceManager.usrInf
-                /*usrInf = new
-                {
-                    eid = "reward001@gmail.com",
-                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
-                    did = DataManager.DataManager.SharedInstance.UDID,
-                    ft = "token",
-                    lang = TNBGlobal.APP_LANGUAGE,
-                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                    sec_auth_k2 = string.Empty,
-                    ses_param1 = string.Empty,
-                    ses_param2 = string.Empty
-                }*/
             };
             GetUserRewardsResponseModel response = await Task.Run(() =>
             {
