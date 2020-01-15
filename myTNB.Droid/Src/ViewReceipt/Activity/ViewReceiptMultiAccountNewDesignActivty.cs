@@ -431,7 +431,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                                 string downloadLinkLocation = string.Format(Utility.GetLocalizedCommonLabel("pdfDownloadMessage"), path);
 
                                 mErrorMessageSnackBar = Snackbar.Make(baseView, downloadLinkLocation, Snackbar.LengthIndefinite)
-                                .SetAction("Open", delegate
+                                .SetAction(Utility.GetLocalizedCommonLabel("open"), delegate
                                 {
                                     Java.IO.File file = new Java.IO.File(path);
                                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
