@@ -1000,7 +1000,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     ry = rx;
                 }
                 float widthMinusCorners = (width - (2 * rx));
-                float heightMinusCorners = (height - (2 * ry) - 4f);
+                float heightMinusCorners = (height - (2 * ry) - DPUtils.ConvertDPToPx(1f));
 
                 path.MoveTo(right, top + ry);
                 if (tr)
