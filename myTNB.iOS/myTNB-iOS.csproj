@@ -1323,7 +1323,6 @@
     <Folder Include="Home\" />
     <Folder Include="Home\Dashboard\" />
     <Folder Include="Home\Bill\" />
-    <Folder Include="Home\Promotions\" />
     <Folder Include="Home\More\" />
     <Folder Include="Home\Components\" />
     <Folder Include="Assets.xcassets\Download.imageset\" />
@@ -1446,7 +1445,6 @@
     <Folder Include="Assets.xcassets\Payment-Checkbox-Active.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\IC-Empty-Promotion.imageset\" />
-    <Folder Include="Home\Promotions\Promotion Details\" />
     <Folder Include="Assets.xcassets\Notification-Promo.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\" />
@@ -1771,6 +1769,7 @@
     <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
     <Folder Include="Maintenance\" />
     <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\" />
+    <Folder Include="WhatsNew\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1800,7 +1799,6 @@
     <InterfaceDefinition Include="Home\More\Find Us\Location Details\LocationDetails.storyboard" />
     <InterfaceDefinition Include="Rating\Rating.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
-    <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
@@ -1904,10 +1902,6 @@
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Promotions\PromotionsViewController.cs" />
-    <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
-      <DependentUpon>PromotionsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\AccountSelectionComponent.cs" />
     <Compile Include="Home\Components\AddressComponent.cs" />
@@ -2155,15 +2149,6 @@
     <Compile Include="Model\FAQ\FAQModel.cs" />
     <Compile Include="Model\FAQ\FAQDataModel.cs" />
     <Compile Include="Home\More\FAQ\FAQDataSource.cs" />
-    <Compile Include="Home\Promotions\PromotionsViewCell.cs" />
-    <Compile Include="Home\Promotions\PromotionsViewCell.designer.cs">
-      <DependentUpon>PromotionsViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Promotions\Promotion Details\PromotionDetailsViewController.cs" />
-    <Compile Include="Home\Promotions\Promotion Details\PromotionDetailsViewController.designer.cs">
-      <DependentUpon>PromotionDetailsViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Promotions\PromotionsDataSource.cs" />
     <Compile Include="Sitecore CMS\Service\FAQsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\FAQEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PromotionsEntity.cs" />
@@ -2203,12 +2188,7 @@
     <Compile Include="Helpers\AppVersionHelper.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Home\Promotions\PromotionsModalViewController.cs" />
-    <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
-      <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sitecore CMS\Service\PromotionsService.cs" />
-    <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
     <Compile Include="Model\Feedback\QuestionInputOption.cs" />
     <Compile Include="Enums\QuestionTypeEnum.cs" />
     <Compile Include="Enums\QuestionCategoryEnum.cs" />
@@ -2600,7 +2580,6 @@
     </Compile>
     <Compile Include="Feedback\FeedbackConstants.cs" />
     <Compile Include="Rating\RatingConstants.cs" />
-    <Compile Include="Home\Promotions\PromotionConstants.cs" />
     <Compile Include="Sitecore CMS\Model\Language\LanguageModel.cs" />
     <Compile Include="Sitecore CMS\Service\LanguageService.cs" />
     <Compile Include="Home\More\Language\LanguageUtility.cs" />
@@ -2653,6 +2632,11 @@
     <Compile Include="Maintenance\MaintenanceViewController.cs" />
     <Compile Include="Maintenance\MaintenanceViewController.designer.cs">
       <DependentUpon>MaintenanceViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WhatsNew\WhatsNewConstants.cs" />
+    <Compile Include="WhatsNew\WhatsNewViewController.cs" />
+    <Compile Include="WhatsNew\WhatsNewViewController.designer.cs">
+      <DependentUpon>WhatsNewViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

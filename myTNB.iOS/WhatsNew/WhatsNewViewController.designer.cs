@@ -11,11 +11,8 @@ using UIKit;
 
 namespace myTNB
 {
-    [Register ("PromotionsModalViewController")]
-    partial class PromotionsModalViewController
+    [Register ("WhatsNewViewController")]
+    partial class WhatsNewViewController
     {
-        void ReleaseDesignerOutlets ()
-        {
-        }
     }
 }

@@ -903,5 +903,8 @@
     "unsave": "Alih Keluar",
     "save": "Simpan",
     "redeemRewardNote": "Ganjaran telah ditebus. Sila tunjukkan skrin ini kepada peniaga sebelum pemasa tamat."
+  },
+  "WhatsNew": {
+    "title": "Terkini"
   }
 }

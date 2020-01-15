@@ -191,36 +191,6 @@ namespace myTNB
         }
 
         /// <summary>
-        /// Shows the promotions modal.
-        /// </summary>
-        private void ShowPromotionsModal()
-        {
-            PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModel> items = wsManager.GetAllItemsV2();
-
-            if (items?.Count > 0)
-            {
-                CheckResetPromoShown(items);
-                List<PromotionsModel> filtered = items.FindAll(item => ShouldDisplayAppLaunch(item));
-
-                if (filtered?.Count > 0)
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName(TabbarConstants.Storyboard_Promotion, null);
-                    PromotionsModalViewController viewController =
-                        storyBoard.InstantiateViewController(TabbarConstants.Controller_Promotion) as PromotionsModalViewController;
-                    if (viewController != null)
-                    {
-                        viewController.Promotions = filtered;
-                        viewController.OnModalDone = OnPromotionsModalDone;
-                        UINavigationController navController = new UINavigationController(viewController);
-                        navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
-                        PresentViewController(navController, true, null);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Handler for when the promotions modal is done.
         /// </summary>
         public void OnPromotionsModalDone()
@@ -375,7 +345,6 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 UpdatePromotionTabBarIcon();
-                                ShowPromotionsModal();
                             });
                         });
                     }

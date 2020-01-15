@@ -902,6 +902,9 @@
     "confirm": "Confirm",
     "unsave": "Unsave",
     "save": "Save",
-    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out."
+  },
+  "WhatsNew": {
+    "title": "What's New"
   }
 }
