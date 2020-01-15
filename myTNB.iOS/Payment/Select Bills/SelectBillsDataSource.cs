@@ -109,7 +109,7 @@ namespace myTNB.Payment.SelectBills
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return 187;
+            return ScaleUtility.GetScaledHeight(187);
         }
 
         #region UpdateCheckBox
