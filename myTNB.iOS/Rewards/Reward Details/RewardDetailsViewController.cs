@@ -24,7 +24,7 @@ namespace myTNB
         private UIBarButtonItem _btnShareReward;
         private DateTime _exitTime;
         private int _exitSeconds;
-        private bool _hotspotIsOn;
+        private bool _hotspotIsOn, _countdownHasStarted;
 
         public override void ViewDidLoad()
         {
@@ -92,6 +92,8 @@ namespace myTNB
                 if (topVc is RewardDetailsViewController)
                 {
                     OnChangeStatusBarFrame(null);
+                    if (!_countdownHasStarted) { return; }
+                    _countdownHasStarted = false;
                     var timeNow = DateTime.Now;
                     var diffInSeconds = (timeNow - _exitTime).TotalSeconds;
                     var remainingSeconds = _exitSeconds - diffInSeconds;
@@ -789,6 +791,7 @@ namespace myTNB
         #region Action Methods
         private void OnUseNowAction()
         {
+            _countdownHasStarted = true;
             ActivityIndicator.Show();
             InvokeInBackground(async () =>
             {

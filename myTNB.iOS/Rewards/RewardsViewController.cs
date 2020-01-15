@@ -113,11 +113,12 @@ namespace myTNB
             {
                 InvokeInBackground(async () =>
                 {
-                    bool hasUpdate = await RewardsServices.RewardListHasUpdates();
+                    bool hasUpdate = await RewardsServices.RewardListHasUpdates() || RewardsCache.RefreshReward;
                     InvokeOnMainThread(() =>
                     {
                         if (hasUpdate)
                         {
+                            RewardsCache.RefreshReward = false;
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                             ResetViews();
                             SetSkeletonLoading();

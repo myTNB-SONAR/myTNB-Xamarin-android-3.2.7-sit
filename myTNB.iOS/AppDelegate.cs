@@ -11,6 +11,7 @@ using Facebook.CoreKit;
 using Firebase.Crashlytics;
 using System.Diagnostics;
 using Firebase.DynamicLinks;
+using System.Collections.Generic;
 
 namespace myTNB
 {
@@ -206,18 +207,91 @@ namespace myTNB
                                 if (rewardId.IsValid())
                                 {
                                     RewardsCache.DeeplinkRewardId = rewardId;
-                                    if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+                                    if (NetworkUtility.isReachable)
                                     {
-                                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                                        var topVc = GetTopViewController(baseRootVc);
-                                        if (topVc != null)
+                                        InvokeOnMainThread(() =>
                                         {
-                                            if (!(topVc is RewardDetailsViewController))
+                                            var baseRootVc1 = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                            var topVc1 = GetTopViewController(baseRootVc1);
+                                            if (topVc1 != null)
                                             {
-                                                RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                                if (!(topVc1 is AppLaunchViewController))
+                                                {
+                                                    ActivityIndicator.Show();
+                                                }
                                             }
-                                        }
-                                        DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                            InvokeInBackground(async () =>
+                                            {
+                                                bool hasUpdate = await RewardsServices.RewardListHasUpdates();
+                                                if (hasUpdate)
+                                                {
+                                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                                                    await RewardsServices.GetLatestRewards();
+                                                    if (RewardsCache.RewardIsAvailable)
+                                                    {
+                                                        await RewardsServices.GetUserRewards();
+                                                        if (RewardsCache.RewardIsAvailable)
+                                                        {
+                                                            InvokeOnMainThread(() =>
+                                                            {
+                                                                ActivityIndicator.Hide();
+                                                                DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                                                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                                var topVc = GetTopViewController(baseRootVc);
+                                                                if (topVc != null)
+                                                                {
+                                                                    if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                    {
+                                                                        RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                                                        DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            InvokeOnMainThread(() =>
+                                                            {
+                                                                ActivityIndicator.Hide();
+                                                                DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                                                RewardsServices.ShowRewardUnavailable();
+                                                                DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                            });
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                                            RewardsServices.ShowRewardUnavailable();
+                                                            DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                        });
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                            var topVc = GetTopViewController(baseRootVc);
+                                                            if (topVc != null)
+                                                            {
+                                                                if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                {
+                                                                    RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                                                    DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        });
                                     }
                                 }
                             }
