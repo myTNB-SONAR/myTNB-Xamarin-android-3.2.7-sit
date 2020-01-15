@@ -94,7 +94,8 @@
     "showMoreRewards": "Ganjaran Selebihnya",
     "illDoItLater": "Kemudian",
     "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu.",
-    "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}"
+    "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}",
+    "open": "Buka"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -140,8 +141,8 @@
     "refreshBillPayHistory": "Halaman yang mengandungi sejarah pengebilan dan bayaran anda terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
     "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
-    "rewardsUnavailableTitle" : "Ganjaran tidak tersedia buat masa ini.",
-    "rewardsUnavailableMsg" : "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian."
+    "rewardsUnavailableTitle": "Ganjaran tidak tersedia buat masa ini.",
+    "rewardsUnavailableMsg": "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
