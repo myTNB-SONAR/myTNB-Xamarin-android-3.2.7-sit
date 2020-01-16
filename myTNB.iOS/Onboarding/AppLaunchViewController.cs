@@ -1013,17 +1013,16 @@ namespace myTNB
         /// <param name="willHideBackButton">If set to <c>true</c> will hide back button.</param>
         private void ShowUpdateMobileNumber(bool willHideBackButton)
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
-            /*UpdateMobileNumberViewController viewController =
-                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
-            if (viewController != null)
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController()
             {
-                viewController.WillHideBackButton = willHideBackButton;
-                viewController.IsFromLogin = true;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
-            }*/
+                WillHideBackButton = willHideBackButton,
+                IsFromLogin = true
+            };
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
+            PresentViewController(navController, true, null);
             ActivityIndicator.Hide();
         }
     }

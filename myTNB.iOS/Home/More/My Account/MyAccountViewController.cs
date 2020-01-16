@@ -190,15 +190,16 @@ namespace myTNB
 
         internal void UpdateMobileNumber()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
-            /*UpdateMobileNumberViewController viewController =
-                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController()
+            {
+                WillHideBackButton = true,
+                IsFromLogin = true
+            };
             UINavigationController navController = new UINavigationController(viewController)
             {
                 ModalPresentationStyle = UIModalPresentationStyle.FullScreen
             };
             PresentViewController(navController, true, null);
-            */
         }
 
         internal void UpdatePassword()
