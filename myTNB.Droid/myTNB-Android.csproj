@@ -530,10 +530,6 @@
     <Compile Include="Src\Database\Model\PaymentHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\PaymentHistoryModel.cs" />
     <Compile Include="Src\Database\Model\PreLoginPromoEntity.cs" />
-    <Compile Include="Src\Database\Model\PromotionsEntity.cs" />
-    <Compile Include="Src\Database\Model\PromotionsEntityV2.cs" />
-    <Compile Include="Src\Database\Model\PromotionsParentEntity.cs" />
-    <Compile Include="Src\Database\Model\PromotionsParentEntityV2.cs" />
     <Compile Include="Src\Database\Model\REPaymentHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\REPaymentHistoryModel.cs" />
     <Compile Include="Src\Database\Model\SelectBillsEntity.cs" />
@@ -708,7 +704,6 @@
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SMSelectedMarkerView.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\PromotionsMenu\PromotionsMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMChartHScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMDashboardScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Models\AccountDueAmount.cs" />
@@ -779,14 +774,6 @@
     <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
-    <Compile Include="Src\Promotions\Activity\PromotionsActivity.cs" />
-    <Compile Include="Src\Promotions\Adapter\PromotionListAdapter.cs" />
-    <Compile Include="Src\Promotions\Adapter\PromotionPagerAdapter.cs" />
-    <Compile Include="Src\Promotions\Fragments\PromotionDetailsFragment.cs" />
-    <Compile Include="Src\Promotions\Fragments\PromotionDialogFragmnet.cs" />
-    <Compile Include="Src\Promotions\Fragments\PromotionListFragment.cs" />
-    <Compile Include="Src\Promotions\MVP\PromotionContract.cs" />
-    <Compile Include="Src\Promotions\MVP\PromotionPresenter.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
@@ -885,12 +872,6 @@
     <Compile Include="Src\SitecoreCMS\Model\FullRTEPagesResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\LocationsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsModelV2.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsParentResponseModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsParentV2ResponseModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsResponseModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsV2ResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\WalkthroughScreensModel.cs" />
@@ -902,8 +883,6 @@
     <Compile Include="Src\SitecoreCMS\Service\GetItemsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\LocationsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\PreLoginPromoService.cs" />
-    <Compile Include="Src\SitecoreCMS\Service\PromotionsService.cs" />
-    <Compile Include="Src\SitecoreCMS\Service\PromotionsV2Service.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SitecoreService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\TimestampService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\WalkthroughScreenService.cs" />
@@ -1016,7 +995,7 @@
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
     <AndroidResource Include="Resources\drawable\launch_screen.xml" />
     <Compile Include="Src\AppLaunch\Async\MasterApiDBOperation.cs" />
-    <Compile Include="Src\myTNBMenu\Async\SiteCorePromotioAPI.cs" />
+    <Compile Include="Src\myTNBMenu\Async\SiteCoreWhatsNewAPI.cs" />
     <AndroidResource Include="Resources\layout\WhatIsThisDialogView.axml" />
     <AndroidResource Include="Resources\drawable\rounded_corner_dialog.xml" />
     <Compile Include="Src\myTNBMenu\Api\IGetInstallationDetailsApi.cs" />
@@ -4265,6 +4244,37 @@
     <Compile Include="Src\MyTNBService\Response\GetLocationListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetLocationListByKeywordResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\GetLocationListByKeywordRequest.cs" />
+    <AndroidResource Include="Resources\layout\WhatsNewListView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewListItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\WhatsNewTabAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewMenuFragment.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewMenuPresenter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewMenuContract.cs" />
+    <Compile Include="Src\Utils\WhatsNewMenuUtils.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewItemFragment.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\WhatsNewRecyclerAdapter.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\WhatsNewModel.cs" />
+    <Compile Include="Src\Database\Model\WhatsNewEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewItemContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewItemPresenter.cs" />
+    <Compile Include="Src\Database\Model\WhatsNewCategoryEntity.cs" />
+    <Compile Include="Src\Database\Model\WhatsNewParentEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\WhatsNewMenuModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\WhatsNewService.cs" />
+    <AndroidResource Include="Resources\layout\BaseWebView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4375,9 +4385,6 @@
     <AndroidResource Include="Resources\values\MakePaymentStyle.xml" />
     <AndroidResource Include="Resources\layout\AddCardView.axml" />
     <AndroidResource Include="Resources\layout\FeedbackMenuView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\PromotionsMenuView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MoreMenuView.axml">
@@ -4522,7 +4529,6 @@
     <AndroidResource Include="Resources\layout\LocationTypeRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\PromotionWebView.axml" />
     <AndroidResource Include="Resources\layout\OpeningHoursListItemView.axml" />
     <AndroidResource Include="Resources\layout\PhoneListItemView.axml" />
     <AndroidResource Include="Resources\layout\ServiceListItemView.axml" />
@@ -4532,18 +4538,12 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountRow.axml" />
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionsView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionListView.axml" />
     <AndroidResource Include="Resources\layout\FAQListItemView.axml" />
     <AndroidResource Include="Resources\layout\FAQListView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionDetailsView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionListItemView.axml" />
     <AndroidResource Include="Resources\layout\SelectAccountListItemView.axml" />
     <AndroidResource Include="Resources\layout\SelectMultipleAccountsView.axml" />
     <AndroidResource Include="Resources\layout\AppUpdateDialog.axml" />
     <AndroidResource Include="Resources\layout\LoadingOverlayView.axml" />
-    <AndroidResource Include="Resources\layout\promotion_dialog.axml" />
-    <AndroidResource Include="Resources\layout\promotion_pager_item.axml" />
     <AndroidResource Include="Resources\layout\RateUsQuestionItemView.axml" />
     <AndroidResource Include="Resources\layout\rating_activity_view.axml" />
     <AndroidResource Include="Resources\layout\SubmitRatingView.axml" />
@@ -4663,6 +4663,10 @@
     <Folder Include="Src\NotificationDetails\Api\" />
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

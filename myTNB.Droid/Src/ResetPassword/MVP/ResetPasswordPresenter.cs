@@ -201,6 +201,20 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                 Utility.LoggingNonFatalError(ex);
                             }
 
+                            try
+                            {
+                                WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                                mWhatsNewParentEntity.DeleteTable();
+                                WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                                mWhatsNewCategoryEntity.DeleteTable();
+                                WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                                mWhatsNewEntity.DeleteTable();
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+
                             if (mView.IsActive())
                             {
                                 this.mView.HideProgressDialog();

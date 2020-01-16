@@ -93,9 +93,9 @@ namespace myTNB_Android.Src.Base
                 NewFAQParentManager.DeleteTable();
                 NewFAQParentManager.CreateTable();
 
-                PromotionsParentEntityV2 PromotionsParentEntityVManager = new PromotionsParentEntityV2();
-                PromotionsParentEntityVManager.DeleteTable();
-                PromotionsParentEntityVManager.CreateTable();
+                WhatsNewParentEntity WhatsNewParentEntityVManager = new WhatsNewParentEntity();
+                WhatsNewParentEntityVManager.DeleteTable();
+                WhatsNewParentEntityVManager.CreateTable();
 
                 RewardsParentEntity RewardsParentEntityManager = new RewardsParentEntity();
                 RewardsParentEntityManager.DeleteTable();

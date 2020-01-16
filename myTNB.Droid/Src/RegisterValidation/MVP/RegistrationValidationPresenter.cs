@@ -168,6 +168,20 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 Utility.LoggingNonFatalError(ex);
                             }
 
+                            try
+                            {
+                                WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                                mWhatsNewParentEntity.DeleteTable();
+                                WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                                mWhatsNewCategoryEntity.DeleteTable();
+                                WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                                mWhatsNewEntity.DeleteTable();
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                             HomeMenuUtils.ResetAll();

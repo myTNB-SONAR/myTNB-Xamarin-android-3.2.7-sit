@@ -39,8 +39,6 @@ namespace myTNB_Android.Src.Login.MVP
 
         CancellationTokenSource cts;
 
-        private string savedPromoTimeStamp = "0000000";
-
         public LoginPresenter(LoginContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
@@ -229,12 +227,15 @@ namespace myTNB_Android.Src.Login.MVP
 
                         try
                         {
-                            PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                            WhatsNewParentEntity wtManager = new WhatsNewParentEntity();
                             wtManager.DeleteTable();
                             wtManager.CreateTable();
-                            PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                            WhatsNewEntity wtManager2 = new WhatsNewEntity();
                             wtManager.DeleteTable();
                             wtManager.CreateTable();
+                            WhatsNewCategoryEntity wtManager3 = new WhatsNewCategoryEntity();
+                            wtManager3.DeleteTable();
+                            wtManager3.CreateTable();
                         }
                         catch (Exception e)
                         {
@@ -407,10 +408,6 @@ namespace myTNB_Android.Src.Login.MVP
                 SubmittedFeedbackEntity.Remove();
                 SMUsageHistoryEntity.RemoveAll();
                 UsageHistoryEntity.RemoveAll();
-                PromotionsEntityV2 promotionTable = new PromotionsEntityV2();
-                promotionTable.DeleteTable();
-                PromotionsParentEntityV2 promotionEntityTable = new PromotionsParentEntityV2();
-                promotionEntityTable.DeleteTable();
                 BillHistoryEntity.RemoveAll();
                 PaymentHistoryEntity.RemoveAll();
                 REPaymentHistoryEntity.RemoveAll();

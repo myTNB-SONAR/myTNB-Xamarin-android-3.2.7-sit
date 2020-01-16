@@ -299,6 +299,9 @@ namespace myTNB_Android.Src.Utils
         public const string REWARDS_ITEM_LIST_MODE = ".rewardItemList";
         public const string REWARDS_ITEM_LIST_SEARCH_STRING_KEY = ".rewardSearchKey";
 
+        public const string WHATSNEW_ITEM_LIST_MODE = ".whatsNewItemList";
+        public const string WHATSNEW_ITEM_LIST_SEARCH_STRING_KEY = ".whatsNewSearchKey";
+
         public const string REWARD_DETAIL_TITLE_KEY = ".rewardDetailTitle";
         public const string REWARD_DETAIL_ITEM_KEY = ".rewardDetailItem";
 
@@ -306,6 +309,12 @@ namespace myTNB_Android.Src.Utils
         public const string IN_APP_TITLE = ".inAppTitle";
 
         public enum REWARDSITEMLISTMODE
+        {
+            INITIATE,
+            LOADED
+        }
+
+        public enum WHATSNEWITEMLISTMODE
         {
             INITIATE,
             LOADED

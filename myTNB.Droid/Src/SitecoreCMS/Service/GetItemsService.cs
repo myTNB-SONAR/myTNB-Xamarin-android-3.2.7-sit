@@ -66,22 +66,6 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetPromotionsV2Item()
-        {
-            PromotionsV2Service service = new PromotionsV2Service();
-            var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-
-        public string GetPromotionsV2TimestampItem()
-        {
-            PromotionsV2Service service = new PromotionsV2Service();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
         public string GetFAQsItem()
         {
             FAQsService service = new FAQsService();
@@ -472,6 +456,43 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetRewardsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public WhatsNewResponseModel GetWhatsNewItems()
+        {
+            WhatsNewResponseModel respModel = new WhatsNewResponseModel();
+            try
+            {
+                WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhatsNewItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public WhatsNewTimeStampResponseModel GetWhatsNewTimestampItem()
+        {
+            WhatsNewTimeStampResponseModel respModel = new WhatsNewTimeStampResponseModel();
+            try
+            {
+                WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhatsNewTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhatsNewTimestampItem: " + e.Message);
             }
             return respModel;
         }

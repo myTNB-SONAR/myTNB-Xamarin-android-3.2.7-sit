@@ -71,7 +71,7 @@ namespace myTNB.SitecoreCMS.Services
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
-                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.Path) || string.IsNullOrEmpty(item.DisplayName))
+                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.Path))
                     {
                         continue;
                     }
@@ -105,7 +105,7 @@ namespace myTNB.SitecoreCMS.Services
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
-                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.DisplayName))
+                    if (item == null || string.IsNullOrEmpty(item.Id))
                     {
                         continue;
                     }
@@ -120,7 +120,6 @@ namespace myTNB.SitecoreCMS.Services
                         StartDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.StartDate),
                         EndDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.EndDate),
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
-                        RewardName = item.DisplayName,
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
                         Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Rewards.Image, _websiteURL, false),
                         RewardUseWithinTime = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseWithinTime),

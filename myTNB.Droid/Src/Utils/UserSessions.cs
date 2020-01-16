@@ -158,11 +158,6 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
-        {
-            return prefs.GetBoolean("hasWhatNewShown", false);
-        }
-
         public static void DoCleanSSMRMeterReadingCache(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -173,13 +168,6 @@ namespace myTNB_Android.Src.Utils
         public static System.Boolean HasCleanSSMRMeterReadingCache(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasCleanSSMRMeterReadingCache", false);
-        }
-
-        public static void DoWhatNewShown(ISharedPreferences prefs)
-        {
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("hasWhatNewShown", true);
-            editor.Apply();
         }
 
         public static System.Boolean HasRewardsShown(ISharedPreferences prefs)
@@ -203,6 +191,18 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("hasRewardsDetailShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasWhatsNewShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasWhatsNewShown", false);
+        }
+
+        public static void DoWhatsNewShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasWhatsNewShown", true);
             editor.Apply();
         }
 

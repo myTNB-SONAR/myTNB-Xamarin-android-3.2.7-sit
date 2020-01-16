@@ -7,7 +7,6 @@ using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB.SitecoreCM.Models;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;
