@@ -254,6 +254,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnGetUserWhatsNewList();
 
             void OnResumeUpdateWhatsNewUnRead();
+
+            void OnStartWhatsNewThread();
+
+            void UpdateWhatsNewRead(string itemID, bool flag);
         }
 	}
 }

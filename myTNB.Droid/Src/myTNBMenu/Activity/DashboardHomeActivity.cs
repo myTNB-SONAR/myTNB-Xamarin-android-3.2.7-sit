@@ -40,6 +40,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using static Android.Views.View;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -634,7 +635,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     .Build().Show();
                             }
                         }
-                        // Whats New TODO: Check schema for Whats New
+                        else if (urlSchemaData.Contains("whatsnew") && !string.IsNullOrEmpty(urlSchemaPath))
+                        {
+                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(whatsNewID))
+                            {
+                                whatsNewID = "{" + whatsNewID + "}";
+
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
+
+                                this.mPresenter.OnStartWhatsNewThread();
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("whatsnew"))
+                        {
+                            urlSchemaData = "whatsnew";
+                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(whatsNewID))
+                            {
+                                whatsNewID = "{" + whatsNewID + "}";
+
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
+
+                                this.mPresenter.OnStartWhatsNewThread();
+                            }
+                        }
                     }
                 }
             }
@@ -1784,7 +1813,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             // Whats New TODO: Check schema for Whats New
-            /*try
+            try
             {
                 if (urlSchemaCalled)
                 {
@@ -1792,32 +1821,33 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     urlSchemaCalled = false;
                     if (urlSchemaData != null)
                     {
-                        if (urlSchemaData.Contains("rewards"))
+                        if (urlSchemaData.Contains("whatsnew"))
                         {
-                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                            if (!string.IsNullOrEmpty(rewardID))
+                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(whatsNewID))
                             {
-                                rewardID = "{" + rewardID + "}";
+                                whatsNewID = "{" + whatsNewID + "}";
 
-                                RewardsEntity wtManager = new RewardsEntity();
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
 
-                                RewardsEntity item = wtManager.GetItem(rewardID);
+                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
 
                                 if (item != null)
                                 {
                                     if (!item.Read)
                                     {
-                                        this.mPresenter.UpdateRewardRead(item.ID, true);
+                                        this.mPresenter.UpdateWhatsNewRead(item.ID, true);
                                     }
 
-                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
-                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
-                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                    Intent activity = new Intent(this, typeof(WhatsNewDetailActivity));
+                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsNewID);
+                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
                                     StartActivity(activity);
                                 }
                                 else
                                 {
-                                    IsRootTutorialShown = true;
+                                    // Whats New TODO: What's New No Available Tooltip
+                                    /*IsRootTutorialShown = true;
                                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
@@ -1827,7 +1857,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                         IsRootTutorialShown = false;
                                         OnSelectReward();
                                     })
-                                    .Build().Show();
+                                    .Build().Show();*/
                                 }
                             }
                         }
@@ -1837,7 +1867,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }*/
+            }
         }
 
         public void ReloadProfileMenu()

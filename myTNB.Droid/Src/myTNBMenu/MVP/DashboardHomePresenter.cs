@@ -479,6 +479,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
+        public void OnStartWhatsNewThread()
+        {
+            if (!WhatsNewMenuUtils.GetWhatsNewLoading())
+            {
+                this.mView.ShowProgressDialog();
+                WhatsNewMenuUtils.OnSetWhatsNewLoading(true);
+                new SiteCoreWhatsNewAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+            }
+            else
+            {
+                this.mView.ShowProgressDialog();
+            }
+        }
+
         public void OnResetRewardPromotionThread()
         {
             try
@@ -1699,6 +1713,75 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void UpdateWhatsNewRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            WhatsNewEntity wtManager = new WhatsNewEntity();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+
+            _ = OnUpdateWhatsNew(itemID);
+        }
+
+        private async Task OnUpdateWhatsNew(string itemID)
+        {
+            // Whats New TODO: Update Whats New API Caliing
+            /*try
+            {
+                // Update api calling
+                RewardsEntity wtManager = new RewardsEntity();
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
+                    Redeemed = currentItem.IsUsed,
+                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }*/
         }
 
     }
