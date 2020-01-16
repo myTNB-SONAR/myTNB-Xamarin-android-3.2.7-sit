@@ -563,27 +563,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             }
         }
 
+        // Whats New TODO: Multilingual tutorial for What's New
         public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             List<NewAppModel> newList = new List<NewAppModel>();
-
-            newList.Add(new NewAppModel()
-            {
-                ContentShowPosition = ContentType.BottomLeft,
-                ContentTitle = Utility.GetLocalizedLabel("Rewards", "tutorialRewardTitle"), //"Pick a reward, check it out!",
-                ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialRewardDesc"), //"Tap on a reward to find out more, or<br/>tap on the heart to save it for later.",
-                ItemCount = 0,
-                DisplayMode = "",
-                IsButtonShow = false
-            });
 
             if (this.mView.CheckTabVisibility())
             {
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.BottomLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("Rewards", "tutorialCategoryTitle"), // "Rewards for you.",
-                    ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialCategoryDesc"), // "Switch between the categories to<br/>explore the different rewards.",
+                    ContentTitle = "Get caught up with TNB news.", // "Get caught up with TNB news.",
+                    ContentMessage = "Switch between the categories to view announcements and/or promotions relevant to you.", // "Switch between the categories to view announcements and/or promotions relevant to you.",
                     ItemCount = 0,
                     DisplayMode = "",
                     IsButtonShow = false
@@ -592,9 +583,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
             newList.Add(new NewAppModel()
             {
-                ContentShowPosition = ContentType.BottomRight,
-                ContentTitle = Utility.GetLocalizedLabel("Rewards", "tutorialSaveTitle"), // "Your favourites all in one place.",
-                ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialSaveDesc"), // "Here you’ll find all the rewards<br/>you’ve saved for later use.",
+                ContentShowPosition = ContentType.BottomLeft,
+                ContentTitle = "Check out what’s new and exciting.", // "Check out what’s new and exciting.",
+                ContentMessage = "Tap on the promotion or announcement for more details.", // "Tap on the promotion or announcement for more details.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true

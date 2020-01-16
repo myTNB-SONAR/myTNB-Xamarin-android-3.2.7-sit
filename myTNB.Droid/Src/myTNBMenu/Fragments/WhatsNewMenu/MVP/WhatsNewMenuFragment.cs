@@ -219,9 +219,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         Handler h = new Handler();
                         Action myAction = () =>
                         {
-                            // Whats New TODO: What's New Tutorial
                             NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                            //OnShowWhatsNewMenuTutorial();
+                            OnShowWhatsNewMenuTutorial();
                         };
                         h.PostDelayed(myAction, 50);
                     }
@@ -469,9 +468,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                                 Handler h = new Handler();
                                 Action myAction = () =>
                                 {
-                                    // Whats New TODO: What's New Tutorial
                                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                                    //OnShowWhatsNewMenuTutorial();
+                                    OnShowWhatsNewMenuTutorial();
                                 };
                                 h.PostDelayed(myAction, 50);
                             }
@@ -689,10 +687,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             }
         }
 
-        // Whats New TODO: What's New Tutorial
-        /*public void OnShowWhatsNewMenuTutorial()
+        public void OnShowWhatsNewMenuTutorial()
         {
-            if (!UserSessions.HasWhatsNewsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+            if (!UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
             {
                 Handler h = new Handler();
                 Action myAction = () =>
@@ -701,7 +698,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 };
                 h.PostDelayed(myAction, 100);
             }
-        }*/
+        }
 
         public void StopScrolling()
         {
