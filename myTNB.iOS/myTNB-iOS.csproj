@@ -1770,6 +1770,7 @@
     <Folder Include="Profile Updates\Update Password\" />
     <Folder Include="Profile Updates\Manage Cards\" />
     <Folder Include="Profile Updates\Manage Accounts\" />
+    <Folder Include="Profile Updates\Update Mobile Number\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
