@@ -80,6 +80,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                 {
                     WhatsNewEntity item = new WhatsNewEntity();
 
+                    item.ID = obj.ID;
                     item.CategoryID = obj.CategoryID;
                     item.CategoryName = obj.CategoryName;
                     item.Title = obj.Title;

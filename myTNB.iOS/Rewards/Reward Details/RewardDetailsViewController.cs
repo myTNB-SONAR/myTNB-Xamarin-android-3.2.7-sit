@@ -168,7 +168,7 @@ namespace myTNB
                     string linkUrl = baseService.GetDomain(env) + "/rewards/redirect.aspx/rid=" + RewardModel.ID;
 
                     var deeplinkUrl = string.Empty;
-                    var components = RewardsServices.GenerateLongURL(linkUrl);
+                    var components = CommonServices.GenerateLongURL(linkUrl);
                     components.GetShortenUrl((shortUrl, warnings, error) =>
                     {
                         if (error == null)
@@ -234,69 +234,81 @@ namespace myTNB
 
             if (RewardModel.Image.IsValid())
             {
-                try
+                NSData imgData = RewardsCache.GetImage(RewardModel.ID);
+                if (imgData != null)
                 {
-                    UIView imgLoadingView = new UIView(imageContainer.Bounds)
+                    imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                    using (var image = UIImage.LoadFromData(imgData))
                     {
-                        BackgroundColor = UIColor.Clear
-                    };
-                    _scrollView.AddSubview(imgLoadingView);
-
-                    UIView viewImage = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
-                    {
-                        BackgroundColor = MyTNBColor.PaleGreyThree
-                    };
-
-                    CustomShimmerView shimmeringView = new CustomShimmerView();
-                    UIView viewShimmerParent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
-                    { BackgroundColor = UIColor.Clear };
-                    UIView viewShimmerContent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
-                    { BackgroundColor = UIColor.Clear };
-                    viewShimmerParent.AddSubview(shimmeringView);
-                    shimmeringView.ContentView = viewShimmerContent;
-                    shimmeringView.Shimmering = true;
-                    shimmeringView.SetValues();
-
-                    viewShimmerContent.AddSubview(viewImage);
-                    imgLoadingView.AddSubview(viewShimmerParent);
-                    NSUrl url = new NSUrl(RewardModel.Image);
-                    NSUrlSession session = NSUrlSession
-                        .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-                    NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
-                    {
-                        if (error == null && response != null && data != null)
-                        {
-                            InvokeOnMainThread(() =>
-                            {
-                                imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
-                                using (var image = UIImage.LoadFromData(data))
-                                {
-                                    imageView.Image = image;
-                                }
-                                if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
-                                imgLoadingView.RemoveFromSuperview();
-                            });
-                        }
-                        else
-                        {
-                            InvokeOnMainThread(() =>
-                            {
-                                imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
-                                if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
-                                imgLoadingView.RemoveFromSuperview();
-                            });
-                        }
-                    });
-                    dataTask.Resume();
+                        imageView.Image = image;
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debug.WriteLine("Image load Error: " + e.Message);
-                    InvokeOnMainThread(() =>
+                    try
                     {
-                        imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
-                        if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
-                    });
+                        UIView imgLoadingView = new UIView(imageContainer.Bounds)
+                        {
+                            BackgroundColor = UIColor.Clear
+                        };
+                        _scrollView.AddSubview(imgLoadingView);
+
+                        UIView viewImage = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                        {
+                            BackgroundColor = MyTNBColor.PaleGreyThree
+                        };
+
+                        CustomShimmerView shimmeringView = new CustomShimmerView();
+                        UIView viewShimmerParent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                        { BackgroundColor = UIColor.Clear };
+                        UIView viewShimmerContent = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
+                        { BackgroundColor = UIColor.Clear };
+                        viewShimmerParent.AddSubview(shimmeringView);
+                        shimmeringView.ContentView = viewShimmerContent;
+                        shimmeringView.Shimmering = true;
+                        shimmeringView.SetValues();
+
+                        viewShimmerContent.AddSubview(viewImage);
+                        imgLoadingView.AddSubview(viewShimmerParent);
+                        NSUrl url = new NSUrl(RewardModel.Image);
+                        NSUrlSession session = NSUrlSession
+                            .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                        NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+                        {
+                            if (error == null && response != null && data != null)
+                            {
+                                InvokeOnMainThread(() =>
+                                {
+                                    imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                    using (var image = UIImage.LoadFromData(data))
+                                    {
+                                        imageView.Image = image;
+                                    }
+                                    if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
+                                    imgLoadingView.RemoveFromSuperview();
+                                });
+                            }
+                            else
+                            {
+                                InvokeOnMainThread(() =>
+                                {
+                                    imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                                    if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
+                                    imgLoadingView.RemoveFromSuperview();
+                                });
+                            }
+                        });
+                        dataTask.Resume();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Image load Error: " + e.Message);
+                        InvokeOnMainThread(() =>
+                        {
+                            imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                            if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
+                        });
+                    }
                 }
             }
             else

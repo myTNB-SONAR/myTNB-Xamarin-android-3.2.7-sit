@@ -905,6 +905,7 @@
     "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out."
   },
   "WhatsNew": {
-    "title": "What's New"
+    "title": "What's New",
+    "emptyDesc": "Looks like there's nothing new... Yet! Check back soon."
   }
 }

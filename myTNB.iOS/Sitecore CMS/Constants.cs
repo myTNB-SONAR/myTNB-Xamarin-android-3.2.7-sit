@@ -152,13 +152,13 @@
 
                 public struct WhatsNew
                 {
-                    public const string Category = "RewardCategory";
+                    public const string Category = "WhatsNewCategory";
                     public const string Title = "Title";
                     public const string TitleOnListing = "TitleOnListing";
                     public const string Description = "Description";
                     public const string Image = "Image";
-                    public const string StartDateTime = "StartDateTime";
-                    public const string EndDateTime = "EndDateTime";
+                    public const string StartDate = "StartDate";
+                    public const string EndDate = "EndDate";
                 }
             }
 
@@ -181,8 +181,8 @@
                 public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV4";
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
 #else
-                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
+				public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+				public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
 #endif
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 

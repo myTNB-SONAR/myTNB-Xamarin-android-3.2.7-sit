@@ -139,23 +139,23 @@ namespace myTNB
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
-            if (item != null && item.Tag == 2)
-            {
-                NotifCenterUtility.PostNotificationName("WhatsNewWillChange", new NSObject());
-                InvokeInBackground(async () =>
-                {
-                    await SitecoreServices.Instance.LoadPromotions();
-                    NotifCenterUtility.PostNotificationName("WhatsNewDidChange", new NSObject());
-                    Debug.WriteLine("LoadPromotions Done home tab bar");
-                    InvokeOnMainThread(() =>
-                    {
-                        if (!ShowNewIndicator("2"))
-                        {
-                            UpdatePromotionTabBarIcon();
-                        }
-                    });
-                });
-            }
+            //if (item != null && item.Tag == 2)
+            //{
+            //    NotifCenterUtility.PostNotificationName("WhatsNewWillChange", new NSObject());
+            //    InvokeInBackground(async () =>
+            //    {
+            //        await SitecoreServices.Instance.LoadPromotions();
+            //        NotifCenterUtility.PostNotificationName("WhatsNewDidChange", new NSObject());
+            //        Debug.WriteLine("LoadPromotions Done home tab bar");
+            //        InvokeOnMainThread(() =>
+            //        {
+            //            if (!ShowNewIndicator("2"))
+            //            {
+            //                UpdatePromotionTabBarIcon();
+            //            }
+            //        });
+            //    });
+            //}
 
             InvokeOnMainThread(() =>
             {
@@ -340,7 +340,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        SitecoreServices.Instance.LoadPromotions().ContinueWith(task =>
+                        SitecoreServices.Instance.LoadWhatsNew().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
@@ -357,11 +357,11 @@ namespace myTNB
             TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 
-            PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModel> promotionList = wsManager.GetAllItemsV2();
-            if (!ShowNewIndicator("2") && promotionList != null && promotionList.Count > 0)
+            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+            List<WhatsNewModel> whatsNewList = whatsNewEntity.GetAllItems();
+            if (!ShowNewIndicator("2") && whatsNewList != null && whatsNewList.Count > 0)
             {
-                int unreadCount = promotionList.Where(x => !x.IsRead).Count();
+                int unreadCount = whatsNewList.Where(x => !x.IsRead).Count();
                 TabBar.Items[2].BadgeColor = _badgeColor;
                 TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount.ToString() : null;
                 TabBar.Items[2].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);

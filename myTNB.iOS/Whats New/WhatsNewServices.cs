@@ -1,0 +1,49 @@
+﻿using System;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
+
+namespace myTNB
+{
+    public static class WhatsNewServices
+    {
+        public static bool FilterExpiredWhatsNew()
+        {
+            bool isExpired = false;
+            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+            var list = whatsNewEntity.GetAllItems();
+            if (list != null && list.Count > 0)
+            {
+                foreach (var whatsNew in list)
+                {
+                    if (WhatsNewHasExpired(whatsNew))
+                    {
+                        isExpired = true;
+                        whatsNewEntity.DeleteItem(whatsNew.ID);
+                    }
+                }
+            }
+            return isExpired;
+        }
+
+        public static bool WhatsNewHasExpired(WhatsNewModel whatsNew)
+        {
+            bool res = true;
+            if (whatsNew != null && whatsNew.ID.IsValid())
+            {
+                if (whatsNew.EndDate.IsValid())
+                {
+                    var rewardEndDate = DateHelper.GetDateWithoutSeparator(whatsNew.EndDate);
+                    if (rewardEndDate != default(DateTime))
+                    {
+                        DateTime now = DateTime.Now.Date;
+                        if (now < rewardEndDate)
+                        {
+                            res = false;
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+    }
+}

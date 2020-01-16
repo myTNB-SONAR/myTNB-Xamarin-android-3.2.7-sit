@@ -1,4 +1,6 @@
-﻿namespace myTNB
+﻿using System.Collections.Generic;
+
+namespace myTNB
 {
     public static class Constants
     {
@@ -174,5 +176,13 @@
 
         //Strings
         public static string Value_99 = "99+";
+
+        //Dictionary
+        public static Dictionary<string, string> DynamicLinkDomain = new Dictionary<string, string>
+        {
+            { "DEV", "mytnbappsit.page.link"}
+            , { "SIT", "mytnbappsit.page.link" }
+            , { "PROD", "mytnbapp.page.link"}
+        };
     }
 }

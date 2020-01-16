@@ -1769,8 +1769,10 @@
     <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
     <Folder Include="Maintenance\" />
     <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\" />
-    <Folder Include="WhatsNew\" />
+    <Folder Include="Whats New\" />
     <Folder Include="Sitecore CMS\Model\Whats New\" />
+    <Folder Include="Whats New\Whats New Details\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1812,6 +1814,7 @@
     <InterfaceDefinition Include="Rewards\Reward Details\RewardDetailsViewController.xib" />
     <InterfaceDefinition Include="Rewards\Saved Rewards\SavedRewardsViewController.xib" />
     <InterfaceDefinition Include="Maintenance\MaintenanceViewController.xib" />
+    <InterfaceDefinition Include="Whats New\Whats New Details\WhatsNewDetailsViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2391,7 +2394,6 @@
     <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Constants.cs" />
     <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
     <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
@@ -2634,14 +2636,24 @@
     <Compile Include="Maintenance\MaintenanceViewController.designer.cs">
       <DependentUpon>MaintenanceViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="WhatsNew\WhatsNewConstants.cs" />
-    <Compile Include="WhatsNew\WhatsNewViewController.cs" />
-    <Compile Include="WhatsNew\WhatsNewViewController.designer.cs">
+    <Compile Include="Whats New\WhatsNewConstants.cs" />
+    <Compile Include="Whats New\WhatsNewViewController.cs" />
+    <Compile Include="Whats New\WhatsNewViewController.designer.cs">
       <DependentUpon>WhatsNewViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Sitecore CMS\Model\Whats New\WhatsNewResponseModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\WhatsNewEntity.cs" />
     <Compile Include="Sitecore CMS\Service\WhatsNewService.cs" />
+    <Compile Include="Session Cache\WhatsNewCache.cs" />
+    <Compile Include="Whats New\WhatsNewServices.cs" />
+    <Compile Include="Whats New\WhatsNewCell.cs" />
+    <Compile Include="Whats New\WhatsNewDataSource.cs" />
+    <Compile Include="Whats New\Whats New Details\WhatsNewDetailsViewController.cs" />
+    <Compile Include="Whats New\Whats New Details\WhatsNewDetailsViewController.designer.cs">
+      <DependentUpon>WhatsNewDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonServices.cs" />
+    <Compile Include="Common\Constants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

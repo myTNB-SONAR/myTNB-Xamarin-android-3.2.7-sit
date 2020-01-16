@@ -123,6 +123,9 @@ namespace myTNB.DataManager
         //Promotion
         public bool IsPromotionFirstLoad = false;
 
+        //WhatsNew
+        public bool IsWhatsNewLoading = false;
+
         //Rewards
         public bool IsRewardsLoading = false;
         public bool IsFromRewardsDeeplink;
@@ -242,6 +245,7 @@ namespace myTNB.DataManager
             isLocationSearch = false;
 
             IsPromotionFirstLoad = false;
+            IsWhatsNewLoading = false;
             IsRewardsLoading = false;
             IsFromRewardsDeeplink = false;
 
