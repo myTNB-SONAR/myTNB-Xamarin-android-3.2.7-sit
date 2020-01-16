@@ -72,9 +72,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         [BindView(Resource.Id.baseView)]
         FrameLayout rootView;
 
-        [BindView(Resource.Id.text_load_more)]
-        TextView textLoadMore;
-
         [BindView(Resource.Id.txtTotalPayableCurrency)]
         TextView textTotalPayableCurrency;
 
@@ -198,6 +195,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency, textTotalPayableTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnPayBill);
 
+                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
                 btnPayBill.Text = GetLabelByLanguage("paySingle");
                 textTotalPayableTitle.Text = GetLabelCommonByLanguage("totalAmount");
 
@@ -238,36 +238,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     NavigateToPayment();
                 };
 
-                string html = "<html><u>" + GetLabelByLanguage("loadMore") + "</u></html>";
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                {
-                    textLoadMore.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    textLoadMore.TextFormatted = Html.FromHtml(html);
-                }
-                TextViewUtils.SetMuseoSans300Typeface(textLoadMore);
-                textLoadMore.Visibility = ViewStates.Gone;
-                textLoadMore.Click += delegate
-                {
-                    if (IsNetworkAvailable())
-                    {
-                        INDEX_COUNTER = INDEX_COUNTER + TOTAL_NUMBER_OF_ITEMS_TO_GET;
-                        List<string> custAccounts = new List<string>();
-                        List<CustomerBillingAccount> list = GetMoreCustomerAccounts(INDEX_COUNTER);
-                        foreach (CustomerBillingAccount item in list)
-                        {
-                            custAccounts.Add(item.AccNum);
-                        }
-                        this.userActionsListener.GetAccountsCharges(custAccounts, null);
-                        NO_OF_ITARATION = NO_OF_ITARATION - 1;
-                    }
-                    else
-                    {
-                        ShowError(this.GetString(Resource.String.dashboard_chartview_no_internet_content));
-                    }
-                };
+                adapter.SetShowMoreAction(OnShowMore);
 
                 btnPayBill.RequestFocus();
                 InputMethodManager inputMethodManager = this.GetSystemService(Context.InputMethodService) as InputMethodManager;
@@ -283,6 +254,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
+                adapter.EnableShowMoreButton(!(NO_OF_ITARATION <= 0 && REMAINING_ITEM_COUNT == 0));
                 adapter.AddAccounts(accountList);
                 UpdateTotal(adapter.GetSelectedAccounts());
             }
@@ -595,14 +567,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             accountList.Clear();
             accountList.AddRange(updatedAccountList);
             ValidateAccountListAdapter();
-            if (NO_OF_ITARATION <= 0 && REMAINING_ITEM_COUNT == 0)
-            {
-                textLoadMore.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                textLoadMore.Visibility = ViewStates.Visible;
-            }
         }
 
         public void GetAccountDueAmountResult(MPAccountDueResponse response)
@@ -652,18 +616,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
                             }
                             ValidateAccountListAdapter();
-                            if (NO_OF_ITARATION == 0)
-                            {
-                                textLoadMore.Visibility = ViewStates.Gone;
-                            }
-                            else
-                            {
-                                textLoadMore.Visibility = ViewStates.Visible;
-                            }
-                        }
-                        else
-                        {
-                            textLoadMore.Visibility = ViewStates.Gone;
                         }
                     }
                 }
@@ -706,18 +658,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             accountList.Add(account);
                         }
                         ValidateAccountListAdapter();
-                        if (NO_OF_ITARATION == 0)
-                        {
-                            textLoadMore.Visibility = ViewStates.Gone;
-                        }
-                        else
-                        {
-                            textLoadMore.Visibility = ViewStates.Visible;
-                        }
-                    }
-                    else
-                    {
-                        textLoadMore.Visibility = ViewStates.Gone;
                     }
                 }
             }
@@ -885,6 +825,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void OnShowMore()
+        {
+            if (IsNetworkAvailable())
+            {
+                INDEX_COUNTER = INDEX_COUNTER + TOTAL_NUMBER_OF_ITEMS_TO_GET;
+                List<string> custAccounts = new List<string>();
+                List<CustomerBillingAccount> list = GetMoreCustomerAccounts(INDEX_COUNTER);
+                foreach (CustomerBillingAccount item in list)
+                {
+                    custAccounts.Add(item.AccNum);
+                }
+                this.userActionsListener.GetAccountsCharges(custAccounts, null);
+                NO_OF_ITARATION = NO_OF_ITARATION - 1;
+            }
+            else
+            {
+                ShowError(this.GetString(Resource.String.dashboard_chartview_no_internet_content));
+            }
         }
     }
 }
