@@ -305,6 +305,9 @@ namespace myTNB_Android.Src.Utils
         public const string REWARD_DETAIL_TITLE_KEY = ".rewardDetailTitle";
         public const string REWARD_DETAIL_ITEM_KEY = ".rewardDetailItem";
 
+        public const string WHATS_NEW_DETAIL_TITLE_KEY = ".whatsNewDetailTitle";
+        public const string WHATS_NEW_DETAIL_ITEM_KEY = ".whatsNewDetailItem";
+
         public const string IN_APP_LINK = ".inAppLink";
         public const string IN_APP_TITLE = ".inAppTitle";
 

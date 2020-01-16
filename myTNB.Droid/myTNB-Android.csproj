@@ -4279,6 +4279,9 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailActivity.cs" />
+    <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailContract.cs" />
+    <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

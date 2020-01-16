@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Android.Preferences;
 using System;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
@@ -129,11 +130,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
                 WhatsNewMenuUtils.OnSetRefreshAll(true);
 
-                // Whats New TODO: TO GO TO WHATSNEWDETAIL
-                /*Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
-                activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, mWhatsNewList[e].ID);
-                activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
-                StartActivity(activity);*/
+                Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
+                activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, mWhatsNewList[e].ID);
+                activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                StartActivity(activity);
             }
         }
 
