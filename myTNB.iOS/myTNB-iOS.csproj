@@ -1370,11 +1370,6 @@
     <Folder Include="Enums\" />
     <Folder Include="Home\More\My Account\" />
     <Folder Include="Assets.xcassets\Call.imageset\" />
-    <Folder Include="Home\More\My Account\Update Mobile Number\" />
-    <Folder Include="Home\More\My Account\Update Password\" />
-    <Folder Include="Home\More\My Account\Manage Cards\" />
-    <Folder Include="Home\More\My Account\Manage Accounts\" />
-    <Folder Include="Home\More\My Account\Manage Accounts\Update Nickname\" />
     <Folder Include="Assets.xcassets\Logout-Logo.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Rating-Active.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\" />
@@ -1771,6 +1766,10 @@
     <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
     <Folder Include="Maintenance\" />
     <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\" />
+    <Folder Include="Profile Updates\" />
+    <Folder Include="Profile Updates\Update Password\" />
+    <Folder Include="Profile Updates\Manage Cards\" />
+    <Folder Include="Profile Updates\Manage Accounts\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1788,11 +1787,6 @@
     <InterfaceDefinition Include="Home\More\Push Notification Settings\NotificationSettings.storyboard" />
     <InterfaceDefinition Include="Payment\Make Payment\MakePayment.storyboard" />
     <InterfaceDefinition Include="Home\More\My Account\MyAccount.storyboard" />
-    <InterfaceDefinition Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumber.storyboard" />
-    <InterfaceDefinition Include="Home\More\My Account\Update Password\UpdatePassword.storyboard" />
-    <InterfaceDefinition Include="Home\More\My Account\Manage Cards\ManageCards.storyboard" />
-    <InterfaceDefinition Include="Home\More\My Account\Manage Accounts\ManageAccounts.storyboard" />
-    <InterfaceDefinition Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNickname.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\FindUs.storyboard" />
     <InterfaceDefinition Include="Home\Bill\Receipt\Receipt.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\Select Store Type\SelectStoreType.storyboard" />
@@ -1813,6 +1807,10 @@
     <InterfaceDefinition Include="Rewards\Reward Details\RewardDetailsViewController.xib" />
     <InterfaceDefinition Include="Rewards\Saved Rewards\SavedRewardsViewController.xib" />
     <InterfaceDefinition Include="Maintenance\MaintenanceViewController.xib" />
+    <InterfaceDefinition Include="Profile Updates\Update Password\UpdatePassword.storyboard" />
+    <InterfaceDefinition Include="Profile Updates\Manage Cards\ManageCards.storyboard" />
+    <InterfaceDefinition Include="Profile Updates\Manage Accounts\ManageAccounts.storyboard" />
+    <InterfaceDefinition Include="Profile Updates\Manage Accounts\Update Nickname\UpdateNickname.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2017,45 +2015,7 @@
       <DependentUpon>SupplyAccountViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\More\My Account\MyAccountDataSource.cs" />
-    <Compile Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumberViewController.cs" />
-    <Compile Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumberViewController.designer.cs">
-      <DependentUpon>UpdateMobileNumberViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Accounts\ManageAccountsViewController.cs" />
-    <Compile Include="Home\More\My Account\Manage Accounts\ManageAccountsViewController.designer.cs">
-      <DependentUpon>ManageAccountsViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Accounts\DetailsViewCell.cs" />
-    <Compile Include="Home\More\My Account\Manage Accounts\DetailsViewCell.designer.cs">
-      <DependentUpon>DetailsViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Accounts\UpdateViewCell.cs" />
-    <Compile Include="Home\More\My Account\Manage Accounts\UpdateViewCell.designer.cs">
-      <DependentUpon>UpdateViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Accounts\RemoveViewCell.cs" />
-    <Compile Include="Home\More\My Account\Manage Accounts\RemoveViewCell.designer.cs">
-      <DependentUpon>RemoveViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Accounts\ManageAccountsDataSource.cs" />
-    <Compile Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNicknameViewController.cs" />
-    <Compile Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNicknameViewController.designer.cs">
-      <DependentUpon>UpdateNicknameViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewController.cs" />
-    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewController.designer.cs">
-      <DependentUpon>ManageCardViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewCell.cs" />
-    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewCell.designer.cs">
-      <DependentUpon>ManageCardViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Manage Cards\ManageCardsDataSource.cs" />
     <Compile Include="Data Manager\ServiceCall.cs" />
-    <Compile Include="Home\More\My Account\Update Password\UpdatePasswordViewController.cs" />
-    <Compile Include="Home\More\My Account\Update Password\UpdatePasswordViewController.designer.cs">
-      <DependentUpon>UpdatePasswordViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\More\Find Us\FindUsViewController.cs" />
     <Compile Include="Home\More\Find Us\FindUsViewController.designer.cs">
       <DependentUpon>FindUsViewController.cs</DependentUpon>
@@ -2653,6 +2613,40 @@
     <Compile Include="Maintenance\MaintenanceViewController.cs" />
     <Compile Include="Maintenance\MaintenanceViewController.designer.cs">
       <DependentUpon>MaintenanceViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Update Password\UpdatePasswordViewController.cs" />
+    <Compile Include="Profile Updates\Update Password\UpdatePasswordViewController.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Update Password\UpdatePasswordViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Cards\ManageCardsDataSource.cs" />
+    <Compile Include="Profile Updates\Manage Cards\ManageCardViewCell.cs" />
+    <Compile Include="Profile Updates\Manage Cards\ManageCardViewCell.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Manage Cards\ManageCardViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Cards\ManageCardViewController.cs" />
+    <Compile Include="Profile Updates\Manage Cards\ManageCardViewController.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Manage Cards\ManageCardViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Accounts\DetailsViewCell.cs" />
+    <Compile Include="Profile Updates\Manage Accounts\DetailsViewCell.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Manage Accounts\DetailsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Accounts\ManageAccountsDataSource.cs" />
+    <Compile Include="Profile Updates\Manage Accounts\ManageAccountsViewController.cs" />
+    <Compile Include="Profile Updates\Manage Accounts\ManageAccountsViewController.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Manage Accounts\ManageAccountsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Accounts\RemoveViewCell.cs" />
+    <Compile Include="Profile Updates\Manage Accounts\RemoveViewCell.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Manage Accounts\RemoveViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Accounts\Update Nickname\UpdateNicknameViewController.cs" />
+    <Compile Include="Profile Updates\Manage Accounts\Update Nickname\UpdateNicknameViewController.designer.cs">
+      <DependentUpon>..\..\..\Home\More\My Account\Manage Accounts\Update Nickname\UpdateNicknameViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Manage Accounts\UpdateViewCell.cs" />
+    <Compile Include="Profile Updates\Manage Accounts\UpdateViewCell.designer.cs">
+      <DependentUpon>..\..\Home\More\My Account\Manage Accounts\UpdateViewCell.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
