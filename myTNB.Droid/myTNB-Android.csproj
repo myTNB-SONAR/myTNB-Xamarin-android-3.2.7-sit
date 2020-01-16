@@ -4275,6 +4275,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewDetailLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4667,6 +4671,8 @@
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\" />
+    <Folder Include="Src\WhatsNewDetail\" />
+    <Folder Include="Src\WhatsNewDetail\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
