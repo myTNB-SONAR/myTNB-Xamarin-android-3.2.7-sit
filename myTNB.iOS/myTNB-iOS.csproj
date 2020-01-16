@@ -1812,6 +1812,7 @@
     <InterfaceDefinition Include="Profile Updates\Manage Cards\ManageCards.storyboard" />
     <InterfaceDefinition Include="Profile Updates\Manage Accounts\ManageAccounts.storyboard" />
     <InterfaceDefinition Include="Profile Updates\Manage Accounts\Update Nickname\UpdateNickname.storyboard" />
+    <InterfaceDefinition Include="Profile Updates\Update Mobile Number\UpdateMobileNoViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2648,6 +2649,10 @@
     <Compile Include="Profile Updates\Manage Accounts\UpdateViewCell.cs" />
     <Compile Include="Profile Updates\Manage Accounts\UpdateViewCell.designer.cs">
       <DependentUpon>..\..\Home\More\My Account\Manage Accounts\UpdateViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Update Mobile Number\UpdateMobileNoViewController.cs" />
+    <Compile Include="Profile Updates\Update Mobile Number\UpdateMobileNoViewController.designer.cs">
+      <DependentUpon>UpdateMobileNoViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

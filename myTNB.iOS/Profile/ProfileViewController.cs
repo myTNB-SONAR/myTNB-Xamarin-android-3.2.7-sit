@@ -641,8 +641,10 @@ namespace myTNB
 
         private void UpdateMobileNumber()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
-            /*UpdateMobileNumberViewController viewController =
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController();
+
+            /*UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
+            UpdateMobileNumberViewController viewController =
                 storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
             UINavigationController navController = new UINavigationController(viewController)
             {
@@ -650,6 +652,11 @@ namespace myTNB
             };
             PresentViewController(navController, true, null);
             */
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
+            PresentViewController(navController, true, null);
         }
 
         private void UpdatePassword()

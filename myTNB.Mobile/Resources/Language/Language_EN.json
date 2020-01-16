@@ -813,8 +813,11 @@
     "invalidPoleNumber": "Invalid pole number",
     "noAccessTitle": "Location Access is not allowed",
     "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
-    "goToSettings": "Go to Settings"
+    "goToSettings": "Go to Settings",
     //Not Supported by MS Translation End
+    "selectOptions": "Select Options",
+    "takePhoto": "Take Photo",
+    "chooseFromLibrary": "Choose from Library"
   },
   "FeedbackDetails": {
     "feedbackID": "Feedback ID",
