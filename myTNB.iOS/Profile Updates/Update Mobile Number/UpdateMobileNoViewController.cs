@@ -12,6 +12,7 @@ namespace myTNB
     public class UpdateMobileNoViewController : CustomUIViewController
     {
         public bool IsFromLogin { set; private get; }
+        public bool IsUpdate { set; private get; }
         public bool WillHideBackButton { set; private get; }
 
         private CustomUIButtonV2 _btnNext;
@@ -72,10 +73,10 @@ namespace myTNB
             }
             _mobileNumberComponent = new MobileNumberComponent(_cardView, lblInfo.Frame.GetMaxY())
             {
-                OnDone = OnDone
+                OnDone = OnDone,
+                CountryCode = CountryCode
             };
             UIView viewMobileNumber = _mobileNumberComponent.GetUI();
-            _mobileNumberComponent.CountryCode = "+60";
             AddInfoView();
             _cardView.AddSubviews(new UIView[] { viewMobileNumber, _infoView });
             View.AddSubview(_cardView);
@@ -97,7 +98,7 @@ namespace myTNB
             _btnNext.AddGestureRecognizer(new UITapGestureRecognizer(async () =>
             {
                 ActivityIndicator.Show();
-                _mobileNo = "";// txtFieldMobileNo.Text.Replace(" ", string.Empty);
+                _mobileNo = _mobileNumberComponent.MobileNumber;
                 BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMS(_mobileNo);
 
                 if (ServiceCall.ValidateBaseResponse(response))
@@ -139,12 +140,15 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "What is it for?"
+                Text = GetI18NValue(MyAccountConstants.I18N_InfoTitle)
             };
             _infoView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert("This is just for the purpose of registering on the myTNB app."
-                    , "Updating your phone number here will not change the existing phone number registered with TNB."
+                string title = GetI18NValue(MyAccountConstants.I18N_InfoPopupTitle
+                    + (IsFromLogin ? MyAccountConstants.Suffix_Verify : MyAccountConstants.Suffix_Update));
+                string message = GetI18NValue(MyAccountConstants.I18N_InfoPopupMessage
+                   + (IsFromLogin ? MyAccountConstants.Suffix_Verify : MyAccountConstants.Suffix_Update));
+                DisplayCustomAlert(title, message
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , false);
             }));
@@ -166,6 +170,16 @@ namespace myTNB
                     _btnNext.Enabled = value;
                     _btnNext.BackgroundColor = value ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
                 }
+            }
+        }
+
+        private string CountryCode
+        {
+            get
+            {
+                string defaultCountry = "ml";
+                CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
+                return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
             }
         }
     }

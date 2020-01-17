@@ -641,7 +641,10 @@ namespace myTNB
 
         private void UpdateMobileNumber()
         {
-            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController();
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController()
+            {
+                IsUpdate = true
+            };
             UINavigationController navController = new UINavigationController(viewController)
             {
                 ModalPresentationStyle = UIModalPresentationStyle.FullScreen

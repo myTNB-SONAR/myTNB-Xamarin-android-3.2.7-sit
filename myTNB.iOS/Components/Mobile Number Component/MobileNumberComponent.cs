@@ -58,7 +58,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Center,
-                Text = "+60"
+                Text = _countryCode
             };
             UIImageView imgDropDown = new UIImageView(new CGRect(lblCountryCode.Frame.GetMaxX() + GetScaledWidth(1), 0
                 , GetScaledWidth(24), GetScaledWidth(24)))
@@ -98,7 +98,7 @@ namespace myTNB
             _txtFieldMobileNo.ShouldChangeCharacters += (txtField, range, replacementString) =>
             {
                 int totalLength = _countryCode.Length + (int)range.Location;
-                return !(totalLength == 15);
+                return !(totalLength == 16);
             };
             _mobileNoView.AddSubviews(new UIView[] { viewLine, _txtFieldMobileNo });
         }
@@ -142,7 +142,7 @@ namespace myTNB
         {
             set
             {
-                _countryCode = value.Replace("+", string.Empty);
+                _countryCode = value;
             }
             get { return _countryCode; }
         }

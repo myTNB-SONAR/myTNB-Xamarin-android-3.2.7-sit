@@ -685,7 +685,12 @@
     "verifyDeviceTitle": "Verify Device",
     "verifyDeviceMessage": "Please take a moment to verify your device.",
     "details": "For security purposes, please enter your mobile number to verify this device.",
-    "updateMobileNumberTitle": "Update Mobile Number"
+    "updateMobileNumberTitle": "Update Mobile Number",
+    "infoTitle": "What is it for?",
+    "infoPopupTitle_Verify": "This is just for the purpose of registering on the myTNB app.",
+    "infoPopupTitle_Update": "This is just for the purpose of registering on the myTNB app.",
+    "infoPopupMessage_Verify": "Updating your phone number here will not change the existing phone number registered with TNB.",
+    "infoPopupMessage_Update": "Updating your phone number here will not change the existing phone number registered with TNB."
   },
   "VerifyPin": {
     "title": "Verify Mobile Number",
