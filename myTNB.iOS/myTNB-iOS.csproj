@@ -1260,6 +1260,12 @@
     <ImageAsset Include="Assets.xcassets\Loading.imageset\icButtonResendLoadedGreen%403x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%402x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Flags-PH.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Flags-ML.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Flags-ML.imageset\my%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Flags-ML.imageset\my%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Flags-PH.imageset\ph%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Flags-PH.imageset\ph%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1773,6 +1779,8 @@
     <Folder Include="Profile Updates\Update Mobile Number\" />
     <Folder Include="Components\Mobile Number Component\" />
     <Folder Include="Sitecore CMS\Model\Country\" />
+    <Folder Include="Assets.xcassets\Flags-PH.imageset\" />
+    <Folder Include="Assets.xcassets\Flags-ML.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

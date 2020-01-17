@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using SpriteKit;
 using UIKit;
 
 namespace myTNB
@@ -14,6 +15,7 @@ namespace myTNB
         private TextFieldHelper _textFieldHelper;
         private nfloat _yLocation;
         private string _countryCode = string.Empty;
+        private const string Flags = "Flags-{0}";
 
         public Action OnDone { set; private get; }
 
@@ -47,11 +49,14 @@ namespace myTNB
             _countryCodeView = new CustomUIView(new CGRect(0, _lblTitle.Frame.GetMaxY() + GetScaledHeight(1)
                 , GetScaledWidth(82), GetScaledHeight(25)));
             UIView viewLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _countryCodeView.Frame.Width, GetScaledHeight(1)));
+
+            string imgString = string.Format(Flags, CountryShortCode.ToUpper());
+
             UIImageView imgFlag = new UIImageView(new CGRect(GetScaledWidth(6), GetScaledWidth(6)
                 , GetScaledWidth(17), GetScaledWidth(12)))
             {
                 BackgroundColor = UIColor.White,
-                Image = UIImage.FromBundle("")
+                Image = UIImage.FromBundle(imgString)
             };
             UILabel lblCountryCode = new UILabel(new CGRect(imgFlag.Frame.GetMaxX() + GetScaledWidth(4), 0, GetScaledWidth(31), GetScaledHeight(24)))
             {
@@ -146,5 +151,7 @@ namespace myTNB
             }
             get { return _countryCode; }
         }
+
+        public string CountryShortCode { set; get; } = "ML";
     }
 }
