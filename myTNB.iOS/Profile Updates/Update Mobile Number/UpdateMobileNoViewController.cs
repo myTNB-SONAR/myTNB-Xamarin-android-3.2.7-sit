@@ -75,10 +75,7 @@ namespace myTNB
                 OnDone = OnDone
             };
             UIView viewMobileNumber = _mobileNumberComponent.GetUI();
-            string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-               ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
-               : string.Empty;
-            _mobileNumberComponent.MobileNumber = _textFieldHelper.FormatMobileNo(mobileNo);
+            _mobileNumberComponent.CountryCode = "+60";
             AddInfoView();
             _cardView.AddSubviews(new UIView[] { viewMobileNumber, _infoView });
             View.AddSubview(_cardView);

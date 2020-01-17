@@ -13,6 +13,7 @@ namespace myTNB
         private UITextField _txtFieldMobileNo;
         private TextFieldHelper _textFieldHelper;
         private nfloat _yLocation;
+        private string _countryCode = string.Empty;
 
         public Action OnDone { set; private get; }
 
@@ -94,6 +95,11 @@ namespace myTNB
                 }
                 return true;
             };
+            _txtFieldMobileNo.ShouldChangeCharacters += (txtField, range, replacementString) =>
+            {
+                int totalLength = _countryCode.Length + (int)range.Location;
+                return !(totalLength == 15);
+            };
             _mobileNoView.AddSubviews(new UIView[] { viewLine, _txtFieldMobileNo });
         }
 
@@ -130,6 +136,15 @@ namespace myTNB
                 }
                 return string.Empty;
             }
+        }
+
+        public string CountryCode
+        {
+            set
+            {
+                _countryCode = value.Replace("+", string.Empty);
+            }
+            get { return _countryCode; }
         }
     }
 }
