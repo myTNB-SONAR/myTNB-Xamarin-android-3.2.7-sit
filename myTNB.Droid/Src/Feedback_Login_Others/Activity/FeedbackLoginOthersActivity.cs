@@ -309,26 +309,26 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         private AlertDialog _ChooseDialog;
         private void Adapter_AddClickEvent(object sender, int e)
         {
-            string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
-                               GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
-                               GetString(Resource.String.bill_related_feedback_selection_cancel)};
+            string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
+                            Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                            Utility.GetLocalizedCommonLabel("cancel")};
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
+                .SetTitle(Utility.GetLocalizedLabel("FeedbackForm", "selectOptions"));
             builder.SetItems(items, (lsender, args) =>
             {
 
 
 
-                if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
+                if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")))
                 {
                     this.userActionsListener.OnAttachPhotoCamera();
                 }
-                else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
+                else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
                 {
                     this.userActionsListener.OnAttachPhotoGallery();
                 }
-                else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
+                else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
                 {
                     _ChooseDialog.Dismiss();
                 }
