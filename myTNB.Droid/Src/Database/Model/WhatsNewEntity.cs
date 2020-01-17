@@ -46,9 +46,6 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CTA")]
         public string CTA { set; get; }
 
-        [Column("Language")]
-        public string Language { set; get; }
-
         public void CreateTable()
         {
 
@@ -96,7 +93,6 @@ namespace myTNB_Android.Src.Database.Model
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
                     item.CTA = obj.CTA;
-                    item.Language = obj.Language;
                     InsertItem(item);
                 }
             }
@@ -384,26 +380,6 @@ namespace myTNB_Android.Src.Database.Model
             {
                 Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
             }
-        }
-
-        public string GetContentLanguage()
-        {
-            string lang = "";
-
-            try
-            {
-                List<WhatsNewEntity> itemList = GetAllItems();
-                if (itemList != null && itemList.Count > 0)
-                {
-                    lang = itemList[0].Language;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
-            }
-
-            return lang;
         }
 
         private void UpdateReadDateTimeItem(string itemID, string datetime)

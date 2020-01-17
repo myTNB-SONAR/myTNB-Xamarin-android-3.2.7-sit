@@ -1238,40 +1238,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     List<WhatsNewEntity> checkList = mWhatsNewEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
                     if (checkList != null && checkList.Count > 0)
                     {
-                        // Whats New TODO: Implement Read Check from API
-                        /*for (int j = 0; j < checkList.Count; j++)
-                        {
-                            if (userList != null && userList.Count > 0)
-                            {
-                                string checkID = checkList[j].ID;
-                                checkID = checkID.Replace("{", "");
-                                checkID = checkID.Replace("}", "");
-
-                                AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkID));
-                                if (found != null)
-                                {
-                                    if (found.Read)
-                                    {
-                                        string readDate = !string.IsNullOrEmpty(found.ReadDate) ? found.ReadDate : "";
-                                        if (readDate.Contains("Date("))
-                                        {
-                                            int startIndex = readDate.LastIndexOf("(") + 1;
-                                            int lastIndex = readDate.LastIndexOf(")");
-                                            int lengthOfId = (lastIndex - startIndex);
-                                            if (lengthOfId < readDate.Length)
-                                            {
-                                                string timeStamp = readDate.Substring(startIndex, lengthOfId);
-                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                                                readDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
-                                            }
-                                        }
-                                        mWhatsNewEntity.UpdateReadItem(checkList[j].ID, found.Read, readDate);
-                                    }
-                                }
-                            }
-                        }*/
-
                         mDisplayCategoryList.Add(new WhatsNewCategoryModel()
                         {
                             ID = mCategoryList[i].ID,
@@ -1727,61 +1693,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             }
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
-
-            _ = OnUpdateWhatsNew(itemID);
-        }
-
-        private async Task OnUpdateWhatsNew(string itemID)
-        {
-            // Whats New TODO: Update Whats New API Caliing
-            /*try
-            {
-                // Update api calling
-                RewardsEntity wtManager = new RewardsEntity();
-                RewardsEntity currentItem = wtManager.GetItem(itemID);
-
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = UserEntity.GetActive().DeviceId,
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                string rewardId = currentItem.ID;
-                rewardId = rewardId.Replace("{", "");
-                rewardId = rewardId.Replace("}", "");
-
-                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
-                {
-                    Email = UserEntity.GetActive().Email,
-                    RewardId = rewardId,
-                    Read = currentItem.Read,
-                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
-                    Favourite = currentItem.IsSaved,
-                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
-                    Redeemed = currentItem.IsUsed,
-                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
-                };
-
-                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
-                {
-                    usrInf = currentUsrInf,
-                    reward = currentReward
-                };
-
-                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
-
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }*/
         }
 
     }

@@ -564,7 +564,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                             List<WhatsNewEntity> subItems = wtItemManager.GetAllItems();
                             if (subItems != null && subItems.Count > 0)
                             {
-                                _ = this.presenter.OnGetUserWhatsNewList();
+                                this.presenter.CheckWhatsNewsCache();
                             }
                             else
                             {
@@ -574,17 +574,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                     }
                     else
                     {
-                        _ = this.presenter.OnGetUserWhatsNewList();
+                        this.presenter.CheckWhatsNewsCache();
                     }
                 }
                 else
                 {
-                    _ = this.presenter.OnGetUserWhatsNewList();
+                    this.presenter.CheckWhatsNewsCache();
                 }
             }
             catch (System.Exception e)
             {
-                _ = this.presenter.OnGetUserWhatsNewList();
+                this.presenter.CheckWhatsNewsCache();
                 Utility.LoggingNonFatalError(e);
             }
         }

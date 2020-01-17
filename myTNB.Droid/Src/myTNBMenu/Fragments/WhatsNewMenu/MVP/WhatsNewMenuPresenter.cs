@@ -33,15 +33,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
         private WhatsNewEntity mWhatsNewEntity;
 
-        private RewardServiceImpl mApi;
-
-        private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
-
         public WhatsNewMenuPresenter(WhatsNewMenuContract.IWhatsNewMenuView view, ISharedPreferences pref)
         {
             this.mView = view;
             this.mPref = pref;
-            this.mApi = new RewardServiceImpl();
         }
 
 
@@ -232,76 +227,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
-        public async Task OnGetUserWhatsNewList()
-        {
-            // Whats New TODO: Check Whats New Api
-            /*try
-            {
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = UserEntity.GetActive().DeviceId,
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                GetUserRewardsRequest request = new GetUserRewardsRequest()
-                {
-                    usrInf = currentUsrInf
-                };
-
-                GetUserRewardsResponse response = await this.mApi.GetUserRewards(request, new System.Threading.CancellationTokenSource().Token);
-
-                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
-                {
-                    if (response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
-                    {
-                        userList = response.Data.Data.CurrentList;
-                    }
-                    else
-                    {
-                        userList = new List<AddUpdateRewardModel>();
-                    }
-                    CheckWhatsNewsCache();
-                }
-                else
-                {
-                    userList = new List<AddUpdateRewardModel>();
-
-                    string messageText = "";
-                    string buttonText = "";
-
-                    if (response != null && response.Data != null)
-                    {
-                        if (!string.IsNullOrEmpty(response.Data.RefreshMessage))
-                        {
-                            messageText = response.Data.RefreshMessage;
-                        }
-
-                        if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
-                        {
-                            buttonText = response.Data.RefreshBtnText;
-                        }
-                    }
-
-                    this.mView.SetRefreshView(buttonText, messageText);
-                }
-            }
-            catch (Exception e)
-            {
-                userList = new List<AddUpdateRewardModel>();
-                this.mView.SetRefreshView(null, null);
-                Utility.LoggingNonFatalError(e);
-            }*/
-
-            CheckWhatsNewsCache();
-        }
-
         public void CheckWhatsNewsCache()
         {
             if (mWhatsNewCategoryEntity == null)
@@ -325,82 +250,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                     List<WhatsNewEntity> checkList = mWhatsNewEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
                     if (checkList != null && checkList.Count > 0)
                     {
-                        for (int j = 0; j < checkList.Count; j++)
-                        {
-                            // Whats New TODO: Whats New comparison
-                            /*if (userList != null && userList.Count > 0)
-                            {
-                                string checkID = checkList[j].ID;
-                                checkID = checkID.Replace("{", "");
-                                checkID = checkID.Replace("}", "");
-
-                                AddUpdateRewardModel found = userList.Find(x => x.RewardId.Contains(checkID));
-                                if (found != null)
-                                {
-                                    if (found.Read)
-                                    {
-                                        string readDate = !string.IsNullOrEmpty(found.ReadDate) ? found.ReadDate : "";
-                                        if (readDate.Contains("Date("))
-                                        {
-                                            int startIndex = readDate.LastIndexOf("(") + 1;
-                                            int lastIndex = readDate.LastIndexOf(")");
-                                            int lengthOfId = (lastIndex - startIndex);
-                                            if (lengthOfId < readDate.Length)
-                                            {
-                                                string timeStamp = readDate.Substring(startIndex, lengthOfId);
-                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                                                readDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
-                                            }
-                                        }
-                                        mWhatsNewEntity.UpdateReadItem(checkList[j].ID, found.Read, readDate);
-                                    }
-
-                                    if (found.Favourite)
-                                    {
-                                        string favDate = !string.IsNullOrEmpty(found.FavUpdatedDate) ? found.FavUpdatedDate : "";
-                                        if (favDate.Contains("Date("))
-                                        {
-                                            int startIndex = favDate.LastIndexOf("(") + 1;
-                                            int lastIndex = favDate.LastIndexOf(")");
-                                            int lengthOfId = (lastIndex - startIndex);
-                                            if (lengthOfId < favDate.Length)
-                                            {
-                                                string timeStamp = favDate.Substring(startIndex, lengthOfId);
-                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                                                favDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
-                                            }
-                                        }
-                                        mWhatsNewEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, favDate);
-                                    }
-                                    else
-                                    {
-                                        mWhatsNewEntity.UpdateIsSavedItem(checkList[j].ID, found.Favourite, "");
-                                    }
-
-                                    if (found.Redeemed)
-                                    {
-                                        string redeemDate = !string.IsNullOrEmpty(found.RedeemedDate) ? found.RedeemedDate : "";
-                                        if (redeemDate.Contains("Date("))
-                                        {
-                                            int startIndex = redeemDate.LastIndexOf("(") + 1;
-                                            int lastIndex = redeemDate.LastIndexOf(")");
-                                            int lengthOfId = (lastIndex - startIndex);
-                                            if (lengthOfId < redeemDate.Length)
-                                            {
-                                                string timeStamp = redeemDate.Substring(startIndex, lengthOfId);
-                                                DateTime dateTimeParse = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(timeStamp)).DateTime;
-                                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                                                redeemDate = dateTimeParse.ToString(@"M/d/yyyy h:m:s tt", currCult);
-                                            }
-                                        }
-                                        mWhatsNewEntity.UpdateIsUsedItem(checkList[j].ID, found.Redeemed, redeemDate);
-                                    }
-                                }
-                            }*/
-                        }
-
                         mDisplayCategoryList.Add(new WhatsNewCategoryModel()
                         {
                             ID = mCategoryList[i].ID,
@@ -555,7 +404,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                     mWhatsNewEntity.CreateTable();
                 }
 
-                _ = OnGetUserWhatsNewList();
+                CheckWhatsNewsCache();
             }
             catch (Exception e)
             {

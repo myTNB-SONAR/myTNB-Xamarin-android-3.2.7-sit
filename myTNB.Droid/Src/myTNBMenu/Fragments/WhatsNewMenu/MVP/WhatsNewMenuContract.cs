@@ -39,8 +39,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
             void CheckWhatsNewsCache();
 
-            Task OnGetUserWhatsNewList();
-
             List<NewAppModel> OnGeneraNewAppTutorialList();
 
             Task OnRecheckWhatsNewsStatus();

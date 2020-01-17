@@ -1742,7 +1742,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             try
             {
-                if (urlSchemaCalled)
+                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
                 {
                     HideProgressDialog();
                     urlSchemaCalled = false;
@@ -1815,7 +1815,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             // Whats New TODO: Check schema for Whats New
             try
             {
-                if (urlSchemaCalled)
+                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
                 {
                     HideProgressDialog();
                     urlSchemaCalled = false;

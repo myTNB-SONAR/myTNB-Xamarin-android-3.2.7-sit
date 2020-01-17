@@ -887,7 +887,6 @@
     <Compile Include="Src\SitecoreCMS\Service\TimestampService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\WalkthroughScreenService.cs" />
     <Compile Include="Src\SitecoreCMS\SiteCoreConfig.cs" />
-    <Compile Include="Src\SmartMeterLearnMore\Activity\SmartMeterLearnMoreActivity.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardDetails.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardResponse.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBordRequest.cs" />
@@ -4526,7 +4525,6 @@
     <AndroidResource Include="Resources\layout\PaymentSuccessExperienceRatingView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SmartMeterLearnMoreView.axml" />
     <AndroidResource Include="Resources\layout\ForgotPasswordEnterCodeView.axml" />
     <AndroidResource Include="Resources\layout\FeedbackDetailsFullscreenImageView.axml">
       <SubType>Designer</SubType>
