@@ -46,6 +46,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CTA")]
         public string CTA { set; get; }
 
+        [Column("Language")]
+        public string Language { set; get; }
+
         public void CreateTable()
         {
 
@@ -93,6 +96,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
                     item.CTA = obj.CTA;
+                    item.Language = obj.Language;
                     InsertItem(item);
                 }
             }
@@ -191,54 +195,6 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntity");
-
-                if (existingRecord != null && existingRecord.Count > 0)
-                {
-                    List<WhatsNewEntity> matchList = existingRecord.FindAll(x =>
-                    {
-                        int startResult = -1;
-                        int endResult = 1;
-                        try
-                        {
-                            if (!string.IsNullOrEmpty(x.StartDate) && !string.IsNullOrEmpty(x.EndDate))
-                            {
-                                DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                DateTime stopDateTime = DateTime.ParseExact(x.EndDate, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                DateTime nowDateTime = DateTime.Now;
-                                startResult = DateTime.Compare(nowDateTime, startDateTime);
-                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
-                            }
-                        }
-                        catch (Exception ne)
-                        {
-                            Utility.LoggingNonFatalError(ne);
-                        }
-                        return (startResult >= 0 && endResult <= 0);
-                    });
-
-                    if (matchList != null && matchList.Count > 0)
-                    {
-                        return matchList;
-                    }
-
-                    return new List<WhatsNewEntity>();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
-            }
-            return new List<WhatsNewEntity>();
-        }
-
-        public List<WhatsNewEntity> GetActiveSavedItems()
-        {
-            try
-            {
-                var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntity WHERE IsSaved = ?", true);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -428,6 +384,26 @@ namespace myTNB_Android.Src.Database.Model
             {
                 Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
             }
+        }
+
+        public string GetContentLanguage()
+        {
+            string lang = "";
+
+            try
+            {
+                List<WhatsNewEntity> itemList = GetAllItems();
+                if (itemList != null && itemList.Count > 0)
+                {
+                    lang = itemList[0].Language;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+
+            return lang;
         }
 
         private void UpdateReadDateTimeItem(string itemID, string datetime)

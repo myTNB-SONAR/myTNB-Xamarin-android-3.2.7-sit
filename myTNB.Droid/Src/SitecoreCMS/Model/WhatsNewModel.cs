@@ -38,7 +38,8 @@ namespace myTNB.SitecoreCMS.Model
 		public string CTA { set; get; }
 		public bool Read { set; get; }
 		public string ReadDateTime { set; get; }
-	}
+        public string Language { set; get; }
+    }
 
 	public class WhatsNewTimeStamp
     {

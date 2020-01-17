@@ -172,6 +172,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             {
                 try
                 {
+                    // Whats New TODO: to add language handling
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     WhatsNewResponseModel responseModel = getItemsService.GetWhatsNewItems();

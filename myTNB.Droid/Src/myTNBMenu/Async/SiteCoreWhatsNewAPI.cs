@@ -138,95 +138,116 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 							{
 								try
 								{
+                                    // Whats New TODO: to add language handling
                                     string newDensity = DPUtils.GetDeviceDensity(Application.Context);
                                     GetItemsService getWhatsNewItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                                     WhatsNewResponseModel responseModel = getWhatsNewItemsService.GetWhatsNewItems();
-                                    if (responseModel.Status.Equals("Success"))
+                                    if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                                     {
-                                        WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
-                                        WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
-
-                                        if (responseModel != null && responseModel.Data != null && responseModel.Data.Count > 0)
+                                        if (responseModel.Status.Equals("Success"))
                                         {
-                                            List<WhatsNewCategoryModel> ToStoredList = new List<WhatsNewCategoryModel>();
-                                            List<WhatsNewModel> ToStoredWhatsNewList = new List<WhatsNewModel>();
+                                            WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                                            WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
 
-                                            for (int i = 0; i < responseModel.Data.Count; i++)
+                                            if (responseModel != null && responseModel.Data != null && responseModel.Data.Count > 0)
                                             {
-                                                if (responseModel.Data[i].WhatsNewList != null && responseModel.Data[i].WhatsNewList.Count > 0)
+                                                List<WhatsNewCategoryModel> ToStoredList = new List<WhatsNewCategoryModel>();
+                                                List<WhatsNewModel> ToStoredWhatsNewList = new List<WhatsNewModel>();
+
+                                                for (int i = 0; i < responseModel.Data.Count; i++)
                                                 {
-                                                    List<WhatsNewModel> localList = new List<WhatsNewModel>();
-                                                    for (int j = 0; j < responseModel.Data[i].WhatsNewList.Count; j++)
+                                                    if (responseModel.Data[i].WhatsNewList != null && responseModel.Data[i].WhatsNewList.Count > 0)
                                                     {
-                                                        int startResult = -1;
-                                                        int endResult = 1;
-                                                        try
+                                                        List<WhatsNewModel> localList = new List<WhatsNewModel>();
+                                                        for (int j = 0; j < responseModel.Data[i].WhatsNewList.Count; j++)
                                                         {
-                                                            if (!string.IsNullOrEmpty(responseModel.Data[i].WhatsNewList[j].StartDate) && !string.IsNullOrEmpty(responseModel.Data[i].WhatsNewList[j].EndDate))
+                                                            int startResult = -1;
+                                                            int endResult = 1;
+                                                            try
                                                             {
-                                                                DateTime startDateTime = DateTime.ParseExact(responseModel.Data[i].WhatsNewList[j].StartDate, "yyyyMMddTHHmmss",
-                                                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                                                DateTime stopDateTime = DateTime.ParseExact(responseModel.Data[i].WhatsNewList[j].EndDate, "yyyyMMddTHHmmss",
+                                                                if (!string.IsNullOrEmpty(responseModel.Data[i].WhatsNewList[j].StartDate) && !string.IsNullOrEmpty(responseModel.Data[i].WhatsNewList[j].EndDate))
+                                                                {
+                                                                    DateTime startDateTime = DateTime.ParseExact(responseModel.Data[i].WhatsNewList[j].StartDate, "yyyyMMddTHHmmss",
                                                                     CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                                                DateTime nowDateTime = DateTime.Now;
-                                                                startResult = DateTime.Compare(nowDateTime, startDateTime);
-                                                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                                                                    DateTime stopDateTime = DateTime.ParseExact(responseModel.Data[i].WhatsNewList[j].EndDate, "yyyyMMddTHHmmss",
+                                                                        CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                                                    DateTime nowDateTime = DateTime.Now;
+                                                                    startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                                                    endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                                                                }
                                                             }
-                                                        }
-                                                        catch (Exception ne)
-                                                        {
-                                                            Utility.LoggingNonFatalError(ne);
-                                                        }
-                                                        if (startResult >= 0 && endResult <= 0)
-                                                        {
-                                                            WhatsNewModel mModel = responseModel.Data[i].WhatsNewList[j];
-
-                                                            WhatsNewEntity searchItem = mWhatsNewEntity.GetItem(mModel.ID);
-                                                            if (searchItem != null)
+                                                            catch (Exception ne)
                                                             {
-                                                                mModel.Read = searchItem.Read;
-                                                                mModel.ReadDateTime = searchItem.ReadDateTime;
+                                                                Utility.LoggingNonFatalError(ne);
                                                             }
-                                                            localList.Add(mModel);
+                                                            if (startResult >= 0 && endResult <= 0)
+                                                            {
+                                                                WhatsNewModel mModel = responseModel.Data[i].WhatsNewList[j];
+
+                                                                WhatsNewEntity searchItem = mWhatsNewEntity.GetItem(mModel.ID);
+                                                                if (searchItem != null)
+                                                                {
+                                                                    mModel.Read = searchItem.Read;
+                                                                    mModel.ReadDateTime = searchItem.ReadDateTime;
+                                                                }
+                                                                localList.Add(mModel);
+                                                            }
                                                         }
-                                                    }
 
-                                                    if (localList.Count > 0)
-                                                    {
-                                                        ToStoredList.Add(new WhatsNewCategoryModel()
+                                                        if (localList.Count > 0)
                                                         {
-                                                            ID = responseModel.Data[i].ID,
-                                                            CategoryName = responseModel.Data[i].CategoryName
-                                                        });
+                                                            ToStoredList.Add(new WhatsNewCategoryModel()
+                                                            {
+                                                                ID = responseModel.Data[i].ID,
+                                                                CategoryName = responseModel.Data[i].CategoryName
+                                                            });
 
-                                                        ToStoredWhatsNewList.AddRange(localList);
+                                                            ToStoredWhatsNewList.AddRange(localList);
+                                                        }
                                                     }
                                                 }
+
+                                                mWhatsNewCategoryEntity.DeleteTable();
+                                                mWhatsNewEntity.DeleteTable();
+                                                mWhatsNewCategoryEntity.CreateTable();
+                                                mWhatsNewEntity.CreateTable();
+
+                                                if (ToStoredList.Count > 0)
+                                                {
+                                                    mWhatsNewCategoryEntity.InsertListOfItems(ToStoredList);
+                                                    mWhatsNewEntity.InsertListOfItems(ToStoredWhatsNewList);
+                                                }
+
+                                                if (mHomeView != null)
+                                                {
+                                                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
+                                                }
                                             }
-
-                                            mWhatsNewCategoryEntity.DeleteTable();
-                                            mWhatsNewEntity.DeleteTable();
-                                            mWhatsNewCategoryEntity.CreateTable();
-                                            mWhatsNewEntity.CreateTable();
-
-                                            if (ToStoredList.Count > 0)
+                                            else
                                             {
-                                                mWhatsNewCategoryEntity.InsertListOfItems(ToStoredList);
-                                                mWhatsNewEntity.InsertListOfItems(ToStoredWhatsNewList);
-                                            }
+                                                mWhatsNewCategoryEntity.DeleteTable();
+                                                mWhatsNewEntity.DeleteTable();
+                                                mWhatsNewCategoryEntity.CreateTable();
+                                                mWhatsNewEntity.CreateTable();
 
-                                            if (mHomeView != null)
-                                            {
-                                                mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
+                                                if (mHomeView != null)
+                                                {
+                                                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
+                                                }
                                             }
                                         }
                                         else
                                         {
-                                            mWhatsNewCategoryEntity.DeleteTable();
-                                            mWhatsNewEntity.DeleteTable();
-                                            mWhatsNewCategoryEntity.CreateTable();
-                                            mWhatsNewEntity.CreateTable();
-
+                                            WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
+                                            wtManager2.DeleteTable();
+                                            wtManager2.CreateTable();
+                                            WhatsNewCategoryEntity mWhatsNewCategoryEntity2 = new WhatsNewCategoryEntity();
+                                            WhatsNewEntity mWhatsNewEntity2 = new WhatsNewEntity();
+                                            mWhatsNewCategoryEntity2.DeleteTable();
+                                            mWhatsNewEntity2.DeleteTable();
+                                            mWhatsNewCategoryEntity2.CreateTable();
+                                            mWhatsNewEntity2.CreateTable();
+                                            isSitecoreApiFailed = true;
                                             if (mHomeView != null)
                                             {
                                                 mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
@@ -238,12 +259,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                                         wtManager2.DeleteTable();
                                         wtManager2.CreateTable();
-                                        WhatsNewCategoryEntity mWhatsNewCategoryEntity2 = new WhatsNewCategoryEntity();
-                                        WhatsNewEntity mWhatsNewEntity2 = new WhatsNewEntity();
-                                        mWhatsNewCategoryEntity2.DeleteTable();
-                                        mWhatsNewEntity2.DeleteTable();
-                                        mWhatsNewCategoryEntity2.CreateTable();
-                                        mWhatsNewEntity2.CreateTable();
                                         isSitecoreApiFailed = true;
                                         if (mHomeView != null)
                                         {
