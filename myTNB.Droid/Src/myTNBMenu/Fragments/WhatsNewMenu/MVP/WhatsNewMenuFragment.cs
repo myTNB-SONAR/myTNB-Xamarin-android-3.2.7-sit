@@ -602,6 +602,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         whatsNewEmptyImg.RequestLayout();
 
                         WhatsNewMenuUtils.OnSetTouchDisable(false);
+
+                        try
+                        {
+                            if (WhatsNewEntity.HasUnread())
+                            {
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                            }
+                            else
+                            {
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                     }
                     catch (System.Exception e)
                     {

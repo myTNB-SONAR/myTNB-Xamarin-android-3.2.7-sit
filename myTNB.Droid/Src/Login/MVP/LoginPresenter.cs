@@ -126,6 +126,23 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 else
                 {
+                    try
+                    {
+                        WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                        mWhatsNewParentEntity.DeleteTable();
+                        mWhatsNewParentEntity.CreateTable();
+                        WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                        mWhatsNewEntity.DeleteTable();
+                        mWhatsNewEntity.CreateTable();
+                        WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                        mWhatsNewCategoryEntity.DeleteTable();
+                        mWhatsNewCategoryEntity.CreateTable();
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
                     ///<summary>
                     ///THIS TO SAVE UPDATE THAT LOGOUT HAS BEEN DONE - WHILE UPGRADING VERSION 6 TO 7
                     ///</summary>
@@ -223,23 +240,6 @@ namespace myTNB_Android.Src.Login.MVP
                         catch (Exception ex)
                         {
                             Utility.LoggingNonFatalError(ex);
-                        }
-
-                        try
-                        {
-                            WhatsNewParentEntity wtManager = new WhatsNewParentEntity();
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                            WhatsNewEntity wtManager2 = new WhatsNewEntity();
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                            WhatsNewCategoryEntity wtManager3 = new WhatsNewCategoryEntity();
-                            wtManager3.DeleteTable();
-                            wtManager3.CreateTable();
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
                         }
 
                         try
