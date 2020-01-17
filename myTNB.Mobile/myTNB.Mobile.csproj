@@ -21,6 +21,7 @@
     <Folder Include="Resources\FAQ\" />
     <Folder Include="Resources\Notification\" />
     <Folder Include="Resources\Language\" />
+    <Folder Include="Resources\Country\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -54,6 +55,7 @@
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_10053.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
+    <EmbeddedResource Include="Resources\Country\CountryList.json" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -82,5 +84,6 @@
     <None Remove="Resources\Notification\NotificationInfo_1099.json" />
     <None Remove="Resources\Language\Language_MS.json" />
     <None Remove="Resources\Language\Language_EN.json" />
+    <None Remove="Resources\Country\CountryList.json" />
   </ItemGroup>
 </Project>

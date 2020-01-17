@@ -1,0 +1,19 @@
+﻿{
+  "CountryList": [
+    {
+      "CountryCode": "IN",
+      "CountryName": "India",
+      "CountryISDCode": "+91"
+    },
+    {
+      "CountryCode": "ML",
+      "CountryName": "Malaysia",
+      "CountryISDCode": "+60"
+    },
+    {
+      "CountryCode": "PH",
+      "CountryName": "Philippines",
+      "CountryISDCode": "+63"
+    }
+  ]
+}
