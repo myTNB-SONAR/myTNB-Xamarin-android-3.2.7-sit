@@ -45,6 +45,14 @@ namespace myTNB
             }
         }
 
+        public string CountryString
+        {
+            get
+            {
+                return CountryJSON;
+            }
+        }
+
         public List<CountryModel> GetCountryList()
         {
             Countries Countries = (string.IsNullOrEmpty(CountryJSON) || string.IsNullOrWhiteSpace(CountryJSON)) ? new Countries()

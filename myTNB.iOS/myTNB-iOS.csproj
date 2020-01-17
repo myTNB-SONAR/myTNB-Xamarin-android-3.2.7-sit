@@ -1772,6 +1772,7 @@
     <Folder Include="Profile Updates\Manage Accounts\" />
     <Folder Include="Profile Updates\Update Mobile Number\" />
     <Folder Include="Components\Mobile Number Component\" />
+    <Folder Include="Sitecore CMS\Model\Country\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2656,6 +2657,9 @@
       <DependentUpon>UpdateMobileNoViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Mobile Number Component\MobileNumberComponent.cs" />
+    <Compile Include="Sitecore CMS\Model\Country\CountryModel.cs" />
+    <Compile Include="Sitecore CMS\Service\CountryService.cs" />
+    <Compile Include="Profile Updates\Update Mobile Number\CountryUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

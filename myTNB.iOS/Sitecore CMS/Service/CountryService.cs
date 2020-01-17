@@ -11,10 +11,10 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 
 namespace myTNB.SitecoreCMS.Service
 {
-    internal class LanguageService
+    internal class CountryService
     {
         private string _os, _imgSize, _websiteURL, _language;
-        internal LanguageService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        internal CountryService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
             _imgSize = imageSize;
@@ -22,10 +22,10 @@ namespace myTNB.SitecoreCMS.Service
             _language = language;
         }
 
-        internal List<LanguageModel> GetItems()
+        internal List<CountryDataModel> GetItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Language
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Country
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToChildrenItems(item);
@@ -36,7 +36,7 @@ namespace myTNB.SitecoreCMS.Service
         internal HelpTimeStamp GetTimeStamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Language
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Country
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
@@ -44,9 +44,9 @@ namespace myTNB.SitecoreCMS.Service
             return itemList;
         }
 
-        private async Task<IEnumerable<LanguageModel>> ParseToChildrenItems(ScItemsResponse itemsResponse)
+        private async Task<IEnumerable<CountryDataModel>> ParseToChildrenItems(ScItemsResponse itemsResponse)
         {
-            List<LanguageModel> list = new List<LanguageModel>();
+            List<CountryDataModel> list = new List<CountryDataModel>();
             try
             {
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
@@ -57,16 +57,16 @@ namespace myTNB.SitecoreCMS.Service
                         continue;
                     }
 
-                    list.Add(new LanguageModel
+                    list.Add(new CountryDataModel
                     {
-                        LanguageFile = item.GetFileURLFromFieldName(Constants.Sitecore.Fields.Language.LanguageFile, _websiteURL),
+                        CountryFile = item.GetFileURLFromFieldName(Constants.Sitecore.Fields.Country.CountryFile, _websiteURL),
                         ID = item.Id
                     });
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in LanguageService/GetChildren: " + e.Message);
+                Debug.WriteLine("Exception in CountryService/GetChildren: " + e.Message);
             }
             return list;
         }
@@ -98,7 +98,7 @@ namespace myTNB.SitecoreCMS.Service
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in LanguageService/GenerateTimestamp: " + e.Message);
+                Debug.WriteLine("Exception in CountryService/GenerateTimestamp: " + e.Message);
             }
             return new HelpTimeStamp();
         }
