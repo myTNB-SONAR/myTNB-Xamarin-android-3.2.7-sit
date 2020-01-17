@@ -16,7 +16,9 @@ namespace myTNB
 
         private CustomUIButtonV2 _btnNext;
         private CustomUIView _infoView;
+        private UIView _cardView;
         private MobileNumberComponent _mobileNumberComponent;
+        private TextFieldHelper _textFieldHelper;
         private string _mobileNo;
 
         public override void ViewDidLoad()
@@ -24,13 +26,14 @@ namespace myTNB
             PageName = MyAccountConstants.Pagename_UpdateMobileNumber;
             base.ViewDidLoad();
             View.BackgroundColor = MyTNBColor.LightGrayBG;
+            _textFieldHelper = new TextFieldHelper();
             SetNavigationBar();
             SetViews();
             SetCTA();
 
             if (IsFromLogin)
             {
-                DisplayToast(GetI18NValue(MyAccountConstants.I18N_VerifyDeviceMessage));
+                DisplayToast(GetI18NValue(MyAccountConstants.I18N_VerifyDeviceMessage), true);
             }
         }
 
@@ -49,15 +52,36 @@ namespace myTNB
 
         private void SetViews()
         {
-            UIView cardView = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(123))) { BackgroundColor = UIColor.White };
-            _mobileNumberComponent = new MobileNumberComponent(cardView)
+            _cardView = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(123))) { BackgroundColor = UIColor.White };
+            UILabel lblInfo = new UILabel();
+            if (IsFromLogin)
+            {
+                lblInfo = new UILabel(new CGRect(BaseMargin, BaseMargin, BaseMarginedWidth, 60))
+                {
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Lines = 0,
+                    Font = TNBFont.MuseoSans_14_300,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Text = GetI18NValue(MyAccountConstants.I18N_Details)
+                };
+                nfloat newHeight = lblInfo.GetLabelHeight(1000);
+                lblInfo.Frame = new CGRect(lblInfo.Frame.Location, new CGSize(lblInfo.Frame.Width, newHeight));
+                _cardView.AddSubview(lblInfo);
+                _cardView.Frame = new CGRect(_cardView.Frame.Location
+                    , new CGSize(_cardView.Frame.Width, _cardView.Frame.Height + lblInfo.Frame.GetMaxY()));
+            }
+            _mobileNumberComponent = new MobileNumberComponent(_cardView, lblInfo.Frame.GetMaxY())
             {
                 OnDone = OnDone
             };
             UIView viewMobileNumber = _mobileNumberComponent.GetUI();
+            string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+               ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
+               : string.Empty;
+            _mobileNumberComponent.MobileNumber = _textFieldHelper.FormatMobileNo(mobileNo);
             AddInfoView();
-            cardView.AddSubviews(new UIView[] { viewMobileNumber, _infoView });
-            View.AddSubview(cardView);
+            _cardView.AddSubviews(new UIView[] { viewMobileNumber, _infoView });
+            View.AddSubview(_cardView);
         }
 
         private void SetCTA()
@@ -102,7 +126,7 @@ namespace myTNB
 
         private void AddInfoView()
         {
-            _infoView = new CustomUIView(new CGRect(BaseMargin, GetScaledHeight(83), BaseMarginedWidth, GetScaledHeight(24)))
+            _infoView = new CustomUIView(new CGRect(BaseMargin, _cardView.Frame.Height - GetScaledHeight(40), BaseMarginedWidth, GetScaledHeight(24)))
             {
                 BackgroundColor = MyTNBColor.IceBlue
             };

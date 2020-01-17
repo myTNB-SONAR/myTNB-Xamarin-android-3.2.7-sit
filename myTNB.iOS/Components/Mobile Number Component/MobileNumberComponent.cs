@@ -12,21 +12,22 @@ namespace myTNB
         private UILabel _lblTitle;
         private UITextField _txtFieldMobileNo;
         private TextFieldHelper _textFieldHelper;
+        private nfloat _yLocation;
 
         public Action OnDone { set; private get; }
 
-        public MobileNumberComponent(UIView parentView)
+        public MobileNumberComponent(UIView parentView, nfloat yLocation)
         {
             _textFieldHelper = new TextFieldHelper();
             _parentView = parentView;
+            _yLocation = yLocation + GetScaledHeight(16);
         }
 
         private void CreateUI()
         {
-            _viewMobileNumber = new UIView(new CGRect(GetScaledWidth(16), GetScaledWidth(16)
+            _viewMobileNumber = new UIView(new CGRect(GetScaledWidth(16), _yLocation
                 , _parentView.Frame.Width - GetScaledWidth(32), GetScaledHeight(51)));
-            _viewMobileNumber.Layer.BorderColor = UIColor.Red.CGColor;
-            _viewMobileNumber.Layer.BorderWidth = 1;
+
             _lblTitle = new UILabel(new CGRect(0, 0, _viewMobileNumber.Frame.Width, GetScaledHeight(12)))
             {
                 Font = TNBFont.MuseoSans_10_300,
