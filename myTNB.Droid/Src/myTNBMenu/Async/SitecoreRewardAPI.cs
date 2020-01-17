@@ -27,6 +27,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         private bool isSitecoreApiFailed = false;
 
+        private RewardsTimeStampResponseModel responseMasterModel = new RewardsTimeStampResponseModel();
+
         public SitecoreRewardAPI(DashboardHomeContract.IView mView)
 		{
             this.mHomeView = mView;
@@ -71,12 +73,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 					{
 						string density = DPUtils.GetDeviceDensity(Application.Context);
                         GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                        RewardsTimeStampResponseModel responseMasterModel = getItemsService.GetRewardsTimestampItem();
+                        responseMasterModel = getItemsService.GetRewardsTimestampItem();
                         if (responseMasterModel.Status.Equals("Success"))
                         {
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                            wtManager.InsertListOfItems(responseMasterModel.Data);
                             if (responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                             {
                                 if (!responseMasterModel.Data[0].Timestamp.Equals(savedRewardTimeStamp))
@@ -141,96 +140,124 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                     string newDensity = DPUtils.GetDeviceDensity(Application.Context);
                                     GetItemsService getRewardItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                                     RewardsResponseModel responseModel = getRewardItemsService.GetRewardsItems();
-                                    if (responseModel.Status.Equals("Success"))
+                                    if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                                     {
-                                        RewardsCategoryEntity mRewardsCategoryEntity = new RewardsCategoryEntity();
-                                        RewardsEntity mRewardsEntity = new RewardsEntity();
-
-                                        if (responseModel != null && responseModel.Data != null && responseModel.Data.Count > 0)
+                                        if (responseModel.Status.Equals("Success"))
                                         {
-                                            List<RewardsCategoryModel> ToStoredList = new List<RewardsCategoryModel>();
-                                            List<RewardsModel> ToStoredRewardList = new List<RewardsModel>();
-
-                                            for (int i = 0; i < responseModel.Data.Count; i++)
+                                            if (responseMasterModel != null && responseMasterModel.Status != null && responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                                             {
-                                                if (responseModel.Data[i].RewardList != null && responseModel.Data[i].RewardList.Count > 0)
+                                                RewardsParentEntity mRewardsParentEntity = new RewardsParentEntity();
+                                                mRewardsParentEntity.DeleteTable();
+                                                mRewardsParentEntity.CreateTable();
+                                                mRewardsParentEntity.InsertListOfItems(responseMasterModel.Data);
+                                            }
+
+                                            RewardsCategoryEntity mRewardsCategoryEntity = new RewardsCategoryEntity();
+                                            RewardsEntity mRewardsEntity = new RewardsEntity();
+
+                                            if (responseModel != null && responseModel.Data != null && responseModel.Data.Count > 0)
+                                            {
+                                                List<RewardsCategoryModel> ToStoredList = new List<RewardsCategoryModel>();
+                                                List<RewardsModel> ToStoredRewardList = new List<RewardsModel>();
+
+                                                for (int i = 0; i < responseModel.Data.Count; i++)
                                                 {
-                                                    List<RewardsModel> localList = new List<RewardsModel>();
-                                                    for (int j = 0; j < responseModel.Data[i].RewardList.Count; j++)
+                                                    if (responseModel.Data[i].RewardList != null && responseModel.Data[i].RewardList.Count > 0)
                                                     {
-                                                        int startResult = -1;
-                                                        int endResult = 1;
-                                                        try
+                                                        List<RewardsModel> localList = new List<RewardsModel>();
+                                                        for (int j = 0; j < responseModel.Data[i].RewardList.Count; j++)
                                                         {
-                                                            if (!string.IsNullOrEmpty(responseModel.Data[i].RewardList[j].StartDate) && !string.IsNullOrEmpty(responseModel.Data[i].RewardList[j].EndDate))
+                                                            int startResult = -1;
+                                                            int endResult = 1;
+                                                            try
                                                             {
-                                                                DateTime startDateTime = DateTime.ParseExact(responseModel.Data[i].RewardList[j].StartDate, "yyyyMMddTHHmmss",
-                                                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                                                DateTime stopDateTime = DateTime.ParseExact(responseModel.Data[i].RewardList[j].EndDate, "yyyyMMddTHHmmss",
+                                                                if (!string.IsNullOrEmpty(responseModel.Data[i].RewardList[j].StartDate) && !string.IsNullOrEmpty(responseModel.Data[i].RewardList[j].EndDate))
+                                                                {
+                                                                    DateTime startDateTime = DateTime.ParseExact(responseModel.Data[i].RewardList[j].StartDate, "yyyyMMddTHHmmss",
                                                                     CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                                                DateTime nowDateTime = DateTime.Now;
-                                                                startResult = DateTime.Compare(nowDateTime, startDateTime);
-                                                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                                                                    DateTime stopDateTime = DateTime.ParseExact(responseModel.Data[i].RewardList[j].EndDate, "yyyyMMddTHHmmss",
+                                                                        CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                                                    DateTime nowDateTime = DateTime.Now;
+                                                                    startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                                                    endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                                                                }
                                                             }
-                                                        }
-                                                        catch (Exception ne)
-                                                        {
-                                                            Utility.LoggingNonFatalError(ne);
-                                                        }
-                                                        if (startResult >= 0 && endResult <= 0)
-                                                        {
-                                                            RewardsModel mModel = responseModel.Data[i].RewardList[j];
-
-                                                            RewardsEntity searchItem = mRewardsEntity.GetItem(mModel.ID);
-                                                            if (searchItem != null)
+                                                            catch (Exception ne)
                                                             {
-                                                                mModel.IsSaved = searchItem.IsSaved;
-                                                                mModel.IsSavedDateTime = searchItem.IsSavedDateTime;
-                                                                mModel.IsUsed = searchItem.IsUsed;
-                                                                mModel.IsUsedDateTime = searchItem.IsUsedDateTime;
-                                                                mModel.Read = searchItem.Read;
-                                                                mModel.ReadDateTime = searchItem.ReadDateTime;
+                                                                Utility.LoggingNonFatalError(ne);
                                                             }
-                                                            localList.Add(mModel);
+                                                            if (startResult >= 0 && endResult <= 0)
+                                                            {
+                                                                RewardsModel mModel = responseModel.Data[i].RewardList[j];
+
+                                                                RewardsEntity searchItem = mRewardsEntity.GetItem(mModel.ID);
+                                                                if (searchItem != null)
+                                                                {
+                                                                    mModel.IsSaved = searchItem.IsSaved;
+                                                                    mModel.IsSavedDateTime = searchItem.IsSavedDateTime;
+                                                                    mModel.IsUsed = searchItem.IsUsed;
+                                                                    mModel.IsUsedDateTime = searchItem.IsUsedDateTime;
+                                                                    mModel.Read = searchItem.Read;
+                                                                    mModel.ReadDateTime = searchItem.ReadDateTime;
+                                                                }
+                                                                localList.Add(mModel);
+                                                            }
                                                         }
-                                                    }
 
-                                                    if (localList.Count > 0)
-                                                    {
-                                                        ToStoredList.Add(new RewardsCategoryModel()
+                                                        if (localList.Count > 0)
                                                         {
-                                                            ID = responseModel.Data[i].ID,
-                                                            CategoryName = responseModel.Data[i].CategoryName
-                                                        });
+                                                            ToStoredList.Add(new RewardsCategoryModel()
+                                                            {
+                                                                ID = responseModel.Data[i].ID,
+                                                                CategoryName = responseModel.Data[i].CategoryName
+                                                            });
 
-                                                        ToStoredRewardList.AddRange(localList);
+                                                            ToStoredRewardList.AddRange(localList);
+                                                        }
                                                     }
                                                 }
+
+                                                mRewardsCategoryEntity.DeleteTable();
+                                                mRewardsEntity.DeleteTable();
+                                                mRewardsCategoryEntity.CreateTable();
+                                                mRewardsEntity.CreateTable();
+
+                                                if (ToStoredList.Count > 0)
+                                                {
+                                                    mRewardsCategoryEntity.InsertListOfItems(ToStoredList);
+                                                    mRewardsEntity.InsertListOfItems(ToStoredRewardList);
+                                                }
+
+                                                if (mHomeView != null)
+                                                {
+                                                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                                }
                                             }
-
-                                            mRewardsCategoryEntity.DeleteTable();
-                                            mRewardsEntity.DeleteTable();
-                                            mRewardsCategoryEntity.CreateTable();
-                                            mRewardsEntity.CreateTable();
-
-                                            if (ToStoredList.Count > 0)
+                                            else
                                             {
-                                                mRewardsCategoryEntity.InsertListOfItems(ToStoredList);
-                                                mRewardsEntity.InsertListOfItems(ToStoredRewardList);
-                                            }
+                                                mRewardsCategoryEntity.DeleteTable();
+                                                mRewardsEntity.DeleteTable();
+                                                mRewardsCategoryEntity.CreateTable();
+                                                mRewardsEntity.CreateTable();
 
-                                            if (mHomeView != null)
-                                            {
-                                                mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                                if (mHomeView != null)
+                                                {
+                                                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                                }
                                             }
                                         }
                                         else
                                         {
-                                            mRewardsCategoryEntity.DeleteTable();
-                                            mRewardsEntity.DeleteTable();
-                                            mRewardsCategoryEntity.CreateTable();
-                                            mRewardsEntity.CreateTable();
-
+                                            RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                                            wtManager2.DeleteTable();
+                                            wtManager2.CreateTable();
+                                            RewardsCategoryEntity mRewardsCategoryEntity2 = new RewardsCategoryEntity();
+                                            RewardsEntity mRewardsEntity2 = new RewardsEntity();
+                                            mRewardsCategoryEntity2.DeleteTable();
+                                            mRewardsEntity2.DeleteTable();
+                                            mRewardsCategoryEntity2.CreateTable();
+                                            mRewardsEntity2.CreateTable();
+                                            isSitecoreApiFailed = true;
                                             if (mHomeView != null)
                                             {
                                                 mHomeView.OnCheckUserReward(isSitecoreApiFailed);
@@ -242,12 +269,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                         RewardsParentEntity wtManager2 = new RewardsParentEntity();
                                         wtManager2.DeleteTable();
                                         wtManager2.CreateTable();
-                                        RewardsCategoryEntity mRewardsCategoryEntity2 = new RewardsCategoryEntity();
-                                        RewardsEntity mRewardsEntity2 = new RewardsEntity();
-                                        mRewardsCategoryEntity2.DeleteTable();
-                                        mRewardsEntity2.DeleteTable();
-                                        mRewardsCategoryEntity2.CreateTable();
-                                        mRewardsEntity2.CreateTable();
                                         isSitecoreApiFailed = true;
                                         if (mHomeView != null)
                                         {

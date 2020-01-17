@@ -1047,59 +1047,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public async Task OnGetUserWhatsNewList()
-        {
-            // Whats New TODO: Set Whats New API calling
-            /*try
-            {
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = UserEntity.GetActive().DeviceId,
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                GetUserRewardsRequest request = new GetUserRewardsRequest()
-                {
-                    usrInf = currentUsrInf
-                };
-
-                GetUserRewardsResponse response = await this.mApi.GetUserRewards(request, new System.Threading.CancellationTokenSource().Token);
-
-                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
-                {
-                    if (response.Data.Data != null && response.Data.Data.CurrentList != null && response.Data.Data.CurrentList.Count > 0)
-                    {
-                        userList = response.Data.Data.CurrentList;
-                    }
-                    else
-                    {
-                        userList = new List<AddUpdateRewardModel>();
-                    }
-                    CheckRewardsCache();
-                }
-                else
-                {
-                    this.mView.OnCheckUserRewardApiFailed();
-                }
-
-            }
-            catch (Exception e)
-            {
-                userList = new List<AddUpdateRewardModel>();
-                this.mView.OnCheckUserRewardApiFailed();
-                Utility.LoggingNonFatalError(e);
-            }*/
-
-            CheckWhatsNewCache();
-        }
-
         public void CheckRewardsCache()
         {
             if (mRewardsCategoryEntity == null)

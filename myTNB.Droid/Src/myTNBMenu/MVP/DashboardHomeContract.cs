@@ -251,8 +251,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnResetRewardPromotionThread();
 
-            Task OnGetUserWhatsNewList();
-
             void OnResumeUpdateWhatsNewUnRead();
 
             void OnStartWhatsNewThread();

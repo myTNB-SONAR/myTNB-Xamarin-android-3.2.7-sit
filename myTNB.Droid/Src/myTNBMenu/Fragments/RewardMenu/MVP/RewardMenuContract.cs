@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 		{
             void OnSavedRewardsTimeStamp(string mSavedTimeStamp);
 
-            void CheckRewardsTimeStamp();
+            void CheckRewardsTimeStamp(string mTimeStemp);
 
             void OnSetResultTabView(List<RewardMenuModel> list);
 

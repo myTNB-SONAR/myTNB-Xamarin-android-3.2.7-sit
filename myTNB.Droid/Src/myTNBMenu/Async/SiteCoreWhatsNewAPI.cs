@@ -27,6 +27,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         private bool isSitecoreApiFailed = false;
 
+        private WhatsNewTimeStampResponseModel responseMasterModel = new WhatsNewTimeStampResponseModel();
+
         public SiteCoreWhatsNewAPI(DashboardHomeContract.IView mView)
 		{
             this.mHomeView = mView;
@@ -71,12 +73,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 					{
 						string density = DPUtils.GetDeviceDensity(Application.Context);
                         GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                        WhatsNewTimeStampResponseModel responseMasterModel = getItemsService.GetWhatsNewTimestampItem();
+                        responseMasterModel = getItemsService.GetWhatsNewTimestampItem();
                         if (responseMasterModel.Status.Equals("Success"))
                         {
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                            wtManager.InsertListOfItems(responseMasterModel.Data);
                             if (responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                             {
                                 if (!responseMasterModel.Data[0].Timestamp.Equals(savedWhatsNewTimeStamp))
@@ -138,7 +137,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 							{
 								try
 								{
-                                    // Whats New TODO: to add language handling
                                     string newDensity = DPUtils.GetDeviceDensity(Application.Context);
                                     GetItemsService getWhatsNewItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                                     WhatsNewResponseModel responseModel = getWhatsNewItemsService.GetWhatsNewItems();
@@ -146,6 +144,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                     {
                                         if (responseModel.Status.Equals("Success"))
                                         {
+                                            if (responseMasterModel != null && responseMasterModel.Status != null && responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
+                                            {
+                                                WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                                                mWhatsNewParentEntity.DeleteTable();
+                                                mWhatsNewParentEntity.CreateTable();
+                                                mWhatsNewParentEntity.InsertListOfItems(responseMasterModel.Data);
+                                            }
+
                                             WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
                                             WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
 

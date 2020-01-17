@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
         {
             void OnSavedWhatsNewsTimeStamp(string mSavedTimeStamp);
 
-            void CheckWhatsNewsTimeStamp();
+            void CheckWhatsNewsTimeStamp(string mTimeStamp);
 
             void OnSetResultTabView(List<WhatsNewMenuModel> list);
 

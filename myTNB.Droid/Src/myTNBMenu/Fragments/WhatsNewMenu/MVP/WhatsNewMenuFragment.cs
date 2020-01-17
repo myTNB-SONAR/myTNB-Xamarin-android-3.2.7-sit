@@ -543,48 +543,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             }
         }
 
-        public void CheckWhatsNewsTimeStamp()
+        public void CheckWhatsNewsTimeStamp(string mTimeStamp)
         {
             try
             {
-                WhatsNewParentEntity wtManager = new WhatsNewParentEntity();
-                List<WhatsNewParentEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                if (mTimeStamp != null)
                 {
-                    WhatsNewParentEntity entity = items[0];
-                    if (entity != null)
+                    if (!mTimeStamp.Equals(savedTimeStamp))
                     {
-                        if (!entity.Timestamp.Equals(savedTimeStamp))
-                        {
-                            this.presenter.OnGetWhatsNews();
-                        }
-                        else
-                        {
-                            WhatsNewEntity wtItemManager = new WhatsNewEntity();
-                            List<WhatsNewEntity> subItems = wtItemManager.GetAllItems();
-                            if (subItems != null && subItems.Count > 0)
-                            {
-                                this.presenter.CheckWhatsNewsCache();
-                            }
-                            else
-                            {
-                                this.presenter.OnGetWhatsNews();
-                            }
-                        }
+                        this.presenter.OnGetWhatsNews();
                     }
                     else
                     {
-                        this.presenter.CheckWhatsNewsCache();
+                        WhatsNewEntity wtItemManager = new WhatsNewEntity();
+                        List<WhatsNewEntity> subItems = wtItemManager.GetAllItems();
+                        if (subItems != null && subItems.Count > 0)
+                        {
+                            this.presenter.CheckWhatsNewsCache();
+                        }
+                        else
+                        {
+                            this.presenter.OnGetWhatsNews();
+                        }
                     }
                 }
                 else
                 {
-                    this.presenter.CheckWhatsNewsCache();
+                    this.presenter.OnGetWhatsNews();
                 }
             }
             catch (System.Exception e)
             {
-                this.presenter.CheckWhatsNewsCache();
+                this.presenter.OnGetWhatsNews();
                 Utility.LoggingNonFatalError(e);
             }
         }

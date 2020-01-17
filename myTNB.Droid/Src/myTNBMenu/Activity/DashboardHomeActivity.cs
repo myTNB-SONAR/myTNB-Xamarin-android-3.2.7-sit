@@ -1683,7 +1683,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             try
                             {
-                                _ = this.mPresenter.OnGetUserWhatsNewList();
+                                this.mPresenter.CheckWhatsNewCache();
                             }
                             catch (Exception e)
                             {

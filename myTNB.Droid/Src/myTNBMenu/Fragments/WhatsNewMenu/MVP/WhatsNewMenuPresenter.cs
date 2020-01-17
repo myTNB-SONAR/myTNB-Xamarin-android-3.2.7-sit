@@ -33,6 +33,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
         private WhatsNewEntity mWhatsNewEntity;
 
+        private WhatsNewTimeStampResponseModel responseMasterModel = new WhatsNewTimeStampResponseModel();
+
         public WhatsNewMenuPresenter(WhatsNewMenuContract.IWhatsNewMenuView view, ISharedPreferences pref)
         {
             this.mView = view;
@@ -134,26 +136,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    WhatsNewTimeStampResponseModel responseModel = getItemsService.GetWhatsNewTimestampItem();
-                    if (responseModel.Status.Equals("Success"))
+                    responseMasterModel = getItemsService.GetWhatsNewTimestampItem();
+                    if (responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                     {
-                        if (mWhatsNewParentEntity == null)
-                        {
-                            mWhatsNewParentEntity = new WhatsNewParentEntity();
-                        }
-                        mWhatsNewParentEntity.DeleteTable();
-                        mWhatsNewParentEntity.CreateTable();
-                        mWhatsNewParentEntity.InsertListOfItems(responseModel.Data);
-                        this.mView.CheckWhatsNewsTimeStamp();
+                        this.mView.CheckWhatsNewsTimeStamp(responseMasterModel.Data[0].Timestamp);
                     }
                     else
                     {
-                        this.mView.CheckWhatsNewsTimeStamp();
+                        this.mView.CheckWhatsNewsTimeStamp(null);
                     }
                 }
                 catch (Exception e)
                 {
-                    this.mView.CheckWhatsNewsTimeStamp();
+                    this.mView.CheckWhatsNewsTimeStamp(null);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -167,7 +162,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             {
                 try
                 {
-                    // Whats New TODO: to add language handling
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     WhatsNewResponseModel responseModel = getItemsService.GetWhatsNewItems();
@@ -175,6 +169,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                     {
                         if (responseModel.Status.Equals("Success"))
                         {
+                            if (responseMasterModel != null && responseMasterModel.Status != null && responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
+                            {
+                                if (mWhatsNewParentEntity == null)
+                                {
+                                    mWhatsNewParentEntity = new WhatsNewParentEntity();
+                                }
+                                mWhatsNewParentEntity.DeleteTable();
+                                mWhatsNewParentEntity.CreateTable();
+                                mWhatsNewParentEntity.InsertListOfItems(responseMasterModel.Data);
+                            }
                             ProcessWhatsNewResponse(responseModel);
                         }
                         else

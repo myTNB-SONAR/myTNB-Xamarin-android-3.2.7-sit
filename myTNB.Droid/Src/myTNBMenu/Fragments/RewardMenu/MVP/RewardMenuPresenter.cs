@@ -36,6 +36,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
 
+        private RewardsTimeStampResponseModel responseMasterModel = new RewardsTimeStampResponseModel();
+
         public RewardMenuPresenter(RewardMenuContract.IRewardMenuView view, ISharedPreferences pref)
 		{
 			this.mView = view;
@@ -138,26 +140,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    RewardsTimeStampResponseModel responseModel = getItemsService.GetRewardsTimestampItem();
-                    if (responseModel.Status.Equals("Success"))
+                    responseMasterModel = getItemsService.GetRewardsTimestampItem();
+                    if (responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                     {
-                        if (mRewardsParentEntity == null)
-                        {
-                            mRewardsParentEntity = new RewardsParentEntity();
-                        }
-                        mRewardsParentEntity.DeleteTable();
-                        mRewardsParentEntity.CreateTable();
-                        mRewardsParentEntity.InsertListOfItems(responseModel.Data);
-                        this.mView.CheckRewardsTimeStamp();
+                        this.mView.CheckRewardsTimeStamp(responseMasterModel.Data[0].Timestamp);
                     }
                     else
                     {
-                        this.mView.CheckRewardsTimeStamp();
+                        this.mView.CheckRewardsTimeStamp(null);
                     }
                 }
                 catch (Exception e)
                 {
-                    this.mView.CheckRewardsTimeStamp();
+                    this.mView.CheckRewardsTimeStamp(null);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -178,6 +173,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     {
                         if (responseModel.Status.Equals("Success"))
                         {
+                            if (responseMasterModel != null && responseMasterModel.Status != null && responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
+                            {
+                                if (mRewardsParentEntity == null)
+                                {
+                                    mRewardsParentEntity = new RewardsParentEntity();
+                                }
+                                mRewardsParentEntity.DeleteTable();
+                                mRewardsParentEntity.CreateTable();
+                                mRewardsParentEntity.InsertListOfItems(responseMasterModel.Data);
+                            }
                             ProcessRewardResponse(responseModel);
                         }
                         else

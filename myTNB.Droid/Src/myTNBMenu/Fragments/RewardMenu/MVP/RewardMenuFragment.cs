@@ -568,48 +568,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
         }
 
-        public void CheckRewardsTimeStamp()
+        public void CheckRewardsTimeStamp(string mTimeStemp)
         {
             try
             {
-                RewardsParentEntity wtManager = new RewardsParentEntity();
-                List<RewardsParentEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                if (mTimeStemp != null)
                 {
-                    RewardsParentEntity entity = items[0];
-                    if (entity != null)
+                    if (!mTimeStemp.Equals(savedTimeStamp))
                     {
-                        if (!entity.Timestamp.Equals(savedTimeStamp))
-                        {
-                            this.presenter.OnGetRewards();
-                        }
-                        else
-                        {
-                            RewardsEntity wtItemManager = new RewardsEntity();
-                            List<RewardsEntity> subItems = wtItemManager.GetAllItems();
-                            if (subItems != null && subItems.Count > 0)
-                            {
-                                _ = this.presenter.OnGetUserRewardList();
-                            }
-                            else
-                            {
-                                this.presenter.OnGetRewards();
-                            }
-                        }
+                        this.presenter.OnGetRewards();
                     }
                     else
                     {
-                        _ = this.presenter.OnGetUserRewardList();
+                        RewardsEntity wtItemManager = new RewardsEntity();
+                        List<RewardsEntity> subItems = wtItemManager.GetAllItems();
+                        if (subItems != null && subItems.Count > 0)
+                        {
+                            _ = this.presenter.OnGetUserRewardList();
+                        }
+                        else
+                        {
+                            this.presenter.OnGetRewards();
+                        }
                     }
                 }
                 else
                 {
-                    _ = this.presenter.OnGetUserRewardList();
+                    this.presenter.OnGetRewards();
                 }
             }
             catch (System.Exception e)
             {
-                _ = this.presenter.OnGetUserRewardList();
+                this.presenter.OnGetRewards();
                 Utility.LoggingNonFatalError(e);
             }
         }
