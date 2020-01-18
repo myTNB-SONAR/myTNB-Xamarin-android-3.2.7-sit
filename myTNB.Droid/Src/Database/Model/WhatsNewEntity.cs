@@ -31,6 +31,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("EndDate")]
         public string EndDate { set; get; }
 
+        [Column("PublishDate")]
+        public string PublishDate { set; get; }
+
         [Column("Image")]
         public string Image { set; get; }
 
@@ -92,6 +95,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.TitleOnListing = obj.TitleOnListing;
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
+                    item.PublishDate = obj.PublishDate;
                     item.CTA = obj.CTA;
                     InsertItem(item);
                 }

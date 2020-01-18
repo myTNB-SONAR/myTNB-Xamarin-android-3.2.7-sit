@@ -152,6 +152,7 @@
                     public const string Description = "Description";
                     public const string Image = "Image";
                     public const string StartDate = "StartDate";
+                    public const string PublishDate = "PublishDate";
                     public const string EndDate = "EndDate";
                     public const string CTA = "CTA";
                     public const string WhatsNewCategory = "WhatsNewCategory";

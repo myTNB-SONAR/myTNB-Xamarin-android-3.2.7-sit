@@ -35,7 +35,8 @@ namespace myTNB.SitecoreCMS.Model
 		public Bitmap ImageBitmap { set; get; }
 		public string StartDate { set; get; }
 		public string EndDate { set; get; }
-		public string CTA { set; get; }
+        public string PublishDate { set; get; }
+        public string CTA { set; get; }
 		public bool Read { set; get; }
 		public string ReadDateTime { set; get; }
     }

@@ -226,24 +226,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
 						vh.whatsNewBottomView.Visibility = ViewStates.Visible;
 						vh.txtTitle.Text = whatsNewList[position].TitleOnListing;
 
+                        bool isDateAvailable = false;
+
                         try
                         {
-                            if (!string.IsNullOrEmpty(whatsNewList[position].StartDate))
+                            if (!string.IsNullOrEmpty(whatsNewList[position].PublishDate))
                             {
                                 try
                                 {
-                                    DateTime startDateTime = DateTime.ParseExact(whatsNewList[position].StartDate, "yyyyMMddTHHmmss",
+                                    DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
                                         CultureInfo.InvariantCulture, DateTimeStyles.None);
 
                                     if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                                     {
                                         CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-                                        vh.txtDate.Text = startDateTime.ToString("dd MMM yyyy", currCult);
+                                        vh.txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
+                                        isDateAvailable = true;
                                     }
                                     else
                                     {
                                         CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                                        vh.txtDate.Text = startDateTime.ToString("dd MMM yyyy", currCult);
+                                        vh.txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
+                                        isDateAvailable = true;
                                     }
                                 }
                                 catch (Exception e)
@@ -263,26 +267,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
                             Utility.LoggingNonFatalError(ex);
                         }
 
-                        if (whatsNewList[position].Read)
-						{
-							vh.whatsNewUnreadImg.Visibility = ViewStates.Gone;
-                            TextViewUtils.SetMuseoSans300Typeface(vh.txtDate);
-                            vh.txtDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.new_grey)));
-                            RelativeLayout.LayoutParams txtDateParam = vh.txtDate.LayoutParameters as RelativeLayout.LayoutParams;
-                            txtDateParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
-                            RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
-							txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(86f);
-						}
-						else
-						{
-							vh.whatsNewUnreadImg.Visibility = ViewStates.Visible;
-                            TextViewUtils.SetMuseoSans500Typeface(vh.txtDate);
-                            vh.txtDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.tunaGrey)));
-                            RelativeLayout.LayoutParams txtDateParam = vh.txtDate.LayoutParameters as RelativeLayout.LayoutParams;
-                            txtDateParam.RightMargin = (int)DPUtils.ConvertDPToPx(28f);
-                            RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
-							txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(98f);
-						}
+                        if (isDateAvailable)
+                        {
+                            vh.txtDate.Visibility = ViewStates.Visible;
+                            if (whatsNewList[position].Read)
+                            {
+                                vh.whatsNewUnreadImg.Visibility = ViewStates.Gone;
+                                TextViewUtils.SetMuseoSans300Typeface(vh.txtDate);
+                                vh.txtDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.new_grey)));
+                                RelativeLayout.LayoutParams txtDateParam = vh.txtDate.LayoutParameters as RelativeLayout.LayoutParams;
+                                txtDateParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                                RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(86f);
+                            }
+                            else
+                            {
+                                vh.whatsNewUnreadImg.Visibility = ViewStates.Visible;
+                                TextViewUtils.SetMuseoSans500Typeface(vh.txtDate);
+                                vh.txtDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.tunaGrey)));
+                                RelativeLayout.LayoutParams txtDateParam = vh.txtDate.LayoutParameters as RelativeLayout.LayoutParams;
+                                txtDateParam.RightMargin = (int)DPUtils.ConvertDPToPx(28f);
+                                RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(98f);
+                            }
+                        }
+                        else
+                        {
+                            vh.txtDate.Visibility = ViewStates.Gone;
+                            if (whatsNewList[position].Read)
+                            {
+                                vh.whatsNewUnreadImg.Visibility = ViewStates.Gone;
+                                RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                            }
+                            else
+                            {
+                                vh.whatsNewUnreadImg.Visibility = ViewStates.Visible;
+                                RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
+                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(34f);
+                            }
+                        }
 
                         vh.txtTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
 

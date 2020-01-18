@@ -58,6 +58,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
                     fetchItem.TitleOnListing = item.TitleOnListing;
                     fetchItem.StartDate = item.StartDate;
                     fetchItem.EndDate = item.EndDate;
+                    fetchItem.PublishDate = item.PublishDate;
                     fetchItem.CTA = item.CTA;
 
                     this.mView.SetWhatsNewDetail(fetchItem);

@@ -75,6 +75,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 					item.TitleOnListing = obj.TitleOnListing;
 					item.StartDate = obj.StartDate;
 					item.EndDate = obj.EndDate;
+					item.PublishDate = obj.PublishDate;
 					item.CTA = obj.CTA;
 					list.Add(item);
 				}
@@ -109,6 +110,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 					item.TitleOnListing = obj.TitleOnListing;
 					item.StartDate = obj.StartDate;
 					item.EndDate = obj.EndDate;
+					item.PublishDate = obj.PublishDate;
 					item.CTA = obj.CTA;
 					list.Add(item);
 				}
