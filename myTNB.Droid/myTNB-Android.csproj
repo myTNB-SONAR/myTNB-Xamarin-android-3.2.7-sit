@@ -923,10 +923,6 @@
     <Compile Include="Src\UpdatePassword\Request\UpdatePasswordRequest.cs" />
     <Compile Include="Src\Utils\BitmapUtils.cs" />
     <Compile Include="Src\Utils\BottomNavigationViewUtils.cs" />
-    <Compile Include="Src\GetAccessSuccess\Activity\GetAccessSuccessActivity.cs" />
-    <Compile Include="Src\GetAccess\Activity\GetAccessFormActivity.cs" />
-    <Compile Include="Src\GetAccess\MVP\GetAccessFormContract.cs" />
-    <Compile Include="Src\GetAccess\MVP\GetAccessFormPresenter.cs" />
     <Compile Include="Src\Utils\ConnectionUtils.cs" />
     <Compile Include="Src\Utils\Constants.cs" />
     <Compile Include="Src\RegisterValidation\Activity\RegisterValidationActivity.cs" />
@@ -4347,12 +4343,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ViewBillView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\GetAccessFormView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\GetAccessSuccessView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BillsRowView.axml">
