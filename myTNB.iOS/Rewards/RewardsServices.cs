@@ -412,16 +412,16 @@ namespace myTNB
                             }
                         }
                         rewardsEntity.InsertListOfItems(rewardsData);
-                    }
-                    try
-                    {
-                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
-                        sharedPreference.Synchronize();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
+                        try
+                        {
+                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Error in sharedPreference: " + e.Message);
+                        }
                     }
                 }
                 else

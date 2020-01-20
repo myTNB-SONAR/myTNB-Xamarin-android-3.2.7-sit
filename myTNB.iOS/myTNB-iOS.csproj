@@ -2658,6 +2658,7 @@
     </Compile>
     <Compile Include="Common\CommonServices.cs" />
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="Components\Tutorial Overlay\WhatsNewTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

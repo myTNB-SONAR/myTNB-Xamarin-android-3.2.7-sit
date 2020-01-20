@@ -25,9 +25,17 @@ namespace myTNB
         //Event Names
         public static string Event_Refresh = "Refresh";
 
+        //Preference Key
+        public static string Pref_WhatsNewTutorialOverlay = "WhatsNewTutorialOverlayV2.1.0";
+
         //I18N Keys
         public static string I18N_Title = "title";
         public static string I18N_EmptyDesc = "emptyDesc";
+        public static string I18N_ViewAll = "viewAll";
+        public static string I18N_TutorialCatTitle = "tutorialCategoryTitle";
+        public static string I18N_TutorialCatDesc = "tutorialCategoryDesc";
+        public static string I18N_TutorialItemTitle = "tutorialItemTitle";
+        public static string I18N_TutorialItemDesc = "tutorialItemDesc";
 
         //Img
         public static string Img_WhatsNewDefaultBanner = "WhatsNew_Default-Banner";

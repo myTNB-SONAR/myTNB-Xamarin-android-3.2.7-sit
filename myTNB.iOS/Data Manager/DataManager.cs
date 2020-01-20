@@ -121,7 +121,8 @@ namespace myTNB.DataManager
         public bool IsPreloginFeedback = false;
 
         //WhatsNew
-        public bool IsWhatsNewLoading = false;
+        public bool IsWhatsNewLoading;
+        public bool IsFromWhatsNewDeeplink;
 
         //Rewards
         public bool IsRewardsLoading = false;
@@ -245,6 +246,7 @@ namespace myTNB.DataManager
             isLocationSearch = false;
 
             IsWhatsNewLoading = false;
+            IsFromWhatsNewDeeplink = false;
             IsRewardsLoading = false;
             IsFromRewardsDeeplink = false;
 

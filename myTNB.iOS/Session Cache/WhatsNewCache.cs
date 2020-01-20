@@ -11,6 +11,8 @@ namespace myTNB
         private static Dictionary<string, NSData> ImageDictionary = new Dictionary<string, NSData>();
 
         public static bool WhatsNewIsAvailable { set; get; }
+        public static bool RefreshWhatsNew { set; get; } = false;
+        public static string DeeplinkWhatsNewId { set; get; }
 
         public static void SaveImage(string key, NSData data)
         {
@@ -44,6 +46,7 @@ namespace myTNB
                 ImageDictionary.Clear();
             }
             WhatsNewIsAvailable = false;
+            DeeplinkWhatsNewId = string.Empty;
         }
 
         public static void ClearImages()

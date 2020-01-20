@@ -12,6 +12,7 @@ using Firebase.Crashlytics;
 using System.Diagnostics;
 using Firebase.DynamicLinks;
 using System.Collections.Generic;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -285,6 +286,93 @@ namespace myTNB
                                                                 {
                                                                     RewardsServices.OpenRewardDetails(rewardId, topVc);
                                                                     DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                        else if (absoluteURL.Contains("whatsnew/redirect.aspx/wnid"))
+                        {
+                            Regex regex = new Regex("\\bwnid.*\\b");
+                            Match match = regex.Match(absoluteURL);
+                            if (match.Success)
+                            {
+                                string whatsNewId = match.Value.Replace("wnid=", "");
+                                DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = whatsNewId.IsValid();
+
+                                if (whatsNewId.IsValid())
+                                {
+                                    WhatsNewCache.DeeplinkWhatsNewId = whatsNewId;
+                                    if (NetworkUtility.isReachable)
+                                    {
+                                        InvokeOnMainThread(() =>
+                                        {
+                                            var baseRootVc1 = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                            var topVc1 = GetTopViewController(baseRootVc1);
+                                            if (topVc1 != null)
+                                            {
+                                                if (!(topVc1 is AppLaunchViewController))
+                                                {
+                                                    ActivityIndicator.Show();
+                                                }
+                                            }
+                                            InvokeInBackground(async () =>
+                                            {
+                                                bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates();
+                                                if (hasUpdate)
+                                                {
+                                                    DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
+                                                    await SitecoreServices.Instance.LoadWhatsNew(true);
+                                                    if (WhatsNewCache.WhatsNewIsAvailable)
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                                                            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                            var topVc = GetTopViewController(baseRootVc);
+                                                            if (topVc != null)
+                                                            {
+                                                                if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                {
+                                                                    WhatsNewServices.OpenWhatsNewDetails(whatsNewId, topVc);
+                                                                    DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                                                            WhatsNewServices.ShowWhatsNewUnavailable();
+                                                            DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
+                                                        });
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                            var topVc = GetTopViewController(baseRootVc);
+                                                            if (topVc != null)
+                                                            {
+                                                                if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                {
+                                                                    WhatsNewServices.OpenWhatsNewDetails(whatsNewId, topVc);
+                                                                    DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
                                                                 }
                                                             }
                                                         });

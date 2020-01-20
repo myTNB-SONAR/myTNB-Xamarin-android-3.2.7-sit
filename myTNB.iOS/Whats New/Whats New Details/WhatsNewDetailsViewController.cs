@@ -40,7 +40,7 @@ namespace myTNB
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            Title = "What's New";
+            Title = GetI18NValue(WhatsNewConstants.I18N_Title);
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
@@ -282,7 +282,7 @@ namespace myTNB
                         storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
                     if (viewController != null)
                     {
-                        viewController.NavigationTitle = "What's New";
+                        viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);
                         viewController.URL = url.AbsoluteString;
                         viewController.IsDelegateNeeded = false;
                         UINavigationController navController = new UINavigationController(viewController)

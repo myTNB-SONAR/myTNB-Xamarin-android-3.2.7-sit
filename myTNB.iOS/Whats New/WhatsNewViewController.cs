@@ -137,7 +137,7 @@ namespace myTNB
                         WhatsNewModel viewAllModel = new WhatsNewModel()
                         {
                             CategoryID = "1001",
-                            CategoryName = "View All"
+                            CategoryName = GetI18NValue(WhatsNewConstants.I18N_ViewAll)
                         };
                         _categoryList.Insert(0, viewAllModel);
                         CreateCategoryTopBar();
@@ -145,7 +145,7 @@ namespace myTNB
                     _selectedCategoryIndex = 0;
                     AddWhatsNewScrollView();
                     _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
-                    //CheckTutorialOverlay();
+                    CheckTutorialOverlay();
                 }
                 else
                 {
@@ -617,17 +617,19 @@ namespace myTNB
             {
                 InvokeInBackground(async () =>
                 {
-                    bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates();
+                    bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates() || WhatsNewCache.RefreshWhatsNew;
                     InvokeOnMainThread(() =>
                     {
                         if (hasUpdate)
                         {
+                            WhatsNewCache.RefreshWhatsNew = false;
                             DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
                             ResetViews();
                             SetSkeletonLoading();
                             InvokeInBackground(async () =>
                             {
                                 await SitecoreServices.Instance.LoadWhatsNew(true);
+                                DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                                 InvokeOnMainThread(() =>
                                 {
                                     if (WhatsNewCache.WhatsNewIsAvailable)
@@ -655,6 +657,8 @@ namespace myTNB
                                     if (!_isViewDidLoad)
                                     {
                                         OnReloadTableAction(_selectedCategoryIndex);
+                                        _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
+                                        CheckTutorialOverlay();
                                     }
                                 }
                             }
@@ -676,7 +680,34 @@ namespace myTNB
         #region ACTION METHODS
         private void RefreshButtonOnTap()
         {
+            if (NetworkUtility.isReachable)
+            {
+                ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
+                SetSkeletonLoading();
 
+                InvokeInBackground(async () =>
+                {
+                    DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
+                    await SitecoreServices.Instance.LoadWhatsNew(true);
+                    DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                    InvokeOnMainThread(() =>
+                    {
+                        if (WhatsNewCache.WhatsNewIsAvailable)
+                        {
+                            ProcessWhatsNew();
+                        }
+                        else
+                        {
+                            SetRefreshScreen();
+                        }
+                    });
+                });
+            }
+            else
+            {
+                AlertHandler.DisplayNoDataAlert(this);
+            }
         }
 
         public void OnItemSelection(WhatsNewModel whatsNew, int index)
@@ -765,7 +796,128 @@ namespace myTNB
         #region TUTORIAL OVERLAY
         public void CheckTutorialOverlay()
         {
+            if (!WhatsNewCache.WhatsNewIsAvailable) { return; }
 
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(WhatsNewConstants.Pref_WhatsNewTutorialOverlay);
+
+            //if (tutorialOverlayHasShown) { return; }
+
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading && _whatsNewList != null && _whatsNewList.Count > 0)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is WhatsNewViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                        else
+                        {
+                            if (_tutorialContainer != null)
+                            {
+                                _tutorialContainer.RemoveFromSuperview();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            if (_tutorialContainer != null && _tutorialContainer.IsDescendantOfView(currentWindow)) { return; }
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear,
+                Tag = 1001
+            };
+
+            WhatsNewTutorialOverlay tutorialView = new WhatsNewTutorialOverlay(_tutorialContainer, this, _hotspotIsOn)
+            {
+                OnDismissAction = HideTutorialOverlay,
+                GetI18NValue = GetI18NValue
+            };
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is WhatsNewViewController && _tutorialContainer != null && !_tutorialContainer.IsDescendantOfView(currentWindow))
+                {
+                    foreach (UIView view in currentWindow.Subviews)
+                    {
+                        if (view.Tag == 1001)
+                        {
+                            view.RemoveFromSuperview();
+                            break;
+                        }
+                    }
+
+                    _tutorialContainer.AddSubview(tutorialView.GetView());
+                    currentWindow.AddSubview(_tutorialContainer);
+                }
+                else
+                {
+                    if (_tutorialContainer != null)
+                    {
+                        _tutorialContainer.RemoveFromSuperview();
+                    }
+                }
+            }
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, WhatsNewConstants.Pref_WhatsNewTutorialOverlay);
+                sharedPreference.Synchronize();
+            }
+        }
+
+        public nfloat GetFirstRewardYPos()
+        {
+            nfloat yPos = 0;
+            if (_mainScrollView != null)
+            {
+                yPos = _mainScrollView.Frame.Y + GetScaledHeight(17F);
+            }
+            return yPos;
+        }
+
+        public nfloat GetNavigationMaxYPos()
+        {
+            try
+            {
+                return NavigationController.NavigationBar.Frame.GetMaxY();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in services: " + e.Message);
+                return 0;
+            }
+        }
+
+        public bool CategoryMenuIsVisible()
+        {
+            return _categoryList != null && _categoryList.Count > 2;
         }
         #endregion
     }

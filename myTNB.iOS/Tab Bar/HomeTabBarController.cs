@@ -334,15 +334,27 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
+                    if (DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink)
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            ActivityIndicator.Show();
+                        });
+                    }
                     InvokeInBackground(async () =>
                     {
+                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
                         await SitecoreServices.Instance.LoadWhatsNew(isForceUpdate);
                         NotifCenterUtility.PostNotificationName("OnReceiveWhatsNewNotification", new NSObject());
                         InvokeOnMainThread(() =>
                         {
+                            if (DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink)
+                            {
+                                ActivityIndicator.Hide();
+                            }
                             UpdatePromotionTabBarIcon();
                             DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
-                            //CheckForRewardDeepLink();
+                            CheckForWhatsNewDeepLink();
                         });
                     });
                 }
@@ -441,6 +453,7 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
+
                     InvokeInBackground(async () =>
                     {
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
@@ -495,12 +508,34 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
-                            LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableTitle),
+                            LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableMsg),
                             new Dictionary<string, Action> {
-                        {LanguageUtility.GetCommonI18NValue(Constants.Common_Ok), null}});
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null}});
                     }
                     DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                }
+            }
+        }
+
+        private void CheckForWhatsNewDeepLink()
+        {
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+            {
+                if (DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink)
+                {
+                    if (WhatsNewCache.WhatsNewIsAvailable)
+                    {
+                        WhatsNewServices.OpenWhatsNewDetails(WhatsNewCache.DeeplinkWhatsNewId, this);
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_WhatsNewUnavailableTitle),
+                            LanguageUtility.GetErrorI18NValue(Constants.Error_WhatsNewUnavailableMsg),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null}});
+                    }
+                    DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
                 }
             }
         }

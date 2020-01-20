@@ -128,11 +128,11 @@ namespace myTNB
                                 if (RewardsCache.RewardIsAvailable)
                                 {
                                     await RewardsServices.GetUserRewards();
+                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                                     if (RewardsCache.RewardIsAvailable)
                                     {
                                         InvokeOnMainThread(() =>
                                         {
-                                            DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                                             ProcessRewards();
                                         });
                                     }
@@ -143,6 +143,7 @@ namespace myTNB
                                 }
                                 else
                                 {
+                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                                     SetRefreshScreen();
                                 }
                             });

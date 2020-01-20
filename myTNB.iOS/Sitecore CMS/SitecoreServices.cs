@@ -569,8 +569,8 @@ namespace myTNB.SitecoreCMS
                                 }
                             }
                             rewardsEntity.InsertListOfItems(rewardsData);
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
                         }
-                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
                     }
                     else
                     {
@@ -669,8 +669,8 @@ namespace myTNB.SitecoreCMS
                                 }
                             }
                             whatsNewEntity.InsertListOfItems(whatsNewData);
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
                         }
-                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
                     }
                     else
                     {

@@ -140,6 +140,11 @@ namespace myTNB
         public static string Error_PlannedDownTimeMessage = "plannedDownTimeMessage";
         public static string Error_RewardsUnavailableTitle = "rewardsUnavailableTitle";
         public static string Error_RewardsUnavailableMsg = "rewardsUnavailableMsg";
+        public static string Error_WhatsNewUnavailableTitle = "whatsNewUnavailableTitle";
+        public static string Error_WhatsNewUnavailableMsg = "whatsNewUnavailableMsg";
+        public static string Error_WhatsNewExpiredTitle = "whatsNewExpiredTitle";
+        public static string Error_WhatsNewExpiredMsg = "whatsNewExpiredMsg";
+        public static string Error_WhatsNewExpiredBtnText = "whatsNewExpiredBtnText";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
