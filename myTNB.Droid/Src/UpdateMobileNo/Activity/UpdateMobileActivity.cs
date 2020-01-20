@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.UpdateMobileNo.MVP;
@@ -30,17 +31,14 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
-        [BindView(Resource.Id.txtInputLayoutMobileNo)]
-        TextInputLayout txtInputLayoutMobileNo;
-
         [BindView(Resource.Id.lblVerifyMobileNo)]
         TextView lblVerifyMobileNo;
 
-        [BindView(Resource.Id.txtMobileNo)]
-        EditText txtMobileNo;
-
         [BindView(Resource.Id.btnSave)]
         Button btnSave;
+
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
 
         UpdateMobileContract.IUserActionsListener userActionsListener;
         UpdateMobilePresenter mPresenter;
@@ -88,14 +86,11 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
                 // Create your application here
 
-                TextViewUtils.SetMuseoSans300Typeface(txtMobileNo);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo);
+                //TextViewUtils.SetMuseoSans300Typeface(txtMobileNo);
+                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
-                TextViewUtils.SetMuseoSans300Typeface(lblVerifyMobileNo);
-
-                lblVerifyMobileNo.Text = GetLabelByLanguage("details");
                 btnSave.Text = GetLabelCommonByLanguage("next");
-                txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
+
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))
                     .Content(GetString(Resource.String.update_mobile_progress_content))
@@ -107,19 +102,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mPresenter = new UpdateMobilePresenter(this);
                 userActionsListener.Start();
 
-                //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-                //{
-                //    if (e.HasFocus)
-                //    {
-                //        if (string.IsNullOrEmpty(txtMobileNo.Text))
-                //        {
-                //            txtMobileNo.Append("+60");
-                //        }
-                //    }
-                //};
-
-                txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
-                txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
+                //txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
+                //txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
 
 
                 if (UserEntity.IsCurrentlyActive())
@@ -130,7 +114,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     {
                         MobileNo = "+60" + MobileNo;
                     }
-                    txtMobileNo.Text = MobileNo;
+                    //txtMobileNo.Text = MobileNo;
                 }
                 else if (intent.ContainsKey("PhoneNumber"))
                 {
@@ -139,14 +123,14 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     {
                         MobileNo = "+60" + MobileNo;
                     }
-                    txtMobileNo.Text = string.IsNullOrEmpty(MobileNo) ? "" : MobileNo;
+                    //txtMobileNo.Text = string.IsNullOrEmpty(MobileNo) ? "" : MobileNo;
                 }
 
-                if (string.IsNullOrEmpty(txtMobileNo.Text))
-                {
-                    txtMobileNo.Append("+60");
-                }
-                txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
+                //if (string.IsNullOrEmpty(txtMobileNo.Text))
+                //{
+                //    txtMobileNo.Append("+60");
+                //}
+                //txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
 
                 if (forceUpdatePhoneNo)
                 {
@@ -159,31 +143,33 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     SetToolBarTitle(GetLabelByLanguage("updateMobileNumberTitle"));
                 }
 
+                MobileNumberInputComponent component = new MobileNumberInputComponent(this);
+                mobileNumberFieldContainer.AddView(component);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-        [Preserve]
-        private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
+        //[Preserve]
+        //private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
+        //{
 
 
-            string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
-            if (checkedPhoneNumber != txtMobileNo.Text)
-            {
-                txtMobileNo.Text = checkedPhoneNumber;
-            }
-            this.userActionsListener.OnVerifyMobile(txtMobileNo.Text.ToString(), forceUpdatePhoneNo);
-        }
+        //    string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
+        //    if (checkedPhoneNumber != txtMobileNo.Text)
+        //    {
+        //        txtMobileNo.Text = checkedPhoneNumber;
+        //    }
+        //    this.userActionsListener.OnVerifyMobile(txtMobileNo.Text.ToString(), forceUpdatePhoneNo);
+        //}
 
         [OnClick(Resource.Id.btnSave)]
         void OnSave(object sender, EventArgs eventArgs)
         {
             if (ConnectionUtils.HasInternetConnection(this))
             {
-                string newMobile = txtMobileNo.Text.Trim();
+                string newMobile = "test";// txtMobileNo.Text.Trim();
                 this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
             }
             else
@@ -259,7 +245,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            //txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowProgress()
@@ -363,7 +349,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutMobileNo.Error = null;
+            //txtInputLayoutMobileNo.Error = null;
         }
 
         public void EnableSaveButton()
@@ -381,8 +367,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowMobile(string mobileNo)
         {
-            txtMobileNo.Text = mobileNo;
-            txtMobileNo.SetSelection(mobileNo.Length);
+            //txtMobileNo.Text = mobileNo;
+            //txtMobileNo.SetSelection(mobileNo.Length);
         }
 
         public override void OnBackPressed()
@@ -413,7 +399,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            //txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
 

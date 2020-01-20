@@ -4265,6 +4265,9 @@
     <Compile Include="Src\MyTNBService\Response\GetLocationListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetLocationListByKeywordResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\GetLocationListByKeywordRequest.cs" />
+    <Compile Include="Src\CompoundView\MobileNumberInputComponent.cs" />
+    <AndroidResource Include="Resources\layout\MobileNumberInputComponentLayout.axml" />
+    <AndroidResource Include="Resources\drawable\ph.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

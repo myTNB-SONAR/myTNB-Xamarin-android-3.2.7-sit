@@ -26,27 +26,12 @@
                 android:textColor="@color/tunaGrey"
                 android:visibility="gone"
                 android:text="@string/verify_mobile_no_info" />
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtInputLayoutMobileNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
+            <LinearLayout
+                android:id="@+id/mobileNumberFieldContainer"
                 android:layout_margin="18dp"
-                app:errorEnabled="true"
-                app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
-                <EditText
-                    android:id="@+id/txtMobileNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/placeholder_mobile"
-                    android:drawablePadding="6dp"
-                    android:hint="@string/my_account_hint_mobile_no"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:digits="0123456789+"
-                    android:importantForAutofill="noExcludeDescendants"
-                    android:textColor="@color/tunaGrey" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnSave"
