@@ -147,8 +147,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 NewAccount item = accountList[position];
                 mDeleteDialog = new AlertDialog.Builder(this)
                   .SetTitle(GetLabelByLanguage("removeAcct"))
-                  .SetMessage("Are you sure! Remove " + item.accountNumber + " from the list ?")
-                  .SetPositiveButton("Remove", (senderAlert, args) =>
+                  .SetPositiveButton(GetLabelCommonByLanguage("ok"), (senderAlert, args) =>
                   {
                       accountList.Remove(item);
                       adapter = new AccountListAdapter(this, accountList);
@@ -162,13 +161,21 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       }
                       mDeleteDialog.Dismiss();
                   })
-
-                 .SetNegativeButton("Cancel", (senderAlert, args) =>
+                 .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
                  {
                      mDeleteDialog.Dismiss();
                  })
                   .SetCancelable(false)
                   .Create();
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
+                }
+                else
+                {
+                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber)));
+                }
                 if (!mDeleteDialog.IsShowing)
                 {
                     mDeleteDialog.Show();
