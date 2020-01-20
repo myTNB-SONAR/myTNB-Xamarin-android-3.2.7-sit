@@ -593,7 +593,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
                         whatsNewRefreshLayout.Visibility = ViewStates.Gone;
 
-                        txtEmptyWhatsNew.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
+                        txtEmptyWhatsNew.Text = Utility.GetLocalizedLabel("WhatsNew", "noPromotions");
 
                         LinearLayout.LayoutParams whatsNewEmptyImgParams = whatsNewEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
                         whatsNewEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);

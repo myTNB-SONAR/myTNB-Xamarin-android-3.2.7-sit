@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 {
                     list.Add(new WhatsNewMenuModel()
                     {
-                        TabTitle = Utility.GetLocalizedLabel("Rewards", "viewAll"),
+                        TabTitle = Utility.GetLocalizedLabel("WhatsNew", "viewAll"),
                         Fragment = new WhatsNewItemFragment(),
                         FragmentListMode = WHATSNEWITEMLISTMODE.LOADED,
                         FragmentSearchString = ""
@@ -417,7 +417,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             }
         }
 
-        // Whats New TODO: Multilingual tutorial for What's New
         public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             List<NewAppModel> newList = new List<NewAppModel>();
@@ -427,8 +426,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.BottomLeft,
-                    ContentTitle = "Get caught up with TNB news.", // "Get caught up with TNB news.",
-                    ContentMessage = "Switch between the categories to view announcements and/or promotions relevant to you.", // "Switch between the categories to view announcements and/or promotions relevant to you.",
+                    ContentTitle = Utility.GetLocalizedLabel("WhatsNew", "tutorialCategoryTitle"), // "Get caught up with TNB news.",
+                    ContentMessage = Utility.GetLocalizedLabel("WhatsNew", "tutorialCategoryDesc"), // "Switch between the categories to view announcements and/or promotions relevant to you.",
                     ItemCount = 0,
                     DisplayMode = "",
                     IsButtonShow = false
@@ -438,8 +437,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.BottomLeft,
-                ContentTitle = "Check out what’s new and exciting.", // "Check out what’s new and exciting.",
-                ContentMessage = "Tap on the promotion or announcement for more details.", // "Tap on the promotion or announcement for more details.",
+                ContentTitle = Utility.GetLocalizedLabel("WhatsNew", "tutorialItemTitle"), // "Check out what’s new and exciting.",
+                ContentMessage = Utility.GetLocalizedLabel("WhatsNew", "tutorialItemDesc"), // "Tap on the promotion or announcement for more details.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true

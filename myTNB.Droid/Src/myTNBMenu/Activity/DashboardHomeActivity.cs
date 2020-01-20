@@ -152,7 +152,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill);
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
 
@@ -1660,8 +1659,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
                                 {
                                     urlSchemaCalled = false;
-                                    // Whats New TODO: Show failed tooltip
-                                    // ShowRewardFailedTooltip();
+                                    ShowWhatsNewFailedTooltip();
                                 }
                             }
                             catch (Exception e)
@@ -1812,7 +1810,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-            // Whats New TODO: Check schema for Whats New
             try
             {
                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
@@ -1846,18 +1843,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 }
                                 else
                                 {
-                                    // Whats New TODO: What's New No Available Tooltip
-                                    /*IsRootTutorialShown = true;
+                                    // Whats New TODO: What's New No Available Tooltip Multilingual
+                                    IsRootTutorialShown = true;
                                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                    //.SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
+                                    //.SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
+                                    //.SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                    .SetTitle("This announcement is over.")
+                                    .SetMessage("Check back often to find new announcements by TNB.")
+                                    .SetCTALabel("Show Me What’s New!")
                                     .SetCTAaction(() =>
                                     {
                                         IsRootTutorialShown = false;
-                                        OnSelectReward();
+                                        OnSelectWhatsNew();
                                     })
-                                    .Build().Show();*/
+                                    .Build().Show();
                                 }
                             }
                         }
@@ -1887,6 +1887,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SetBottomNavigationLabels();
         }
 
+        private void OnSelectWhatsNew()
+        {
+            bottomNavigationView.SelectedItemId = Resource.Id.menu_promotion;
+            SetBottomNavigationLabels();
+        }
+
         public void ShowRewardFailedTooltip()
         {
             try
@@ -1895,6 +1901,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
                     .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                    .SetCTAaction(() =>
+                    {
+                        IsRootTutorialShown = false;
+                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                        {
+                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            fragment.CallOnCheckShowHomeTutorial();
+                        }
+                    })
+                    .Build().Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowWhatsNewFailedTooltip()
+        {
+            // Whats New TODO: Whats New Failed Content Multilingual
+            try
+            {
+                IsRootTutorialShown = true;
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    //.SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
+                    //.SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
+                    .SetTitle("What's New is currently unavailable.")
+                    .SetMessage("But we'll be back soon so check back later!")
                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                     .SetCTAaction(() =>
                     {

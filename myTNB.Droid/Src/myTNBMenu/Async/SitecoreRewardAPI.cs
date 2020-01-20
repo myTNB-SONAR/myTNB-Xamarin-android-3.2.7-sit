@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         }
                         else
                         {
-                            getSiteCoreRewards = false;
+                            getSiteCoreRewards = true;
                         }
 
 						if (getSiteCoreRewards)
