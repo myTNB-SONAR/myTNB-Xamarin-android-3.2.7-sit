@@ -1847,7 +1847,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewExpiredTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewExpiredMsg"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableBtnText"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewExpiredBtnText"))
                                     .SetCTAaction(() =>
                                     {
                                         IsRootTutorialShown = false;
