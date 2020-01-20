@@ -78,5 +78,30 @@ namespace myTNB
             }
             return new CountryModel();
         }
+
+        public Dictionary<string, List<CountryModel>> GetCountryDictionary()
+        {
+            Dictionary<string, List<CountryModel>> countryDictionary = new Dictionary<string, List<CountryModel>>(); ;
+            List<CountryModel> countryList = GetCountryList();
+            if (countryList != null && countryList.Count > 0)
+            {
+                for (int i = 0; i < countryList.Count; i++)
+                {
+                    CountryModel countryInfo = countryList[i];
+                    string countryName = countryInfo.CountryName;
+                    string firstChar = countryName[0].ToString().ToUpper();
+                    if (countryDictionary.ContainsKey(firstChar))
+                    {
+                        List<CountryModel> list = countryDictionary[firstChar];
+                        list.Add(countryInfo);
+                    }
+                    else
+                    {
+                        countryDictionary.Add(firstChar, new List<CountryModel> { countryInfo });
+                    }
+                }
+            }
+            return countryDictionary;
+        }
     }
 }

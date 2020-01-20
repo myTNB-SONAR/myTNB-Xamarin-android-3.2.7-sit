@@ -1781,6 +1781,7 @@
     <Folder Include="Sitecore CMS\Model\Country\" />
     <Folder Include="Assets.xcassets\Flags-PH.imageset\" />
     <Folder Include="Assets.xcassets\Flags-ML.imageset\" />
+    <Folder Include="Profile Updates\Update Mobile Number\Select Country\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1823,6 +1824,7 @@
     <InterfaceDefinition Include="Profile Updates\Manage Accounts\ManageAccounts.storyboard" />
     <InterfaceDefinition Include="Profile Updates\Manage Accounts\Update Nickname\UpdateNickname.storyboard" />
     <InterfaceDefinition Include="Profile Updates\Update Mobile Number\UpdateMobileNoViewController.xib" />
+    <InterfaceDefinition Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2668,6 +2670,13 @@
     <Compile Include="Sitecore CMS\Model\Country\CountryModel.cs" />
     <Compile Include="Sitecore CMS\Service\CountryService.cs" />
     <Compile Include="Profile Updates\Update Mobile Number\CountryUtility.cs" />
+    <Compile Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryViewController.cs" />
+    <Compile Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryViewController.designer.cs">
+      <DependentUpon>SelectCountryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryConstants.cs" />
+    <Compile Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryCell.cs" />
+    <Compile Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

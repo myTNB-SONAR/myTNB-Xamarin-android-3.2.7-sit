@@ -9,15 +9,17 @@ namespace myTNB
     public class MobileNumberComponent
     {
         private CustomUIView _countryCodeView, _mobileNoView;
-        private UIView _parentView, _viewMobileNumber;
-        private UILabel _lblTitle;
+        private UIView _parentView, _viewMobileNumber, _viewCountyCodeLine, _viewMobileNoLine;
+        private UILabel _lblTitle, _lblCountryCode;
         private UITextField _txtFieldMobileNo;
+        private UIImageView _imgFlag, _imgDropDown;
         private TextFieldHelper _textFieldHelper;
         private nfloat _yLocation;
-        private string _countryCode = string.Empty;
+        private string _countryCode = string.Empty, _countryShortCode = "ML";
         private const string Flags = "Flags-{0}";
 
         public Action OnDone { set; private get; }
+        public Action OnSelect { set; private get; }
 
         public MobileNumberComponent(UIView parentView, nfloat yLocation)
         {
@@ -48,38 +50,47 @@ namespace myTNB
         {
             _countryCodeView = new CustomUIView(new CGRect(0, _lblTitle.Frame.GetMaxY() + GetScaledHeight(1)
                 , GetScaledWidth(82), GetScaledHeight(25)));
-            UIView viewLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _countryCodeView.Frame.Width, GetScaledHeight(1)));
+            _viewCountyCodeLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _countryCodeView.Frame.Width, GetScaledHeight(1)));
 
             string imgString = string.Format(Flags, CountryShortCode.ToUpper());
 
-            UIImageView imgFlag = new UIImageView(new CGRect(GetScaledWidth(6), GetScaledWidth(6)
-                , GetScaledWidth(17), GetScaledWidth(12)))
+            _imgFlag = new UIImageView(new CGRect(GetScaledWidth(6), GetScaledWidth(6)
+               , GetScaledWidth(17), GetScaledWidth(12)))
             {
                 BackgroundColor = UIColor.White,
                 Image = UIImage.FromBundle(imgString)
             };
-            UILabel lblCountryCode = new UILabel(new CGRect(imgFlag.Frame.GetMaxX() + GetScaledWidth(4), 0, GetScaledWidth(31), GetScaledHeight(24)))
+            _lblCountryCode = new UILabel(new CGRect(_imgFlag.Frame.GetMaxX() + GetScaledWidth(4), 0, GetScaledWidth(31), GetScaledHeight(24)))
             {
                 Font = TNBFont.MuseoSans_16_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Center,
                 Text = _countryCode
             };
-            UIImageView imgDropDown = new UIImageView(new CGRect(lblCountryCode.Frame.GetMaxX() + GetScaledWidth(1), 0
-                , GetScaledWidth(24), GetScaledWidth(24)))
+            _imgDropDown = new UIImageView(new CGRect(_lblCountryCode.Frame.GetMaxX(), 0
+               , GetScaledWidth(24), GetScaledWidth(24)))
             {
                 BackgroundColor = UIColor.White,
                 Image = UIImage.FromBundle("IC-Action-Dropdown")
             };
 
-            _countryCodeView.AddSubviews(new UIView[] { imgFlag, lblCountryCode, imgDropDown, viewLine });
+            _countryCodeView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (OnSelect != null)
+                {
+                    OnSelect.Invoke();
+                }
+            }));
+
+            _countryCodeView.AddSubviews(new UIView[] { _imgFlag, _lblCountryCode, _imgDropDown, _viewCountyCodeLine });
         }
 
         private void AddMobileNumberView()
         {
-            _mobileNoView = new CustomUIView(new CGRect(_countryCodeView.Frame.GetMaxX() + GetScaledWidth(4), _lblTitle.Frame.GetMaxY() + GetScaledHeight(1)
+            _mobileNoView = new CustomUIView(new CGRect(_countryCodeView.Frame.GetMaxX() + GetScaledWidth(4)
+                , _lblTitle.Frame.GetMaxY() + GetScaledHeight(1)
                 , _viewMobileNumber.Frame.Width - _countryCodeView.Frame.Width - GetScaledWidth(4), GetScaledHeight(25)));
-            UIView viewLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _mobileNoView.Frame.Width, GetScaledHeight(1)));
+            _viewMobileNoLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _mobileNoView.Frame.Width, GetScaledHeight(1)));
 
             _txtFieldMobileNo = new UITextField
             {
@@ -105,7 +116,7 @@ namespace myTNB
                 int totalLength = _countryCode.Length + (int)range.Location;
                 return !(totalLength == 16);
             };
-            _mobileNoView.AddSubviews(new UIView[] { viewLine, _txtFieldMobileNo });
+            _mobileNoView.AddSubviews(new UIView[] { _viewMobileNoLine, _txtFieldMobileNo });
         }
 
         private nfloat GetScaledHeight(nfloat val)
@@ -116,6 +127,19 @@ namespace myTNB
         private nfloat GetScaledWidth(nfloat val)
         {
             return ScaleUtility.GetScaledWidth(val);
+        }
+
+        private void AdjustView()
+        {
+            _imgDropDown.Frame = new CGRect(new CGPoint(_lblCountryCode.Frame.GetMaxX(), _imgDropDown.Frame.Y), _imgDropDown.Frame.Size);
+            _countryCodeView.Frame = new CGRect(_countryCodeView.Frame.Location, new CGSize(_imgDropDown.Frame.GetMaxX(), _countryCodeView.Frame.Height));
+            _viewCountyCodeLine.Frame = new CGRect(_viewCountyCodeLine.Frame.Location, new CGSize(_countryCodeView.Frame.Width, _viewCountyCodeLine.Frame.Height));
+
+            _mobileNoView.Frame = new CGRect(_countryCodeView.Frame.GetMaxX() + GetScaledWidth(4), _mobileNoView.Frame.Y
+                , _viewMobileNumber.Frame.Width - _countryCodeView.Frame.Width - GetScaledWidth(4)
+                , _mobileNoView.Frame.Height);
+            _txtFieldMobileNo.Frame = new CGRect(_txtFieldMobileNo.Frame.Location, new CGSize(_mobileNoView.Frame.Width, _txtFieldMobileNo.Frame.Height));
+            _viewMobileNoLine.Frame = new CGRect(_viewMobileNoLine.Frame.Location, new CGSize(_mobileNoView.Frame.Width, _viewMobileNoLine.Frame.Height));
         }
 
         public UIView GetUI()
@@ -148,10 +172,39 @@ namespace myTNB
             set
             {
                 _countryCode = value;
+                if (_lblCountryCode != null)
+                {
+                    _lblCountryCode.Text = _countryCode;
+                    nfloat newWidth = _lblCountryCode.GetLabelWidth(GetScaledWidth(100));
+                    if (newWidth < GetScaledWidth(31))
+                    {
+                        newWidth = GetScaledWidth(31);
+                    }
+                    _lblCountryCode.Frame = new CGRect(_lblCountryCode.Frame.Location, new CGSize(newWidth, _lblCountryCode.Frame.Height));
+                    AdjustView();
+                }
             }
             get { return _countryCode; }
         }
 
-        public string CountryShortCode { set; get; } = "ML";
+        public string CountryShortCode
+        {
+            set
+            {
+                if (value.IsValid())
+                {
+                    _countryShortCode = value;
+                }
+                if (_imgFlag != null)
+                {
+                    string imgString = string.Format(Flags, _countryShortCode.ToUpper());
+                    _imgFlag.Image = UIImage.FromBundle(imgString);
+                }
+            }
+            get
+            {
+                return _countryShortCode;
+            }
+        }
     }
 }

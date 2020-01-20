@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
+using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using myTNB.MyAccount;
@@ -19,15 +21,14 @@ namespace myTNB
         private CustomUIView _infoView;
         private UIView _cardView;
         private MobileNumberComponent _mobileNumberComponent;
-        private TextFieldHelper _textFieldHelper;
         private string _mobileNo;
 
         public override void ViewDidLoad()
         {
             PageName = MyAccountConstants.Pagename_UpdateMobileNumber;
             base.ViewDidLoad();
+            NotifCenterUtility.AddObserver((NSString)"OnCountrySelected", OnCountrySelected);
             View.BackgroundColor = MyTNBColor.LightGrayBG;
-            _textFieldHelper = new TextFieldHelper();
             SetNavigationBar();
             SetViews();
             SetCTA();
@@ -35,6 +36,22 @@ namespace myTNB
             if (IsFromLogin)
             {
                 DisplayToast(GetI18NValue(MyAccountConstants.I18N_VerifyDeviceMessage), true);
+            }
+        }
+
+        private void OnCountrySelected(NSNotification obj)
+        {
+            NSDictionary userInfo = obj.UserInfo;
+            CountryModel countryInfo = new CountryModel
+            {
+                CountryCode = userInfo.ValueForKey(new NSString("CountryCode")).ToString(),
+                CountryName = userInfo.ValueForKey(new NSString("CountryName")).ToString(),
+                CountryISDCode = userInfo.ValueForKey(new NSString("CountryISDCode")).ToString()
+            };
+            if (_mobileNumberComponent != null)
+            {
+                _mobileNumberComponent.CountryShortCode = countryInfo.CountryCode;
+                _mobileNumberComponent.CountryCode = countryInfo.CountryISDCode;
             }
         }
 
@@ -74,7 +91,8 @@ namespace myTNB
             _mobileNumberComponent = new MobileNumberComponent(_cardView, lblInfo.Frame.GetMaxY())
             {
                 OnDone = OnDone,
-                CountryCode = CountryCode
+                CountryCode = CountryCode,
+                OnSelect = OnSelect
             };
             UIView viewMobileNumber = _mobileNumberComponent.GetUI();
             AddInfoView();
@@ -180,6 +198,23 @@ namespace myTNB
                 string defaultCountry = "ml";
                 CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
                 return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
+            }
+        }
+
+        private Action OnSelect
+        {
+            get
+            {
+                return () =>
+                {
+                    SelectCountryViewController viewController = new SelectCountryViewController();
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    //PresentViewController(navController, true, null);
+                    NavigationController.PushViewController(viewController, true);
+                };
             }
         }
     }
