@@ -71,7 +71,7 @@ namespace myTNB.SitecoreCMS.Services
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
-                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.Path))
+                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.Path) || string.IsNullOrEmpty(item.DisplayName))
                     {
                         continue;
                     }
@@ -105,7 +105,7 @@ namespace myTNB.SitecoreCMS.Services
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
-                    if (item == null || string.IsNullOrEmpty(item.Id))
+                    if (item == null || string.IsNullOrEmpty(item.Id) || string.IsNullOrEmpty(item.DisplayName))
                     {
                         continue;
                     }
