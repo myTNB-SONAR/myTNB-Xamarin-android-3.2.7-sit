@@ -41,12 +41,7 @@ namespace myTNB
                 FetchRewards();
             }
             SetTabbarTitle();
-
-            if (!DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
-            {
-                UpdatePromotions();
-                DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
-            }
+            FetchWhatsNew();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -55,6 +50,7 @@ namespace myTNB
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             SetTabbarTitle();
             if (!AppLaunchMasterCache.IsRewardsDisabled) { FetchRewards(); }
+            FetchWhatsNew(true);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -332,23 +328,24 @@ namespace myTNB
             return index > -1;
         }
 
-        private void UpdatePromotions()
+        private void FetchWhatsNew(bool isForceUpdate = false)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() =>
+                if (NetworkUtility.isReachable)
                 {
-                    if (NetworkUtility.isReachable)
+                    InvokeInBackground(async () =>
                     {
-                        SitecoreServices.Instance.LoadWhatsNew().ContinueWith(task =>
+                        await SitecoreServices.Instance.LoadWhatsNew(isForceUpdate);
+                        NotifCenterUtility.PostNotificationName("OnReceiveWhatsNewNotification", new NSObject());
+                        InvokeOnMainThread(() =>
                         {
-                            InvokeOnMainThread(() =>
-                            {
-                                UpdatePromotionTabBarIcon();
-                            });
+                            UpdatePromotionTabBarIcon();
+                            DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                            //CheckForRewardDeepLink();
                         });
-                    }
-                });
+                    });
+                }
             });
         }
 

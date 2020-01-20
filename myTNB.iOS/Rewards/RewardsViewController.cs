@@ -199,6 +199,15 @@ namespace myTNB
 
             _refreshScreenView.AddSubview(refreshIcon);
 
+            UILabel title = new UILabel(new CGRect(BaseMarginWidth16, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(24F)))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                TextColor = UIColor.White,
+                Text = GetI18NValue(RewardsConstants.I18N_Title),
+                TextAlignment = UITextAlignment.Center
+            };
+            _refreshScreenView.AddSubview(title);
+
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetCommonI18NValue(Constants.Common_RefreshMessage)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(16F));

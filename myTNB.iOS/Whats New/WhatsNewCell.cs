@@ -9,7 +9,7 @@ namespace myTNB
     {
         private UIView _viewContainer, _readIndicator, _imgLoadingView, _imgView;
         public UIImageView BannerImageView;
-        public UILabel Title;
+        public UILabel Title, Date;
 
         public WhatsNewCell(IntPtr handle) : base(handle)
         {
@@ -52,6 +52,16 @@ namespace myTNB
             };
             _viewContainer.AddSubview(Title);
 
+            Date = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(BannerImageView.Frame, 16F)
+                , _viewContainer.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = TNBFont.MuseoSans_10_500,
+                TextColor = MyTNBColor.CharcoalGrey,
+                LineBreakMode = UILineBreakMode.TailTruncation
+            };
+            _viewContainer.AddSubview(Date);
+
             nfloat dotWidth = GetScaledWidth(8F);
             nfloat dotHeight = GetScaledHeight(8F);
             _readIndicator = new UIView(new CGRect(_viewContainer.Frame.Width - dotWidth - GetScaledWidth(12F)
@@ -71,11 +81,21 @@ namespace myTNB
             if (model != null)
             {
                 Title.Text = model.TitleOnListing;
+                Date.TextColor = model.IsRead ? MyTNBColor.WarmGrey : MyTNBColor.CharcoalGrey;
+                Date.Font = model.IsRead ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500;
+                Date.Text = WhatsNewServices.GetPublishedDate(model.StartDate);
+                CGSize dateSize = Date.SizeThatFits(new CGSize(_cellWidth, GetScaledHeight(16F)));
+                ViewHelper.AdjustFrameSetWidth(Date, dateSize.Width);
                 _readIndicator.Hidden = model.IsRead;
                 if (!model.IsRead)
                 {
-                    ViewHelper.AdjustFrameSetWidth(Title, _viewContainer.Frame.Width - BaseMarginWidth16 - _readIndicator.Frame.Width - GetScaledWidth(18F) - GetScaledWidth(12F));
+                    ViewHelper.AdjustFrameSetX(Date, _readIndicator.Frame.GetMinX() - Date.Frame.Width - GetScaledWidth(8F));
                 }
+                else
+                {
+                    ViewHelper.AdjustFrameSetX(Date, _viewContainer.Frame.Width - Date.Frame.Width - BaseMarginWidth16);
+                }
+                ViewHelper.AdjustFrameSetWidth(Title, Date.Frame.GetMinX() - GetScaledWidth(8F) - BaseMarginWidth16);
             }
         }
 

@@ -16,6 +16,7 @@ namespace myTNB
     {
         internal UIScrollView _loadingScrollView, _topBarScrollView, _mainScrollView;
         internal UIView _skeletonLoadingView, _emptyView, _refreshScreenView;
+        private UIView _tutorialContainer;
         private int _selectedCategoryIndex;
         private bool _isViewDidLoad, _hotspotIsOn;
 
@@ -28,6 +29,8 @@ namespace myTNB
         {
             PageName = WhatsNewConstants.Pagename_WhatsNew;
             base.ViewDidLoad();
+            _isViewDidLoad = true;
+            NotifCenterUtility.AddObserver((NSString)"OnReceiveWhatsNewNotification", OnReceiveWhatsNew);
             View.BackgroundColor = MyTNBColor.VeryLightPinkEight;
             InitiateView();
         }
@@ -35,23 +38,89 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+            {
+                CheckForUpdates();
+            }
+            else
+            {
+                ResetViews();
+                SetSkeletonLoading();
+            }
+            _isViewDidLoad = false;
+        }
+
+        private void OnEnterForeground(NSNotification notification)
+        {
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
+            {
+                if (topVc is RewardsViewController)
+                {
+                    OnChangeStatusBarFrame(null);
+                }
+            }
+        }
+
+        private void OnChangeStatusBarFrame(NSNotification notification)
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+                return;
+
+            SetFrames();
+            _hotspotIsOn = DeviceHelper.GetStatusBarHeight() > 20;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            CheckTutorialOverlay();
         }
 
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            Title = "What's New";
+            Title = GetI18NValue(WhatsNewConstants.I18N_Title);
         }
 
-
         #region INITIALIZATION METHODS
+        private void InitiateView()
+        {
+            SetNavigationBar();
+            SetSkeletonLoading();
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+            {
+                if (WhatsNewCache.WhatsNewIsAvailable)
+                {
+                    ProcessWhatsNew();
+                }
+                else
+                {
+                    SetRefreshScreen();
+                }
+            }
+        }
+
+        private void OnReceiveWhatsNew(NSNotification notification)
+        {
+            Debug.WriteLine("OnReceiveWhatsNewNotification");
+            if (WhatsNewCache.WhatsNewIsAvailable)
+            {
+                ProcessWhatsNew();
+            }
+            else
+            {
+                SetRefreshScreen();
+            }
+        }
+
         private void ProcessWhatsNew()
         {
             WhatsNewServices.FilterExpiredWhatsNew();
-            ValidateRewards();
+            ValidateWhatsNew();
         }
 
-        private void ValidateRewards()
+        private void ValidateWhatsNew()
         {
             InvokeOnMainThread(async () =>
             {
@@ -74,7 +143,7 @@ namespace myTNB
                         CreateCategoryTopBar();
                     }
                     _selectedCategoryIndex = 0;
-                    AddRewardsScrollView();
+                    AddWhatsNewScrollView();
                     _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                     //CheckTutorialOverlay();
                 }
@@ -83,23 +152,6 @@ namespace myTNB
                     SetEmptyView();
                 }
             });
-        }
-
-        private void InitiateView()
-        {
-            SetNavigationBar();
-            SetSkeletonLoading();
-            if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
-            {
-                if (WhatsNewCache.WhatsNewIsAvailable)
-                {
-                    ProcessWhatsNew();
-                }
-                else
-                {
-                    SetRefreshScreen();
-                }
-            }
         }
 
         private void ResetViews()
@@ -209,14 +261,14 @@ namespace myTNB
                 itemView.Layer.ShadowRadius = 8;
                 itemView.Layer.ShadowPath = UIBezierPath.FromRect(itemView.Bounds).CGPath;
 
-                UIView rewardImgView = new UIImageView(new CGRect(0, 0, itemView.Frame.Width, GetScaledHeight(112F)))
+                UIView whatsNewImgView = new UIImageView(new CGRect(0, 0, itemView.Frame.Width, GetScaledHeight(112F)))
                 {
                     BackgroundColor = MyTNBColor.PaleGreyThree,
                     ClipsToBounds = false
                 };
-                itemView.AddSubview(rewardImgView);
+                itemView.AddSubview(whatsNewImgView);
 
-                UIView titleView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(rewardImgView.Frame, 16F), itemView.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+                UIView titleView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(whatsNewImgView.Frame, 16F), itemView.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
                 {
                     BackgroundColor = MyTNBColor.PaleGreyThree
                 };
@@ -247,7 +299,7 @@ namespace myTNB
             nfloat iconHeight = GetScaledHeight(94F);
             UIImageView emptyIcon = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth), DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height + GetScaledHeight(88F), iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle(RewardsConstants.Img_EmptyRewardIcon) //Stub
+                Image = UIImage.FromBundle(WhatsNewConstants.Img_EmptyIcon)
             };
             UITextView emptyDesc = new UITextView(new CGRect(GetScaledWidth(32F), GetYLocationFromFrame(emptyIcon.Frame, 24F), ViewWidth - (GetScaledWidth(32F) * 2), GetScaledHeight(70F)))
             {
@@ -257,7 +309,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Center,
-                Text = "Looks like there's nothing new... Yet! Check back soon."
+                Text = GetI18NValue(WhatsNewConstants.I18N_EmptyDesc)
             };
             emptyDesc.TextContainer.LineFragmentPadding = 0F;
 
@@ -276,11 +328,20 @@ namespace myTNB
 
             UIImageView refreshIcon = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
-                Image = UIImage.FromBundle(RewardsConstants.IMG_Refresh), //Stub
+                Image = UIImage.FromBundle(WhatsNewConstants.Img_Refresh),
                 BackgroundColor = UIColor.Clear
             };
 
             _refreshScreenView.AddSubview(refreshIcon);
+
+            UILabel title = new UILabel(new CGRect(BaseMarginWidth16, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(24F)))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                TextColor = UIColor.White,
+                Text = "What's New",
+                TextAlignment = UITextAlignment.Center
+            };
+            _refreshScreenView.AddSubview(title);
 
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetCommonI18NValue(Constants.Common_RefreshMessage)
@@ -291,7 +352,7 @@ namespace myTNB
                 ForegroundColor = MyTNBColor.Grey,
                 ParagraphStyle = new NSMutableParagraphStyle
                 {
-                    Alignment = UITextAlignment.Left,
+                    Alignment = UITextAlignment.Center,
                     LineSpacing = 3.0f
                 }
             }, new NSRange(0, htmlBody.Length));
@@ -319,7 +380,7 @@ namespace myTNB
                 Frame = new CGRect(BaseMargin, GetYLocationFromFrame(desc.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen,
                 PageName = PageName,
-                EventName = RewardsConstants.EVENT_Refresh, //Stub
+                EventName = WhatsNewConstants.Event_Refresh,
                 Hidden = false
             };
             btnRefresh.SetTitle(GetCommonI18NValue(Constants.Common_RefreshNow), UIControlState.Normal);
@@ -461,8 +522,8 @@ namespace myTNB
         }
         #endregion
 
-        #region REWARDS SCROLL VIEW
-        private void AddRewardsScrollView()
+        #region WHAT'S NEW SCROLL VIEW
+        private void AddWhatsNewScrollView()
         {
             _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             var addtl = _hotspotIsOn ? 20F : 0F;
@@ -510,14 +571,14 @@ namespace myTNB
 
                 ViewHelper.AdjustFrameSetX(viewContainer, i * width);
 
-                var filteredList = i == 0 ? _whatsNewList : FilteredWhatsNew(i);
+                var filteredList = i == 0 ? _whatsNewList : FilterWhatsNew(i);
                 whatsNewTableView.Source = new WhatsNewDataSource(this, filteredList, GetI18NValue);
                 whatsNewTableView.ReloadData();
             }
             _mainScrollView.ContentSize = new CGSize(_mainScrollView.Frame.Width * _categoryList.Count, _mainScrollView.Frame.Height);
         }
 
-        private List<WhatsNewModel> FilteredWhatsNew(int index)
+        private List<WhatsNewModel> FilterWhatsNew(int index)
         {
             List<WhatsNewModel> filteredWhatsNew = new List<WhatsNewModel>();
             var activeCatId = _categoryList[index].CategoryID;
@@ -587,16 +648,13 @@ namespace myTNB
                                 bool needsUpdate = WhatsNewServices.FilterExpiredWhatsNew();
                                 if (needsUpdate)
                                 {
-                                    ValidateRewards();
+                                    ValidateWhatsNew();
                                 }
                                 else
                                 {
                                     if (!_isViewDidLoad)
                                     {
-                                        //props_needsUpdate = true;
-                                        //props_rewardsList = _rewardsList;
-                                        //props_index = _selectedCategoryIndex;
-                                        //OnTableReload();
+                                        OnReloadTableAction(_selectedCategoryIndex);
                                     }
                                 }
                             }
@@ -621,7 +679,7 @@ namespace myTNB
 
         }
 
-        public void OnRewardSelection(WhatsNewModel whatsNew)
+        public void OnItemSelection(WhatsNewModel whatsNew, int index)
         {
             if (whatsNew != null)
             {
@@ -632,7 +690,82 @@ namespace myTNB
                     ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                 };
                 PresentViewController(navController, true, null);
+                OnUpdateReadWhatsNew(whatsNew, index);
             }
+        }
+
+        private void OnUpdateReadWhatsNew(WhatsNewModel whatsNew, int index)
+        {
+            if (whatsNew == null)
+                return;
+
+            var entity = WhatsNewEntity.GetItem(whatsNew.ID);
+            if (entity != null)
+            {
+                var entityModel = whatsNew.ToEntity();
+                entityModel.IsRead = true;
+                WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                whatsNewEntity.UpdateItem(entityModel);
+
+                int indx = _whatsNewList.FindIndex(x => x.ID == entityModel.ID);
+                if (indx > -1 && indx < _whatsNewList.Count)
+                {
+                    _whatsNewList[indx].IsRead = entityModel.IsRead;
+                    OnReloadTableAction(index);
+                }
+            }
+        }
+
+        private void OnReloadTableAction(int index)
+        {
+            if (_whatsNewList != null && _whatsNewList.Count > 0 && index > -1 && index < _whatsNewList.Count)
+            {
+                WhatsNewModel whatsNew = _whatsNewList[index];
+                var catIndx = _categoryList.FindIndex(x => x.CategoryID.Equals(whatsNew.CategoryID));
+
+                if (catIndx > -1 && catIndx < _mainScrollView.Subviews.Count())
+                {
+                    UIView viewContainer = _mainScrollView.Subviews[catIndx];
+                    if (viewContainer != null && viewContainer.Subviews.Count() > 0)
+                    {
+                        if (viewContainer.Subviews[0] is UITableView table)
+                        {
+                            var filteredList = catIndx == 0 ? _whatsNewList : FilterWhatsNew(catIndx);
+                            table.ClearsContextBeforeDrawing = true;
+                            table.Source = new WhatsNewDataSource(this, filteredList, GetI18NValue);
+                            UIView.PerformWithoutAnimation(() =>
+                            {
+                                table.BeginUpdates();
+                                table.ReloadData();
+                                table.EndUpdates();
+                            });
+                        }
+                    }
+                }
+
+                UIView viewAllView = _mainScrollView.Subviews[0];
+                if (viewAllView != null && viewAllView.Subviews.Count() > 0)
+                {
+                    if (viewAllView.Subviews[0] is UITableView table)
+                    {
+                        table.ClearsContextBeforeDrawing = true;
+                        table.Source = new WhatsNewDataSource(this, _whatsNewList, GetI18NValue);
+                        UIView.PerformWithoutAnimation(() =>
+                        {
+                            table.BeginUpdates();
+                            table.ReloadData();
+                            table.EndUpdates();
+                        });
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region TUTORIAL OVERLAY
+        public void CheckTutorialOverlay()
+        {
+
         }
         #endregion
     }

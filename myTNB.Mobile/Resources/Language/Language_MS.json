@@ -906,6 +906,11 @@
   },
   "WhatsNew": {
     "title": "Terkini",
-    "noPromotions": "Belum ada berita baharu... Cuba semak sebentar lagi!"
+    "noPromotions": "Belum ada berita baharu... Cuba semak sebentar lagi!",
+    "viewAll": "Lihat Semua",
+    "tutorialCategoryTitle":"Dapatkan Informasi Terkini TNB.",
+    "tutorialCategoryDesc": "Lihat pelbagai kategori untuk ketahui pengumuman dan/atau promosi yang berkenaan dengan anda.",
+    "tutorialItemTitle":"Lihat Tawaran Terbaharu Dan Menarik.",
+    "tutorialItemDesc": "Tekan pada promosi atau pengumuman untuk butiran lanjut."
   }
 }

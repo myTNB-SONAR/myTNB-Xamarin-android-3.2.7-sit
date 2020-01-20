@@ -120,9 +120,6 @@ namespace myTNB.DataManager
         public List<OtherFeedbackTypeDataModel> OtherFeedbackType = new List<OtherFeedbackTypeDataModel>();
         public bool IsPreloginFeedback = false;
 
-        //Promotion
-        public bool IsPromotionFirstLoad = false;
-
         //WhatsNew
         public bool IsWhatsNewLoading = false;
 
@@ -174,11 +171,14 @@ namespace myTNB.DataManager
             DueEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
             PromotionsEntity.DeleteTable();
+            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+            whatsNewEntity.DeleteTable();
             RewardsEntity rewardsEntity = new RewardsEntity();
             rewardsEntity.DeleteTable();
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.LoginState);
             sharedPreference.SetString("", "SiteCorePromotionTimeStamp");
+            sharedPreference.SetString("", "SiteCoreWhatsNewTimeStamp");
             sharedPreference.SetString("", "SiteCoreRewardsTimeStamp");
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.PhoneVerification);
             sharedPreference.Synchronize();
@@ -244,7 +244,6 @@ namespace myTNB.DataManager
             SelectedLocationTypeTitle = "All";
             isLocationSearch = false;
 
-            IsPromotionFirstLoad = false;
             IsWhatsNewLoading = false;
             IsRewardsLoading = false;
             IsFromRewardsDeeplink = false;
@@ -259,6 +258,7 @@ namespace myTNB.DataManager
             //Reset SSMR Onboarding
             SSMRAccounts.IsHideOnboarding = true; //Always hide ssmr onboarding
             SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
+            WhatsNewCache.Clear();
             RewardsCache.Clear();
         }
 

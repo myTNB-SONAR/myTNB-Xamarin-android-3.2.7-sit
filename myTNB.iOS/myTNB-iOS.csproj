@@ -1135,9 +1135,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\notificationUnreadCountEmpty%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\notificationUnreadCountCopy13%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\notificationUnreadCountCopy13%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%403x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\white%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\white%403x.png" />
@@ -1260,6 +1257,12 @@
     <ImageAsset Include="Assets.xcassets\Loading.imageset\icButtonResendLoadedGreen%403x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%402x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%403x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\Promotion-Default%402x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\Promotion-Default%403x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Empty.imageset\WhatsNew_Empty%402x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Empty.imageset\WhatsNew_Empty%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1731,7 +1734,6 @@
     <Folder Include="Model\Language\" />
     <Folder Include="Assets.xcassets\Dpc-Indicator.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Rearrange Account\" />
-    <Folder Include="Assets.xcassets\Promotion-Default.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Planned.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Popup.imageset\" />
@@ -1773,6 +1775,8 @@
     <Folder Include="Sitecore CMS\Model\Whats New\" />
     <Folder Include="Whats New\Whats New Details\" />
     <Folder Include="Common\" />
+    <Folder Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\WhatsNew_Empty.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

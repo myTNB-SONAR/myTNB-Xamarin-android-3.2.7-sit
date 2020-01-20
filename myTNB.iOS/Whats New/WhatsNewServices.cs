@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 
@@ -44,6 +45,22 @@ namespace myTNB
                 }
             }
             return res;
+        }
+
+        public static string GetPublishedDate(string publishedDate)
+        {
+            string strPublishedDate = string.Empty;
+            try
+            {
+                DateTime? pDate = DateHelper.GetDateWithoutSeparator(publishedDate);
+                DateTime? pDateValue = pDate.Value.ToLocalTime();
+                strPublishedDate = pDateValue.Value.ToString(WhatsNewConstants.Format_Date, DateHelper.DateCultureInfo);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Parse Error: " + e.Message);
+            }
+            return strPublishedDate;
         }
     }
 }

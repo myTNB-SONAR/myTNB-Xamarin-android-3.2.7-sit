@@ -39,6 +39,7 @@ namespace myTNB.SitecoreCMS
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
+                WhatsNewCache.ClearImages();
                 RewardsCache.ClearImages();
             }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
@@ -639,13 +640,13 @@ namespace myTNB.SitecoreCMS
 
                 if (needsUpdate || forceUpdate)
                 {
-                    WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
-                    whatsNewEntity.DeleteTable();
-                    whatsNewEntity.CreateTable();
-
                     WhatsNewResponseModel whatsNewResponse = iService.GetWhatsNewItems();
                     if (whatsNewResponse != null)
                     {
+                        WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                        whatsNewEntity.DeleteTable();
+                        whatsNewEntity.CreateTable();
+
                         WhatsNewCache.WhatsNewIsAvailable = true;
                         if (whatsNewResponse.Data != null && whatsNewResponse.Data.Count > 0)
                         {
@@ -680,6 +681,7 @@ namespace myTNB.SitecoreCMS
                 {
                     WhatsNewCache.WhatsNewIsAvailable = true;
                 }
+                Debug.WriteLine("LoadWhatsNew Done");
             });
         }
 

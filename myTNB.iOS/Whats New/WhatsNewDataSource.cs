@@ -127,8 +127,7 @@ namespace myTNB.WhatsNew
             {
                 if (_controller != null)
                 {
-                    _controller.OnRewardSelection(_whatsNewList[index]);
-                    //_controller.SetReloadProperties(_whatsNewList, index);
+                    _controller.OnItemSelection(_whatsNewList[index], index);
                 }
             }
         }
