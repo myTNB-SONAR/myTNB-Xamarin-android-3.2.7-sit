@@ -1843,15 +1843,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 }
                                 else
                                 {
-                                    // Whats New TODO: What's New No Available Tooltip Multilingual
                                     IsRootTutorialShown = true;
                                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    //.SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
-                                    //.SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
-                                    //.SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
-                                    .SetTitle("This announcement is over.")
-                                    .SetMessage("Check back often to find new announcements by TNB.")
-                                    .SetCTALabel("Show Me What’s New!")
+                                    .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewExpiredTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewExpiredMsg"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableBtnText"))
                                     .SetCTAaction(() =>
                                     {
                                         IsRootTutorialShown = false;
@@ -1921,15 +1917,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowWhatsNewFailedTooltip()
         {
-            // Whats New TODO: Whats New Failed Content Multilingual
             try
             {
                 IsRootTutorialShown = true;
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                    //.SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
-                    //.SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
-                    .SetTitle("What's New is currently unavailable.")
-                    .SetMessage("But we'll be back soon so check back later!")
+                    .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableMsg"))
                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                     .SetCTAaction(() =>
                     {
