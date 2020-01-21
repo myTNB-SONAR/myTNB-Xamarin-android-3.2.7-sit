@@ -23,7 +23,7 @@ namespace myTNB
         private UIImage _loadingImg = UIImage.FromBundle("Loading");
         private UIImage _loadedImg = UIImage.FromBundle("Loaded");
 
-        private UILabel _lblError, _resendLabel;
+        private UILabel _lblError, _resendLabel, _lblPinSent;
         private UIImageView _loadingImage;
         private UITapGestureRecognizer _onResendPin;
 
@@ -113,6 +113,8 @@ namespace myTNB
             _segment.BackgroundColor = MyTNBColor.FreshGreen;
             _loadingImage.Frame = new CGRect(25, 13, 24, 24);
             _resendLabel.Frame = new CGRect(55, 15, 85 + margin, 20);
+            _segment.Layer.CornerRadius = 5.0f;
+            _loadingView.Layer.CornerRadius = 5.0f;
             _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
             _resendLabel.TextColor = UIColor.White;
             _loadingImage.Image = _loadedImg;
@@ -337,15 +339,17 @@ namespace myTNB
             _viewPinSent.Layer.CornerRadius = 2.0f;
             _viewPinSent.Hidden = true;
 
-            UILabel lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32));
-            lblPinSent.TextAlignment = UITextAlignment.Left;
-            lblPinSent.Font = MyTNBFont.MuseoSans12_300;
-            lblPinSent.TextColor = MyTNBColor.TunaGrey();
-            lblPinSent.Text = GetI18NValue(ForgotPasswordConstants.I18N_ResendPinMessage);
-            lblPinSent.Lines = 0;
-            lblPinSent.LineBreakMode = UILineBreakMode.WordWrap;
+            _lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = MyTNBFont.MuseoSans12_300,
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = GetI18NValue(ForgotPasswordConstants.I18N_ResendPinMessage),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
 
-            _viewPinSent.AddSubview(lblPinSent);
+            _viewPinSent.AddSubview(_lblPinSent);
 
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(_viewPinSent);
@@ -355,6 +359,13 @@ namespace myTNB
         {
             _viewPinSent.Hidden = false;
             _viewPinSent.Alpha = 1.0f;
+            if (_lblPinSent != null && _resetCodeList != null && _resetCodeList.d != null && _resetCodeList.d.IsSuccess
+                && _resetCodeList.d.DisplayMessage.IsValid())
+            {
+                _lblPinSent.Text = _resetCodeList.d.DisplayMessage;
+            }
+            nfloat newHeight = _lblPinSent.GetLabelHeight(64);
+            _lblPinSent.Frame = new CGRect(_lblPinSent.Frame.X, (64 - newHeight) / 2, _lblPinSent.Frame.Width, newHeight);
             UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _viewPinSent.Alpha = 0.0f;
@@ -449,6 +460,8 @@ namespace myTNB
                         _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
                         _resendLabel = new UILabel(new CGRect(41, 15, 100 + margin, 20));
                         _segment = new UIView(new CGRect(0, 0, 0, 48));
+                        _segment.Layer.CornerRadius = 5.0f;
+                        _loadingView.Layer.CornerRadius = 5.0f;
                         _loadingView.AddSubview(_segment);
                         _loadingView.AddSubview(_loadingImage);
                         _loadingView.AddSubview(_resendLabel);

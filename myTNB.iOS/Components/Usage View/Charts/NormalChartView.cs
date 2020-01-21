@@ -200,9 +200,11 @@ namespace myTNB
                 ClipsToBounds = true,
                 BackgroundColor = tariffCount > 0 && !isDPC ? UIColor.Clear : UIColor.White
             };
+
             viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;
             if (tariffCount > 0 && !isDPC)
             {
+                baseHeigt -= ((GetTariffWithValueCount(tariffList) - 1) * GetHeightByScreenSize(1));
                 for (int i = 0; i < tariffList.Count; i++)
                 {
                     TariffItemModel item = tariffList[i];
