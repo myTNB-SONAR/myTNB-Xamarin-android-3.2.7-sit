@@ -156,5 +156,38 @@ namespace myTNB
             }
             return formattedMobileNo;
         }
+
+        public string RemoveCountryCode(string mobileNo)
+        {
+            if (string.IsNullOrEmpty(mobileNo))
+            {
+                return string.Empty;
+            }
+
+            string formattedMobileNo = string.Empty;
+            string prefix = TNBGlobal.MobileNoPrefix;
+
+            if (mobileNo.StartsWith("+60", StringComparison.InvariantCulture))
+            {
+                formattedMobileNo = mobileNo;
+            }
+            else if (mobileNo.StartsWith("+0", StringComparison.InvariantCulture))
+            {
+                formattedMobileNo = prefix + mobileNo.Substring(2);
+            }
+            else if (mobileNo.StartsWith("+1", StringComparison.InvariantCulture) || mobileNo.StartsWith("0", StringComparison.InvariantCulture))
+            {
+                formattedMobileNo = prefix + mobileNo.Substring(1);
+            }
+            else if (mobileNo.StartsWith("60", StringComparison.InvariantCulture) && Array.Exists(TNBGlobal.MobileNumberLimits, s => s == mobileNo.Substring(2).Length))
+            {
+                formattedMobileNo = prefix + mobileNo.Substring(2);
+            }
+            else
+            {
+                formattedMobileNo = prefix + mobileNo;
+            }
+            return formattedMobileNo;
+        }
     }
 }

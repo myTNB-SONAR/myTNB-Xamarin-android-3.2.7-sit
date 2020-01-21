@@ -641,9 +641,10 @@ namespace myTNB
 
         private void UpdateMobileNumber()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
-            UpdateMobileNumberViewController viewController =
-                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController()
+            {
+                IsUpdate = true
+            };
             UINavigationController navController = new UINavigationController(viewController)
             {
                 ModalPresentationStyle = UIModalPresentationStyle.FullScreen

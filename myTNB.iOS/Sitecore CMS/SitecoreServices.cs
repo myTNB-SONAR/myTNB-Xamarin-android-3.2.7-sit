@@ -27,20 +27,23 @@ namespace myTNB.SitecoreCMS
         public async Task OnExecuteSitecoreCall(bool isforcedUpdate = false)
         {
             _isForcedUpdate = isforcedUpdate;
-            List<Task> taskList = new List<Task>
-                {
-                    LoadMeterReadSSMRWalkthrough(),
-                    LoadMeterReadSSMRWalkthroughV2(),
-                    LoadBillDetailsTooltip(),
-                    //LoadSSMRWalkthrough(),
-                    LoadTermsAndCondition(),
-                    LoadFAQs()
-                };
+            List<Task> taskList = new List<Task>{
+                LoadMeterReadSSMRWalkthrough()
+                , LoadMeterReadSSMRWalkthroughV2()
+                , LoadBillDetailsTooltip()
+                //, LoadSSMRWalkthrough()
+                , LoadTermsAndCondition()
+                , LoadFAQs()
+             };
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
                 RewardsCache.ClearImages();
+            }
+            else
+            {
+                taskList.Add(LoadCountry());
             }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
@@ -833,6 +836,66 @@ namespace myTNB.SitecoreCMS
             });
 
             return isDone;
+        }
+
+        public Task LoadCountry()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                CountryTimeStampResponseModel timeStamp = iService.GetCountryTimestampItem();
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new CountryTimeStampResponseModel();
+                    timeStamp.Data = new List<CountryTimeStamp> { new CountryTimeStamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "CountryTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    CountryResponseModel languageItems = iService.GetCountryItems();
+                    if (languageItems != null && languageItems.Data != null
+                        && languageItems.Data.Count > 0 && languageItems.Data[0] != null)
+                    {
+                        CountryDataModel item = languageItems.Data[0];
+                        if (item.CountryFile.IsValid())
+                        {
+                            string content = GetDataFromFile(item.CountryFile);
+                            CountryManager.Instance.SetCountries(content);
+                            CountryUtility.CountryContent = content;
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "CountryTimeStamp");
+                        }
+                        else
+                        {
+                            CountryManager.Instance.SetCountries();
+                            CountryUtility.CountryContent = CountryManager.Instance.CountryString;
+                        }
+                        Debug.WriteLine("LoadCountry Done");
+                    }
+                }
+                else
+                {
+                    string content = CountryUtility.CountryContent;
+                    if (content.IsValid())
+                    {
+                        CountryManager.Instance.SetCountries(content);
+                    }
+                    else
+                    {
+                        CountryManager.Instance.SetCountries();
+                    }
+                    CountryUtility.CountryContent = CountryManager.Instance.CountryString;
+                }
+            });
         }
     }
 }

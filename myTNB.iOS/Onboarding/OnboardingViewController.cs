@@ -81,17 +81,16 @@ namespace myTNB
 
         private void ShowUpdateMobileNumber()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
-            UpdateMobileNumberViewController viewController =
-                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
-            if (viewController != null)
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController()
             {
-                viewController.WillHideBackButton = true;
-                viewController.IsFromLogin = true;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
-            }
+                WillHideBackButton = true,
+                IsFromLogin = true
+            };
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
+            PresentViewController(navController, true, null);
         }
 
         #region Language

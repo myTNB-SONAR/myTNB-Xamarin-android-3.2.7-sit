@@ -207,8 +207,10 @@ namespace myTNB
         }
         #endregion
         #region Toast
-        public void DisplayToast(string message)
+        public void DisplayToast(string message, bool isWindow = false)
         {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
             if (_viewToast == null)
             {
                 _viewToast = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48))
@@ -238,7 +240,14 @@ namespace myTNB
 
                 _viewToast.AddSubview(_lblToastDetails);
                 AddSwipeGestureForToast();
-                View.AddSubviews(new UIView[] { _viewToast, _viewToastOverlay });
+                if (isWindow)
+                {
+                    currentWindow.AddSubviews(new UIView[] { _viewToast, _viewToastOverlay });
+                }
+                else
+                {
+                    View.AddSubviews(new UIView[] { _viewToast, _viewToastOverlay });
+                }
             }
             _lblToastDetails.Text = message ?? string.Empty;
 
@@ -252,7 +261,14 @@ namespace myTNB
                 , 32, _viewToast.Frame.Width, size.Height + 32);
 
             _viewToast.Hidden = false;
-            View.BringSubviewToFront(_viewToast);
+            if (isWindow)
+            {
+                currentWindow.BringSubviewToFront(_viewToast);
+            }
+            else
+            {
+                View.BringSubviewToFront(_viewToast);
+            }
             _viewToastOverlay.Hidden = false;
             if (!_isAnimating)
             {

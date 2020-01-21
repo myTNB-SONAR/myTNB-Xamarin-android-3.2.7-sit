@@ -133,6 +133,11 @@
                     public const string LanguageFile = "Language File";
                 }
 
+                public struct Country
+                {
+                    public const string CountryFile = "Language File";//"Country File";
+                }
+
                 public struct Rewards
                 {
                     public const string Category = "RewardCategory";
@@ -201,6 +206,7 @@
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
+                public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
             }
         }
     }

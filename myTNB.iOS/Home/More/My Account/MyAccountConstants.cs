@@ -25,6 +25,12 @@
         public static string I18N_VerifyDeviceMessage = "verifyDeviceMessage";
         public static string I18N_Details = "details";
         public static string I18N_UpdateMobileTitle = "updateMobileNumberTitle";
+        public static string I18N_InfoTitle = "infoTitle";
+        public static string I18N_InfoPopupTitle = "infoPopupTitle_";
+        public static string I18N_InfoPopupMessage = "infoPopupMessage_";
+
+        public static string Suffix_Update = "Update";
+        public static string Suffix_Verify = "Verify";
 
         public static string I18N_CurrentPassword = "currentPassword";
         public static string I18N_NewPassword = "newPassword";
