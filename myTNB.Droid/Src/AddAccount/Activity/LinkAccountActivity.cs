@@ -18,7 +18,6 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -51,7 +50,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         private AlertDialog mNoAccountFoundDialog;
 
         private AlertDialog mGetAccountsProgressDialog;
-        private LoadingOverlay loadingOverlay;
         private MaterialDialog mAddAccountProgressDialog;
         private Snackbar mSnackBar;
         Snackbar mErrorMessageSnackBar;
@@ -111,13 +109,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -129,10 +121,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

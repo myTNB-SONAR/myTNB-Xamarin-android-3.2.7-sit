@@ -7,7 +7,6 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
-using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Activity;
@@ -17,11 +16,9 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.ResetPassword.MVP;
 using myTNB_Android.Src.ResetPasswordSuccess.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Runtime;
-using static Android.Views.View;
 
 namespace myTNB_Android.Src.ResetPassword.Activity
 {
@@ -65,7 +62,6 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         string enteredPassword, enteredUserName;
         const string PAGE_ID = "ResetPassword";
-        private LoadingOverlay loadingOverlay;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -272,13 +268,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -290,10 +280,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

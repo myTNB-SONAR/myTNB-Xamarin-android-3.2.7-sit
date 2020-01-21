@@ -17,7 +17,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -75,7 +74,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         View spaceOthers;
 
         MaterialDialog progressDialog;
-        LoadingOverlay loadingOverlay;
 
         [BindView(Resource.Id.feedbackMenuHeaderImage)]
         ImageView feedbackMenuHeaderImage;
@@ -290,20 +288,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void ShowProgressDialog()
         {
-            //if (progressDialog != null && !progressDialog.IsShowing)
-            //{
-            //    progressDialog.Show();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {
@@ -313,16 +300,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void HideProgressDialog()
         {
-            //if (progressDialog != null && progressDialog.IsShowing)
-            //{
-            //    progressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {

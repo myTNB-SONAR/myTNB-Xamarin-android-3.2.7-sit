@@ -3,14 +3,12 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Preferences;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;
@@ -22,9 +20,7 @@ using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -101,8 +97,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
-
-        private LoadingOverlay loadingOverlay;
 
         private void UpdateLabels()
         {
@@ -623,13 +617,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -641,10 +629,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

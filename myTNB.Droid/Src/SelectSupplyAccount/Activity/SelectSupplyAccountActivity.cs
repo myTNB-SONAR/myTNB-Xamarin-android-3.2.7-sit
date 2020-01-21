@@ -8,20 +8,17 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Dashboard.Adapter;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SelectSupplyAccount.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
@@ -44,7 +41,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         SelectSupplyAccountAdapter accountListAdapter;
 
         MaterialDialog materialDialog;
-        private LoadingOverlay loadingOverlay;
 
         const string PAGE_ID = "SelectElectricityAccounts";
 
@@ -242,28 +238,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         public void ShowProgressDialog()
         {
-            //if (materialDialog != null && materialDialog.IsShowing)
-            //{
-            //    materialDialog.Dismiss();
-            //}
-
-            //materialDialog = new MaterialDialog.Builder(this)
-            //    .Title(GetString(Resource.String.dashboard_select_supply_account_dialog_progress_title))
-            //    .Content(GetString(Resource.String.dashboard_select_supply_account_dialog_progress_content))
-            //    .Progress(true, 0)
-            //    .Cancelable(false)
-            //    .Build();
-
-            //materialDialog.Show();
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -273,16 +250,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         public void HideShowProgressDialog()
         {
-            //if (materialDialog != null && materialDialog.IsShowing)
-            //{
-            //    materialDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

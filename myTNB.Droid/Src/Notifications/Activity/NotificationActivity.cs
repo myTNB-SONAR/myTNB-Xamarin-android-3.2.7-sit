@@ -17,7 +17,6 @@ using myTNB_Android.Src.Notifications.Adapter;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Notifications.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -26,7 +25,6 @@ using System.Runtime;
 using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
 using static Android.Widget.CompoundButton;
-using Android.Graphics;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Activity;
 
@@ -100,7 +98,6 @@ namespace myTNB_Android.Src.Notifications.Activity
         NotificationContract.IUserActionsListener userActionsListener;
         NotificationPresenter mPresenter;
         MaterialDialog mProgressDialog, mQueryProgressDialog;
-        private LoadingOverlay loadingOverlay;
         ItemTouchHelper itemTouchHelper;
         private static NotificationSwipeDeleteCallback notificationSwipeDelete;
         private static EditNotificationStates editState = EditNotificationStates.HIDE;
@@ -511,13 +508,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -597,10 +588,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -818,13 +806,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -836,10 +818,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

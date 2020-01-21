@@ -13,7 +13,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressButton;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Linq;
@@ -34,8 +33,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         private ProgressGenerator progressGenerator;
 
         private MaterialDialog mVerificationProgressDialog;
-
-        private LoadingOverlay loadingOverlay;
 
         private Snackbar mSnackBar;
 
@@ -360,19 +357,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowProgressDialog()
         {
-            //if (mVerificationProgressDialog != null && !mVerificationProgressDialog.IsShowing)
-            //{
-            //    mVerificationProgressDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -382,16 +369,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void HideProgressDialog()
         {
-            //if (mVerificationProgressDialog != null && mVerificationProgressDialog.IsShowing)
-            //{
-            //    mVerificationProgressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

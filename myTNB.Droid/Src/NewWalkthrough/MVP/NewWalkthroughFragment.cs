@@ -1,23 +1,13 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Android.Content;
-using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {

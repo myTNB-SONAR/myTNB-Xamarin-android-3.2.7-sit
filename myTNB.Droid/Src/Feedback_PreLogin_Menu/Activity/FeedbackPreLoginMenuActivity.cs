@@ -16,7 +16,6 @@ using myTNB_Android.Src.Feedback_PreLogin_Menu.MVP;
 using myTNB_Android.Src.Feedback_PreLogin_Others.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -86,7 +85,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         FeedbackPreLoginMenuPresenter mPresenter;
 
         MaterialDialog progressDialog;
-        LoadingOverlay loadingOverlay;
 
         string feedbackBillRelatedTitle = "";
         string feedbackStreetLampTitle = "";
@@ -247,19 +245,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
         public void ShowProgressDialog()
         {
-            //if (progressDialog != null && !progressDialog.IsShowing)
-            //{
-            //    progressDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -269,16 +257,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
         public void HideProgressDialog()
         {
-            //if (progressDialog != null && progressDialog.IsShowing)
-            //{
-            //    progressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

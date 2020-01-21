@@ -12,7 +12,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -34,8 +33,6 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         private RearrangeAccountListView listView;
 
         List<CustomerBillingAccount> items = new List<CustomerBillingAccount>();
-
-        private LoadingOverlay loadingOverlay;
 
         private string PAGE_ID = "RearrangeAccount";
 
@@ -185,13 +182,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -203,10 +194,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

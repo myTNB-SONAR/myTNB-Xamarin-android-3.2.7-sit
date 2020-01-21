@@ -14,7 +14,6 @@ using myTNB_Android.Src.FeedbackDetails.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -45,8 +44,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         SelectSubmittedFeedbackPresenter mPresenter;
 
         MaterialDialog progressDialog;
-        LoadingOverlay loadingOverlay;
-
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -156,19 +153,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ShowProgressDialog()
         {
-            //if (progressDialog != null && !progressDialog.IsShowing)
-            //{
-            //    progressDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -178,16 +165,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void HideProgressDialog()
         {
-            //if (progressDialog != null && progressDialog.IsShowing)
-            //{
-            //    progressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

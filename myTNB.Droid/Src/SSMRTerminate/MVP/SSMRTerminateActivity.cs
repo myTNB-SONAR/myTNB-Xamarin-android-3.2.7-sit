@@ -7,7 +7,6 @@ using Android.Util;
 using Android.Views;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Utils;
 using CheeseBind;
@@ -15,9 +14,7 @@ using Android.Widget;
 using Android.Support.Design.Widget;
 using Android.Text;
 using Android.Support.V4.Content;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Android.Content.PM;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using Android.Runtime;
@@ -34,7 +31,6 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
     public class SSMRTerminateActivity : BaseActivityCustom, SSMRTerminateContract.IView, View.IOnTouchListener
     {
-        LoadingOverlay loadingOverlay;
         private AccountData selectedAccount;
         SSMRTerminatePresenter mPresenter;
         bool isOtherReasonSelected = false;
@@ -347,13 +343,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -432,10 +422,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

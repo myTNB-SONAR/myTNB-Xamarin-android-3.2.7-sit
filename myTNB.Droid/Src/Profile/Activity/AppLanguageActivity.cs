@@ -15,16 +15,10 @@ using CheeseBind;
 using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Database.Model;
 using Android.Support.V4.Content;
-using myTNB;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Android.Preferences;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System.Threading.Tasks;
-using System.Threading;
 using myTNB_Android.Src.Maintenance.Activity;
 
 namespace myTNB_Android.Src.Profile.Activity
@@ -45,7 +39,6 @@ namespace myTNB_Android.Src.Profile.Activity
         private List<Item> languageItemList;
         private string savedLanguage;
         private bool isSelectionChange;
-        private LoadingOverlay loadingOverlay;
 
         public override string GetPageId()
         {
@@ -127,7 +120,6 @@ namespace myTNB_Android.Src.Profile.Activity
             languageListView.ItemClick += OnItemClick;
 
             selectItemAdapter = new SelectItemAdapter(this, languageItemList);
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             languageListView.Adapter = selectItemAdapter;
             UpdateLabels();
             SetSelectedLanguage(null);
@@ -323,12 +315,7 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -340,10 +327,7 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

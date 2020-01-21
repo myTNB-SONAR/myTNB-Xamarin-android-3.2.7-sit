@@ -18,7 +18,6 @@ using myTNB_Android.Src.RegisterValidation.MVP;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressButton;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -80,7 +79,6 @@ namespace myTNB_Android.Src.RegisterValidation
         //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
-        private LoadingOverlay loadingOverlay;
         const string PAGE_ID = "VerifyPin";
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -629,20 +627,9 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void ShowRegistrationProgress()
         {
-            //if (registrationDialog != null && !registrationDialog.IsShowing)
-            //{
-            //    registrationDialog.Show();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -652,16 +639,9 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void HideRegistrationProgress()
         {
-            //if (registrationDialog != null && registrationDialog.IsShowing)
-            //{
-            //    registrationDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

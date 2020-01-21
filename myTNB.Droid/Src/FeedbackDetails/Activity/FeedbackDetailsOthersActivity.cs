@@ -15,7 +15,6 @@ using myTNB_Android.Src.FeedbackDetails.Adapter;
 using myTNB_Android.Src.FeedbackDetails.MVP;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -76,7 +75,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         SubmittedFeedbackDetails submittedFeedback;
 
-        private LoadingOverlay loadingOverlay;
 
         public bool IsActive()
         {
@@ -225,13 +223,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -243,10 +235,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

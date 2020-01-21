@@ -20,7 +20,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -72,7 +71,6 @@ namespace myTNB_Android.Src.MakePayment.Fragment
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
-        private LoadingOverlay loadingOverlay;
         private Snackbar mErrorMessageSnackBar;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
@@ -334,19 +332,9 @@ namespace myTNB_Android.Src.MakePayment.Fragment
 
         public void ShowPaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && !this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -356,16 +344,9 @@ namespace myTNB_Android.Src.MakePayment.Fragment
 
         public void HidePaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {

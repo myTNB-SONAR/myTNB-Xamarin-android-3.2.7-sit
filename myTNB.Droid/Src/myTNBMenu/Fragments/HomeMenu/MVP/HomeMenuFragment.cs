@@ -28,7 +28,6 @@ using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Android.App;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Base;
@@ -36,7 +35,6 @@ using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Android.Runtime;
 using Android.Util;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using Android.Views.Animations;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
@@ -44,7 +42,6 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
-using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.RearrangeAccount.MVP;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -270,8 +267,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewFAQShimmerAdapter newFAQShimmerAdapter;
 
         NewFAQAdapter newFAQAdapter;
-
-        private LoadingOverlay loadingOverlay;
 
         const string PAGE_ID = "DashboardHome";
 
@@ -1609,13 +1604,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {
@@ -1627,10 +1616,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {

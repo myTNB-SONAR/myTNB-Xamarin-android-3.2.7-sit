@@ -28,7 +28,6 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -48,7 +47,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         public static SelectAccountsActivity selectAccountsActivity;
         private Snackbar mErrorMessageSnackBar;
         private MaterialDialog mGetDueAmountDialog;
-        private LoadingOverlay loadingOverlay;
         private MaterialDialog mWhyThisAmtCardDialog;
         private int TOTAL_ACCOUNTS = 0;
         private int TOTAL_NUMBER_OF_ITEMS_TO_GET = 4;
@@ -533,13 +531,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -551,10 +543,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

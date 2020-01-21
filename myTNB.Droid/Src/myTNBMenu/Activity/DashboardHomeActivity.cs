@@ -36,7 +36,6 @@ using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using static Android.Views.View;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
@@ -88,8 +87,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private bool isBackButtonVisible = false;
 
         private bool isFromNotification = false;
-
-        private LoadingOverlay loadingOverlay;
 
         private string savedSSMRMeterReadingTimeStamp = "0000000";
 
@@ -495,13 +492,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -513,13 +504,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                if (IsActive())
-                {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
