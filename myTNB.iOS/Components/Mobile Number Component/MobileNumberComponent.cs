@@ -51,11 +51,13 @@ namespace myTNB
                 , GetScaledWidth(82), GetScaledHeight(25)));
             _viewCountyCodeLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _countryCodeView.Frame.Width, GetScaledHeight(1)));
 
+            UIImage img = UIImage.FromBundle(CountryShortCode.ToUpper());
             _imgFlag = new UIImageView(new CGRect(GetScaledWidth(6), GetScaledWidth(6)
                , GetScaledWidth(17), GetScaledWidth(12)))
             {
                 BackgroundColor = UIColor.White,
-                Image = UIImage.FromBundle(CountryShortCode.ToUpper())
+                Image = img ?? UIImage.FromBundle(Constants.IMG_NoFlag),
+                ContentMode = UIViewContentMode.ScaleAspectFit
             };
             _lblCountryCode = new UILabel(new CGRect(_imgFlag.Frame.GetMaxX() + GetScaledWidth(4), 0, GetScaledWidth(31), GetScaledHeight(24)))
             {

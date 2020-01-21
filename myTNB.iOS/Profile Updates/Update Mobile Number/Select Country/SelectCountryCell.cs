@@ -35,7 +35,10 @@ namespace myTNB.ProfileUpdates.UpdateMobileNumber.SelectCountry
 
         private void AddCellSubviews()
         {
-            _imgFlag = new UIImageView(new CGRect(GetScaledWidth(12), GetScaledHeight(20), GetScaledWidth(28), GetScaledHeight(20)));
+            _imgFlag = new UIImageView(new CGRect(GetScaledWidth(12), GetScaledHeight(20), GetScaledWidth(28), GetScaledHeight(20)))
+            {
+                ContentMode = UIViewContentMode.ScaleAspectFit
+            };
             _lblCountryCode = new UILabel(new CGRect(_imgFlag.Frame.GetMaxX() + GetScaledWidth(8)
                 , GetScaledHeight(18), GetScaledWidth(45), GetScaledHeight(24)))
             {
@@ -60,7 +63,8 @@ namespace myTNB.ProfileUpdates.UpdateMobileNumber.SelectCountry
             {
                 if (value.IsValid())
                 {
-                    _imgFlag.Image = UIImage.FromBundle(value.ToUpper());
+                    UIImage img = UIImage.FromBundle(value.ToUpper());
+                    _imgFlag.Image = img ?? UIImage.FromBundle(Constants.IMG_NoFlag);
                 }
             }
         }
