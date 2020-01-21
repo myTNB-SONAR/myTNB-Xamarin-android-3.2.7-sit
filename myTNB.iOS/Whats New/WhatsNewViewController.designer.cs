@@ -11,11 +11,8 @@ using UIKit;
 
 namespace myTNB
 {
-    [Register("RewardsViewController")]
-    partial class RewardsViewController
+    [Register ("WhatsNewViewController")]
+    partial class WhatsNewViewController
     {
-        void ReleaseDesignerOutlets()
-        {
-        }
     }
 }

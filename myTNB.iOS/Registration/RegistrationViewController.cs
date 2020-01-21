@@ -343,7 +343,7 @@ namespace myTNB.Registration
         {
             get
             {
-                string defaultCountry = "ml";//Todo: Change this default country
+                string defaultCountry = "my";//Todo: Change this default country
                 CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
                 return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
             }

@@ -30,7 +30,7 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _rewardsList.Count;
+            return _rewardsList != null ? _rewardsList.Count : 0;
         }
 
         public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
