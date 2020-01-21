@@ -26,6 +26,7 @@ namespace myTNB
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
         public static string IMG_ShowPassword = "IC-Action-Show-Password";
         public static string IMG_HidePassword = "IC-Action-Hide-Password";
+        public static string IMG_NoFlag = "Flag-Generic";
         //Refresh Images
         public static string IMG_BannerRefresh = "Banner-Refresh";
         public static string IMG_BannerPlannedDownTime = "Banner-PlannedDown";
