@@ -541,5 +541,42 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public CountryResponseModel GetCountryItems()
+        {
+            CountryResponseModel respModel = new CountryResponseModel();
+            try
+            {
+                CountryService service = new CountryService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<CountryResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public CountryTimeStampResponseModel GetCountryTimestampItem()
+        {
+            CountryTimeStampResponseModel respModel = new CountryTimeStampResponseModel();
+            try
+            {
+                CountryService service = new CountryService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<CountryTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
     }
 }

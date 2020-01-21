@@ -4269,6 +4269,9 @@
     <AndroidResource Include="Resources\layout\MobileNumberInputComponentLayout.axml" />
     <AndroidResource Include="Resources\drawable\ph.png" />
     <Compile Include="Src\Utils\CountryUtil.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\CountryModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\CountryService.cs" />
+    <Compile Include="Src\Common\Model\Country.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
