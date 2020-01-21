@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
@@ -19,12 +20,13 @@ namespace myTNB_Android.Src.Utils
         private static readonly Lazy<CountryUtil>
             lazy = new Lazy<CountryUtil>(() => new CountryUtil());
         public static CountryUtil Instance { get { return lazy.Value; } }
+        private Country defaultCountry;
         private CountryUtil()
         {
         }
 
         /// <summary>
-        /// Sets the country list
+        /// Sets the country list and default country
         /// </summary>
         public void SetCountryList()
         {
@@ -56,6 +58,23 @@ namespace myTNB_Android.Src.Utils
                     SetCountryListFromCache();
                 }
             }
+
+            if (defaultCountry == null)
+            {
+                myTNB.CountryModel countryModel = CountryManager.Instance.GetCountryList().Find(model =>
+                {
+                    return model.CountryCode.ToLower() == Constants.DEFAULT_COUNTRY_CODE.ToLower();
+                });
+                if (countryModel != null)
+                {
+                    defaultCountry = new Country(countryModel.CountryCode, countryModel.CountryName, countryModel.CountryISDCode);
+                }
+                else
+                {
+                    defaultCountry = new Country("MY","Malaysia","+60");
+                }
+                
+            }
         }
 
         public List<Country> GetCountryList()
@@ -71,6 +90,23 @@ namespace myTNB_Android.Src.Utils
             });
 
             return countryList;
+        }
+
+        public Country GetDefaultCountry()
+        {
+            return new Country("MY", "Malaysia", "+60");
+        }
+
+        public int GetFlagImageResource(Context context, string countryCode)
+        {
+            int flagResource = context.Resources.GetIdentifier(countryCode.ToLower(), "drawable", context.PackageName);
+
+            if (flagResource == 0)
+            {
+                flagResource = context.Resources.GetIdentifier("noflag", "drawable", context.PackageName);
+            }
+
+            return flagResource;
         }
 
         private void SetCountryListFromSitecore(GetItemsService getItemsService, string timeStamp)

@@ -10,6 +10,8 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
@@ -53,6 +55,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         private bool fromAppLaunch = false;
 
         const string PAGE_ID = "UpdateMobileNumber";
+
+        private MobileNumberInputComponent mobileNumberInputComponent;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -143,13 +147,25 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     SetToolBarTitle(GetLabelByLanguage("updateMobileNumberTitle"));
                 }
 
-                MobileNumberInputComponent component = new MobileNumberInputComponent(this);
-                mobileNumberFieldContainer.AddView(component);
+                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent,321);
         }
         //[Preserve]
         //private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
@@ -389,13 +405,18 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     SetResult(Result.Ok);
                     Finish();
                 }
+                else
+                {
+                    string dataString = data.GetStringExtra("selectedCountry");
+                    Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                    mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
 
         public void ShowEmptyMobileNoError()
         {

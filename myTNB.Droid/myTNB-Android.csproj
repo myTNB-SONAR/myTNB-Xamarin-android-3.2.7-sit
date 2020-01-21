@@ -4272,6 +4272,13 @@
     <Compile Include="Src\SitecoreCMS\Model\CountryModel.cs" />
     <Compile Include="Src\SitecoreCMS\Service\CountryService.cs" />
     <Compile Include="Src\Common\Model\Country.cs" />
+    <Compile Include="Src\Common\Activity\SelectCountryActivity.cs" />
+    <AndroidResource Include="Resources\layout\SelectCountryLayout.axml" />
+    <Compile Include="Src\Common\Adapter\SelectCountryISDCodeAdapter.cs" />
+    <AndroidResource Include="Resources\layout\SelectCountryISDCodeItemLayout.axml" />
+    <AndroidResource Include="Resources\drawable\in.png" />
+    <AndroidResource Include="Resources\drawable\my.png" />
+    <AndroidResource Include="Resources\drawable\noflag.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4670,6 +4677,7 @@
     <Folder Include="Src\NotificationDetails\Api\" />
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
+    <Folder Include="Src\Common\Activity\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -227,6 +227,7 @@ namespace myTNB_Android.Src.Utils
 
         //Language
         internal static readonly string DEFAULT_LANG = "EN";
+        internal static readonly string DEFAULT_COUNTRY_CODE = "MY";
 
         // SMR
         internal static readonly string SMR_RESPONSE_KEY = "smrReponse";

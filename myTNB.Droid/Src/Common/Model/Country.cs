@@ -3,7 +3,7 @@ namespace myTNB_Android.Src.Common.Model
 {
     public class Country
     {
-        private string code, name, isd;
+        public string code, name, isd;
 
         public Country(string code, string name, string isd)
         {
