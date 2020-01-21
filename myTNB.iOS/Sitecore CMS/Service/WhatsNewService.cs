@@ -11,10 +11,10 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 
 namespace myTNB.SitecoreCMS.Service
 {
-    internal class RewardsService
+    internal class WhatsNewService
     {
         private string _os, _imgSize, _websiteURL, _language;
-        internal RewardsService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        internal WhatsNewService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
             _imgSize = imageSize;
@@ -22,10 +22,10 @@ namespace myTNB.SitecoreCMS.Service
             _language = language;
         }
 
-        internal RewardsTimestamp GetTimeStamp()
+        internal WhatsNewTimestamp GetTimeStamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WhatsNew
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
@@ -33,9 +33,9 @@ namespace myTNB.SitecoreCMS.Service
             return itemList;
         }
 
-        private async Task<RewardsTimestamp> ParseToTimestamp(ScItemsResponse itemsResponse)
+        private async Task<WhatsNewTimestamp> ParseToTimestamp(ScItemsResponse itemsResponse)
         {
-            RewardsTimestamp rewardsTimestamp = new RewardsTimestamp();
+            WhatsNewTimestamp whatsNewTimestamp = new WhatsNewTimestamp();
             await Task.Run(() =>
             {
                 try
@@ -47,22 +47,22 @@ namespace myTNB.SitecoreCMS.Service
                         {
                             continue;
                         }
-                        rewardsTimestamp.Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField);
-                        rewardsTimestamp.ID = item.Id;
+                        whatsNewTimestamp.Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField);
+                        whatsNewTimestamp.ID = item.Id;
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Exception in LanguageService/GenerateTimestamp: " + e.Message);
+                    Debug.WriteLine("Exception in WhatsNewService/GenerateTimestamp: " + e.Message);
                 }
             });
-            return rewardsTimestamp;
+            return whatsNewTimestamp;
         }
 
-        internal List<RewardsCategoryModel> GetCategoryItems()
+        internal List<WhatsNewCategoryModel> GetCategoryItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WhatsNew
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToCategoryItems(item);
@@ -70,20 +70,20 @@ namespace myTNB.SitecoreCMS.Service
             return itemList.ToList();
         }
 
-        internal List<RewardsModel> GetChildItems(ISitecoreItem categoryItem)
+        internal List<WhatsNewModel> GetChildItems(ISitecoreItem categoryItem)
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(categoryItem.Path
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateRewardsChildren(item);
+            var list = GenerateWhatsNewChildren(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        private async Task<IEnumerable<RewardsCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
+        private async Task<IEnumerable<WhatsNewCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
         {
-            List<RewardsCategoryModel> list = new List<RewardsCategoryModel>();
+            List<WhatsNewCategoryModel> list = new List<WhatsNewCategoryModel>();
             await Task.Run(() =>
             {
                 try
@@ -95,25 +95,25 @@ namespace myTNB.SitecoreCMS.Service
                         {
                             continue;
                         }
-                        list.Add(new RewardsCategoryModel
+                        list.Add(new WhatsNewCategoryModel
                         {
                             ID = GetValidID(item.Id),
-                            CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Category),
-                            Rewards = GetChildItems(item)
+                            CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Category),
+                            WhatsNewItems = GetChildItems(item)
                         });
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Exception in RewardsService/ParseToCategoryItems: " + e.Message);
+                    Debug.WriteLine("Exception in WhatsNewService/ParseToCategoryItems: " + e.Message);
                 }
             });
             return list;
         }
 
-        private async Task<IEnumerable<RewardsModel>> GenerateRewardsChildren(ScItemsResponse itemsResponse)
+        private async Task<IEnumerable<WhatsNewModel>> GenerateWhatsNewChildren(ScItemsResponse itemsResponse)
         {
-            List<RewardsModel> list = new List<RewardsModel>();
+            List<WhatsNewModel> list = new List<WhatsNewModel>();
             await Task.Run(() =>
             {
                 try
@@ -125,22 +125,16 @@ namespace myTNB.SitecoreCMS.Service
                         if (item == null)
                             continue;
 
-                        RewardsModel listlItem = new RewardsModel
+                        WhatsNewModel listlItem = new WhatsNewModel
                         {
                             ID = GetValidID(item.Id),
-                            RewardName = item.DisplayName,
-                            Title = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Title),
-                            TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TitleOnListing),
-                            Description = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Description),
-                            Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Rewards.Image, _websiteURL, false),
-                            PeriodLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardPeriodText),
-                            LocationLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.LocationsText),
-                            TandCLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TermsAndConditions),
-                            StartDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.StartDateTime),
-                            EndDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.EndDateTime),
-                            RewardUseWithinTime = item.GetIntValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseWithinTime),
-                            RewardUseTitle = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseTitle),
-                            RewardUseDescription = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseDescription)
+                            Title = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Title),
+                            TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.TitleOnListing),
+                            Description = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Description),
+                            Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
+                            StartDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
+                            EndDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate),
+                            PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate)
                         };
 
                         list.Add(listlItem);
@@ -148,7 +142,7 @@ namespace myTNB.SitecoreCMS.Service
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Exception in RewardsService/GenerateRewardsChildren: " + e.Message);
+                    Debug.WriteLine("Exception in WhatsNewService/GenerateWhatsNewChildren: " + e.Message);
                 }
             });
             return list;
@@ -156,14 +150,14 @@ namespace myTNB.SitecoreCMS.Service
 
         private string GetValidID(string str)
         {
-            string rewardId = str;
+            string whatsNewId = str;
 
             try
             {
                 var startStr = str.Substring(str.IndexOf('{') + 1);
                 if (startStr.IsValid())
                 {
-                    rewardId = startStr?.Split('}')[0];
+                    whatsNewId = startStr?.Split('}')[0];
                 }
             }
             catch (Exception e)
@@ -171,7 +165,7 @@ namespace myTNB.SitecoreCMS.Service
                 Debug.WriteLine("Exception in GetValidID: " + e.Message);
             }
 
-            return rewardId;
+            return whatsNewId;
         }
     }
 }

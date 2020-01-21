@@ -25,6 +25,8 @@ namespace myTNB
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver((NSString)"WhatsNewFetchUpdate", WhatsNewFetchUpdate);
+            NotifCenterUtility.AddObserver((NSString)"RewardsFetchUpdate", RewardsFetchUpdate);
             NotifCenterUtility.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
@@ -41,12 +43,7 @@ namespace myTNB
                 FetchRewards();
             }
             SetTabbarTitle();
-
-            if (!DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
-            {
-                UpdatePromotions();
-                DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
-            }
+            FetchWhatsNew();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -55,6 +52,23 @@ namespace myTNB
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             SetTabbarTitle();
             if (!AppLaunchMasterCache.IsRewardsDisabled) { FetchRewards(); }
+            FetchWhatsNew(true);
+        }
+
+        private void WhatsNewFetchUpdate(NSNotification notification)
+        {
+            if (!ShowNewIndicator("2"))
+            {
+                UpdateWhatsNewTabBarIcon();
+            }
+        }
+
+        private void RewardsFetchUpdate(NSNotification notification)
+        {
+            if (!AppLaunchMasterCache.IsRewardsDisabled && !ShowNewIndicator("3"))
+            {
+                UpdateRewardsTabBarIcon();
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -62,7 +76,7 @@ namespace myTNB
             base.ViewWillAppear(animated);
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[1].Enabled = ServiceCall.HasAccountList();
-            UpdatePromotionTabBarIcon();
+            UpdateWhatsNewTabBarIcon();
             UpdateRewardsTabBarIcon();
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             PushNotificationHelper.HandlePushNotification();
@@ -139,29 +153,29 @@ namespace myTNB
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
-            if (item != null && item.Tag == 2)
-            {
-                NotifCenterUtility.PostNotificationName("WhatsNewWillChange", new NSObject());
-                InvokeInBackground(async () =>
-                {
-                    await SitecoreServices.Instance.LoadPromotions();
-                    NotifCenterUtility.PostNotificationName("WhatsNewDidChange", new NSObject());
-                    Debug.WriteLine("LoadPromotions Done home tab bar");
-                    InvokeOnMainThread(() =>
-                    {
-                        if (!ShowNewIndicator("2"))
-                        {
-                            UpdatePromotionTabBarIcon();
-                        }
-                    });
-                });
-            }
+            //if (item != null && item.Tag == 2)
+            //{
+            //    NotifCenterUtility.PostNotificationName("WhatsNewWillChange", new NSObject());
+            //    InvokeInBackground(async () =>
+            //    {
+            //        await SitecoreServices.Instance.LoadPromotions();
+            //        NotifCenterUtility.PostNotificationName("WhatsNewDidChange", new NSObject());
+            //        Debug.WriteLine("LoadPromotions Done home tab bar");
+            //        InvokeOnMainThread(() =>
+            //        {
+            //            if (!ShowNewIndicator("2"))
+            //            {
+            //                UpdatePromotionTabBarIcon();
+            //            }
+            //        });
+            //    });
+            //}
 
             InvokeOnMainThread(() =>
             {
                 if (!ShowNewIndicator("2"))
                 {
-                    UpdatePromotionTabBarIcon();
+                    UpdateWhatsNewTabBarIcon();
                 }
                 if (!AppLaunchMasterCache.IsRewardsDisabled && !ShowNewIndicator("3"))
                 {
@@ -191,41 +205,11 @@ namespace myTNB
         }
 
         /// <summary>
-        /// Shows the promotions modal.
-        /// </summary>
-        private void ShowPromotionsModal()
-        {
-            PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModel> items = wsManager.GetAllItemsV2();
-
-            if (items?.Count > 0)
-            {
-                CheckResetPromoShown(items);
-                List<PromotionsModel> filtered = items.FindAll(item => ShouldDisplayAppLaunch(item));
-
-                if (filtered?.Count > 0)
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName(TabbarConstants.Storyboard_Promotion, null);
-                    PromotionsModalViewController viewController =
-                        storyBoard.InstantiateViewController(TabbarConstants.Controller_Promotion) as PromotionsModalViewController;
-                    if (viewController != null)
-                    {
-                        viewController.Promotions = filtered;
-                        viewController.OnModalDone = OnPromotionsModalDone;
-                        UINavigationController navController = new UINavigationController(viewController);
-                        navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
-                        PresentViewController(navController, true, null);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Handler for when the promotions modal is done.
         /// </summary>
         public void OnPromotionsModalDone()
         {
-            UpdatePromotionTabBarIcon();
+            UpdateWhatsNewTabBarIcon();
         }
 
         /// <summary>
@@ -362,37 +346,49 @@ namespace myTNB
             return index > -1;
         }
 
-        private void UpdatePromotions()
+        private void FetchWhatsNew(bool isForceUpdate = false)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() =>
+                if (NetworkUtility.isReachable)
                 {
-                    if (NetworkUtility.isReachable)
+                    if (DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink)
                     {
-                        SitecoreServices.Instance.LoadPromotions().ContinueWith(task =>
+                        InvokeOnMainThread(() =>
                         {
-                            InvokeOnMainThread(() =>
-                            {
-                                UpdatePromotionTabBarIcon();
-                                ShowPromotionsModal();
-                            });
+                            ActivityIndicator.Show();
                         });
                     }
-                });
+                    InvokeInBackground(async () =>
+                    {
+                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
+                        await SitecoreServices.Instance.LoadWhatsNew(isForceUpdate);
+                        NotifCenterUtility.PostNotificationName("OnReceiveWhatsNewNotification", new NSObject());
+                        InvokeOnMainThread(() =>
+                        {
+                            if (DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink)
+                            {
+                                ActivityIndicator.Hide();
+                            }
+                            UpdateWhatsNewTabBarIcon();
+                            DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                            CheckForWhatsNewDeepLink();
+                        });
+                    });
+                }
             });
         }
 
-        private void UpdatePromotionTabBarIcon()
+        private void UpdateWhatsNewTabBarIcon()
         {
             TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 
-            PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModel> promotionList = wsManager.GetAllItemsV2();
-            if (!ShowNewIndicator("2") && promotionList != null && promotionList.Count > 0)
+            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+            List<WhatsNewModel> whatsNewList = whatsNewEntity.GetAllItems();
+            if (!ShowNewIndicator("2") && whatsNewList != null && whatsNewList.Count > 0)
             {
-                int unreadCount = promotionList.Where(x => !x.IsRead).Count();
+                int unreadCount = whatsNewList.Where(x => !x.IsRead).Count();
                 TabBar.Items[2].BadgeColor = _badgeColor;
                 TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount.ToString() : null;
                 TabBar.Items[2].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);
@@ -475,6 +471,7 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
+
                     InvokeInBackground(async () =>
                     {
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
@@ -529,12 +526,34 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
-                            LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableTitle),
+                            LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableMsg),
                             new Dictionary<string, Action> {
-                        {LanguageUtility.GetCommonI18NValue(Constants.Common_Ok), null}});
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null}});
                     }
                     DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                }
+            }
+        }
+
+        private void CheckForWhatsNewDeepLink()
+        {
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+            {
+                if (DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink)
+                {
+                    if (WhatsNewCache.WhatsNewIsAvailable)
+                    {
+                        WhatsNewServices.OpenWhatsNewDetails(WhatsNewCache.DeeplinkWhatsNewId, this);
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_WhatsNewUnavailableTitle),
+                            LanguageUtility.GetErrorI18NValue(Constants.Error_WhatsNewUnavailableMsg),
+                            new Dictionary<string, Action> {
+                        {LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null}});
+                    }
+                    DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
                 }
             }
         }

@@ -1135,9 +1135,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\notificationUnreadCountEmpty%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\notificationUnreadCountCopy13%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\notificationUnreadCountCopy13%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Promotion-Default.imageset\Promotion-Default%403x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\white%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\white%403x.png" />
@@ -1260,6 +1257,12 @@
     <ImageAsset Include="Assets.xcassets\Loading.imageset\icButtonResendLoadedGreen%403x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%402x.png" />
     <ImageAsset Include="Assets.xcassets\Loaded.imageset\icButtonResendLoaded%403x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\Promotion-Default%402x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\Promotion-Default%403x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Empty.imageset\WhatsNew_Empty%402x.png" />
+    <ImageAsset Include="Assets.xcassets\WhatsNew_Empty.imageset\WhatsNew_Empty%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1323,7 +1326,6 @@
     <Folder Include="Home\" />
     <Folder Include="Home\Dashboard\" />
     <Folder Include="Home\Bill\" />
-    <Folder Include="Home\Promotions\" />
     <Folder Include="Home\More\" />
     <Folder Include="Home\Components\" />
     <Folder Include="Assets.xcassets\Download.imageset\" />
@@ -1446,7 +1448,6 @@
     <Folder Include="Assets.xcassets\Payment-Checkbox-Active.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\IC-Empty-Promotion.imageset\" />
-    <Folder Include="Home\Promotions\Promotion Details\" />
     <Folder Include="Assets.xcassets\Notification-Promo.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\" />
@@ -1733,7 +1734,6 @@
     <Folder Include="Model\Language\" />
     <Folder Include="Assets.xcassets\Dpc-Indicator.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Rearrange Account\" />
-    <Folder Include="Assets.xcassets\Promotion-Default.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Unplanned.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Planned.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Popup.imageset\" />
@@ -1771,6 +1771,12 @@
     <Folder Include="Assets.xcassets\Banner-Refresh.imageset\" />
     <Folder Include="Maintenance\" />
     <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon-Disabled.imageset\" />
+    <Folder Include="Whats New\" />
+    <Folder Include="Sitecore CMS\Model\Whats New\" />
+    <Folder Include="Whats New\Whats New Details\" />
+    <Folder Include="Common\" />
+    <Folder Include="Assets.xcassets\WhatsNew_Default-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\WhatsNew_Empty.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1800,7 +1806,6 @@
     <InterfaceDefinition Include="Home\More\Find Us\Location Details\LocationDetails.storyboard" />
     <InterfaceDefinition Include="Rating\Rating.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
-    <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
@@ -1813,6 +1818,7 @@
     <InterfaceDefinition Include="Rewards\Reward Details\RewardDetailsViewController.xib" />
     <InterfaceDefinition Include="Rewards\Saved Rewards\SavedRewardsViewController.xib" />
     <InterfaceDefinition Include="Maintenance\MaintenanceViewController.xib" />
+    <InterfaceDefinition Include="Whats New\Whats New Details\WhatsNewDetailsViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1904,10 +1910,6 @@
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Promotions\PromotionsViewController.cs" />
-    <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
-      <DependentUpon>PromotionsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\AccountSelectionComponent.cs" />
     <Compile Include="Home\Components\AddressComponent.cs" />
@@ -2155,15 +2157,6 @@
     <Compile Include="Model\FAQ\FAQModel.cs" />
     <Compile Include="Model\FAQ\FAQDataModel.cs" />
     <Compile Include="Home\More\FAQ\FAQDataSource.cs" />
-    <Compile Include="Home\Promotions\PromotionsViewCell.cs" />
-    <Compile Include="Home\Promotions\PromotionsViewCell.designer.cs">
-      <DependentUpon>PromotionsViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Promotions\Promotion Details\PromotionDetailsViewController.cs" />
-    <Compile Include="Home\Promotions\Promotion Details\PromotionDetailsViewController.designer.cs">
-      <DependentUpon>PromotionDetailsViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Promotions\PromotionsDataSource.cs" />
     <Compile Include="Sitecore CMS\Service\FAQsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\FAQEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PromotionsEntity.cs" />
@@ -2203,12 +2196,7 @@
     <Compile Include="Helpers\AppVersionHelper.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Home\Promotions\PromotionsModalViewController.cs" />
-    <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
-      <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sitecore CMS\Service\PromotionsService.cs" />
-    <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
     <Compile Include="Model\Feedback\QuestionInputOption.cs" />
     <Compile Include="Enums\QuestionTypeEnum.cs" />
     <Compile Include="Enums\QuestionCategoryEnum.cs" />
@@ -2410,7 +2398,6 @@
     <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Constants.cs" />
     <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
     <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
@@ -2600,7 +2587,6 @@
     </Compile>
     <Compile Include="Feedback\FeedbackConstants.cs" />
     <Compile Include="Rating\RatingConstants.cs" />
-    <Compile Include="Home\Promotions\PromotionConstants.cs" />
     <Compile Include="Sitecore CMS\Model\Language\LanguageModel.cs" />
     <Compile Include="Sitecore CMS\Service\LanguageService.cs" />
     <Compile Include="Home\More\Language\LanguageUtility.cs" />
@@ -2654,6 +2640,25 @@
     <Compile Include="Maintenance\MaintenanceViewController.designer.cs">
       <DependentUpon>MaintenanceViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Whats New\WhatsNewConstants.cs" />
+    <Compile Include="Whats New\WhatsNewViewController.cs" />
+    <Compile Include="Whats New\WhatsNewViewController.designer.cs">
+      <DependentUpon>WhatsNewViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitecore CMS\Model\Whats New\WhatsNewResponseModel.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\WhatsNewEntity.cs" />
+    <Compile Include="Sitecore CMS\Service\WhatsNewService.cs" />
+    <Compile Include="Session Cache\WhatsNewCache.cs" />
+    <Compile Include="Whats New\WhatsNewServices.cs" />
+    <Compile Include="Whats New\WhatsNewCell.cs" />
+    <Compile Include="Whats New\WhatsNewDataSource.cs" />
+    <Compile Include="Whats New\Whats New Details\WhatsNewDetailsViewController.cs" />
+    <Compile Include="Whats New\Whats New Details\WhatsNewDetailsViewController.designer.cs">
+      <DependentUpon>WhatsNewDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonServices.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Components\Tutorial Overlay\WhatsNewTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

@@ -1,4 +1,6 @@
-﻿namespace myTNB
+﻿using System.Collections.Generic;
+
+namespace myTNB
 {
     public static class Constants
     {
@@ -138,6 +140,11 @@
         public static string Error_PlannedDownTimeMessage = "plannedDownTimeMessage";
         public static string Error_RewardsUnavailableTitle = "rewardsUnavailableTitle";
         public static string Error_RewardsUnavailableMsg = "rewardsUnavailableMsg";
+        public static string Error_WhatsNewUnavailableTitle = "whatsNewUnavailableTitle";
+        public static string Error_WhatsNewUnavailableMsg = "whatsNewUnavailableMsg";
+        public static string Error_WhatsNewExpiredTitle = "whatsNewExpiredTitle";
+        public static string Error_WhatsNewExpiredMsg = "whatsNewExpiredMsg";
+        public static string Error_WhatsNewExpiredBtnText = "whatsNewExpiredBtnText";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
@@ -174,5 +181,13 @@
 
         //Strings
         public static string Value_99 = "99+";
+
+        //Dictionary
+        public static Dictionary<string, string> DynamicLinkDomain = new Dictionary<string, string>
+        {
+            { "DEV", "mytnbappsit.page.link"}
+            , { "SIT", "mytnbappsit.page.link" }
+            , { "PROD", "mytnbapp.page.link"}
+        };
     }
 }

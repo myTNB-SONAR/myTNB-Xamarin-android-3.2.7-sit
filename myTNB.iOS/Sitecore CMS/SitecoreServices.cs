@@ -39,6 +39,7 @@ namespace myTNB.SitecoreCMS
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
+                WhatsNewCache.ClearImages();
                 RewardsCache.ClearImages();
             }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
@@ -568,8 +569,8 @@ namespace myTNB.SitecoreCMS
                                 }
                             }
                             rewardsEntity.InsertListOfItems(rewardsData);
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
                         }
-                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
                     }
                     else
                     {
@@ -580,6 +581,108 @@ namespace myTNB.SitecoreCMS
                 {
                     RewardsCache.RewardIsAvailable = true;
                 }
+            });
+        }
+
+        public async Task<bool> WhatsNewHasUpdates()
+        {
+            bool needsUpdate = true;
+            await Task.Run(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                WhatsNewTimestampResponseModel timeStamp = iService.GetWhatsNewTimestampItem();
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new WhatsNewTimestampResponseModel();
+                    timeStamp.Data = new List<WhatsNewTimestamp> { new WhatsNewTimestamp { Timestamp = string.Empty } };
+                }
+
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                string currentTS = sharedPreference.StringForKey("SiteCoreWhatsNewTimeStamp");
+
+                if (currentTS != null && currentTS.Equals(timeStamp.Data[0].Timestamp))
+                {
+                    needsUpdate = false;
+                }
+            });
+
+            return needsUpdate;
+        }
+
+        public Task LoadWhatsNew(bool forceUpdate = false)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
+
+                WhatsNewTimestampResponseModel timeStamp = iService.GetWhatsNewTimestampItem();
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new WhatsNewTimestampResponseModel();
+                    timeStamp.Data = new List<WhatsNewTimestamp> { new WhatsNewTimestamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp", ref needsUpdate);
+
+                if (needsUpdate || forceUpdate)
+                {
+                    WhatsNewResponseModel whatsNewResponse = iService.GetWhatsNewItems();
+                    if (whatsNewResponse != null)
+                    {
+                        WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                        whatsNewEntity.DeleteTable();
+                        whatsNewEntity.CreateTable();
+
+                        WhatsNewCache.WhatsNewIsAvailable = true;
+                        if (whatsNewResponse.Data != null && whatsNewResponse.Data.Count > 0)
+                        {
+                            List<WhatsNewModel> whatsNewData = new List<WhatsNewModel>();
+                            List<WhatsNewCategoryModel> categoryList = new List<WhatsNewCategoryModel>(whatsNewResponse.Data);
+                            foreach (var category in categoryList)
+                            {
+                                List<WhatsNewModel> whatsNewList = new List<WhatsNewModel>(category.WhatsNewItems);
+                                if (whatsNewList.Count > 0)
+                                {
+                                    foreach (var whatsNew in whatsNewList)
+                                    {
+                                        if (!WhatsNewServices.WhatsNewHasExpired(whatsNew))
+                                        {
+                                            whatsNew.CategoryID = category.ID;
+                                            whatsNew.CategoryName = category.CategoryName;
+                                            whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
+                                            whatsNewData.Add(whatsNew);
+                                        }
+                                    }
+                                }
+                            }
+                            whatsNewEntity.InsertListOfItems(whatsNewData);
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
+                        }
+                    }
+                    else
+                    {
+                        WhatsNewCache.WhatsNewIsAvailable = false;
+                    }
+                }
+                else
+                {
+                    WhatsNewCache.WhatsNewIsAvailable = true;
+                }
+                Debug.WriteLine("LoadWhatsNew Done");
             });
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using CoreAnimation;
 using CoreGraphics;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 

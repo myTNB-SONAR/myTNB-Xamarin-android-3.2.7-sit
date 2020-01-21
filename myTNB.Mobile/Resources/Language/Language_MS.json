@@ -142,7 +142,12 @@
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
     "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "rewardsUnavailableTitle": "Ganjaran tidak tersedia buat masa ini.",
-    "rewardsUnavailableMsg": "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian."
+    "rewardsUnavailableMsg": "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian.",
+    "whatsNewUnavailableTitle": "What's New is currently unavailable.",
+    "whatsNewUnavailableMsg": "But we'll be back soon so check back later!",
+    "whatsNewExpiredTitle": "This content is unavailable.",
+    "whatsNewExpiredMsg": "Looks like this promotion/announcement is over. Check back often to find out what else is new!",
+    "whatsNewExpiredBtnText": "Show Me What’s New!"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -903,5 +908,14 @@
     "unsave": "Alih Keluar",
     "save": "Simpan",
     "redeemRewardNote": "Ganjaran telah ditebus. Sila tunjukkan skrin ini kepada peniaga sebelum pemasa tamat."
+  },
+  "WhatsNew": {
+    "title": "Terkini",
+    "noPromotions": "Belum ada berita baharu... Cuba semak sebentar lagi!",
+    "viewAll": "Lihat Semua",
+    "tutorialCategoryTitle":"Dapatkan Informasi Terkini TNB.",
+    "tutorialCategoryDesc": "Lihat pelbagai kategori untuk ketahui pengumuman dan/atau promosi yang berkenaan dengan anda.",
+    "tutorialItemTitle":"Lihat Tawaran Terbaharu Dan Menarik.",
+    "tutorialItemDesc": "Tekan pada promosi atau pengumuman untuk butiran lanjut."
   }
 }

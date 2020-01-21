@@ -128,11 +128,11 @@ namespace myTNB
                                 if (RewardsCache.RewardIsAvailable)
                                 {
                                     await RewardsServices.GetUserRewards();
+                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                                     if (RewardsCache.RewardIsAvailable)
                                     {
                                         InvokeOnMainThread(() =>
                                         {
-                                            DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                                             ProcessRewards();
                                         });
                                     }
@@ -143,6 +143,7 @@ namespace myTNB
                                 }
                                 else
                                 {
+                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
                                     SetRefreshScreen();
                                 }
                             });
@@ -160,6 +161,7 @@ namespace myTNB
                                 {
                                     if (!_isViewDidLoad)
                                     {
+                                        NotifCenterUtility.PostNotificationName("RewardsFetchUpdate", new NSObject());
                                         props_needsUpdate = true;
                                         props_rewardsList = _rewardsList;
                                         props_index = _selectedCategoryIndex;
@@ -198,6 +200,15 @@ namespace myTNB
             };
 
             _refreshScreenView.AddSubview(refreshIcon);
+
+            UILabel title = new UILabel(new CGRect(BaseMarginWidth16, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(24F)))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                TextColor = UIColor.White,
+                Text = GetI18NValue(RewardsConstants.I18N_Title),
+                TextAlignment = UITextAlignment.Center
+            };
+            _refreshScreenView.AddSubview(title);
 
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetCommonI18NValue(Constants.Common_RefreshMessage)
@@ -349,6 +360,7 @@ namespace myTNB
         {
             InvokeOnMainThread(async () =>
             {
+                NotifCenterUtility.PostNotificationName("RewardsFetchUpdate", new NSObject());
                 ResetViews();
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
@@ -366,7 +378,7 @@ namespace myTNB
                             CategoryName = GetI18NValue(RewardsConstants.I18N_ViewAll)
                         };
                         _categoryList.Insert(0, viewAllModel);
-                        CreateCategoryTopBar();
+                        CreateCategoryTopBar(0);
                     }
                     _selectedCategoryIndex = 0;
                     AddRewardsScrollView();
@@ -634,7 +646,7 @@ namespace myTNB
         #endregion
 
         #region CATEGORY TOP BAR MENU
-        private void CreateCategoryTopBar()
+        private void CreateCategoryTopBar(nfloat addtlPadding)
         {
             _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             var addtl = _hotspotIsOn ? 20F : 0F;
@@ -647,14 +659,15 @@ namespace myTNB
             };
             _topBarScrollView.ShowsHorizontalScrollIndicator = false;
             View.AddSubview(_topBarScrollView);
-            SetCategoryTopBarValues();
+            SetCategoryTopBarValues(addtlPadding);
         }
 
-        private void SetCategoryTopBarValues()
+        private void SetCategoryTopBarValues(nfloat addtlPadding)
         {
             nfloat xPos = 0;
             nfloat labelHeight = GetScaledHeight(14F);
-            nfloat padding = GetScaledWidth(10F);
+            nfloat padding = GetScaledWidth(10F) + addtlPadding;
+            CustomUIView lastView = new CustomUIView();
 
             for (int i = 0; i < _categoryList.Count; i++)
             {
@@ -694,8 +707,29 @@ namespace myTNB
                 xPos = categoryView.Frame.GetMaxX();
                 categoryView.AddSubview(categoryLabel);
                 _topBarScrollView.AddSubview(categoryView);
+                lastView = categoryView;
             }
             _topBarScrollView.ContentSize = new CGSize(xPos, _topBarScrollView.Frame.Height);
+            AdjustCategoryMenuUI(lastView);
+        }
+
+        private void AdjustCategoryMenuUI(CustomUIView lastView)
+        {
+            if (lastView != null)
+            {
+                if (lastView.Frame.GetMaxX() < ViewWidth)
+                {
+                    nfloat diff = ViewWidth - lastView.Frame.GetMaxX();
+                    nfloat xtraPadding = diff / (_categoryList.Count * 2);
+
+                    if (_topBarScrollView != null)
+                    {
+                        _topBarScrollView.RemoveFromSuperview();
+                        _topBarScrollView = null;
+                    }
+                    CreateCategoryTopBar(xtraPadding);
+                }
+            }
         }
 
         private void OnSelectCategoryAction(int index)

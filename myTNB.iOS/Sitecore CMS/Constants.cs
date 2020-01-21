@@ -149,6 +149,18 @@
                     public const string RewardUseTitle = "RewardUseTitle";
                     public const string RewardUseDescription = "RewardUseDescription";
                 }
+
+                public struct WhatsNew
+                {
+                    public const string Category = "WhatsNewCategory";
+                    public const string Title = "Title";
+                    public const string TitleOnListing = "TitleOnListing";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                    public const string StartDate = "StartDate";
+                    public const string EndDate = "EndDate";
+                    public const string PublishDate = "PublishDate";
+                }
             }
 
             public struct ItemID
@@ -170,8 +182,8 @@
                 public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV4";
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
 #else
-                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
+				public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+				public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
 #endif
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 
@@ -187,7 +199,7 @@
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
-
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }

@@ -114,14 +114,18 @@ namespace myTNB
             {
                 if (reward.EndDate.IsValid())
                 {
-                    var rewardEndDate = DateHelper.GetDateWithoutSeparator(reward.EndDate);
-                    if (rewardEndDate != default(DateTime))
+                    try
                     {
-                        DateTime now = DateTime.Now.Date;
-                        if (now < rewardEndDate)
+                        DateTime endDate = DateTime.ParseExact(reward.EndDate, "yyyyMMddTHHmmss", DateHelper.DateCultureInfo);
+                        DateTime now = DateTime.Now;
+                        if (now < endDate)
                         {
                             res = false;
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Parse Error: " + e.Message);
                     }
                 }
             }
@@ -219,56 +223,6 @@ namespace myTNB
                     LanguageUtility.GetErrorI18NValue(Constants.Error_RewardsUnavailableMsg),
                     new Dictionary<string, Action> {
                         { LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), null} });
-        }
-
-        private static string GetDynamicLinkDomain(APIEnvironment environment)
-        {
-            string env = environment.ToString();
-            return RewardsConstants.DynamicLinkDomain.ContainsKey(env) ? RewardsConstants.DynamicLinkDomain[env] : string.Empty;
-        }
-
-        public static DynamicLinkComponents GenerateLongURL(string linkStr)
-        {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>
-            {
-                { "Link", linkStr },
-                { "BundleID", "com.mytnb.mytnb" },
-                { "PackageName", "com.mytnb.mytnb" },
-                { "MinimumAppVersioniOS", "2.1.0" },
-                { "MinimumAppVersionAndroid", "171" },
-                { "AppStoreId", "1297089591" }
-            };
-
-            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-            string Dynamic_Link_Domain = GetDynamicLinkDomain(env);
-
-            var link = NSUrl.FromString(dictionary["Link"]);
-            var components = DynamicLinkComponents.FromLink(link, Dynamic_Link_Domain);
-
-            var bundleId = dictionary["BundleID"];
-
-            if (!string.IsNullOrWhiteSpace(bundleId))
-            {
-                var iOSParams = DynamicLinkiOSParameters.FromBundleId(bundleId);
-                iOSParams.MinimumAppVersion = dictionary["MinimumAppVersioniOS"];
-                iOSParams.AppStoreId = dictionary["AppStoreId"];
-                components.IOSParameters = iOSParams;
-            }
-
-            var packageName = dictionary["PackageName"];
-
-            if (!string.IsNullOrWhiteSpace(packageName))
-            {
-                var androidParams = DynamicLinkAndroidParameters.FromPackageName(packageName);
-                androidParams.MinimumVersion = nint.Parse(dictionary["MinimumAppVersionAndroid"]);
-                components.AndroidParameters = androidParams;
-            }
-
-            var options = DynamicLinkComponentsOptions.Create();
-            options.PathLength = ShortDynamicLinkPathLength.Unguessable;
-            components.Options = options;
-
-            return components;
         }
 
         #region Rewards Services
@@ -462,16 +416,16 @@ namespace myTNB
                             }
                         }
                         rewardsEntity.InsertListOfItems(rewardsData);
-                    }
-                    try
-                    {
-                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
-                        sharedPreference.Synchronize();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
+                        try
+                        {
+                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreRewardsTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Error in sharedPreference: " + e.Message);
+                        }
                     }
                 }
                 else
