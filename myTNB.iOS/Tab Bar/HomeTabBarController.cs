@@ -25,6 +25,8 @@ namespace myTNB
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver((NSString)"WhatsNewFetchUpdate", WhatsNewFetchUpdate);
+            NotifCenterUtility.AddObserver((NSString)"RewardsFetchUpdate", RewardsFetchUpdate);
             NotifCenterUtility.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
@@ -53,12 +55,28 @@ namespace myTNB
             FetchWhatsNew(true);
         }
 
+        private void WhatsNewFetchUpdate(NSNotification notification)
+        {
+            if (!ShowNewIndicator("2"))
+            {
+                UpdateWhatsNewTabBarIcon();
+            }
+        }
+
+        private void RewardsFetchUpdate(NSNotification notification)
+        {
+            if (!AppLaunchMasterCache.IsRewardsDisabled && !ShowNewIndicator("3"))
+            {
+                UpdateRewardsTabBarIcon();
+            }
+        }
+
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[1].Enabled = ServiceCall.HasAccountList();
-            UpdatePromotionTabBarIcon();
+            UpdateWhatsNewTabBarIcon();
             UpdateRewardsTabBarIcon();
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             PushNotificationHelper.HandlePushNotification();
@@ -157,7 +175,7 @@ namespace myTNB
             {
                 if (!ShowNewIndicator("2"))
                 {
-                    UpdatePromotionTabBarIcon();
+                    UpdateWhatsNewTabBarIcon();
                 }
                 if (!AppLaunchMasterCache.IsRewardsDisabled && !ShowNewIndicator("3"))
                 {
@@ -191,7 +209,7 @@ namespace myTNB
         /// </summary>
         public void OnPromotionsModalDone()
         {
-            UpdatePromotionTabBarIcon();
+            UpdateWhatsNewTabBarIcon();
         }
 
         /// <summary>
@@ -352,7 +370,7 @@ namespace myTNB
                             {
                                 ActivityIndicator.Hide();
                             }
-                            UpdatePromotionTabBarIcon();
+                            UpdateWhatsNewTabBarIcon();
                             DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                             CheckForWhatsNewDeepLink();
                         });
@@ -361,7 +379,7 @@ namespace myTNB
             });
         }
 
-        private void UpdatePromotionTabBarIcon()
+        private void UpdateWhatsNewTabBarIcon()
         {
             TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
             TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);

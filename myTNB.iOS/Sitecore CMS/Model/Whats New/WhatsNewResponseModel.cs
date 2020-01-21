@@ -29,6 +29,7 @@ namespace myTNB.SitecoreCMS.Model
         public string Image { set; get; }
         public string StartDate { set; get; }
         public string EndDate { set; get; }
+        public string PublishDate { set; get; }
         public bool IsRead { set; get; }
 
         public WhatsNewEntity ToEntity()
@@ -44,6 +45,7 @@ namespace myTNB.SitecoreCMS.Model
                 Image = Image,
                 StartDate = StartDate,
                 EndDate = EndDate,
+                PublishDate = PublishDate,
                 IsRead = IsRead
             };
 

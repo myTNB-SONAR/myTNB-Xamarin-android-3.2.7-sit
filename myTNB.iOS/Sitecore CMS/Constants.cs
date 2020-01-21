@@ -159,6 +159,7 @@
                     public const string Image = "Image";
                     public const string StartDate = "StartDate";
                     public const string EndDate = "EndDate";
+                    public const string PublishDate = "PublishDate";
                 }
             }
 

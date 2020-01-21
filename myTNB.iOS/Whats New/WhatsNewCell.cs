@@ -83,7 +83,7 @@ namespace myTNB
                 Title.Text = model.TitleOnListing;
                 Date.TextColor = model.IsRead ? MyTNBColor.WarmGrey : MyTNBColor.CharcoalGrey;
                 Date.Font = model.IsRead ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500;
-                Date.Text = WhatsNewServices.GetPublishedDate(model.StartDate);
+                Date.Text = WhatsNewServices.GetPublishedDate(model.PublishDate);
                 CGSize dateSize = Date.SizeThatFits(new CGSize(_cellWidth, GetScaledHeight(16F)));
                 ViewHelper.AdjustFrameSetWidth(Date, dateSize.Width);
                 _readIndicator.Hidden = model.IsRead;

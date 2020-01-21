@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
@@ -35,18 +36,46 @@ namespace myTNB
             {
                 if (whatsNew.EndDate.IsValid())
                 {
-                    var whatsNewEndDate = DateHelper.GetDateWithoutSeparator(whatsNew.EndDate);
-                    if (whatsNewEndDate != default(DateTime))
+                    try
                     {
-                        DateTime now = DateTime.Now.Date;
-                        if (now < whatsNewEndDate)
+                        DateTime endDate = DateTime.ParseExact(whatsNew.EndDate, "yyyyMMddTHHmmss", DateHelper.DateCultureInfo);
+                        DateTime now = DateTime.Now;
+                        if (now < endDate)
                         {
                             res = false;
                         }
                     }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Parse Error: " + e.Message);
+                    }
                 }
             }
             return res;
+        }
+
+        public static bool GetIsRead(string id)
+        {
+            bool isRead = false;
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                isRead = sharedPreference.BoolForKey(id);
+            }
+            return isRead;
+        }
+
+        public static bool SetIsRead(string id)
+        {
+            bool isRead = false;
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, id);
+                sharedPreference.Synchronize();
+                isRead = true;
+            }
+            return isRead;
         }
 
         public static string GetPublishedDate(string publishedDate)
@@ -54,9 +83,8 @@ namespace myTNB
             string strPublishedDate = string.Empty;
             try
             {
-                DateTime? pDate = DateHelper.GetDateWithoutSeparator(publishedDate);
-                DateTime? pDateValue = pDate.Value.ToLocalTime();
-                strPublishedDate = pDateValue.Value.ToString(WhatsNewConstants.Format_Date, DateHelper.DateCultureInfo);
+                DateTime? endDate = DateTime.ParseExact(publishedDate, "yyyyMMddTHHmmss", DateHelper.DateCultureInfo);
+                strPublishedDate = endDate.Value.ToString(WhatsNewConstants.Format_Date, DateHelper.DateCultureInfo);
             }
             catch (Exception e)
             {

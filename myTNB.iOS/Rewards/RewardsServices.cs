@@ -114,14 +114,18 @@ namespace myTNB
             {
                 if (reward.EndDate.IsValid())
                 {
-                    var rewardEndDate = DateHelper.GetDateWithoutSeparator(reward.EndDate);
-                    if (rewardEndDate != default(DateTime))
+                    try
                     {
-                        DateTime now = DateTime.Now.Date;
-                        if (now < rewardEndDate)
+                        DateTime endDate = DateTime.ParseExact(reward.EndDate, "yyyyMMddTHHmmss", DateHelper.DateCultureInfo);
+                        DateTime now = DateTime.Now;
+                        if (now < endDate)
                         {
                             res = false;
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Parse Error: " + e.Message);
                     }
                 }
             }

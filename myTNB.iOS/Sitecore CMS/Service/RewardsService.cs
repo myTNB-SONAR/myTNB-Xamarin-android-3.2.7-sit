@@ -136,8 +136,8 @@ namespace myTNB.SitecoreCMS.Service
                             PeriodLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardPeriodText),
                             LocationLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.LocationsText),
                             TandCLabel = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.TermsAndConditions),
-                            StartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Rewards.StartDateTime),
-                            EndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Rewards.EndDateTime),
+                            StartDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.StartDateTime),
+                            EndDate = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.EndDateTime),
                             RewardUseWithinTime = item.GetIntValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseWithinTime),
                             RewardUseTitle = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseTitle),
                             RewardUseDescription = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.RewardUseDescription)

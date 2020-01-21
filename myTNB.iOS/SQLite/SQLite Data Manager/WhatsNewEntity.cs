@@ -89,6 +89,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.Image = obj.Image;
                     item.StartDate = obj.StartDate;
                     item.EndDate = obj.EndDate;
+                    item.PublishDate = obj.PublishDate;
                     item.IsRead = obj.IsRead;
                     InsertItem(item);
                 }
@@ -135,6 +136,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     Image = item.Image,
                     StartDate = item.StartDate,
                     EndDate = item.EndDate,
+                    PublishDate = item.PublishDate,
                     IsRead = item.IsRead
                 };
                 itemList.Add(rewardModel);
@@ -217,6 +219,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     Image = reward.Image,
                     StartDate = reward.StartDate,
                     EndDate = reward.EndDate,
+                    PublishDate = reward.PublishDate,
                     IsRead = reward.IsRead
                 };
                 UpdateItem(item);

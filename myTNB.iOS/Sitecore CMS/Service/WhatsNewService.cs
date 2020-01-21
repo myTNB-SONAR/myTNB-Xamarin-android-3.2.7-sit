@@ -132,8 +132,9 @@ namespace myTNB.SitecoreCMS.Service
                             TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.TitleOnListing),
                             Description = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Description),
                             Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
-                            StartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
-                            EndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate)
+                            StartDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
+                            EndDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate),
+                            PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate)
                         };
 
                         list.Add(listlItem);

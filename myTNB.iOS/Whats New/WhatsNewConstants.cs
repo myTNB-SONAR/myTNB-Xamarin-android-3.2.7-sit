@@ -30,7 +30,7 @@ namespace myTNB
 
         //I18N Keys
         public static string I18N_Title = "title";
-        public static string I18N_EmptyDesc = "emptyDesc";
+        public static string I18N_NoPromotions = "noPromotions";
         public static string I18N_ViewAll = "viewAll";
         public static string I18N_TutorialCatTitle = "tutorialCategoryTitle";
         public static string I18N_TutorialCatDesc = "tutorialCategoryDesc";

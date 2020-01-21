@@ -256,7 +256,7 @@ namespace myTNB
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
 
-            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFirstRewardYPos() + _addtlYPos))
+            UIView topView = new UIView(new CGRect(0, 0, width, _controller.GetFirstWhatsNewYPos() + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };

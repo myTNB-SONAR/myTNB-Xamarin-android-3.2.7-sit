@@ -663,6 +663,7 @@ namespace myTNB.SitecoreCMS
                                         {
                                             whatsNew.CategoryID = category.ID;
                                             whatsNew.CategoryName = category.CategoryName;
+                                            whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
                                             whatsNewData.Add(whatsNew);
                                         }
                                     }

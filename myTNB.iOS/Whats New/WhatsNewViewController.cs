@@ -31,6 +31,7 @@ namespace myTNB
             base.ViewDidLoad();
             _isViewDidLoad = true;
             NotifCenterUtility.AddObserver((NSString)"OnReceiveWhatsNewNotification", OnReceiveWhatsNew);
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             View.BackgroundColor = MyTNBColor.VeryLightPinkEight;
             InitiateView();
         }
@@ -50,13 +51,20 @@ namespace myTNB
             _isViewDidLoad = false;
         }
 
+        protected override void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> What's New LanguageDidChange");
+            base.LanguageDidChange(notification);
+            Title = GetI18NValue(WhatsNewConstants.I18N_Title);
+        }
+
         private void OnEnterForeground(NSNotification notification)
         {
             var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
             var topVc = AppDelegate.GetTopViewController(baseRootVc);
             if (topVc != null)
             {
-                if (topVc is RewardsViewController)
+                if (topVc is WhatsNewViewController)
                 {
                     OnChangeStatusBarFrame(null);
                 }
@@ -124,6 +132,7 @@ namespace myTNB
         {
             InvokeOnMainThread(async () =>
             {
+                NotifCenterUtility.PostNotificationName("WhatsNewFetchUpdate", new NSObject());
                 ResetViews();
                 WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
                 _whatsNewList = whatsNewEntity.GetAllItems();
@@ -140,7 +149,7 @@ namespace myTNB
                             CategoryName = GetI18NValue(WhatsNewConstants.I18N_ViewAll)
                         };
                         _categoryList.Insert(0, viewAllModel);
-                        CreateCategoryTopBar();
+                        CreateCategoryTopBar(0);
                     }
                     _selectedCategoryIndex = 0;
                     AddWhatsNewScrollView();
@@ -309,7 +318,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Center,
-                Text = GetI18NValue(WhatsNewConstants.I18N_EmptyDesc)
+                Text = GetI18NValue(WhatsNewConstants.I18N_NoPromotions)
             };
             emptyDesc.TextContainer.LineFragmentPadding = 0F;
 
@@ -338,7 +347,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = UIColor.White,
-                Text = "What's New",
+                Text = GetI18NValue(WhatsNewConstants.I18N_Title),
                 TextAlignment = UITextAlignment.Center
             };
             _refreshScreenView.AddSubview(title);
@@ -395,7 +404,7 @@ namespace myTNB
         #endregion
 
         #region CATEGORY TOP BAR MENU
-        private void CreateCategoryTopBar()
+        private void CreateCategoryTopBar(nfloat addtlPadding)
         {
             _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
             var addtl = _hotspotIsOn ? 20F : 0F;
@@ -408,14 +417,15 @@ namespace myTNB
             };
             _topBarScrollView.ShowsHorizontalScrollIndicator = false;
             View.AddSubview(_topBarScrollView);
-            SetCategoryTopBarValues();
+            SetCategoryTopBarValues(addtlPadding);
         }
 
-        private void SetCategoryTopBarValues()
+        private void SetCategoryTopBarValues(nfloat addtlPadding)
         {
             nfloat xPos = 0;
             nfloat labelHeight = GetScaledHeight(14F);
-            nfloat padding = GetScaledWidth(10F);
+            nfloat padding = GetScaledWidth(10F) + addtlPadding;
+            CustomUIView lastView = new CustomUIView();
 
             for (int i = 0; i < _categoryList.Count; i++)
             {
@@ -455,8 +465,29 @@ namespace myTNB
                 xPos = categoryView.Frame.GetMaxX();
                 categoryView.AddSubview(categoryLabel);
                 _topBarScrollView.AddSubview(categoryView);
+                lastView = categoryView;
             }
             _topBarScrollView.ContentSize = new CGSize(xPos, _topBarScrollView.Frame.Height);
+            AdjustCategoryMenuUI(lastView);
+        }
+
+        private void AdjustCategoryMenuUI(CustomUIView lastView)
+        {
+            if (lastView != null)
+            {
+                if (lastView.Frame.GetMaxX() < ViewWidth)
+                {
+                    nfloat diff = ViewWidth - lastView.Frame.GetMaxX();
+                    nfloat xtraPadding = diff / (_categoryList.Count * 2);
+
+                    if (_topBarScrollView != null)
+                    {
+                        _topBarScrollView.RemoveFromSuperview();
+                        _topBarScrollView = null;
+                    }
+                    CreateCategoryTopBar(xtraPadding);
+                }
+            }
         }
 
         private void OnSelectCategoryAction(int index)
@@ -656,6 +687,7 @@ namespace myTNB
                                 {
                                     if (!_isViewDidLoad)
                                     {
+                                        NotifCenterUtility.PostNotificationName("WhatsNewFetchUpdate", new NSObject());
                                         OnReloadTableAction(_selectedCategoryIndex);
                                         _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                                         CheckTutorialOverlay();
@@ -721,6 +753,7 @@ namespace myTNB
                     ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                 };
                 PresentViewController(navController, true, null);
+                WhatsNewServices.SetIsRead(whatsNew.ID);
                 OnUpdateReadWhatsNew(whatsNew, index);
             }
         }
@@ -801,7 +834,7 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(WhatsNewConstants.Pref_WhatsNewTutorialOverlay);
 
-            //if (tutorialOverlayHasShown) { return; }
+            if (tutorialOverlayHasShown) { return; }
 
             if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading && _whatsNewList != null && _whatsNewList.Count > 0)
             {
@@ -892,7 +925,7 @@ namespace myTNB
             }
         }
 
-        public nfloat GetFirstRewardYPos()
+        public nfloat GetFirstWhatsNewYPos()
         {
             nfloat yPos = 0;
             if (_mainScrollView != null)

@@ -911,7 +911,7 @@
   },
   "WhatsNew": {
     "title": "What's New",
-    "emptyDesc": "Looks like there's nothing new... Yet! Check back soon.",
+    "noPromotions": "Looks like there's nothing new... Yet! Check back soon.",
     "viewAll": "View All",
     "tutorialCategoryTitle":"Get Caught Up With TNB News.",
     "tutorialCategoryDesc": "Switch Between the categories to view announcements and/or promotions relevant to you.",
