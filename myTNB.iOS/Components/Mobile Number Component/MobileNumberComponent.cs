@@ -20,11 +20,11 @@ namespace myTNB
         public Action OnDone { set; private get; }
         public Action OnSelect { set; private get; }
 
-        public MobileNumberComponent(UIView parentView, nfloat yLocation)
+        public MobileNumberComponent(UIView parentView, nfloat yLocation, bool isYAdjust = true)
         {
             _textFieldHelper = new TextFieldHelper();
             _parentView = parentView;
-            _yLocation = yLocation + GetScaledHeight(16);
+            _yLocation = yLocation + (isYAdjust ? GetScaledHeight(16) : 0);
         }
 
         private void CreateUI()
