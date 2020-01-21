@@ -11,7 +11,7 @@ namespace myTNB
         private CustomUIView _countryCodeView, _mobileNoView;
         private UIView _parentView, _viewMobileNumber, _viewCountyCodeLine, _viewMobileNoLine;
         private UILabel _lblTitle, _lblCountryCode;
-        private UITextField _txtFieldMobileNo;
+        private MobileNumberTextField _txtFieldMobileNo;
         private UIImageView _imgFlag, _imgDropDown;
         private TextFieldHelper _textFieldHelper;
         private nfloat _yLocation;
@@ -89,7 +89,7 @@ namespace myTNB
                 , _viewMobileNumber.Frame.Width - _countryCodeView.Frame.Width - GetScaledWidth(4), GetScaledHeight(25)));
             _viewMobileNoLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _mobileNoView.Frame.Width, GetScaledHeight(1)));
 
-            _txtFieldMobileNo = new UITextField
+            _txtFieldMobileNo = new MobileNumberTextField
             {
                 Frame = new CGRect(0, 0, _mobileNoView.Frame.Width, GetScaledHeight(24)),
                 AttributedPlaceholder = new NSAttributedString(string.Empty
@@ -110,9 +110,14 @@ namespace myTNB
             };
             _txtFieldMobileNo.ShouldChangeCharacters += (txtField, range, replacementString) =>
             {
+                if ((int)range.Location == 0 && (int)range.Length == 0 && replacementString == "0")
+                {
+                    return false;
+                }
                 int totalLength = _countryCode.Length + (int)range.Location;
                 return !(totalLength == 16);
             };
+
             _mobileNoView.AddSubviews(new UIView[] { _viewMobileNoLine, _txtFieldMobileNo });
         }
 
@@ -164,6 +169,14 @@ namespace myTNB
             }
         }
 
+        public string FullMobileNumber
+        {
+            get
+            {
+                return _countryCode + MobileNumber;
+            }
+        }
+
         public string CountryCode
         {
             set
@@ -200,6 +213,21 @@ namespace myTNB
             get
             {
                 return _countryShortCode;
+            }
+        }
+
+        private class MobileNumberTextField : UITextField
+        {
+            public override bool CanPerform(ObjCRuntime.Selector action, NSObject withSender)
+            {
+                if (action == new ObjCRuntime.Selector("paste:"))
+                {
+                    return false;
+                }
+                else
+                {
+                    return base.CanPerform(action, withSender);
+                }
             }
         }
     }

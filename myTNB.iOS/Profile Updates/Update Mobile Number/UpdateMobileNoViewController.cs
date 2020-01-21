@@ -116,9 +116,7 @@ namespace myTNB
             _btnNext.AddGestureRecognizer(new UITapGestureRecognizer(async () =>
             {
                 ActivityIndicator.Show();
-                _mobileNo = _mobileNumberComponent.MobileNumber;
                 BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMS(_mobileNo);
-
                 if (ServiceCall.ValidateBaseResponse(response))
                 {
                     DataManager.DataManager.SharedInstance.User.MobileNo = _mobileNo;
@@ -127,13 +125,12 @@ namespace myTNB
                     viewController.IsMobileVerification = true;
                     viewController.IsFromLogin = IsFromLogin;
                     NavigationController.PushViewController(viewController, true);
-                    ActivityIndicator.Hide();
                 }
                 else
                 {
                     DisplayServiceError(response?.d?.DisplayMessage ?? string.Empty);
-                    ActivityIndicator.Hide();
                 }
+                ActivityIndicator.Hide();
             }));
             IsCTAEnabled = false;
             cardView.AddSubview(_btnNext);
@@ -175,8 +172,8 @@ namespace myTNB
 
         private void OnDone()
         {
-            _mobileNo = _mobileNumberComponent.MobileNumber;
-            IsCTAEnabled = _mobileNo.IsValid();
+            _mobileNo = _mobileNumberComponent.FullMobileNumber;
+            IsCTAEnabled = _mobileNumberComponent.MobileNumber.IsValid();
         }
 
         private bool IsCTAEnabled
@@ -195,7 +192,7 @@ namespace myTNB
         {
             get
             {
-                string defaultCountry = "ml";
+                string defaultCountry = "ml";//Todo: Change this default country
                 CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
                 return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
             }
@@ -212,7 +209,6 @@ namespace myTNB
                     {
                         ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                     };
-                    //PresentViewController(navController, true, null);
                     NavigationController.PushViewController(viewController, true);
                 };
             }

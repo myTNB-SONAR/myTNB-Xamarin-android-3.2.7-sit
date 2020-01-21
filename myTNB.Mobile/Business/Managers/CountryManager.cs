@@ -55,6 +55,10 @@ namespace myTNB
 
         public List<CountryModel> GetCountryList()
         {
+            if (string.IsNullOrEmpty(CountryJSON) || string.IsNullOrWhiteSpace(CountryJSON))
+            {
+                SetCountries();
+            }
             Countries Countries = (string.IsNullOrEmpty(CountryJSON) || string.IsNullOrWhiteSpace(CountryJSON)) ? new Countries()
                 : JsonConvert.DeserializeObject<Countries>(CountryJSON);
             if (Countries != null && Countries.CountryList != null)
