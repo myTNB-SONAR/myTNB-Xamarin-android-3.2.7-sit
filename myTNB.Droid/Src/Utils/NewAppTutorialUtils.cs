@@ -4,6 +4,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
@@ -42,6 +43,10 @@ namespace myTNB_Android.Src.Utils
                     else if (fragment is RewardMenuFragment)
                     {
                         ((RewardMenuFragment)fragment).StopScrolling();
+                    }
+                    else if (fragment is WhatsNewMenuFragment)
+                    {
+                        ((WhatsNewMenuFragment)fragment).StopScrolling();
                     }
                 }
                 else

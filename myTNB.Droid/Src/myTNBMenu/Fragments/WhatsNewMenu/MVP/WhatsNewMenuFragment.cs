@@ -13,38 +13,37 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.SavedRewards.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
+using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Model;
 using myTNB_Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
+namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
-    public class RewardMenuFragment : BaseFragment, RewardMenuContract.IRewardMenuView, ViewPager.IOnPageChangeListener
+    public class WhatsNewMenuFragment : BaseFragment, WhatsNewMenuContract.IWhatsNewMenuView, ViewPager.IOnPageChangeListener
     {
 
         private bool isSiteCoreComplete = false;
 
-        [BindView(Resource.Id.rewardMainLayout)]
-        LinearLayout rewardMainLayout;
+        [BindView(Resource.Id.whatsNewMainLayout)]
+        LinearLayout whatsNewMainLayout;
 
-        [BindView(Resource.Id.rewardsSlidingTabs)]
-        TabLayout rewardsSlidingTabs;
+        [BindView(Resource.Id.whatsNewsSlidingTabs)]
+        TabLayout whatsNewsSlidingTabs;
 
-        [BindView(Resource.Id.rewardViewPager)]
-        ViewPager rewardViewPager;
+        [BindView(Resource.Id.whatsNewViewPager)]
+        ViewPager whatsNewViewPager;
 
-        [BindView(Resource.Id.rewardEmptyLayout)]
-        LinearLayout rewardEmptyLayout;
+        [BindView(Resource.Id.whatsNewEmptyLayout)]
+        LinearLayout whatsNewEmptyLayout;
 
-        [BindView(Resource.Id.rewardEmptyImg)]
-        ImageView rewardEmptyImg;
+        [BindView(Resource.Id.whatsNewEmptyImg)]
+        ImageView whatsNewEmptyImg;
 
-        [BindView(Resource.Id.txtEmptyReward)]
-        TextView txtEmptyReward;
+        [BindView(Resource.Id.txtEmptyWhatsNew)]
+        TextView txtEmptyWhatsNew;
 
-        [BindView(Resource.Id.rewardRefreshLayout)]
-        LinearLayout rewardRefreshLayout;
+        [BindView(Resource.Id.whatsNewRefreshLayout)]
+        LinearLayout whatsNewRefreshLayout;
 
         [BindView(Resource.Id.txtRefresh)]
         TextView txtRefresh;
@@ -52,11 +51,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         [BindView(Resource.Id.btnRefresh)]
         Button btnRefresh;
 
-        private RewardsTabAdapter mAdapter;
+        private WhatsNewTabAdapter mAdapter;
 
-        RewardMenuContract.IRewardMenuPresenter presenter;
+        WhatsNewMenuContract.IWhatsNewMenuPresenter presenter;
 
-        private List<RewardMenuModel> mTabList = new List<RewardMenuModel>();
+        private List<WhatsNewMenuModel> mTabList = new List<WhatsNewMenuModel>();
 
         private string savedTimeStamp = "0000000";
 
@@ -65,9 +64,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             base.OnCreate(savedInstanceState);
 
             SetHasOptionsMenu(true);
-            presenter = new RewardMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            presenter = new WhatsNewMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
-            RewardsMenuUtils.OnSetTouchDisable(false);
+            WhatsNewMenuUtils.OnSetTouchDisable(false);
         }
 
         public override void OnAttach(Context context)
@@ -75,7 +74,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             base.OnAttach(context);
             try
             {
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Rewards");
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "WhatsNews");
             }
             catch (Java.Lang.ClassCastException e)
             {
@@ -92,7 +91,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                RewardsMenuUtils.OnSetTouchDisable(true);
+                WhatsNewMenuUtils.OnSetTouchDisable(true);
 
                 InitializeView();
 
@@ -101,21 +100,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     SetupTabIndicator((int)DPUtils.ConvertDPToPx(16f), (int)DPUtils.ConvertDPToPx(10f));
                     MeasureTabScroll();
                     HighLightCurrentTab(0);
-                    rewardViewPager.AddOnPageChangeListener(this);
+                    whatsNewViewPager.AddOnPageChangeListener(this);
                 }
-                rewardViewPager.OverScrollMode = OverScrollMode.Never;
+                whatsNewViewPager.OverScrollMode = OverScrollMode.Never;
 
-                TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward, txtRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyWhatsNew, txtRefresh);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
-                rewardMainLayout.Visibility = ViewStates.Visible;
+                whatsNewMainLayout.Visibility = ViewStates.Visible;
 
-                rewardEmptyLayout.Visibility = ViewStates.Gone;
+                whatsNewEmptyLayout.Visibility = ViewStates.Gone;
 
-                rewardRefreshLayout.Visibility = ViewStates.Gone;
+                whatsNewRefreshLayout.Visibility = ViewStates.Gone;
 
-                OnGetRewardTimestamp();
+                OnGetWhatsNewTimestamp();
             }
             catch (System.Exception e)
             {
@@ -134,7 +133,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             try
             {
-                RewardsMenuUtils.OnResetUpdateList();
+                WhatsNewMenuUtils.OnResetUpdateList();
             }
             catch (System.Exception e)
             {
@@ -142,17 +141,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
         }
 
-        public void OnGetRewardTimestamp()
+        public void OnGetWhatsNewTimestamp()
         {
             try
             {
-                if (RewardsMenuUtils.GetRewardLoading())
+                if (WhatsNewMenuUtils.GetWhatsNewLoading())
                 {
-                    _ = this.presenter.OnRecheckRewardsStatus();
+                    _ = this.presenter.OnRecheckWhatsNewsStatus();
                 }
                 else
                 {
-                    this.presenter.GetRewardsTimeStamp();
+                    this.presenter.GetWhatsNewsTimeStamp();
                 }
             }
             catch (System.Exception e)
@@ -191,9 +190,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             try
             {
-                if (RewardsMenuUtils.GetRefreshAll())
+                if (WhatsNewMenuUtils.GetRefreshAll())
                 {
-                    RewardsMenuUtils.OnResetUpdateList();
+                    WhatsNewMenuUtils.OnResetUpdateList();
                     if (mTabList != null && mTabList.Count > 0)
                     {
                         for (int i = 0; i < mTabList.Count; i++)
@@ -213,15 +212,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             try
             {
-                if (mTabList != null && mTabList.Count > 0 && mTabList[0].FragmentListMode == Constants.REWARDSITEMLISTMODE.LOADED)
+                if (mTabList != null && mTabList.Count > 0 && mTabList[0].FragmentListMode == Constants.WHATSNEWITEMLISTMODE.LOADED)
                 {
-                    if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                    if (!UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                     {
                         Handler h = new Handler();
                         Action myAction = () =>
                         {
                             NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                            OnShowRewardMenuTutorial();
+                            OnShowWhatsNewMenuTutorial();
                         };
                         h.PostDelayed(myAction, 50);
                     }
@@ -241,7 +240,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         public override int ResourceId()
         {
-            return Resource.Layout.RewardListView;
+            return Resource.Layout.WhatsNewListView;
         }
 
         public void ShowBackButton(bool flag)
@@ -258,44 +257,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             return this.DeviceId();
         }
 
-        private IMenu menu;
-        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
-        {
-            inflater.Inflate(Resource.Menu.RewardsToolBarMenu, menu);
-            this.menu = menu;
-            base.OnCreateOptionsMenu(menu, inflater);
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Resource.Id.action_menu_reward:
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-                        Intent activityIntent = new Intent(this.Activity, typeof(SavedRewardsActivity));
-                        this.StartActivity(activityIntent);
-                    }
-                    return true;
-            }
-            return base.OnOptionsItemSelected(item);
-        }
-
         private void HighLightCurrentTab(int position)
         {
             try
             {
-                for (int i = 0; i < rewardsSlidingTabs.TabCount; i++)
+                for (int i = 0; i < whatsNewsSlidingTabs.TabCount; i++)
                 {
                     if (i != position)
                     {
-                        TabLayout.Tab currentTab = rewardsSlidingTabs.GetTabAt(i);
+                        TabLayout.Tab currentTab = whatsNewsSlidingTabs.GetTabAt(i);
                         currentTab.SetCustomView(null);
                         currentTab.SetCustomView(mAdapter.GetTabView(i));
                     }
                 }
-                TabLayout.Tab currentHightlightTab = rewardsSlidingTabs.GetTabAt(position);
+                TabLayout.Tab currentHightlightTab = whatsNewsSlidingTabs.GetTabAt(position);
                 currentHightlightTab.SetCustomView(null);
                 currentHightlightTab.SetCustomView(mAdapter.GetSelectedTabView(position));
             }
@@ -309,7 +284,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         {
             try
             {
-                View TabStrip = rewardsSlidingTabs.GetChildAt(0);
+                View TabStrip = whatsNewsSlidingTabs.GetChildAt(0);
 
                 ViewGroup TabStripGroup = (ViewGroup)TabStrip;
 
@@ -338,7 +313,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                     }
                 }
 
-                rewardsSlidingTabs.RequestLayout();
+                whatsNewsSlidingTabs.RequestLayout();
             }
             catch (Exception e)
             {
@@ -386,9 +361,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 HighLightCurrentTab(position);
                 try
                 {
-                    RewardMenuModel currentModel = mTabList[position];
-                    if (currentModel.FragmentListMode == Constants.REWARDSITEMLISTMODE.LOADED
-                        && RewardsMenuUtils.OnCheckIsUpdateNeed(currentModel.FragmentSearchString))
+                    WhatsNewMenuModel currentModel = mTabList[position];
+                    if (currentModel.FragmentListMode == Constants.WHATSNEWITEMLISTMODE.LOADED
+                        && WhatsNewMenuUtils.OnCheckIsUpdateNeed(currentModel.FragmentSearchString))
                     {
                         currentModel.Fragment.Refresh();
                     }
@@ -402,32 +377,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         private void InitializeView()
         {
-            mAdapter = new RewardsTabAdapter(this.FragmentManager, this.Activity);
+            mAdapter = new WhatsNewTabAdapter(this.FragmentManager, this.Activity);
 
-            mTabList = this.presenter.InitializeRewardView();
+            mTabList = this.presenter.InitializeWhatsNewView();
 
             for (int i = 0; i < mTabList.Count; i++)
             {
                 Bundle bundle = new Bundle();
-                bundle.PutInt(Constants.REWARDS_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
+                bundle.PutInt(Constants.WHATSNEW_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
                 mTabList[i].Fragment.Arguments = bundle;
                 mAdapter.AddFragment(mTabList[i].Fragment, mTabList[i].TabTitle);
             }
 
-            rewardViewPager.Adapter = mAdapter;
-            rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
+            whatsNewViewPager.Adapter = mAdapter;
+            whatsNewsSlidingTabs.SetupWithViewPager(whatsNewViewPager);
         }
 
-        public void OnSavedRewardsTimeStamp(string mSavedTimeStamp)
+        public void OnSavedWhatsNewsTimeStamp(string mSavedTimeStamp)
         {
             if (mSavedTimeStamp != null)
             {
                 this.savedTimeStamp = mSavedTimeStamp;
             }
-            this.presenter.OnGetRewardsTimeStamp();
+            this.presenter.OnGetWhatsNewsTimeStamp();
         }
 
-        public void OnSetResultTabView(List<RewardMenuModel> list)
+        public void OnSetResultTabView(List<WhatsNewMenuModel> list)
         {
             try
             {
@@ -442,15 +417,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         for (int i = 0; i < mTabList.Count; i++)
                         {
                             Bundle bundle = new Bundle();
-                            bundle.PutInt(Constants.REWARDS_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
-                            bundle.PutString(Constants.REWARDS_ITEM_LIST_SEARCH_STRING_KEY, mTabList[i].FragmentSearchString);
+                            bundle.PutInt(Constants.WHATSNEW_ITEM_LIST_MODE, (int)mTabList[i].FragmentListMode);
+                            bundle.PutString(Constants.WHATSNEW_ITEM_LIST_SEARCH_STRING_KEY, mTabList[i].FragmentSearchString);
 
                             mTabList[i].Fragment.Arguments = bundle;
                             mAdapter.AddFragment(mTabList[i].Fragment, mTabList[i].TabTitle);
                         }
 
-                        rewardViewPager.Adapter = mAdapter;
-                        rewardsSlidingTabs.SetupWithViewPager(rewardViewPager);
+                        whatsNewViewPager.Adapter = mAdapter;
+                        whatsNewsSlidingTabs.SetupWithViewPager(whatsNewViewPager);
 
                         if (mTabList != null && mTabList.Count > 1)
                         {
@@ -461,22 +436,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                         if (mTabList == null || (mTabList != null && mTabList.Count <= 1))
                         {
-                            rewardsSlidingTabs.Visibility = ViewStates.Gone;
+                            whatsNewsSlidingTabs.Visibility = ViewStates.Gone;
                         }
                         else
                         {
-                            rewardsSlidingTabs.Visibility = ViewStates.Visible;
+                            whatsNewsSlidingTabs.Visibility = ViewStates.Visible;
                         }
 
                         try
                         {
-                            if (RewardsEntity.HasUnread())
+                            if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
                             }
                         }
                         catch (System.Exception ex)
@@ -484,17 +459,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                             Utility.LoggingNonFatalError(ex);
                         }
 
-                        RewardsMenuUtils.OnSetTouchDisable(false);
+                        WhatsNewMenuUtils.OnSetTouchDisable(false);
 
                         try
                         {
-                            if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            if (!UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
                                 Handler h = new Handler();
                                 Action myAction = () =>
                                 {
                                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                                    OnShowRewardMenuTutorial();
+                                    OnShowWhatsNewMenuTutorial();
                                 };
                                 h.PostDelayed(myAction, 50);
                             }
@@ -533,8 +508,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                     try
                                     {
                                         int widthS = DPUtils.GetWidth();
-                                        rewardsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
-                                        int widthT = rewardsSlidingTabs.MeasuredWidth;
+                                        whatsNewsSlidingTabs.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
+                                        int widthT = whatsNewsSlidingTabs.MeasuredWidth;
 
                                         if (widthS > widthT)
                                         {
@@ -554,7 +529,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                                 Utility.LoggingNonFatalError(ex);
                             }
                         };
-                        rewardsSlidingTabs.Post(myAction);
+                        whatsNewsSlidingTabs.Post(myAction);
                     }
                     catch (Exception e)
                     {
@@ -568,38 +543,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
         }
 
-        public void CheckRewardsTimeStamp(string mTimeStemp)
+        public void CheckWhatsNewsTimeStamp(string mTimeStamp)
         {
             try
             {
-                if (mTimeStemp != null)
+                if (mTimeStamp != null)
                 {
-                    if (!mTimeStemp.Equals(savedTimeStamp))
+                    if (!mTimeStamp.Equals(savedTimeStamp))
                     {
-                        this.presenter.OnGetRewards();
+                        this.presenter.OnGetWhatsNews();
                     }
                     else
                     {
-                        RewardsEntity wtItemManager = new RewardsEntity();
-                        List<RewardsEntity> subItems = wtItemManager.GetAllItems();
+                        WhatsNewEntity wtItemManager = new WhatsNewEntity();
+                        List<WhatsNewEntity> subItems = wtItemManager.GetAllItems();
                         if (subItems != null && subItems.Count > 0)
                         {
-                            _ = this.presenter.OnGetUserRewardList();
+                            this.presenter.CheckWhatsNewsCache();
                         }
                         else
                         {
-                            this.presenter.OnGetRewards();
+                            this.presenter.OnGetWhatsNews();
                         }
                     }
                 }
                 else
                 {
-                    this.presenter.OnGetRewards();
+                    this.presenter.OnGetWhatsNews();
                 }
             }
             catch (System.Exception e)
             {
-                this.presenter.OnGetRewards();
+                this.presenter.OnGetWhatsNews();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -612,37 +587,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     try
                     {
-                        rewardMainLayout.Visibility = ViewStates.Gone;
+                        whatsNewMainLayout.Visibility = ViewStates.Gone;
 
-                        rewardEmptyLayout.Visibility = ViewStates.Visible;
+                        whatsNewEmptyLayout.Visibility = ViewStates.Visible;
 
-                        rewardRefreshLayout.Visibility = ViewStates.Gone;
+                        whatsNewRefreshLayout.Visibility = ViewStates.Gone;
 
-                        txtEmptyReward.Text = Utility.GetLocalizedLabel("Rewards", "noRewards");
+                        txtEmptyWhatsNew.Text = Utility.GetLocalizedLabel("WhatsNew", "noPromotions");
 
-                        LinearLayout.LayoutParams rewardEmptyImgParams = rewardEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
-                        rewardEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
-                        rewardEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
-                        rewardEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
-                        rewardEmptyImg.RequestLayout();
+                        LinearLayout.LayoutParams whatsNewEmptyImgParams = whatsNewEmptyImg.LayoutParameters as LinearLayout.LayoutParams;
+                        whatsNewEmptyImgParams.TopMargin = GetDeviceVerticalScaleInPixel(0.155f);
+                        whatsNewEmptyImgParams.Width = GetDeviceHorizontalScaleInPixel(0.319f);
+                        whatsNewEmptyImgParams.Height = GetDeviceVerticalScaleInPixel(0.165f);
+                        whatsNewEmptyImg.RequestLayout();
 
-                        IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
-                        if (item != null)
-                        {
-                            item.SetVisible(false);
-                        }
-
-                        RewardsMenuUtils.OnSetTouchDisable(false);
+                        WhatsNewMenuUtils.OnSetTouchDisable(false);
 
                         try
                         {
-                            if (RewardsEntity.HasUnread())
+                            if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
                             }
                         }
                         catch (System.Exception ex)
@@ -670,11 +639,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 {
                     try
                     {
-                        rewardMainLayout.Visibility = ViewStates.Gone;
+                        whatsNewMainLayout.Visibility = ViewStates.Gone;
 
-                        rewardEmptyLayout.Visibility = ViewStates.Gone;
+                        whatsNewEmptyLayout.Visibility = ViewStates.Gone;
 
-                        rewardRefreshLayout.Visibility = ViewStates.Visible;
+                        whatsNewRefreshLayout.Visibility = ViewStates.Visible;
 
                         if (!string.IsNullOrEmpty(buttonText))
                         {
@@ -694,23 +663,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                             txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
                         }
 
-                        IMenuItem item = this.menu.FindItem(Resource.Id.action_menu_reward);
-                        if (item != null)
-                        {
-                            item.SetVisible(false);
-                        }
-
-                        RewardsMenuUtils.OnSetTouchDisable(false);
+                        WhatsNewMenuUtils.OnSetTouchDisable(false);
 
                         try
                         {
-                            if (RewardsEntity.HasUnread())
+                            if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
                             }
                         }
                         catch (System.Exception ex)
@@ -730,9 +693,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
         }
 
-        public void OnShowRewardMenuTutorial()
+        public void OnShowWhatsNewMenuTutorial()
         {
-            if (!UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+            if (!UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
             {
                 Handler h = new Handler();
                 Action myAction = () =>
@@ -758,14 +721,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             }
         }
 
-        public List<RewardMenuModel> GetTabList()
+        public List<WhatsNewMenuModel> GetTabList()
         {
             return mTabList;
         }
 
         public bool CheckTabVisibility()
         {
-            return rewardsSlidingTabs.Visibility == ViewStates.Visible;
+            return whatsNewsSlidingTabs.Visibility == ViewStates.Visible;
         }
 
         public int GetTabRelativePosition()
@@ -775,7 +738,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
             try
             {
                 int[] location = new int[2];
-                rewardsSlidingTabs.GetLocationOnScreen(location);
+                whatsNewsSlidingTabs.GetLocationOnScreen(location);
                 i = location[1];
             }
             catch (Exception e)
@@ -792,7 +755,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
             try
             {
-                i = rewardsSlidingTabs.Height;
+                i = whatsNewsSlidingTabs.Height;
             }
             catch (Exception e)
             {
@@ -807,7 +770,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         {
             try
             {
-                ((DashboardHomeActivity)Activity).ShowRewardsMenu();
+                ((DashboardHomeActivity)Activity).ShowWhatsNewMenu();
             }
             catch (System.Exception ex)
             {

@@ -14,6 +14,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
@@ -180,6 +181,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mFragment is RewardMenuFragment)
                     {
                         ((RewardMenuFragment)this.mFragment).StopScrolling();
+                    }
+                    else if (this.mFragment is WhatsNewMenuFragment)
+                    {
+                        ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
                     }
                 }
                 else
@@ -811,6 +816,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((RewardMenuFragment)this.mFragment).StopScrolling();
                         UserSessions.DoRewardsShown(this.mPref);
+                    }
+                    else if (this.mFragment is WhatsNewMenuFragment)
+                    {
+                        ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
+                        UserSessions.DoWhatsNewShown(this.mPref);
                     }
                 }
                 else

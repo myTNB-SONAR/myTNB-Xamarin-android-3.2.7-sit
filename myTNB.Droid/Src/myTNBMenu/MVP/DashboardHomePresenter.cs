@@ -63,8 +63,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private bool isBillAvailable = true;
 
-        private static bool isPromoClicked = false;
-
         private RewardServiceImpl mApi;
 
         private List<AddUpdateRewardModel> userList = new List<AddUpdateRewardModel>();
@@ -72,6 +70,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         private RewardsCategoryEntity mRewardsCategoryEntity;
 
         private RewardsEntity mRewardsEntity;
+
+        private WhatsNewCategoryEntity mWhatsNewCategoryEntity;
+
+        private WhatsNewEntity mWhatsNewEntity;
 
         private static SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager;
         private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
@@ -304,7 +306,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			switch (resourceId)
 			{
 				case Resource.Id.menu_dashboard:
-                    OnUpdatePromoUnRead();
+                    OnUpdateWhatsNewUnRead();
                     if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
 						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment)))
 					{
@@ -329,7 +331,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_bill:
-                    OnUpdatePromoUnRead();
+                    OnUpdateWhatsNewUnRead();
                     this.mView.RemoveHeaderDropDown();
                     if (accountList.Count > 0)
 					{
@@ -383,34 +385,27 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     break;
 				case Resource.Id.menu_promotion:
                     this.mView.RemoveHeaderDropDown();
-                    WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
-					if (weblinkEntity != null)
-					{
-                        currentBottomNavigationMenu = Resource.Id.menu_promotion;
-						this.mView.HideAccountName();
-						//this.mView.SetToolbarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
-						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
-                    }
-
-                    isPromoClicked = true;
+                    currentBottomNavigationMenu = Resource.Id.menu_promotion;
+                    this.mView.HideAccountName();
+                    this.mView.ShowWhatsNewMenu();
 
                     if (this.mView.IsActive())
 					{
-						if (PromotionsEntityV2.HasUnread())
+						if (WhatsNewEntity.HasUnread())
 						{
-							this.mView.ShowUnreadPromotions(true);
+							this.mView.ShowUnreadWhatsNew(true);
 
 						}
 						else
 						{
-							this.mView.HideUnreadPromotions(true);
+							this.mView.HideUnreadWhatsNew(true);
 
 						}
 					}
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_reward:
-                    OnUpdatePromoUnRead();
+                    OnUpdateWhatsNewUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
@@ -432,7 +427,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     break;
 				case Resource.Id.menu_more:
                     this.mView.RemoveHeaderDropDown();
-                    OnUpdatePromoUnRead();
+                    OnUpdateWhatsNewUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
                     OnUpdateRewardUnRead();
@@ -484,11 +479,26 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
+        public void OnStartWhatsNewThread()
+        {
+            if (!WhatsNewMenuUtils.GetWhatsNewLoading())
+            {
+                this.mView.ShowProgressDialog();
+                WhatsNewMenuUtils.OnSetWhatsNewLoading(true);
+                new SiteCoreWhatsNewAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+            }
+            else
+            {
+                this.mView.ShowProgressDialog();
+            }
+        }
+
         public void OnResetRewardPromotionThread()
         {
             try
             {
-                new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                WhatsNewMenuUtils.OnSetWhatsNewLoading(true);
+                new SiteCoreWhatsNewAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
                 if (!IsRewardsDisabled)
                 {
@@ -507,7 +517,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
-                new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+                WhatsNewMenuUtils.OnSetWhatsNewLoading(true);
+                new SiteCoreWhatsNewAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
                 if (!IsRewardsDisabled)
                 {
@@ -627,60 +638,32 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        private void OnUpdatePromoUnRead()
+        private void OnUpdateWhatsNewUnRead()
         {
-            if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            if (WhatsNewEntity.HasUnread())
             {
-                UserSessions.DoWhatNewShown(mSharedPref);
-            }
-
-            if (PromotionsEntityV2.HasUnread())
-            {
-                this.mView.ShowUnreadPromotions(false);
+                this.mView.ShowUnreadWhatsNew(false);
 
             }
             else
             {
-                this.mView.HideUnreadPromotions(false);
-
-            }
-
-            isPromoClicked = false;
-        }
-
-        public void OnResumeUpdatePromotionUnReadCounter()
-        {
-            if (PromotionsEntityV2.HasUnread())
-            {
-                this.mView.ShowUnreadPromotions();
-
-            }
-            else
-            {
-                this.mView.HideUnreadPromotions();
+                this.mView.HideUnreadWhatsNew(false);
 
             }
         }
 
-        private void OnResumeUpdatePromotionUnRead()
+        public void OnResumeUpdateWhatsNewUnRead()
         {
-            if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            if (WhatsNewEntity.HasUnread())
             {
-                UserSessions.DoWhatNewShown(mSharedPref);
-            }
-
-            if (PromotionsEntityV2.HasUnread())
-            {
-                this.mView.ShowUnreadPromotions();
+                this.mView.ShowUnreadWhatsNew();
 
             }
             else
             {
-                this.mView.HideUnreadPromotions();
+                this.mView.HideUnreadWhatsNew();
 
             }
-
-            isPromoClicked = false;
         }
 
         private void OnUpdateRewardUnRead()
@@ -712,7 +695,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         public void OnValidateData()
 		{
-            OnResumeUpdatePromotionUnRead();
+            OnResumeUpdateWhatsNewUnRead();
             OnResumeUpdateRewardUnRead();
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
@@ -721,103 +704,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 this.mView.DisableBillMenu();
             }
         }
-
-		public Task OnGetPromotionsTimeStamp()
-		{
-			cts = new CancellationTokenSource();
-			PromotionsEntityV2 wtManager1 = new PromotionsEntityV2();
-			PromotionsParentEntityV2 wtManger12 = new PromotionsParentEntityV2();
-			return Task.Factory.StartNew(() =>
-			{
-				try
-				{
-					string density = DPUtils.GetDeviceDensity(Application.Context);
-					GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-					string json = getItemsService.GetPromotionsV2TimestampItem();
-					PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
-					if (responseModel.Status.Equals("Success"))
-					{
-						PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-						wtManager.DeleteTable();
-						wtManager.CreateTable();
-						wtManager.InsertListOfItems(responseModel.Data);
-						mView.ShowPromotionTimestamp(true);
-					}
-					else
-					{
-						mView.ShowPromotionTimestamp(false);
-					}
-				}
-				catch (System.Exception e)
-				{
-					mView.ShowPromotionTimestamp(false);
-					Utility.LoggingNonFatalError(e);
-				}
-			}).ContinueWith((Task previous) =>
-			{
-			}, cts.Token);
-		}
-
-		public Task OnGetPromotions()
-		{
-			cts = new CancellationTokenSource();
-			return Task.Factory.StartNew(() =>
-			{
-				try
-				{
-					string density = DPUtils.GetDeviceDensity(Application.Context);
-					GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-					string json = getItemsService.GetPromotionsV2Item();
-					PromotionsV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
-					if (responseModel.Status.Equals("Success"))
-					{
-						PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-						wtManager.DeleteTable();
-						wtManager.CreateTable();
-						wtManager.InsertListOfItems(responseModel.Data);
-						mView.ShowPromotion(true);
-					}
-					else
-					{
-						mView.ShowPromotion(false);
-					}
-				}
-				catch (System.Exception e)
-				{
-					mView.ShowPromotion(true);
-					Utility.LoggingNonFatalError(e);
-				}
-			}).ContinueWith((Task previous) =>
-			{
-			}, cts.Token);
-		}
-
-		public void GetSavedPromotionTimeStamp()
-		{
-			try
-			{
-				PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-				List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-				if (items != null)
-				{
-					PromotionsParentEntityV2 entity = items[0];
-					if (entity != null)
-					{
-						mView.OnSavedTimeStamp(entity.Timestamp);
-					}
-				}
-				else
-				{
-					mView.OnSavedTimeStamp(null);
-				}
-			}
-			catch (System.Exception e)
-			{
-				mView.OnSavedTimeStamp(null);
-				Utility.LoggingNonFatalError(e);
-			}
-		}
-
 
 		public void OnAccountSelectDashBoard()
 		{
@@ -1276,6 +1162,46 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             this.mView.OnCheckRewardTab();
         }
 
+        public void CheckWhatsNewCache()
+        {
+            if (mWhatsNewCategoryEntity == null)
+            {
+                mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+            }
+
+            if (mWhatsNewEntity == null)
+            {
+                mWhatsNewEntity = new WhatsNewEntity();
+            }
+
+            List<WhatsNewCategoryModel> mDisplayCategoryList = new List<WhatsNewCategoryModel>();
+
+            List<WhatsNewCategoryEntity> mCategoryList = mWhatsNewCategoryEntity.GetAllItems();
+
+            if (mCategoryList != null && mCategoryList.Count > 0)
+            {
+                for (int i = 0; i < mCategoryList.Count; i++)
+                {
+                    List<WhatsNewEntity> checkList = mWhatsNewEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
+                    if (checkList != null && checkList.Count > 0)
+                    {
+                        mDisplayCategoryList.Add(new WhatsNewCategoryModel()
+                        {
+                            ID = mCategoryList[i].ID,
+                            CategoryName = mCategoryList[i].CategoryName
+                        });
+                    }
+                    else
+                    {
+                        mWhatsNewEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                        mWhatsNewCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                    }
+                }
+            }
+
+            this.mView.OnCheckWhatsNewTab();
+        }
+
         public void UpdateRewardRead(string itemID, bool flag)
         {
             DateTime currentDate = DateTime.UtcNow;
@@ -1700,6 +1626,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void UpdateWhatsNewRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            WhatsNewEntity wtManager = new WhatsNewEntity();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
         }
 
     }

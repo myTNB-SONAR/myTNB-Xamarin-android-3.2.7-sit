@@ -17,19 +17,19 @@ using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
-	public class SitecoreRewardAPI : AsyncTask
+	public class SiteCoreWhatsNewAPI : AsyncTask
 	{
 
-		private string savedRewardTimeStamp = "0000000";
+		private string savedWhatsNewTimeStamp = "0000000";
 		CancellationTokenSource cts = null;
 
         private DashboardHomeContract.IView mHomeView = null;
 
         private bool isSitecoreApiFailed = false;
 
-        private RewardsTimeStampResponseModel responseMasterModel = new RewardsTimeStampResponseModel();
+        private WhatsNewTimeStampResponseModel responseMasterModel = new WhatsNewTimeStampResponseModel();
 
-        public SitecoreRewardAPI(DashboardHomeContract.IView mView)
+        public SiteCoreWhatsNewAPI(DashboardHomeContract.IView mView)
 		{
             this.mHomeView = mView;
         }
@@ -44,18 +44,18 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			try
 			{
                 isSitecoreApiFailed = false;
-                Console.WriteLine("000 SitecoreRewardAPI started");
-                RewardsParentEntity wtManager = new RewardsParentEntity();
+                Console.WriteLine("000 SiteCoreWhatsNewAPI started");
+                WhatsNewParentEntity wtManager = new WhatsNewParentEntity();
 
                 try
                 {
-                    List<RewardsParentEntity> saveditems = wtManager.GetAllItems();
+                    List<WhatsNewParentEntity> saveditems = wtManager.GetAllItems();
                     if (saveditems != null && saveditems.Count > 0)
                     {
-                        RewardsParentEntity entity = saveditems[0];
+                        WhatsNewParentEntity entity = saveditems[0];
                         if (entity != null)
                         {
-                            savedRewardTimeStamp = entity.Timestamp;
+                            savedWhatsNewTimeStamp = entity.Timestamp;
                         }
                     }
                 }
@@ -64,8 +64,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     Utility.LoggingNonFatalError(e);
                 }
 
-				//Get Sitecore reward timestamp
-				bool getSiteCoreRewards = false;
+				//Get Sitecore whatsnew timestamp
+				bool getSiteCoreWhatsNew = false;
 				cts = new CancellationTokenSource();
 				Task.Factory.StartNew(() =>
 				{
@@ -73,64 +73,64 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 					{
 						string density = DPUtils.GetDeviceDensity(Application.Context);
                         GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                        responseMasterModel = getItemsService.GetRewardsTimestampItem();
+                        responseMasterModel = getItemsService.GetWhatsNewTimestampItem();
                         if (responseMasterModel.Status.Equals("Success"))
                         {
                             if (responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                             {
-                                if (!responseMasterModel.Data[0].Timestamp.Equals(savedRewardTimeStamp))
+                                if (!responseMasterModel.Data[0].Timestamp.Equals(savedWhatsNewTimeStamp))
                                 {
-                                    getSiteCoreRewards = true;
+                                    getSiteCoreWhatsNew = true;
                                 }
                                 else
                                 {
-                                    getSiteCoreRewards = false;
+                                    getSiteCoreWhatsNew = false;
                                 }
                             }
                             else
                             {
-                                List<RewardsParentEntity> items = wtManager.GetAllItems();
+                                List<WhatsNewParentEntity> items = wtManager.GetAllItems();
                                 if (items != null && items.Count > 0)
                                 {
-                                    RewardsParentEntity entity = items[0];
+                                    WhatsNewParentEntity entity = items[0];
                                     if (entity != null)
                                     {
-                                        if (!entity.Timestamp.Equals(savedRewardTimeStamp))
+                                        if (!entity.Timestamp.Equals(savedWhatsNewTimeStamp))
                                         {
-                                            getSiteCoreRewards = true;
+                                            getSiteCoreWhatsNew = true;
                                         }
                                         else
                                         {
-                                            RewardsEntity mRewardsEntityCheck = new RewardsEntity();
-                                            List<RewardsEntity> mCheckList = mRewardsEntityCheck.GetAllItems();
+                                            WhatsNewEntity mWhatsNewEntityCheck = new WhatsNewEntity();
+                                            List<WhatsNewEntity> mCheckList = mWhatsNewEntityCheck.GetAllItems();
                                             if (mCheckList == null || mCheckList.Count == 0)
                                             {
-                                                getSiteCoreRewards = true;
+                                                getSiteCoreWhatsNew = true;
                                             }
                                             else
                                             {
-                                                getSiteCoreRewards = false;
+                                                getSiteCoreWhatsNew = false;
 
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        getSiteCoreRewards = true;
+                                        getSiteCoreWhatsNew = true;
                                     }
                                 }
                                 else
                                 {
-                                    getSiteCoreRewards = true;
+                                    getSiteCoreWhatsNew = true;
                                 }
                             }
                         }
                         else
                         {
-                            getSiteCoreRewards = true;
+                            getSiteCoreWhatsNew = true;
                         }
 
-						if (getSiteCoreRewards)
+						if (getSiteCoreWhatsNew)
 						{
 							cts = new CancellationTokenSource();
 							Task.Factory.StartNew(() =>
@@ -138,44 +138,44 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 								try
 								{
                                     string newDensity = DPUtils.GetDeviceDensity(Application.Context);
-                                    GetItemsService getRewardItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                                    RewardsResponseModel responseModel = getRewardItemsService.GetRewardsItems();
+                                    GetItemsService getWhatsNewItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+                                    WhatsNewResponseModel responseModel = getWhatsNewItemsService.GetWhatsNewItems();
                                     if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                                     {
                                         if (responseModel.Status.Equals("Success"))
                                         {
                                             if (responseMasterModel != null && responseMasterModel.Status != null && responseMasterModel.Status.Equals("Success") && responseMasterModel.Data != null && responseMasterModel.Data.Count > 0)
                                             {
-                                                RewardsParentEntity mRewardsParentEntity = new RewardsParentEntity();
-                                                mRewardsParentEntity.DeleteTable();
-                                                mRewardsParentEntity.CreateTable();
-                                                mRewardsParentEntity.InsertListOfItems(responseMasterModel.Data);
+                                                WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                                                mWhatsNewParentEntity.DeleteTable();
+                                                mWhatsNewParentEntity.CreateTable();
+                                                mWhatsNewParentEntity.InsertListOfItems(responseMasterModel.Data);
                                             }
 
-                                            RewardsCategoryEntity mRewardsCategoryEntity = new RewardsCategoryEntity();
-                                            RewardsEntity mRewardsEntity = new RewardsEntity();
+                                            WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                                            WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
 
                                             if (responseModel != null && responseModel.Data != null && responseModel.Data.Count > 0)
                                             {
-                                                List<RewardsCategoryModel> ToStoredList = new List<RewardsCategoryModel>();
-                                                List<RewardsModel> ToStoredRewardList = new List<RewardsModel>();
+                                                List<WhatsNewCategoryModel> ToStoredList = new List<WhatsNewCategoryModel>();
+                                                List<WhatsNewModel> ToStoredWhatsNewList = new List<WhatsNewModel>();
 
                                                 for (int i = 0; i < responseModel.Data.Count; i++)
                                                 {
-                                                    if (responseModel.Data[i].RewardList != null && responseModel.Data[i].RewardList.Count > 0)
+                                                    if (responseModel.Data[i].WhatsNewList != null && responseModel.Data[i].WhatsNewList.Count > 0)
                                                     {
-                                                        List<RewardsModel> localList = new List<RewardsModel>();
-                                                        for (int j = 0; j < responseModel.Data[i].RewardList.Count; j++)
+                                                        List<WhatsNewModel> localList = new List<WhatsNewModel>();
+                                                        for (int j = 0; j < responseModel.Data[i].WhatsNewList.Count; j++)
                                                         {
                                                             int startResult = -1;
                                                             int endResult = 1;
                                                             try
                                                             {
-                                                                if (!string.IsNullOrEmpty(responseModel.Data[i].RewardList[j].StartDate) && !string.IsNullOrEmpty(responseModel.Data[i].RewardList[j].EndDate))
+                                                                if (!string.IsNullOrEmpty(responseModel.Data[i].WhatsNewList[j].StartDate) && !string.IsNullOrEmpty(responseModel.Data[i].WhatsNewList[j].EndDate))
                                                                 {
-                                                                    DateTime startDateTime = DateTime.ParseExact(responseModel.Data[i].RewardList[j].StartDate, "yyyyMMddTHHmmss",
+                                                                    DateTime startDateTime = DateTime.ParseExact(responseModel.Data[i].WhatsNewList[j].StartDate, "yyyyMMddTHHmmss",
                                                                     CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                                                    DateTime stopDateTime = DateTime.ParseExact(responseModel.Data[i].RewardList[j].EndDate, "yyyyMMddTHHmmss",
+                                                                    DateTime stopDateTime = DateTime.ParseExact(responseModel.Data[i].WhatsNewList[j].EndDate, "yyyyMMddTHHmmss",
                                                                         CultureInfo.InvariantCulture, DateTimeStyles.None);
                                                                     DateTime nowDateTime = DateTime.Now;
                                                                     startResult = DateTime.Compare(nowDateTime, startDateTime);
@@ -188,15 +188,11 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                                             }
                                                             if (startResult >= 0 && endResult <= 0)
                                                             {
-                                                                RewardsModel mModel = responseModel.Data[i].RewardList[j];
+                                                                WhatsNewModel mModel = responseModel.Data[i].WhatsNewList[j];
 
-                                                                RewardsEntity searchItem = mRewardsEntity.GetItem(mModel.ID);
+                                                                WhatsNewEntity searchItem = mWhatsNewEntity.GetItem(mModel.ID);
                                                                 if (searchItem != null)
                                                                 {
-                                                                    mModel.IsSaved = searchItem.IsSaved;
-                                                                    mModel.IsSavedDateTime = searchItem.IsSavedDateTime;
-                                                                    mModel.IsUsed = searchItem.IsUsed;
-                                                                    mModel.IsUsedDateTime = searchItem.IsUsedDateTime;
                                                                     mModel.Read = searchItem.Read;
                                                                     mModel.ReadDateTime = searchItem.ReadDateTime;
                                                                 }
@@ -206,85 +202,85 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
                                                         if (localList.Count > 0)
                                                         {
-                                                            ToStoredList.Add(new RewardsCategoryModel()
+                                                            ToStoredList.Add(new WhatsNewCategoryModel()
                                                             {
                                                                 ID = responseModel.Data[i].ID,
                                                                 CategoryName = responseModel.Data[i].CategoryName
                                                             });
 
-                                                            ToStoredRewardList.AddRange(localList);
+                                                            ToStoredWhatsNewList.AddRange(localList);
                                                         }
                                                     }
                                                 }
 
-                                                mRewardsCategoryEntity.DeleteTable();
-                                                mRewardsEntity.DeleteTable();
-                                                mRewardsCategoryEntity.CreateTable();
-                                                mRewardsEntity.CreateTable();
+                                                mWhatsNewCategoryEntity.DeleteTable();
+                                                mWhatsNewEntity.DeleteTable();
+                                                mWhatsNewCategoryEntity.CreateTable();
+                                                mWhatsNewEntity.CreateTable();
 
                                                 if (ToStoredList.Count > 0)
                                                 {
-                                                    mRewardsCategoryEntity.InsertListOfItems(ToStoredList);
-                                                    mRewardsEntity.InsertListOfItems(ToStoredRewardList);
+                                                    mWhatsNewCategoryEntity.InsertListOfItems(ToStoredList);
+                                                    mWhatsNewEntity.InsertListOfItems(ToStoredWhatsNewList);
                                                 }
 
                                                 if (mHomeView != null)
                                                 {
-                                                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                                                 }
                                             }
                                             else
                                             {
-                                                mRewardsCategoryEntity.DeleteTable();
-                                                mRewardsEntity.DeleteTable();
-                                                mRewardsCategoryEntity.CreateTable();
-                                                mRewardsEntity.CreateTable();
+                                                mWhatsNewCategoryEntity.DeleteTable();
+                                                mWhatsNewEntity.DeleteTable();
+                                                mWhatsNewCategoryEntity.CreateTable();
+                                                mWhatsNewEntity.CreateTable();
 
                                                 if (mHomeView != null)
                                                 {
-                                                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                                            WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                                             wtManager2.DeleteTable();
                                             wtManager2.CreateTable();
-                                            RewardsCategoryEntity mRewardsCategoryEntity2 = new RewardsCategoryEntity();
-                                            RewardsEntity mRewardsEntity2 = new RewardsEntity();
-                                            mRewardsCategoryEntity2.DeleteTable();
-                                            mRewardsEntity2.DeleteTable();
-                                            mRewardsCategoryEntity2.CreateTable();
-                                            mRewardsEntity2.CreateTable();
+                                            WhatsNewCategoryEntity mWhatsNewCategoryEntity2 = new WhatsNewCategoryEntity();
+                                            WhatsNewEntity mWhatsNewEntity2 = new WhatsNewEntity();
+                                            mWhatsNewCategoryEntity2.DeleteTable();
+                                            mWhatsNewEntity2.DeleteTable();
+                                            mWhatsNewCategoryEntity2.CreateTable();
+                                            mWhatsNewEntity2.CreateTable();
                                             isSitecoreApiFailed = true;
                                             if (mHomeView != null)
                                             {
-                                                mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                                mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                                        WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                                         wtManager2.DeleteTable();
                                         wtManager2.CreateTable();
                                         isSitecoreApiFailed = true;
                                         if (mHomeView != null)
                                         {
-                                            mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                            mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                                         }
                                     }
 								}
 								catch (System.Exception e)
 								{
-                                    RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                                    WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                                     wtManager2.DeleteTable();
                                     wtManager2.CreateTable();
                                     isSitecoreApiFailed = true;
                                     if (mHomeView != null)
                                     {
-                                        mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                        mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                                     }
                                     Utility.LoggingNonFatalError(e);
 								}
@@ -296,19 +292,19 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         {
                             if (mHomeView != null)
                             {
-                                mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                                mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                             }
                         }
 					}
 					catch (System.Exception e)
 					{
-                        RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                        WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                         wtManager2.DeleteTable();
                         wtManager2.CreateTable();
                         isSitecoreApiFailed = true;
                         if (mHomeView != null)
                         {
-                            mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                            mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                         }
                         Utility.LoggingNonFatalError(e);
 					}
@@ -319,41 +315,41 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			}
 			catch (ApiException apiException)
 			{
-                RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                 wtManager2.DeleteTable();
                 wtManager2.CreateTable();
                 isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
-                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                 }
                 Utility.LoggingNonFatalError(apiException);
 			}
 			catch (Newtonsoft.Json.JsonReaderException e)
 			{
-                RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                 wtManager2.DeleteTable();
                 wtManager2.CreateTable();
                 isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
-                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                 }
                 Utility.LoggingNonFatalError(e);
 			}
 			catch (System.Exception e)
 			{
-                RewardsParentEntity wtManager2 = new RewardsParentEntity();
+                WhatsNewParentEntity wtManager2 = new WhatsNewParentEntity();
                 wtManager2.DeleteTable();
                 wtManager2.CreateTable();
                 isSitecoreApiFailed = true;
                 if (mHomeView != null)
                 {
-                    mHomeView.OnCheckUserReward(isSitecoreApiFailed);
+                    mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
                 }
                 Utility.LoggingNonFatalError(e);
 			}
-			Console.WriteLine("000 SitecoreRewardAPI ended");
+			Console.WriteLine("000 SiteCoreWhatsNewAPI ended");
 			return null;
 		}
 

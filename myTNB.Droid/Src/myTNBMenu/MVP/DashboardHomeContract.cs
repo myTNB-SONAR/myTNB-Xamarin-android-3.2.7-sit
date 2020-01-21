@@ -36,11 +36,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			void ShowFeedbackMenu();
 
-			/// <summary>
-			/// Show promotions menu
-			/// </summary>
-			/// <param name="weblink">Weblink</param>
-			void ShowPromotionsMenu(Weblink weblink);
+
+			void ShowWhatsNewMenu();
 
 			/// <summary>
 			/// Show more menu
@@ -108,38 +105,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			void ShowAccountName();
 
-            /// <summary>
-            /// Shows unread promotions
-            /// </summary>
-            void ShowUnreadPromotions(bool flag);
+            void ShowUnreadWhatsNew(bool flag);
 
-            void ShowUnreadPromotions();
+            void ShowUnreadWhatsNew();
 
-            /// <summary>
-            /// Hides unread promotions
-            /// </summary>
-            void HideUnreadPromotions(bool flag);
+            void HideUnreadWhatsNew(bool flag);
 
-            void HideUnreadPromotions();
-
-            /// <summary>
-            /// return saved time stamp to view
-            /// </summary>
-            void OnSavedTimeStamp(string savedTimeStamp);
-
-			/// <summary>
-			/// Show promotion timestamp success/error
-			/// Call get promotion service to get latest promotion list
-			/// </summary>
-			/// <param name="success"></param>
-			void ShowPromotionTimestamp(bool success);
-
-			/// <summary>
-			/// Show promotion success/error
-			/// </summary>
-			/// <param name="success"></param>
-			void ShowPromotion(bool success);
-
+            void HideUnreadWhatsNew();
 
 			void ShowHomeDashBoard();
 
@@ -202,6 +174,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp);
 
             void CheckSSMRMeterReadingThreePhaseTimeStamp();
+
+            void OnCheckUserWhatsNew(bool isSitecoreApiFailed);
+
+            void OnCheckWhatsNewTab();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -234,23 +210,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// Handles actions triggered by real time data
 			/// </summary>
 			void OnValidateData();
-
-			/// <summary>
-			/// Get saved timestamp from database
-			/// </summary>
-			void GetSavedPromotionTimeStamp();
-
-			/// <summary>
-			/// Sitecore service call to get promotion timestamp
-			/// </summary>
-			/// <returns></returns>
-			Task OnGetPromotionsTimeStamp();
-
-			/// <summary>
-			/// Sitecore service call to get latest promotions 
-			/// </summary>
-			/// <returns></returns>
-			Task OnGetPromotions();
 
 			void OnTapToRefresh();
 
@@ -292,7 +251,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnResetRewardPromotionThread();
 
-            void OnResumeUpdatePromotionUnReadCounter();
+            void OnResumeUpdateWhatsNewUnRead();
+
+            void OnStartWhatsNewThread();
+
+            void UpdateWhatsNewRead(string itemID, bool flag);
         }
 	}
 }

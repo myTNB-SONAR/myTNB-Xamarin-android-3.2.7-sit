@@ -191,10 +191,30 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             {
                                 RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
                                 mRewardParentEntity.DeleteTable();
+                                mRewardParentEntity.CreateTable();
                                 RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
                                 mRewardCategoryEntity.DeleteTable();
+                                mRewardCategoryEntity.CreateTable();
                                 RewardsEntity mRewardEntity = new RewardsEntity();
                                 mRewardEntity.DeleteTable();
+                                mRewardEntity.CreateTable();
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+
+                            try
+                            {
+                                WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                                mWhatsNewParentEntity.DeleteTable();
+                                mWhatsNewParentEntity.CreateTable();
+                                WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                                mWhatsNewCategoryEntity.DeleteTable();
+                                mWhatsNewCategoryEntity.CreateTable();
+                                WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                                mWhatsNewEntity.DeleteTable();
+                                mWhatsNewEntity.CreateTable();
                             }
                             catch (Exception ex)
                             {
