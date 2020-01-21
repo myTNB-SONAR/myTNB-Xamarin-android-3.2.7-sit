@@ -4268,6 +4268,7 @@
     <Compile Include="Src\CompoundView\MobileNumberInputComponent.cs" />
     <AndroidResource Include="Resources\layout\MobileNumberInputComponentLayout.axml" />
     <AndroidResource Include="Resources\drawable\ph.png" />
+    <Compile Include="Src\Utils\CountryUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
