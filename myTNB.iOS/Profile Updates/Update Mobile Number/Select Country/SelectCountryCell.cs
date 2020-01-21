@@ -60,8 +60,7 @@ namespace myTNB.ProfileUpdates.UpdateMobileNumber.SelectCountry
             {
                 if (value.IsValid())
                 {
-                    string flagFormat = "Flags-{0}";
-                    _imgFlag.Image = UIImage.FromBundle(string.Format(flagFormat, value.ToUpper()));
+                    _imgFlag.Image = UIImage.FromBundle(value.ToUpper());
                 }
             }
         }

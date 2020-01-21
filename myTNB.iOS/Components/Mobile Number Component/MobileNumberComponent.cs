@@ -16,7 +16,6 @@ namespace myTNB
         private TextFieldHelper _textFieldHelper;
         private nfloat _yLocation;
         private string _countryCode = string.Empty, _countryShortCode = "ML";
-        private const string Flags = "Flags-{0}";
 
         public Action OnDone { set; private get; }
         public Action OnSelect { set; private get; }
@@ -52,13 +51,11 @@ namespace myTNB
                 , GetScaledWidth(82), GetScaledHeight(25)));
             _viewCountyCodeLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(24), _countryCodeView.Frame.Width, GetScaledHeight(1)));
 
-            string imgString = string.Format(Flags, CountryShortCode.ToUpper());
-
             _imgFlag = new UIImageView(new CGRect(GetScaledWidth(6), GetScaledWidth(6)
                , GetScaledWidth(17), GetScaledWidth(12)))
             {
                 BackgroundColor = UIColor.White,
-                Image = UIImage.FromBundle(imgString)
+                Image = UIImage.FromBundle(CountryShortCode.ToUpper())
             };
             _lblCountryCode = new UILabel(new CGRect(_imgFlag.Frame.GetMaxX() + GetScaledWidth(4), 0, GetScaledWidth(31), GetScaledHeight(24)))
             {
@@ -197,8 +194,7 @@ namespace myTNB
                 }
                 if (_imgFlag != null)
                 {
-                    string imgString = string.Format(Flags, _countryShortCode.ToUpper());
-                    _imgFlag.Image = UIImage.FromBundle(imgString);
+                    _imgFlag.Image = UIImage.FromBundle(_countryShortCode);
                 }
             }
             get
