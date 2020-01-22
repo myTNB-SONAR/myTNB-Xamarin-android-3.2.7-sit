@@ -1,15 +1,20 @@
-﻿using Facebook.Shimmer;
+﻿//using Facebook.Shimmer;
+
+using UIKit;
 
 namespace myTNB
 {
-    public class CustomShimmerView : FBShimmeringView
+    public class CustomShimmerView : UIView//FBShimmeringView
     {
         public void SetValues()
         {
-            ShimmeringSpeed = 2000;
+            /*ShimmeringSpeed = 2000;
             ShimmeringBeginFadeDuration = 0.3;
             ShimmeringEndFadeDuration = 0.3;
-            ShimmeringPauseDuration = 1;
+            ShimmeringPauseDuration = 1;*/
         }
+
+        public UIView ContentView { set; get; }
+        public bool Shimmering { set; get; }
     }
 }

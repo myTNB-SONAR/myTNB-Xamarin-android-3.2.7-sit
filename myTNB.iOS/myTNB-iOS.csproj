@@ -233,9 +233,6 @@
     <Reference Include="Refit">
       <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Facebook.Shimmer.iOS">
-      <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="DeepCloner">
       <HintPath>..\packages\DeepCloner.0.10.2\lib\netstandard1.3\DeepCloner.dll</HintPath>
     </Reference>
