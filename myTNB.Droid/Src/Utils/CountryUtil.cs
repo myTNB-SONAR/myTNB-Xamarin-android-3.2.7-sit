@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Android.App;
@@ -85,9 +86,12 @@ namespace myTNB_Android.Src.Utils
 
             countryModeList.ForEach(model =>
             {
-                country = new Country(model.CountryCode,model.CountryName,model.CountryISDCode);
+                country = new Country(model.CountryCode,model.CountryName,model.CountryISDCode.Replace(" ", string.Empty));
                 countryList.Add(country);
             });
+
+            //Sort Alphabetical by Country Name
+            countryList = countryList.OrderBy(countryItem => countryItem.name).ToList();
 
             return countryList;
         }
@@ -99,7 +103,18 @@ namespace myTNB_Android.Src.Utils
 
         public int GetFlagImageResource(Context context, string countryCode)
         {
-            int flagResource = context.Resources.GetIdentifier(countryCode.ToLower(), "drawable", context.PackageName);
+            string resourceName;
+            //handling for reserve word 'do'
+            if (countryCode.ToLower() == "do")
+            {
+                resourceName = countryCode.ToLower() + "flag";
+            }
+            else
+            {
+                resourceName = countryCode.ToLower();
+            }
+
+            int flagResource = context.Resources.GetIdentifier(resourceName, "drawable", context.PackageName);
 
             if (flagResource == 0)
             {

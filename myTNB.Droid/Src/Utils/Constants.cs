@@ -53,6 +53,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SELECTED_ERROR_MSG = ".errorMessage";
         internal static readonly string APP_NAVIGATION_KEY = ".appNavigation";
         internal static readonly string FROM_BILL_DETAILS_PAGE = ".fromBillDetailsPage";
+        internal static readonly string SELECT_COUNTRY_CODE = ".selectCountryCode";
 
         internal static readonly int VIEW_TYPE_REAL_RECORD = 0;
         internal static readonly int VIEW_TYPE_DUMMY_RECORD = 1;

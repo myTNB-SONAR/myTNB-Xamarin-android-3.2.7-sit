@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.Common.Activity
         , Theme = "@style/Theme.UpdateMobile")]
     public class SelectCountryActivity : BaseActivityCustom
     {
-        const string PAGE_ID = "SelectCountryPage";
+        const string PAGE_ID = "SelectCountry";
         List<Country> countryList;
 
         [BindView(Resource.Id.countryListView)]
@@ -52,7 +52,6 @@ namespace myTNB_Android.Src.Common.Activity
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
-            CountryUtil.Instance.SetCountryList();
             countryList = CountryUtil.Instance.GetCountryList();
             SelectCountryISDCodeAdapter adapter = new SelectCountryISDCodeAdapter(this, countryList);
             countryListView.Adapter = adapter;
@@ -65,7 +64,7 @@ namespace myTNB_Android.Src.Common.Activity
             int position = args.Position;
             Country selectedCountry = countryList[position];
             Intent intent = new Intent();
-            intent.PutExtra("selectedCountry", JsonConvert.SerializeObject(selectedCountry));
+            intent.PutExtra(Constants.SELECT_COUNTRY_CODE, JsonConvert.SerializeObject(selectedCountry));
             SetResult(Result.Ok,intent);
             Finish();
         }

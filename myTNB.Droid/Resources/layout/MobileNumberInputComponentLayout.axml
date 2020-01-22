@@ -18,14 +18,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
+            android:textColor="#a6a6a6"
             android:textSize="12dp"
             android:text="MOBILE NUMBER"/>
         <LinearLayout
             android:id="@+id/countryCodeContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:paddingTop="8dp"
+            android:paddingTop="6dp"
+            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
             <ImageView
@@ -40,6 +41,7 @@
                 android:gravity="center"
                 android:textSize="16dp"
                 android:layout_marginLeft="2dp"
+                android:textColor="#49494a"
                 android:text="+60"/>
             <ImageView
                 android:id="@+id/selectDropDownIcon"
@@ -60,22 +62,24 @@
         android:orientation="vertical"
         android:layout_weight="1">
         <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtInputLayoutMobileNo"
+            android:id="@+id/txtInputLayoutMobileNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            app:errorEnabled="true"
+            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+            <EditText
+                android:id="@+id/txtMobileNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                app:errorEnabled="true"
-                app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
-                <EditText
-                    android:id="@+id/txtMobileNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint=""
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:digits="0123456789+"
-                    android:importantForAutofill="noExcludeDescendants"
-                    android:textColor="@color/tunaGrey" />
-            </android.support.design.widget.TextInputLayout>
+                android:hint=""
+                android:inputType="phone"
+                android:maxLines="1"
+                android:digits="0123456789"
+                android:maxLength="15"
+                android:textSize="16dp"
+                android:importantForAutofill="noExcludeDescendants"
+                android:textColor="#49494a"/>
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </LinearLayout>
