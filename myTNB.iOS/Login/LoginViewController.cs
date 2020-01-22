@@ -568,9 +568,6 @@ namespace myTNB
                 //if (isVerified)
                 if (isPhoneVerified)
                 {
-                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
-                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
-                    sharedPreference.Synchronize();
                     ExecuteGetCutomerRecordsCall();
                 }
                 else
@@ -788,6 +785,10 @@ namespace myTNB
                         }
                         txtFieldEmail.Text = string.Empty;
                         txtFieldPassword.Text = string.Empty;
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                        sharedPreference.Synchronize();
                     }
                     else
                     {

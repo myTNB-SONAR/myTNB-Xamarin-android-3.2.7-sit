@@ -1,4 +1,5 @@
 using CoreGraphics;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Model;
@@ -17,11 +18,8 @@ namespace myTNB
         internal UIView _skeletonLoadingView, _emptyRewardView, _refreshScreenView;
         private List<RewardsModel> _categoryList;
         private List<RewardsModel> _rewardsList;
-        private int _selectedCategoryIndex, props_index;
-
-        private bool props_needsUpdate;
+        private int _selectedCategoryIndex;
         private bool _isViewDidLoad;
-        private List<RewardsModel> props_rewardsList;
         private UIView _tutorialContainer;
         private bool _hotspotIsOn;
 
@@ -52,12 +50,6 @@ namespace myTNB
                 SetSkeletonLoading();
             }
             _isViewDidLoad = false;
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-            OnTableReload();
         }
 
         private void OnEnterForeground(NSNotification notification)
@@ -162,10 +154,7 @@ namespace myTNB
                                     if (!_isViewDidLoad)
                                     {
                                         NotifCenterUtility.PostNotificationName("RewardsFetchUpdate", new NSObject());
-                                        props_needsUpdate = true;
-                                        props_rewardsList = _rewardsList;
-                                        props_index = _selectedCategoryIndex;
-                                        OnTableReload();
+                                        RefreshRewardsList();
                                     }
                                 }
                             }
@@ -826,7 +815,7 @@ namespace myTNB
             }
         }
 
-        public void OnSaveUnsaveAction(List<RewardsModel> rewardsList, RewardsModel reward, int index)
+        public void OnSaveUnsaveAction(RewardsModel reward)
         {
             if (reward != null)
             {
@@ -835,10 +824,7 @@ namespace myTNB
                     InvokeInBackground(async () =>
                     {
                         await RewardsServices.UpdateRewards(reward, RewardsServices.RewardProperties.Favourite, reward.IsSaved);
-                        InvokeOnMainThread(() =>
-                        {
-                            OnReloadTableAction(rewardsList, index);
-                        });
+                        RefreshRewardsList();
                     });
                 }
                 else
@@ -862,62 +848,52 @@ namespace myTNB
             }
         }
 
-        internal void SetReloadProperties(List<RewardsModel> rewardsList, int index)
+        private void RefreshRewardsList()
         {
-            props_needsUpdate = true;
-            props_rewardsList = rewardsList;
-            props_index = index;
-        }
-
-        private void OnTableReload()
-        {
-            InvokeOnMainThread(async () =>
+            InvokeInBackground(async () =>
             {
-                GetUserRewardsResponseModel _userRewards = await RewardsServices.GetUserRewards();
-                if (props_needsUpdate && props_rewardsList != null)
+                GetUserRewardsResponseModel userRewards = await RewardsServices.GetUserRewards();
+                InvokeOnMainThread(() =>
                 {
-                    if (_userRewards != null && _userRewards.d != null && _userRewards.d.IsSuccess)
+                    if (userRewards != null && userRewards.d != null && userRewards.d.IsSuccess)
                     {
-                        if (_userRewards.d.data != null && _userRewards.d.data.UserRewards != null)
+                        if (userRewards.d.data != null && userRewards.d.data.UserRewards != null)
                         {
-                            foreach (RewardsItemModel item in _userRewards.d.data.UserRewards)
+                            List<RewardsModel> rList = _rewardsList.DeepClone();
+                            foreach (RewardsItemModel item in userRewards.d.data.UserRewards)
                             {
-                                int index = props_rewardsList.FindIndex(x => x.ID == item.RewardId);
+                                int index = rList.FindIndex(x => x.ID == item.RewardId);
                                 if (index > -1)
                                 {
-                                    props_rewardsList[index].IsRead = item.Read;
-                                    props_rewardsList[index].IsSaved = item.Favourite;
-                                    props_rewardsList[index].IsUsed = item.Redeemed;
+                                    rList[index].IsRead = item.Read;
+                                    rList[index].IsSaved = item.Favourite;
+                                    rList[index].IsUsed = item.Redeemed;
                                 }
                             }
-                            OnReloadTableAction(props_rewardsList, props_index);
+                            _rewardsList = rList;
+                            RefreshTable();
                         }
                     }
                     else
                     {
                         SetRefreshScreen();
                     }
-                    props_needsUpdate = false;
-                }
-
+                });
             });
         }
 
-        public void OnReloadTableAction(List<RewardsModel> rewardsList, int index)
+        private void RefreshTable()
         {
-            if (rewardsList != null && rewardsList.Count > 0 && index > -1 && index < rewardsList.Count)
+            if (_rewardsList != null && _rewardsList.Count > 0)
             {
-                RewardsModel reward = rewardsList[index];
-                var catIndx = _categoryList.FindIndex(x => x.CategoryID.Equals(reward.CategoryID));
-
-                if (catIndx > -1 && catIndx < _rewardsScrollView.Subviews.Count())
+                for (int c = 0; c < _categoryList.Count; c++)
                 {
-                    UIView viewContainer = _rewardsScrollView.Subviews[catIndx];
+                    UIView viewContainer = _rewardsScrollView.Subviews[c];
                     if (viewContainer != null && viewContainer.Subviews.Count() > 0)
                     {
                         if (viewContainer.Subviews[0] is UITableView table)
                         {
-                            var filteredList = catIndx == 0 ? _rewardsList : FilteredRewards(catIndx);
+                            var filteredList = c == 0 ? _rewardsList : FilteredRewards(c);
                             table.ClearsContextBeforeDrawing = true;
                             table.Source = new RewardsDataSource(this, filteredList, GetI18NValue);
                             UIView.PerformWithoutAnimation(() =>
@@ -927,22 +903,6 @@ namespace myTNB
                                 table.EndUpdates();
                             });
                         }
-                    }
-                }
-
-                UIView viewAllView = _rewardsScrollView.Subviews[0];
-                if (viewAllView != null && viewAllView.Subviews.Count() > 0)
-                {
-                    if (viewAllView.Subviews[0] is UITableView table)
-                    {
-                        table.ClearsContextBeforeDrawing = true;
-                        table.Source = new RewardsDataSource(this, _rewardsList, GetI18NValue);
-                        UIView.PerformWithoutAnimation(() =>
-                        {
-                            table.BeginUpdates();
-                            table.ReloadData();
-                            table.EndUpdates();
-                        });
                     }
                 }
             }
