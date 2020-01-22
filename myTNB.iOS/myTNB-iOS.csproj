@@ -72,7 +72,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <IOSDebuggerPort>41117</IOSDebuggerPort>
     <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchArch>ARMv7s, ARM64</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
     <BuildIpa>false</BuildIpa>
@@ -241,6 +241,9 @@
     </Reference>
     <Reference Include="Firebase.DynamicLinks">
       <HintPath>..\packages\Xamarin.Firebase.iOS.DynamicLinks.2.1.0\lib\Xamarin.iOS10\Firebase.DynamicLinks.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Shimmer.iOS">
+      <HintPath>..\packages\Naxam.Shimmer.iOS.1.0.2\lib\Xamarin.iOS10\Naxam.Shimmer.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
