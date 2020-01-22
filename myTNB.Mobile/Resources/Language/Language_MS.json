@@ -692,10 +692,8 @@
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
     "updateMobileNumberTitle": "Kemas kini Nombor Telefon",
     "infoTitle": "MS_What is it for?",
-    "infoPopupTitle_Verify": "MS_This is just for the purpose of registering on the myTNB app.",
-    "infoPopupTitle_Update": "MS_This is just for the purpose of registering on the myTNB app.",
-    "infoPopupMessage_Verify": "MS_Updating your phone number here will not change the existing phone number registered with TNB.",
-    "infoPopupMessage_Update": "MS_Updating your phone number here will not change the existing phone number registered with TNB."
+    "infoPopupTitle": "MS_This is just for the purpose of registering on the myTNB app.",
+    "infoPopupMessage": "MS_Updating your phone number here will not change the existing phone number registered with TNB."
   },
   "VerifyPin": {
     "title": "Sahkan Nombor Telefon",
