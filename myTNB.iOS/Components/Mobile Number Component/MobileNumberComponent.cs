@@ -15,7 +15,7 @@ namespace myTNB
         private UIImageView _imgFlag, _imgDropDown;
         private TextFieldHelper _textFieldHelper;
         private nfloat _yLocation;
-        private string _countryCode = string.Empty, _countryShortCode = "ML";
+        private string _countryCode = string.Empty, _countryShortCode = "MY";
 
         public Action OnDone { set; private get; }
         public Action OnSelect { set; private get; }
@@ -116,7 +116,8 @@ namespace myTNB
                 {
                     return false;
                 }
-                int totalLength = _countryCode.Length + (int)range.Location;
+                int cCodeLenght = _countryCode.Replace(" ", "").Length;
+                int totalLength = cCodeLenght + (int)range.Location;
                 return !(totalLength == 16);
             };
 
@@ -175,7 +176,13 @@ namespace myTNB
         {
             get
             {
-                return _countryCode + MobileNumber;
+                string fullNumber = _countryCode + MobileNumber;
+                if (fullNumber.IsValid())
+                {
+                    fullNumber = fullNumber.Replace(" ", "");
+                }
+                else { fullNumber = string.Empty; }
+                return fullNumber;
             }
         }
 
@@ -205,7 +212,7 @@ namespace myTNB
             {
                 if (value.IsValid())
                 {
-                    _countryShortCode = value;
+                    _countryShortCode = value.ToUpper();
                 }
                 if (_imgFlag != null)
                 {

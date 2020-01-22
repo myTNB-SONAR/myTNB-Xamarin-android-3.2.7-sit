@@ -40,7 +40,7 @@ namespace myTNB.ProfileUpdates.UpdateMobileNumber.SelectCountry
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };
             _lblCountryCode = new UILabel(new CGRect(_imgFlag.Frame.GetMaxX() + GetScaledWidth(8)
-                , GetScaledHeight(18), GetScaledWidth(45), GetScaledHeight(24)))
+                , GetScaledHeight(18), GetScaledWidth(55), GetScaledHeight(24)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_16_300,
