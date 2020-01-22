@@ -253,7 +253,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             mWhatsNewEntity2.DeleteTable();
                                             mWhatsNewCategoryEntity2.CreateTable();
                                             mWhatsNewEntity2.CreateTable();
-                                            isSitecoreApiFailed = true;
                                             if (mHomeView != null)
                                             {
                                                 mHomeView.OnCheckUserWhatsNew(isSitecoreApiFailed);
