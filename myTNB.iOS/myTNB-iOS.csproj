@@ -1882,6 +1882,8 @@
     <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\nv%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\nv%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\X-Red.imageset\icDisplayBulletCross%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\X-Red.imageset\icDisplayBulletCross%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
