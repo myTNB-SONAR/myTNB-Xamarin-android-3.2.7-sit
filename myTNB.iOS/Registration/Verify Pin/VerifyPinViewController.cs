@@ -366,10 +366,6 @@ namespace myTNB.Registration
 
                                         if (IsFromLogin)
                                         {
-                                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
-                                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
-                                            sharedPreference.Synchronize();
                                             ExecuteGetCutomerRecordsCall();
                                         }
                                         else
@@ -733,7 +729,6 @@ namespace myTNB.Registration
                             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                             sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
                             sharedPreference.Synchronize();
-                            //PushNotificationHelper.GetNotifications();
                             DataManager.DataManager.SharedInstance.User.Password = string.Empty;
                             ShowAccountsVC();
                         }
@@ -797,6 +792,7 @@ namespace myTNB.Registration
             {
                 InvokeOnMainThread(async () =>
                 {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                     if (DataManager.DataManager.SharedInstance.CustomerAccounts != null
                        && DataManager.DataManager.SharedInstance.CustomerAccounts?.d != null
                        && DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.data != null)
@@ -829,6 +825,9 @@ namespace myTNB.Registration
                             loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(loginVC, true, null);
                             ActivityIndicator.Hide();
+                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                            sharedPreference.Synchronize();
                         }
                     }
                     else
@@ -841,6 +840,9 @@ namespace myTNB.Registration
                         loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(loginVC, true, null);
                         ActivityIndicator.Hide();
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                        sharedPreference.Synchronize();
                     }
                 });
             });
@@ -862,6 +864,10 @@ namespace myTNB.Registration
                         loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(loginVC, true, null);
                         ActivityIndicator.Hide();
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                        sharedPreference.Synchronize();
                     }
                     else
                     {

@@ -155,7 +155,7 @@ namespace myTNB
                             cell.SaveIcon.Image = UIImage.FromBundle(reward.IsSaved ? RewardsConstants.Img_HeartSaveIcon : RewardsConstants.Img_HeartUnsaveIcon);
                             if (_controller != null)
                             {
-                                _controller.OnSaveUnsaveAction(_rewardsList, reward, indexPath.Row);
+                                _controller.OnSaveUnsaveAction(reward);
                             }
                         }
                     });
@@ -173,7 +173,6 @@ namespace myTNB
                 if (_controller != null)
                 {
                     _controller.OnRewardSelection(_rewardsList[index]);
-                    _controller.SetReloadProperties(_rewardsList, index);
                 }
             }
         }
