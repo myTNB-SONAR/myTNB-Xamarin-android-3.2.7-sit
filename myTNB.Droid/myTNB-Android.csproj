@@ -1320,10 +1320,6 @@
     <AndroidResource Include="Resources\drawable\meter_capture_holder_inactive.xml" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
     <AndroidResource Include="Resources\drawable\overlay_crop_image.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\ocr_reading.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ocr_reading.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ocr_reading.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ocr_reading.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_no.png" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
     <AndroidResource Include="Resources\layout\OCRLoadingFragmentLayout.axml" />
@@ -4544,6 +4540,7 @@
     <AndroidResource Include="Resources\layout\ViewBillReceiptAccountDetails.axml" />
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
     <AndroidAsset Include="Assets\tnb_general_loading.json" />
+    <AndroidAsset Include="Assets\ocr_loading_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">

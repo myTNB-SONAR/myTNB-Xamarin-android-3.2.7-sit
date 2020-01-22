@@ -12,6 +12,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Com.Airbnb.Lottie;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -234,6 +235,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             LinearLayout ocrLoadingScreen = FindViewById<LinearLayout>(Resource.Id.ocrLoadingScreen);
             ocrLoadingScreen.Visibility = ViewStates.Visible;
+
+            LottieAnimationView loadingImage = ocrLoadingScreen.FindViewById<LottieAnimationView>(Resource.Id.loadingImage);
+
+            try
+            {
+                loadingImage.Progress = 0f;
+                loadingImage.PlayAnimation();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void ShowImagePreView(bool isShown)
