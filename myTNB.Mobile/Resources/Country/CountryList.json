@@ -1,19 +1,1174 @@
 ﻿{
   "CountryList": [
     {
+      "CountryCode": "AD",
+      "CountryName": "Andorra",
+      "CountryISDCode": "+376"
+    },
+    {
+      "CountryCode": "AE",
+      "CountryName": "United Arab Emirates",
+      "CountryISDCode": "+971"
+    },
+    {
+      "CountryCode": "AF",
+      "CountryName": "Afghanistan",
+      "CountryISDCode": "+93"
+    },
+    {
+      "CountryCode": "AG",
+      "CountryName": "Antigua and Barbuda",
+      "CountryISDCode": "+1268"
+    },
+    {
+      "CountryCode": "AI",
+      "CountryName": "Anguilla",
+      "CountryISDCode": "+1 264"
+    },
+    {
+      "CountryCode": "AL",
+      "CountryName": "Albania",
+      "CountryISDCode": "+355"
+    },
+    {
+      "CountryCode": "AM",
+      "CountryName": "Armenia",
+      "CountryISDCode": "+374"
+    },
+    {
+      "CountryCode": "AN",
+      "CountryName": "Netherlands Antilles",
+      "CountryISDCode": "+599"
+    },
+    {
+      "CountryCode": "AO",
+      "CountryName": "Angola",
+      "CountryISDCode": "+244"
+    },
+    {
+      "CountryCode": "AQ",
+      "CountryName": "Antarctica",
+      "CountryISDCode": "+672"
+    },
+    {
+      "CountryCode": "AR",
+      "CountryName": "Argentina",
+      "CountryISDCode": "+54"
+    },
+    {
+      "CountryCode": "AS",
+      "CountryName": "American Samoa",
+      "CountryISDCode": "+1 684"
+    },
+    {
+      "CountryCode": "AT",
+      "CountryName": "Austria",
+      "CountryISDCode": "+43"
+    },
+    {
+      "CountryCode": "AU",
+      "CountryName": "Australia",
+      "CountryISDCode": "+61"
+    },
+    {
+      "CountryCode": "AW",
+      "CountryName": "Aruba",
+      "CountryISDCode": "+297"
+    },
+    {
+      "CountryCode": "AX",
+      "CountryName": "Aland Islands",
+      "CountryISDCode": "+358"
+    },
+    {
+      "CountryCode": "AZ",
+      "CountryName": "Azerbaijan",
+      "CountryISDCode": "+994"
+    },
+    {
+      "CountryCode": "BA",
+      "CountryName": "Bosnia and Herzegovina",
+      "CountryISDCode": "+387"
+    },
+    {
+      "CountryCode": "BB",
+      "CountryName": "Barbados",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "BD",
+      "CountryName": "Bangladesh",
+      "CountryISDCode": "+880"
+    },
+    {
+      "CountryCode": "BE",
+      "CountryName": "Belgium",
+      "CountryISDCode": "+32"
+    },
+    {
+      "CountryCode": "BF",
+      "CountryName": "Burkina Faso",
+      "CountryISDCode": "+226"
+    },
+    {
+      "CountryCode": "BG",
+      "CountryName": "Bulgaria",
+      "CountryISDCode": "+359"
+    },
+    {
+      "CountryCode": "BH",
+      "CountryName": "Bahrain",
+      "CountryISDCode": "+973"
+    },
+    {
+      "CountryCode": "BI",
+      "CountryName": "Burundi",
+      "CountryISDCode": "+257"
+    },
+    {
+      "CountryCode": "BJ",
+      "CountryName": "Benin",
+      "CountryISDCode": "+229"
+    },
+    {
+      "CountryCode": "BL",
+      "CountryName": "Saint Barthélemy",
+      "CountryISDCode": "+590"
+    },
+    {
+      "CountryCode": "BM",
+      "CountryName": "Bermuda",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "BN",
+      "CountryName": "Brunei",
+      "CountryISDCode": "+673"
+    },
+    {
+      "CountryCode": "BO",
+      "CountryName": "Bolivia",
+      "CountryISDCode": "+591"
+    },
+    {
+      "CountryCode": "BR",
+      "CountryName": "Brazil",
+      "CountryISDCode": "+55"
+    },
+    {
+      "CountryCode": "BS",
+      "CountryName": "Bahamas",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "BT",
+      "CountryName": "Bhutan",
+      "CountryISDCode": "+975"
+    },
+    {
+      "CountryCode": "BW",
+      "CountryName": "Botswana",
+      "CountryISDCode": "+267"
+    },
+    {
+      "CountryCode": "BY",
+      "CountryName": "Belarus",
+      "CountryISDCode": "+375"
+    },
+    {
+      "CountryCode": "BZ",
+      "CountryName": "Belize",
+      "CountryISDCode": "+501"
+    },
+    {
+      "CountryCode": "CA",
+      "CountryName": "Canada",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "CD",
+      "CountryName": "Democratic Republic of Congo",
+      "CountryISDCode": "+243"
+    },
+    {
+      "CountryCode": "CF",
+      "CountryName": "Central African Republic",
+      "CountryISDCode": "+236"
+    },
+    {
+      "CountryCode": "CG",
+      "CountryName": "Republic of the Congo",
+      "CountryISDCode": "+242"
+    },
+    {
+      "CountryCode": "CH",
+      "CountryName": "Switzerland",
+      "CountryISDCode": "+41"
+    },
+    {
+      "CountryCode": "CI",
+      "CountryName": "Ivory Coast",
+      "CountryISDCode": "+225"
+    },
+    {
+      "CountryCode": "CK",
+      "CountryName": "Cook Islands",
+      "CountryISDCode": "+682"
+    },
+    {
+      "CountryCode": "CL",
+      "CountryName": "Chile",
+      "CountryISDCode": "+56"
+    },
+    {
+      "CountryCode": "CM",
+      "CountryName": "Cameroon",
+      "CountryISDCode": "+237"
+    },
+    {
+      "CountryCode": "CN",
+      "CountryName": "China",
+      "CountryISDCode": "+86"
+    },
+    {
+      "CountryCode": "CO",
+      "CountryName": "Colombia",
+      "CountryISDCode": "+57"
+    },
+    {
+      "CountryCode": "CR",
+      "CountryName": "Costa Rica",
+      "CountryISDCode": "+506"
+    },
+    {
+      "CountryCode": "CU",
+      "CountryName": "Cuba",
+      "CountryISDCode": "+53"
+    },
+    {
+      "CountryCode": "CV",
+      "CountryName": "Cape Verde",
+      "CountryISDCode": "+238"
+    },
+    {
+      "CountryCode": "CW",
+      "CountryName": "Curacao",
+      "CountryISDCode": "+599"
+    },
+    {
+      "CountryCode": "CY",
+      "CountryName": "Cyprus",
+      "CountryISDCode": "+357"
+    },
+    {
+      "CountryCode": "CZ",
+      "CountryName": "Czech Republic",
+      "CountryISDCode": "+420"
+    },
+    {
+      "CountryCode": "DE",
+      "CountryName": "Germany",
+      "CountryISDCode": "+49"
+    },
+    {
+      "CountryCode": "DJ",
+      "CountryName": "Djibouti",
+      "CountryISDCode": "+253"
+    },
+    {
+      "CountryCode": "DK",
+      "CountryName": "Denmark",
+      "CountryISDCode": "+45"
+    },
+    {
+      "CountryCode": "DM",
+      "CountryName": "Dominica",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "DO",
+      "CountryName": "Dominican Republic",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "DZ",
+      "CountryName": "Algeria",
+      "CountryISDCode": "+213"
+    },
+    {
+      "CountryCode": "EC",
+      "CountryName": "Ecuador",
+      "CountryISDCode": "+593"
+    },
+    {
+      "CountryCode": "EE",
+      "CountryName": "Estonia",
+      "CountryISDCode": "+372"
+    },
+    {
+      "CountryCode": "EG",
+      "CountryName": "Egypt",
+      "CountryISDCode": "+20"
+    },
+    {
+      "CountryCode": "EH",
+      "CountryName": "Western Sahara",
+      "CountryISDCode": "+212"
+    },
+    {
+      "CountryCode": "ER",
+      "CountryName": "Eritrea",
+      "CountryISDCode": "+291"
+    },
+    {
+      "CountryCode": "ES",
+      "CountryName": "Spain",
+      "CountryISDCode": "+34"
+    },
+    {
+      "CountryCode": "ET",
+      "CountryName": "Ethiopia",
+      "CountryISDCode": "+251"
+    },
+    {
+      "CountryCode": "FI",
+      "CountryName": "Finland",
+      "CountryISDCode": "+358"
+    },
+    {
+      "CountryCode": "FJ",
+      "CountryName": "Fiji",
+      "CountryISDCode": "+679"
+    },
+    {
+      "CountryCode": "FK",
+      "CountryName": "Falkland Islands",
+      "CountryISDCode": "+500"
+    },
+    {
+      "CountryCode": "FM",
+      "CountryName": "Micronesia",
+      "CountryISDCode": "+691"
+    },
+    {
+      "CountryCode": "FO",
+      "CountryName": "Faroe Islands",
+      "CountryISDCode": "+298"
+    },
+    {
+      "CountryCode": "FR",
+      "CountryName": "France",
+      "CountryISDCode": "+33"
+    },
+    {
+      "CountryCode": "GA",
+      "CountryName": "Gabon",
+      "CountryISDCode": "+241"
+    },
+    {
+      "CountryCode": "GB",
+      "CountryName": "United Kingdom",
+      "CountryISDCode": "+44"
+    },
+    {
+      "CountryCode": "GD",
+      "CountryName": "Grenada",
+      "CountryISDCode": "+1473"
+    },
+    {
+      "CountryCode": "GE",
+      "CountryName": "Georgia",
+      "CountryISDCode": "+995"
+    },
+    {
+      "CountryCode": "GG",
+      "CountryName": "Guernsey",
+      "CountryISDCode": "+44"
+    },
+    {
+      "CountryCode": "GH",
+      "CountryName": "Ghana",
+      "CountryISDCode": "+233"
+    },
+    {
+      "CountryCode": "GI",
+      "CountryName": "Gibraltar",
+      "CountryISDCode": "+350"
+    },
+    {
+      "CountryCode": "GL",
+      "CountryName": "Greenland",
+      "CountryISDCode": "+299"
+    },
+    {
+      "CountryCode": "GM",
+      "CountryName": "Gambia",
+      "CountryISDCode": "+220"
+    },
+    {
+      "CountryCode": "GN",
+      "CountryName": "Guinea",
+      "CountryISDCode": "+224"
+    },
+    {
+      "CountryCode": "GP",
+      "CountryName": "Guadeloupe",
+      "CountryISDCode": "+590"
+    },
+    {
+      "CountryCode": "GQ",
+      "CountryName": "Equatorial Guinea",
+      "CountryISDCode": "+240"
+    },
+    {
+      "CountryCode": "GR",
+      "CountryName": "Greece",
+      "CountryISDCode": "+30"
+    },
+    {
+      "CountryCode": "GT",
+      "CountryName": "Guatemala",
+      "CountryISDCode": "+502"
+    },
+    {
+      "CountryCode": "GU",
+      "CountryName": "Guam",
+      "CountryISDCode": "+1671"
+    },
+    {
+      "CountryCode": "GW",
+      "CountryName": "Guinea-Bissau",
+      "CountryISDCode": "+245"
+    },
+    {
+      "CountryCode": "GY",
+      "CountryName": "Guyana",
+      "CountryISDCode": "+592"
+    },
+    {
+      "CountryCode": "HK",
+      "CountryName": "Hong Kong",
+      "CountryISDCode": "+852"
+    },
+    {
+      "CountryCode": "HN",
+      "CountryName": "Honduras",
+      "CountryISDCode": "+504"
+    },
+    {
+      "CountryCode": "HR",
+      "CountryName": "Croatia",
+      "CountryISDCode": "+385"
+    },
+    {
+      "CountryCode": "HT",
+      "CountryName": "Haiti",
+      "CountryISDCode": "+509"
+    },
+    {
+      "CountryCode": "HU",
+      "CountryName": "Hungary",
+      "CountryISDCode": "+36"
+    },
+    {
+      "CountryCode": "ID",
+      "CountryName": "Indonesia",
+      "CountryISDCode": "+62"
+    },
+    {
+      "CountryCode": "IE",
+      "CountryName": "Ireland",
+      "CountryISDCode": "+353"
+    },
+    {
+      "CountryCode": "IL",
+      "CountryName": "Israel",
+      "CountryISDCode": "+972"
+    },
+    {
+      "CountryCode": "IM",
+      "CountryName": "Isle of Man",
+      "CountryISDCode": "+44"
+    },
+    {
       "CountryCode": "IN",
       "CountryName": "India",
       "CountryISDCode": "+91"
     },
     {
+      "CountryCode": "IQ",
+      "CountryName": "Iraq",
+      "CountryISDCode": "+964"
+    },
+    {
+      "CountryCode": "IR",
+      "CountryName": "Iran",
+      "CountryISDCode": "+98"
+    },
+    {
+      "CountryCode": "IS",
+      "CountryName": "Iceland",
+      "CountryISDCode": "+354"
+    },
+    {
+      "CountryCode": "IT",
+      "CountryName": "Italy",
+      "CountryISDCode": "+39"
+    },
+    {
+      "CountryCode": "JE",
+      "CountryName": "Jersey",
+      "CountryISDCode": "+44"
+    },
+    {
+      "CountryCode": "JM",
+      "CountryName": "Jamaica",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "JO",
+      "CountryName": "Jordan",
+      "CountryISDCode": "+962"
+    },
+    {
+      "CountryCode": "JP",
+      "CountryName": "Japan",
+      "CountryISDCode": "+81"
+    },
+    {
+      "CountryCode": "KE",
+      "CountryName": "Kenya",
+      "CountryISDCode": "+254"
+    },
+    {
+      "CountryCode": "KG",
+      "CountryName": "Kyrgyzstan",
+      "CountryISDCode": "+996"
+    },
+    {
+      "CountryCode": "KH",
+      "CountryName": "Cambodia",
+      "CountryISDCode": "+855"
+    },
+    {
+      "CountryCode": "KI",
+      "CountryName": "Kiribati",
+      "CountryISDCode": "+686"
+    },
+    {
+      "CountryCode": "KM",
+      "CountryName": "Comoros",
+      "CountryISDCode": "+269"
+    },
+    {
+      "CountryCode": "KN",
+      "CountryName": "Saint Kitts and Nevis",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "KP",
+      "CountryName": "North Korea",
+      "CountryISDCode": "+850"
+    },
+    {
+      "CountryCode": "KR",
+      "CountryName": "South Korea",
+      "CountryISDCode": "+82"
+    },
+    {
+      "CountryCode": "KW",
+      "CountryName": "Kuwait",
+      "CountryISDCode": "+965"
+    },
+    {
+      "CountryCode": "KY",
+      "CountryName": "Cayman Islands",
+      "CountryISDCode": "+1345"
+    },
+    {
+      "CountryCode": "KZ",
+      "CountryName": "Kazakhstan",
+      "CountryISDCode": "+7"
+    },
+    {
+      "CountryCode": "LA",
+      "CountryName": "Laos",
+      "CountryISDCode": "+856"
+    },
+    {
+      "CountryCode": "LB",
+      "CountryName": "Lebanon",
+      "CountryISDCode": "+961"
+    },
+    {
+      "CountryCode": "LC",
+      "CountryName": "Saint Lucia",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "LI",
+      "CountryName": "Liechtenstein",
+      "CountryISDCode": "+423"
+    },
+    {
+      "CountryCode": "LK",
+      "CountryName": "Sri Lanka",
+      "CountryISDCode": "+94"
+    },
+    {
+      "CountryCode": "LR",
+      "CountryName": "Liberia",
+      "CountryISDCode": "+231"
+    },
+    {
+      "CountryCode": "LS",
+      "CountryName": "Lesotho",
+      "CountryISDCode": "+266"
+    },
+    {
+      "CountryCode": "LT",
+      "CountryName": "Lithuania",
+      "CountryISDCode": "+370"
+    },
+    {
+      "CountryCode": "LU",
+      "CountryName": "Luxembourg",
+      "CountryISDCode": "+352"
+    },
+    {
+      "CountryCode": "LV",
+      "CountryName": "Latvia",
+      "CountryISDCode": "+371"
+    },
+    {
+      "CountryCode": "LY",
+      "CountryName": "Libya",
+      "CountryISDCode": "+218"
+    },
+    {
+      "CountryCode": "MA",
+      "CountryName": "Morocco",
+      "CountryISDCode": "+212"
+    },
+    {
+      "CountryCode": "MC",
+      "CountryName": "Monaco",
+      "CountryISDCode": "+377"
+    },
+    {
+      "CountryCode": "MD",
+      "CountryName": "Moldova",
+      "CountryISDCode": "+373"
+    },
+    {
+      "CountryCode": "ME",
+      "CountryName": "Montenegro",
+      "CountryISDCode": "+382"
+    },
+    {
+      "CountryCode": "MF",
+      "CountryName": "Saint Martin",
+      "CountryISDCode": "+1599"
+    },
+    {
+      "CountryCode": "MG",
+      "CountryName": "Madagascar",
+      "CountryISDCode": "+261"
+    },
+    {
+      "CountryCode": "MH",
+      "CountryName": "Marshall Islands",
+      "CountryISDCode": "+692"
+    },
+    {
+      "CountryCode": "MK",
+      "CountryName": "Macedonia",
+      "CountryISDCode": "+389"
+    },
+    {
       "CountryCode": "ML",
+      "CountryName": "Mali",
+      "CountryISDCode": "+223"
+    },
+    {
+      "CountryCode": "MM",
+      "CountryName": "Myanmar [Burma]",
+      "CountryISDCode": "+95"
+    },
+    {
+      "CountryCode": "MN",
+      "CountryName": "Mongolia",
+      "CountryISDCode": "+976"
+    },
+    {
+      "CountryCode": "MO",
+      "CountryName": "Macau",
+      "CountryISDCode": "+853"
+    },
+    {
+      "CountryCode": "MP",
+      "CountryName": "Northern Mariana Islands",
+      "CountryISDCode": "+1670"
+    },
+    {
+      "CountryCode": "MR",
+      "CountryName": "Mauritania",
+      "CountryISDCode": "+222"
+    },
+    {
+      "CountryCode": "MS",
+      "CountryName": "Montserrat",
+      "CountryISDCode": "+1664"
+    },
+    {
+      "CountryCode": "MT",
+      "CountryName": "Malta",
+      "CountryISDCode": "+356"
+    },
+    {
+      "CountryCode": "MU",
+      "CountryName": "Mauritius",
+      "CountryISDCode": "+230"
+    },
+    {
+      "CountryCode": "MV",
+      "CountryName": "Maldives",
+      "CountryISDCode": "+960"
+    },
+    {
+      "CountryCode": "MW",
+      "CountryName": "Malawi",
+      "CountryISDCode": "+265"
+    },
+    {
+      "CountryCode": "MX",
+      "CountryName": "Mexico",
+      "CountryISDCode": "+52"
+    },
+    {
+      "CountryCode": "MY",
       "CountryName": "Malaysia",
       "CountryISDCode": "+60"
+    },
+    {
+      "CountryCode": "MZ",
+      "CountryName": "Mozambique",
+      "CountryISDCode": "+258"
+    },
+    {
+      "CountryCode": "NA",
+      "CountryName": "Namibia",
+      "CountryISDCode": "+264"
+    },
+    {
+      "CountryCode": "NC",
+      "CountryName": "New Caledonia",
+      "CountryISDCode": "+687"
+    },
+    {
+      "CountryCode": "NE",
+      "CountryName": "Niger",
+      "CountryISDCode": "+227"
+    },
+    {
+      "CountryCode": "NF",
+      "CountryName": "Norfolk Island",
+      "CountryISDCode": "+672"
+    },
+    {
+      "CountryCode": "NG",
+      "CountryName": "Nigeria",
+      "CountryISDCode": "+234"
+    },
+    {
+      "CountryCode": "NI",
+      "CountryName": "Nicaragua",
+      "CountryISDCode": "+505"
+    },
+    {
+      "CountryCode": "NL",
+      "CountryName": "Netherlands",
+      "CountryISDCode": "+31"
+    },
+    {
+      "CountryCode": "NO",
+      "CountryName": "Norway",
+      "CountryISDCode": "+47"
+    },
+    {
+      "CountryCode": "NP",
+      "CountryName": "Nepal",
+      "CountryISDCode": "+977"
+    },
+    {
+      "CountryCode": "NR",
+      "CountryName": "Nauru",
+      "CountryISDCode": "+674"
+    },
+    {
+      "CountryCode": "NU",
+      "CountryName": "Niue",
+      "CountryISDCode": "+683"
+    },
+    {
+      "CountryCode": "NZ",
+      "CountryName": "New Zealand",
+      "CountryISDCode": "+64"
+    },
+    {
+      "CountryCode": "OM",
+      "CountryName": "Oman",
+      "CountryISDCode": "+968"
+    },
+    {
+      "CountryCode": "PA",
+      "CountryName": "Panama",
+      "CountryISDCode": "+507"
+    },
+    {
+      "CountryCode": "PE",
+      "CountryName": "Peru",
+      "CountryISDCode": "+51"
+    },
+    {
+      "CountryCode": "PF",
+      "CountryName": "French Polynesia",
+      "CountryISDCode": "+689"
+    },
+    {
+      "CountryCode": "PG",
+      "CountryName": "Papua New Guinea",
+      "CountryISDCode": "+675"
     },
     {
       "CountryCode": "PH",
       "CountryName": "Philippines",
       "CountryISDCode": "+63"
+    },
+    {
+      "CountryCode": "PK",
+      "CountryName": "Pakistan",
+      "CountryISDCode": "+92"
+    },
+    {
+      "CountryCode": "PL",
+      "CountryName": "Poland",
+      "CountryISDCode": "+48"
+    },
+    {
+      "CountryCode": "PM",
+      "CountryName": "Saint Pierre and Miquelon",
+      "CountryISDCode": "+508"
+    },
+    {
+      "CountryCode": "PN",
+      "CountryName": "Pitcairn Islands",
+      "CountryISDCode": "+870"
+    },
+    {
+      "CountryCode": "PR",
+      "CountryName": "Puerto Rico",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "PT",
+      "CountryName": "Portugal",
+      "CountryISDCode": "+351"
+    },
+    {
+      "CountryCode": "PW",
+      "CountryName": "Palau",
+      "CountryISDCode": "+680"
+    },
+    {
+      "CountryCode": "PY",
+      "CountryName": "Paraguay",
+      "CountryISDCode": "+595"
+    },
+    {
+      "CountryCode": "QA",
+      "CountryName": "Qatar",
+      "CountryISDCode": "+974"
+    },
+    {
+      "CountryCode": "RE",
+      "CountryName": "Reunion",
+      "CountryISDCode": "+262"
+    },
+    {
+      "CountryCode": "RO",
+      "CountryName": "Romania",
+      "CountryISDCode": "+40"
+    },
+    {
+      "CountryCode": "RS",
+      "CountryName": "Serbia",
+      "CountryISDCode": "+381"
+    },
+    {
+      "CountryCode": "RU",
+      "CountryName": "Russia",
+      "CountryISDCode": "+7"
+    },
+    {
+      "CountryCode": "RW",
+      "CountryName": "Rwanda",
+      "CountryISDCode": "+250"
+    },
+    {
+      "CountryCode": "SA",
+      "CountryName": "Saudi Arabia",
+      "CountryISDCode": "+966"
+    },
+    {
+      "CountryCode": "SB",
+      "CountryName": "Solomon Islands",
+      "CountryISDCode": "+677"
+    },
+    {
+      "CountryCode": "SC",
+      "CountryName": "Seychelles",
+      "CountryISDCode": "+248"
+    },
+    {
+      "CountryCode": "SD",
+      "CountryName": "Sudan",
+      "CountryISDCode": "+249"
+    },
+    {
+      "CountryCode": "SE",
+      "CountryName": "Sweden",
+      "CountryISDCode": "+46"
+    },
+    {
+      "CountryCode": "SG",
+      "CountryName": "Singapore",
+      "CountryISDCode": "+65"
+    },
+    {
+      "CountryCode": "SH",
+      "CountryName": "Saint Helena",
+      "CountryISDCode": "+290"
+    },
+    {
+      "CountryCode": "SI",
+      "CountryName": "Slovenia",
+      "CountryISDCode": "+386"
+    },
+    {
+      "CountryCode": "SK",
+      "CountryName": "Slovakia",
+      "CountryISDCode": "+421"
+    },
+    {
+      "CountryCode": "SL",
+      "CountryName": "Sierra Leone",
+      "CountryISDCode": "+232"
+    },
+    {
+      "CountryCode": "SM",
+      "CountryName": "San Marino",
+      "CountryISDCode": "+378"
+    },
+    {
+      "CountryCode": "SN",
+      "CountryName": "Senegal",
+      "CountryISDCode": "+221"
+    },
+    {
+      "CountryCode": "SO",
+      "CountryName": "Somalia",
+      "CountryISDCode": "+252"
+    },
+    {
+      "CountryCode": "SR",
+      "CountryName": "Suriname",
+      "CountryISDCode": "+597"
+    },
+    {
+      "CountryCode": "SS",
+      "CountryName": "South Sudan",
+      "CountryISDCode": "+211"
+    },
+    {
+      "CountryCode": "ST",
+      "CountryName": "Sao Tome and Principe",
+      "CountryISDCode": "+239"
+    },
+    {
+      "CountryCode": "SV",
+      "CountryName": "El Salvador",
+      "CountryISDCode": "+503"
+    },
+    {
+      "CountryCode": "SY",
+      "CountryName": "Syria",
+      "CountryISDCode": "+963"
+    },
+    {
+      "CountryCode": "SZ",
+      "CountryName": "Swaziland",
+      "CountryISDCode": "+268"
+    },
+    {
+      "CountryCode": "TC",
+      "CountryName": "Turks and Caico Islands",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "TD",
+      "CountryName": "Chad",
+      "CountryISDCode": "+235"
+    },
+    {
+      "CountryCode": "TG",
+      "CountryName": "Togo",
+      "CountryISDCode": "+228"
+    },
+    {
+      "CountryCode": "TH",
+      "CountryName": "Thailand",
+      "CountryISDCode": "+66"
+    },
+    {
+      "CountryCode": "TJ",
+      "CountryName": "Tajikistan",
+      "CountryISDCode": "+992"
+    },
+    {
+      "CountryCode": "TK",
+      "CountryName": "Tokelau",
+      "CountryISDCode": "+690"
+    },
+    {
+      "CountryCode": "TL",
+      "CountryName": "East Timor",
+      "CountryISDCode": "+670"
+    },
+    {
+      "CountryCode": "TM",
+      "CountryName": "Turkmenistan",
+      "CountryISDCode": "+993"
+    },
+    {
+      "CountryCode": "TN",
+      "CountryName": "Tunisia",
+      "CountryISDCode": "+216"
+    },
+    {
+      "CountryCode": "TO",
+      "CountryName": "Tonga",
+      "CountryISDCode": "+676"
+    },
+    {
+      "CountryCode": "TR",
+      "CountryName": "Turkey",
+      "CountryISDCode": "+90"
+    },
+    {
+      "CountryCode": "TT",
+      "CountryName": "Trinidad and Tobago",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "TV",
+      "CountryName": "Tuvalu",
+      "CountryISDCode": "+688"
+    },
+    {
+      "CountryCode": "TW",
+      "CountryName": "Taiwan",
+      "CountryISDCode": "+886"
+    },
+    {
+      "CountryCode": "TZ",
+      "CountryName": "Tanzania",
+      "CountryISDCode": "+255"
+    },
+    {
+      "CountryCode": "UA",
+      "CountryName": "Ukraine",
+      "CountryISDCode": "+380"
+    },
+    {
+      "CountryCode": "UG",
+      "CountryName": "Uganda",
+      "CountryISDCode": "+256"
+    },
+    {
+      "CountryCode": "US",
+      "CountryName": "United States",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "UY",
+      "CountryName": "Uruguay",
+      "CountryISDCode": "+598"
+    },
+    {
+      "CountryCode": "UZ",
+      "CountryName": "Uzbekistan",
+      "CountryISDCode": "+998"
+    },
+    {
+      "CountryCode": "VA",
+      "CountryName": "Vatican",
+      "CountryISDCode": "+39"
+    },
+    {
+      "CountryCode": "VC",
+      "CountryName": "Saint Vincent and the Grenadines",
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "VE",
+      "CountryName": "Venezuela",
+      "CountryISDCode": "+58"
+    },
+    {
+      "CountryCode": "VG",
+      "CountryName": "British Virgin Islands",
+      "CountryISDCode": "+1 284"
+    },
+    {
+      "CountryCode": "VN",
+      "CountryName": "Vietnam",
+      "CountryISDCode": "+84"
+    },
+    {
+      "CountryCode": "VU",
+      "CountryName": "Vanuatu",
+      "CountryISDCode": "+678"
+    },
+    {
+      "CountryCode": "WS",
+      "CountryName": "Samoa",
+      "CountryISDCode": "+685"
+    },
+    {
+      "CountryCode": "XK",
+      "CountryName": "Kosovo",
+      "CountryISDCode": "+381"
+    },
+    {
+      "CountryCode": "YE",
+      "CountryName": "Yemen",
+      "CountryISDCode": "+967"
+    },
+    {
+      "CountryCode": "ZA",
+      "CountryName": "South Africa",
+      "CountryISDCode": "+27"
+    },
+    {
+      "CountryCode": "ZM",
+      "CountryName": "Zambia",
+      "CountryISDCode": "+260"
+    },
+    {
+      "CountryCode": "ZW",
+      "CountryName": "Zimbabwe",
+      "CountryISDCode": "+263"
     }
   ]
 }

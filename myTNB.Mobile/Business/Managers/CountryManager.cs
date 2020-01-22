@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 
@@ -105,7 +106,16 @@ namespace myTNB
                     }
                 }
             }
+
+            countryDictionary = OrderDictionary(countryDictionary);
             return countryDictionary;
+        }
+
+        private Dictionary<string, List<CountryModel>> OrderDictionary(Dictionary<string, List<CountryModel>> dictionary)
+        {
+            Dictionary<string, List<CountryModel>> newdictionary = dictionary.OrderBy(d => d.Key)
+                .ToDictionary(d => d.Key, d => ((IList<CountryModel>)d.Value.OrderBy(c => c.CountryName)).ToList());
+            return newdictionary;
         }
     }
 }

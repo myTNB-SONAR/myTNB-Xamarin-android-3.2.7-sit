@@ -158,10 +158,8 @@ namespace myTNB
             };
             _infoView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                string title = GetI18NValue(MyAccountConstants.I18N_InfoPopupTitle
-                    + (IsFromLogin ? MyAccountConstants.Suffix_Verify : MyAccountConstants.Suffix_Update));
-                string message = GetI18NValue(MyAccountConstants.I18N_InfoPopupMessage
-                   + (IsFromLogin ? MyAccountConstants.Suffix_Verify : MyAccountConstants.Suffix_Update));
+                string title = GetI18NValue(MyAccountConstants.I18N_InfoPopupTitle);
+                string message = GetI18NValue(MyAccountConstants.I18N_InfoPopupMessage);
                 DisplayCustomAlert(title, message
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , false);
@@ -191,7 +189,7 @@ namespace myTNB
         {
             get
             {
-                string defaultCountry = "my";//Todo: Change this default country
+                string defaultCountry = "MY";//Todo: Change this default country
                 CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
                 return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
             }

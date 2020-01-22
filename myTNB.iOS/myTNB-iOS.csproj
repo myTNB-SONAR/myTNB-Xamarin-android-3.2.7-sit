@@ -1660,9 +1660,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\NR.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\NR.imageset\nr%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\NR.imageset\nr%403x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\NV.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\NV.imageset\nv%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\NV.imageset\nv%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\NZ.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\NZ.imageset\nz%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\NZ.imageset\nz%403x.png" />
@@ -1882,6 +1879,9 @@
     <ImageAsset Include="Assets\Flags.xcassets\Flag-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\Flag-Generic.imageset\combinedShape%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\Flag-Generic.imageset\combinedShape%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\nv%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\nv%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2040,6 +2040,7 @@
     <Folder Include="Assets\Assets.xcassets\" />
     <Folder Include="Assets\Flags.xcassets\" />
     <Folder Include="Assets\Flags.xcassets\Flag-Generic.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\NU.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
