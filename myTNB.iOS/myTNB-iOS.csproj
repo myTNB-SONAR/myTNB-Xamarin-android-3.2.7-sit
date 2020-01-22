@@ -72,7 +72,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <IOSDebuggerPort>41117</IOSDebuggerPort>
     <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchArch>ARMv7s, ARM64</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
     <BuildIpa>false</BuildIpa>
@@ -233,9 +233,6 @@
     <Reference Include="Refit">
       <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Facebook.Shimmer.iOS">
-      <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="DeepCloner">
       <HintPath>..\packages\DeepCloner.0.10.2\lib\netstandard1.3\DeepCloner.dll</HintPath>
     </Reference>
@@ -244,6 +241,9 @@
     </Reference>
     <Reference Include="Firebase.DynamicLinks">
       <HintPath>..\packages\Xamarin.Firebase.iOS.DynamicLinks.2.1.0\lib\Xamarin.iOS10\Firebase.DynamicLinks.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Shimmer.iOS">
+      <HintPath>..\packages\Naxam.Shimmer.iOS.1.0.2\lib\Xamarin.iOS10\Naxam.Shimmer.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
