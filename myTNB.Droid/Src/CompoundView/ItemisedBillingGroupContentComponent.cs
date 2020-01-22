@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Content;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -13,7 +14,7 @@ namespace myTNB_Android.Src.CompoundView
     public class ItemisedBillingGroupContentComponent : LinearLayout
     {
         private Context mContext;
-        TextView dateHistoryTypeView, paidViaView, amountView;
+        TextView dateHistoryTypeView, paidViaView, amountView, pendingIndicator;
         private bool isPayment = false;
         public ItemisedBillingGroupContentComponent(Context context) : base(context)
         {
@@ -39,9 +40,19 @@ namespace myTNB_Android.Src.CompoundView
             dateHistoryTypeView = FindViewById<TextView>(Resource.Id.itemisedBillingItemTitle);
             paidViaView = FindViewById<TextView>(Resource.Id.itemisedBillingItemSubTitle);
             amountView = FindViewById<TextView>(Resource.Id.itemisedBillingItemAmount);
+            pendingIndicator = FindViewById<TextView>(Resource.Id.itemisedBillingPendingIndicator);
 
-            TextViewUtils.SetMuseoSans300Typeface(paidViaView);
+            TextViewUtils.SetMuseoSans300Typeface(paidViaView, pendingIndicator);
             TextViewUtils.SetMuseoSans500Typeface(dateHistoryTypeView, amountView);
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                pendingIndicator.TextFormatted = Html.FromHtml("<i>" + "Processing" + "</i>", FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                pendingIndicator.TextFormatted = Html.FromHtml("<i>" + "Processing" + "</i>");
+            }
         }
 
         public void IsPayment(bool isPay)
