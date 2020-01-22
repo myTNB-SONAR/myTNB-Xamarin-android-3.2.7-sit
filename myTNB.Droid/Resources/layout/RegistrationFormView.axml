@@ -72,23 +72,11 @@
                         android:maxLines="1"
                         android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/mobileNumberFieldContainer"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
-                    app:errorEnabled="true"
-                    android:id="@+id/textInputLayoutMobileNo">
-                    <EditText
-                        android:hint="@string/registration_form_mobile_no_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="6dp"
-                        android:id="@+id/txtMobileNumber"
-                        android:drawableLeft="@drawable/placeholder_mobile"
-                        android:maxLines="1"
-                        android:digits="0123456789+"
-                        android:inputType="phone" />
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"/>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

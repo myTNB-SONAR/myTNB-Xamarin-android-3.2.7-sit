@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.CompoundView
                 editTextMobileNumber.Text = validatedMobileNumber;
             }
 
-            validateAction(!string.IsNullOrEmpty(editTextMobileNumber.Text));
+            validateAction?.Invoke(!string.IsNullOrEmpty(editTextMobileNumber.Text));
         }
 
         public void SetOnTapCountryCodeAction(Action onTapAction)
@@ -88,6 +88,11 @@ namespace myTNB_Android.Src.CompoundView
         public string GetMobileNumberValue()
         {
             return selectedCountry.isd + editTextMobileNumber.Text.Trim();
+        }
+
+        public void ClearMobileNumber()
+        {
+            editTextMobileNumber.Text = "";
         }
     }
 }
