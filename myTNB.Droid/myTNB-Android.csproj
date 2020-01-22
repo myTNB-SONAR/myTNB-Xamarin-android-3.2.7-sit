@@ -4484,6 +4484,32 @@
     <AndroidResource Include="Resources\drawable\sg.png" />
     <AndroidResource Include="Resources\drawable\sh.png" />
     <AndroidResource Include="Resources\drawable\si.png" />
+    <AndroidResource Include="Resources\drawable\aq.png" />
+    <AndroidResource Include="Resources\drawable\as.png" />
+    <AndroidResource Include="Resources\drawable\bl.png" />
+    <AndroidResource Include="Resources\drawable\ck.png" />
+    <AndroidResource Include="Resources\drawable\cw.png" />
+    <AndroidResource Include="Resources\drawable\eh.png" />
+    <AndroidResource Include="Resources\drawable\gl.png" />
+    <AndroidResource Include="Resources\drawable\gp.png" />
+    <AndroidResource Include="Resources\drawable\gu.png" />
+    <AndroidResource Include="Resources\drawable\ki.png" />
+    <AndroidResource Include="Resources\drawable\mf.png" />
+    <AndroidResource Include="Resources\drawable\mh.png" />
+    <AndroidResource Include="Resources\drawable\mp.png" />
+    <AndroidResource Include="Resources\drawable\nc.png" />
+    <AndroidResource Include="Resources\drawable\nf.png" />
+    <AndroidResource Include="Resources\drawable\nr.png" />
+    <AndroidResource Include="Resources\drawable\nu.png" />
+    <AndroidResource Include="Resources\drawable\pm.png" />
+    <AndroidResource Include="Resources\drawable\pn.png" />
+    <AndroidResource Include="Resources\drawable\re.png" />
+    <AndroidResource Include="Resources\drawable\ss.png" />
+    <AndroidResource Include="Resources\drawable\tk.png" />
+    <AndroidResource Include="Resources\drawable\tv.png" />
+    <AndroidResource Include="Resources\drawable\va.png" />
+    <AndroidResource Include="Resources\drawable\xk.png" />
+    <AndroidResource Include="Resources\drawable\fo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
