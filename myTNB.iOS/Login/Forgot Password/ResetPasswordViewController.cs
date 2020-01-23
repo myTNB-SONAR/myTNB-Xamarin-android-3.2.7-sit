@@ -167,7 +167,7 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     GetI18NValue(ForgotPasswordConstants.I18N_ConfirmNewPassword)
-                    , font: MyTNBFont.MuseoSans16
+                    , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
