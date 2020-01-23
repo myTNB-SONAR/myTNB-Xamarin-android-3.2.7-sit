@@ -197,19 +197,18 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
 
         private Snackbar mCancelledExceptionSnackBar;
-        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException, string message)
         {
             if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
             {
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, !string.IsNullOrEmpty(message) ? message : Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
-                this.userActionsListener.OnStartShowLoading(this.DeviceId());
             }
             );
             View v = mCancelledExceptionSnackBar.View;
@@ -220,19 +219,17 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         }
 
         private Snackbar mApiExcecptionSnackBar;
-        public void ShowRetryOptionsApiException(ApiException apiException)
+        public void ShowRetryOptionsApiException(ApiException apiException, string message)
         {
             if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
             {
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, !string.IsNullOrEmpty(message) ? message : Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
-
                 mApiExcecptionSnackBar.Dismiss();
-                this.userActionsListener.OnStartShowLoading(this.DeviceId());
             }
             );
             View v = mApiExcecptionSnackBar.View;
@@ -242,7 +239,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             this.SetIsClicked(false);
         }
         private Snackbar mUknownExceptionSnackBar;
-        public void ShowRetryOptionsUnknownException(Exception exception)
+        public void ShowRetryOptionsUnknownException(Exception exception, string message)
         {
             if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
             {
@@ -250,12 +247,11 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, !string.IsNullOrEmpty(message) ? message : Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
-                this.userActionsListener.OnStartShowLoading(this.DeviceId());
             }
             );
             View v = mUknownExceptionSnackBar.View;
