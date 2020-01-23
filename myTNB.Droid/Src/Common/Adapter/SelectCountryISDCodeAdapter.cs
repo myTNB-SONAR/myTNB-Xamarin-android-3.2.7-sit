@@ -4,14 +4,19 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Java.Lang;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Common.Adapter
 {
-    public class SelectCountryISDCodeAdapter : BaseCustomAdapter<Country>
+    public class SelectCountryISDCodeAdapter : BaseCustomAdapter<Country>, ISectionIndexer
     {
+        private Dictionary<string, int> alphaIndex;
+        string[] sections;
+        Java.Lang.Object[] sectionsObjects;
+
         public SelectCountryISDCodeAdapter(Context context) : base(context)
         {
         }
@@ -22,10 +27,51 @@ namespace myTNB_Android.Src.Common.Adapter
 
         public SelectCountryISDCodeAdapter(Context context, List<Country> itemList) : base(context, itemList)
         {
+            alphaIndex = new Dictionary<string, int>();
+            for (int i = 0; i < itemList.Count; i++)
+            {
+                var key = itemList[i].name[0].ToString();
+                if (!alphaIndex.ContainsKey(key))
+                    alphaIndex.Add(key, i);
+            }
+            sections = new string[alphaIndex.Keys.Count];
+            alphaIndex.Keys.CopyTo(sections, 0);
+            sectionsObjects = new Java.Lang.Object[sections.Length];
+            for (int i = 0; i < sections.Length; i++)
+            {
+                sectionsObjects[i] = new Java.Lang.String(sections[i]);
+            }
         }
 
         public SelectCountryISDCodeAdapter(Context context, List<Country> itemList, bool notify) : base(context, itemList, notify)
         {
+        }
+
+        public int GetPositionForSection(int sectionIndex)
+        {
+            return alphaIndex[sections[sectionIndex]];
+        }
+
+        public int GetSectionForPosition(int position)
+        {
+            int prevSection = 0;
+
+            for (int i = 0; i < sections.Length; i++)
+            {
+                if (GetPositionForSection(i) > position)
+                {
+                    break;
+                }
+
+                prevSection = i;
+            }
+
+            return prevSection;
+        }
+
+        public Java.Lang.Object[] GetSections()
+        {
+            return sectionsObjects;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
