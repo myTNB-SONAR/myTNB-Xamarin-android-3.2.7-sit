@@ -128,12 +128,12 @@ namespace myTNB.Registration.CustomerAccounts
             lblNicknameError.Font = TNBFont.MuseoSans_9_300;
             ViewHelper.AdjustFrameSetY(lblNicknameError, lineView.Frame.GetMaxY());
             ViewHelper.AdjustFrameSetWidth(lblNicknameError, ScaleUtility.GetScaledWidth(236));
-            ViewHelper.AdjustFrameSetHeight(lblNicknameError, ScaleUtility.GetScaledHeight(14));
+            ViewHelper.AdjustFrameSetHeight(lblNicknameError, ScaleUtility.GetScaledHeight(24));
 
             lblAccountNo.Font = TNBFont.MuseoSans_14_500;
             lblAccountNo.TextColor = MyTNBColor.TunaGrey();
             ViewHelper.AdjustFrameSetX(lblAccountNo, ScaleUtility.GetScaledWidth(18));
-            ViewHelper.AdjustFrameSetY(lblAccountNo, lineView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(18));
+            ViewHelper.AdjustFrameSetY(lblAccountNo, lineView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(28));
             ViewHelper.AdjustFrameSetWidth(lblAccountNo, ScaleUtility.GetScaledWidth(236));
             ViewHelper.AdjustFrameSetHeight(lblAccountNo, ScaleUtility.GetScaledHeight(18));
 
