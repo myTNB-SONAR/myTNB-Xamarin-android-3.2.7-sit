@@ -132,7 +132,7 @@ namespace myTNB
                 });
             };
             UIView viewFooter = new UIView(new CGRect(0, 0, ViewWidth, 80)) { BackgroundColor = UIColor.White };
-            /*
+
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 //viewLogout.Frame = new CGRect(0, 80, View.Frame.Width, 88);
@@ -165,7 +165,7 @@ namespace myTNB
                 btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
                 //viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
                 viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount });//, viewLogout });
-            }*/
+            }
             viewFooter.AddSubview(btnAddAccount);
             myAccountTableView.TableFooterView = viewFooter;
         }

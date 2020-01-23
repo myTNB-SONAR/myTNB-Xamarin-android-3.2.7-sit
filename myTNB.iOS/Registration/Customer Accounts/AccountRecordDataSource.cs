@@ -204,8 +204,11 @@ namespace myTNB.Registration.CustomerAccounts
             CustomerAccountRecordModel acount = new CustomerAccountRecordModel();
 
             var cell = tableView.DequeueReusableCell("accountCell", indexPath) as AccountRecordsTableViewCell;
+            cell.SetScale();
             cell.SeparatorView.BackgroundColor = MyTNBColor.SectionGrey;
-
+            cell.NicknameTextField.Placeholder = LanguageUtility.GetCommonI18NValue(Constants.Common_AccountNickname);
+            TextFieldHelper tfHelper = new TextFieldHelper();
+            tfHelper.CreateTextFieldLeftView(cell.NicknameTextField, "Name");
 
             if (indexPath.Section == 0)
             {
@@ -276,7 +279,6 @@ namespace myTNB.Registration.CustomerAccounts
             SetTextField(txtFieldNickname, title, error, line, cell);
 
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-            cell.SetScale();
             return cell;
         }
 
@@ -297,7 +299,6 @@ namespace myTNB.Registration.CustomerAccounts
         internal void SetTextField(UITextField textField, UILabel title, UILabel error
                                    , UIView line, AccountRecordsTableViewCell cell)
         {
-            _txtFieldHelper.CreateTextFieldLeftView(textField, LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Name));
             textField.ShouldReturn = (sender) =>
             {
                 sender.ResignFirstResponder();
@@ -355,12 +356,17 @@ namespace myTNB.Registration.CustomerAccounts
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                title.Hidden = false;
+                title.Hidden = !textField.Text.IsValid();
                 error.Hidden = false;
                 line.BackgroundColor = MyTNBColor.PowerBlue;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
             };
             textField.EditingDidEnd += (sender, e) =>
             {
+                if (textField.Text.Length == 0)
+                {
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+                }
                 _controller?.UpdateControlStates();
             };
             textField.ShouldChangeCharacters = (txtField, range, replacementString) =>
