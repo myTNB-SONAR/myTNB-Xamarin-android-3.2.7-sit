@@ -95,7 +95,9 @@
     "illDoItLater": "I’ll Do It Later",
     "selectBillMaxDesc": "You may select up to <b>5 bills</b> to pay in each transaction. To pay the rest of your bills, complete this transaction first.",
     "pdfDownloadMessage": "Your document has been downloaded: {0}",
-    "open": "Open"
+    "open": "Open",
+    "paymentPendingMsg": "My payment is being processed",
+    "processing": "Processing"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

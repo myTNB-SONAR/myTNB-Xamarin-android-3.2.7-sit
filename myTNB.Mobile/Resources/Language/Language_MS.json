@@ -95,7 +95,9 @@
     "illDoItLater": "Kemudian",
     "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu.",
     "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}",
-    "open": "Buka"
+    "open": "Buka",
+    "paymentPendingMsg": "Pembayaran sedang diproses",
+    "processing": "sedang diproses"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
