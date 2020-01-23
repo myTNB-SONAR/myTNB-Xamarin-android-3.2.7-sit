@@ -47,11 +47,11 @@ namespace myTNB_Android.Src.CompoundView
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
-                pendingIndicator.TextFormatted = Html.FromHtml("<i>" + "Processing" + "</i>", FromHtmlOptions.ModeLegacy);
+                pendingIndicator.TextFormatted = Html.FromHtml("<i>" + Utility.GetLocalizedCommonLabel("processing") + "</i>", FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                pendingIndicator.TextFormatted = Html.FromHtml("<i>" + "Processing" + "</i>");
+                pendingIndicator.TextFormatted = Html.FromHtml("<i>" + Utility.GetLocalizedCommonLabel("processing") + "</i>");
             }
         }
 
@@ -70,16 +70,27 @@ namespace myTNB_Android.Src.CompoundView
             paidViaView.Text = paidVia;
         }
 
-        public void SetAmount(string amount)
+        public void SetAmount(string amount, bool isPendingPayment)
         { 
             amountView.Text = amount;
-            if (isPayment)
+
+            if (isPendingPayment)
             {
-                amountView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.freshGreen)));
+                amountView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.lightOrange)));
+                pendingIndicator.Visibility = ViewStates.Visible;
             }
             else
             {
-                amountView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.tunaGrey)));
+                pendingIndicator.Visibility = ViewStates.Gone;
+
+                if (isPayment)
+                {
+                    amountView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.freshGreen)));
+                }
+                else
+                {
+                    amountView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.tunaGrey)));
+                }
             }
         }
 

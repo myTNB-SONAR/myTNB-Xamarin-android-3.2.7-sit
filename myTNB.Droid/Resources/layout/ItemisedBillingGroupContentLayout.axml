@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/itemisedBillingAmountLayout"
                 android:visibility="visible"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:layout_marginRight="12dp"
                 android:orientation="vertical">
                 <TextView

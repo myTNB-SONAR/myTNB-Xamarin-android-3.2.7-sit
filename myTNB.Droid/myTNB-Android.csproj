@@ -4297,6 +4297,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Api\IPaymentStatusApi.cs" />
+    <Compile Include="Src\myTNBMenu\Requests\CheckPendingPaymentRequest.cs" />
+    <Compile Include="Src\Base\Models\DeviceInterface.cs" />
+    <Compile Include="Src\myTNBMenu\Models\CheckPendingPaymentsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

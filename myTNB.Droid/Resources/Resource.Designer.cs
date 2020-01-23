@@ -3136,44 +3136,44 @@ namespace myTNB_Android
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f0c00bc
-			public const int abc_background_cache_hint_selector_material_dark = 2131493052;
-			
 			// aapt resource value: 0x7f0c00bd
-			public const int abc_background_cache_hint_selector_material_light = 2131493053;
+			public const int abc_background_cache_hint_selector_material_dark = 2131493053;
 			
 			// aapt resource value: 0x7f0c00be
-			public const int abc_btn_colored_borderless_text_material = 2131493054;
+			public const int abc_background_cache_hint_selector_material_light = 2131493054;
 			
 			// aapt resource value: 0x7f0c00bf
-			public const int abc_btn_colored_text_material = 2131493055;
+			public const int abc_btn_colored_borderless_text_material = 2131493055;
 			
 			// aapt resource value: 0x7f0c00c0
-			public const int abc_color_highlight_material = 2131493056;
+			public const int abc_btn_colored_text_material = 2131493056;
 			
 			// aapt resource value: 0x7f0c00c1
-			public const int abc_hint_foreground_material_dark = 2131493057;
+			public const int abc_color_highlight_material = 2131493057;
 			
 			// aapt resource value: 0x7f0c00c2
-			public const int abc_hint_foreground_material_light = 2131493058;
+			public const int abc_hint_foreground_material_dark = 2131493058;
+			
+			// aapt resource value: 0x7f0c00c3
+			public const int abc_hint_foreground_material_light = 2131493059;
 			
 			// aapt resource value: 0x7f0c0020
 			public const int abc_input_method_navigation_guard = 2131492896;
 			
-			// aapt resource value: 0x7f0c00c3
-			public const int abc_primary_text_disable_only_material_dark = 2131493059;
-			
 			// aapt resource value: 0x7f0c00c4
-			public const int abc_primary_text_disable_only_material_light = 2131493060;
+			public const int abc_primary_text_disable_only_material_dark = 2131493060;
 			
 			// aapt resource value: 0x7f0c00c5
-			public const int abc_primary_text_material_dark = 2131493061;
+			public const int abc_primary_text_disable_only_material_light = 2131493061;
 			
 			// aapt resource value: 0x7f0c00c6
-			public const int abc_primary_text_material_light = 2131493062;
+			public const int abc_primary_text_material_dark = 2131493062;
 			
 			// aapt resource value: 0x7f0c00c7
-			public const int abc_search_url_text = 2131493063;
+			public const int abc_primary_text_material_light = 2131493063;
+			
+			// aapt resource value: 0x7f0c00c8
+			public const int abc_search_url_text = 2131493064;
 			
 			// aapt resource value: 0x7f0c0021
 			public const int abc_search_url_text_normal = 2131492897;
@@ -3184,29 +3184,29 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0023
 			public const int abc_search_url_text_selected = 2131492899;
 			
-			// aapt resource value: 0x7f0c00c8
-			public const int abc_secondary_text_material_dark = 2131493064;
-			
 			// aapt resource value: 0x7f0c00c9
-			public const int abc_secondary_text_material_light = 2131493065;
+			public const int abc_secondary_text_material_dark = 2131493065;
 			
 			// aapt resource value: 0x7f0c00ca
-			public const int abc_tint_btn_checkable = 2131493066;
+			public const int abc_secondary_text_material_light = 2131493066;
 			
 			// aapt resource value: 0x7f0c00cb
-			public const int abc_tint_default = 2131493067;
+			public const int abc_tint_btn_checkable = 2131493067;
 			
 			// aapt resource value: 0x7f0c00cc
-			public const int abc_tint_edittext = 2131493068;
+			public const int abc_tint_default = 2131493068;
 			
 			// aapt resource value: 0x7f0c00cd
-			public const int abc_tint_seek_thumb = 2131493069;
+			public const int abc_tint_edittext = 2131493069;
 			
 			// aapt resource value: 0x7f0c00ce
-			public const int abc_tint_spinner = 2131493070;
+			public const int abc_tint_seek_thumb = 2131493070;
 			
 			// aapt resource value: 0x7f0c00cf
-			public const int abc_tint_switch_track = 2131493071;
+			public const int abc_tint_spinner = 2131493071;
+			
+			// aapt resource value: 0x7f0c00d0
+			public const int abc_tint_switch_track = 2131493072;
 			
 			// aapt resource value: 0x7f0c0024
 			public const int accent_material_dark = 2131492900;
@@ -3358,8 +3358,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0014
 			public const int com_facebook_button_send_background_color_pressed = 2131492884;
 			
-			// aapt resource value: 0x7f0c00d0
-			public const int com_facebook_button_text_color = 2131493072;
+			// aapt resource value: 0x7f0c00d1
+			public const int com_facebook_button_text_color = 2131493073;
 			
 			// aapt resource value: 0x7f0c0015
 			public const int com_facebook_device_auth_text = 2131492885;
@@ -3376,8 +3376,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0019
 			public const int com_facebook_messenger_blue = 2131492889;
 			
-			// aapt resource value: 0x7f0c00d1
-			public const int com_facebook_send_button_text_color = 2131493073;
+			// aapt resource value: 0x7f0c00d2
+			public const int com_facebook_send_button_text_color = 2131493074;
 			
 			// aapt resource value: 0x7f0c001a
 			public const int com_facebook_share_button_text_color = 2131492890;
@@ -3385,8 +3385,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c001b
 			public const int com_smart_login_code = 2131492891;
 			
-			// aapt resource value: 0x7f0c00d2
-			public const int common_google_signin_btn_text_dark = 2131493074;
+			// aapt resource value: 0x7f0c00d3
+			public const int common_google_signin_btn_text_dark = 2131493075;
 			
 			// aapt resource value: 0x7f0c0000
 			public const int common_google_signin_btn_text_dark_default = 2131492864;
@@ -3400,8 +3400,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0003
 			public const int common_google_signin_btn_text_dark_pressed = 2131492867;
 			
-			// aapt resource value: 0x7f0c00d3
-			public const int common_google_signin_btn_text_light = 2131493075;
+			// aapt resource value: 0x7f0c00d4
+			public const int common_google_signin_btn_text_light = 2131493076;
 			
 			// aapt resource value: 0x7f0c0004
 			public const int common_google_signin_btn_text_light_default = 2131492868;
@@ -3415,8 +3415,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0007
 			public const int common_google_signin_btn_text_light_pressed = 2131492871;
 			
-			// aapt resource value: 0x7f0c00d4
-			public const int common_google_signin_btn_tint = 2131493076;
+			// aapt resource value: 0x7f0c00d5
+			public const int common_google_signin_btn_tint = 2131493077;
 			
 			// aapt resource value: 0x7f0c009f
 			public const int completedColor = 2131493023;
@@ -3430,8 +3430,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c005c
 			public const int design_bottom_navigation_shadow_color = 2131492956;
 			
-			// aapt resource value: 0x7f0c00d5
-			public const int design_error = 2131493077;
+			// aapt resource value: 0x7f0c00d6
+			public const int design_error = 2131493078;
 			
 			// aapt resource value: 0x7f0c005d
 			public const int design_fab_shadow_end_color = 2131492957;
@@ -3457,8 +3457,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0064
 			public const int design_snackbar_background_color = 2131492964;
 			
-			// aapt resource value: 0x7f0c00d6
-			public const int design_tint_password_toggle = 2131493078;
+			// aapt resource value: 0x7f0c00d7
+			public const int design_tint_password_toggle = 2131493079;
 			
 			// aapt resource value: 0x7f0c0099
 			public const int dialogButtonColor = 2131493017;
@@ -3549,6 +3549,9 @@ namespace myTNB_Android
 			
 			// aapt resource value: 0x7f0c0091
 			public const int lightGrey = 2131493009;
+			
+			// aapt resource value: 0x7f0c00bc
+			public const int lightOrange = 2131493052;
 			
 			// aapt resource value: 0x7f0c00b7
 			public const int light_green_blue = 2131493047;
@@ -3742,11 +3745,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0c0056
 			public const int switch_thumb_disabled_material_light = 2131492950;
 			
-			// aapt resource value: 0x7f0c00d7
-			public const int switch_thumb_material_dark = 2131493079;
-			
 			// aapt resource value: 0x7f0c00d8
-			public const int switch_thumb_material_light = 2131493080;
+			public const int switch_thumb_material_dark = 2131493080;
+			
+			// aapt resource value: 0x7f0c00d9
+			public const int switch_thumb_material_light = 2131493081;
 			
 			// aapt resource value: 0x7f0c0057
 			public const int switch_thumb_normal_material_dark = 2131492951;

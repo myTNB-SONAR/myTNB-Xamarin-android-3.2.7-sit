@@ -165,7 +165,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private string myHistoryTitle = "";
         private string billTitle = "";
 
-		public override void OnCreate(Bundle savedInstanceState)
+        private bool isPendingPayment = false;
+
+        public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new ItemisedBillingMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
@@ -258,6 +260,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
                 intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
+                intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
                 StartActivity(intent);
             }
         }
@@ -541,8 +544,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                             content.SetDateHistoryType(data.DateAndHistoryType);
                             content.SetPaidVia(data.PaidVia);
-                            content.SetAmount("RM " + Convert.ToDecimal(data.Amount).ToString("#,##0.00"));
-                            if (data.DetailedInfoNumber != "")
+                            content.SetAmount("RM " + Convert.ToDecimal(data.Amount).ToString("#,##0.00"), data.IsPaymentPending);
+                            if (data.DetailedInfoNumber != "" && !data.IsPaymentPending)
                             {
                                 content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
                             }
@@ -552,6 +555,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             }
                             itemisedBillingGroupComponent.AddContent(content);
 							itemisedBillingGroupComponent.ShowContentSeparators();
+
+
 						}
                         //Rendering Filtered History Type
                         else
@@ -562,8 +567,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                                 content.SetDateHistoryType(data.DateAndHistoryType);
                                 content.SetPaidVia(data.PaidVia);
-                                content.SetAmount("RM " + Convert.ToDecimal(data.Amount).ToString("#,##0.00"));
-                                if (data.DetailedInfoNumber != "")
+                                content.SetAmount("RM " + Convert.ToDecimal(data.Amount).ToString("#,##0.00"), data.IsPaymentPending);
+                                if (data.DetailedInfoNumber != "" && !data.IsPaymentPending)
                                 {
                                     content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
                                 }
@@ -709,6 +714,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 billFilterIcon.Enabled = true;
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
+
+                isPendingPayment = false;
+
+                for (int i = 0; i < billingHistoryModelList.Count; i++)
+                {
+                    if (billingHistoryModelList[i].BillingHistoryDataList != null && billingHistoryModelList[i].BillingHistoryDataList.Count > 0)
+                    {
+                        for (int j = 0; j < billingHistoryModelList[i].BillingHistoryDataList.Count; j++)
+                        {
+                            if (billingHistoryModelList[i].BillingHistoryDataList[j].IsPaymentPending)
+                            {
+                                isPendingPayment = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isPendingPayment)
+                    {
+                        break;
+                    }
+                }
+
+                if (isPendingPayment && unavailableChargeContainer.Visibility != ViewStates.Visible)
+                {
+                    UpdatePendingPaymentCharge();
+                }
             }
             else
             {
@@ -726,6 +758,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
                 itemisedBillingList.Visibility = ViewStates.Gone;
             }
+        }
+
+        public void UpdatePendingPaymentCharge()
+        {
+            itemisedBillingHeaderImage.SetImageResource(Resource.Drawable.bill_payment_processing_banner);
+            itemisedBillingInfoNote.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
+            itemisedBillingInfoAmount.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
+            itemisedBillingInfoAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
+            itemisedBillingInfoDate.Visibility = ViewStates.Gone;
         }
 
         public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)
@@ -806,6 +847,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);
+
+            if (isPendingPayment)
+            {
+                UpdatePendingPaymentCharge();
+            }
         }
 
         public void ShowBillPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData)

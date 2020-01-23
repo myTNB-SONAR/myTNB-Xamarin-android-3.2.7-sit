@@ -364,8 +364,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 #if DEBUG
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                 var amountDueApi = RestService.For<IAmountDueApi>(httpClient);
+                var paymentStatusApi = RestService.For<IPaymentStatusApi>(httpClient);
 #else
 				var amountDueApi = RestService.For<IAmountDueApi>(Constants.SERVER_URL.END_POINT);
+                var paymentStatusApi = RestService.For<IPaymentStatusApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                 UserInterface currentUsrInf = new UserInterface()
@@ -380,6 +382,64 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param1 = "",
                     ses_param2 = ""
                 };
+
+                bool isPendingPayment = false;
+
+                if (!this.mView.GetIsREAccount())
+                {
+                    try
+                    {
+                        DeviceInterface currentDvdInf = new DeviceInterface()
+                        {
+                            DeviceId = UserSessions.GetDeviceId(),
+                            AppVersion = DeviceIdUtils.GetAppVersionName(),
+                            OsType = Constants.DEVICE_PLATFORM,
+                            OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                            DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper(),
+                            VersionCode = ""
+                        };
+
+                        List<string> accountList = new List<string>();
+                        accountList.Add(this.mView.GetSelectedAccount().AccountNum);
+
+                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(new CheckPendingPaymentRequest()
+                        {
+                            AccountList = accountList,
+                            usrInf = currentUsrInf,
+                            dvcInf = currentDvdInf
+                        }, cts.Token);
+
+                        if (paymentStatusResponse != null && paymentStatusResponse.Data != null && paymentStatusResponse.Data.ErrorCode == "7200")
+                        {
+                            if (paymentStatusResponse.Data.Data != null && paymentStatusResponse.Data.Data.Count > 0)
+                            {
+                                for (int j = 0; j < paymentStatusResponse.Data.Data.Count; j++)
+                                {
+                                    if (paymentStatusResponse.Data.Data[j].HasPendingPayment)
+                                    {
+                                        isPendingPayment = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (System.OperationCanceledException e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    catch (ApiException apiException)
+                    {
+                        Utility.LoggingNonFatalError(apiException);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
+                cts = new CancellationTokenSource();
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
 
                 AccountDueAmountResponse dueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
@@ -397,7 +457,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode == "7200")
                 {
                     Utility.SetIsPayDisableNotFromAppLaunch(!dueResponse.Data.IsPayEnabled);
-                    this.mView.ShowAmountDue(dueResponse.Data.Data.AmountDueData);
+                    this.mView.ShowAmountDue(dueResponse.Data.Data.AmountDueData, isPendingPayment);
                 }
                 else
                 {

@@ -94,6 +94,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
 			[JsonProperty(PropertyName = "HistoryTypeText")]
 			public string HistoryTypeText { get; set; }
-		}
+
+            [JsonProperty(PropertyName = "IsPaymentPending")]
+            public bool IsPaymentPending { get; set; }
+        }
 	}
 }

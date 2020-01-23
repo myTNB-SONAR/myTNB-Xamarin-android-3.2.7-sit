@@ -1545,38 +1545,51 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:visibility="gone">
-                <TextView
-                    android:id="@+id/txtNoPayableTitle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="7dp"
-                    android:text="@string/dashboard_need_pay"
-                    android:textColor="@color/charcoalGrey"
-                    android:textSize="15dp" />
-                <TextView
-                    android:id="@+id/txtNoPayable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:text="0.00"
-                    android:textColor="@color/tunaGrey"
-                    android:textSize="25dp" />
-                <TextView
-                    android:id="@+id/txtNoPayableCurrency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/txtNoPayable"
-                    android:layout_alignBottom="@+id/txtNoPayable"
-                    android:layout_toLeftOf="@+id/txtNoPayable"
-                    android:layout_toStartOf="@+id/txtNoPayable"
-                    android:text="RM"
-                    android:layout_marginRight="7dp"
-                    android:textColor="@color/tunaGrey"
-                    android:textSize="13dp" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/txtNoPayableTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:text="@string/dashboard_need_pay"
+                        android:textColor="@color/charcoalGrey"
+                        android:textSize="15dp"
+                        android:lineSpacingExtra="3dp"/>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6">
+                        <TextView
+                            android:id="@+id/txtNoPayable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:text="0.00"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="25dp" />
+                        <TextView
+                            android:id="@+id/txtNoPayableCurrency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/txtNoPayable"
+                            android:layout_alignBottom="@+id/txtNoPayable"
+                            android:layout_toLeftOf="@+id/txtNoPayable"
+                            android:layout_toStartOf="@+id/txtNoPayable"
+                            android:text="RM"
+                            android:layout_marginRight="7dp"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="13dp" />
+                    </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/totalPayableLayout"
