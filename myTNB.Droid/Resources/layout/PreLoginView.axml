@@ -219,6 +219,7 @@
                     android:layout_width="match_parent"
                     android:textSize="12dp"
                     android:paddingTop="19dp"
+                    android:paddingBottom="23dp"
                     android:textColor="@color/powerBlue"
                     android:gravity="center_horizontal"
                     android:text="Tukar kepada Bahasa Malaysia"
