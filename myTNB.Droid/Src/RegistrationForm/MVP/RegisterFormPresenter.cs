@@ -96,19 +96,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                         this.mView.ClearNotEqualConfirmPasswordError();
                     }
 
-
-                    if (!Utility.IsValidMobileNumber(mobile_no))
-                    {
-                        this.mView.ShowInvalidMobileNoError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else
-                    {
-                        this.mView.ClearInvalidMobileError();
-
-                    }
-
                     this.mView.EnableRegisterButton();
                 }
                 else
@@ -148,26 +135,11 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 return;
             }
 
-
             if (TextUtils.IsEmpty(icno))
             {
                 this.mView.ShowEmptyICNoError();
                 return;
             }
-
-            if (TextUtils.IsEmpty(mobile_no))
-            {
-                this.mView.ShowEmptyMobileNoError();
-                return;
-            }
-
-            if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-
 
             if (TextUtils.IsEmpty(email))
             {

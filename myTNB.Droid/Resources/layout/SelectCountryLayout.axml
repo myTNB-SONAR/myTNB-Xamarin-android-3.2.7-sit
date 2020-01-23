@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:theme="@style/Theme.Dashboard"
     android:id="@+id/rootView">
     <RelativeLayout
         android:layout_width="match_parent"

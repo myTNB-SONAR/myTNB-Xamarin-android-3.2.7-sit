@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mobileNumberFieldContainer.RemoveAllViews();
                 mobileNumberInputComponent = new MobileNumberInputComponent(this);
                 mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
-                //mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
                 mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
@@ -190,6 +190,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             //#endif
         }
 
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            string fullname = txtFullName.Text.ToString().Trim();
+            string ic_no = txtICNumber.Text.ToString().Trim();
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            string email = txtEmail.Text.ToString().Trim();
+            string confirm_email = txtConfirmEmail.Text.ToString().Trim();
+            string password = txtPassword.Text;
+            string confirm_password = txtConfirmPassword.Text;
+            this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, email, confirm_email, password, confirm_password);
+        }
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
@@ -371,7 +382,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     this.SetIsClicked(true);
                     string fName = txtFullName.Text.ToString().Trim();
                     string ic_no = txtICNumber.Text.ToString().Trim();
-                    string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+                    string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                     string eml_str = txtEmail.Text.ToString().Trim();
                     string confirm_email = txtConfirmEmail.Text.ToString().Trim();
                     string password = txtPassword.Text;

@@ -178,7 +178,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             if (ConnectionUtils.HasInternetConnection(this))
             {
-                string newMobile = mobileNumberInputComponent.GetMobileNumberValue();
+                string newMobile = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                 this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
             }
             else

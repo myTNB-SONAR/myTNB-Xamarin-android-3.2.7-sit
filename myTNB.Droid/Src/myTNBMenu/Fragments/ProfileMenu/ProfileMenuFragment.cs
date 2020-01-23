@@ -27,6 +27,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.Profile.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.UpdatePassword.Activity;
@@ -55,7 +56,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         private LoadingOverlay loadingOverlay;
         private ProfileMenuItemContentComponent fullName, referenceNumber, email, mobileNumber, password, cards, electricityAccount;
         private bool mobileNoUpdated = false;
-        MaterialDialog logoutProgressDialog;
+        MyTNBAppToolTipBuilder logoutDialog;
 
         const string PAGE_ID = "Profile";
 
@@ -112,14 +113,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     }
                 }
 
-                logoutProgressDialog = new MaterialDialog.Builder(this.Activity)
-                    .Title(GetLabelByLanguage("logout"))
-                    .Content(GetLabelByLanguage("logoutMessage"))
-                    .PositiveText(GetLabelCommonByLanguage("ok"))
-                    .NeutralText(GetLabelCommonByLanguage("cancel"))
-                    .OnPositive((dialog, which) => mPresenter.OnLogout(this.DeviceId()))
-                    .OnNeutral((dialog, which) => dialog.Dismiss())
-                    .Build();
+                logoutDialog = MyTNBAppToolTipBuilder.Create(Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(GetLabelByLanguage("logout"))
+                        .SetMessage(GetLabelByLanguage("logoutMessage"))
+                        .SetCTALabel(GetLabelCommonByLanguage("ok"))
+                        .SetCTAaction(() => { mPresenter.OnLogout(this.DeviceId()); })
+                        .SetSecondaryCTALabel(GetLabelCommonByLanguage("cancel"))
+                        .Build();
 
                 ProfileMenuItemComponent myTNBAccountItem = GetMyTNBAccountItems();
                 myTNBAccountItem.SetHeaderTitle(GetLabelByLanguage("myTNBAccount"));
@@ -843,7 +843,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 if (IsActive())
                 {
-                    logoutProgressDialog.Show();
+                    logoutDialog.Show();
                 }
             }
             catch (System.Exception e)

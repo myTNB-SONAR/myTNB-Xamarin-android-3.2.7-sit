@@ -19,13 +19,13 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:textColor="#a6a6a6"
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:text="MOBILE NUMBER"/>
         <LinearLayout
             android:id="@+id/countryCodeContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="6dp"
+            android:paddingTop="2dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
