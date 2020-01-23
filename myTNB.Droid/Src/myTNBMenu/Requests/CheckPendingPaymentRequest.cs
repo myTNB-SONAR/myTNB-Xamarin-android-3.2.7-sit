@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.myTNBMenu.Requests
 		[JsonProperty("usrInf")]
 		public UserInterface usrInf { get; set; }
 
-        [JsonProperty("dvcInf")]
-        public DeviceInterface dvcInf { get; set; }
+        [JsonProperty("deviceInf")]
+        public DeviceInterface deviceInf { get; set; }
     }
 }

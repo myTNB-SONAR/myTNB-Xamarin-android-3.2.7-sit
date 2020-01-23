@@ -136,7 +136,7 @@ namespace myTNB_Android.Src.Billing.MVP
                         {
                             AccountList = accountList,
                             usrInf = currentUsrInf,
-                            dvcInf = currentDvdInf
+                            deviceInf = currentDvdInf
                         }, cts.Token);
 
                         if (paymentStatusResponse != null && paymentStatusResponse.Data != null && paymentStatusResponse.Data.ErrorCode == "7200")

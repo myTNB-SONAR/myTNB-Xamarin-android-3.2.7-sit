@@ -31,6 +31,9 @@ namespace myTNB_Android.Src.AppLaunch.Models
             [JsonProperty("DeviceDesc")]
             public string DeviceDesc { get; set; }
 
+            [JsonProperty("VersionCode")]
+            public string VersionCode { get; set; }
+
         }
     }
 }
