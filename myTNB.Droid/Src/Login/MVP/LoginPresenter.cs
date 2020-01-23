@@ -39,8 +39,6 @@ namespace myTNB_Android.Src.Login.MVP
 
         CancellationTokenSource cts;
 
-        private string savedPromoTimeStamp = "0000000";
-
         public LoginPresenter(LoginContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
@@ -128,6 +126,23 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 else
                 {
+                    try
+                    {
+                        WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                        mWhatsNewParentEntity.DeleteTable();
+                        mWhatsNewParentEntity.CreateTable();
+                        WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                        mWhatsNewEntity.DeleteTable();
+                        mWhatsNewEntity.CreateTable();
+                        WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                        mWhatsNewCategoryEntity.DeleteTable();
+                        mWhatsNewCategoryEntity.CreateTable();
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
                     ///<summary>
                     ///THIS TO SAVE UPDATE THAT LOGOUT HAS BEEN DONE - WHILE UPGRADING VERSION 6 TO 7
                     ///</summary>
@@ -225,20 +240,6 @@ namespace myTNB_Android.Src.Login.MVP
                         catch (Exception ex)
                         {
                             Utility.LoggingNonFatalError(ex);
-                        }
-
-                        try
-                        {
-                            PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                            PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
                         }
 
                         try
@@ -407,10 +408,6 @@ namespace myTNB_Android.Src.Login.MVP
                 SubmittedFeedbackEntity.Remove();
                 SMUsageHistoryEntity.RemoveAll();
                 UsageHistoryEntity.RemoveAll();
-                PromotionsEntityV2 promotionTable = new PromotionsEntityV2();
-                promotionTable.DeleteTable();
-                PromotionsParentEntityV2 promotionEntityTable = new PromotionsParentEntityV2();
-                promotionEntityTable.DeleteTable();
                 BillHistoryEntity.RemoveAll();
                 PaymentHistoryEntity.RemoveAll();
                 REPaymentHistoryEntity.RemoveAll();

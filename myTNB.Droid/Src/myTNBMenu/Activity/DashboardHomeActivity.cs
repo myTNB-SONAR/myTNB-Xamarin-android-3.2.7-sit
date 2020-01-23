@@ -16,10 +16,7 @@ using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.SitecoreCM.Models;
-using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -27,14 +24,11 @@ using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
-using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.RewardDetail.MVP;
@@ -44,8 +38,9 @@ using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Activity;
-using Newtonsoft.Json;
 using static Android.Views.View;
+using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -95,8 +90,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private bool isFromNotification = false;
 
         private LoadingOverlay loadingOverlay;
-
-        private string savedTimeStamp = "0000000";
 
         private string savedSSMRMeterReadingTimeStamp = "0000000";
 
@@ -159,7 +152,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill);
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
 
@@ -215,12 +207,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             RewardsMenuUtils.OnSetRewardLoading(false);
 
+            WhatsNewMenuUtils.OnSetWhatsNewLoading(false);
+
             Bundle extras = Intent?.Extras;
-            if (extras != null && extras.ContainsKey(Constants.PROMOTION_NOTIFICATION_VIEW))
-            {
-                bottomNavigationView.Menu.FindItem(Resource.Id.menu_promotion).SetChecked(true);
-                this.userActionsListener?.OnMenuSelect(Resource.Id.menu_promotion);
-            }
 
             if (extras != null && extras.ContainsKey("FROM_NOTIFICATION"))
             {
@@ -645,6 +634,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     .Build().Show();
                             }
                         }
+                        else if (urlSchemaData.Contains("whatsnew") && !string.IsNullOrEmpty(urlSchemaPath))
+                        {
+                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(whatsNewID))
+                            {
+                                whatsNewID = "{" + whatsNewID + "}";
+
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
+
+                                this.mPresenter.OnStartWhatsNewThread();
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("whatsnew"))
+                        {
+                            urlSchemaData = "whatsnew";
+                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(whatsNewID))
+                            {
+                                whatsNewID = "{" + whatsNewID + "}";
+
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
+
+                                this.mPresenter.OnStartWhatsNewThread();
+                            }
+                        }
                     }
                 }
             }
@@ -664,11 +682,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                      .CommitAllowingStateLoss();
         }
 
-        public void ShowPromotionsMenu(Weblink weblink)
+        public void ShowWhatsNewMenu()
         {
             ShowBackButton(false);
             SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
-            PromotionListFragment fragment = new PromotionListFragment();
+            WhatsNewMenuFragment fragment = new WhatsNewMenuFragment();
             currentFragment = fragment;
             FragmentManager.BeginTransaction()
                         .Replace(Resource.Id.content_layout, fragment)
@@ -784,7 +802,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
-        public void ShowUnreadPromotions(bool flag)
+        public void ShowUnreadWhatsNew(bool flag)
         {
             if (bottomNavigationView != null && bottomNavigationView.Menu != null)
             {
@@ -793,16 +811,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
-                        int count = PromotionsEntityV2.Count();
+                        int count = WhatsNewEntity.Count();
                         if (count > 0)
                         {
                             SetReadUnReadNewBottomView(flag, true, count, promotionMenuItem);
                         }
                         else
                         {
-                            HideUnreadPromotions(flag);
+                            HideUnreadWhatsNew(flag);
                         }
                     }
                     else
@@ -814,7 +832,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void ShowUnreadPromotions()
+        public void ShowUnreadWhatsNew()
         {
             if (bottomNavigationView != null && bottomNavigationView.Menu != null)
             {
@@ -823,16 +841,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
-                        int count = PromotionsEntityV2.Count();
+                        int count = WhatsNewEntity.Count();
                         if (count > 0)
                         {
                             SetReadUnReadNewBottomView(promotionMenuItem.IsChecked, true, count, promotionMenuItem);
                         }
                         else
                         {
-                            HideUnreadPromotions(promotionMenuItem.IsChecked);
+                            HideUnreadWhatsNew(promotionMenuItem.IsChecked);
                         }
                     }
                     else
@@ -844,7 +862,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void HideUnreadPromotions(bool flag)
+        public void HideUnreadWhatsNew(bool flag)
         {
             if (bottomNavigationView != null && bottomNavigationView.Menu != null)
             {
@@ -853,7 +871,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadNewBottomView(flag, false, 0, promotionMenuItem);
                     }
@@ -866,7 +884,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void HideUnreadPromotions()
+        public void HideUnreadWhatsNew()
         {
             if (bottomNavigationView != null && bottomNavigationView.Menu != null)
             {
@@ -875,7 +893,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadNewBottomView(promotionMenuItem.IsChecked, false, 0, promotionMenuItem);
                     }
@@ -1210,106 +1228,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void ShowPromotionTimestamp(bool success)
-        {
-            if (success)
-            {
-                PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
-                {
-                    PromotionsParentEntityV2 entity = items[0];
-                    if (entity != null)
-                    {
-                        if (!entity.Timestamp.Equals(savedTimeStamp))
-                        {
-                            this.userActionsListener.OnGetPromotions();
-                        }
-                        else
-                        {
-                            ShowPromotion(true);
-                        }
-                    }
-                    else
-                    {
-                        this.userActionsListener.OnGetPromotions();
-                    }
-                }
-                else
-                {
-                    this.userActionsListener.OnGetPromotions();
-                }
-
-            }
-            else
-            {
-                this.userActionsListener.OnGetPromotions();
-            }
-        }
-
-        public void OnSavedTimeStamp(string mSavedTimeStamp)
-        {
-            if (mSavedTimeStamp != null)
-            {
-                this.savedTimeStamp = mSavedTimeStamp;
-            }
-            this.userActionsListener.OnGetPromotionsTimeStamp();
-        }
-
-        public void ShowPromotion(bool success)
-        {
-            try
-            {
-                RunOnUiThread(() =>
-                {
-                    try
-                    {
-                        if (success)
-                        {
-
-                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                            List<PromotionsEntityV2> items = wtManager.GetAllValidPromotions();
-                            List<PromotionsModelV2> promotions = new List<PromotionsModelV2>();
-                            if (items != null)
-                            {
-                                promotions = new List<PromotionsModelV2>();
-                                promotions.AddRange(items);
-                            }
-                            if (promotions.Count > 0)
-                            {
-                                PromotionDialogFragmnet dialogFragmnet = new PromotionDialogFragmnet(this);
-                                dialogFragmnet.Cancelable = false;
-                                Bundle extras = new Bundle();
-                                extras.PutString("promotions", JsonConvert.SerializeObject(promotions));
-                                dialogFragmnet.Arguments = extras;
-                                dialogFragmnet.Show(SupportFragmentManager, "Promotion Dialog");
-                            }
-                        }
-
-                        try
-                        {
-                            if (this.mPresenter != null)
-                            {
-                                this.mPresenter.OnResumeUpdatePromotionUnReadCounter();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-
         public void NavigateToDashBoardFragment()
         {
             mPresenter.OnAccountSelectDashBoard();
@@ -1417,6 +1335,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     && currentFragment.GetType() == typeof(RewardMenuFragment))
                 {
                     if (RewardsMenuUtils.GetTouchDisable())
+                    {
+                        int x = (int)ev.RawX;
+                        int y = (int)ev.RawY;
+                        if (!IsViewInBounds(bottomNavigationView, x, y))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if (ev.Action == MotionEventActions.Down
+                    && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_promotion
+                    && currentFragment.GetType() == typeof(WhatsNewMenuFragment))
+                {
+                    if (WhatsNewMenuUtils.GetTouchDisable())
                     {
                         int x = (int)ev.RawX;
                         int y = (int)ev.RawY;
@@ -1707,6 +1639,69 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void OnCheckUserWhatsNew(bool isSitecoreApiFailed)
+        {
+            try
+            {
+                if (isSitecoreApiFailed)
+                {
+                    WhatsNewParentEntity WhatsNewParentEntityManager = new WhatsNewParentEntity();
+                    WhatsNewParentEntityManager.DeleteTable();
+                    WhatsNewParentEntityManager.CreateTable();
+                    WhatsNewMenuUtils.OnSetWhatsNewLoading(false);
+                    try
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                HideProgressDialog();
+                                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
+                                {
+                                    urlSchemaCalled = false;
+                                    ShowWhatsNewFailedTooltip();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                this.mPresenter.CheckWhatsNewCache();
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnCheckUserRewardApiFailed()
         {
             try
@@ -1745,7 +1740,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             try
             {
-                if (urlSchemaCalled)
+                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
                 {
                     HideProgressDialog();
                     urlSchemaCalled = false;
@@ -1799,6 +1794,78 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void OnCheckWhatsNewTab()
+        {
+            try
+            {
+                WhatsNewMenuUtils.OnSetWhatsNewLoading(false);
+
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnResumeUpdateWhatsNewUnRead();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
+                {
+                    HideProgressDialog();
+                    urlSchemaCalled = false;
+                    if (urlSchemaData != null)
+                    {
+                        if (urlSchemaData.Contains("whatsnew"))
+                        {
+                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            if (!string.IsNullOrEmpty(whatsNewID))
+                            {
+                                whatsNewID = "{" + whatsNewID + "}";
+
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
+
+                                if (item != null)
+                                {
+                                    if (!item.Read)
+                                    {
+                                        this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                    }
+
+                                    Intent activity = new Intent(this, typeof(WhatsNewDetailActivity));
+                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsNewID);
+                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                    StartActivity(activity);
+                                }
+                                else
+                                {
+                                    IsRootTutorialShown = true;
+                                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewExpiredTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewExpiredMsg"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewExpiredBtnText"))
+                                    .SetCTAaction(() =>
+                                    {
+                                        IsRootTutorialShown = false;
+                                        OnSelectWhatsNew();
+                                    })
+                                    .Build().Show();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ReloadProfileMenu()
         {
             bottomNavigationView.SelectedItemId = Resource.Id.menu_more;
@@ -1816,6 +1883,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SetBottomNavigationLabels();
         }
 
+        private void OnSelectWhatsNew()
+        {
+            bottomNavigationView.SelectedItemId = Resource.Id.menu_promotion;
+            SetBottomNavigationLabels();
+        }
+
         public void ShowRewardFailedTooltip()
         {
             try
@@ -1824,6 +1897,32 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
                     .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                    .SetCTAaction(() =>
+                    {
+                        IsRootTutorialShown = false;
+                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                        {
+                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            fragment.CallOnCheckShowHomeTutorial();
+                        }
+                    })
+                    .Build().Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowWhatsNewFailedTooltip()
+        {
+            try
+            {
+                IsRootTutorialShown = true;
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableMsg"))
                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                     .SetCTAaction(() =>
                     {

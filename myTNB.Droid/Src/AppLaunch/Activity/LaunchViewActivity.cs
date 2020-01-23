@@ -1049,6 +1049,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
                     urlSchemaPath = "rewardId=" + id;
                 }
+                else if (!string.IsNullOrEmpty(deepLinkUrl) && deepLinkUrl.Contains("whatsnew"))
+                {
+                    urlSchemaData = "whatsnew";
+                    string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
+                    urlSchemaPath = "whatsNewId=" + id;
+                }
             }
 
         }

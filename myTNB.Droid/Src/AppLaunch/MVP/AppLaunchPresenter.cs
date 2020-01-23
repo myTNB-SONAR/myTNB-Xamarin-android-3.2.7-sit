@@ -43,8 +43,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public static readonly string TAG = "LaunchViewActivity";
         CancellationTokenSource cts;
 
-        private string savedPromoTimeStamp = "0000000";
-
         private static int AppLaunchDefaultTimeOutMillisecond = 4000;
         private int AppLaunchTimeOutMillisecond = AppLaunchDefaultTimeOutMillisecond;
         private bool IsOnGetPhotoRunning = false;

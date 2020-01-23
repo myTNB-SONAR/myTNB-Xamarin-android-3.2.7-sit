@@ -27,7 +27,6 @@ namespace myTNB.SitecoreCMS.Model
         public string CategoryID { set; get; }
         public string CategoryName { set; get; }
         public string ID { set; get; }
-        public string RewardName { set; get; }
         public string Title { set; get; }
         public string TitleOnListing { set; get; }
         public string Description { set; get; }

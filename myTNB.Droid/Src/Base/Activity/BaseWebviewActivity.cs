@@ -229,7 +229,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.PromotionWebView;
+            return Resource.Layout.BaseWebView;
         }
 
         public override bool ShowCustomToolbarTitle()

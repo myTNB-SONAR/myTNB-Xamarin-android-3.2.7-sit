@@ -412,6 +412,9 @@
     <Reference Include="Xamarin.Firebase.Dynamic.Links">
       <HintPath>..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\lib\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Location">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\lib\MonoAndroid80\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -530,10 +533,6 @@
     <Compile Include="Src\Database\Model\PaymentHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\PaymentHistoryModel.cs" />
     <Compile Include="Src\Database\Model\PreLoginPromoEntity.cs" />
-    <Compile Include="Src\Database\Model\PromotionsEntity.cs" />
-    <Compile Include="Src\Database\Model\PromotionsEntityV2.cs" />
-    <Compile Include="Src\Database\Model\PromotionsParentEntity.cs" />
-    <Compile Include="Src\Database\Model\PromotionsParentEntityV2.cs" />
     <Compile Include="Src\Database\Model\REPaymentHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\REPaymentHistoryModel.cs" />
     <Compile Include="Src\Database\Model\SelectBillsEntity.cs" />
@@ -708,7 +707,6 @@
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SMSelectedMarkerView.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\PromotionsMenu\PromotionsMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMChartHScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMDashboardScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Models\AccountDueAmount.cs" />
@@ -779,14 +777,6 @@
     <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
     <Compile Include="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
-    <Compile Include="Src\Promotions\Activity\PromotionsActivity.cs" />
-    <Compile Include="Src\Promotions\Adapter\PromotionListAdapter.cs" />
-    <Compile Include="Src\Promotions\Adapter\PromotionPagerAdapter.cs" />
-    <Compile Include="Src\Promotions\Fragments\PromotionDetailsFragment.cs" />
-    <Compile Include="Src\Promotions\Fragments\PromotionDialogFragmnet.cs" />
-    <Compile Include="Src\Promotions\Fragments\PromotionListFragment.cs" />
-    <Compile Include="Src\Promotions\MVP\PromotionContract.cs" />
-    <Compile Include="Src\Promotions\MVP\PromotionPresenter.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
@@ -885,12 +875,6 @@
     <Compile Include="Src\SitecoreCMS\Model\FullRTEPagesResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\LocationsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsModelV2.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsParentResponseModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsParentV2ResponseModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsResponseModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\PromotionsV2ResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\WalkthroughScreensModel.cs" />
@@ -902,13 +886,10 @@
     <Compile Include="Src\SitecoreCMS\Service\GetItemsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\LocationsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\PreLoginPromoService.cs" />
-    <Compile Include="Src\SitecoreCMS\Service\PromotionsService.cs" />
-    <Compile Include="Src\SitecoreCMS\Service\PromotionsV2Service.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SitecoreService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\TimestampService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\WalkthroughScreenService.cs" />
     <Compile Include="Src\SitecoreCMS\SiteCoreConfig.cs" />
-    <Compile Include="Src\SmartMeterLearnMore\Activity\SmartMeterLearnMoreActivity.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardDetails.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardResponse.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBordRequest.cs" />
@@ -945,10 +926,6 @@
     <Compile Include="Src\UpdatePassword\Request\UpdatePasswordRequest.cs" />
     <Compile Include="Src\Utils\BitmapUtils.cs" />
     <Compile Include="Src\Utils\BottomNavigationViewUtils.cs" />
-    <Compile Include="Src\GetAccessSuccess\Activity\GetAccessSuccessActivity.cs" />
-    <Compile Include="Src\GetAccess\Activity\GetAccessFormActivity.cs" />
-    <Compile Include="Src\GetAccess\MVP\GetAccessFormContract.cs" />
-    <Compile Include="Src\GetAccess\MVP\GetAccessFormPresenter.cs" />
     <Compile Include="Src\Utils\ConnectionUtils.cs" />
     <Compile Include="Src\Utils\Constants.cs" />
     <Compile Include="Src\RegisterValidation\Activity\RegisterValidationActivity.cs" />
@@ -1016,7 +993,7 @@
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
     <AndroidResource Include="Resources\drawable\launch_screen.xml" />
     <Compile Include="Src\AppLaunch\Async\MasterApiDBOperation.cs" />
-    <Compile Include="Src\myTNBMenu\Async\SiteCorePromotioAPI.cs" />
+    <Compile Include="Src\myTNBMenu\Async\SiteCoreWhatsNewAPI.cs" />
     <AndroidResource Include="Resources\layout\WhatIsThisDialogView.axml" />
     <AndroidResource Include="Resources\drawable\rounded_corner_dialog.xml" />
     <Compile Include="Src\myTNBMenu\Api\IGetInstallationDetailsApi.cs" />
@@ -4510,6 +4487,44 @@
     <AndroidResource Include="Resources\drawable\va.png" />
     <AndroidResource Include="Resources\drawable\xk.png" />
     <AndroidResource Include="Resources\drawable\fo.png" />
+    <AndroidResource Include="Resources\layout\WhatsNewListView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewListItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\WhatsNewTabAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewMenuFragment.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewMenuPresenter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewMenuContract.cs" />
+    <Compile Include="Src\Utils\WhatsNewMenuUtils.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewItemFragment.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\WhatsNewRecyclerAdapter.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\WhatsNewModel.cs" />
+    <Compile Include="Src\Database\Model\WhatsNewEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewItemContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\WhatsNewItemPresenter.cs" />
+    <Compile Include="Src\Database\Model\WhatsNewCategoryEntity.cs" />
+    <Compile Include="Src\Database\Model\WhatsNewParentEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\WhatsNewMenuModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\WhatsNewService.cs" />
+    <AndroidResource Include="Resources\layout\BaseWebView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewDetailLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailActivity.cs" />
+    <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailContract.cs" />
+    <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4578,12 +4593,6 @@
     <AndroidResource Include="Resources\layout\ViewBillView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\GetAccessFormView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\GetAccessSuccessView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\BillsRowView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -4620,9 +4629,6 @@
     <AndroidResource Include="Resources\values\MakePaymentStyle.xml" />
     <AndroidResource Include="Resources\layout\AddCardView.axml" />
     <AndroidResource Include="Resources\layout\FeedbackMenuView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\PromotionsMenuView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MoreMenuView.axml">
@@ -4757,7 +4763,6 @@
     <AndroidResource Include="Resources\layout\PaymentSuccessExperienceRatingView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SmartMeterLearnMoreView.axml" />
     <AndroidResource Include="Resources\layout\ForgotPasswordEnterCodeView.axml" />
     <AndroidResource Include="Resources\layout\FeedbackDetailsFullscreenImageView.axml">
       <SubType>Designer</SubType>
@@ -4767,7 +4772,6 @@
     <AndroidResource Include="Resources\layout\LocationTypeRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\PromotionWebView.axml" />
     <AndroidResource Include="Resources\layout\OpeningHoursListItemView.axml" />
     <AndroidResource Include="Resources\layout\PhoneListItemView.axml" />
     <AndroidResource Include="Resources\layout\ServiceListItemView.axml" />
@@ -4777,18 +4781,12 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountRow.axml" />
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionsView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionListView.axml" />
     <AndroidResource Include="Resources\layout\FAQListItemView.axml" />
     <AndroidResource Include="Resources\layout\FAQListView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionDetailsView.axml" />
-    <AndroidResource Include="Resources\layout\PromotionListItemView.axml" />
     <AndroidResource Include="Resources\layout\SelectAccountListItemView.axml" />
     <AndroidResource Include="Resources\layout\SelectMultipleAccountsView.axml" />
     <AndroidResource Include="Resources\layout\AppUpdateDialog.axml" />
     <AndroidResource Include="Resources\layout\LoadingOverlayView.axml" />
-    <AndroidResource Include="Resources\layout\promotion_dialog.axml" />
-    <AndroidResource Include="Resources\layout\promotion_pager_item.axml" />
     <AndroidResource Include="Resources\layout\RateUsQuestionItemView.axml" />
     <AndroidResource Include="Resources\layout\rating_activity_view.axml" />
     <AndroidResource Include="Resources\layout\SubmitRatingView.axml" />
@@ -4909,6 +4907,12 @@
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
     <Folder Include="Src\Common\Activity\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\" />
+    <Folder Include="Src\WhatsNewDetail\" />
+    <Folder Include="Src\WhatsNewDetail\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -6049,10 +6053,10 @@
     <AndroidResource Include="Resources\values\NotificationStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <GoogleServicesJson Include="google-services-develop.json" Condition=" '$(Configuration)' == 'Develop' " />
+    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Develop' " />
     <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'SIT' " />
     <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'Debug' " />
-    <GoogleServicesJson Include="google-services-stub.json" Condition=" '$(Configuration)' == 'Stub' " />
+    <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'Stub' " />
     <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
     <!-- <GoogleServicesJson Include="google-services.json" /> -->
   </ItemGroup>
@@ -7160,4 +7164,5 @@
   <Import Project="..\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.targets')" />
+  <Import Project="..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Location.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Location.targets')" />
 </Project>
