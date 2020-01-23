@@ -257,7 +257,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                             mRewardsEntity2.DeleteTable();
                                             mRewardsCategoryEntity2.CreateTable();
                                             mRewardsEntity2.CreateTable();
-                                            isSitecoreApiFailed = true;
                                             if (mHomeView != null)
                                             {
                                                 mHomeView.OnCheckUserReward(isSitecoreApiFailed);
