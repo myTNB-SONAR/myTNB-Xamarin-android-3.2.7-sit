@@ -185,8 +185,11 @@ namespace myTNB
         private void SetTableView()
         {
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
-            _profileTableview = new UITableView(new CGRect(0, NavigationController.NavigationBar.Frame.GetMaxY(), View.Frame.Width
-                , ViewHeight))
+            nfloat yLoc = DeviceHelper.IsIOS10 ? 0 : NavigationController.NavigationBar.Frame.GetMaxY();
+            nfloat tabHeight = TabBarController != null && TabBarController.TabBar != null
+                && TabBarController.TabBar.Frame != null ? TabBarController.TabBar.Frame.Height : 0;
+            nfloat height = DeviceHelper.IsIOS10 ? View.Frame.Height - tabHeight : ViewHeight;
+            _profileTableview = new UITableView(new CGRect(0, yLoc, View.Frame.Width, height))
             {
                 SeparatorStyle = UITableViewCellSeparatorStyle.None
             };
