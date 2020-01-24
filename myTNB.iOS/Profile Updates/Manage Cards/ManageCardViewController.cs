@@ -184,8 +184,11 @@ namespace myTNB
                         Text = GetI18NValue(MyAccountConstants.I18N_NoCards),
                         Font = MyTNBFont.MuseoSans12_300,
                         TextColor = MyTNBColor.SilverChalice,
-                        Lines = 3
+                        Lines = 0,
+                        LineBreakMode = UILineBreakMode.WordWrap
                     };
+                    nfloat newHeight = _lblNoCards.GetLabelHeight(1000);
+                    _lblNoCards.Frame = new CGRect(_lblNoCards.Frame.Location, new CGSize(_lblNoCards.Frame.Width, newHeight));
                     View.AddSubviews(new UIView[] { _imgNoCards, _lblNoCards });
                 }
                 _imgNoCards.Hidden = false;
