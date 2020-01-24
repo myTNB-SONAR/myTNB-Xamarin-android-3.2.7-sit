@@ -1884,6 +1884,9 @@
     <ImageAsset Include="Assets\Flags.xcassets\NU.imageset\nv%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\X-Red.imageset\icDisplayBulletCross%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\X-Red.imageset\icDisplayBulletCross%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Bills-Pending-Payment.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\Bills-Pending-Payment.imageset\Bills-Pending-Payment%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Bills-Pending-Payment.imageset\Bills-Pending-Payment%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2043,6 +2046,7 @@
     <Folder Include="Assets\Flags.xcassets\" />
     <Folder Include="Assets\Flags.xcassets\Flag-Generic.imageset\" />
     <Folder Include="Assets\Flags.xcassets\NU.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\Bills-Pending-Payment.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2937,6 +2941,7 @@
     <Compile Include="Common\CommonServices.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Components\Tutorial Overlay\WhatsNewTutorialOverlay.cs" />
+    <Compile Include="Model\Usage\PendingPaymentModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

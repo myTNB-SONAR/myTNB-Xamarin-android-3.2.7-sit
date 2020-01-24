@@ -5,18 +5,18 @@ using UIKit;
 
 namespace myTNB.Home.Bill
 {
-    public class BillHistoryViewCell : UITableViewCell
+    public class BillHistoryViewCell : CustomUITableViewCell
     {
         private CustomUIView _view;
         private UIView _viewGroupedDate, _viewLine;
-        private UILabel _lblGroupedDate, _lblDate, _lblSource, _lblAmount;
+        private UILabel _lblGroupedDate, _lblDate, _lblSource, _lblAmount, _lblPending;
         private UIImageView _imgArrow;
-        private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
         private nfloat _baseVMargin = ScaleUtility.GetScaledHeight(16);
 
         public BillHistoryViewCell(IntPtr handle) : base(handle)
         {
+            BackgroundColor = UIColor.White;
             _view = new CustomUIView(new CGRect(0, 0, _cellWidth, ScaleUtility.GetScaledHeight(68))) { ClipsToBounds = false };
             AddViews();
             AddSubview(_view);
@@ -54,6 +54,15 @@ namespace myTNB.Home.Bill
                 Font = TNBFont.MuseoSans_12_500
             };
 
+            _lblPending = new UILabel(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(148), _lblSource.Frame.Y
+                , ScaleUtility.GetScaledWidth(100), _baseVMargin))
+            {
+                TextColor = MyTNBColor.Grey,
+                TextAlignment = UITextAlignment.Right,
+                Font = TNBFont.MuseoSans_12_300I,
+                Hidden = false
+            };
+
             _imgArrow = new UIImageView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(26)
                 , _baseHMargin, _baseHMargin))
             {
@@ -63,7 +72,7 @@ namespace myTNB.Home.Bill
             _viewLine = new UIView(new CGRect(_baseHMargin, 0, _cellWidth - (_baseHMargin * 2), ScaleUtility.GetScaledHeight(1)))
             { BackgroundColor = MyTNBColor.VeryLightPinkThree };
 
-            _view.AddSubviews(new UIView[] { _lblDate, _lblSource, _lblAmount, _imgArrow, _viewLine });
+            _view.AddSubviews(new UIView[] { _lblDate, _lblSource, _lblAmount, _lblPending, _imgArrow, _viewLine });
 
             _viewGroupedDate = new UIView(new CGRect(ScaleUtility.GetScaledWidth(16), 0 - ScaleUtility.GetScaledHeight(12)
                   , ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledHeight(24)))
@@ -198,6 +207,27 @@ namespace myTNB.Home.Bill
                 nfloat lineXloc = value ? _baseHMargin : 0;
                 nfloat lineWidth = value ? _cellWidth - (_baseHMargin * 2) : _cellWidth;
                 _viewLine.Frame = new CGRect(lineXloc, 0, lineWidth, ScaleUtility.GetScaledHeight(1));
+            }
+        }
+        public string PendingLabel
+        {
+            set
+            {
+                if (!IsValidInput(value))
+                {
+                    value = string.Empty;
+                }
+                _lblPending.Text = value;
+            }
+        }
+        public void SetPendingPayment(bool isPending = false)
+        {
+            _lblAmount.TextColor = isPending ? MyTNBColor.LightOrange : MyTNBColor.FreshGreen;
+            _lblPending.Hidden = !isPending;
+            if (isPending)
+            {
+                ViewHelper.AdjustFrameSetY(_lblAmount, GetScaledHeight(26F));
+                ViewHelper.AdjustFrameSetY(_lblPending, GetYLocationFromFrame(_lblAmount.Frame, 4F));
             }
         }
     }

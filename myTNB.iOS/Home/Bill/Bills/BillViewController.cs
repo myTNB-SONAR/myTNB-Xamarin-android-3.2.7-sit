@@ -417,6 +417,7 @@ namespace myTNB
             _btnMore.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 NeedsUpdate = false;
+                bool hasPendingPayment = HasPendingPayment(_billHistory?.d?.data?.BillPayHistories);
                 UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
                 BillDetailsViewController viewController =
                     storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
@@ -424,6 +425,7 @@ namespace myTNB
                 {
                     viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
                     viewController.IsPayBtnEnabled = _isPayBtnEnabled;
+                    viewController.HasPendingPayment = hasPendingPayment;
                     UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
@@ -480,7 +482,7 @@ namespace myTNB
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
         }
 
-        private void UpdateViewAmount(bool isExtra = false)
+        private void UpdateViewAmount(bool isExtra = false, bool hasPendingPayment = false)
         {
             nfloat currencyWidth = _lblCurrency.GetLabelWidth(GetScaledWidth(ViewWidth / 2));
             _lblCurrency.Frame = new CGRect(0, _lblCurrency.Frame.Y, currencyWidth, _lblCurrency.Frame.Height);
@@ -492,8 +494,16 @@ namespace myTNB
             nfloat newXLoc = (ViewWidth - (currencyWidth + amountWidth + GetScaledWidth(6))) / 2;
             _viewAmount.Frame = new CGRect(newXLoc, _viewAmount.Frame.Y, _lblAmount.Frame.GetMaxY(), _viewAmount.Frame.Height);
 
-            _lblCurrency.TextColor = isExtra ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
-            _lblAmount.TextColor = isExtra ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
+            if (hasPendingPayment)
+            {
+                _lblCurrency.TextColor = MyTNBColor.LightOrange;
+                _lblAmount.TextColor = MyTNBColor.LightOrange;
+            }
+            else
+            {
+                _lblCurrency.TextColor = isExtra ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
+                _lblAmount.TextColor = isExtra ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
+            }
         }
 
         private void AddAccountSelector()
@@ -640,8 +650,7 @@ namespace myTNB
                 {
                     SetHeaderLoading(false);
                     AccountChargesCache.SetData(_accountCharges);
-                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
-                    EvaluateBillData();
+                    EvaluateBillData(_accountCharges.d.data.AccountCharges[0]);
                 }
                 else if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                     && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
@@ -743,7 +752,8 @@ namespace myTNB
             if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
                 && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
             {
-                UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                bool hasPendingPayment = HasPendingPayment(_billHistory?.d?.data?.BillPayHistories);
+                UpdateHeaderData(_accountCharges.d.data.AccountCharges[0], hasPendingPayment);
                 return;
             }
 
@@ -809,7 +819,7 @@ namespace myTNB
             _historyTableView.ReloadData();
         }
 
-        private void EvaluateBillData()
+        private void EvaluateBillData(AccountChargesModel data = null)
         {
             OnResetBGRect();
             if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
@@ -872,6 +882,8 @@ namespace myTNB
                 };
                 _historyTableView.ReloadData();
             }
+            bool hasPendingPayment = HasPendingPayment(_billHistory?.d?.data?.BillPayHistories);
+            UpdateHeaderData(data, hasPendingPayment);
         }
 
         private void OnHistoryRefresh()
@@ -891,7 +903,7 @@ namespace myTNB
                 await GetAccountBillPayHistory();
                 InvokeOnMainThread(() =>
                 {
-                    EvaluateBillData();
+                    EvaluateBillData(_accountCharges?.d?.data?.AccountCharges[0]);
                     isGetAcctBillPayHistoryLoading = false;
                 });
             });
@@ -914,8 +926,10 @@ namespace myTNB
             });
         }
 
-        private void UpdateHeaderData(AccountChargesModel data)
+        private void UpdateHeaderData(AccountChargesModel data, bool isPendingPayment = false)
         {
+            if (data == null) { return; }
+
             bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             if (isRe)
             {
@@ -923,10 +937,7 @@ namespace myTNB
             }
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
-
             _bgImageView.Frame = DefaultBannerRect;
-            _bgImageView.Image = isRe ? UIImage.FromBundle(BillConstants.IMG_RE)
-                : UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
 
             if (data.AmountDue > 0)
             {
@@ -945,7 +956,21 @@ namespace myTNB
                 _lblDate.Hidden = true;
                 ctaFrame.Y = GetYLocationFromFrame(_viewAmount.Frame, 24);
             }
-            UpdateViewAmount(data.AmountDue < 0);
+
+            if (!isRe && isPendingPayment)
+            {
+                _bgImageView.Image = UIImage.FromBundle(BillConstants.IMG_PendingPayment);
+                _lblPaymentStatus.Text = GetCommonI18NValue(Constants.Common_PaymentPendingMsg);
+                _lblDate.Hidden = true;
+                ctaFrame.Y = GetYLocationFromFrame(_viewAmount.Frame, 24);
+            }
+            else
+            {
+                _bgImageView.Image = isRe ? UIImage.FromBundle(BillConstants.IMG_RE)
+               : UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
+            }
+
+            UpdateViewAmount(data.AmountDue < 0, !isRe && isPendingPayment);
 
             _viewCTA.Frame = ctaFrame;
             _viewCTA.Hidden = isRe;
@@ -1221,6 +1246,25 @@ namespace myTNB
             {
                 return GetI18NValue(isRe ? BillConstants.I18N_EmptyHistoryRE : BillConstants.I18N_EmptyHistory);
             }
+        }
+
+        private bool HasPendingPayment(List<BillPayHistoryModel> historyList)
+        {
+            bool flag = false;
+            if (historyList != null && historyList.Count > 0)
+            {
+                foreach (BillPayHistoryModel hModel in historyList)
+                {
+                    List<BillPayHistoryDataModel> hDModel = hModel.BillPayHistoryData;
+                    var results = hDModel.FindAll(x => x.IsPayment && x.IsPaymentPending);
+                    if (results != null && results.Count > 0)
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            return flag;
         }
 
         #region Services

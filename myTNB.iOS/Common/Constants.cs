@@ -107,6 +107,8 @@ namespace myTNB
         public static string Common_SelectBillMaxDesc = "selectBillMaxDesc";
         public static string Common_MaintenanceTitle = "maintenanceTitle";
         public static string Common_MaintenanceMsg = "maintenanceMsg";
+        public static string Common_PaymentPendingMsg = "paymentPendingMsg";
+        public static string Common_Processing = "processing";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

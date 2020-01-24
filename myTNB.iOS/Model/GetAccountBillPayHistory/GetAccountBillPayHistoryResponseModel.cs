@@ -40,6 +40,7 @@ namespace myTNB
         public string Amount { set; get; } = string.Empty;
         public string DetailedInfoNumber { set; get; } = string.Empty;
         public string PaidVia { set; get; } = string.Empty;
+        public bool IsPaymentPending { set; get; }
         public bool IsPayment
         {
             get

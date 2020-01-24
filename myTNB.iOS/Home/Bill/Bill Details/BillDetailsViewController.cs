@@ -32,7 +32,7 @@ namespace myTNB
         public string AccountNumber { set; private get; } = string.Empty;
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public bool IsFromBillSelection { set; private get; }
-        public bool IsPayBtnEnabled = true;
+        public bool IsPayBtnEnabled = true, HasPendingPayment;
         private UIView _tutorialContainer;
         private bool IsLoading = true;
         private Timer tutorialOverlayTimer;
@@ -100,6 +100,11 @@ namespace myTNB
                         ActivityIndicator.Show();
                         InvokeInBackground(async () =>
                         {
+                            PendingPaymentResponseModel pendingPaymentResponse = await UsageServiceCall.CheckPendingPayments(new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty });
+                            HasPendingPayment =
+                                            pendingPaymentResponse != null && pendingPaymentResponse.d != null &&
+                                            pendingPaymentResponse.d.IsSuccess && pendingPaymentResponse.d.data != null &&
+                                            pendingPaymentResponse.d.data.Count > 0 && pendingPaymentResponse.d.data[0].HasPendingPayment;
                             _accountCharges = await GetAccountsCharges();
                             InvokeOnMainThread(() =>
                             {
@@ -538,8 +543,33 @@ namespace myTNB
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };
-            nfloat statusHeight = lblStatus.GetLabelHeight(1000);
-            lblStatus.Frame = new CGRect(lblStatus.Frame.Location, new CGSize(lblStatus.Frame.Width, statusHeight));
+
+            if (HasPendingPayment)
+            {
+                lblCurrency.TextColor = MyTNBColor.LightOrange;
+                lblAmount.TextColor = MyTNBColor.LightOrange;
+                UIStringAttributes stringAttributes = new UIStringAttributes
+                {
+                    Font = TNBFont.MuseoSans_14_500,
+                    ForegroundColor = MyTNBColor.GreyishBrown,
+                    ParagraphStyle = new NSMutableParagraphStyle() { LineSpacing = 3.0f, Alignment = UITextAlignment.Left }
+                };
+                var text = GetCommonI18NValue(Constants.Common_PaymentPendingMsg);
+                var AttributedText = new NSMutableAttributedString(text);
+                AttributedText.AddAttributes(stringAttributes, new NSRange(0, text.Length));
+                lblStatus.AttributedText = AttributedText;
+
+                nfloat width = viewPayment.Frame.Width / 2 - BaseMarginWidth16;
+                nfloat height = GetScaledHeight(40F);
+                nfloat xPos = BaseMarginWidth16;
+                nfloat yPos = GetScaledHeight(-4);
+                lblStatus.Frame = new CGRect(xPos, yPos, width, height);
+            }
+            else
+            {
+                nfloat statusHeight = lblStatus.GetLabelHeight(1000);
+                lblStatus.Frame = new CGRect(lblStatus.Frame.Location, new CGSize(lblStatus.Frame.Width, statusHeight));
+            }
 
             string result = string.Empty;
             if (_charges.DueDate != null)
@@ -560,7 +590,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.GreyishBrown,
                 Text = string.Format(BillConstants.Format_Default, GetI18NValue(BillConstants.I18N_By), result),
-                Hidden = _charges.AmountDue <= 0,
+                Hidden = _charges.AmountDue <= 0 || HasPendingPayment,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };
