@@ -805,44 +805,60 @@ namespace myTNB
         {
             _countdownHasStarted = true;
             ActivityIndicator.Show();
-            InvokeInBackground(async () =>
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                UpdateRewardsResponseModel response = await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Redeemed, true);
                 InvokeOnMainThread(() =>
                 {
-                    if (response != null && response.d != null &&
-                        response.d.didSucceed)
+                    if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Hide();
-                        OnUseNowDone();
                         InvokeInBackground(async () =>
                         {
-                            await RewardsServices.GetUserRewards();
-                            DateTime? rDate = RewardsCache.GetRedeemedDate(RewardModel.ID);
-                            string rDateStr = string.Empty;
-                            if (rDate != null)
+                            UpdateRewardsResponseModel response = await RewardsServices.UpdateRewards(RewardModel, RewardsServices.RewardProperties.Redeemed, true);
+                            InvokeOnMainThread(() =>
                             {
-                                try
+                                if (response != null && response.d != null &&
+                                    response.d.didSucceed)
                                 {
-                                    DateTime? rDateValue = rDate.Value.ToLocalTime();
-                                    rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                    ActivityIndicator.Hide();
+                                    OnUseNowDone();
+                                    InvokeInBackground(async () =>
+                                    {
+                                        await RewardsServices.GetUserRewards();
+                                        DateTime? rDate = RewardsCache.GetRedeemedDate(RewardModel.ID);
+                                        string rDateStr = string.Empty;
+                                        if (rDate != null)
+                                        {
+                                            try
+                                            {
+                                                DateTime? rDateValue = rDate.Value.ToLocalTime();
+                                                rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                            }
+                                        }
+                                        RedeemedDate = rDateStr;
+                                    });
                                 }
-                                catch (Exception e)
+                                else
                                 {
-                                    Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                    ActivityIndicator.Hide();
+                                    AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                                        LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
+                                        new Dictionary<string, Action>
+                                        {
+                                            { LanguageUtility.GetCommonI18NValue(Constants.Common_IllDoItLater), null },
+                                            { LanguageUtility.GetCommonI18NValue(Constants.Common_TryAgain), () => OnUseNowAction() }
+                                        });
                                 }
-                            }
-                            RedeemedDate = rDateStr;
+                            });
                         });
                     }
                     else
                     {
+                        DisplayNoDataAlert();
                         ActivityIndicator.Hide();
-                        AlertHandler.DisplayCustomAlert(LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
-                            LanguageUtility.GetCommonI18NValue(Constants.Common_RedeemRewardFailMsg),
-                            new Dictionary<string, Action> {
-                        {LanguageUtility.GetCommonI18NValue(Constants.Common_IllDoItLater), null },
-                        {LanguageUtility.GetCommonI18NValue(Constants.Common_TryAgain), () => OnUseNowAction()}});
                     }
                 });
             });

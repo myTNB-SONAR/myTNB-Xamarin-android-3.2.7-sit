@@ -47,11 +47,13 @@ namespace myTNB.ProfileUpdates.UpdateMobileNumber.SelectCountry
                 TextColor = MyTNBColor.CharcoalGrey
             };
             _lblCountryName = new UILabel(new CGRect(_lblCountryCode.Frame.GetMaxX() + GetScaledWidth(12)
-                , GetScaledHeight(18), cellWidth - (_lblCountryCode.Frame.GetMaxX() + GetScaledWidth(30)), GetScaledHeight(24)))
+                , 0, cellWidth - (_lblCountryCode.Frame.GetMaxX() + GetScaledWidth(30)), GetScaledHeight(60)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_16_300,
-                TextColor = MyTNBColor.CharcoalGrey
+                TextColor = MyTNBColor.CharcoalGrey,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
             };
             UIView viewLine = GenericLine.GetLine(new CGRect(0, _view.Frame.Height - GetScaledHeight(1), cellWidth, GetScaledHeight(1)));
             _view.AddSubviews(new UIView[] { _imgFlag, _lblCountryCode, _lblCountryName, viewLine });
