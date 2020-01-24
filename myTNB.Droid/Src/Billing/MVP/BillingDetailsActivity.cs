@@ -129,6 +129,9 @@ namespace myTNB_Android.Src.Billing.MVP
         ISharedPreferences mPref;
         private bool isTutorialShown = false;
 
+        private bool isPendingPayment = false;
+        private bool isCheckPendingPaymentNeeded = false;
+
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
@@ -221,12 +224,22 @@ namespace myTNB_Android.Src.Billing.MVP
 			{
 				fromSelectAccountPage = false;
 			}
+            if (extras.ContainsKey("PENDING_PAYMENT"))
+            {
+                isCheckPendingPaymentNeeded = false;
+                isPendingPayment = extras.GetBoolean("PENDING_PAYMENT");
+            }
+            else
+            {
+                isCheckPendingPaymentNeeded = true;
+                isPendingPayment = false;
+            }
 			SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
-            if (selectedAccountChargeModel != null)
+            if (selectedAccountChargeModel != null && !isCheckPendingPaymentNeeded)
             {
                 topLayout.Visibility = ViewStates.Visible;
                 PopulateCharges();
@@ -235,7 +248,7 @@ namespace myTNB_Android.Src.Billing.MVP
             else
             {
                 topLayout.Visibility = ViewStates.Invisible;
-                this.billingDetailsPresenter.ShowBillDetails(selectedAccountData);
+                this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
             }
         }
 
@@ -388,6 +401,16 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
+
+            if (isPendingPayment)
+            {
+                accountPayAmountLabel.Visibility = ViewStates.Visible;
+                accountPayAmountDate.Visibility = ViewStates.Gone;
+
+                accountPayAmountLabel.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
+                accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
+                accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -434,7 +457,7 @@ namespace myTNB_Android.Src.Billing.MVP
         void OnTapBillingDetailRefresh(object sender, EventArgs eventArgs)
         {
             topLayout.Visibility = ViewStates.Invisible;
-            this.billingDetailsPresenter.ShowBillDetails(selectedAccountData);
+            this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
         }
 
         protected override void OnResume()
@@ -502,6 +525,11 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OnUpdatePendingPayment(bool mIsPendingPayament)
+        {
+            isPendingPayment = mIsPendingPayament;
         }
 
         public void HideProgressDialog()

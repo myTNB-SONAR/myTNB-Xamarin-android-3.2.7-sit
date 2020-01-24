@@ -586,6 +586,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool isGoToBillingDetail = false;
 
+        private bool mIsPendingPayment = false;
+
 
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00");
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0");
@@ -755,6 +757,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             SetHasOptionsMenu(true);
             this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+
+            mIsPendingPayment = false;
         }
 
         internal static DashboardChartFragment NewInstance(UsageHistoryResponse usageHistoryResponse, AccountData accountData, string error, string errorMessage)
@@ -4789,6 +4793,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isGoToBillingDetail = true;
                 Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
+                intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
                 StartActivity(intent);
                 try
                 {
@@ -6306,10 +6311,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowAmountDue(AccountDueAmountData accountDueAmount)
+        public void ShowAmountDue(AccountDueAmountData accountDueAmount, bool isPendingPayment)
         {
             try
             {
+                mIsPendingPayment = isPendingPayment;
+
                 accountDueAmountData = accountDueAmount;
                 // txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                 Date d = null;
@@ -6432,6 +6439,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             noPayableLayout.Visibility = ViewStates.Gone;
                                             txtDueDate.Text = Utility.GetLocalizedLabel("Usage", "by") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                                         }
+
+                                        if (isPendingPayment)
+                                        {
+                                            totalPayableLayout.Visibility = ViewStates.Gone;
+                                            noPayableLayout.Visibility = ViewStates.Visible;
+                                            txtNoPayableTitle.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
+                                            txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                            txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                            txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
+                                            txtDueDate.Text = "- -";
+                                        }
                                     }
                                 }
                                 else
@@ -6507,6 +6525,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
+
+                                            if (isPendingPayment)
+                                            {
+                                                totalPayableLayout.Visibility = ViewStates.Gone;
+                                                noPayableLayout.Visibility = ViewStates.Visible;
+                                                txtNoPayableTitle.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
+                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                                txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
+                                                txtDueDate.Text = "- -";
+                                            }
                                         }
                                         else
                                         {

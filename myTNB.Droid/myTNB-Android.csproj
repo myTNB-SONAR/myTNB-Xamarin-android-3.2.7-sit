@@ -4280,6 +4280,30 @@
     <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailActivity.cs" />
     <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailContract.cs" />
     <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Api\IPaymentStatusApi.cs" />
+    <Compile Include="Src\myTNBMenu\Requests\CheckPendingPaymentRequest.cs" />
+    <Compile Include="Src\Base\Models\DeviceInterface.cs" />
+    <Compile Include="Src\myTNBMenu\Models\CheckPendingPaymentsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

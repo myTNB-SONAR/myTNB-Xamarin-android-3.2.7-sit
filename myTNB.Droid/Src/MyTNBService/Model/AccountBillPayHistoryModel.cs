@@ -16,6 +16,7 @@ namespace myTNB_Android.Src.MyTNBService.Model
 			public string DetailedInfoNumber { get; set; }
 			public string PaidVia { get; set; }
 			public string HistoryTypeText { get; set; }
-		}
+            public bool IsPaymentPending { get; set; }
+        }
 	}
 }

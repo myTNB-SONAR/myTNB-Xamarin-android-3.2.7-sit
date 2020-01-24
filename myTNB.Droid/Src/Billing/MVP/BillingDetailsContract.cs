@@ -16,13 +16,14 @@ namespace myTNB_Android.Src.Billing.MVP
             void ShowBillErrorSnackBar();
             void ShowBillDetails(List<AccountChargeModel> accountChargeModelList);
             void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
+            void OnUpdatePendingPayment(bool mIsPendingPayament);
         }
 
         public interface IPresenter
         {
             void GetBillHistory(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList();
-            void ShowBillDetails(AccountData selectedAccount);
+            void ShowBillDetails(AccountData selectedAccount, bool isCheckPendingNeeded);
         }
     }
 }
