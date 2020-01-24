@@ -167,6 +167,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                    .SetCancelable(false)
                    .Create();
 
+                txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
                 TextViewUtils.SetMuseoSans500Typeface(txtEmailTitle);
 

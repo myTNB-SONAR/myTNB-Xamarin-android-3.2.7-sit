@@ -3,83 +3,63 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mobileNumberInputContainer"
-    android:orientation="horizontal"
-    android:gravity="top"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/countryCodeContainer"
-        android:layout_width="wrap_content"
-        android:layout_weight="0"
+    <TextView
+        android:id="@+id/countryCodeHeaderTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/countryCodeHeaderTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textColor="#a6a6a6"
-            android:textSize="14dp"
-            android:text="MOBILE NUMBER"/>
+        android:includeFontPadding="false"
+        android:textColor="#a6a6a6"
+        android:lineSpacingExtra="0dp"
+        android:textSize="14sp"
+        android:text="MOBILE NUMBER"/>
+    <LinearLayout
+        android:id="@+id/countryCodeRootContainer"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/countryCodeContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
+            android:orientation="horizontal"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_weight="0"
+            android:background="?attr/editTextBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/countryIcon"
                 android:layout_width="17dp"
                 android:layout_height="12dp"
                 android:src="@drawable/ph"/>
             <TextView
+                android:text="+60"
                 android:id="@+id/coutryCodeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
                 android:gravity="center"
-                android:textSize="16dp"
-                android:layout_marginLeft="2dp"
                 android:textColor="#49494a"
-                android:text="+60"/>
+                android:layout_marginLeft="2dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/selectDropDownIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_action_dropdown"/>
         </LinearLayout>
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/platinumGrey"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/txtInputLayoutMobileNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputLayoutMobileNo"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/txtMobileNo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            app:errorEnabled="true"
-            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
-            <EditText
-                android:id="@+id/txtMobileNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint=""
-                android:inputType="phone"
-                android:maxLines="1"
-                android:digits="0123456789"
-                android:maxLength="15"
-                android:textSize="16dp"
-                android:importantForAutofill="noExcludeDescendants"
-                android:textColor="#49494a"/>
-        </android.support.design.widget.TextInputLayout>
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:digits="0123456789"
+            android:maxLength="15"
+            android:textColor="#49494a"
+            android:longClickable="false"
+        />
     </LinearLayout>
 </LinearLayout>

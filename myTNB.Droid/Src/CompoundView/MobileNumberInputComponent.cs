@@ -61,8 +61,8 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetOnTapCountryCodeAction(Action onTapAction)
         {
-            LinearLayout countryCodeContainer = FindViewById<LinearLayout>(Resource.Id.countryCodeContainer);
-            countryCodeContainer.Click += delegate
+            ImageView selectDropDownIcon = FindViewById<ImageView>(Resource.Id.selectDropDownIcon);
+            selectDropDownIcon.Click += delegate
             {
                 onTapAction?.Invoke();
             };

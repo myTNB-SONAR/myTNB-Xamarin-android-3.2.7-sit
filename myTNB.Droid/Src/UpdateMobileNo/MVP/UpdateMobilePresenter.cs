@@ -29,25 +29,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
         {
             this.mView.ClearErrors();
 
-            if (TextUtils.IsEmpty(newPhoneNumber))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-            if (!PhoneNumberUtils.IsGlobalPhoneNumber(newPhoneNumber))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-
-            if (!Utility.IsValidMobileNumber(newPhoneNumber))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
             if (mView.IsActive())
             {
                 this.mView.ShowProgress();
