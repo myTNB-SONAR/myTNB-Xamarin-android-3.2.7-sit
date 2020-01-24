@@ -30,6 +30,7 @@ namespace myTNB
         readonly static UIFont _m300_26 = UIFont.FromName(FONTNAME_300, 26F * ARDelta);
         readonly static UIFont _m300_36 = UIFont.FromName(FONTNAME_300, 36F * ARDelta);
 
+        readonly static UIFont _m300I_12 = UIFont.FromName(FONTNAME_300I, 12F * ARDelta);
         readonly static UIFont _m300I_14 = UIFont.FromName(FONTNAME_300I, 14F * ARDelta);
 
         readonly static UIFont _m500_8 = UIFont.FromName(FONTNAME_500, 8F * ARDelta);
@@ -60,6 +61,7 @@ namespace myTNB
         public static UIFont MuseoSans_26_300 { get { return _m300_26; } }
         public static UIFont MuseoSans_36_300 { get { return _m300_36; } }
 
+        public static UIFont MuseoSans_12_300I { get { return _m300I_12; } }
         public static UIFont MuseoSans_14_300I { get { return _m300I_14; } }
 
         public static UIFont MuseoSans_8_500 { get { return _m500_8; } }

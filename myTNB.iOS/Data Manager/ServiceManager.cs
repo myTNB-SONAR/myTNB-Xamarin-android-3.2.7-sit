@@ -189,7 +189,8 @@ namespace myTNB
                     AppVersion = AppVersionHelper.GetAppShortVersion(),
                     OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
                     OsVersion = DeviceHelper.GetOSVersion(),
-                    DeviceDesc = TNBGlobal.APP_LANGUAGE
+                    DeviceDesc = TNBGlobal.APP_LANGUAGE,
+                    VersionCode = string.Empty
                 };
             }
         }

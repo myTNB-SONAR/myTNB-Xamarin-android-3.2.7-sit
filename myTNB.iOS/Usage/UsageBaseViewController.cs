@@ -1818,7 +1818,7 @@ namespace myTNB
             }
         }
 
-        internal void UpdateFooterUI(bool isUpdating)
+        internal void UpdateFooterUI(bool isUpdating, bool isPendingPayment = false)
         {
             if (_footerViewComponent != null)
             {
@@ -1829,7 +1829,7 @@ namespace myTNB
                     if (dueData != null)
                     {
                         _footerViewComponent.IsPayEnable = dueData.IsPayEnabled;
-                        _footerViewComponent.SetAmount(dueData.amountDue);
+                        _footerViewComponent.SetAmount(dueData.amountDue, isPendingPayment);
                         _footerViewComponent.SetDate(dueData.billDueDate);
                     }
                 }
