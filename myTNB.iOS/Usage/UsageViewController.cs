@@ -406,6 +406,15 @@ namespace myTNB
                         var account = DataManager.DataManager.SharedInstance.SelectedAccount;
                         InvokeInBackground(async () =>
                         {
+                            bool hasPendingPayment = false;
+                            if (!isREAccount)
+                            {
+                                PendingPaymentResponseModel pendingPaymentResponse = await UsageServiceCall.CheckPendingPayments(new List<string> { account.accNum ?? string.Empty });
+                                hasPendingPayment =
+                                            pendingPaymentResponse != null && pendingPaymentResponse.d != null &&
+                                            pendingPaymentResponse.d.IsSuccess && pendingPaymentResponse.d.data != null &&
+                                            pendingPaymentResponse.d.data.Count > 0 && pendingPaymentResponse.d.data[0].HasPendingPayment;
+                            }
                             DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
                             InvokeOnMainThread(() =>
                             {
@@ -435,7 +444,7 @@ namespace myTNB
                                         }
                                         else
                                         {
-                                            UpdateFooterUI(false);
+                                            UpdateFooterUI(false, hasPendingPayment);
                                         }
                                     }
                                     else
@@ -446,7 +455,7 @@ namespace myTNB
                                         }
                                         else
                                         {
-                                            UpdateFooterUI(false);
+                                            UpdateFooterUI(false, hasPendingPayment);
                                             UpdateFooterForRefreshState();
                                         }
                                     }
@@ -571,6 +580,7 @@ namespace myTNB
                 });
             });
         }
+
         private void SSMRUsageParallelAPICalls()
         {
             NormalChartIsLoading = true;

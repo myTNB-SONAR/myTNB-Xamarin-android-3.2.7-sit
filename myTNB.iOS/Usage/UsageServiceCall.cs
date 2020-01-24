@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -100,6 +101,30 @@ namespace myTNB
             });
 
             return accountUsageSmartResponse;
+        }
+
+        /// <summary>
+        /// API Call for CheckPendingPayments
+        /// </summary>
+        /// <param name="accountsList"></param>
+        /// <returns></returns>
+        public static async Task<PendingPaymentResponseModel> CheckPendingPayments(List<string> accountsList)
+        {
+            PendingPaymentResponseModel response = null;
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                accounts = accountsList ?? new List<string>(),
+                serviceManager.usrInf,
+                serviceManager.deviceInf
+            };
+
+            response = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<PendingPaymentResponseModel>("CheckPendingPayments", requestParameter);
+            });
+
+            return response;
         }
     }
 }

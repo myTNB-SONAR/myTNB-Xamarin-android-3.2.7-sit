@@ -162,6 +162,21 @@ namespace myTNB.Home.Bill
                     {
                         cell.IsGroupedDateHidden = true;
                     }
+
+                    if (item.IsPayment)
+                    {
+                        cell.SetPendingPayment(item.IsPaymentPending);
+                        cell.PendingLabel = LanguageUtility.GetCommonI18NValue(Constants.Common_Processing);
+                        if (item.IsPaymentPending)
+                        {
+                            cell.IsArrowHidden = true;
+                        }
+                        else
+                        {
+                            cell.IsArrowHidden = !item.IsDocumentAvailable;
+                        }
+                    }
+
                     cell.IsLineHidden = index == 0;
                     cell.ClipsToBounds = false;
                     cell.Layer.ZPosition = 10 + indexPath.Section + indexPath.Row;
@@ -185,7 +200,7 @@ namespace myTNB.Home.Bill
                     {
                         if (item.IsPayment)
                         {
-                            if (OnSelectPayment != null)
+                            if (!item.IsPaymentPending && OnSelectPayment != null)
                             {
                                 OnSelectPayment.Invoke(item.DetailedInfoNumber);
                             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace myTNB
@@ -95,6 +96,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Left,
+                Lines = 0,
                 Hidden = true
             };
             _containerView.AddSubview(_lblCommon);
@@ -175,7 +177,7 @@ namespace myTNB
             }
         }
 
-        public void SetAmount(double amount)
+        public void SetAmount(double amount, bool isPendingPayment = false)
         {
             if (amount >= 0)
             {
@@ -195,10 +197,13 @@ namespace myTNB
                     , MyTNBColor.FreshGreen, TNBFont.MuseoSans_12_500, MyTNBColor.FreshGreen);
                 }
             }
-
-            AdjustLabels(amount);
+            if (isPendingPayment)
+            {
+                _lblAmount.TextColor = MyTNBColor.LightOrange;
+            }
+            AdjustLabels(amount, isPendingPayment);
         }
-        private void AdjustLabels(double amount)
+        private void AdjustLabels(double amount, bool isPendingPayment = false)
         {
             if (_containerView != null)
             {
@@ -219,6 +224,30 @@ namespace myTNB
                     nfloat width = _lblCommon.GetLabelWidth(_width * .8F);
                     _lblCommon.Frame = new CGRect(_lblCommon.Frame.Location, new CGSize(width, _lblCommon.Frame.Height));
                 }
+            }
+
+            if (isPendingPayment)
+            {
+                _lblPaymentTitle.Hidden = true;
+                _lblPaymentTitle.Text = string.Empty;
+                _lblDate.Hidden = true;
+                _lblCommon.Hidden = false;
+                UIStringAttributes stringAttributes = new UIStringAttributes
+                {
+                    Font = TNBFont.MuseoSans_14_500,
+                    ForegroundColor = MyTNBColor.GreyishBrown,
+                    ParagraphStyle = new NSMutableParagraphStyle() { LineSpacing = 3.0f, Alignment = UITextAlignment.Left }
+                };
+                var text = GetCommonI18NValue(Constants.Common_PaymentPendingMsg);
+                var AttributedText = new NSMutableAttributedString(text);
+                AttributedText.AddAttributes(stringAttributes, new NSRange(0, text.Length));
+                _lblCommon.AttributedText = AttributedText;
+
+                nfloat width = _containerView.Frame.Width / 2 - (BaseMarginWidth16 * 2);
+                nfloat height = GetScaledHeight(40F);
+                nfloat xPos = BaseMarginWidth16;
+                nfloat yPos = BaseMarginHeight16;
+                _lblCommon.Frame = new CGRect(xPos, yPos, width, height);
             }
         }
 
