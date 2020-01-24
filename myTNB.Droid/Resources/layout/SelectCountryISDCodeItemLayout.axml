@@ -10,8 +10,10 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center|left"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
+        android:paddingRight="12dp"
         android:paddingLeft="12dp">
         <ImageView
             android:id="@+id/imgCountryFlag"
