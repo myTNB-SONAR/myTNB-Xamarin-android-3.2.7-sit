@@ -62,13 +62,14 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     currentUsrInf.sspuid = UserEntity.GetActive().UserID;
                 }
 
-                DeviceInterface currentDeviceInf = new DeviceInterface()
+                MasterDataRequest.DeviceInterface currentDeviceInf = new MasterDataRequest.DeviceInterface()
                 {
                     DeviceId = this.mView.GetDeviceId(),
                     AppVersion = DeviceIdUtils.GetAppVersionName(),
                     OsType = int.Parse(Constants.DEVICE_PLATFORM),
                     OsVersion = DeviceIdUtils.GetAndroidVersion(),
-                    DeviceDesc = Constants.DEFAULT_LANG
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
 
                 };
 

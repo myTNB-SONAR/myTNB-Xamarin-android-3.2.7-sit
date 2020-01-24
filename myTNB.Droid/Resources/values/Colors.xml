@@ -121,4 +121,6 @@
 
     <color name="reward_background">#f9f8f8</color>
 
+    <color name="lightOrange">#ff9e43</color>
+
 </resources>

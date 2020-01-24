@@ -18,6 +18,8 @@ using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.Base;
+using System.Net;
+using myTNB_Android.Src.Base.Models;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -85,13 +87,87 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
-        public async void ShowBillDetails(AccountData selectedAccount)
+        public async void ShowBillDetails(AccountData selectedAccount, bool isCheckPendingNeeded)
         {
             try
             {
                 this.mView.ShowProgressDialog();
+
                 List<string> accountList = new List<string>();
                 accountList.Add(selectedAccount.AccountNum);
+
+                if (isCheckPendingNeeded)
+                {
+                    try
+                    {
+                        CancellationTokenSource cts = new CancellationTokenSource();
+                        ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+#if DEBUG
+                        var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+                        var paymentStatusApi = RestService.For<IPaymentStatusApi>(httpClient);
+#else
+                var paymentStatusApi = RestService.For<IPaymentStatusApi>(Constants.SERVER_URL.END_POINT);
+#endif
+
+                        UserInterface currentUsrInf = new UserInterface()
+                        {
+                            eid = UserEntity.GetActive().Email,
+                            sspuid = UserEntity.GetActive().UserID,
+                            did = UserSessions.GetDeviceId(),
+                            ft = FirebaseTokenEntity.GetLatest().FBToken,
+                            lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                            sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                            sec_auth_k2 = "",
+                            ses_param1 = "",
+                            ses_param2 = ""
+                        };
+
+                        DeviceInterface currentDvdInf = new DeviceInterface()
+                        {
+                            DeviceId = UserSessions.GetDeviceId(),
+                            AppVersion = DeviceIdUtils.GetAppVersionName(),
+                            OsType = Constants.DEVICE_PLATFORM,
+                            OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                            DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper(),
+                            VersionCode = ""
+                        };
+
+                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(new CheckPendingPaymentRequest()
+                        {
+                            AccountList = accountList,
+                            usrInf = currentUsrInf,
+                            deviceInf = currentDvdInf
+                        }, cts.Token);
+
+                        if (paymentStatusResponse != null && paymentStatusResponse.Data != null && paymentStatusResponse.Data.ErrorCode == "7200")
+                        {
+                            if (paymentStatusResponse.Data.Data != null && paymentStatusResponse.Data.Data.Count > 0)
+                            {
+                                for (int j = 0; j < paymentStatusResponse.Data.Data.Count; j++)
+                                {
+                                    if (paymentStatusResponse.Data.Data[j].HasPendingPayment)
+                                    {
+                                        this.mView.OnUpdatePendingPayment(true);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (System.OperationCanceledException e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    catch (ApiException apiException)
+                    {
+                        Utility.LoggingNonFatalError(apiException);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
                 AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
                     accountList,

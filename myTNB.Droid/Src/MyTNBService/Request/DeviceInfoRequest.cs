@@ -5,7 +5,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class DeviceInfoRequest
     {
-		public string DeviceId, AppVersion, OsVersion, OsType, DeviceDesc;
+		public string DeviceId, AppVersion, OsVersion, OsType, DeviceDesc, VersionCode;
 		public DeviceInfoRequest()
 		{
 			DeviceId = UserSessions.GetDeviceId();
@@ -13,6 +13,8 @@ namespace myTNB_Android.Src.MyTNBService.Request
 			OsType = Constants.DEVICE_PLATFORM;
 			OsVersion = DeviceIdUtils.GetAndroidVersion();
 			DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper();
-		}
+            VersionCode = "";
+
+        }
 	}
 }

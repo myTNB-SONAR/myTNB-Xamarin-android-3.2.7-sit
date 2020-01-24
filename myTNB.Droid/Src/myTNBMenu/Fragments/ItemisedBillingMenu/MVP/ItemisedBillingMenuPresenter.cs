@@ -572,6 +572,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     data.DetailedInfoNumber = historyData.DetailedInfoNumber;
                     data.PaidVia = historyData.PaidVia;
                     data.HistoryTypeText = historyData.HistoryTypeText;
+                    data.IsPaymentPending = historyData.IsPaymentPending;
                     dataList.Add(data);
                 });
 
