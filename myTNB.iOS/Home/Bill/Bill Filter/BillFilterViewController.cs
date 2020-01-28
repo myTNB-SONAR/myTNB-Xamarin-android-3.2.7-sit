@@ -113,7 +113,10 @@ namespace myTNB
             nfloat footerRatio = 80.0f / 320.0f;
             nfloat footerHeight = ViewWidth * footerRatio;
             nfloat footerYPos = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - footerHeight;
-
+            if (DeviceHelper.IsIOS10)
+            {
+                footerYPos = ViewHeight - footerHeight;
+            }
             UIView footerContainer = new UIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
             {
                 BackgroundColor = UIColor.White

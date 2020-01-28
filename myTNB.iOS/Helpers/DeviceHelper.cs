@@ -274,5 +274,21 @@ namespace myTNB
                 }
             }
         }
+
+        public static bool IsIOS10
+        {
+            get
+            {
+                try
+                {
+                    return !UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("IsIOS10 Exception: " + e.Message);
+                }
+                return false;
+            }
+        }
     }
 }

@@ -104,6 +104,11 @@ namespace myTNB
             nfloat containerHeight = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
             nfloat yLoc = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - containerHeight;
 
+            if (DeviceHelper.IsIOS10)
+            {
+                yLoc = ViewHeight - containerHeight;
+            }
+
             UIView cardView = new UIView(new CGRect(0, yLoc, View.Frame.Width, containerHeight)) { BackgroundColor = UIColor.White };
 
             _btnNext = new CustomUIButtonV2()

@@ -17,8 +17,7 @@ namespace myTNB.Login.ForgotPassword
         private string _password = string.Empty;
         private string _confirmPassword = string.Empty;
 
-        private UILabel lblPasswordTitle, lblConfirmPasswordTitle, lblConfirmPasswordError
-            , lblTitle, lblPasswordError;
+        private UILabel lblPasswordTitle, lblConfirmPasswordTitle, lblConfirmPasswordError, lblPasswordError;
         private UITextField txtFieldPassword, txtFieldConfirmPassword;
         private UIView viewLinePassword, viewLineConfirmPassword, viewShowConfirmPassword, viewShowPassword;
 
@@ -35,8 +34,6 @@ namespace myTNB.Login.ForgotPassword
             AddBackButton();
 
             InitializeSubviews();
-
-            SetStaticFields();
             SetViews();
             SetEvents();
         }
@@ -49,7 +46,7 @@ namespace myTNB.Login.ForgotPassword
 
         private void InitializeSubviews()
         {
-            lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18))
+            UILabel lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18))
             {
                 TextColor = MyTNBColor.PowerBlue,
                 Font = MyTNBFont.MuseoSans16_500,
@@ -57,12 +54,22 @@ namespace myTNB.Login.ForgotPassword
             };
             View.AddSubview(lblTitle);
 
-            lblDescription.TextColor = MyTNBColor.TunaGrey();
-            lblDescription.Font = MyTNBFont.MuseoSans14;
+            UILabel lblDescription = new UILabel(new CGRect(18, lblTitle.Frame.GetMaxY(), View.Frame.Width - 36, 18))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_300,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Text = GetI18NValue(ForgotPasswordConstants.I18N_Details)
+            };
+            View.AddSubview(lblDescription);
+
+            nfloat newDescriptionHeight = lblDescription.GetLabelHeight(1000);
+            lblDescription.Frame = new CGRect(lblDescription.Frame.Location, new CGSize(lblDescription.Frame.Width, newDescriptionHeight));
             btnSubmit.Layer.CornerRadius = 5f;
 
             #region Password
-            UIView viewPassword = new UIView((new CGRect(18, 98, View.Frame.Width - 36, 51)))
+            UIView viewPassword = new UIView((new CGRect(18, lblDescription.Frame.GetMaxY() + 18, View.Frame.Width - 36, 51)))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -206,12 +213,7 @@ namespace myTNB.Login.ForgotPassword
             #endregion
         }
 
-        internal void SetStaticFields()
-        {
-            lblDescription.Text = GetI18NValue(ForgotPasswordConstants.I18N_Details);
-        }
-
-        internal void SetViews()
+        private void SetViews()
         {
             lblPasswordTitle.Hidden = true;
             lblPasswordError.Hidden = true;
@@ -226,7 +228,7 @@ namespace myTNB.Login.ForgotPassword
                 ? 184 : DeviceHelper.GetScaledHeight(130)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
-        internal void SetEvents()
+        private void SetEvents()
         {
             btnSubmit.TouchUpInside += (sender, e) =>
             {
