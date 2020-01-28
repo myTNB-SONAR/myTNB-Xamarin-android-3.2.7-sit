@@ -71,7 +71,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayGenericAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle), GetI18NValue(ReceiptConstants.I18N_ReceiptErrorMsg));
+                                    DisplayGenericAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle), GetI18NValue(ReceiptConstants.I18N_ReceiptErrorMsg), (obj) => { BackButtonAction(); });
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -105,23 +105,28 @@ namespace myTNB
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
-                if (File.Exists(_pdfFilePath))
-                {
-                    File.Delete(_pdfFilePath);
-                }
-                if (isCCFlow)
-                {
-                    NavigationController.PopViewController(true);
-                }
-                else
-                {
-                    DismissViewController(true, null);
-                    OnDone?.Invoke();
-                }
-
+                BackButtonAction();
             }));
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
+        }
+
+        private void BackButtonAction()
+        {
+            if (File.Exists(_pdfFilePath))
+            {
+                File.Delete(_pdfFilePath);
+            }
+
+            if (isCCFlow)
+            {
+                NavigationController.PopViewController(true);
+            }
+            else
+            {
+                DismissViewController(true, null);
+                OnDone?.Invoke();
+            }
         }
 
         private void SetSubviews()
