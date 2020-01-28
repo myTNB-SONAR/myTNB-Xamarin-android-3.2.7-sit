@@ -149,7 +149,8 @@
     "whatsNewUnavailableMsg": "But we'll be back soon so check back later!",
     "whatsNewExpiredTitle": "This content is unavailable.",
     "whatsNewExpiredMsg": "Looks like this promotion/announcement is over. Check back often to find out what else is new!",
-    "whatsNewExpiredBtnText": "Show Me What’s New!"
+    "whatsNewExpiredBtnText": "Show Me What’s New!",
+    "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
