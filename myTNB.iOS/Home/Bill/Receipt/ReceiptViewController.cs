@@ -173,6 +173,8 @@ namespace myTNB
             _headerView.AddSubviews(new UIView[] {imageView,paymentTitle,msgTitle,msgBody,viewLineTop
                 ,lblReference,lblReferenceValue,viewLineBottom});
 
+            _headerView.Frame = new CGRect(_headerView.Frame.Location, new CGSize(_headerView.Frame.Width, viewLineBottom.Frame.GetMaxY() + 1));
+
             _footerView = new UIView(new CGRect(0, 0, tableViewReceipt.Frame.Width, 400));
             _footerView.BackgroundColor = UIColor.White;
 
@@ -382,7 +384,7 @@ namespace myTNB
         private UILabel GetLabel(LabelType type, CGRect frame, string text, UIFont font = null, UIColor txtColor = null)
         {
             bool isTitle = type == LabelType.Title;
-            return new UILabel
+            UILabel label = new UILabel
             {
                 Frame = frame,
                 TextAlignment = UITextAlignment.Left,
@@ -392,6 +394,9 @@ namespace myTNB
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };
+            nfloat newHeight = label.GetLabelHeight(1000);
+            label.Frame = new CGRect(label.Frame.Location, new CGSize(label.Frame.Width, newHeight));
+            return label;
         }
     }
 }

@@ -65,6 +65,10 @@ namespace myTNB.PushNotification
             cell.IsRead = notification.IsReadNotification;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                 ? PushNotificationConstants.IMG_ChkActive : PushNotificationConstants.IMG_ChkInactive);
+
+            cell.Layer.BorderWidth = 1;
+            cell.Layer.BorderColor = UIColor.Cyan.CGColor;
+
             return cell;
         }
 
@@ -142,7 +146,7 @@ namespace myTNB.PushNotification
             return null;
         }
 
-        UIImage RowActionImage(CGColor bgColor, string imgKey)
+        private UIImage RowActionImage(CGColor bgColor, string imgKey)
         {
             CGRect frame = new CGRect(0, 0, 66, 66);
             UIGraphics.BeginImageContextWithOptions(new CGSize(66, 66), false, UIScreen.MainScreen.Scale);
