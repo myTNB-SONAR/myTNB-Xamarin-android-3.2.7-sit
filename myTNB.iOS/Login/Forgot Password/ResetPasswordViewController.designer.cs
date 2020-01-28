@@ -18,20 +18,11 @@ namespace myTNB.Login.ForgotPassword
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton btnSubmit { get; set; }
 
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel lblDescription { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
             if (btnSubmit != null) {
                 btnSubmit.Dispose ();
                 btnSubmit = null;
-            }
-
-            if (lblDescription != null) {
-                lblDescription.Dispose ();
-                lblDescription = null;
             }
         }
     }

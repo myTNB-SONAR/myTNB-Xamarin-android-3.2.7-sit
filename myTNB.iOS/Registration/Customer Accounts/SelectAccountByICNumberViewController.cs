@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -8,117 +7,107 @@ namespace myTNB
 {
     public partial class SelectAccountByICNumberViewController : CustomUIViewController
     {
-        private UILabel lblTitle, lblYes, lblYesDescription, lblNo, lblNoDescription;
-        private UIView viewYes, viewNo;
-
-        private const float margin = 16f;
-        private const float inlineMargin = 8f;
-
         public SelectAccountByICNumberViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
             PageName = AddAccountConstants.PageName;
             base.ViewDidLoad();
-            InitializedSubviews();
             AddBackButton();
-            SetUpGestures();
+            InitializedSubviews();
         }
 
         private void InitializedSubviews()
         {
-            NavigationItem.Title = GetI18NValue(AddAccountConstants.I18N_NavTitle);
-            View.BackgroundColor = MyTNBColor.LightGrayBG;
+            UIScrollView scrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight)) { BackgroundColor = UIColor.Clear };
 
-            lblTitle = new UILabel
+            UILabel lblTitle = new UILabel(new CGRect(BaseMargin, BaseMargin, BaseMarginedWidth, 100))
             {
-                Frame = new CGRect(18, 16, View.Frame.Width - 36, 80),
-                AttributedText = new NSAttributedString(
-                   GetI18NValue(AddAccountConstants.I18N_AddByIDMessage)
-                    , font: MyTNBFont.MuseoSans18_500
-                    , foregroundColor: MyTNBColor.PowerBlue
-                    , strokeWidth: 0
-                ),
+                Text = GetI18NValue(AddAccountConstants.I18N_AddByIDMessage),
+                Font = TNBFont.MuseoSans_16_500,
+                TextColor = MyTNBColor.PowerBlue,
+                TextAlignment = UITextAlignment.Left,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
+            };
+            nfloat newTitleHeight = lblTitle.GetLabelHeight(1000);
+            lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(lblTitle.Frame.Width, newTitleHeight));
+
+            CustomUIView viewYes = new CustomUIView(new CGRect(BaseMargin, GetYLocationFromFrame(lblTitle.Frame, 16), BaseMarginedWidth, 100)) { BackgroundColor = UIColor.White };
+            viewYes.Layer.CornerRadius = GetScaledWidth(4);
+
+            UILabel lblYes = new UILabel(new CGRect(BaseMargin, BaseMargin, viewYes.Frame.Width - (BaseMargin * 2), GetScaledHeight(18)))
+            {
+                Text = string.Format("{0}.", GetCommonI18NValue(Constants.Common_Yes)),
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = UITextAlignment.Left,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
+            };
+            UILabel yesDescription = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(lblYes.Frame, 5), viewYes.Frame.Width - (BaseMargin * 2), 100))
+            {
+                Text = GetI18NValue(AddAccountConstants.I18N_AddAsOwnerMessage),
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = UITextAlignment.Left,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
+            };
+            nfloat newYesDescriptionHeight = yesDescription.GetLabelHeight(1000);
+            yesDescription.Frame = new CGRect(yesDescription.Frame.Location, new CGSize(yesDescription.Frame.Width, newYesDescriptionHeight));
+            viewYes.AddSubviews(new UIView[] { lblYes, yesDescription });
+            viewYes.Frame = new CGRect(viewYes.Frame.Location, new CGSize(viewYes.Frame.Width, yesDescription.Frame.GetMaxY() + GetScaledHeight(16)));
+
+            CustomUIView viewNo = new CustomUIView(new CGRect(BaseMargin, GetYLocationFromFrame(viewYes.Frame, 8), BaseMarginedWidth, 100)) { BackgroundColor = UIColor.White };
+            viewNo.Layer.CornerRadius = GetScaledWidth(4);
+
+            UILabel lblNo = new UILabel(new CGRect(BaseMargin, BaseMargin, viewNo.Frame.Width - (BaseMargin * 2), GetScaledHeight(18)))
+            {
+                Text = string.Format("{0}.", GetCommonI18NValue(Constants.Common_No)),
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Left,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0
             };
 
-            viewYes = new UIView
+            UILabel noDescription = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(lblYes.Frame, 5), viewNo.Frame.Width - (BaseMargin * 2), 100))
             {
-                Frame = new CGRect(18, lblTitle.Frame.GetMaxY() + inlineMargin, View.Frame.Width - (margin * 2), 100),
-                BackgroundColor = UIColor.White,
-            };
-            viewYes.Layer.CornerRadius = 4.0f;
-
-            lblYes = new UILabel
-            {
-                Frame = new CGRect(margin, margin, viewYes.Frame.Width - (margin * 2), 18),
-                AttributedText = new NSAttributedString(string.Format("{0}.", GetCommonI18NValue(Constants.Common_Yes))
-                    , font: MyTNBFont.MuseoSans16_500
-                    , foregroundColor: MyTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
+                Text = GetI18NValue(AddAccountConstants.I18N_AddAsTenantMessage),
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Left,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
             };
+            nfloat newNoDescriptionHeight = noDescription.GetLabelHeight(1000);
+            noDescription.Frame = new CGRect(noDescription.Frame.Location, new CGSize(noDescription.Frame.Width, newNoDescriptionHeight));
+            viewNo.AddSubviews(new UIView[] { lblNo, noDescription });
+            viewNo.Frame = new CGRect(viewNo.Frame.Location, new CGSize(viewNo.Frame.Width, noDescription.Frame.GetMaxY() + GetScaledHeight(16)));
 
-            lblYesDescription = new UILabel
+            scrollView.AddSubviews(new UIView[] { lblTitle, viewYes, viewNo });
+            scrollView.ContentSize = new CGSize(scrollView.Frame.Width, viewNo.Frame.GetMaxY());
+            View.AddSubview(scrollView);
+
+            viewYes.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Frame = new CGRect(margin, lblYes.Frame.GetMaxY() + inlineMargin, viewYes.Frame.Width - (margin * 2), 40),
-                AttributedText = new NSAttributedString(
-                    GetI18NValue(AddAccountConstants.I18N_AddAsOwnerMessage)
-                    , font: MyTNBFont.MuseoSans16_300
-                    , foregroundColor: MyTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left,
-                Lines = 0,
-                LineBreakMode = UILineBreakMode.WordWrap
-            };
-
-            viewYes.AddSubviews(new UIView[] { lblYes, lblYesDescription });
-
-            viewNo = new UIView
+                DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex = 0;
+                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+                AddAccountViewController addAccountVC = storyBoard.InstantiateViewController("AddAccountViewController") as AddAccountViewController;
+                addAccountVC.isOwner = true;
+                NavigationController.PushViewController(addAccountVC, true);
+            }));
+            viewNo.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Frame = new CGRect(18, viewYes.Frame.GetMaxY() + inlineMargin, View.Frame.Width - (margin * 2), 100),
-                BackgroundColor = UIColor.White
-            };
-            viewNo.Layer.CornerRadius = 4.0f;
-
-            lblNo = new UILabel
-            {
-                Frame = new CGRect(margin, margin, viewNo.Frame.Width - (margin * 2), 18),
-                AttributedText = new NSAttributedString(string.Format("{0}.", GetCommonI18NValue(Constants.Common_No))
-                    , font: MyTNBFont.MuseoSans16_500
-                    , foregroundColor: MyTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left,
-            };
-
-            lblNoDescription = new UILabel
-            {
-                Frame = new CGRect(margin, lblNo.Frame.GetMaxY() + inlineMargin, viewNo.Frame.Width - (margin * 2), 40),
-                AttributedText = new NSAttributedString(
-                    GetI18NValue(AddAccountConstants.I18N_AddAsTenantMessage)
-                    , font: MyTNBFont.MuseoSans16_300
-                    , foregroundColor: MyTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left,
-                Lines = 0,
-                LineBreakMode = UILineBreakMode.WordWrap
-            };
-
-            viewNo.AddSubviews(new UIView[] { lblNo, lblNoDescription });
-
-            View.AddSubview(lblTitle);
-            View.AddSubview(viewYes);
-            View.AddSubview(viewNo);
+                NavigateToPage("AccountRecords", "SelectAccountByRightsViewController");
+            }));
         }
 
         private void AddBackButton()
         {
+            NavigationItem.Title = GetI18NValue(AddAccountConstants.I18N_NavTitle);
+            View.BackgroundColor = MyTNBColor.LightGrayBG;
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
@@ -139,25 +128,6 @@ namespace myTNB
                     NavigationController?.PushViewController(viewController, true);
                 }
             }
-        }
-
-        private void SetUpGestures()
-        {
-            UITapGestureRecognizer yes = new UITapGestureRecognizer(() =>
-            {
-                DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex = 0;
-                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                AddAccountViewController addAccountVC = storyBoard.InstantiateViewController("AddAccountViewController") as AddAccountViewController;
-                addAccountVC.isOwner = true;
-                NavigationController.PushViewController(addAccountVC, true);
-            });
-            viewYes.AddGestureRecognizer(yes);
-
-            UITapGestureRecognizer no = new UITapGestureRecognizer(() =>
-            {
-                NavigateToPage("AccountRecords", "SelectAccountByRightsViewController");
-            });
-            viewNo.AddGestureRecognizer(no);
         }
     }
 }
