@@ -218,11 +218,6 @@ namespace myTNB.Home.Bill
             }
         }
 
-        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
-        {
-            return ScaleUtility.GetScaledHeight(60);
-        }
-
         public override void Scrolled(UIScrollView scrollView)
         {
             OnTableViewScroll?.Invoke(scrollView, null);
