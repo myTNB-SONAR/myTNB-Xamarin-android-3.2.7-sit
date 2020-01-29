@@ -54,6 +54,8 @@
 			<array>
 				<string>mytnbapp</string>
 				<string>fb1820273008266041</string>
+				<string>mytnbappsit.page.link</string>
+				<string>mytnbapp.page.link</string>
 			</array>
 			<key>CFBundleURLName</key>
 			<string>com.mytnb.mytnb</string>
