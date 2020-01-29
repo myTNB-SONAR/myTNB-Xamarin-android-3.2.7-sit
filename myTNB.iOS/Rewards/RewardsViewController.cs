@@ -568,9 +568,13 @@ namespace myTNB
                 Hidden = false,
                 Bounces = false
             };
-
-            View.AddSubview(_rewardsScrollView);
             SetRewardTableViewForCategory();
+            View.AddSubview(_rewardsScrollView);
+            if (DeviceHelper.IsIOS10)
+            {
+                _rewardsScrollView.SetContentOffset(new CGPoint(_rewardsScrollView.Frame.Width * _selectedCategoryIndex
+                    , NavigationController.NavigationBar.Frame.Height + DeviceHelper.GetStatusBarHeight()), true);
+            }
         }
 
         private void SetRewardTableViewForCategory()

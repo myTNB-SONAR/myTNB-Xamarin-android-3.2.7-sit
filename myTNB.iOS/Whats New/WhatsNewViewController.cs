@@ -575,9 +575,13 @@ namespace myTNB
                 Hidden = false,
                 Bounces = false
             };
-
-            View.AddSubview(_mainScrollView);
             SetWhatsNewTableViewForCategory();
+            View.AddSubview(_mainScrollView);
+            if (DeviceHelper.IsIOS10)
+            {
+                _mainScrollView.SetContentOffset(new CGPoint(_mainScrollView.Frame.Width * _selectedCategoryIndex
+                    , NavigationController.NavigationBar.Frame.Height + DeviceHelper.GetStatusBarHeight()), true);
+            }
         }
 
         private void SetWhatsNewTableViewForCategory()
