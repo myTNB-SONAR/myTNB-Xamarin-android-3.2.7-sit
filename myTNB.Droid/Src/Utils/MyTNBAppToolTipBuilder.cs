@@ -10,7 +10,7 @@ using Android.Text.Style;
 using Android.Text.Method;
 using Android.Support.V7.Widget;
 
-namespace myTNB_Android.Src.SSMR.Util
+namespace myTNB_Android.Src.Utils
 {
     public class MyTNBAppToolTipBuilder
     {

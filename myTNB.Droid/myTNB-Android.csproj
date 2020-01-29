@@ -2111,7 +2111,6 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\PhotoContainerBox.cs" />
     <AndroidResource Include="Resources\layout\CustomDialogWithImageHeader.axml" />
     <Compile Include="Src\SSMR\Util\MyTNBAppToolTip.cs" />
-    <Compile Include="Src\SSMR\Util\MyTNBAppToolTipBuilder.cs" />
     <Compile Include="Src\Base\MyTNBAppToolTipData.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\multiple_phase.png" />
     <AndroidResource Include="Resources\drawable-mdpi\multi_phase.png" />
@@ -4549,6 +4548,7 @@
     <Compile Include="Src\myTNBMenu\Requests\CheckPendingPaymentRequest.cs" />
     <Compile Include="Src\Base\Models\DeviceInterface.cs" />
     <Compile Include="Src\myTNBMenu\Models\CheckPendingPaymentsResponse.cs" />
+    <Compile Include="Src\Utils\MyTNBAppToolTipBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
