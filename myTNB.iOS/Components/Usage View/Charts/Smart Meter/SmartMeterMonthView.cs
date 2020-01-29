@@ -134,7 +134,7 @@ namespace myTNB.SmartMeterView
                     viewBar.AddSubview(viewCover);
                     if (AddTariffBlocks != null)
                     {
-                        AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1
+                        AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, isSelected
                             , viewCover.Frame.Size, isLatestBar, item.DPCIndicator);
                     }
                     nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;

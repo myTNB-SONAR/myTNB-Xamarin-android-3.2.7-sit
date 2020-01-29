@@ -288,6 +288,7 @@ namespace myTNB.SmartMeterView
                 UIView viewTariff = viewBar.ViewWithTag(2002);
                 if (viewTariff != null)
                 {
+                    viewTariff.Alpha = isActive ? 1F : 0.5F;
                     for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                     {
                         UIView tBlock = viewTariff.Subviews[j];

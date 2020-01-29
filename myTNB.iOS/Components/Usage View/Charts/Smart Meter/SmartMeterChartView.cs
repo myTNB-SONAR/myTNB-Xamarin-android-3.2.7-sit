@@ -337,7 +337,7 @@ namespace myTNB
             };
             if (_viewType != SmartMeterConstants.SmartMeterViewType.DayZOut)
             {
-                viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;
+                viewTariffContainer.Alpha = isSelected ? 1F : 0.5F;
             }
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
 
