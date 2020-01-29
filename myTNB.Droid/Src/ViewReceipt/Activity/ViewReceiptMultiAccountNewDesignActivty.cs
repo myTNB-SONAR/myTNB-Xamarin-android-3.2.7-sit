@@ -663,9 +663,10 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         public void ShowPaymentReceiptError()
         {
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle("Oh no, something went wrong!")
-                .SetMessage("We can’t seem to fetch your receipt right now. Check back later!")
-                .SetCTALabel("Ok")
+                .SetTitle(Utility.GetLocalizedErrorLabel("defaultErrorTitle"))
+                .SetMessage(Utility.GetLocalizedErrorLabel("receiptErrorMsg"))
+                .SetContentGravity(GravityFlags.Center)
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .SetCTAaction(Finish)
                 .Build().Show();
         }

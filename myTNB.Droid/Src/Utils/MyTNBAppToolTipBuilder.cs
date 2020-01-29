@@ -197,6 +197,9 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
 
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
+
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
