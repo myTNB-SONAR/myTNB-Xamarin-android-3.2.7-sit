@@ -156,7 +156,6 @@ namespace myTNB
                     {
                         CreateCategoryTopBar(0);
                     }
-                    OnSelectCategoryAction(0);
                     _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                     CheckTutorialOverlay();
                 }
