@@ -55,19 +55,29 @@ namespace myTNB
 
             _totalViews = _controller != null && _controller.CategoryMenuIsVisible() ? 2 : 1;
 
-            for (int i = 1; i <= _totalViews; i++)
+            if (_totalViews == 1)
             {
                 UIView view = new UIView(_parentView.Bounds);
-                if (i == 1)
-                {
-                    view.AddSubview(GetCategoryMenuView());
-                }
-                else
-                {
-                    view.Alpha = 0F;
-                }
-                view.Tag = i;
+                view.AddSubview(GetItemView());
+                view.Tag = 1;
                 _containerView.AddSubview(view);
+            }
+            else
+            {
+                for (int i = 1; i <= _totalViews; i++)
+                {
+                    UIView view = new UIView(_parentView.Bounds);
+                    if (i == 1)
+                    {
+                        view.AddSubview(GetCategoryMenuView());
+                    }
+                    else
+                    {
+                        view.Alpha = 0F;
+                    }
+                    view.Tag = i;
+                    _containerView.AddSubview(view);
+                }
             }
 
             CreateFooterView();
@@ -397,7 +407,8 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
-                UserInteractionEnabled = false
+                UserInteractionEnabled = false,
+                Hidden = _controller != null && !_controller.CategoryMenuIsVisible()
             };
             CGSize cGSize = _swipeText.SizeThatFits(new CGSize(textWidth, GetScaledHeight(32F)));
             ViewHelper.AdjustFrameSetHeight(_swipeText, cGSize.Height);
