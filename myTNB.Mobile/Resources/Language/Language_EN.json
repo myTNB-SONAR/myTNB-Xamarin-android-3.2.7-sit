@@ -694,9 +694,9 @@
     "verifyDeviceMessage": "Please take a moment to verify your device.",
     "details": "For security purposes, please enter your mobile number to verify this device.",
     "updateMobileNumberTitle": "Update Mobile Number",
-    "infoTitle": "What is it for?",
-    "infoPopupTitle": "This is just for the purpose of registering on the myTNB app.",
-    "infoPopupMessage": "Updating your phone number here will not change the existing phone number registered with TNB."
+    "infoTitle": "What is this for?",
+    "infoPopupTitle": "This is just to update your myTNB contact details.",
+    "infoPopupMessage": "This will only update your contact details on myTNB, it will not affect or change any information tied to the electricity account(s) you have added here."
   },
   "VerifyPin": {
     "title": "Verify Mobile Number",

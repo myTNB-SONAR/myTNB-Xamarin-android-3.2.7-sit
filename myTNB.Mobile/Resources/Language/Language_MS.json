@@ -145,11 +145,11 @@
     "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "rewardsUnavailableTitle": "Ganjaran tidak tersedia buat masa ini.",
     "rewardsUnavailableMsg": "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian.",
-    "whatsNewUnavailableTitle": "What's New is currently unavailable.",
-    "whatsNewUnavailableMsg": "But we'll be back soon so check back later!",
-    "whatsNewExpiredTitle": "This content is unavailable.",
-    "whatsNewExpiredMsg": "Looks like this promotion/announcement is over. Check back often to find out what else is new!",
-    "whatsNewExpiredBtnText": "Show Me What’s New!",
+    "whatsNewUnavailableTitle": "Informasi terkini tidak tersedia buat masa ini.",
+    "whatsNewUnavailableMsg": "Sila semak semula selepas ini.",
+    "whatsNewExpiredTitle": "Kandungan ini tidak tersedia.",
+    "whatsNewExpiredMsg": "Promosi/pengumuman ini telah tamat & dikeluarkan. Semak semula selepas ini untuk mengetahui informasi terkini tentang TNB!",
+    "whatsNewExpiredBtnText": "Tunjukkan Terkini!",
     "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!"
   },
   "DashboardHome": {
@@ -694,9 +694,9 @@
     "verifyDeviceMessage": "Sila sahkan no. telefon anda.",
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
     "updateMobileNumberTitle": "Kemas kini Nombor Telefon",
-    "infoTitle": "MS_What is it for?",
-    "infoPopupTitle": "MS_This is just for the purpose of registering on the myTNB app.",
-    "infoPopupMessage": "MS_Updating your phone number here will not change the existing phone number registered with TNB."
+    "infoTitle": "Apakah tujuannya?",
+    "infoPopupTitle": "Ini bertujuan untuk mengenas kini butiran myTNB anda.",
+    "infoPopupMessage": "Ini hanya akan mengemas kini butiran anda pada myTNB. Ia tidak akan memberi kesan atau mengubah sebarang maklumat yang berkaitan dengan akaun elektrik sedia ada."
   },
   "VerifyPin": {
     "title": "Sahkan Nombor Telefon",
