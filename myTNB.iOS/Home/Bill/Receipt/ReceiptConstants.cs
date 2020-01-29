@@ -17,6 +17,7 @@
         public static string I18N_TrnDate = "trnDate";
         public static string I18N_TrnID = "trnID";
         public static string I18N_TrnMethod = "trnMethod";
+        public static string I18N_ReceiptErrorMsg = "receiptErrorMsg";
 
         public static string Service_GetPaymentReceipt = "GetPaymentReceipt";
     }

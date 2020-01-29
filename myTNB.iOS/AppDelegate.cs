@@ -243,8 +243,8 @@ namespace myTNB
                                                                 {
                                                                     if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
                                                                     {
-                                                                        RewardsServices.OpenRewardDetails(rewardId, topVc);
                                                                         DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                                        RewardsServices.OpenRewardDetails(rewardId, topVc);
                                                                     }
                                                                 }
                                                             });
@@ -341,8 +341,8 @@ namespace myTNB
                                                             {
                                                                 if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
                                                                 {
-                                                                    WhatsNewServices.OpenWhatsNewDetails(whatsNewId, topVc);
                                                                     DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
+                                                                    WhatsNewServices.OpenWhatsNewDetails(whatsNewId, topVc);
                                                                 }
                                                             }
                                                         });
