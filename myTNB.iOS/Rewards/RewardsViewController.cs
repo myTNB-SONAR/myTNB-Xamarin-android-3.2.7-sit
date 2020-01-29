@@ -367,10 +367,13 @@ namespace myTNB
                             CategoryName = GetI18NValue(RewardsConstants.I18N_ViewAll)
                         };
                         _categoryList.Insert(0, viewAllModel);
-                        CreateCategoryTopBar(0);
                     }
                     _selectedCategoryIndex = 0;
                     AddRewardsScrollView();
+                    if (_categoryList.Count > 1)
+                    {
+                        CreateCategoryTopBar(0);
+                    }
                     _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                     CheckTutorialOverlay();
                 }

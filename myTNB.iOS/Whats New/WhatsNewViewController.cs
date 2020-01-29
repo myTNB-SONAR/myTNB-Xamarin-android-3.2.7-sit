@@ -149,10 +149,14 @@ namespace myTNB
                             CategoryName = GetI18NValue(WhatsNewConstants.I18N_ViewAll)
                         };
                         _categoryList.Insert(0, viewAllModel);
-                        CreateCategoryTopBar(0);
                     }
                     _selectedCategoryIndex = 0;
                     AddWhatsNewScrollView();
+                    if (CategoryMenuIsVisible())
+                    {
+                        CreateCategoryTopBar(0);
+                    }
+                    OnSelectCategoryAction(0);
                     _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                     CheckTutorialOverlay();
                 }
