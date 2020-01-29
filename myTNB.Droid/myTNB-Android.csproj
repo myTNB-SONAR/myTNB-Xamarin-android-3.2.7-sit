@@ -4549,6 +4549,8 @@
     <Compile Include="Src\Base\Models\DeviceInterface.cs" />
     <Compile Include="Src\myTNBMenu\Models\CheckPendingPaymentsResponse.cs" />
     <Compile Include="Src\Utils\MyTNBAppToolTipBuilder.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetPaymentReceiptRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetPaymentReceiptResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

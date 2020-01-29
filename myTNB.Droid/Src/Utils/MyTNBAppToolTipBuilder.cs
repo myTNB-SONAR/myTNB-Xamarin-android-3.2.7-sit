@@ -200,10 +200,7 @@ namespace myTNB_Android.Src.Utils
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (this.ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipTitle.Text = this.title;
@@ -268,10 +265,7 @@ namespace myTNB_Android.Src.Utils
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (this.ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
             }
             else if (this.toolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
@@ -287,10 +281,7 @@ namespace myTNB_Android.Src.Utils
                 tooltipPrimaryCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipSecondaryCTA.Click += delegate
@@ -330,10 +321,7 @@ namespace myTNB_Android.Src.Utils
                 tooltipPrimaryCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipSecondaryCTA.Click += delegate
@@ -371,10 +359,7 @@ namespace myTNB_Android.Src.Utils
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (this.ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipTitle.Visibility = ViewStates.Gone;

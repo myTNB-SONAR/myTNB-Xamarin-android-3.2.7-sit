@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
         public interface IView : IBaseView<IUserActionsListener>
         {
-            void OnShowReceiptDetails(AccountReceiptResponse response);
+            void OnShowReceiptDetails(GetPaymentReceiptResponse response);
 
             void ShowGetReceiptDialog();
 
@@ -23,8 +23,9 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
             void OnDownloadPDF();
 
-            void createPDF(AccountReceiptResponse response);
+            void createPDF(GetPaymentReceiptResponse response);
 
+            void ShowPaymentReceiptError();
         }
 
         public interface IUserActionsListener : IBasePresenter
