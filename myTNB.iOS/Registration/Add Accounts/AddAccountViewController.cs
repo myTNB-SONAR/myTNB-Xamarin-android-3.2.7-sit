@@ -687,13 +687,14 @@ namespace myTNB.Registration
             */
             btnAddAccount = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 159 : 135)
-                , View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48))
+                Frame = new CGRect(GetScaledWidth(18F), ViewHeight - GetScaledHeight(48F) - GetScaledHeight(24F)
+                , ViewWidth - (GetScaledWidth(18F) * 2), GetScaledHeight(48F))
             };
             btnAddAccount.SetTitle(GetI18NValue(AddAccountConstants.I18N_AddAccountCTATitle), UIControlState.Normal);
+            btnAddAccount.Font = TNBFont.MuseoSans_16_500;
             btnAddAccount.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnAddAccount.BackgroundColor = MyTNBColor.FreshGreen;
-            btnAddAccount.Layer.CornerRadius = 4.0f;
+            btnAddAccount.Layer.CornerRadius = GetScaledWidth(4F);
 
             View.AddSubview(viewAccountNo);
             View.AddSubview(viewNickname);

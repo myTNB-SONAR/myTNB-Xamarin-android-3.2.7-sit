@@ -38,6 +38,11 @@ namespace myTNB.SmartMeterView
             double maxValue = GetMaxValue(ConsumptionState, valueList, dpcIndicatorList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
+            if (LoadTariffLegendWithIndex != null)
+            {
+                LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
+            }
+
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
@@ -134,7 +139,7 @@ namespace myTNB.SmartMeterView
                     viewBar.AddSubview(viewCover);
                     if (AddTariffBlocks != null)
                     {
-                        AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1
+                        AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, isSelected
                             , viewCover.Frame.Size, isLatestBar, item.DPCIndicator);
                     }
                     nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
@@ -219,10 +224,6 @@ namespace myTNB.SmartMeterView
                         dpcIcon.Alpha = isSelected ? 1 : 0.5F;
                     }
                 }
-            }
-            if (LoadTariffLegendWithIndex != null)
-            {
-                LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
             }
         }
     }
