@@ -14,16 +14,8 @@ namespace myTNB.PushNotification
     [Register ("PushNotificationViewController")]
     partial class PushNotificationViewController
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITableView pushNotificationTableView { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
-            if (pushNotificationTableView != null) {
-                pushNotificationTableView.Dispose ();
-                pushNotificationTableView = null;
-            }
         }
     }
 }

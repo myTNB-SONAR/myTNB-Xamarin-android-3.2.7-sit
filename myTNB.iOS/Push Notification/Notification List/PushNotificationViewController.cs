@@ -20,7 +20,7 @@ namespace myTNB.PushNotification
         private ReadNotificationResponseModel _readNotificationResponse = new ReadNotificationResponseModel();
         private UserNotificationResponseModel userNotificationResponse = new UserNotificationResponseModel();
         public bool _isSelectionMode;
-        internal bool _isDeletionMode;
+        private bool _isDeletionMode;
         private bool _isAllSelected;
 
         private AccountSelectionComponentV2 _notificationSelectionComponent;
@@ -34,6 +34,7 @@ namespace myTNB.PushNotification
 
         private RefreshViewComponent _refreshViewComponent;
         private UIView _headerView, _titleBarView, _refreshView;
+        private UITableView _pushNotificationTableView;
 
         private GradientViewComponent _gradientViewComponent;
 
@@ -59,7 +60,7 @@ namespace myTNB.PushNotification
             Debug.WriteLine("DEBUG >>> PushNotificationViewController OnNotificationFilterDidChange");
             OnReset();
             SetNavigationBar();
-            pushNotificationTableView.TableHeaderView = null;
+            _pushNotificationTableView.TableHeaderView = null;
         }
 
         private void UpdateNotificationTypes()
@@ -106,7 +107,7 @@ namespace myTNB.PushNotification
 
         private void ValidateResponse()
         {
-            pushNotificationTableView.Hidden = true;
+            _pushNotificationTableView.Hidden = true;
             if (_refreshView != null)
             {
                 _refreshView.RemoveFromSuperview();
@@ -202,12 +203,9 @@ namespace myTNB.PushNotification
                             _refreshViewComponent.GetView().RemoveFromSuperview();
                         }
                     }
-                    pushNotificationTableView.Hidden = false;
-                    pushNotificationTableView.ClearsContextBeforeDrawing = true;
-                    pushNotificationTableView.RowHeight = UITableView.AutomaticDimension;
-                    pushNotificationTableView.EstimatedRowHeight = GetScaledHeight(70);
-                    pushNotificationTableView.Source = new PushNotificationDataSource(this, _notifications);
-                    pushNotificationTableView.ReloadData();
+                    _pushNotificationTableView.Hidden = false;
+                    _pushNotificationTableView.Source = new PushNotificationDataSource(this, _notifications);
+                    _pushNotificationTableView.ReloadData();
                 }
                 else
                 {
@@ -250,7 +248,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        pushNotificationTableView.Hidden = true;
+                        _pushNotificationTableView.Hidden = true;
                         _titleBarComponent.SetPrimaryVisibility(true);
                         OnReset();
                         DisplayRefreshScreen(GetErrorI18NValue(Constants.Error_RefreshMessage), GetCommonI18NValue(Constants.Common_RefreshNow));
@@ -261,7 +259,7 @@ namespace myTNB.PushNotification
 
         private void DisplayNoNotification()
         {
-            pushNotificationTableView.Hidden = true;
+            _pushNotificationTableView.Hidden = true;
 
             if (_refreshViewComponent != null)
             {
@@ -385,11 +383,11 @@ namespace myTNB.PushNotification
                     }
                     _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Cancel);
                     UpdateSelectAllFlags(false);
-                    pushNotificationTableView.TableHeaderView = GetTableViewHeader();
+                    _pushNotificationTableView.TableHeaderView = GetTableViewHeader();
                     _titleBarComponent.SetTitle(GetI18NValue(_isSelectionMode ? PushNotificationConstants.I18N_Title : PushNotificationConstants.I18N_Select));
                     _isSelectionMode = !_isSelectionMode;
                     UpdateTitleRightIconImage();
-                    pushNotificationTableView.ReloadData();
+                    _pushNotificationTableView.ReloadData();
                 }
             }));
         }
@@ -431,9 +429,9 @@ namespace myTNB.PushNotification
         private void OnDismiss()
         {
             OnReset();
-            pushNotificationTableView.TableHeaderView = null;
+            _pushNotificationTableView.TableHeaderView = null;
             UpdateTitleRightIconImage();
-            pushNotificationTableView.ReloadData();
+            _pushNotificationTableView.ReloadData();
             _titleBarComponent.SetSecondaryVisibility(true);
             _titleBarComponent.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Title));
             _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Select);
@@ -461,11 +459,18 @@ namespace myTNB.PushNotification
             return new List<string>();
         }
 
-        internal void SetSubViews()
+        private void SetSubViews()
         {
-            pushNotificationTableView.Frame = new CGRect(0, _headerView.Frame.GetMaxY(), View.Frame.Width
-                , View.Frame.Height - _headerView.Frame.GetMaxY());
-            pushNotificationTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            _pushNotificationTableView = new UITableView(new CGRect(0, _headerView.Frame.GetMaxY(), View.Frame.Width
+                , View.Frame.Height - _headerView.Frame.GetMaxY()))
+            {
+                SeparatorStyle = UITableViewCellSeparatorStyle.None,
+                ClearsContextBeforeDrawing = true,
+                RowHeight = UITableView.AutomaticDimension,
+                EstimatedRowHeight = GetScaledHeight(70)
+            };
+            View.AddSubview(_pushNotificationTableView);
+            _pushNotificationTableView.RegisterClassForCellReuse(typeof(NotificationViewCell), PushNotificationConstants.Cell_PushNotificationCell);
         }
 
         internal void ExecuteGetNotificationDetailedInfoCall(UserNotificationDataModel dataModel)
@@ -523,7 +528,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        internal Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
+        private Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -560,7 +565,7 @@ namespace myTNB.PushNotification
                                     UpdateNotificationDisplay();
                                     UpdateTitleRightIconImage();
                                     NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
-                                    pushNotificationTableView.ReloadData();
+                                    _pushNotificationTableView.ReloadData();
                                     if (_lblTitle != null)
                                     {
                                         _lblTitle.Text = GetCommonI18NValue(Constants.Common_SelectAll);
@@ -608,7 +613,7 @@ namespace myTNB.PushNotification
                                     && deleteNotifResponse.d.IsSuccess)
                                 {
                                     UpdateNotifications(updateNotificationList, isMultiple, indexPath);
-                                    pushNotificationTableView.ReloadData();
+                                    _pushNotificationTableView.ReloadData();
                                     UpdateTitleRightIconImage();
                                     UpdateNotificationDisplay(true);
                                     NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
@@ -736,7 +741,7 @@ namespace myTNB.PushNotification
         /// <summary>
         /// Creates the view header.
         /// </summary>
-        UIView GetTableViewHeader()
+        private UIView GetTableViewHeader()
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = ScaleUtility.GetScaledHeight(62);
@@ -773,7 +778,6 @@ namespace myTNB.PushNotification
                 BackgroundColor = UIColor.White
             };
             viewHeader.AddSubviews(new UIView[] { viewCheckBox, _lblTitle, viewLine });
-
             return viewHeader;
         }
 
@@ -826,7 +830,7 @@ namespace myTNB.PushNotification
                         });
                     }
                 }
-                pushNotificationTableView.ReloadData();
+                _pushNotificationTableView.ReloadData();
                 UpdateTitleRightIconImage();
             }
         }
@@ -887,7 +891,7 @@ namespace myTNB.PushNotification
         /// Checks if at least one notification is selected for deletion
         /// </summary>
         /// <returns><c>true</c>, if at least one is selected was ised, <c>false</c> otherwise.</returns>
-        internal bool IsAtLeastOneIsSelected()
+        private bool IsAtLeastOneIsSelected()
         {
             foreach (UserNotificationDataModel obj in _notifications)
             {

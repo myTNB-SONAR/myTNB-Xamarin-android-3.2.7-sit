@@ -90,10 +90,7 @@ namespace myTNB.PushNotification
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public NotificationViewCell(string cellId) : base(UITableViewCellStyle.Default, cellId)
-        {
-
-        }
+        public NotificationViewCell(string cellId) : base(UITableViewCellStyle.Default, cellId) { }
 
         public void UpdateCell(bool isSelectionMode, bool isRead)
         {

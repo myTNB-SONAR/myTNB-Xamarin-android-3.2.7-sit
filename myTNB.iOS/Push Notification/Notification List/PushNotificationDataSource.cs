@@ -33,7 +33,7 @@ namespace myTNB.PushNotification
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UserNotificationDataModel notification = _data[indexPath.Row];
-            NotificationViewCell cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
+            NotificationViewCell cell = tableView.DequeueReusableCell(PushNotificationConstants.Cell_PushNotificationCell) as NotificationViewCell;
             if (cell == null)
             {
                 cell = new NotificationViewCell("pushNotificationCell");
@@ -65,10 +65,6 @@ namespace myTNB.PushNotification
             cell.IsRead = notification.IsReadNotification;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                 ? PushNotificationConstants.IMG_ChkActive : PushNotificationConstants.IMG_ChkInactive);
-
-            cell.Layer.BorderWidth = 1;
-            cell.Layer.BorderColor = UIColor.Cyan.CGColor;
-
             return cell;
         }
 
