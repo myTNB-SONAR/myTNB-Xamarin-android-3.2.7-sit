@@ -9,6 +9,9 @@ namespace myTNB.PushNotification
         public static string Pagename_PushNotificationList = "PushNotificationList";
         public static string Pagename_PushNotificationDetails = "PushNotificationDetails";
 
+        //Cell
+        public static string Cell_PushNotificationCell = "pushNotificationCell";
+
         //Service
         public static string Service_DeleteNotification = "DeleteUserNotification";
         public static string Service_ReadUserNotification = "ReadUserNotification";

@@ -149,10 +149,13 @@ namespace myTNB
                             CategoryName = GetI18NValue(WhatsNewConstants.I18N_ViewAll)
                         };
                         _categoryList.Insert(0, viewAllModel);
-                        CreateCategoryTopBar(0);
                     }
                     _selectedCategoryIndex = 0;
                     AddWhatsNewScrollView();
+                    if (CategoryMenuIsVisible())
+                    {
+                        CreateCategoryTopBar(0);
+                    }
                     _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                     CheckTutorialOverlay();
                 }
@@ -572,9 +575,13 @@ namespace myTNB
                 Hidden = false,
                 Bounces = false
             };
-
-            View.AddSubview(_mainScrollView);
             SetWhatsNewTableViewForCategory();
+            View.AddSubview(_mainScrollView);
+            if (DeviceHelper.IsIOS10)
+            {
+                _mainScrollView.SetContentOffset(new CGPoint(_mainScrollView.Frame.Width * _selectedCategoryIndex
+                    , NavigationController.NavigationBar.Frame.Height + DeviceHelper.GetStatusBarHeight()), true);
+            }
         }
 
         private void SetWhatsNewTableViewForCategory()

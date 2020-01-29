@@ -33,7 +33,7 @@ namespace myTNB.PushNotification
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UserNotificationDataModel notification = _data[indexPath.Row];
-            NotificationViewCell cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
+            NotificationViewCell cell = tableView.DequeueReusableCell(PushNotificationConstants.Cell_PushNotificationCell) as NotificationViewCell;
             if (cell == null)
             {
                 cell = new NotificationViewCell("pushNotificationCell");
@@ -142,7 +142,7 @@ namespace myTNB.PushNotification
             return null;
         }
 
-        UIImage RowActionImage(CGColor bgColor, string imgKey)
+        private UIImage RowActionImage(CGColor bgColor, string imgKey)
         {
             CGRect frame = new CGRect(0, 0, 66, 66);
             UIGraphics.BeginImageContextWithOptions(new CGSize(66, 66), false, UIScreen.MainScreen.Scale);
