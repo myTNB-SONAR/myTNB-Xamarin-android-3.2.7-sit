@@ -64,6 +64,14 @@ namespace myTNB
             double maxValue = GetMaxValue(ConsumptionState, valueList, dpcIndicatorList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
+            if (LoadTariffLegendWithIndex != null)
+            {
+                if (usageData != null && usageData.Count > 0)
+                {
+                    LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
+                }
+            }
+
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
@@ -166,13 +174,7 @@ namespace myTNB
                     , () => { }
                 );
             }
-            if (LoadTariffLegendWithIndex != null)
-            {
-                if (usageData != null && usageData.Count > 0)
-                {
-                    LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
-                }
-            }
+
             _mainView.AddSubview(_segmentContainer);
         }
 
