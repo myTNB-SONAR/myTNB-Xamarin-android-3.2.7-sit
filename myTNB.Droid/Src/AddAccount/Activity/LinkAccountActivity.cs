@@ -938,7 +938,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     mAddAccountProgressDialog = new MaterialDialog.Builder(this)
                         .CustomView(Resource.Layout.CustomDialogLayout, false)
-                        .Cancelable(true)
+                        .Cancelable(false)
                         .Build();
 
                     View view = mAddAccountProgressDialog.View;
