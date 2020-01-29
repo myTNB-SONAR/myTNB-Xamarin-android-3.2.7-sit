@@ -512,8 +512,8 @@ namespace myTNB.Registration.CustomerAccounts
 
         private void InitializeViews()
         {
-            var addtl = DeviceHelper.IsIphoneXUpResolution() ? GetScaledHeight(20) : 0;
-            _footerView = new UIView(new CGRect(0, View.Frame.Height - GetScaledHeight(140) - NavigationController.NavigationBar.Frame.Height - addtl, ViewWidth, GetScaledHeight(126)))
+            var height = GetScaledHeight(126);
+            _footerView = new UIView(new CGRect(0, ViewHeight - height, ViewWidth, height + GetBottomPadding))
             {
                 BackgroundColor = UIColor.Clear
             };
