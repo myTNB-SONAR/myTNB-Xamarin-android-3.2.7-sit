@@ -41,7 +41,7 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
-        private bool _isBCRMAvailable, _isBCRMPopupDisplayed;
+        private bool _isBCRMPopupDisplayed;
         public string RearrangeSuccessMsg;
         public bool IsRearrangeSaved;
         public bool IsNeedHelpCallDone;
@@ -59,7 +59,6 @@ namespace myTNB
             IsNewGradientRequired = true;
             base.ViewDidLoad();
             AddFooterBG();
-            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0 && accNum != null && !string.IsNullOrEmpty(accNum) && !string.IsNullOrWhiteSpace(accNum))
             {
@@ -96,16 +95,8 @@ namespace myTNB
 
         private void PrepareTableView()
         {
-            if (_isBCRMAvailable)
-            {
-                SetAccountListViewController();
-                InitializeTableView();
-            }
-            else
-            {
-                InitializeTableView();
-                ShowRefreshScreen(true, null);
-            }
+            SetAccountListViewController();
+            InitializeTableView();
         }
 
         private void SetGreetingView()
