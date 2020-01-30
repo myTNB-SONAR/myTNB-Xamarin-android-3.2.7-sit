@@ -993,7 +993,7 @@ namespace myTNB
             }
         }
 
-        public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
+        public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null, bool isPlannedDowntime = false)
         {
             InvokeOnMainThread(() =>
             {
@@ -1001,14 +1001,15 @@ namespace myTNB
                 _isRefreshScreenEnabled = isFail;
                 if (_isRefreshScreenEnabled)
                 {
-                    var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-                    var bcrmMsg = bcrm?.DowntimeMessage ?? GetCommonI18NValue(Constants.Common_BCRMMessage);
-                    string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
-
-                    _refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(24f));
-                    _refreshScreenComponent.SetIsBCRMDown(!_isBCRMAvailable);
-                    _refreshScreenComponent.SetRefreshButtonHidden(!_isBCRMAvailable);
-                    _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
+                    string desc = isPlannedDowntime ? model?.DisplayMessage : model?.RefreshMessage;
+                    var yPos = isPlannedDowntime ? GetScaledHeight(54F) : GetScaledHeight(24F);
+                    _refreshScreenComponent = new RefreshScreenComponent(View, yPos);
+                    _refreshScreenComponent.SetIsBCRMDown(isPlannedDowntime);
+                    _refreshScreenComponent.SetRefreshButtonHidden(isPlannedDowntime);
+                    if (!isPlannedDowntime)
+                    {
+                        _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
+                    }
                     _refreshScreenComponent.SetDescription(desc);
                     _refreshScreenComponent.CreateComponent();
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
