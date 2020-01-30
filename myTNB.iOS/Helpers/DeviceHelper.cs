@@ -233,6 +233,8 @@ namespace myTNB
             {
                 try
                 {
+                    if (IsIOS10AndBelow) { return false; }
+
                     return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom > 0;
                 }
                 catch (Exception e)
@@ -249,6 +251,8 @@ namespace myTNB
             {
                 try
                 {
+                    if (IsIOS10AndBelow) { return 0; }
+
                     return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top;
                 }
                 catch (Exception e)
@@ -265,6 +269,7 @@ namespace myTNB
             {
                 try
                 {
+                    if (IsIOS10AndBelow) { return 0; }
                     return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
                 }
                 catch (Exception e)
@@ -275,7 +280,7 @@ namespace myTNB
             }
         }
 
-        public static bool IsIOS10
+        public static bool IsIOS10AndBelow
         {
             get
             {
