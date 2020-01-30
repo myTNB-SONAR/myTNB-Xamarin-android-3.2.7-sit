@@ -184,7 +184,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
                 TOTAL_ACCOUNTS = registerdAccounts.Count;
                 NO_OF_ITARATION = TOTAL_ACCOUNTS / TOTAL_NUMBER_OF_ITEMS_TO_GET;
-                REMAINING_ITEM_COUNT = TOTAL_ACCOUNTS - (NO_OF_ITARATION * TOTAL_NUMBER_OF_ITEMS_TO_GET);
+                if (NO_OF_ITARATION == 0)
+                {
+                    REMAINING_ITEM_COUNT = 0;
+                }
+                else
+                {
+                    REMAINING_ITEM_COUNT = TOTAL_ACCOUNTS - (NO_OF_ITARATION * TOTAL_NUMBER_OF_ITEMS_TO_GET);
+                }
                 if (TOTAL_ACCOUNTS < 8 && TOTAL_ACCOUNTS > 4)
                 {
                     NO_OF_ITARATION = NO_OF_ITARATION + 1;
