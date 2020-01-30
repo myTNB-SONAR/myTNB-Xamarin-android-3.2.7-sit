@@ -1919,7 +1919,6 @@
     <Folder Include="Push Notification\Notification List\" />
     <Folder Include="Model\GetBillingAccountDetails\" />
     <Folder Include="Model\Notification\" />
-    <Folder Include="Model\GetAccountUsageHistoryForGraph\" />
     <Folder Include="Model\IsUserAuthenticate\" />
     <Folder Include="Model\GetCustomerBillingAccountList\" />
     <Folder Include="Enums\" />
@@ -2238,16 +2237,10 @@
     <Compile Include="Model\Notification\NotificationPreferenceUpdateResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationPreferenceResponseModel.cs" />
     <Compile Include="Model\Notification\UserNotificationResponseModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByDayModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByMonthModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartResponseData.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountDataModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordListModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountResponseModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\SegmentDetailsModel.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.designer.cs">
       <DependentUpon>MyAccountViewController.cs</DependentUpon>
@@ -2270,9 +2263,6 @@
     <Compile Include="Home\Bill\Receipt\ReceiptViewController.designer.cs">
       <DependentUpon>ReceiptViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsDataModel.cs" />
-    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsModel.cs" />
-    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingResponseModel.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.designer.cs">
@@ -2383,16 +2373,7 @@
       <DependentUpon>SelectBillsTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\LineChartComponent.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModelBase.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\SmartChartDataModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\SmartChartModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartModelBase.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\UsageMetrics.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\RealTimeMetrics.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ChartEntity.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\EmissionMetric.cs" />
-    <Compile Include="Enums\ChartModeEnum.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByRangeModelBase.cs" />
     <Compile Include="Helpers\ChartHelper.cs" />
     <Compile Include="Helpers\AppVersionHelper.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
@@ -2420,7 +2401,6 @@
       <DependentUpon>DashboardNavigationController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetAccountDueAmount\AmountDueStatusResponseModel.cs" />
-    <Compile Include="Enums\GreetingModeEnum.cs" />
     <Compile Include="Enums\NotificationEnum.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
@@ -2434,13 +2414,11 @@
       <DependentUpon>ReceiptTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PhoneVerificationStatusResponseModel.cs" />
-    <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
