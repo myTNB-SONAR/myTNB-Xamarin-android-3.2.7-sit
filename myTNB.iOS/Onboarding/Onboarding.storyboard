@@ -24,41 +24,7 @@
             <point key="canvasLocation" x="52" y="97"/>
         </scene>
         <!--Onboarding Root View Controller-->
-        <scene sceneID="1557">
-            <objects>
-                <viewController storyboardIdentifier="GenericPageRootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1558" customClass="GenericPageRootViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="1555"/>
-                        <viewControllerLayoutGuide type="bottom" id="1556"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1559">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1560" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="585" y="98"/>
-        </scene>
         <!--Onboarding Data View Controller-->
-        <scene sceneID="1564">
-            <objects>
-                <viewController storyboardIdentifier="GenericPageDataViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1565" customClass="GenericPageDataViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="1562"/>
-                        <viewControllerLayoutGuide type="bottom" id="1563"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1566">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1567" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1014" y="103"/>
-        </scene>
         <!--App Update View Controller-->
         <scene sceneID="2006">
             <objects>
@@ -75,7 +41,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2009" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1446" y="104"/>
+            <point key="canvasLocation" x="628" y="101"/>
         </scene>
     </scenes>
 </document>
