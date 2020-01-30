@@ -570,7 +570,7 @@ namespace myTNB
             };
             SetRewardTableViewForCategory();
             View.AddSubview(_rewardsScrollView);
-            if (DeviceHelper.IsIOS10)
+            if (DeviceHelper.IsIOS10AndBelow)
             {
                 _rewardsScrollView.SetContentOffset(new CGPoint(_rewardsScrollView.Frame.Width * _selectedCategoryIndex
                     , NavigationController.NavigationBar.Frame.Height + DeviceHelper.GetStatusBarHeight()), true);

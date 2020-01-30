@@ -745,7 +745,7 @@ namespace myTNB
         {
             nfloat containerHeight = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
             nfloat yLoc = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - containerHeight;
-            if (DeviceHelper.IsIOS10)
+            if (DeviceHelper.IsIOS10AndBelow)
             {
                 yLoc = ViewHeight - containerHeight;
             }

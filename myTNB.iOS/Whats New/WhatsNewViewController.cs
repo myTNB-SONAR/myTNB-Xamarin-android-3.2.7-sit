@@ -577,7 +577,7 @@ namespace myTNB
             };
             SetWhatsNewTableViewForCategory();
             View.AddSubview(_mainScrollView);
-            if (DeviceHelper.IsIOS10)
+            if (DeviceHelper.IsIOS10AndBelow)
             {
                 _mainScrollView.SetContentOffset(new CGPoint(_mainScrollView.Frame.Width * _selectedCategoryIndex
                     , NavigationController.NavigationBar.Frame.Height + DeviceHelper.GetStatusBarHeight()), true);
