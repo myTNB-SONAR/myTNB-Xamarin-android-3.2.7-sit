@@ -21,7 +21,7 @@ namespace myTNB
             PageName = BillConstants.Pagename_BillFilter;
             NavigationController.SetNavigationBarHidden(false, true);
             base.ViewDidLoad();
-            CreateSubvies();
+            CreateSubviews();
             SetNavigation();
         }
 
@@ -37,7 +37,7 @@ namespace myTNB
             }
         }
 
-        private void CreateSubvies()
+        private void CreateSubviews()
         {
             View.BackgroundColor = MyTNBColor.LightGrayBG;
             nfloat lblWidth = ViewWidth - (BaseMarginWidth16 * 2);
@@ -113,7 +113,7 @@ namespace myTNB
             nfloat footerRatio = 80.0f / 320.0f;
             nfloat footerHeight = ViewWidth * footerRatio;
             nfloat footerYPos = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - footerHeight;
-            if (DeviceHelper.IsIOS10)
+            if (DeviceHelper.IsIOS10AndBelow)
             {
                 footerYPos = ViewHeight - footerHeight;
             }

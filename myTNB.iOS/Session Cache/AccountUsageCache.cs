@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Force.DeepCloner;
 using Foundation;
@@ -137,19 +138,27 @@ namespace myTNB
         #region Normal and RE
         public static void SaveToCache(string accountNumber, AccountUsageResponseDataModel data)
         {
-            string jsonData = JsonConvert.SerializeObject(data);
-            if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber)
-                && !string.IsNullOrEmpty(jsonData) && !string.IsNullOrWhiteSpace(jsonData))
+            if (!accountNumber.IsValid()) { return; }
+            try
             {
-                string accKey = string.Format(AccountDataPrefix, accountNumber);
-                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
-                userDefaults.SetString(jsonData, accKey);
-                userDefaults.Synchronize();
+                string jsonData = JsonConvert.SerializeObject(data);
+                if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber)
+                    && !string.IsNullOrEmpty(jsonData) && !string.IsNullOrWhiteSpace(jsonData))
+                {
+                    string accKey = string.Format(AccountDataPrefix, accountNumber);
+                    NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                    userDefaults.SetString(jsonData, accKey);
+                    userDefaults.Synchronize();
 
-                string tsKey = string.Format(TimeStampPrefix, accountNumber);
-                string dateTime = DateTime.Now.ToString(DateFormat);
-                userDefaults.SetString(dateTime, tsKey);
-                userDefaults.Synchronize();
+                    string tsKey = string.Format(TimeStampPrefix, accountNumber);
+                    string dateTime = DateTime.Now.ToString(DateFormat);
+                    userDefaults.SetString(dateTime, tsKey);
+                    userDefaults.Synchronize();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SaveToCache Error: " + e.Message);
             }
         }
 

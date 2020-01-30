@@ -101,7 +101,7 @@ namespace myTNB
         {
             _viewNotificationMsg.Hidden = false;
             _viewNotificationMsg.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            UIView.Animate(1, 3, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _viewNotificationMsg.Alpha = 0.0f;
             }, () =>

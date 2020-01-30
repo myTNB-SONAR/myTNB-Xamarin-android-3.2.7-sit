@@ -108,12 +108,12 @@ namespace myTNB
         /// <param name="willAnimateDismiss">If set to <c>true</c> will animate dismiss.</param>
         /// <param name="willPopToRootOnSelect">If set to <c>true</c> will pop to root on select.</param>
         /// <param name="dismissCompletionHandler">Dismiss completion handler.</param>
-        public static HomeTabBarController DismissControllersAndSelectTab(UIViewController baseVc, int tabIndexToSelect, bool willAnimateDismiss,
-                                                          bool willPopToRootOnSelect = false, Action dismissCompletionHandler = null)
+        public static HomeTabBarController DismissControllersAndSelectTab(UIViewController baseVc
+            , int tabIndexToSelect, bool willAnimateDismiss
+            , bool willPopToRootOnSelect = false, Action dismissCompletionHandler = null)
         {
             try
             {
-#if true
                 var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                 var topVc = AppDelegate.GetTopViewController(baseRootVc);
 
@@ -169,18 +169,6 @@ namespace myTNB
 
                     return tabBar;
                 }
-#else
-                var presentedVc = baseVc?.View?.Window?.RootViewController?.PresentedViewController;
-                if (presentedVc is HomeTabBarController)
-                {
-                    var tabBar = presentedVc as HomeTabBarController;
-                    if (tabIndexToSelect < tabBar.ViewControllers?.Length)
-                    {
-                        tabBar.SelectedIndex = tabIndexToSelect;
-                    }
-                    tabBar.DismissViewController(willAnimateDismiss, dismissCompletionHandler);
-                }
-#endif
             }
             catch (Exception ex)
             {

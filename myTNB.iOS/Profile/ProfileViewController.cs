@@ -185,10 +185,10 @@ namespace myTNB
         private void SetTableView()
         {
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
-            nfloat yLoc = DeviceHelper.IsIOS10 ? 0 : NavigationController.NavigationBar.Frame.GetMaxY();
+            nfloat yLoc = DeviceHelper.IsIOS10AndBelow ? 0 : NavigationController.NavigationBar.Frame.GetMaxY();
             nfloat tabHeight = TabBarController != null && TabBarController.TabBar != null
                 && TabBarController.TabBar.Frame != null ? TabBarController.TabBar.Frame.Height : 0;
-            nfloat height = DeviceHelper.IsIOS10 ? View.Frame.Height - tabHeight : ViewHeight;
+            nfloat height = DeviceHelper.IsIOS10AndBelow ? View.Frame.Height - tabHeight : ViewHeight;
             _profileTableview = new UITableView(new CGRect(0, yLoc, View.Frame.Width, height))
             {
                 SeparatorStyle = UITableViewCellSeparatorStyle.None
@@ -726,7 +726,7 @@ namespace myTNB
         {
             _viewNotificationMsg.Hidden = false;
             _viewNotificationMsg.Alpha = 1.0f;
-            UIView.Animate(2, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            UIView.Animate(1, 3, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _viewNotificationMsg.Alpha = 0.0f;
             }, () =>
