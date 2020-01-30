@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Foundation;
 
 namespace myTNB
@@ -7,7 +8,11 @@ namespace myTNB
     {
         public static void AddObserver(NSString aName, Action<NSNotification> notify)
         {
-            NSNotificationCenter.DefaultCenter.RemoveObserver(aName);
+            try
+            {
+                NSNotificationCenter.DefaultCenter.RemoveObserver(aName);
+            }
+            catch (Exception e) { Debug.WriteLine("AddObserver Error: " + e.Message); }
             NSNotificationCenter.DefaultCenter.AddObserver(aName, notify);
         }
 
