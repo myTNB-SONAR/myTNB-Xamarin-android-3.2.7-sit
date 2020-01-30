@@ -1911,7 +1911,6 @@
     <Folder Include="Home\Bill\" />
     <Folder Include="Home\More\" />
     <Folder Include="Home\Components\" />
-    <Folder Include="Home\Dashboard\Get Access\" />
     <Folder Include="Payment\Add Card\" />
     <Folder Include="Push Notification\" />
     <Folder Include="Home\More\Push Notification Settings\" />
@@ -2058,7 +2057,6 @@
     <InterfaceDefinition Include="Payment\Payment.storyboard" />
     <InterfaceDefinition Include="Home\Dashboard\Dashboard.storyboard" />
     <InterfaceDefinition Include="Home\Dashboard\View Bill\ViewBill.storyboard" />
-    <InterfaceDefinition Include="Home\Dashboard\Get Access\GetAccess.storyboard" />
     <InterfaceDefinition Include="Payment\Add Card\AddCard.storyboard" />
     <InterfaceDefinition Include="Push Notification\PushNotification.storyboard" />
     <InterfaceDefinition Include="Home\More\Push Notification Settings\NotificationSettings.storyboard" />
@@ -2173,29 +2171,13 @@
       <DependentUpon>PasswordResetSuccessViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MyTNBFont.cs" />
-    <Compile Include="Home\Dashboard\DashboardViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardViewController.designer.cs">
-      <DependentUpon>..\..\Dashboard\DashboardViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountsDataSource.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Components\AccountSelectionComponent.cs" />
-    <Compile Include="Home\Components\AddressComponent.cs" />
-    <Compile Include="Home\Components\BillAndPaymentComponent.cs" />
-    <Compile Include="Home\Components\ChartComponent.cs" />
-    <Compile Include="Home\Components\EstimatedReadingComponent.cs" />
-    <Compile Include="Home\Components\GetAccessComponent.cs" />
     <Compile Include="Home\Components\GradientViewComponent.cs" />
-    <Compile Include="Home\Components\NoAccountComponent.cs" />
-    <Compile Include="Home\Components\NoDataConnectionComponent.cs" />
-    <Compile Include="Home\Components\SelectorComponent.cs" />
-    <Compile Include="Home\Components\SmartMeterComponent.cs" />
     <Compile Include="Home\Components\TitleBarComponent.cs" />
-    <Compile Include="Home\Components\UsageHistoryComponent.cs" />
-    <Compile Include="Home\Dashboard\DashboardMainComponent.cs" />
     <Compile Include="SQLite\SQLite Data Manager\UserAccountsEntity.cs" />
     <Compile Include="Data Manager\ServiceManager.cs" />
     <Compile Include="Data Manager\BaseService.cs" />
@@ -2205,14 +2187,6 @@
       <DependentUpon>ViewBillViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WebViewDelegate.cs" />
-    <Compile Include="Home\Dashboard\Get Access\GetAccessSuccessViewController.cs" />
-    <Compile Include="Home\Dashboard\Get Access\GetAccessSuccessViewController.designer.cs">
-      <DependentUpon>GetAccessSuccessViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.cs" />
-    <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.designer.cs">
-      <DependentUpon>GetAccessViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Payment\Add Card\AddCardViewController.cs" />
     <Compile Include="Payment\Add Card\AddCardViewController.designer.cs">
       <DependentUpon>AddCardViewController.cs</DependentUpon>
@@ -2419,12 +2393,9 @@
     <Compile Include="Model\GetAccountUsageHistoryForGraph\UsageMetrics.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\RealTimeMetrics.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ChartEntity.cs" />
-    <Compile Include="Home\Components\ChartCompanionComponent.cs" />
-    <Compile Include="Home\Components\InfoComponent.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\EmissionMetric.cs" />
     <Compile Include="Enums\ChartModeEnum.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ByRangeModelBase.cs" />
-    <Compile Include="Home\Dashboard\ChartDataSource.cs" />
     <Compile Include="Helpers\ChartHelper.cs" />
     <Compile Include="Helpers\AppVersionHelper.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
@@ -2452,12 +2423,6 @@
       <DependentUpon>DashboardNavigationController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetAccountDueAmount\AmountDueStatusResponseModel.cs" />
-    <Compile Include="Home\Dashboard\DashboardAccountsDataSource.cs" />
-    <Compile Include="Home\Dashboard\DashboardAccountCell.cs" />
-    <Compile Include="Home\Dashboard\DashboardAccountCell.designer.cs">
-      <DependentUpon>DashboardAccountCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Components\GreetingComponent.cs" />
     <Compile Include="Enums\GreetingModeEnum.cs" />
     <Compile Include="Enums\NotificationEnum.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
@@ -2466,7 +2431,6 @@
     <Compile Include="Model\AppVersionModel.cs" />
     <Compile Include="Model\DowntimeDataModel.cs" />
     <Compile Include="Enums\SystemEnum.cs" />
-    <Compile Include="Home\Components\SystemDownComponent.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptTableViewDataSource.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.designer.cs">
@@ -2481,12 +2445,10 @@
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
-    <Compile Include="Home\Components\ToolTipComponent.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\ItemisedBilling.cs" />
-    <Compile Include="Home\Components\AccountStatusComponent.cs" />
     <Compile Include="Model\GetInstallationDetails\InstallationDetailDataModel.cs" />
     <Compile Include="Model\GetInstallationDetails\InstallationDetailModel.cs" />
     <Compile Include="Model\GetInstallationDetails\InstallationDetailResponseModel.cs" />
