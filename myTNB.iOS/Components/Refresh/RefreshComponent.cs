@@ -27,7 +27,6 @@ namespace myTNB
             _isSolidCTABG = isSolidCTABG;
         }
 
-
         private void CreateComponent()
         {
             nfloat width = _parentView.Frame.Width;
@@ -40,8 +39,8 @@ namespace myTNB
                 , ScaleUtility.GetScaledHeight(24), imgWidth, imgHeight))
             {
                 Image = UIImage.FromBundle(_image.IsValid()
-                    ? (IsPlannedDownTime ? Constants.IMG_IconPlannedDowntime : Constants.IMG_IconRefresh)
-                    : _image)
+                    ? _image
+                    : (IsPlannedDownTime ? Constants.IMG_IconPlannedDowntime : Constants.IMG_IconRefresh))
             };
 
             UILabel lblMessage = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(16)
