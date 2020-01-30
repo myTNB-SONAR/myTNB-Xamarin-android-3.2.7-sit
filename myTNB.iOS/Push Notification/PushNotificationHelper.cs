@@ -65,31 +65,8 @@ namespace myTNB
 
                         if (topVc != null)
                         {
-                            if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
-                            {
-                                HomeTabBarController tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
-                                if (tabBar != null)
-                                {
-                                    if (tabBar.SelectedViewController is DashboardNavigationController selVc)
-                                    {
-                                        if (selVc != null && selVc.ViewControllers.Length > 0)
-                                        {
-                                            UIViewController vc = selVc.ViewControllers[0];
-
-                                            if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
-                                            {
-                                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                                vc.PresentViewController(navController, true, null);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                topVc.PresentViewController(navController, true, null);
-                            }
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                            topVc.PresentViewController(navController, true, null);
                         }
                     }
                 }
