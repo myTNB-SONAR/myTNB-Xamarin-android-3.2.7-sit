@@ -1891,14 +1891,14 @@
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Update.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\Onboarding-Image-6-Install%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\Onboarding-Image-6-Install%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\Onboarding-Image-7-Install%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\Onboarding-Image-7-Install%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Update.imageset\Onboarding-Image-6-Update%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Update.imageset\Onboarding-Image-6-Update%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Update.imageset\Onboarding-Image-7-Update%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Update.imageset\Onboarding-Image-7-Update%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\Onboarding-Image-7-Install%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\Onboarding-Image-7-Install%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\Onboarding-Image-6-Install%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\Onboarding-Image-6-Install%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
