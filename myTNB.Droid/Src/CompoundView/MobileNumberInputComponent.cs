@@ -14,6 +14,8 @@ namespace myTNB_Android.Src.CompoundView
         private EditText editTextMobileNumber;
         private Action<bool> validateAction;
         private Country selectedCountry;
+        public static bool isSelectionTapped;
+        private Action onSelectCountryISDCodeAction;
         public MobileNumberInputComponent(Context context) : base(context)
         {
             Init(context);
@@ -41,6 +43,10 @@ namespace myTNB_Android.Src.CompoundView
             imgFlag = FindViewById<ImageView>(Resource.Id.countryIcon);
             countryISDCode = FindViewById<TextView>(Resource.Id.coutryCodeValue);
             editTextMobileNumber = FindViewById<EditText>(Resource.Id.txtMobileNo);
+            isSelectionTapped = false;
+
+            LinearLayout countryISDCodeContainer = FindViewById<LinearLayout>(Resource.Id.countryISDCodeContainer);
+            countryISDCodeContainer.Click += CountryISDCodeContainer_Click;
 
             TextViewUtils.SetMuseoSans300Typeface(countryCodeHeaderTitle,countryISDCode,editTextMobileNumber);
             editTextMobileNumber.TextChanged += delegate {
@@ -61,11 +67,16 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetOnTapCountryCodeAction(Action onTapAction)
         {
-            ImageView selectDropDownIcon = FindViewById<ImageView>(Resource.Id.selectDropDownIcon);
-            selectDropDownIcon.Click += delegate
+            onSelectCountryISDCodeAction = onTapAction;
+        }
+
+        private void CountryISDCodeContainer_Click(object sender, EventArgs e)
+        {
+            if (!isSelectionTapped)
             {
-                onTapAction?.Invoke();
-            };
+                isSelectionTapped = true;
+                onSelectCountryISDCodeAction?.Invoke();
+            }
         }
 
         public void SetValidationAction(Action<bool> action)

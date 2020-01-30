@@ -821,6 +821,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             try
             {
                 base.OnActivityResult(requestCode, resultCode, data);
+                //Resets the country drop-down selection click
+                MobileNumberInputComponent.isSelectionTapped = false;
                 if (resultCode == Result.Ok)
                 {
                     if (requestCode == COUNTRY_CODE_SELECT_REQUEST)

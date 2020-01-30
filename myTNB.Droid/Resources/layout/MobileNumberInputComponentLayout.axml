@@ -29,25 +29,33 @@
             android:background="?attr/editTextBackground"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/countryIcon"
-                android:layout_width="17dp"
-                android:layout_height="12dp"
-                android:src="@drawable/ph"/>
-            <TextView
-                android:text="+60"
-                android:id="@+id/coutryCodeValue"
+            <LinearLayout
+                android:id="@+id/countryISDCodeContainer"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:textColor="#49494a"
-                android:layout_marginLeft="2dp"
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:id="@+id/selectDropDownIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_action_dropdown"/>
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/countryIcon"
+                    android:layout_width="17dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ph"/>
+                <TextView
+                    android:text="+60"
+                    android:id="@+id/coutryCodeValue"
+                    android:gravity="center"
+                    android:textColor="#49494a"
+                    android:layout_marginLeft="2dp"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/selectDropDownIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_action_dropdown"/>
+            </LinearLayout>
         </LinearLayout>
         <EditText
             android:id="@+id/txtMobileNo"

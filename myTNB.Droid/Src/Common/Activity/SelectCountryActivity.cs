@@ -15,6 +15,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common.Adapter;
 using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -57,6 +58,12 @@ namespace myTNB_Android.Src.Common.Activity
             countryListView.Adapter = adapter;
 
             countryListView.ItemClick += OnCountryCodeSelect;
+        }
+
+        public override void OnBackPressed()
+        {
+            SetResult(Result.Canceled);
+            Finish();
         }
 
         public void OnCountryCodeSelect(object sender, AdapterView.ItemClickEventArgs args)
