@@ -333,9 +333,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\BCRM-Down-Popup.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x-1.png" />
     <ImageAsset Include="Assets\Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Billing.imageset\Billing%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Billing.imageset\Billing%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Billing.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
@@ -351,9 +348,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Bills-RE-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Bills-RE-Banner.imageset\re%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Bills-RE-Banner.imageset\re%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Calculator.imageset\Calculator%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Calculator.imageset\Calculator%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Calculator.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Calendar-Icon.imageset\Contents.json" />
@@ -400,17 +394,12 @@
     <ImageAsset Include="Assets\Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Dashboard.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Dashboard.imageset\Dashboard%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Delete.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Delete.imageset\Delete-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Delete.imageset\Delete-Icon%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Direction.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Down-BCRM.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Download.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Download.imageset\save%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Download.imageset\save%403x.png" />
