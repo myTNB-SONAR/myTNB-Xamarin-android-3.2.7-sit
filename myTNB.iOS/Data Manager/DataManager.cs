@@ -127,7 +127,6 @@ namespace myTNB.DataManager
         private List<string> AccountNumbersForPaymentList;
 
         //Account Related
-        public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
         public bool AccountIsActive = false;
 
         //Language
@@ -242,7 +241,6 @@ namespace myTNB.DataManager
             IsFromRewardsDeeplink = false;
 
             //Account Related
-            InstallationDetails = new InstallationDetailDataModel();
             AccountIsActive = false;
 
             //ResetAmountDues
@@ -936,74 +934,6 @@ namespace myTNB.DataManager
         public void CreatePaymentHistoryTable()
         {
             PaymentHistoryEntity.CreateTable();
-        }
-
-        /// <summary>
-        /// Saves to payment history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveToPaymentHistory(PaymentHistoryModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                if (!string.IsNullOrEmpty(jsonStr))
-                {
-                    var entity = new PaymentHistoryEntity();
-                    entity.AccNum = key;
-                    entity.Data = jsonStr;
-                    entity.DateUpdated = DateHelper.FormatToUtc(DateTime.UtcNow);
-                    entity.IsRefreshNeeded = false;
-                    PaymentHistoryEntity.InsertItem(entity);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the details from payment history.
-        /// </summary>
-        /// <returns>The details from payment history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> is refresh needed.</param>
-        public PaymentHistoryModel GetDetailsFromPaymentHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            PaymentHistoryModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = PaymentHistoryEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<PaymentHistoryModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
-        }
-
-        /// <summary>
-        /// Gets the cached payment history.
-        /// </summary>
-        /// <returns>The cached payment history.</returns>
-        /// <param name="accountNum">Account number.</param>
-        public PaymentHistoryModel GetCachedPaymentHistory(string accountNum)
-        {
-            DateTime lastUpdate = default(DateTime);
-            bool isRefreshNeeded = default(bool);
-            var model = GetDetailsFromPaymentHistory(accountNum, ref lastUpdate, ref isRefreshNeeded);
-
-            if (model != null && lastUpdate.Date == DateTime.Today && !isRefreshNeeded)
-            {
-                return model;
-            }
-            return null;
         }
 
         /// <summary>

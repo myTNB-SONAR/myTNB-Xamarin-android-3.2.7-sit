@@ -1952,7 +1952,6 @@
     <Folder Include="Home\More\Language\" />
     <Folder Include="Model\UpdateNotification\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
-    <Folder Include="Model\GetInstallationDetails\" />
     <Folder Include="Payment\Select Payment Method\" />
     <Folder Include="Session Cache\" />
     <Folder Include="Home\Dashboard\DashboardHome\" />
@@ -2286,8 +2285,6 @@
     </Compile>
     <Compile Include="Model\IsUserAuthenticate\UserAuthenticationResponseModel.cs" />
     <Compile Include="Model\GetLocationTypes\LocationTypeDataModel.cs" />
-    <Compile Include="Model\GetLocationTypes\LocationTypesModel.cs" />
-    <Compile Include="Model\GetLocationTypes\LocationTypesResponseModel.cs" />
     <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.cs" />
     <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.designer.cs">
       <DependentUpon>LocationDetailsViewController.cs</DependentUpon>
@@ -2327,17 +2324,11 @@
       <DependentUpon>RatingViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryDataModel.cs" />
-    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryModel.cs" />
-    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryResponseModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryDataModel.cs" />
-    <Compile Include="Model\GetPaymentHistory\PaymentHistoryModel.cs" />
-    <Compile Include="Model\GetPaymentHistory\PaymentHistoryResponseModel.cs" />
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeDataModel.cs" />
-    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeModel.cs" />
-    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsResponseModel.cs" />
     <Compile Include="Enums\FeedBackEnum.cs" />
@@ -2424,9 +2415,6 @@
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\ItemisedBilling.cs" />
-    <Compile Include="Model\GetInstallationDetails\InstallationDetailDataModel.cs" />
-    <Compile Include="Model\GetInstallationDetails\InstallationDetailModel.cs" />
-    <Compile Include="Model\GetInstallationDetails\InstallationDetailResponseModel.cs" />
     <Compile Include="Payment\Select Payment Method\SelectPaymentCell.cs" />
     <Compile Include="Payment\Select Payment Method\SelectPaymentCell.designer.cs">
       <DependentUpon>SelectPaymentCell.cs</DependentUpon>
