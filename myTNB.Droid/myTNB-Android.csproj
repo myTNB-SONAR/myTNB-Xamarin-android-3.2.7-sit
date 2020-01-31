@@ -4551,6 +4551,17 @@
     <Compile Include="Src\Utils\MyTNBAppToolTipBuilder.cs" />
     <Compile Include="Src\MyTNBService\Request\GetPaymentReceiptRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\GetPaymentReceiptResponse.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughFifthBg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_5.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
