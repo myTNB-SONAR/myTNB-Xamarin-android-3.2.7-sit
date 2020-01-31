@@ -27,7 +27,6 @@ namespace myTNB
             _isSolidCTABG = isSolidCTABG;
         }
 
-
         private void CreateComponent()
         {
             nfloat width = _parentView.Frame.Width;
@@ -171,8 +170,6 @@ namespace myTNB
                 _refreshView.AddSubview(btnRefresh);
             }
             _refreshView.Frame = new CGRect(0, 0, _viewWidth, _parentView.Frame.Height);
-            _refreshView.Layer.BorderColor = UIColor.Red.CGColor;
-            _refreshView.Layer.BorderWidth = 1;
         }
     }
 }

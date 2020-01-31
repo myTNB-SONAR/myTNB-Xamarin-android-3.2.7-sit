@@ -37,6 +37,7 @@ namespace myTNB.Model
         public string NotificationType { set; get; } = string.Empty;
         public string Target { set; get; } = string.Empty;
         public bool IsSMRPeriodOpen { set; get; }
+        public string ODNBatchSubcategory { set; get; } = string.Empty;
 
         public class AccountDetailsModel
         {
@@ -52,9 +53,13 @@ namespace myTNB.Model
             {
                 if (!NotificationType.Equals("ODN"))
                 {
-                    var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                          : new SQLite.SQLiteDataManager.UserEntity();
+                    if (ODNBatchSubcategory.IsValid() && ODNBatchSubcategory.ToUpper().Equals("ODNASBATCH"))
+                    {
+                        return true;
+                    }
+                    SQLite.SQLiteDataManager.UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                        ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                        : new SQLite.SQLiteDataManager.UserEntity();
                     int accIndex = -1;
                     if (DataManager.DataManager.SharedInstance != null
                     && DataManager.DataManager.SharedInstance.AccountRecordsList != null
