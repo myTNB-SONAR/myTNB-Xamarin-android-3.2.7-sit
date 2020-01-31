@@ -41,7 +41,7 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
-        private bool _isBCRMAvailable, _isBCRMPopupDisplayed;
+        private bool _isBCRMPopupDisplayed;
         public string RearrangeSuccessMsg;
         public bool IsRearrangeSaved;
         public bool IsNeedHelpCallDone;
@@ -59,7 +59,6 @@ namespace myTNB
             IsNewGradientRequired = true;
             base.ViewDidLoad();
             AddFooterBG();
-            _isBCRMAvailable = true;// DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0 && accNum != null && !string.IsNullOrEmpty(accNum) && !string.IsNullOrWhiteSpace(accNum))
             {
@@ -96,16 +95,8 @@ namespace myTNB
 
         private void PrepareTableView()
         {
-            if (_isBCRMAvailable)
-            {
-                SetAccountListViewController();
-                InitializeTableView();
-            }
-            else
-            {
-                InitializeTableView();
-                ShowRefreshScreen(true, null);
-            }
+            SetAccountListViewController();
+            InitializeTableView();
         }
 
         private void SetGreetingView()
@@ -993,7 +984,7 @@ namespace myTNB
             }
         }
 
-        public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
+        public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null, bool isPlannedDowntime = false)
         {
             InvokeOnMainThread(() =>
             {
@@ -1001,14 +992,15 @@ namespace myTNB
                 _isRefreshScreenEnabled = isFail;
                 if (_isRefreshScreenEnabled)
                 {
-                    var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-                    var bcrmMsg = bcrm?.DowntimeMessage ?? GetCommonI18NValue(Constants.Common_BCRMMessage);
-                    string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
-
-                    _refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(24f));
-                    _refreshScreenComponent.SetIsBCRMDown(!_isBCRMAvailable);
-                    _refreshScreenComponent.SetRefreshButtonHidden(!_isBCRMAvailable);
-                    _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
+                    string desc = isPlannedDowntime ? model?.DisplayMessage : model?.RefreshMessage;
+                    var yPos = isPlannedDowntime ? GetScaledHeight(54F) : GetScaledHeight(24F);
+                    _refreshScreenComponent = new RefreshScreenComponent(View, yPos);
+                    _refreshScreenComponent.SetIsBCRMDown(isPlannedDowntime);
+                    _refreshScreenComponent.SetRefreshButtonHidden(isPlannedDowntime);
+                    if (!isPlannedDowntime)
+                    {
+                        _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
+                    }
                     _refreshScreenComponent.SetDescription(desc);
                     _refreshScreenComponent.CreateComponent();
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;

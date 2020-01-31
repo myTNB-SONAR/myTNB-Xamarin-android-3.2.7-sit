@@ -30,6 +30,18 @@
       "Description": "description5",
       "Image": "Onboarding-Image-5-Install",
       "ID": "5"
+    },
+    {
+      "Title": "title7",
+      "Description": "description7",
+      "Image": "Onboarding-Image-6-Install",
+      "ID": "6"
+    },
+    {
+      "Title": "title7",
+      "Description": "description7",
+      "Image": "Onboarding-Image-7-Install",
+      "ID": "7"
     }
   ]
 }
