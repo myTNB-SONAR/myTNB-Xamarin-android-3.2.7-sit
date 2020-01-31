@@ -1196,11 +1196,7 @@
     <ImageAsset Include="Assets\Flags.xcassets\BM.imageset\bm%402x-1.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BM.imageset\bm%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BM.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\BN.imageset\bn%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\BN.imageset\bn%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BN.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\BO.imageset\bo%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\BO.imageset\bo%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BO.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\BR.imageset\br%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BR.imageset\br%403x.png" />
@@ -1208,8 +1204,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\BS.imageset\bs%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BS.imageset\bs%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BS.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\BT.imageset\bt%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\BT.imageset\bt%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BT.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\BW.imageset\bw%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BW.imageset\bw%403x.png" />
@@ -1217,8 +1211,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\BY.imageset\by%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BY.imageset\by%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BY.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\BZ.imageset\bz%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\BZ.imageset\bz%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\BZ.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\CA.imageset\ca%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\CA.imageset\ca%403x.png" />
@@ -1338,8 +1330,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\GB.imageset\gb%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GB.imageset\gb%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GD.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\GD.imageset\gd%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\GD.imageset\gd%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GE.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\GE.imageset\ge%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GE.imageset\ge%403x.png" />
@@ -1368,8 +1358,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\GQ.imageset\gq%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GQ.imageset\gq%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GR.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\GR.imageset\gr%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\GR.imageset\gr%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GT.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\GT.imageset\gt%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\GT.imageset\gt%403x.png" />
@@ -1449,8 +1437,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\KI.imageset\ki%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\KI.imageset\ki%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\KM.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\KM.imageset\km%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\KM.imageset\km%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\KN.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\KN.imageset\kn%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\KN.imageset\kn%403x.png" />
@@ -1479,14 +1465,10 @@
     <ImageAsset Include="Assets\Flags.xcassets\LC.imageset\lc%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LC.imageset\lc%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LI.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\LI.imageset\li%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\LI.imageset\li%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LK.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\LK.imageset\lk%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LK.imageset\lk%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LR.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\LR.imageset\lr%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\LR.imageset\lr%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LS.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\LS.imageset\ls%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\LS.imageset\ls%403x.png" />
@@ -1533,8 +1515,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\MM.imageset\mm%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MM.imageset\mm%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MN.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\MN.imageset\mn%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\MN.imageset\mn%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MO.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\MO.imageset\mo%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MO.imageset\mo%403x.png" />
@@ -1563,8 +1543,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\MX.imageset\mx%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MX.imageset\mx%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MY.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\MY.imageset\my%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\MY.imageset\my%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MZ.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\MZ.imageset\mz%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\MZ.imageset\mz%403x.png" />
@@ -1785,8 +1763,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\VC.imageset\vc%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\VC.imageset\vc%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\VE.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\VE.imageset\ve%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\VE.imageset\ve%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\VG.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\VG.imageset\vg%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\VG.imageset\vg%403x.png" />
@@ -1794,8 +1770,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\VN.imageset\vn%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\VN.imageset\vn%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\VU.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\VU.imageset\vu%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\VU.imageset\vu%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\WS.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\WS.imageset\ws%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\WS.imageset\ws%403x.png" />
@@ -1812,8 +1786,6 @@
     <ImageAsset Include="Assets\Flags.xcassets\ZM.imageset\zm%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\ZM.imageset\zm%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\zw%402x.png" />
-    <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\zw%403x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\Flag-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets\Flags.xcassets\Flag-Generic.imageset\combinedShape%402x.png" />
     <ImageAsset Include="Assets\Flags.xcassets\Flag-Generic.imageset\combinedShape%403x.png" />
@@ -1837,6 +1809,34 @@
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-7-Update.imageset\Onboarding-Image-7-Update%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Update.imageset\Onboarding-Image-6-Update%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-6-Update.imageset\Onboarding-Image-6-Update%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BN.imageset\bn%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BN.imageset\bn%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BO.imageset\bo%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BO.imageset\bo%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BT.imageset\bt%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BT.imageset\bt%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BZ.imageset\bz%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BZ.imageset\bz%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GD.imageset\gd%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GD.imageset\gd%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GR.imageset\gr%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GR.imageset\gr%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\KM.imageset\km%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\KM.imageset\km%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\LI.imageset\li%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\LI.imageset\li%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\LR.imageset\lr%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\LR.imageset\lr%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\MN.imageset\mn%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\MN.imageset\mn%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\MY.imageset\my%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\MY.imageset\my%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\VE.imageset\ve%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\VE.imageset\ve%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\VU.imageset\vu%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\VU.imageset\vu%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\zw%402x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\zw%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
