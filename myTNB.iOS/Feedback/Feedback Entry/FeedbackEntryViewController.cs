@@ -8,6 +8,7 @@ using myTNB.Model;
 using myTNB.Customs;
 using myTNB.Home.Feedback.FeedbackEntry;
 using myTNB.Feedback;
+using Foundation;
 
 namespace myTNB
 {
@@ -25,30 +26,33 @@ namespace myTNB
         const float UNIVERSAL_MARGIN = 7f;
         const float VIEW_PHOTO_MARGIN = 20f;
 
-        int imageWidth = 0;
-        int capturedImageCount = 0;
-        int imageCount = 0;
+        private int imageWidth = 0;
+        private int capturedImageCount = 0;
+        private int imageCount = 0;
+
+        internal MobileNumberComponent _mobileNumberComponent;
 
         //Widgets
-        UIView _btnSubmitContainer, _viewUploadPhoto, _feedbackCategoryView, _viewFeedback
-            , _viewLineFeedback;
-        UILabel _lblPhotoTitle, _lblFeedbackTitle, _lblFeedbackSubTitle, _lblFeedbackError;
-        UIImageView _iconFeedback;
-        UIButton _btnSubmit;
-        UIScrollView _svContainer, imageContainerScroll;
-        UITapGestureRecognizer _tapImage;
+        private UIView _btnSubmitContainer, _viewUploadPhoto, _feedbackCategoryView, _viewFeedback
+             , _viewLineFeedback;
+        private UILabel _lblPhotoTitle, _lblFeedbackTitle, _lblFeedbackSubTitle, _lblFeedbackError;
+        private UIImageView _iconFeedback;
+        private UIButton _btnSubmit;
+        private UIScrollView _svContainer, imageContainerScroll;
+        private UITapGestureRecognizer _tapImage;
 
-        FeedbackTextView _feedbackTextView;
-        OtherFeedbackComponent _otherFeedbackComponent;
-        BillRelatedFeedbackComponent _billRelatedFeedbackComponent;
+        private FeedbackTextView _feedbackTextView;
+        private OtherFeedbackComponent _otherFeedbackComponent;
+        private BillRelatedFeedbackComponent _billRelatedFeedbackComponent;
         public StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
 
-        SubmitFeedbackResponseModel _submitFeedback;
+        private SubmitFeedbackResponseModel _submitFeedback;
 
         public override void ViewDidLoad()
         {
             PageName = FeedbackConstants.Pagename_FeedbackForm;
             base.ViewDidLoad();
+            NotifCenterUtility.AddObserver((NSString)"OnCountrySelected", OnCountrySelected);
             CheckMobileNumber();
             _otherFeedbackComponent = new OtherFeedbackComponent(this);
             _billRelatedFeedbackComponent = new BillRelatedFeedbackComponent(this);
@@ -80,6 +84,24 @@ namespace myTNB
             }
         }
 
+        private void OnCountrySelected(NSNotification obj)
+        {
+            NSDictionary userInfo = obj.UserInfo;
+            CountryModel countryInfo = new CountryModel
+            {
+                CountryCode = userInfo.ValueForKey(new NSString("CountryCode")).ToString(),
+                CountryName = userInfo.ValueForKey(new NSString("CountryName")).ToString(),
+                CountryISDCode = userInfo.ValueForKey(new NSString("CountryISDCode")).ToString()
+            };
+            if (_mobileNumberComponent != null)
+            {
+                _mobileNumberComponent.CountryShortCode = countryInfo.CountryCode;
+                _mobileNumberComponent.CountryCode = countryInfo.CountryISDCode;
+                _mobileNumberComponent.ClearField();
+                SetButtonEnable();
+            }
+        }
+
         private void CheckMobileNumber()
         {
             isMobileNumberAvailable = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
@@ -92,10 +114,10 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.DismissViewController(true, null);
+                DismissViewController(true, null);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
-            this.Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
+            NavigationItem.LeftBarButtonItem = btnBack;
+            Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
         }
 
         private void AddScrollView()
@@ -304,7 +326,7 @@ namespace myTNB
 
         private void CreateCommentSection()
         {
-            _viewFeedback = new UIView((new CGRect(18, GetCommentSectionYCoordinate(), View.Frame.Width - 36, 51)))
+            _viewFeedback = new UIView((new CGRect(18, GetCommentSectionYCoordinate() + 16, View.Frame.Width - 36, 51)))
             {
                 BackgroundColor = UIColor.Clear
             };

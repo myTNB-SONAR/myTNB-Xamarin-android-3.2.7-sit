@@ -51,6 +51,8 @@ namespace myTNB
             {
                 _mobileNumberComponent.CountryShortCode = countryInfo.CountryCode;
                 _mobileNumberComponent.CountryCode = countryInfo.CountryISDCode;
+                _mobileNumberComponent.ClearField();
+                OnDone();
             }
         }
 
@@ -194,7 +196,7 @@ namespace myTNB
         {
             get
             {
-                string defaultCountry = "MY";//Todo: Change this default country
+                string defaultCountry = TNBGlobal.APP_COUNTRY;
                 CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
                 return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
             }

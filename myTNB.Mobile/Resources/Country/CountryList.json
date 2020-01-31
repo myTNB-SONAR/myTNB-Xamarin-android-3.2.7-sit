@@ -1,6 +1,11 @@
 ﻿{
   "CountryList": [
     {
+      "CountryCode": "AC",
+      "CountryName": "Ascension Island",
+      "CountryISDCode": "+247"
+    },
+    {
       "CountryCode": "AD",
       "CountryName": "Andorra",
       "CountryISDCode": "+376"
@@ -18,12 +23,12 @@
     {
       "CountryCode": "AG",
       "CountryName": "Antigua and Barbuda",
-      "CountryISDCode": "+1268"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "AI",
       "CountryName": "Anguilla",
-      "CountryISDCode": "+1 264"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "AL",
@@ -34,11 +39,6 @@
       "CountryCode": "AM",
       "CountryName": "Armenia",
       "CountryISDCode": "+374"
-    },
-    {
-      "CountryCode": "AN",
-      "CountryName": "Netherlands Antilles",
-      "CountryISDCode": "+599"
     },
     {
       "CountryCode": "AO",
@@ -58,7 +58,7 @@
     {
       "CountryCode": "AS",
       "CountryName": "American Samoa",
-      "CountryISDCode": "+1 684"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "AT",
@@ -151,6 +151,11 @@
       "CountryISDCode": "+591"
     },
     {
+      "CountryCode": "BQ",
+      "CountryName": "Caribbean Netherlands",
+      "CountryISDCode": "+599"
+    },
+    {
       "CountryCode": "BR",
       "CountryName": "Brazil",
       "CountryISDCode": "+55"
@@ -184,6 +189,11 @@
       "CountryCode": "CA",
       "CountryName": "Canada",
       "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "CC",
+      "CountryName": "Cocos (Keeling) Islands",
+      "CountryISDCode": "+61"
     },
     {
       "CountryCode": "CD",
@@ -252,8 +262,13 @@
     },
     {
       "CountryCode": "CW",
-      "CountryName": "Curacao",
+      "CountryName": "Curaçao",
       "CountryISDCode": "+599"
+    },
+    {
+      "CountryCode": "CX",
+      "CountryName": "Christmas Island",
+      "CountryISDCode": "+61"
     },
     {
       "CountryCode": "CY",
@@ -373,12 +388,17 @@
     {
       "CountryCode": "GD",
       "CountryName": "Grenada",
-      "CountryISDCode": "+1473"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "GE",
       "CountryName": "Georgia",
       "CountryISDCode": "+995"
+    },
+    {
+      "CountryCode": "GF",
+      "CountryName": "French Guiana",
+      "CountryISDCode": "+594"
     },
     {
       "CountryCode": "GG",
@@ -426,6 +446,11 @@
       "CountryISDCode": "+30"
     },
     {
+      "CountryCode": "GS",
+      "CountryName": "So. Georgia & So. Sandwich Isl.",
+      "CountryISDCode": "+500"
+    },
+    {
       "CountryCode": "GT",
       "CountryName": "Guatemala",
       "CountryISDCode": "+502"
@@ -433,7 +458,7 @@
     {
       "CountryCode": "GU",
       "CountryName": "Guam",
-      "CountryISDCode": "+1671"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "GW",
@@ -494,6 +519,11 @@
       "CountryCode": "IN",
       "CountryName": "India",
       "CountryISDCode": "+91"
+    },
+    {
+      "CountryCode": "IO",
+      "CountryName": "British Indian Ocean Territory",
+      "CountryISDCode": "+246"
     },
     {
       "CountryCode": "IQ",
@@ -583,7 +613,7 @@
     {
       "CountryCode": "KY",
       "CountryName": "Cayman Islands",
-      "CountryISDCode": "+1345"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "KZ",
@@ -668,7 +698,7 @@
     {
       "CountryCode": "MF",
       "CountryName": "Saint Martin",
-      "CountryISDCode": "+1599"
+      "CountryISDCode": "+590"
     },
     {
       "CountryCode": "MG",
@@ -682,7 +712,7 @@
     },
     {
       "CountryCode": "MK",
-      "CountryName": "Macedonia",
+      "CountryName": "Northern Macedonia",
       "CountryISDCode": "+389"
     },
     {
@@ -708,7 +738,12 @@
     {
       "CountryCode": "MP",
       "CountryName": "Northern Mariana Islands",
-      "CountryISDCode": "+1670"
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "MQ",
+      "CountryName": "Martinique",
+      "CountryISDCode": "+596"
     },
     {
       "CountryCode": "MR",
@@ -718,7 +753,7 @@
     {
       "CountryCode": "MS",
       "CountryName": "Montserrat",
-      "CountryISDCode": "+1664"
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "MT",
@@ -871,6 +906,11 @@
       "CountryISDCode": "+1"
     },
     {
+      "CountryCode": "PS",
+      "CountryName": "Palestine",
+      "CountryISDCode": "+970"
+    },
+    {
       "CountryCode": "PT",
       "CountryName": "Portugal",
       "CountryISDCode": "+351"
@@ -1001,6 +1041,11 @@
       "CountryISDCode": "+503"
     },
     {
+      "CountryCode": "SX",
+      "CountryName": "Sint Maarten",
+      "CountryISDCode": "+1"
+    },
+    {
       "CountryCode": "SY",
       "CountryName": "Syria",
       "CountryISDCode": "+963"
@@ -1012,7 +1057,7 @@
     },
     {
       "CountryCode": "TC",
-      "CountryName": "Turks and Caico Islands",
+      "CountryName": "Turks and Caicos Islands",
       "CountryISDCode": "+1"
     },
     {
@@ -1112,7 +1157,7 @@
     },
     {
       "CountryCode": "VA",
-      "CountryName": "Vatican",
+      "CountryName": "Vatican City",
       "CountryISDCode": "+39"
     },
     {
@@ -1128,7 +1173,12 @@
     {
       "CountryCode": "VG",
       "CountryName": "British Virgin Islands",
-      "CountryISDCode": "+1 284"
+      "CountryISDCode": "+1"
+    },
+    {
+      "CountryCode": "VI",
+      "CountryName": "US Virgin Islands",
+      "CountryISDCode": "+1"
     },
     {
       "CountryCode": "VN",
@@ -1141,6 +1191,11 @@
       "CountryISDCode": "+678"
     },
     {
+      "CountryCode": "WF",
+      "CountryName": "Wallis and Futuna",
+      "CountryISDCode": "+681"
+    },
+    {
       "CountryCode": "WS",
       "CountryName": "Samoa",
       "CountryISDCode": "+685"
@@ -1148,12 +1203,17 @@
     {
       "CountryCode": "XK",
       "CountryName": "Kosovo",
-      "CountryISDCode": "+381"
+      "CountryISDCode": "+383"
     },
     {
       "CountryCode": "YE",
       "CountryName": "Yemen",
       "CountryISDCode": "+967"
+    },
+    {
+      "CountryCode": "YT",
+      "CountryName": "Mayotte",
+      "CountryISDCode": "+262"
     },
     {
       "CountryCode": "ZA",
