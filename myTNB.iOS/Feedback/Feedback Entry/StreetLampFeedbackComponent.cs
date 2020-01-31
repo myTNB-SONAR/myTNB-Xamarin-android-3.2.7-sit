@@ -37,7 +37,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         private void ConstructOtherFeedbackWidget()
         {
-            _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
+            _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View) { ViewController = _controller };
             _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             ConstructBanner();

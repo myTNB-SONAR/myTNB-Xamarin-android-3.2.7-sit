@@ -15,6 +15,7 @@ namespace myTNB
         public static string OS = "ios";
         public static string APP_LANGUAGE = "EN";
         public static string DB_NAME = "myTNB.db";
+        public static string APP_COUNTRY = "MY";
 
         public static string API_KEY_ID = GetAPIKeyID;
         public static string DEVICE_PLATFORM_IOS = "2";
