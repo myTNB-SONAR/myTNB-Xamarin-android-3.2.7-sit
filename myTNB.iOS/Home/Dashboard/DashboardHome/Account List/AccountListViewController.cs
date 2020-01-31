@@ -726,13 +726,27 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.AccountListIsLoaded = true;
                                 if (response != null &&
                                     response.d != null &&
-                                    response.d.IsSuccess &&
-                                    response.d.data != null &&
-                                    response.d.data?.Count > 0)
+                                    response.d.IsSuccess)
                                 {
-                                    _homeViewController.ShowRefreshScreen(false, null);
-                                    UpdateDueForDisplayedAccounts(response.d.data);
-                                    ReloadViews(false, isFromSearch);
+                                    if (response.d.data != null && response.d.data.Count > 0)
+                                    {
+                                        _homeViewController.ShowRefreshScreen(false, null);
+                                        UpdateDueForDisplayedAccounts(response.d.data);
+                                        ReloadViews(false, isFromSearch);
+                                    }
+                                    else
+                                    {
+                                        _refreshScreenInfoModel.RefreshBtnText = response?.d?.RefreshBtnText ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
+                                        _refreshScreenInfoModel.RefreshMessage = response?.d?.RefreshMessage ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
+                                        _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
+                                    }
+                                }
+                                else if (response != null &&
+                                    response.d != null &&
+                                    response.d.IsPlannedDownTime)
+                                {
+                                    _refreshScreenInfoModel.DisplayMessage = response.d.DisplayMessage.IsValid() ? response.d.DisplayMessage : GetErrorI18NValue(Constants.Error_BcrmDownMessage);
+                                    _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel, true);
                                 }
                                 else
                                 {

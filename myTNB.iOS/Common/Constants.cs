@@ -148,6 +148,7 @@ namespace myTNB
         public static string Error_WhatsNewExpiredTitle = "whatsNewExpiredTitle";
         public static string Error_WhatsNewExpiredMsg = "whatsNewExpiredMsg";
         public static string Error_WhatsNewExpiredBtnText = "whatsNewExpiredBtnText";
+        public static string Error_BcrmDownMessage = "bcrmDownMessage";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";

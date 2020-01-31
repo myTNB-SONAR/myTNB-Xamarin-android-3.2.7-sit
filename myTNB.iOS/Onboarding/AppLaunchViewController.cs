@@ -866,10 +866,24 @@ namespace myTNB
                 OnboardingResponseModel respModel = JsonConvert.DeserializeObject<OnboardingResponseModel>(dataJson);
                 if (AppLaunchMasterCache.IsRewardsDisabled)
                 {
-                    int index = respModel.Data.FindIndex(x => x.Title == "title5");
-                    if (index > -1)
+                    int rIndx = respModel.Data.FindIndex(x => x.ID == "5");
+                    if (rIndx > -1)
                     {
-                        respModel.Data.RemoveAt(index);
+                        respModel.Data.RemoveAt(rIndx);
+                    }
+
+                    int iIndx = respModel.Data.FindIndex(x => x.ID == "6");
+                    if (iIndx > -1)
+                    {
+                        respModel.Data.RemoveAt(iIndx);
+                    }
+                }
+                else
+                {
+                    int iIndx = respModel.Data.FindIndex(x => x.ID == "7");
+                    if (iIndx > -1)
+                    {
+                        respModel.Data.RemoveAt(iIndx);
                     }
                 }
                 onboardingData = respModel?.Data;

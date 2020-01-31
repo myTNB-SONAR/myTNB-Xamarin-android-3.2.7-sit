@@ -150,7 +150,8 @@
     "whatsNewExpiredTitle": "This content is unavailable.",
     "whatsNewExpiredMsg": "Looks like this promotion/announcement is over. Check back often to find out what else is new!",
     "whatsNewExpiredBtnText": "Show Me What’s New!",
-    "receiptErrorMsg": "We can’t seem to fetch your receipt right now. Check back later!"
+    "receiptErrorMsg": "We can’t seem to fetch your receipt right now. Check back later!",
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -637,7 +638,7 @@
     "accountSectionTitle": "TNB Electricity Supply Accounts",
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
-    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "mobileNumberVerified": "You've successfully updated your phone number!",
     "accountDeleteSuccess": "Your electricity supply account has been removed from myTNB account.",
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "noAccounts": "No Electricity Account",
@@ -735,12 +736,14 @@
     "title4": "Pay your bills anytime, anywhere.",
     "title5": "Say hi to myTNB Rewards!",
     "title6": "What’s new with myTNB?",
+    "title7": "Use myTNB with Any Mobile Number.",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
     "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
-    "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah."
+    "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
+    "description7": "You can now register a myTNB account or update your existing one with an international phone number."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
