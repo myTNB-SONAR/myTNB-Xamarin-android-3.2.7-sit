@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
 using myTNB.Profile;
+using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
@@ -22,7 +23,38 @@ namespace myTNB.Registration
             PageName = ProfileConstants.Pagename_TnC;
             base.ViewDidLoad();
             AddBackButton();
-            InitializedSubviews();
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            GetTandC();
+        }
+
+        private void GetTandC()
+        {
+            if (NetworkUtility.isReachable)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    ActivityIndicator.Show();
+                    InvokeInBackground(() =>
+                    {
+                        SitecoreServices.Instance.LoadTermsAndCondition().ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                ActivityIndicator.Hide();
+                                InitializedSubviews();
+                            });
+                        });
+                    });
+                });
+            }
+            else
+            {
+                DisplayNoDataAlert();
+            }
         }
 
         private void InitializedSubviews()
