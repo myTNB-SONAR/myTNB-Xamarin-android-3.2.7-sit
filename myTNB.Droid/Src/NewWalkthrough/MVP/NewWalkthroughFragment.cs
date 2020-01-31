@@ -106,6 +106,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             int imgWidth, imgHeight;
             float heightRatio;
             btnToggleContainer.Visibility = ViewStates.Gone;
+            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
             switch (imageUrl)
             {
                 case "walkthrough_img_install_0":
@@ -175,7 +176,14 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_5":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_5);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughForthBg);
+                    }
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -199,7 +207,14 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_update_2":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_5);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    }
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
