@@ -112,13 +112,13 @@ namespace myTNB_Android.Src.Utils
 
         public static System.Boolean HasUpdateSkipped(ISharedPreferences prefs)
         {
-            return prefs.GetBoolean("hasUpdateSkipped190", false);
+            return prefs.GetBoolean(Utility.GetAppUpdateId(), false);
         }
 
         public static void DoUpdateSkipped(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("hasUpdateSkipped190", true);
+            editor.PutBoolean(Utility.GetAppUpdateId(), true);
             editor.Apply();
         }
 

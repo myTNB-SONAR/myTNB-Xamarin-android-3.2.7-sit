@@ -22,6 +22,7 @@ namespace myTNB_Android.Src.Utils
     public class Utility
     {
         private static bool IsPayDisableNotFromAppLaunch = false;
+        private static string AppUpdateId = "";
 
         public Utility()
         {
@@ -298,19 +299,42 @@ namespace myTNB_Android.Src.Utils
         public static string GetAppVersionName(Context appContext)
         {
             string appVersionName = "";
-            var name = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionName;
-            var code = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionCode;
-            if (name != null)
+            try
             {
-                appVersionName = GetLocalizedLabel("Profile", "appVersion") + " " + name;
-            }
+                var name = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionName;
+                var code = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionCode;
+                if (name != null)
+                {
+                    appVersionName = GetLocalizedLabel("Profile", "appVersion") + " " + name;
+                }
 #if DEBUG || STUB || DEVELOP || SIT
-            if (code != null)
-            {
                 appVersionName = appVersionName + "(" + code + ")";
-            }
 #endif
+            }
+            catch (Exception e)
+            {
+                LoggingNonFatalError(e);
+            }
             return appVersionName;
+        }
+
+        public static void SetAppUpdateId(Context appContext)
+        {
+            AppUpdateId = "AppUpdateId";
+            try
+            {
+                var code = appContext.PackageManager.GetPackageInfo(appContext.PackageName, 0).VersionCode;
+                AppUpdateId = AppUpdateId + code;
+            }
+            catch (Exception e)
+            {
+                LoggingNonFatalError(e);
+            }
+        }
+
+        public static string GetAppUpdateId()
+        {
+            return AppUpdateId;
         }
     }
 }
