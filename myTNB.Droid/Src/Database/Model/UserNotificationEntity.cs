@@ -52,6 +52,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Target")]
         public string Target { get; set; }
 
+        [Column("ODNBatchSubcategory")]
+        public string ODNBatchSubcategory { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
@@ -89,7 +92,8 @@ namespace myTNB_Android.Src.Database.Model
                 BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
                 CreatedDate = userNotification.CreatedDate,
                 NotificationType = userNotification.NotificationType,
-                Target = userNotification.Target
+                Target = userNotification.Target,
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
             };
             int rows = db.InsertOrReplace(newRecord);
             //db.Close();
@@ -117,7 +121,8 @@ namespace myTNB_Android.Src.Database.Model
                 BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
                 CreatedDate = userNotification.CreatedDate,
                 NotificationType = userNotification.NotificationType,
-                Target = userNotification.Target
+                Target = userNotification.Target,
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
             };
 
             //db.InsertOrReplaceAsync(newRecord);
