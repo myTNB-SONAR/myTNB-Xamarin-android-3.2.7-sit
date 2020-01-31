@@ -637,7 +637,7 @@
     "accountSectionTitle": "TNB Electricity Supply Accounts",
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
-    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "mobileNumberVerified": "You've successfully updated your phone number!",
     "accountDeleteSuccess": "Your electricity supply account has been removed from myTNB account.",
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "noAccounts": "No Electricity Account",
