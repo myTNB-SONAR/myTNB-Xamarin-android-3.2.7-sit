@@ -37,7 +37,7 @@
     "selectAll": "Pilih Semua",
     "unselectAll": "Nyahpilih Semua",
     "totalAmount": "Jumlah Keseluruhan",
-    "totalAmountRM": "Jumlah Keseluruhan (RM)",
+    "totalAmountRM": "Jumlah (RM)",
     "amountRM": "Amaun (RM)",
     "back": "Kembali",
     "cards": "Kad Kredit / Debit",
@@ -150,7 +150,8 @@
     "whatsNewExpiredTitle": "Kandungan ini tidak tersedia.",
     "whatsNewExpiredMsg": "Promosi/pengumuman ini telah tamat & dikeluarkan. Semak semula selepas ini untuk mengetahui informasi terkini tentang TNB!",
     "whatsNewExpiredBtnText": "Tunjukkan Terkini!",
-    "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!"
+    "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!",
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -597,7 +598,7 @@
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "electricityAccount": "Akaun Elektrik",
-    "mobileNumberVerified": "Nombor telefon anda telah berjaya disahkan.",
+    "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar."
   },
   "NotificationSettings": {
@@ -637,7 +638,7 @@
     "accountSectionTitle": "Akaun Elektrik TNB",
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
-    "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
+    "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
@@ -695,7 +696,7 @@
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
     "updateMobileNumberTitle": "Kemas kini Nombor Telefon",
     "infoTitle": "Apakah tujuannya?",
-    "infoPopupTitle": "Ini bertujuan untuk mengenas kini butiran myTNB anda.",
+    "infoPopupTitle": "Ini bertujuan untuk mengemas kini butiran myTNB anda.",
     "infoPopupMessage": "Ini hanya akan mengemas kini butiran anda pada myTNB. Ia tidak akan memberi kesan atau mengubah sebarang maklumat yang berkaitan dengan akaun elektrik sedia ada."
   },
   "VerifyPin": {
@@ -735,12 +736,14 @@
     "title4": "Bayar bil anda bila-bila masa, di mana sahaja.",
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
+    "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
-    "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below."
+    "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -788,9 +791,9 @@
     "title": "Resit Pembayaran",
     "accountHolder": "Nama Pemilik Akaun",
     "receiptFilename": "Resit-{0}.pdf",
-    "fullMessage": "Terima kasih kerana menggunakan myTNB.\nSukacita kami maklumkan bahawa pembayaran dalam talian melalui {0} telah berjaya:",
+    "fullMessage": "Terima kasih kerana menggunakan myTNB.\nSukacita dimaklumkan bahawa pembayaran dalam talian berikut menerusi {0} telah berjaya:",
     "messagePartOne": "Terima kasih kerana menggunakan myTNB.",
-    "messagePartTwo": "Sukacita kami maklumkan bahawa pembayaran dalam talian melalui {0} telah berjaya:",
+    "messagePartTwo": "Sukacita dimaklumkan bahawa pembayaran dalam talian berikut menerusi {0} telah berjaya:",
     "noReceipt": "Tiada resit dijumpai",
     "note": "NOTA: Resit ini dihasilkan komputer dan tandatangan tidak diperlukan.",
     "referenceNumber": "Nombor Rujukan",
