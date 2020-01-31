@@ -150,7 +150,8 @@
     "whatsNewExpiredTitle": "Kandungan ini tidak tersedia.",
     "whatsNewExpiredMsg": "Promosi/pengumuman ini telah tamat & dikeluarkan. Semak semula selepas ini untuk mengetahui informasi terkini tentang TNB!",
     "whatsNewExpiredBtnText": "Tunjukkan Terkini!",
-    "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!"
+    "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!",
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -735,12 +736,14 @@
     "title4": "Bayar bil anda bila-bila masa, di mana sahaja.",
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
+    "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
-    "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below."
+    "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",

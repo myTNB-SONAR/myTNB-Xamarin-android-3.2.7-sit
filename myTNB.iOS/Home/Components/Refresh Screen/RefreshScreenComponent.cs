@@ -190,7 +190,7 @@ namespace myTNB.Home.Components
 
         private void AdjustContainerHeight()
         {
-            ViewHelper.AdjustFrameSetHeight(_viewContainer, _isBtnHidden ? _txtDescription.Frame.GetMaxY() + GetScaledHeight(24F) : _btnRefresh.Frame.GetMaxY() + GetScaledHeight(24F));
+            ViewHelper.AdjustFrameSetHeight(_viewContainer, _isBtnHidden ? _txtDescription.Frame.GetMaxY() + GetScaledHeight(56F) : _btnRefresh.Frame.GetMaxY() + GetScaledHeight(24F));
         }
 
         public nfloat GetViewHeight()
