@@ -661,7 +661,7 @@ namespace myTNB
         private void SetCategoryTopBarValues(nfloat addtlPadding)
         {
             nfloat xPos = 0;
-            nfloat labelHeight = GetScaledHeight(14F);
+            nfloat labelHeight = GetScaledHeight(16F);
             nfloat padding = GetScaledWidth(10F) + addtlPadding;
             CustomUIView lastView = new CustomUIView();
 
