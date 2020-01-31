@@ -172,6 +172,14 @@ namespace myTNB
             }
         }
 
+        public void ClearField()
+        {
+            if (_txtFieldMobileNo != null)
+            {
+                _txtFieldMobileNo.Text = string.Empty; ;
+            }
+        }
+
         public string FullMobileNumber
         {
             get

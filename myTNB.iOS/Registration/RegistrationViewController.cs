@@ -79,12 +79,13 @@ namespace myTNB.Registration
             {
                 _mobileNumberComponent.CountryShortCode = countryInfo.CountryCode;
                 _mobileNumberComponent.CountryCode = countryInfo.CountryISDCode;
+                _mobileNumberComponent.ClearField();
+                OnDone();
             }
         }
 
         private void InitializedSubviews()
         {
-
             //Scrollview
             ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
             {
@@ -343,7 +344,7 @@ namespace myTNB.Registration
         {
             get
             {
-                string defaultCountry = "my";//Todo: Change this default country
+                string defaultCountry = TNBGlobal.APP_COUNTRY;
                 CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
                 return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
             }
