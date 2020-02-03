@@ -3,9 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:id="@+id/rootView"
     android:background="@color/greyBackground">
     <ImageView
@@ -17,24 +14,38 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_gravity="center_horizontal"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
         android:orientation="vertical">
         <TextView
             android:text="Question"
             android:id="@+id/faq_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:paddingBottom="4dp"
+            android:textSize="16dp"
+            android:lineSpacingExtra="2dp"
             android:textStyle="bold"
-            android:textColor="@color/tunaGrey" />
+            android:textColor="@color/powerBlue" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:background="@color/white">
         <TextView
             android:text="details"
             android:id="@+id/faq_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-            android:textColorLink="@color/powerBlue"
-            android:autoLink="all"
+            android:lineSpacingExtra="3dp"
             android:textColor="@color/tunaGrey" />
     </LinearLayout>
 </LinearLayout>

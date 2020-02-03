@@ -1,7 +1,14 @@
-﻿using Android.Support.V7.Widget;
+﻿using Android.Graphics;
+using Android.Runtime;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Text.Method;
+using Android.Text.Style;
+using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
+using Java.Lang;
 using myTNB.SitecoreCMS.Models;
 using myTNB_Android.Src.Utils;
 using System;
@@ -38,17 +45,41 @@ namespace myTNB_Android.Src.FAQ.Adapter
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                 {
-                    vh.Answer.TextFormatted = Html.FromHtml(model.Answer, FromHtmlOptions.ModeLegacy);
+                    vh.Answer.TextFormatted = Trim(Html.FromHtml(model.Answer, FromHtmlOptions.ModeLegacy));
                 }
                 else
                 {
-                    vh.Answer.TextFormatted = Html.FromHtml(model.Answer);
+                    vh.Answer.TextFormatted = Trim(Html.FromHtml(model.Answer));
                 }
+
+                Linkify.AddLinks(vh.Answer, MatchOptions.All);
 
                 TextViewUtils.SetMuseoSans500Typeface(vh.Question);
                 TextViewUtils.SetMuseoSans300Typeface(vh.Answer);
+
+                SpannableString s = new SpannableString(vh.Answer.TextFormatted);
+                var spans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                if (spans != null && spans.Length > 0)
+                {
+                    for (int i = 0; i < spans.Length; i++)
+                    {
+                        URLSpan URLItem = spans[i] as URLSpan;
+                        int start = s.GetSpanStart(URLItem);
+                        int end = s.GetSpanEnd(URLItem);
+                        s.RemoveSpan(URLItem);
+                        var newURLSpan = new CustomUrlSpan(URLItem.URL)
+                        {
+                            textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.mActicity, Resource.Color.powerBlue)),
+                            typeFace = Typeface.CreateFromAsset(this.mActicity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                        };
+                        s.SetSpan(newURLSpan, start, end, SpanTypes.ExclusiveExclusive);
+                    }
+
+                    vh.Answer.TextFormatted = s;
+                    vh.Answer.MovementMethod = new LinkMovementMethod();
+                }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -75,6 +106,43 @@ namespace myTNB_Android.Src.FAQ.Adapter
 
             }
 
+        }
+
+        public ICharSequence Trim(ISpanned s)
+        {
+            int start = 0;
+            int end = s.Length() - 1;
+
+            while (start < end && Character.IsWhitespace(s.CharAt(start)))
+            {
+                start++;
+            }
+
+            while (end > start && Character.IsWhitespace(s.CharAt(end - 1)))
+            {
+                end--;
+            }
+
+            return s.SubSequenceFormatted(start, end);
+        }
+
+        public class CustomUrlSpan : URLSpan
+        {
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public CustomUrlSpan(string text) : base(text)
+            {
+
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
+            }
         }
     }
 }
