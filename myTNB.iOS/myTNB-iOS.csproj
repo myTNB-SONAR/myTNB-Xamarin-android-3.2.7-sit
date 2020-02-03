@@ -567,9 +567,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Filtered.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Hide-Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Location.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Location.imageset\icActionLocation%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Location.imageset\icActionLocation%403x.png" />
@@ -585,9 +582,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Rating-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Show-Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Tick.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%403x.png" />
