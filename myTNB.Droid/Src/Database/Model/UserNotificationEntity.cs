@@ -219,10 +219,17 @@ namespace myTNB_Android.Src.Database.Model
             {
                 if (item.NotificationType != "ODN")
                 {
-                    if (UserEntity.GetActive().Email.Equals(item.Email) &&
-                    MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum))
+                    if (item.ODNBatchSubcategory == "ODNAsBATCH")
                     {
                         count++;
+                    }
+                    else
+                    {
+                        if (UserEntity.GetActive().Email.Equals(item.Email) &&
+                        MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum))
+                        {
+                            count++;
+                        }
                     }
                 }
                 else
