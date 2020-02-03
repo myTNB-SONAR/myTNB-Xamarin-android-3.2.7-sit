@@ -222,10 +222,8 @@ namespace myTNB
                 {
                     _countryShortCode = value.ToUpper();
                 }
-                if (_imgFlag != null)
-                {
-                    _imgFlag.Image = UIImage.FromBundle(_countryShortCode);
-                }
+                UIImage img = UIImage.FromBundle(_countryShortCode.ToUpper());
+                _imgFlag.Image = img ?? UIImage.FromBundle(Constants.IMG_NoFlag);
             }
             get
             {
