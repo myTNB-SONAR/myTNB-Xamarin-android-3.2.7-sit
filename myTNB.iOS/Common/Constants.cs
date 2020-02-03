@@ -24,8 +24,8 @@ namespace myTNB
         public static string IMG_TrendUpIcon = "Trend-Up-Icon";
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
-        public static string IMG_ShowPassword = "IC-Action-Show-Password";
-        public static string IMG_HidePassword = "IC-Action-Hide-Password";
+        public static string IMG_ShowPassword = "Show-Password-Icon";
+        public static string IMG_HidePassword = "Hide-Password-Icon";
         public static string IMG_NoFlag = "Flag-Generic";
         //Refresh Images
         public static string IMG_BannerRefresh = "Banner-Refresh";
@@ -180,8 +180,6 @@ namespace myTNB
                 return LanguageUtility.GetCommonI18NValue("unitEmission");
             }
         }
-
-        public static string Key_PromotionTimestamp = "SiteCorePromotionTimeStamp";
 
         //Strings
         public static string Value_99 = "99+";

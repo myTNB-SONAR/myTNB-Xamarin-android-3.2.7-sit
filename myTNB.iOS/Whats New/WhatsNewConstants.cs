@@ -16,9 +16,6 @@ namespace myTNB
         //Format
         public static string Format_Date = "dd MMM yyyy";
 
-        //nfloat
-        public static nfloat WhatsNewCellHeight = ScaleUtility.GetScaledHeight(177F);
-
         //Cell
         public static string Cell_WhatsNew = "whatsNewTableViewCell";
 
@@ -27,6 +24,7 @@ namespace myTNB
 
         //Preference Key
         public static string Pref_WhatsNewTutorialOverlay = "WhatsNewTutorialOverlayV2.1.0";
+        public static string Pref_WhatsNewReadFlags = "WhatsNewReadFlags";
 
         //I18N Keys
         public static string I18N_Title = "title";

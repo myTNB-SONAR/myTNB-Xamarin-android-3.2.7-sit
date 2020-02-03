@@ -471,7 +471,6 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
-
                     InvokeInBackground(async () =>
                     {
                         DataManager.DataManager.SharedInstance.IsRewardsLoading = true;

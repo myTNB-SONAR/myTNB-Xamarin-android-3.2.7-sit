@@ -195,7 +195,7 @@ namespace myTNB
                     if (dynamicLink != null && dynamicLink.Url != null)
                     {
                         string absoluteURL = dynamicLink.Url.ToString();
-                        if (absoluteURL.Contains("rewards/redirect.aspx/rid"))
+                        if (absoluteURL.Contains("rewards/redirect.aspx/rid") && !AppLaunchMasterCache.IsRewardsDisabled)
                         {
                             Regex regex = new Regex("\\brid.*\\b");
                             Match match = regex.Match(absoluteURL);
