@@ -4562,6 +4562,17 @@
     <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_5.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable\bq.png" />
+    <AndroidResource Include="Resources\drawable\cc.png" />
+    <AndroidResource Include="Resources\drawable\cx.png" />
+    <AndroidResource Include="Resources\drawable\gf.png" />
+    <AndroidResource Include="Resources\drawable\io.png" />
+    <AndroidResource Include="Resources\drawable\mq.png" />
+    <AndroidResource Include="Resources\drawable\ps.png" />
+    <AndroidResource Include="Resources\drawable\sx.png" />
+    <AndroidResource Include="Resources\drawable\vi.png" />
+    <AndroidResource Include="Resources\drawable\wf.png" />
+    <AndroidResource Include="Resources\drawable\yt.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Content;
+using Android.Text;
 using Android.Util;
 using Android.Widget;
 using myTNB_Android.Src.Common.Model;
@@ -16,6 +17,8 @@ namespace myTNB_Android.Src.CompoundView
         private Country selectedCountry;
         public static bool isSelectionTapped;
         private Action onSelectCountryISDCodeAction;
+        private const int MAX_NUMBER_INPUT = 15;
+        private const string PLUS_CHARACTER = "+";
         public MobileNumberInputComponent(Context context) : base(context)
         {
             Init(context);
@@ -94,6 +97,8 @@ namespace myTNB_Android.Src.CompoundView
             imgFlag.SetImageResource(CountryUtil.Instance.GetFlagImageResource(Context, country.code));
             countryISDCode.Text = country.isd;
             selectedCountry = country;
+            ClearMobileNumber();
+            SetMaxNumberInputValue();
         }
 
         public string GetMobileNumberValueWithISDCode()
@@ -109,6 +114,23 @@ namespace myTNB_Android.Src.CompoundView
         public void ClearMobileNumber()
         {
             editTextMobileNumber.Text = "";
+        }
+
+        private void SetMaxNumberInputValue()
+        {
+            try
+            {
+                int plusPosition = selectedCountry.isd.IndexOf(PLUS_CHARACTER, StringComparison.Ordinal);
+                string removedPlus = selectedCountry.isd.Remove(plusPosition,1);
+                int count = removedPlus.Length;
+                int maxNumberInputValue = MAX_NUMBER_INPUT - count;
+                editTextMobileNumber.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(maxNumberInputValue) });
+            }
+            catch (Exception e)
+            {
+                editTextMobileNumber.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(MAX_NUMBER_INPUT) });
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
