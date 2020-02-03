@@ -811,7 +811,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = WhatsNewEntity.Count();
                         if (count > 0)
@@ -841,7 +841,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = WhatsNewEntity.Count();
                         if (count > 0)
@@ -871,7 +871,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadNewBottomView(flag, false, 0, promotionMenuItem);
                     }
@@ -893,7 +893,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadNewBottomView(promotionMenuItem.IsChecked, false, 0, promotionMenuItem);
                     }
@@ -1481,7 +1481,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = RewardsEntity.Count();
                         if (count > 0)
@@ -1511,7 +1511,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = RewardsEntity.Count();
                         if (count > 0)
@@ -1541,7 +1541,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadRewardNewBottomView(rewardMenuItem.IsChecked, false, 0, rewardMenuItem);
                     }
@@ -1563,7 +1563,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadRewardNewBottomView(flag, false, 0, rewardMenuItem);
                     }
