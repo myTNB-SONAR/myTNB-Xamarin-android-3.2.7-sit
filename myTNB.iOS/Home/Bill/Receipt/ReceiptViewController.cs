@@ -146,7 +146,6 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle("Receipt-Header")
             };
-            //imageView.ContentMode = UIViewContentMode.ScaleToFill;
 
             UILabel paymentTitle = GetLabel(LabelType.Value
                 , new CGRect(INNER_PADDING, imageView.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 26)
@@ -270,7 +269,6 @@ namespace myTNB
             iTextSharp.text.Image headerImage = iTextSharp.text.Image.GetInstance(filepath + "/tnbReceiptLogoHeader.jpg");
 
             document.Open();
-            PdfContentByte cb = writer.DirectContent;
 
             PdfPTable grayLine = new PdfPTable(1);
             grayLine.TotalWidth = document.PageSize.Width - 40;
