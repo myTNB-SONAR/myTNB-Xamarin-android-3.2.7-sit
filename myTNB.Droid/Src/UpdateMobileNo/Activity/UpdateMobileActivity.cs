@@ -176,14 +176,18 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         [OnClick(Resource.Id.btnSave)]
         void OnSave(object sender, EventArgs eventArgs)
         {
-            if (ConnectionUtils.HasInternetConnection(this))
+            if (!this.GetIsClicked())
             {
-                string newMobile = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-                this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
-            }
-            else
-            {
-                ShowNoInternetSnackbar();
+                this.SetIsClicked(true);
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    string newMobile = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+                    this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
+                }
+                else
+                {
+                    ShowNoInternetSnackbar();
+                }
             }
         }
 
