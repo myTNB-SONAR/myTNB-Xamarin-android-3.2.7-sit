@@ -182,6 +182,22 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasRewardShown(ISharedPreferences prefs)
+        {
+            if (UserSessions.HasRewardsShown(prefs))
+            {
+                DoRewardShown(prefs);
+            }
+            return prefs.GetBoolean("hasRewardShown", false);
+        }
+
+        public static void DoRewardShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasRewardShown", true);
+            editor.Apply();
+        }
+
         public static System.Boolean HasRewardsDetailShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasRewardsDetailShown", false);
@@ -203,6 +219,22 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("hasWhatsNewShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
+        {
+            if (UserSessions.HasWhatsNewShown(prefs))
+            {
+                DoWhatNewShown(prefs);
+            }
+            return prefs.GetBoolean("hasWhatNewShown", false);
+        }
+
+        public static void DoWhatNewShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasWhatNewShown", true);
             editor.Apply();
         }
 
