@@ -441,16 +441,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             fullName.SetValue(user.DisplayName);
             try
             {
-                if (user.IdentificationNo.Count() >= 4)
-                {
-                    string lastDigit = user.IdentificationNo.Substring(user.IdentificationNo.Length - 4);
+                string maskedNo = !string.IsNullOrEmpty(user?.IdentificationNo) ? user.IdentificationNo : "";
 
-                    referenceNumber.SetValue(GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit);
-                }
-                else
+                if (!string.IsNullOrEmpty(maskedNo) && maskedNo.Count() > 4)
                 {
-                    referenceNumber.SetValue(GetString(Resource.String.my_account_ic_no_mask));
+                    string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
+
+                    maskedNo =  GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
                 }
+
+                referenceNumber.SetValue(maskedNo);
 
                 email.SetValue(user.Email);
                 mobileNumber.SetValue(user.MobileNo);
