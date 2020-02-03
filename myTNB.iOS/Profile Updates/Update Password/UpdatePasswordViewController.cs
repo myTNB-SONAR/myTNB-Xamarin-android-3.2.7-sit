@@ -102,6 +102,8 @@ namespace myTNB
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
+                imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
 
             //New Password
@@ -154,6 +156,8 @@ namespace myTNB
             viewShowNewPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 txtFieldNewPassword.SecureTextEntry = !txtFieldNewPassword.SecureTextEntry;
+                imgShowNewPassword.Image = UIImage.FromBundle(txtFieldNewPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
 
             //Confirm Password
@@ -206,6 +210,8 @@ namespace myTNB
             viewShowConfirmNewPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 txtFieldConfirmNewPassword.SecureTextEntry = !txtFieldConfirmNewPassword.SecureTextEntry;
+                imgShowConfirmNewPassword.Image = UIImage.FromBundle(txtFieldConfirmNewPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
 
             viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, txtFieldPassword

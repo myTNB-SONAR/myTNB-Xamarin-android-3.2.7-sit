@@ -567,9 +567,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Filtered.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Hide-Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Location.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Location.imageset\icActionLocation%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Location.imageset\icActionLocation%403x.png" />
@@ -585,9 +582,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Rating-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Show-Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Tick.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%403x.png" />
@@ -1899,6 +1893,45 @@
     <ImageAsset Include="Assets\Flags.xcassets\VU.imageset\vu%403x-1.png" />
     <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\zw%402x-1.png" />
     <ImageAsset Include="Assets\Flags.xcassets\ZW.imageset\zw%403x-1.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\WF.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\WF.imageset\wf%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\WF.imageset\wf%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\MQ.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\GF.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\YT.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\MQ.imageset\wf%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\MQ.imageset\wf%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GF.imageset\wf%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GF.imageset\wf%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\YT.imageset\wf%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\YT.imageset\wf%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\AC.imageset\ac%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\AC.imageset\ac%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\AC.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\BQ.imageset\bq%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BQ.imageset\bq%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\BQ.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\CC.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\CC.imageset\cc%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\CC.imageset\cc%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\CX.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\CX.imageset\cx%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\CX.imageset\cx%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GS.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\GS.imageset\gs%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\GS.imageset\gs%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\IO.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\IO.imageset\io%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\IO.imageset\io%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\PS.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\PS.imageset\ps%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\PS.imageset\ps%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\SX.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\SX.imageset\sx%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\SX.imageset\sx%403x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\VI.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Flags.xcassets\VI.imageset\vi%402x.png" />
+    <ImageAsset Include="Assets\Flags.xcassets\VI.imageset\vi%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2063,6 +2096,19 @@
     <Folder Include="Assets\Assets.xcassets\Onboarding-Image-7-Update.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\WF.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\MQ.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\GF.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\YT.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\AC.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\BQ.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\CC.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\CX.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\GS.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\IO.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\PS.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\SX.imageset\" />
+    <Folder Include="Assets\Flags.xcassets\VI.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
