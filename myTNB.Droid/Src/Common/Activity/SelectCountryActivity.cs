@@ -62,6 +62,8 @@ namespace myTNB_Android.Src.Common.Activity
 
         public override void OnBackPressed()
         {
+            //Resets the country drop-down selection click
+            MobileNumberInputComponent.isSelectionTapped = false;
             SetResult(Result.Canceled);
             Finish();
         }
@@ -72,6 +74,8 @@ namespace myTNB_Android.Src.Common.Activity
             Country selectedCountry = countryList[position];
             Intent intent = new Intent();
             intent.PutExtra(Constants.SELECT_COUNTRY_CODE, JsonConvert.SerializeObject(selectedCountry));
+            //Resets the country drop-down selection click
+            MobileNumberInputComponent.isSelectionTapped = false;
             SetResult(Result.Ok,intent);
             Finish();
         }

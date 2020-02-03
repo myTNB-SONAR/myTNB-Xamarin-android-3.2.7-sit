@@ -52,12 +52,10 @@ namespace myTNB_Android.Src.CompoundView
             countryISDCodeContainer.Click += CountryISDCodeContainer_Click;
 
             TextViewUtils.SetMuseoSans300Typeface(countryCodeHeaderTitle,countryISDCode,editTextMobileNumber);
-            editTextMobileNumber.TextChanged += delegate {
-                OnMobileNumberChangeValue();
-            };
+            editTextMobileNumber.TextChanged += OnMobileNumberChangeValue;
         }
 
-        private void OnMobileNumberChangeValue()
+        private void OnMobileNumberChangeValue(object sender, TextChangedEventArgs e)
         {
             if (editTextMobileNumber.Text.StartsWith("0", StringComparison.Ordinal))
             {

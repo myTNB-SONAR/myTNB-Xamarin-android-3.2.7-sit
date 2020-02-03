@@ -41,7 +41,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
                     android:id="@+id/textInputLayoutFullName"
                     android:layout_marginTop="?attr/actionBarSize">
@@ -59,7 +59,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
                     android:id="@+id/textInputLayoutICNo">
                     <EditText
@@ -76,11 +76,12 @@
                     android:id="@+id/mobileNumberFieldContainer"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_marginBottom="25dp"
                     android:orientation="vertical"/>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
                     android:id="@+id/textInputLayoutEmail">
                     <EditText
@@ -96,7 +97,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
                     android:id="@+id/textInputLayoutConfirmEmail">
                     <EditText
@@ -112,7 +113,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
                     android:layout_marginBottom="0dp"
                     android:id="@+id/textInputLayoutPassword">
@@ -129,7 +130,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
                     android:id="@+id/textInputLayoutConfirmPassword">
                     <EditText

@@ -10,10 +10,11 @@
         android:id="@+id/countryCodeHeaderTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
         android:includeFontPadding="false"
         android:textColor="#a6a6a6"
         android:lineSpacingExtra="0dp"
-        android:textSize="14sp"
+        android:textSize="10dp"
         android:text="MOBILE NUMBER"/>
     <LinearLayout
         android:id="@+id/countryCodeRootContainer"

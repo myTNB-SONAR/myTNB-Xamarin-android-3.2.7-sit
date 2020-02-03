@@ -145,26 +145,6 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 return;
             }
 
-            if (TextUtils.IsEmpty(mobile_no))
-            {
-                this.mView.ShowEmptyMobileNoError();
-                return;
-            }
-
-            if (!Android.Util.Patterns.Phone.Matcher(mobile_no).Matches())
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-            if (!Utility.IsValidMobileNumber(mobile_no))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-
-
             if (TextUtils.IsEmpty(account_no))
             {
                 this.mView.ShowEmptyAccountNoError();
@@ -337,121 +317,95 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
         {
             try
             {
-                //if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(account_no) && !TextUtils.IsEmpty(feedback))
-                //{
-                this.mView.ClearErrors();
-                bool isError = false;
-                if (!TextUtils.IsEmpty(fullname))
+                if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(account_no) && !TextUtils.IsEmpty(feedback))
                 {
-                    if (!Utility.isAlphaNumeric(fullname))
+                    this.mView.ClearErrors();
+                    bool isError = false;
+                    if (!TextUtils.IsEmpty(fullname))
                     {
-
-                        this.mView.ShowNameError();
-                        isError = true;
-                    }
-                }
-                else
-                {
-                    this.mView.ShowEmptyFullnameError();
-                    isError = true;
-                }
-
-
-                if (!TextUtils.IsEmpty(mobile_no) && mobile_no != "+60")
-                {
-                    if (!Android.Util.Patterns.Phone.Matcher(mobile_no).Matches())
-                    {
-                        this.mView.ShowInvalidMobileNoError();
-                        isError = true;
-                    }
-
-                    if (!Utility.IsValidMobileNumber(mobile_no))
-                    {
-                        this.mView.ShowInvalidMobileNoError();
-                        isError = true;
-                    }
-                }
-                else
-                {
-                    isError = true;
-                }
-
-
-
-                if (!TextUtils.IsEmpty(email))
-                {
-                    if (!Android.Util.Patterns.EmailAddress.Matcher(email).Matches())
-                    {
-
-                        this.mView.ShowInvalidEmailError();
-                        isError = true;
-                    }
-                }
-                else
-                {
-                    isError = true;
-                }
-
-
-
-
-
-                if (!TextUtils.IsEmpty(account_no))
-                {
-                    if (!TextUtils.IsDigitsOnly(account_no))
-                    {
-                        this.mView.ShowInvalidAccountNoError();
-                        isError = true;
-                    }
-
-                    if (account_no.Length > 12)
-                    {
-                        string account_no_limit = "";
-                        for (int i = 0; i < 12; i++)
+                        if (!Utility.isAlphaNumeric(fullname))
                         {
-                            account_no_limit += account_no[i];
+
+                            this.mView.ShowNameError();
+                            isError = true;
+                        }
+                    }
+                    else
+                    {
+                        this.mView.ShowEmptyFullnameError();
+                        isError = true;
+                    }
+
+                    if (!TextUtils.IsEmpty(email))
+                    {
+                        if (!Android.Util.Patterns.EmailAddress.Matcher(email).Matches())
+                        {
+
+                            this.mView.ShowInvalidEmailError();
+                            isError = true;
+                        }
+                    }
+                    else
+                    {
+                        isError = true;
+                    }
+
+                    if (!TextUtils.IsEmpty(account_no))
+                    {
+                        if (!TextUtils.IsDigitsOnly(account_no))
+                        {
+                            this.mView.ShowInvalidAccountNoError();
+                            isError = true;
                         }
 
-                        this.mView.ReplaceAccountNum(account_no_limit);
+                        if (account_no.Length > 12)
+                        {
+                            string account_no_limit = "";
+                            for (int i = 0; i < 12; i++)
+                            {
+                                account_no_limit += account_no[i];
+                            }
+
+                            this.mView.ReplaceAccountNum(account_no_limit);
+                        }
+                        else if (!Utility.AccountNumberValidation(account_no.Length))
+                        {
+                            this.mView.ShowInvalidAccountNoError();
+                            isError = true;
+                        }
                     }
-                    else if (!Utility.AccountNumberValidation(account_no.Length))
+                    else
                     {
-                        this.mView.ShowInvalidAccountNoError();
                         isError = true;
                     }
+
+                    if (TextUtils.IsEmpty(feedback) || feedback.Equals(" "))
+                    {
+                        //this.mView.DisableSubmitButton();
+                        ////this.mView.ShowEmptyFeedbackError();
+                        //return;
+                        isError = true;
+                    }
+                    if (isError)
+                    {
+                        this.mView.DisableSubmitButton();
+                    }
+                    else
+                    {
+                        this.mView.EnableSubmitButton();
+
+                    }
                 }
                 else
-                {
-                    isError = true;
-                }
-
-                if (TextUtils.IsEmpty(feedback) || feedback.Equals(" "))
-                {
-                    //this.mView.DisableSubmitButton();
-                    ////this.mView.ShowEmptyFeedbackError();
-                    //return;
-                    isError = true;
-                }
-                if (isError)
                 {
                     this.mView.DisableSubmitButton();
-                }
-                else
-                {
-                this.mView.EnableSubmitButton();
-
                 }
             }
             catch (System.Exception e)
             {
+                this.mView.DisableSubmitButton();
                 Utility.LoggingNonFatalError(e);
             }
-
-            //}
-            //else
-            //{
-            //    this.mView.DisableSubmitButton();
-            //}
         }
     }
 }

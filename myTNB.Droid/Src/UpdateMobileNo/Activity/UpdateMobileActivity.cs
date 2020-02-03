@@ -380,8 +380,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             try
             {
-                //Resets the country drop-down selection click
-                MobileNumberInputComponent.isSelectionTapped = false;
                 base.OnActivityResult(requestCode, resultCode, data);
                 if (resultCode == Result.Ok)
                 {
