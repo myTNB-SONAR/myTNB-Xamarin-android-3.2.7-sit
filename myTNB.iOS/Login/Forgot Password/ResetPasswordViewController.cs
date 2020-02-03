@@ -129,12 +129,14 @@ namespace myTNB.Login.ForgotPassword
             };
             UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("IC-Action-Show-Password")
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
             };
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
+                imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
             viewPassword.AddSubview(viewShowPassword);
 
@@ -193,19 +195,14 @@ namespace myTNB.Login.ForgotPassword
             viewShowConfirmPassword.Hidden = true;
             UIImageView imgShowConfirmPassword = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("IC-Action-Show-Password")
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
             };
             viewShowConfirmPassword.AddSubview(imgShowConfirmPassword);
             viewConfirmPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (txtFieldConfirmPassword.SecureTextEntry)
-                {
-                    txtFieldConfirmPassword.SecureTextEntry = false;
-                }
-                else
-                {
-                    txtFieldConfirmPassword.SecureTextEntry = true;
-                }
+                txtFieldConfirmPassword.SecureTextEntry = !txtFieldConfirmPassword.SecureTextEntry;
+                imgShowConfirmPassword.Image = UIImage.FromBundle(txtFieldConfirmPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
             viewConfirmPassword.AddSubview(viewShowConfirmPassword);
 

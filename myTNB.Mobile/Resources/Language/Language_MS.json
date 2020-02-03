@@ -789,7 +789,7 @@
   },
   "Receipt": {
     "title": "Resit Pembayaran",
-    "accountHolder": "Nama Pemilik Akaun",
+    "accountHolder": "Nama Pemegang Akaun",
     "receiptFilename": "Resit-{0}.pdf",
     "fullMessage": "Terima kasih kerana menggunakan myTNB.\nSukacita dimaklumkan bahawa pembayaran dalam talian berikut menerusi {0} telah berjaya:",
     "messagePartOne": "Terima kasih kerana menggunakan myTNB.",
