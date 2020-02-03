@@ -167,6 +167,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                    .SetCancelable(false)
                    .Create();
 
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
                 TextViewUtils.SetMuseoSans500Typeface(txtEmailTitle);
@@ -179,7 +180,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 txtEmailTitle.Text = GetLabelByLanguage("subTitle");
                 txtEmailLinkInfo.Text = GetLabelByLanguage("details");
-                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
                 btnSubmit.Text = GetLabelCommonByLanguage("submit");
 
                 txtEmail.TextChanged += EmailTextChange;
