@@ -40,7 +40,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && !AppLaunchMasterCache.IsRewardsDisabled)
             {
                 CheckForRewardUpdates();
             }
@@ -251,6 +251,8 @@ namespace myTNB
 
         private void RefreshButtonOnTap()
         {
+            if (AppLaunchMasterCache.IsRewardsDisabled) { return; }
+
             if (NetworkUtility.isReachable)
             {
                 ResetViews();

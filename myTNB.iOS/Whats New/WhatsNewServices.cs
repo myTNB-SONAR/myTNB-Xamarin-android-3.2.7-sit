@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using Newtonsoft.Json;
 using UIKit;
 
 namespace myTNB
@@ -60,22 +61,59 @@ namespace myTNB
             if (id.IsValid())
             {
                 NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                isRead = sharedPreference.BoolForKey(id);
+                Dictionary<string, bool> dict = new Dictionary<string, bool>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewReadFlags);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, bool>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            isRead = dict[id];
+                        }
+                    }
+                }
             }
             return isRead;
         }
 
-        public static bool SetIsRead(string id)
+        public static void SetIsRead(string id)
         {
-            bool isRead = false;
             if (id.IsValid())
             {
                 NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                sharedPreference.SetBool(true, id);
-                sharedPreference.Synchronize();
-                isRead = true;
+                Dictionary<string, bool> dict = new Dictionary<string, bool>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewReadFlags);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, bool>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (!dict.ContainsKey(id))
+                        {
+                            dict.Add(id, true);
+                            var jsonStr = JsonConvert.SerializeObject(dict);
+                            sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewReadFlags);
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                    else
+                    {
+                        dict.Add(id, true);
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewReadFlags);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    dict.Add(id, true);
+                    var jsonStr = JsonConvert.SerializeObject(dict);
+                    sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewReadFlags);
+                    sharedPreference.Synchronize();
+                }
             }
-            return isRead;
         }
 
         public static string GetPublishedDate(string publishedDate)

@@ -15,7 +15,7 @@ namespace myTNB
         int _totalViews;
         UITextView _swipeText;
         public Action OnDismissAction, ScrollTableToTheTop, ScrollToHistorySection;
-        public nfloat NavigationHeight, HeaderViewHeight, TabBarHeight, ViewCTAMinY;
+        public nfloat NavigationHeight, HeaderViewHeight, TabBarHeight;
         public UIView ViewCTA;
         public bool IsREAccount;
         bool _hotspotIsOn;
@@ -360,7 +360,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4) + _addtlYPos))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + _controller.GetViewCTAMinY - GetScaledHeight(4) + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
@@ -454,7 +454,7 @@ namespace myTNB
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4) + _addtlYPos))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + _controller.GetViewCTAMinY - GetScaledHeight(4) + _addtlYPos))
             {
                 BackgroundColor = MyTNBColor.Black60
             };
