@@ -209,7 +209,6 @@ namespace myTNB
                 NavigationHeight = _navbarView.Frame.GetMaxY(),
                 HeaderViewHeight = _headerViewContainer.Frame.Height,
                 ViewCTA = _viewCTA,
-                ViewCTAMinY = _headerView.Frame.GetMinY() + _viewCTA.Frame.GetMinY(),
                 IsREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount,
                 OnDismissAction = HideTutorialOverlay,
                 ScrollTableToTheTop = ScrollTableToTheTop,
@@ -291,6 +290,14 @@ namespace myTNB
             get
             {
                 return _headerView.Frame.GetMinY() + (_lblDate.Hidden ? _viewAmount.Frame.GetMaxY() : _lblDate.Frame.GetMaxY());
+            }
+        }
+
+        public nfloat GetViewCTAMinY
+        {
+            get
+            {
+                return _headerView.Frame.GetMinY() + _viewCTA.Frame.GetMinY();
             }
         }
 
@@ -821,6 +828,7 @@ namespace myTNB
 
         private void EvaluateBillData(AccountChargesModel data = null)
         {
+            bool showTutorial = false;
             OnResetBGRect();
             if (_btnPay != null && _accountCharges != null && _accountCharges.d != null && !_accountCharges.d.IsPayEnabled)
             {
@@ -845,7 +853,7 @@ namespace myTNB
                     EmptyMessage = GetEmptyDataMessage()
                 };
                 _historyTableView.ReloadData();
-                CheckTutorialOverlay();
+                showTutorial = true;
             }
             else
             {
@@ -884,6 +892,7 @@ namespace myTNB
             }
             bool hasPendingPayment = HasPendingPayment(_billHistory?.d?.data?.BillPayHistories);
             UpdateHeaderData(data, hasPendingPayment);
+            if (showTutorial) { CheckTutorialOverlay(); }
         }
 
         private void OnHistoryRefresh()
