@@ -184,11 +184,14 @@ namespace myTNB_Android.Src.Utils
 
         public static System.Boolean HasRewardShown(ISharedPreferences prefs)
         {
-            if (UserSessions.HasRewardsShown(prefs))
+            bool flag = prefs.GetBoolean("hasRewardShown", false);
+
+            if (UserSessions.HasRewardsShown(prefs) && !flag)
             {
                 DoRewardShown(prefs);
+                flag = true;
             }
-            return prefs.GetBoolean("hasRewardShown", false);
+            return flag;
         }
 
         public static void DoRewardShown(ISharedPreferences prefs)
@@ -224,11 +227,14 @@ namespace myTNB_Android.Src.Utils
 
         public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
         {
-            if (UserSessions.HasWhatsNewShown(prefs))
+            bool flag = prefs.GetBoolean("hasWhatNewShown", false);
+
+            if (UserSessions.HasWhatsNewShown(prefs) && !flag)
             {
                 DoWhatNewShown(prefs);
+                flag = true;
             }
-            return prefs.GetBoolean("hasWhatNewShown", false);
+            return flag;
         }
 
         public static void DoWhatNewShown(ISharedPreferences prefs)
