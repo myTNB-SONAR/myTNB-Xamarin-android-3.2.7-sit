@@ -60,7 +60,7 @@ namespace myTNB.Home.Bill
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_12_300I,
-                Hidden = false
+                Hidden = true
             };
 
             _imgArrow = new UIImageView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(26)
@@ -228,6 +228,13 @@ namespace myTNB.Home.Bill
             {
                 ViewHelper.AdjustFrameSetY(_lblAmount, GetScaledHeight(26F));
                 ViewHelper.AdjustFrameSetY(_lblPending, GetYLocationFromFrame(_lblAmount.Frame, 4F));
+            }
+        }
+        public void SetPendingLabelHidden()
+        {
+            if (_lblPending != null)
+            {
+                _lblPending.Hidden = true;
             }
         }
     }

@@ -32,14 +32,13 @@ namespace myTNB.SitecoreCMS
                 , LoadMeterReadSSMRWalkthroughV2()
                 , LoadBillDetailsTooltip()
                 //, LoadSSMRWalkthrough()
-                , LoadTermsAndCondition()
-                , LoadFAQs()
              };
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
                 RewardsCache.ClearImages();
+                ClearTimeStamps();
             }
             else
             {
@@ -51,6 +50,13 @@ namespace myTNB.SitecoreCMS
             }
             Task.WaitAll(taskList.ToArray());
             _isForcedUpdate = false;
+        }
+
+        private void ClearTimeStamps()
+        {
+            UpdateSharedPreference(string.Empty, "SiteCoreTimeStamp");
+            UpdateSharedPreference(string.Empty, "SiteCoreFAQTimeStamp");
+            UpdateSharedPreference(string.Empty, "SiteCoreHelpTimeStamp");
         }
 
         private async Task<NSData> GetImageFromURL(string urlString)
@@ -373,7 +379,7 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        private Task LoadTermsAndCondition()
+        public Task LoadTermsAndCondition()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -686,43 +692,6 @@ namespace myTNB.SitecoreCMS
                     WhatsNewCache.WhatsNewIsAvailable = true;
                 }
                 Debug.WriteLine("LoadWhatsNew Done");
-            });
-        }
-
-        public Task LoadPromotions()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
-                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
-                PromotionsTimestampResponseModel timeStamp = iService.GetPromotionsTimestampItem();
-
-                bool needsUpdate = false;
-
-                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
-                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
-                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
-                {
-                    timeStamp = new PromotionsTimestampResponseModel();
-                    timeStamp.Data = new List<PromotionParentModel> { new PromotionParentModel { Timestamp = string.Empty } };
-                }
-
-                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp", ref needsUpdate);
-
-                if (needsUpdate)
-                {
-                    PromotionsResponseModel promotionResponse = iService.GetPromotionsItem();
-                    PromotionsEntity wsManager = new PromotionsEntity();
-                    PromotionsEntity.DeleteTable();
-                    wsManager.CreateTable();
-                    if (promotionResponse != null && promotionResponse.Status.Equals("Success")
-                        && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
-                    {
-                        wsManager.InsertListOfItemsV2(HomeTabBarController.SetValueForNullEndDate(promotionResponse.Data));
-                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
-                        Debug.WriteLine("LoadPromotions Done");
-                    }
-                }
             });
         }
 

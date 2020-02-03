@@ -32,7 +32,6 @@ namespace myTNB
 
         public MakePaymentViewController _makePaymentVC;
         public SelectBillsViewController _selectBillsVC;
-        public DashboardViewController _dashboardVC;
 
         /// <summary>
         /// Gets the top view controller.

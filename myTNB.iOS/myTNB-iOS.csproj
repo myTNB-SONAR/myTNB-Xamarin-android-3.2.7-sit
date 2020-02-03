@@ -333,9 +333,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\BCRM-Down-Popup.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%402x-1.png" />
     <ImageAsset Include="Assets\Assets.xcassets\BCRM-Down-Popup.imageset\maintenance%403x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Billing.imageset\Billing%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Billing.imageset\Billing%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Billing.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
@@ -351,9 +348,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Bills-RE-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Bills-RE-Banner.imageset\re%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Bills-RE-Banner.imageset\re%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Calculator.imageset\Calculator%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Calculator.imageset\Calculator%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Calculator.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Calendar-Icon.imageset\Contents.json" />
@@ -400,17 +394,12 @@
     <ImageAsset Include="Assets\Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Dashboard.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Dashboard.imageset\Dashboard%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Delete.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Delete.imageset\Delete-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Delete.imageset\Delete-Icon%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Direction.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Down-BCRM.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Download.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Download.imageset\save%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Download.imageset\save%403x.png" />
@@ -429,18 +418,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Email-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Email-Icon.imageset\Email-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Email-Icon.imageset\Email-Icon%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Bill-Payment.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Chart-Data.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Current-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Dashboard.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Empty-Reward-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Empty-Reward-Icon.imageset\Empty-Reward-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Empty-Reward-Icon.imageset\Empty-Reward-Icon%403x.png" />
@@ -504,18 +481,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Fridge-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Get-Access.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Afternoon.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Evening.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Morning.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Heart-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Heart-Icon.imageset\Heart-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Heart-Icon.imageset\Heart-Icon%403x.png" />
@@ -597,33 +562,9 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Zoom.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Avg-Elec-Usage.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Button-Map-Center.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Charges.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Charges.imageset\rm%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Charges.imageset\rm%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-CO2.imageset\co2%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-CO2.imageset\co2%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-CO2.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Cost.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Cost.imageset\estimatedCost%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Cost.imageset\estimatedCost%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Display-Prelogin.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Emission.imageset\co2%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Emission.imageset\co2%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Emission.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Empty-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Empty-Promotion.imageset\PlannedDown%402x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Empty-Promotion.imageset\PlannedDown%403x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Energy-Usage.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Feedback.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Feedback.imageset\icFieldText%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Feedback.imageset\icFieldText%403x.png" />
@@ -636,9 +577,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-Field-Search.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Field-Text.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Field-Text.imageset\icFieldText%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-Field-Text.imageset\icFieldText%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Header-Cancel.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%403x.png" />
@@ -1923,7 +1861,6 @@
     <Folder Include="Home\Bill\" />
     <Folder Include="Home\More\" />
     <Folder Include="Home\Components\" />
-    <Folder Include="Home\Dashboard\Get Access\" />
     <Folder Include="Payment\Add Card\" />
     <Folder Include="Push Notification\" />
     <Folder Include="Home\More\Push Notification Settings\" />
@@ -1932,7 +1869,6 @@
     <Folder Include="Push Notification\Notification List\" />
     <Folder Include="Model\GetBillingAccountDetails\" />
     <Folder Include="Model\Notification\" />
-    <Folder Include="Model\GetAccountUsageHistoryForGraph\" />
     <Folder Include="Model\IsUserAuthenticate\" />
     <Folder Include="Model\GetCustomerBillingAccountList\" />
     <Folder Include="Enums\" />
@@ -1966,7 +1902,6 @@
     <Folder Include="Home\More\Language\" />
     <Folder Include="Model\UpdateNotification\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
-    <Folder Include="Model\GetInstallationDetails\" />
     <Folder Include="Payment\Select Payment Method\" />
     <Folder Include="Session Cache\" />
     <Folder Include="Home\Dashboard\DashboardHome\" />
@@ -1975,9 +1910,7 @@
     <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
-    <Folder Include="Customs\Generic Page View\" />
     <Folder Include="SSMR\" />
-    <Folder Include="SSMR\Onboarding\" />
     <Folder Include="Rewards\" />
     <Folder Include="Tab Bar\" />
     <Folder Include="Model\GetServices\" />
@@ -2063,6 +1996,7 @@
     <Folder Include="Assets\Assets.xcassets\Onboarding-Image-7-Update.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Onboarding-Image-6-Install.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Onboarding-Image-7-Install.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2074,7 +2008,6 @@
     <InterfaceDefinition Include="Payment\Payment.storyboard" />
     <InterfaceDefinition Include="Home\Dashboard\Dashboard.storyboard" />
     <InterfaceDefinition Include="Home\Dashboard\View Bill\ViewBill.storyboard" />
-    <InterfaceDefinition Include="Home\Dashboard\Get Access\GetAccess.storyboard" />
     <InterfaceDefinition Include="Payment\Add Card\AddCard.storyboard" />
     <InterfaceDefinition Include="Push Notification\PushNotification.storyboard" />
     <InterfaceDefinition Include="Home\More\Push Notification Settings\NotificationSettings.storyboard" />
@@ -2149,7 +2082,6 @@
     <Compile Include="Helpers\TNBGlobal.cs" />
     <Compile Include="Data Manager\DataManager.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="Onboarding\OnboardingModelController.cs" />
     <Compile Include="Model\OnboardingModel.cs" />
     <Compile Include="Helpers\NetworkUtility.cs" />
     <Compile Include="Login\Forgot Password\ForgotPasswordViewController.cs" />
@@ -2189,29 +2121,13 @@
       <DependentUpon>PasswordResetSuccessViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MyTNBFont.cs" />
-    <Compile Include="Home\Dashboard\DashboardViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardViewController.designer.cs">
-      <DependentUpon>..\..\Dashboard\DashboardViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountsDataSource.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Components\AccountSelectionComponent.cs" />
-    <Compile Include="Home\Components\AddressComponent.cs" />
-    <Compile Include="Home\Components\BillAndPaymentComponent.cs" />
-    <Compile Include="Home\Components\ChartComponent.cs" />
-    <Compile Include="Home\Components\EstimatedReadingComponent.cs" />
-    <Compile Include="Home\Components\GetAccessComponent.cs" />
     <Compile Include="Home\Components\GradientViewComponent.cs" />
-    <Compile Include="Home\Components\NoAccountComponent.cs" />
-    <Compile Include="Home\Components\NoDataConnectionComponent.cs" />
-    <Compile Include="Home\Components\SelectorComponent.cs" />
-    <Compile Include="Home\Components\SmartMeterComponent.cs" />
     <Compile Include="Home\Components\TitleBarComponent.cs" />
-    <Compile Include="Home\Components\UsageHistoryComponent.cs" />
-    <Compile Include="Home\Dashboard\DashboardMainComponent.cs" />
     <Compile Include="SQLite\SQLite Data Manager\UserAccountsEntity.cs" />
     <Compile Include="Data Manager\ServiceManager.cs" />
     <Compile Include="Data Manager\BaseService.cs" />
@@ -2221,14 +2137,6 @@
       <DependentUpon>ViewBillViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WebViewDelegate.cs" />
-    <Compile Include="Home\Dashboard\Get Access\GetAccessSuccessViewController.cs" />
-    <Compile Include="Home\Dashboard\Get Access\GetAccessSuccessViewController.designer.cs">
-      <DependentUpon>GetAccessSuccessViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.cs" />
-    <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.designer.cs">
-      <DependentUpon>GetAccessViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Payment\Add Card\AddCardViewController.cs" />
     <Compile Include="Payment\Add Card\AddCardViewController.designer.cs">
       <DependentUpon>AddCardViewController.cs</DependentUpon>
@@ -2283,16 +2191,10 @@
     <Compile Include="Model\Notification\NotificationPreferenceUpdateResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationPreferenceResponseModel.cs" />
     <Compile Include="Model\Notification\UserNotificationResponseModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByDayModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByMonthModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartResponseData.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountDataModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordListModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountResponseModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\SegmentDetailsModel.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.designer.cs">
       <DependentUpon>MyAccountViewController.cs</DependentUpon>
@@ -2315,9 +2217,6 @@
     <Compile Include="Home\Bill\Receipt\ReceiptViewController.designer.cs">
       <DependentUpon>ReceiptViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsDataModel.cs" />
-    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsModel.cs" />
-    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingResponseModel.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.designer.cs">
@@ -2341,8 +2240,6 @@
     </Compile>
     <Compile Include="Model\IsUserAuthenticate\UserAuthenticationResponseModel.cs" />
     <Compile Include="Model\GetLocationTypes\LocationTypeDataModel.cs" />
-    <Compile Include="Model\GetLocationTypes\LocationTypesModel.cs" />
-    <Compile Include="Model\GetLocationTypes\LocationTypesResponseModel.cs" />
     <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.cs" />
     <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.designer.cs">
       <DependentUpon>LocationDetailsViewController.cs</DependentUpon>
@@ -2382,17 +2279,11 @@
       <DependentUpon>RatingViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryDataModel.cs" />
-    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryModel.cs" />
-    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryResponseModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryDataModel.cs" />
-    <Compile Include="Model\GetPaymentHistory\PaymentHistoryModel.cs" />
-    <Compile Include="Model\GetPaymentHistory\PaymentHistoryResponseModel.cs" />
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeDataModel.cs" />
-    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeModel.cs" />
-    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsResponseModel.cs" />
     <Compile Include="Enums\FeedBackEnum.cs" />
@@ -2428,19 +2319,7 @@
       <DependentUpon>SelectBillsTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\LineChartComponent.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModelBase.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\SmartChartDataModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\SmartChartModel.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartModelBase.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\UsageMetrics.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\RealTimeMetrics.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ChartEntity.cs" />
-    <Compile Include="Home\Components\ChartCompanionComponent.cs" />
-    <Compile Include="Home\Components\InfoComponent.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\EmissionMetric.cs" />
-    <Compile Include="Enums\ChartModeEnum.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByRangeModelBase.cs" />
-    <Compile Include="Home\Dashboard\ChartDataSource.cs" />
     <Compile Include="Helpers\ChartHelper.cs" />
     <Compile Include="Helpers\AppVersionHelper.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
@@ -2468,13 +2347,6 @@
       <DependentUpon>DashboardNavigationController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetAccountDueAmount\AmountDueStatusResponseModel.cs" />
-    <Compile Include="Home\Dashboard\DashboardAccountsDataSource.cs" />
-    <Compile Include="Home\Dashboard\DashboardAccountCell.cs" />
-    <Compile Include="Home\Dashboard\DashboardAccountCell.designer.cs">
-      <DependentUpon>DashboardAccountCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Components\GreetingComponent.cs" />
-    <Compile Include="Enums\GreetingModeEnum.cs" />
     <Compile Include="Enums\NotificationEnum.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
@@ -2482,30 +2354,22 @@
     <Compile Include="Model\AppVersionModel.cs" />
     <Compile Include="Model\DowntimeDataModel.cs" />
     <Compile Include="Enums\SystemEnum.cs" />
-    <Compile Include="Home\Components\SystemDownComponent.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptTableViewDataSource.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.designer.cs">
       <DependentUpon>ReceiptTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PhoneVerificationStatusResponseModel.cs" />
-    <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
-    <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
-    <Compile Include="Home\Components\ToolTipComponent.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\ItemisedBilling.cs" />
-    <Compile Include="Home\Components\AccountStatusComponent.cs" />
-    <Compile Include="Model\GetInstallationDetails\InstallationDetailDataModel.cs" />
-    <Compile Include="Model\GetInstallationDetails\InstallationDetailModel.cs" />
-    <Compile Include="Model\GetInstallationDetails\InstallationDetailResponseModel.cs" />
     <Compile Include="Payment\Select Payment Method\SelectPaymentCell.cs" />
     <Compile Include="Payment\Select Payment Method\SelectPaymentCell.designer.cs">
       <DependentUpon>SelectPaymentCell.cs</DependentUpon>
@@ -2526,22 +2390,6 @@
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.cs" />
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
-    <Compile Include="Onboarding\OnboardingController.cs" />
-    <Compile Include="Customs\Generic Page View\BasePageViewRootController.cs" />
-    <Compile Include="Customs\Generic Page View\GenericPageRootViewController.cs" />
-    <Compile Include="Customs\Generic Page View\GenericPageRootViewController.designer.cs">
-      <DependentUpon>GenericPageRootViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Customs\Generic Page View\BaseDataViewController.cs" />
-    <Compile Include="Onboarding\OnboardingDataController.cs" />
-    <Compile Include="Customs\Generic Page View\GenericPageDataViewController.cs" />
-    <Compile Include="Customs\Generic Page View\GenericPageDataViewController.designer.cs">
-      <DependentUpon>GenericPageDataViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Customs\Generic Page View\GenericPageViewEnum.cs" />
-    <Compile Include="SSMR\Onboarding\SSMROnboardingController.cs" />
-    <Compile Include="SSMR\Onboarding\SSMROnboardingDataController.cs" />
-    <Compile Include="SSMR\Onboarding\SSMROnboardingModelController.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.designer.cs">
       <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
@@ -2587,7 +2435,6 @@
     <Compile Include="Sitecore CMS\Model\TnC\TimestampModel.cs" />
     <Compile Include="Sitecore CMS\Model\TnC\TimestampResponseModel.cs" />
     <Compile Include="SSMR\SSMRConstants.cs" />
-    <Compile Include="SSMR\Onboarding\SSMROnboardingModel.cs" />
     <Compile Include="SSMR\Application\SSMRApplicationViewController.cs" />
     <Compile Include="SSMR\Application\SSMRApplicationViewController.designer.cs">
       <DependentUpon>SSMRApplicationViewController.cs</DependentUpon>
@@ -2976,7 +2823,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="Resources\TNB_Logo.json" />
-    <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
     <BundleResource Include="Resources\Dashboard Zoom.json" />

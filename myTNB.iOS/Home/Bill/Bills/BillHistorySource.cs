@@ -176,6 +176,10 @@ namespace myTNB.Home.Bill
                             cell.IsArrowHidden = !item.IsDocumentAvailable;
                         }
                     }
+                    else
+                    {
+                        cell.SetPendingLabelHidden();
+                    }
 
                     cell.IsLineHidden = index == 0;
                     cell.ClipsToBounds = false;
