@@ -37,7 +37,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             string dueAmountNote = "";
             if (accountType == 2)
             {
-                dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "getBy") + " " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                if ((amountDue != null && amountDue != "") && (dueDate != null && dueDate != ""))
+                {
+                    double checkAmount = double.Parse(amountDue) * -1;
+                    if (checkAmount <= 0.00)
+                    {
+                        if (checkAmount < 0.00)
+                        {
+                            dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "receivedExtra");
+                        }
+                        else
+                        {
+                            dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "allCleared");
+                        }
+                    }
+                    else
+                    {
+                        dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "getBy") + " " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                    }
+                }
+                else
+                {
+                    dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "getBy") + " " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                }
             }
             else
             {

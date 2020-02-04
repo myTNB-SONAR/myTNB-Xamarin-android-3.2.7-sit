@@ -6410,8 +6410,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             else
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             }
                                         }
                                         else if (calAmt > 0)

@@ -829,8 +829,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     itemisedBillingInfoNote.Text = GetLabelByLanguage("beenPaidExtra");
                     itemisedBillingInfoDate.Visibility = ViewStates.Gone;
                     itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
-                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
                 }
                 else
                 {
