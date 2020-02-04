@@ -694,13 +694,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             }
             else
             {
-                if (accountChargeModel.IsNeedPay)
+                if (this.mView.GetIsPendingPayment())
                 {
-                    DisplayMode = "NoExtra";
+                    DisplayMode = "Extra";
                 }
                 else
                 {
-                    DisplayMode = "Extra";
+                    if (accountChargeModel.IsNeedPay)
+                    {
+                        DisplayMode = "NoExtra";
+                    }
+                    else
+                    {
+                        DisplayMode = "Extra";
+                    }
                 }
             }
 

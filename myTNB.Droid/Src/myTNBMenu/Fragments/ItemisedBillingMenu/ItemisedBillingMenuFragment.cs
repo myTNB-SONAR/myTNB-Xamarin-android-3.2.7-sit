@@ -1194,5 +1194,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 billFilterIcon.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
             }
         }
+
+        public bool GetIsPendingPayment()
+        {
+            return isPendingPayment;
+        }
     }
 }

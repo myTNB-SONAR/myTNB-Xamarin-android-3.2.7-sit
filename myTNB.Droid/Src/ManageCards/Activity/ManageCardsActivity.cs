@@ -48,6 +48,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
         [BindView(Resource.Id.txtEmptyCard)]
         TextView txtEmptyCard;
 
+        [BindView(Resource.Id.imgEmptyCard)]
+        ImageView imgEmptyCard;
+
         ManageCardsAdapter mAdapter;
 
         LinearLayoutManager mLayoutManager;
@@ -248,6 +251,13 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 cardsList.RemoveAt(position);
                 if (cardsList.Count == 0)
                 {
+                    LinearLayout.LayoutParams imgEmptyCardParams = imgEmptyCard.LayoutParameters as LinearLayout.LayoutParams;
+
+                    imgEmptyCardParams.Width = GetDeviceHorizontalScaleInPixel(0.3f);
+                    imgEmptyCardParams.Height = GetDeviceHorizontalScaleInPixel(0.3f);
+                    imgEmptyCardParams.TopMargin = GetDeviceHorizontalScaleInPixel(0.155f);
+                    imgEmptyCard.RequestLayout();
+
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
                     this.userActionsListener.OnRemoveStay(RemovedCard, position);
