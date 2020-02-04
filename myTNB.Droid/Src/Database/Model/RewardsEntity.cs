@@ -199,7 +199,27 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+
+                        bool isUsedExpired = false;
+                        if (x.IsUsed && !string.IsNullOrEmpty(x.IsUsedDateTime))
+                        {
+                            try
+                            {
+                                DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
+                                DateTime utcNow = DateTime.UtcNow;
+                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                {
+                                    isUsedExpired = true;
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        }
+
+                        return (startResult >= 0 && endResult <= 0 && !isUsedExpired);
                     });
 
                     if (matchList != null && matchList.Count > 0)
@@ -252,7 +272,27 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+
+                        bool isUsedExpired = false;
+                        if (x.IsUsed && !string.IsNullOrEmpty(x.IsUsedDateTime))
+                        {
+                            try
+                            {
+                                DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
+                                DateTime utcNow = DateTime.UtcNow;
+                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                {
+                                    isUsedExpired = true;
+                                }
+                                
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        }
+
+                        return (startResult >= 0 && endResult <= 0 && !isUsedExpired);
                     });
 
                     if (matchList != null && matchList.Count > 0)
@@ -300,7 +340,27 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+
+                        bool isUsedExpired = false;
+                        if (x.IsUsed && !string.IsNullOrEmpty(x.IsUsedDateTime))
+                        {
+                            try
+                            {
+                                DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
+                                DateTime utcNow = DateTime.UtcNow;
+                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                {
+                                    isUsedExpired = true;
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        }
+
+                        return (startResult >= 0 && endResult <= 0 && !isUsedExpired);
                     });
 
                     if (matchList != null && matchList.Count > 0)
@@ -348,7 +408,27 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+
+                        bool isUsedExpired = false;
+                        if (x.IsUsed && !string.IsNullOrEmpty(x.IsUsedDateTime))
+                        {
+                            try
+                            {
+                                DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
+                                DateTime utcNow = DateTime.UtcNow;
+                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                {
+                                    isUsedExpired = true;
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        }
+
+                        return (startResult >= 0 && endResult <= 0 && !isUsedExpired);
                     });
 
                     if (matchList != null && matchList.Count > 0)
@@ -422,7 +502,27 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+
+                        bool isUsedExpired = false;
+                        if (x.IsUsed && !string.IsNullOrEmpty(x.IsUsedDateTime))
+                        {
+                            try
+                            {
+                                DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
+                                DateTime utcNow = DateTime.UtcNow;
+                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                {
+                                    isUsedExpired = true;
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        }
+
+                        return (startResult >= 0 && endResult <= 0 && !isUsedExpired);
                     });
 
                     if (itemList != null && itemList.Count > 0)
