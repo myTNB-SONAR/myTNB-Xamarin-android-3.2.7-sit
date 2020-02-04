@@ -1245,6 +1245,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             int topHeight = (int)DPUtils.ConvertDPToPx(375f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
+                            if (model.DisplayMode == "Extra")
+                            {
+                                topHeight = (int)DPUtils.ConvertDPToPx(350f);
+                            }
 
                             if (model.ItemCount == 0)
                             {
@@ -1266,6 +1270,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
                                         int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }
@@ -1277,6 +1285,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
                                         int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
                                         topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
                                     }
                                 }

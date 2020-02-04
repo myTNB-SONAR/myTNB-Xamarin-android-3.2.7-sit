@@ -681,13 +681,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             }
 
             AccountChargeModel accountChargeModel = mainAccountChargeModelList[0];
-            if (accountChargeModel.IsNeedPay)
+            if (storedAccountTypeValue == "RE")
             {
-                DisplayMode = "NoExtra";
+                if (accountChargeModel.IsPaidExtra)
+                {
+                    DisplayMode = "NoExtra";
+                }
+                else
+                {
+                    DisplayMode = "Extra";
+                }
             }
             else
             {
-                DisplayMode = "Extra";
+                if (accountChargeModel.IsNeedPay)
+                {
+                    DisplayMode = "NoExtra";
+                }
+                else
+                {
+                    DisplayMode = "Extra";
+                }
             }
 
             if (storedAccountTypeValue == "RE")
@@ -698,6 +712,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("Bills", "tutorialAdviceTitle"), //"Your advice overview.",
                     ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialBillREAcctDesc"),//"Tap \" " +Constants.APP_TUTORIAL_PATTERN+ " \" to switch between<br/>different accounts. You’ll see how<br/>much you have earned or if you’ve <br/>been paid extra.",
                     ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
 
@@ -707,6 +722,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     ContentTitle = Utility.GetLocalizedLabel("Bills", "tutorialHistoryNormalTitle"),//"Keep track of payments.",
                     ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialHistoryREAcctDesc"),//"View and access your advices and<br/>payment receipts from the<br/>previous six months. Use the filter<br/>to see only advices or receipts.",
                     ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
                     IsButtonShow = true
                 });
             }
