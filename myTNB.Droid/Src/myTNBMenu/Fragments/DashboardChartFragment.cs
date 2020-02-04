@@ -9463,16 +9463,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (GetIsMDMSDown() && isSMAccount)
             {
-                MyTNBAppToolTipBuilder mdmsDownPopup =  MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                if (!isMDMSPlannedDownTime)
+                {
+                    MyTNBAppToolTipBuilder mdmsDownPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(MDMSUnavailableTitle)
+                        .SetMessage(MDMSUnavailableMessage)
+                        .SetSecondaryCTALabel(MDMSUnavailableCTA)
+                        .SetSecondaryCTAaction(userActionsListener.OnTapRefresh)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                        .Build();
+                    mdmsDownPopup.Show();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder mdmsDownPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(MDMSUnavailableTitle)
                     .SetMessage(MDMSUnavailableMessage)
                     .SetCTALabel(MDMSUnavailableCTA)
                     .Build();
-                if (!isMDMSPlannedDownTime)
-                {
-                    mdmsDownPopup.SetCTAaction(userActionsListener.OnTapRefresh);
+                    mdmsDownPopup.Show();
                 }
-                mdmsDownPopup.Show();
             }
         }
 
