@@ -227,6 +227,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     }
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
+                    textInputLayoutPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
@@ -238,6 +239,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 if (!string.IsNullOrEmpty(confirm_password))
                 {
                     textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
+                    textInputLayoutConfirmPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
