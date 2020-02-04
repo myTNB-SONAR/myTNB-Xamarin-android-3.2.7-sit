@@ -6409,7 +6409,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             }
                                             else
                                             {
-                                                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
+                                                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
                                                 txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                                 txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                             }
