@@ -599,7 +599,8 @@
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
     "electricityAccount": "Electricity Accounts",
     "mobileNumberVerified": "You've successfully updated your phone number!",
-    "passwordUpdateSuccess": "Your password has been changed successfully."
+    "passwordUpdateSuccess": "Your password has been changed successfully.",
+    "changeLanguageSuccess": "Your language preference has been changed successfully."
   },
   "NotificationSettings": {
     "title": "Notification Settings",

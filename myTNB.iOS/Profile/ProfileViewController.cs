@@ -81,6 +81,7 @@ namespace myTNB
             };
             _profileTableview.Source = dataSource;
             _profileTableview.ReloadData();
+            DisplayToast(GetI18NValue(ProfileConstants.I18N_ChangeLanguageSuccess), true);
         }
 
         private void OnGetRegisteredCards()
