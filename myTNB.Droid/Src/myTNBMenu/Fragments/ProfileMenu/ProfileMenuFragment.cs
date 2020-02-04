@@ -60,6 +60,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         const string PAGE_ID = "Profile";
 
+        private int APP_LANGUAGE_REQUEST = 1234908;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -146,6 +148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 mPresenter.Start();
                 bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
                 bool hasUpdatedPassword = MyTNBAccountManagement.GetInstance().IsPasswordUpdated();
+                bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
                 if (hasUpdatedMobile)
                 {
                     UserEntity userEntity = UserEntity.GetActive();
@@ -157,6 +160,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     ShowPasswordUpdateSuccess();
                     MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(false);
+                }
+
+                if (hasUpdateLanguage)
+                {
+                    ShowLanguageUpdateSuccess();
+                    MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                 }
 
                 try
@@ -509,7 +518,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 this.SetIsClicked(true);
                 Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
-                StartActivityForResult(nextIntent, 1234908);
+                StartActivityForResult(nextIntent, APP_LANGUAGE_REQUEST);
             }
         }
 
@@ -916,6 +925,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePassWordBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mLanguageSnackbar;
+        private void ShowLanguageUpdateSuccess()
+        {
+            try
+            {
+                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                {
+                    mLanguageSnackbar.Dismiss();
+                }
+
+                mLanguageSnackbar = Snackbar.Make(rootView,
+                    GetLabelByLanguage("changeLanguageSuccess"),
+                    Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = mLanguageSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLanguageSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
