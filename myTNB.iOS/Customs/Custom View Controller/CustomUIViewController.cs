@@ -213,7 +213,7 @@ namespace myTNB
 
             if (_viewToast == null)
             {
-                _viewToast = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48))
+                _viewToast = new UIView(new CGRect(GetScaledWidth(18F), GetScaledHeight(32F), ViewWidth - GetScaledWidth(36F), GetScaledHeight(48F)))
                 {
                     BackgroundColor = MyTNBColor.SunGlow,
                     Hidden = true,
@@ -228,8 +228,8 @@ namespace myTNB
                     Hidden = true
                 };
 
-                _lblToastDetails = new UILabel(new CGRect(16, 16, _viewToast.Frame.Width - 32
-                    , View.Frame.Height - ((_viewToast.Frame.X * 2) + 32)))
+                _lblToastDetails = new UILabel(new CGRect(BaseMarginWidth16, BaseMarginHeight16, _viewToast.Frame.Width - (BaseMarginWidth16 * 2)
+                    , View.Frame.Height - ((_viewToast.Frame.X * 2) + (BaseMarginHeight16 * 2))))
                 {
                     TextAlignment = UITextAlignment.Left,
                     Font = TNBFont.MuseoSans_12_300,
@@ -258,7 +258,7 @@ namespace myTNB
             _viewToast.Frame = new CGRect(_viewToast.Frame.X
                 , 0, _viewToast.Frame.Width, 0);
             _viewToastOverlay.Frame = new CGRect(_viewToast.Frame.X
-                , 32, _viewToast.Frame.Width, size.Height + 32);
+                , GetScaledHeight(32F), _viewToast.Frame.Width, size.Height + GetScaledHeight(32F));
 
             _viewToast.Hidden = false;
             if (isWindow)
@@ -277,7 +277,7 @@ namespace myTNB
                  {
                      _isAnimating = true;
                      _viewToast.Frame = new CGRect(_viewToast.Frame.X
-                    , 32, _viewToast.Frame.Width, size.Height + 32);
+                    , GetScaledHeight(32F), _viewToast.Frame.Width, size.Height + GetScaledHeight(32F));
                  }, () =>
                  {
                      DismissToast(2.0F);

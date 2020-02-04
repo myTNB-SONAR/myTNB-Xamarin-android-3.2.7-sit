@@ -22,6 +22,7 @@ namespace myTNB
         private GenericSelectorViewController languageViewController;
         private CustomUIButtonV2 _btnLogout;
         private UITableView _profileTableview;
+        private bool IsChangeLanguage;
 
         public override void ViewDidLoad()
         {
@@ -66,6 +67,16 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            if (IsChangeLanguage)
+            {
+                DisplayToast(GetI18NValue(ProfileConstants.I18N_ChangeLanguageSuccess), true);
+                IsChangeLanguage = false;
+            }
+        }
+
         protected override void LanguageDidChange(NSNotification notification)
         {
             base.LanguageDidChange(notification);
@@ -81,7 +92,7 @@ namespace myTNB
             };
             _profileTableview.Source = dataSource;
             _profileTableview.ReloadData();
-            DisplayToast(GetI18NValue(ProfileConstants.I18N_ChangeLanguageSuccess), true);
+            IsChangeLanguage = true;
         }
 
         private void OnGetRegisteredCards()
