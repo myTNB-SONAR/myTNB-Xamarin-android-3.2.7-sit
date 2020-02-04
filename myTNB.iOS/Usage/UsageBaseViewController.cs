@@ -580,7 +580,8 @@ namespace myTNB
             string title = AccountUsageSmartCache.ErrorTitle;
             string message = AccountUsageSmartCache.DisplayMessage;
             string ctaTitle = AccountUsageSmartCache.ErrorCTA;
-            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaTitle, OnMDMSRefresh } });
+            string ctaGotIt = GetCommonI18NValue(Constants.Common_GotIt);
+            DisplayCustomAlert(title, message, new Dictionary<string, Action> { { ctaGotIt, null }, { ctaTitle, OnMDMSRefresh } });
         }
 
         private void OnMDMSRefresh()

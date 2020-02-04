@@ -62,7 +62,7 @@
     "retry": "Retry",
     "save": "Save",
     "fullname": "Full Name",
-    "confirmPassword": "Confirm New Password",
+    "confirmPassword": "Confirm Password",
     "accountNo": "Account Number",
     "accountType": "Account Type",
     "allNotifications": "All Notifications",
@@ -379,7 +379,7 @@
     "showTariff": "Show Tariff",
     "hideTariff": "Hide Tariff",
     "tariffBlock": "Tariff Block",
-    "myEarnings": "My Earnings",
+    "myEarnings": "My earnings",
     "viewPaymentAdvice": "View Payment Advice",
     "iWillGetBy": "I will get by",
     "emptyDateAmount": "- -",
@@ -599,7 +599,8 @@
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
     "electricityAccount": "Electricity Accounts",
     "mobileNumberVerified": "You've successfully updated your phone number!",
-    "passwordUpdateSuccess": "Your password has been changed successfully."
+    "passwordUpdateSuccess": "Your password has been changed successfully.",
+    "changeLanguageSuccess": "Your language preference has been changed successfully."
   },
   "NotificationSettings": {
     "title": "Notification Settings",
