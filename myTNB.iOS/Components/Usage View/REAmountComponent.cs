@@ -148,29 +148,43 @@ namespace myTNB
         public void SetValues(string date, double amount)
         {
             double amnt = amount * -1;
-            _lblAmount.AttributedText = TextHelper.CreateValuePairString(amnt.ToString("N2", CultureInfo.InvariantCulture)
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString(Math.Abs(amnt).ToString("N2", CultureInfo.InvariantCulture)
                         , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_16_300
                         , MyTNBColor.GreyishBrown, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrown);
 
             if (amnt < 0)
             {
-                _lblDate.Text = "- -";
+                _lblDate.Hidden = true;
+                _lblAmount.TextColor = MyTNBColor.FreshGreen;
                 _lblTitle.Text = GetI18NValue(UsageConstants.I18N_BeenPaidExtra);
+                ViewHelper.AdjustFrameSetY(_lblTitle, GetScaledHeight(24F));
             }
             else
             {
+                _lblAmount.TextColor = MyTNBColor.CharcoalGrey;
                 _lblTitle.Text = GetI18NValue(UsageConstants.I18N_MyEarnings);
-                if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+                if (amnt == 0)
                 {
-                    string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
-
-                    _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
-                            , GetI18NValue(UsageConstants.I18N_IWillGetBy) + " ", true, TNBFont.MuseoSans_12_300
-                            , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
+                    _lblDate.Hidden = true;
+                    ViewHelper.AdjustFrameSetY(_lblTitle, GetScaledHeight(24F));
                 }
                 else
                 {
-                    _lblDate.Text = "- -";
+                    ViewHelper.AdjustFrameSetY(_lblTitle, GetScaledHeight(16F));
+                    if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+                    {
+                        string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
+
+                        _lblDate.Hidden = false;
+                        _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
+                                , GetI18NValue(UsageConstants.I18N_IWillGetBy) + " ", true, TNBFont.MuseoSans_12_300
+                                , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
+                    }
+                    else
+                    {
+                        _lblDate.Hidden = false;
+                        _lblDate.Text = "- -";
+                    }
                 }
             }
         }
