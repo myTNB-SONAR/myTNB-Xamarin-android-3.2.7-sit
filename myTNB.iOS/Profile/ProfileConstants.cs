@@ -34,6 +34,7 @@
         public static string I18N_ElectricityAccount = "electricityAccount";
         public static string I18N_MobileNumberVerified = "mobileNumberVerified";
         public static string I18N_PasswordUpdateSuccess = "passwordUpdateSuccess";
+        public static string I18N_ChangeLanguageSuccess = "changeLanguageSuccess";
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";

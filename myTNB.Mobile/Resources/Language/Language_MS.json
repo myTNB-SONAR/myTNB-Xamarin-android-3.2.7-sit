@@ -599,7 +599,8 @@
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "electricityAccount": "Akaun Elektrik",
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
-    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar."
+    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
+    "changeLanguageSuccess": "Your language preference has been changed successfully."
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
