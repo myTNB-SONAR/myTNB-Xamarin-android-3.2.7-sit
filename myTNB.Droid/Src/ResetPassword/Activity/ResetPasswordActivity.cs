@@ -137,6 +137,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 if (!string.IsNullOrEmpty(newPassword))
                 {
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                     txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
                     txtInputLayoutNewPassword.ErrorEnabled = true;
                     txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
@@ -159,6 +160,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                     txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
                     txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
                     txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
@@ -199,6 +201,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                     txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
                     txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
