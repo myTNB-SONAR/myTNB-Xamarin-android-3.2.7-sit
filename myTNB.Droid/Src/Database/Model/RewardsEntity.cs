@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.Database.Model
                             {
                                 DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 DateTime utcNow = DateTime.UtcNow;
-                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                if ((utcNow - dateTimeParse).TotalDays > 7)
                                 {
                                     isUsedExpired = true;
                                 }
@@ -280,7 +280,7 @@ namespace myTNB_Android.Src.Database.Model
                             {
                                 DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 DateTime utcNow = DateTime.UtcNow;
-                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                if ((utcNow - dateTimeParse).TotalDays > 7)
                                 {
                                     isUsedExpired = true;
                                 }
@@ -348,7 +348,7 @@ namespace myTNB_Android.Src.Database.Model
                             {
                                 DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 DateTime utcNow = DateTime.UtcNow;
-                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                if ((utcNow - dateTimeParse).TotalDays > 7)
                                 {
                                     isUsedExpired = true;
                                 }
@@ -416,7 +416,7 @@ namespace myTNB_Android.Src.Database.Model
                             {
                                 DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 DateTime utcNow = DateTime.UtcNow;
-                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                if ((utcNow - dateTimeParse).TotalDays > 7)
                                 {
                                     isUsedExpired = true;
                                 }
@@ -510,7 +510,7 @@ namespace myTNB_Android.Src.Database.Model
                             {
                                 DateTime dateTimeParse = DateTime.Parse(x.IsUsedDateTime, CultureInfo.InvariantCulture);
                                 DateTime utcNow = DateTime.UtcNow;
-                                if ((utcNow - dateTimeParse).TotalDays > 2)
+                                if ((utcNow - dateTimeParse).TotalDays > 7)
                                 {
                                     isUsedExpired = true;
                                 }
@@ -537,6 +537,54 @@ namespace myTNB_Android.Src.Database.Model
             }
 
             return null;
+        }
+
+        public bool CheckIsExpired(string itemID)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<RewardsEntity> itemList = new List<RewardsEntity>();
+                itemList = db.Query<RewardsEntity>("Select * FROM RewardsEntity WHERE ID = ?", itemID);
+                if (itemList != null && itemList.Count > 0)
+                {
+                    itemList = itemList.FindAll(x =>
+                    {
+                        int startResult = -1;
+                        int endResult = 1;
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(x.StartDate) && !string.IsNullOrEmpty(x.EndDate))
+                            {
+                                DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime stopDateTime = DateTime.ParseExact(x.EndDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime nowDateTime = DateTime.Now;
+                                startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                            }
+                        }
+                        catch (Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
+
+                        return (startResult >= 0 && endResult <= 0);
+                    });
+
+                    if (itemList != null && itemList.Count > 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+
+            return true;
         }
 
         public void UpdateReadItem(string itemID, bool flag, string formattedDate)
