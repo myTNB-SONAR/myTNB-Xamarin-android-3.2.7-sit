@@ -22,11 +22,11 @@ namespace myTNB
         public static int Tag_DetailLocationImage = 3004;
         public static int Tag_DetailTCImage = 3005;
 
+        //Int
+        public static int Int_UsedRewardLimitInDays = 7;
+
         //Format
         public static string Format_Date = "dd MMM yyyy, h:mm tt.";
-
-        //nfloat
-        public static nfloat RewardsCellHeight = ScaleUtility.GetScaledHeight(177F);
 
         //Preference Key
         public static string Pref_RewardsTutorialOverlay = "RewardsTutorialOverlayV2.1.0";

@@ -132,6 +132,33 @@ namespace myTNB
             return res;
         }
 
+        public static bool RewardHasUsedAfterXDays(RewardsModel reward, int days)
+        {
+            bool res = false;
+            try
+            {
+                if (reward != null && reward.ID.IsValid())
+                {
+                    if (reward.IsUsed)
+                    {
+                        DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
+                        if (rDate != null)
+                        {
+                            DateTime? rDateValue = rDate.Value.ToLocalTime();
+                            DateTime now = DateTime.Now;
+                            var d = (now - rDateValue).Value.Days;
+                            res = d >= days;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Date Error: " + e.Message);
+            }
+            return res;
+        }
+
         public static void OpenRewardDetails(string rewardId, UIViewController topView)
         {
             if (!AppLaunchMasterCache.IsRewardsDisabled)
@@ -145,29 +172,37 @@ namespace myTNB
                         {
                             if (!RewardHasExpired(reward))
                             {
-                                RewardsCache.RefreshReward = true;
-                                RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
-                                DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
-                                string rDateStr = string.Empty;
-                                if (rDate != null)
+                                if (!RewardHasUsedAfterXDays(reward, RewardsConstants.Int_UsedRewardLimitInDays))
                                 {
-                                    try
+                                    RewardsCache.RefreshReward = true;
+                                    RewardDetailsViewController rewardDetailView = new RewardDetailsViewController();
+                                    DateTime? rDate = RewardsCache.GetRedeemedDate(reward.ID);
+                                    string rDateStr = string.Empty;
+                                    if (rDate != null)
                                     {
-                                        DateTime? rDateValue = rDate.Value.ToLocalTime();
-                                        rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                        try
+                                        {
+                                            DateTime? rDateValue = rDate.Value.ToLocalTime();
+                                            rDateStr = rDateValue.Value.ToString(RewardsConstants.Format_Date, DateHelper.DateCultureInfo);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Debug.WriteLine("Error in ParseDate: " + e.Message);
+                                        }
                                     }
-                                    catch (Exception e)
+                                    rewardDetailView.RedeemedDate = rDateStr;
+                                    rewardDetailView.RewardModel = reward;
+                                    UINavigationController navController = new UINavigationController(rewardDetailView)
                                     {
-                                        Debug.WriteLine("Error in ParseDate: " + e.Message);
-                                    }
+                                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                    };
+                                    topView.PresentViewController(navController, true, null);
                                 }
-                                rewardDetailView.RedeemedDate = rDateStr;
-                                rewardDetailView.RewardModel = reward;
-                                UINavigationController navController = new UINavigationController(rewardDetailView)
+                                else
                                 {
-                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                                };
-                                topView.PresentViewController(navController, true, null);
+                                    //pending to be updated with the correct copy
+                                    ShowRewardExpired(topView);
+                                }
                             }
                             else
                             {
@@ -336,6 +371,25 @@ namespace myTNB
             return isExpired;
         }
 
+        public static bool FilterUsedRewards()
+        {
+            bool isUsed = false;
+            RewardsEntity rewardsEntity = new RewardsEntity();
+            var list = rewardsEntity.GetAllItems();
+            if (list != null && list.Count > 0)
+            {
+                foreach (var reward in list)
+                {
+                    if (RewardHasUsedAfterXDays(reward, RewardsConstants.Int_UsedRewardLimitInDays))
+                    {
+                        isUsed = true;
+                        rewardsEntity.DeleteItem(reward.ID);
+                    }
+                }
+            }
+            return isUsed;
+        }
+
         public static async Task<bool> RewardListHasUpdates()
         {
             bool needsUpdate = true;
@@ -406,7 +460,7 @@ namespace myTNB
                             {
                                 foreach (var reward in rewardsList)
                                 {
-                                    if (!RewardHasExpired(reward))
+                                    if (!RewardHasExpired(reward) && !RewardHasUsedAfterXDays(reward, RewardsConstants.Int_UsedRewardLimitInDays))
                                     {
                                         reward.CategoryID = category.ID;
                                         reward.CategoryName = category.CategoryName;

@@ -45,7 +45,7 @@ namespace myTNB
             {
                 addtl = ScaleUtility.GetScaledHeight(17F);
             }
-            return RewardsConstants.RewardsCellHeight + addtl;
+            return ScaleUtility.GetScaledHeight(177F) + addtl;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)

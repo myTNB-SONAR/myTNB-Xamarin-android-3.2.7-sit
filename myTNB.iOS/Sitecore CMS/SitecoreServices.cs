@@ -568,7 +568,7 @@ namespace myTNB.SitecoreCMS
                                 {
                                     foreach (var reward in rewardsList)
                                     {
-                                        if (!RewardsServices.RewardHasExpired(reward))
+                                        if (!RewardsServices.RewardHasExpired(reward) && !RewardsServices.RewardHasUsedAfterXDays(reward, RewardsConstants.Int_UsedRewardLimitInDays))
                                         {
                                             reward.CategoryID = category.ID;
                                             reward.CategoryName = category.CategoryName;
