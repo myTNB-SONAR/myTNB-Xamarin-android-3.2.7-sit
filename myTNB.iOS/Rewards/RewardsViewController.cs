@@ -144,7 +144,7 @@ namespace myTNB
                         {
                             if (RewardsCache.RewardIsAvailable)
                             {
-                                bool needsUpdate = RewardsServices.FilterExpiredRewards();
+                                bool needsUpdate = RewardsServices.FilterExpiredRewards() || RewardsServices.FilterUsedRewards();
                                 if (needsUpdate)
                                 {
                                     ValidateRewards();
@@ -344,6 +344,7 @@ namespace myTNB
         private void ProcessRewards()
         {
             RewardsServices.FilterExpiredRewards();
+            RewardsServices.FilterUsedRewards();
             ValidateRewards();
         }
 

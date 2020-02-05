@@ -229,7 +229,7 @@ namespace myTNB
                 };
 
                 _lblToastDetails = new UILabel(new CGRect(BaseMarginWidth16, BaseMarginHeight16, _viewToast.Frame.Width - (BaseMarginWidth16 * 2)
-                    , View.Frame.Height - ((_viewToast.Frame.X * 2) + (BaseMarginHeight16 * 2))))
+                    , (BaseMarginHeight16 * 2)))
                 {
                     TextAlignment = UITextAlignment.Left,
                     Font = TNBFont.MuseoSans_12_300,
@@ -251,8 +251,7 @@ namespace myTNB
             }
             _lblToastDetails.Text = message ?? string.Empty;
 
-            CGSize size = LabelHelper.GetLabelSize(_lblToastDetails
-                , _lblToastDetails.Frame.Width, _lblToastDetails.Frame.Height);
+            CGSize size = _lblToastDetails.SizeThatFits(new CGSize(_lblToastDetails.Frame.Width, _lblToastDetails.Frame.Height));
             _lblToastDetails.Frame = new CGRect(_lblToastDetails.Frame.X
                 , _lblToastDetails.Frame.Y, _lblToastDetails.Frame.Width, size.Height);
             _viewToast.Frame = new CGRect(_viewToast.Frame.X

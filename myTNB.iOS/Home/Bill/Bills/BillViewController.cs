@@ -491,6 +491,8 @@ namespace myTNB
 
         private void UpdateViewAmount(bool isExtra = false, bool hasPendingPayment = false)
         {
+            bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+
             nfloat currencyWidth = _lblCurrency.GetLabelWidth(GetScaledWidth(ViewWidth / 2));
             _lblCurrency.Frame = new CGRect(0, _lblCurrency.Frame.Y, currencyWidth, _lblCurrency.Frame.Height);
 
@@ -508,8 +510,8 @@ namespace myTNB
             }
             else
             {
-                _lblCurrency.TextColor = isExtra ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
-                _lblAmount.TextColor = isExtra ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
+                _lblCurrency.TextColor = isExtra && !isRe ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
+                _lblAmount.TextColor = isExtra && !isRe ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
             }
         }
 
