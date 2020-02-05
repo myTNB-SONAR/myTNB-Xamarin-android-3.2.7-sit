@@ -200,8 +200,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    //pending to be updated with the correct copy
-                                    ShowRewardExpired(topView);
+                                    ShowRewardIsUsed(topView);
                                 }
                             }
                             else
@@ -234,6 +233,32 @@ namespace myTNB
                 {
                     AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableTitle),
                 LanguageUtility.GetCommonI18NValue(Constants.Common_RewardNotAvailableDesc),
+                new Dictionary<string, Action> {
+                {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () =>
+                {
+                    if (topView is HomeTabBarController)
+                    {
+                        HomeTabBarController tabBar = topView as HomeTabBarController;
+                        tabBar.SelectedIndex = 3;
+                    }
+                    else if (topView.TabBarController != null)
+                    {
+                        topView.TabBarController.SelectedIndex = 3;
+                    }
+                    RewardsCache.RefreshReward = true;
+                }}});
+                });
+            }
+        }
+
+        public static void ShowRewardIsUsed(UIViewController topView)
+        {
+            if (topView != null)
+            {
+                topView.InvokeOnMainThread(() =>
+                {
+                    AlertHandler.DisplayCustomAlert(LanguageUtility.GetCommonI18NValue(Constants.Common_RewardIsUsedTitle),
+                LanguageUtility.GetCommonI18NValue(Constants.Common_RewardIsUsedDesc),
                 new Dictionary<string, Action> {
                 {LanguageUtility.GetCommonI18NValue(Constants.Common_ShowMoreRewards), () =>
                 {

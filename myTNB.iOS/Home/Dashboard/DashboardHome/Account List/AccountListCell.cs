@@ -84,7 +84,7 @@ namespace myTNB
                 _nickname.Text = model.accNickName;
                 _accountNumber.Text = model.accNum;
 
-                var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
+                var amount = !model.IsReAccount ? model.amountDue : model.amountDue * -1;
                 var absAmount = Math.Abs(amount);
                 _amountDue.AttributedText = TextHelper.CreateValuePairString(absAmount.ToString("N2", CultureInfo.InvariantCulture)
                     , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_12_500
@@ -92,9 +92,9 @@ namespace myTNB
                 var dateString = amount > 0 ? model.billDueDate : string.Empty;
                 if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                 {
-                    _dueDate.Text = amount < 0 ? GetI18NValue(DashboardHomeConstants.I18N_PaidExtra) : GetI18NValue(DashboardHomeConstants.I18N_AllCleared);
+                    _dueDate.Text = amount < 0 ? model.IsReAccount ? GetI18NValue(DashboardHomeConstants.I18N_ReceivedExtra) : GetI18NValue(DashboardHomeConstants.I18N_PaidExtra) : GetI18NValue(DashboardHomeConstants.I18N_AllCleared);
                     _dueDate.TextColor = UIColor.FromWhiteAlpha(1, 0.60F);
-                    _amountDue.TextColor = amount < 0 ? MyTNBColor.LightGreenBlue : UIColor.White;
+                    _amountDue.TextColor = amount < 0 ? !model.IsReAccount ? MyTNBColor.LightGreenBlue : UIColor.White : UIColor.White;
                 }
                 else
                 {

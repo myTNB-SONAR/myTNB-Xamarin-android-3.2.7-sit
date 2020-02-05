@@ -74,6 +74,7 @@ namespace myTNB
         public static string I18N_RearrangeToastFailMsg = "rearrangeToastFailMsg";
         public static string I18N_RearrangeToastSuccessMsg = "rearrangeToastSuccessMsg";
         public static string I18N_ServiceRefreshMessage = "serviceRefreshMessage";
+        public static string I18N_ReceivedExtra = "receivedExtra";
 
         //Image
         public static string Img_Notification = "Notification";

@@ -151,7 +151,9 @@
     "whatsNewExpiredMsg": "Promosi/pengumuman ini telah tamat & dikeluarkan. Semak semula selepas ini untuk mengetahui informasi terkini tentang TNB!",
     "whatsNewExpiredBtnText": "Tunjukkan Terkini!",
     "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    "usedRewardTitle": "Ganjaran telah digunakan.",
+    "usedRewardMsg": "Tidak mengapa, kami mempunyai lebih banyak ganjaran untuk anda meneroka!"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -197,7 +199,8 @@
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "Faham!",
-    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! "
+    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
+    "receivedExtra": "received extra"
   },
   "Tabbar": {
     "home": "Utama",
@@ -391,7 +394,7 @@
     "pay": "Bayar",
     "mdmsUnavailable": "Tidak Tersedia Buat Masa Ini",
     "mdmsUnavailableMsg": "Maklumat penggunaan harian anda tidak tersedia buat masa ini. Sila semak kemudian.",
-    "beenPaidExtra": "Saya telah dibayar lebih",
+    "beenPaidExtra": "Saya telah terima lebih",
     "tutorialSMRTitle": "Status bacaan anda sepintas lalu.",
     "tutorialSMRDesc": "Dapatkan status bacaan anda di sini. Kami juga akan memaklumkan apabila tiba masanya untuk menghantar bacaan.",
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
@@ -409,7 +412,7 @@
     "getBy": "dapat pada",
     "myEarnings": "Pendapatan saya",
     "myHistory": "Transaksi Saya",
-    "beenPaidExtra": "Saya telah dibayar lebih",
+    "beenPaidExtra": "Saya telah terima lebih",
     "noHistoryData": "Tiada rekod bacaan meter buat masa ini.",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
