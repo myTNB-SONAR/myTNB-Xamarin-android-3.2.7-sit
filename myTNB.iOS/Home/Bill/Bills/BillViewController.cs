@@ -54,6 +54,11 @@ namespace myTNB
             }
             if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = false;
+                //TabBarController.SelectedIndex = 1;
+            }
             base.ViewDidLoad();
             if ((DataManager.DataManager.SharedInstance.AccountRecordsList != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null

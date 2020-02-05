@@ -6,7 +6,6 @@ using Firebase.CloudMessaging;
 using Firebase.Core;
 using Firebase.InstanceID;
 using Foundation;
-using myTNB.Dashboard;
 using myTNB.Model;
 using myTNB.PushNotification;
 using UIKit;

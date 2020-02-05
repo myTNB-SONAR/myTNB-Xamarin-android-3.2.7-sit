@@ -46,6 +46,10 @@ namespace myTNB
 
         public override void ViewWillAppear(bool animated)
         {
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             base.ViewWillAppear(animated);
             NavigationController.SetNavigationBarHidden(true, true);
             int unreadCount = PushNotificationHelper.GetNotificationCount();
@@ -438,6 +442,8 @@ namespace myTNB
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     //todo: payment history
+                    //OnViewBill();
+                    ViewHelper.DismissControllersAndSelectTab(this, 1, true);
                 }));
                 _btnSecondary = new CustomUIButtonV2
                 {
@@ -447,7 +453,7 @@ namespace myTNB
                 _btnSecondary.SetTitle("View Receipt", UIControlState.Normal);
                 _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
-                    //todo: receipt
+                    OnViewReceipt();
                 }));
 
                 _viewCTA.AddSubviews(new UIView[] { _btnPrimary, _btnSecondary });
@@ -609,6 +615,62 @@ namespace myTNB
                         if (viewController != null)
                         {
                             NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewBill()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard stroryboard = UIStoryboard.FromName("Dashboard", null);
+                        BillViewController viewController = stroryboard.InstantiateViewController("BillViewController") as BillViewController;
+                        if (viewController != null)
+                        {
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewReceipt()
+        {
+            NotificationInfo.DetailedInfoNumber = "340108502538";
+            if (NotificationInfo == null || !NotificationInfo.DetailedInfoNumber.IsValid())
+            {
+                return;
+            }
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
+                        ReceiptViewController viewController =
+                            storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
+                        if (viewController != null)
+                        {
+                            viewController.DetailedInfoNumber = NotificationInfo.DetailedInfoNumber;
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                            PresentViewController(navController, true, null);
                         }
                     }
                     else

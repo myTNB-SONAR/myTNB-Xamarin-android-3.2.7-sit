@@ -38,6 +38,7 @@ namespace myTNB.Model
         public string Target { set; get; } = string.Empty;
         public bool IsSMRPeriodOpen { set; get; }
         public string ODNBatchSubcategory { set; get; } = string.Empty;
+        public string DetailedInfoNumber { set; get; } = string.Empty;
 
         public class AccountDetailsModel
         {

@@ -56,6 +56,10 @@ namespace myTNB
         {
             PageName = UsageConstants.PageName;
             IsNewGradientRequired = true;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = false;
+            }
             base.ViewDidLoad();
             InitializeValues();
             SetNavigation();

@@ -125,6 +125,10 @@ namespace myTNB
 
         public override void ViewWillAppear(bool animated)
         {
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = false;
+            }
             base.ViewWillAppear(animated);
             UpdateGreeting(GetGreeting());
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
@@ -605,9 +609,11 @@ namespace myTNB
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
             PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-            UINavigationController navController = new UINavigationController(viewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(navController, true, null);
+            //UINavigationController navController = new UINavigationController(viewController);
+            //navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            //PresentViewController(navController, true, null);
+            //viewController.HidesBottomBarWhenPushed = false;
+            NavigationController.PushViewController(viewController, true);
         }
 
         public void OnAddAccountAction()

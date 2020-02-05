@@ -225,6 +225,10 @@ namespace myTNB.PushNotification
 
         public override void ViewWillAppear(bool animated)
         {
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             base.ViewWillAppear(animated);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -423,7 +427,8 @@ namespace myTNB.PushNotification
         {
             OnReset();
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
-            DismissViewController(true, null);
+            //DismissViewController(true, null);
+            NavigationController.PopToRootViewController(true);
         }
 
         private void OnDismiss()
