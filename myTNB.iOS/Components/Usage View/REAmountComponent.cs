@@ -155,13 +155,11 @@ namespace myTNB
             if (amnt < 0)
             {
                 _lblDate.Hidden = true;
-                _lblAmount.TextColor = MyTNBColor.FreshGreen;
                 _lblTitle.Text = GetI18NValue(UsageConstants.I18N_BeenPaidExtra);
                 ViewHelper.AdjustFrameSetY(_lblTitle, GetScaledHeight(24F));
             }
             else
             {
-                _lblAmount.TextColor = MyTNBColor.CharcoalGrey;
                 _lblTitle.Text = GetI18NValue(UsageConstants.I18N_MyEarnings);
                 if (amnt == 0)
                 {
