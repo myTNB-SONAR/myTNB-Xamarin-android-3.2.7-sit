@@ -325,7 +325,7 @@
     "SMRPhotoPopUpDetails": [
       {
         "Title": "Muat naik daripada album anda?",
-        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
+        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Single_UploadPhoto"
       },
@@ -343,7 +343,7 @@
       },
       {
         "Title": "Muat naik daripada album anda?",
-        "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
+        "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_UploadPhoto"
       },
@@ -355,7 +355,7 @@
       },
       {
         "Title": "Muat naik daripada album anda?",
-        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
+        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_UploadPhoto_One_Missing"
       }
@@ -527,7 +527,7 @@
     "deleteAllTitle": "Buang Semua Pemberitahuan",
     "deleteMessageMultiple": "Anda pasti mahu membuang pemberitahuan ini?",
     "deleteTitleMultiple": "Buang Pemberitahuan yang Dipilih",
-    "noNotification": "Anda tiada Pemberitahuan baharu pada masa ini.",
+    "noNotification": "Tiada Pemberitahuan baharu pada masa ini.",
     "notificationDeleted": "Pemberitahuan telah dibuang.",
     "notificationsDeleted": "Pemberitahuan telah dibuang.",
     "select": "Pilih",
@@ -751,7 +751,7 @@
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
-    "noCards": "Tiada kad kedit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
+    "noCards": "Tiada kad kredit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
     "details": "Anda hanya boleh menambah kad kredit / debit baharu semasa membuat pembayaran.",
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
@@ -858,7 +858,7 @@
     "pay": "Bayar"
   },
   "RatingResults": {
-    "description": "Penarafan anda akan membantu kami meningkatkan mutu perkhidmatan kepada anda.",
+    "description": "Penarafan anda akan membantu kami melayan anda dengan lebih baik.",
     "thankyou": "Terima Kasih.",
     "backToHome": "Kembali ke Utama"
   },
