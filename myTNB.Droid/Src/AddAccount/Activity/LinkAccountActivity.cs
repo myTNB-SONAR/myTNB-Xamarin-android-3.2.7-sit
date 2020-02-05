@@ -159,6 +159,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       {
                           btnAddAnotherAccount.Visibility = ViewStates.Visible;
                       }
+                      if (accountList.Count() > 0)
+                      {
+                          textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAcctCount");
+                      }
+                      else
+                      {
+                          textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                      }
                       mDeleteDialog.Dismiss();
                   })
                  .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
