@@ -427,6 +427,45 @@ namespace myTNB
             {
                 EvaluateSSMRCTA();
             }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.PaymentSuccess)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle("Payment History", UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    //todo: payment history
+                }));
+                _btnSecondary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnSecondary, true);
+                _btnSecondary.SetTitle("View Receipt", UIControlState.Normal);
+                _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    //todo: receipt
+                }));
+
+                _viewCTA.AddSubviews(new UIView[] { _btnPrimary, _btnSecondary });
+            }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.PaymentFail)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnPrimary, true);
+                _btnPrimary.SetTitle(GetCommonI18NValue(Constants.Common_TryAgain), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnPay();
+                }));
+                _viewCTA.AddSubview(_btnPrimary);
+            }
         }
 
         private void EvaluateSSMRCTA()

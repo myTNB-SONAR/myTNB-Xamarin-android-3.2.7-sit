@@ -49,6 +49,8 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Maintenance, "Notification-Banner-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "SSMR-Reading-History-Banner" }
             , { BCRMNotificationEnum.None, "Notification-Banner-Generic" }
+            , { BCRMNotificationEnum.PaymentFail, "Notification-Banner-PaymentFail"}
+            , { BCRMNotificationEnum.PaymentSuccess, "Notification-Banner-PaymentSuccess"}
         };
 
         //SSMR Banner Dictionary
@@ -72,6 +74,8 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Maintenance, "Notification-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "Notification-SSMR" }
             , { BCRMNotificationEnum.None, "Notification-Generic" }
+            , { BCRMNotificationEnum.PaymentFail, ""}
+            , { BCRMNotificationEnum.PaymentSuccess, ""}
         };
 
         //I18N

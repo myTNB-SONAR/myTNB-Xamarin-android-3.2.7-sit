@@ -130,6 +130,12 @@ namespace myTNB.Model
                         case "0011":
                             notificationType = BCRMNotificationEnum.SSMR;
                             break;
+                        case "71":
+                            notificationType = BCRMNotificationEnum.PaymentFail;
+                            break;
+                        case "72":
+                            notificationType = BCRMNotificationEnum.PaymentSuccess;
+                            break;
                     }
                 }
 
