@@ -400,11 +400,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                             }
                         }
 
-                        mDisplayCategoryList.Add(new RewardsCategoryModel()
+                        List<RewardsEntity> reCheckList = mRewardsEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
+
+                        if (reCheckList != null && reCheckList.Count > 0)
                         {
-                            ID = mCategoryList[i].ID,
-                            CategoryName = mCategoryList[i].CategoryName
-                        });
+                            mDisplayCategoryList.Add(new RewardsCategoryModel()
+                            {
+                                ID = mCategoryList[i].ID,
+                                CategoryName = mCategoryList[i].CategoryName
+                            });
+                        }
+                        else
+                        {
+                            mRewardsEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                            mRewardsCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                        }
                     }
                     else
                     {

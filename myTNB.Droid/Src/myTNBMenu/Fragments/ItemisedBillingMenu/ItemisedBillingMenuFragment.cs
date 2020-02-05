@@ -827,10 +827,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
                     itemisedBillingInfoNote.Text = GetLabelByLanguage("beenPaidExtra");
-
+                    itemisedBillingInfoDate.Visibility = ViewStates.Gone;
                     itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
-                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
                 }
                 else
                 {
@@ -1193,6 +1193,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 billFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
                 billFilterIcon.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
             }
+        }
+
+        public bool GetIsPendingPayment()
+        {
+            return isPendingPayment;
         }
     }
 }

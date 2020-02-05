@@ -473,6 +473,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.dashboard_dropdown)]
         ImageView imgRmKwhDropdownArrow;
 
+        [BindView(Resource.Id.reNoPayableLayout)]
+        LinearLayout reNoPayableLayout;
+
+        [BindView(Resource.Id.txtReNoPayableTitle)]
+        TextView txtReNoPayableTitle;
+
+        [BindView(Resource.Id.txtReNoPayable)]
+        TextView txtReNoPayable;
+
+        [BindView(Resource.Id.txtReNoPayableCurrency)]
+        TextView txtReNoPayableCurrency;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -851,6 +863,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle, txtDayViewZoomInIndicator);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, newAccountContent, txtTariffBlockLegendDisclaimer);
+                TextViewUtils.SetMuseoSans300Typeface(txtReNoPayable, txtReNoPayableCurrency);
+                TextViewUtils.SetMuseoSans500Typeface(txtReNoPayableTitle);
 
 
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
@@ -858,7 +872,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnPay.Text = Utility.GetLocalizedLabel("Usage", "pay");
                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
                 txtTotalPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "needToPay");
-                reTotalPayableTitle.Text = Utility.GetLocalizedLabel("Bills", "myEarnings");
+                reTotalPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
+                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
                 btnReView.Text = Utility.GetLocalizedLabel("Usage", "viewPaymentAdvice");
                 btnToggleDay.Text = Utility.GetLocalizedCommonLabel("day");
                 btnToggleMonth.Text = Utility.GetLocalizedCommonLabel("month");
@@ -6369,16 +6384,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         // txtWhyThisAmt.Visibility = ViewStates.Gone;
                                         selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                                         double calAmt = selectedAccount.AmtCustBal * -1;
-                                        if (calAmt <= 0)
-                                        {
-                                            calAmt = 0.00;
-                                        }
-                                        else
-                                        {
-                                            calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
-                                        }
-                                        txtTotalPayable.Text = decimalFormat.Format(calAmt);
-                                        reTotalPayable.Text = decimalFormat.Format(calAmt);
+
+                                        txtTotalPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        reTotalPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        txtReNoPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
 
                                         int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
                                         Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
@@ -6388,13 +6397,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         SimpleDateFormat df = new SimpleDateFormat("dd MMM");
                                         Date newDate = c.Time;
                                         string dateString = df.Format(newDate);
-                                        if (System.Math.Abs(calAmt) < 0.0001)
+                                        if (calAmt <= 0)
                                         {
-                                            txtDueDate.Text = "- -";
-                                            reDueDate.Text = "- -";
+                                            rePayableLayout.Visibility = ViewStates.Gone;
+                                            reNoPayableLayout.Visibility = ViewStates.Visible;
+                                            if (System.Math.Abs(calAmt) < 0.0001)
+                                            {
+                                                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
+                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            }
+                                            else
+                                            {
+                                                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
+                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            }
                                         }
-                                        else
+                                        else if (calAmt > 0)
                                         {
+                                            rePayableLayout.Visibility = ViewStates.Visible;
+                                            reNoPayableLayout.Visibility = ViewStates.Gone;
                                             txtDueDate.Text = Utility.GetLocalizedLabel("Usage", "iWillGetBy") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
                                             reDueDate.Text = Utility.GetLocalizedLabel("Usage", "iWillGetBy") + " " + dateString;
                                         }
@@ -9463,16 +9486,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (GetIsMDMSDown() && isSMAccount)
             {
-                MyTNBAppToolTipBuilder mdmsDownPopup =  MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                if (!isMDMSPlannedDownTime)
+                {
+                    MyTNBAppToolTipBuilder mdmsDownPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(MDMSUnavailableTitle)
+                        .SetMessage(MDMSUnavailableMessage)
+                        .SetSecondaryCTALabel(MDMSUnavailableCTA)
+                        .SetSecondaryCTAaction(userActionsListener.OnTapRefresh)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                        .Build();
+                    mdmsDownPopup.Show();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder mdmsDownPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(MDMSUnavailableTitle)
                     .SetMessage(MDMSUnavailableMessage)
                     .SetCTALabel(MDMSUnavailableCTA)
                     .Build();
-                if (!isMDMSPlannedDownTime)
-                {
-                    mdmsDownPopup.SetCTAaction(userActionsListener.OnTapRefresh);
+                    mdmsDownPopup.Show();
                 }
-                mdmsDownPopup.Show();
             }
         }
 

@@ -1772,16 +1772,34 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 else
                                 {
                                     IsRootTutorialShown = true;
-                                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
-                                    .SetCTAaction(() =>
+
+                                    bool isExpired = wtManager.CheckIsExpired(rewardID);
+                                    if (!isExpired)
                                     {
-                                        IsRootTutorialShown = false;
-                                        OnSelectReward();
-                                    })
-                                    .Build().Show();
+                                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                            .SetTitle(Utility.GetLocalizedLabel("Error", "usedRewardTitle"))
+                                            .SetMessage(Utility.GetLocalizedLabel("Error", "usedRewardMsg"))
+                                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                            .SetCTAaction(() =>
+                                            {
+                                                IsRootTutorialShown = false;
+                                                OnSelectReward();
+                                            })
+                                            .Build().Show();
+                                    }
+                                    else
+                                    {
+                                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                            .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
+                                            .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
+                                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                            .SetCTAaction(() =>
+                                            {
+                                                IsRootTutorialShown = false;
+                                                OnSelectReward();
+                                            })
+                                            .Build().Show();
+                                    }
                                 }
                             }
                         }

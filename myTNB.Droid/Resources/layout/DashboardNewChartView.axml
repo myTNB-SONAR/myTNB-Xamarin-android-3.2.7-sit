@@ -726,6 +726,54 @@
                                         android:textColor="@color/new_grey"
                                         android:text="I will get by 22 Aug" />
                                 </RelativeLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:id="@+id/reNoPayableLayout"
+                                        android:visibility="gone"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:id="@+id/txtReNoPayableTitle"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentStart="true"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_weight="0.5"
+                                            android:layout_gravity="center"
+                                            android:text="@string/dashboard_need_pay"
+                                            android:textColor="@color/charcoalGrey"
+                                            android:textSize="13dp"
+                                            android:lineSpacingExtra="2dp"/>
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="0.5">
+                                            <TextView
+                                                android:id="@+id/txtReNoPayable"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:layout_alignParentRight="true"
+                                                android:layout_alignParentTop="true"
+                                                android:text="0.00"
+                                                android:layout_marginRight="1dp"
+                                                android:textColor="@color/charcoalGrey"
+                                                android:textSize="17dp" />
+                                            <TextView
+                                                android:id="@+id/txtReNoPayableCurrency"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignBaseline="@+id/txtReNoPayable"
+                                                android:layout_alignBottom="@+id/txtReNoPayable"
+                                                android:layout_toLeftOf="@+id/txtReNoPayable"
+                                                android:layout_toStartOf="@+id/txtReNoPayable"
+                                                android:text="RM"
+                                                android:layout_marginRight="7dp"
+                                                android:textColor="@color/charcoalGrey"
+                                                android:textSize="13dp" />
+                                        </RelativeLayout>
+                                    </LinearLayout>
                                 </LinearLayout>
                                 <Button
                                     android:id="@+id/btnReView"

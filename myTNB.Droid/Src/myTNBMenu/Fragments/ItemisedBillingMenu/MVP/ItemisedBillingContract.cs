@@ -23,6 +23,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             void ItemizedBillingCustomScrolling(int yPosition);
             void ShowUnavailableChargeContent(bool isShowRefresh, string btnText, string contentText);
             void ShowUnavailableBillContent(bool isShowRefresh, string btnText, string contentText);
+            bool GetIsPendingPayment();
         }
     }
 }
