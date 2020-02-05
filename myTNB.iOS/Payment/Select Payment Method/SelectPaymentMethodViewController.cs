@@ -150,22 +150,28 @@ namespace myTNB
 
         internal void ExecuteRequestPayBillCall(int thePlatform, string thePaymentMode, string cardID, bool isNewCard, string amountDue)
         {
-            RemoveCachedAccountRecords();
-            ActivityIndicator.Show();
-            InvokeOnMainThread(async () =>
+            InvokeOnMainThread(() =>
             {
-                GetPaymentTransactionIdResponseModel _paymentTransaction = await GetPaymentTransactionId(thePlatform, thePaymentMode, cardID);
-                if (_paymentTransaction != null && _paymentTransaction.d != null && _paymentTransaction.d.IsSuccess
-                    && _paymentTransaction.d.data != null)
+                RemoveCachedAccountRecords();
+                ActivityIndicator.Show();
+                InvokeInBackground(async () =>
                 {
-                    Debug.WriteLine("Success");
-                    NavigateToVC(_paymentTransaction, thePlatform, thePaymentMode);
-                }
-                else
-                {
-                    DisplayServiceError(_paymentTransaction?.d?.DisplayMessage ?? string.Empty);
-                }
-                ActivityIndicator.Hide();
+                    GetPaymentTransactionIdResponseModel _paymentTransaction = await GetPaymentTransactionId(thePlatform, thePaymentMode, cardID);
+                    InvokeOnMainThread(() =>
+                    {
+                        if (_paymentTransaction != null && _paymentTransaction.d != null && _paymentTransaction.d.IsSuccess
+                        && _paymentTransaction.d.data != null)
+                        {
+                            Debug.WriteLine("Success");
+                            NavigateToVC(_paymentTransaction, thePlatform, thePaymentMode);
+                        }
+                        else
+                        {
+                            DisplayServiceError(_paymentTransaction?.d?.DisplayMessage ?? string.Empty);
+                        }
+                        ActivityIndicator.Hide();
+                    });
+                });
             });
         }
 
