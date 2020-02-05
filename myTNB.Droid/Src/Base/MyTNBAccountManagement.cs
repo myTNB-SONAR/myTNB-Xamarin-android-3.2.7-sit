@@ -36,6 +36,7 @@ namespace myTNB_Android.Src.Base
         private bool IsAppMasterMaintenance = false;
         private bool IsAccessUsageFromNotification = false;
         private bool IsNotificationListFromLaunch = false;
+        private bool IsUpdateAppLanguage = false;
         private MyTNBAccountManagement()
         {
             appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
@@ -532,6 +533,16 @@ namespace myTNB_Android.Src.Base
         public bool IsPasswordUpdated()
         {
             return IsUpdatedPassword;
+        }
+
+        public void SetIsUpdateLanguage(bool isUpdated)
+        {
+            IsUpdateAppLanguage = isUpdated;
+        }
+
+        public bool IsUpdateLanguage()
+        {
+            return IsUpdateAppLanguage;
         }
 
         public void SetIsAccessUsageFromNotification(bool isUsageFromNotification)

@@ -260,6 +260,7 @@ namespace myTNB_Android.Src.Profile.Activity
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     UpdateLanguage();
+                                    MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                                     OnMaintenanceProceed();
                                 }
                                 catch (Exception ex)
@@ -288,6 +289,7 @@ namespace myTNB_Android.Src.Profile.Activity
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     UpdateLanguage();
+                                    MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
                                     OnBackProceed();
                                     HideShowProgressDialog();
                                 }

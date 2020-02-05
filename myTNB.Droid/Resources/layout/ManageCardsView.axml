@@ -36,15 +36,17 @@
             android:id="@+id/layout_empty_cards"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/lightGrey"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="16dp">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/imgEmptyCard"
                 android:src="@drawable/ic_empty_creditcards" />
             <TextView
                 android:id="@+id/txtEmptyCard"
@@ -53,8 +55,9 @@
                 android:padding="16dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textColor="@color/tunaGrey"
-                android:textSize="16dp"
+                android:textColor="#8b8b8b"
+                android:textSize="14dp"
+                android:lineSpacingExtra="3dp"
                 android:text="@string/manage_cards_no_cards" />
         </LinearLayout>
     </FrameLayout>
