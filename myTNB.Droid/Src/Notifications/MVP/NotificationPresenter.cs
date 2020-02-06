@@ -27,6 +27,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -238,6 +239,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+            List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
             cts = new CancellationTokenSource();
             this.mView.ShowQueryProgress();
 
@@ -321,6 +323,40 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                                         foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                                         {
+                                            try
+                                            {
+                                                if ((userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_BILL_DUE_ID) || userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID)) && !userNotification.IsDeleted && !TextUtils.IsEmpty(userNotification.NotificationTypeId))
+                                                {
+                                                    CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(userNotification.AccountNum);
+                                                    if (selected.billingDetails != null)
+                                                    {
+                                                        SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                                                        double amtDue = 0.00;
+                                                        if (cached.AccType == "2")
+                                                        {
+                                                            amtDue = double.Parse(cached.AmountDue) * -1;
+                                                        }
+                                                        else
+                                                        {
+                                                            amtDue = double.Parse(cached.AmountDue);
+                                                        }
+
+                                                        if (amtDue <= 0.00)
+                                                        {
+                                                            userNotification.IsDeleted = true;
+                                                            Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                                            temp.Id = userNotification.Id;
+                                                            temp.NotificationType = userNotification.NotificationType;
+                                                            ToBeDeleteList.Add(temp);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            catch (System.Exception ene)
+                                            {
+                                                Utility.LoggingNonFatalError(ene);
+                                            }
+
                                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                         }
                                         this.mView.ShowView();
@@ -391,6 +427,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                     this.mView.HideQueryProgress();
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     this.mView.ShowRefreshView(true, null, null);
+                }
+
+                if (ToBeDeleteList != null && ToBeDeleteList.Count > 0)
+                {
+                    _ = OnBatchDeleteNotifications(ToBeDeleteList);
                 }
             }
             catch (ApiException apiException)
@@ -724,6 +765,35 @@ namespace myTNB_Android.Src.Notifications.MVP
             data.Title = "Testing of Reseed validation";
             data.Message = "Your bill is {0}. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>Account: #accountName#";
             return data;
+        }
+
+        private async Task OnBatchDeleteNotifications(List<Notifications.Models.UserNotificationData> accountList)
+        {
+            try
+            {
+                if (accountList != null && accountList.Count > 0)
+                {
+                    NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                    UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(accountList));
+
+                    if (notificationDeleteResponse != null && notificationDeleteResponse.Data != null && notificationDeleteResponse.Data.ErrorCode == "7200")
+                    {
+
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
     }
 }
