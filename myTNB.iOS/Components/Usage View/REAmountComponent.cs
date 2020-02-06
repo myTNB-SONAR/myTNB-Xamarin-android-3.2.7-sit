@@ -96,7 +96,7 @@ namespace myTNB
             };
             _containerView.AddSubview(_lblDate);
 
-            _viewDate = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), _lblTitle.Frame.GetMaxY(), labelWidth * 0.7F, _lblDate.Frame.Height * 0.8F))
+            _viewDate = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(8F), _lblTitle.Frame.GetMaxY(), labelWidth * 0.7F, _lblDate.Frame.Height * 0.8F))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
