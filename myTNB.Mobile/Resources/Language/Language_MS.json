@@ -542,7 +542,9 @@
     "viewMyUsage": "Lihat Penggunaan Saya",
     "submitMeterReading": "Hantar Bacaan Meter",
     "reenableSSMR": "Aktifkan semula SMR",
-    "viewReadingHistory": "Kembali ke Penggunaan"
+    "viewReadingHistory": "Kembali ke Penggunaan",
+    "paymentHistory": "Rekod bayaran",
+    "viewReceipt": "Melihat Resit"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
