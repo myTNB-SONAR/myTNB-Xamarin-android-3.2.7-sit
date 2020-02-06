@@ -10,8 +10,12 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.UpdateMobileNo.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -29,17 +33,20 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
-        [BindView(Resource.Id.txtInputLayoutMobileNo)]
-        TextInputLayout txtInputLayoutMobileNo;
-
         [BindView(Resource.Id.lblVerifyMobileNo)]
         TextView lblVerifyMobileNo;
 
-        [BindView(Resource.Id.txtMobileNo)]
-        EditText txtMobileNo;
-
         [BindView(Resource.Id.btnSave)]
         Button btnSave;
+
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
+
+        [BindView(Resource.Id.infoLabelContainer)]
+        LinearLayout infoLabelContainer;
+
+        [BindView(Resource.Id.infoLabel)]
+        TextView lblInfoLabel;
 
         UpdateMobileContract.IUserActionsListener userActionsListener;
         UpdateMobilePresenter mPresenter;
@@ -54,6 +61,11 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         const string PAGE_ID = "UpdateMobileNumber";
 
+        const int COUNTRY_CODE_SELECT_REQUEST = 1;
+
+        private MobileNumberInputComponent mobileNumberInputComponent;
+        private string dialogTitle, dialogMessage, dialogBtnLabel;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -67,12 +79,10 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     if (intent.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
                     {
                         forceUpdatePhoneNo = intent.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO, false);
-                        //SupportActionBar.SetDisplayHomeAsUpEnabled(false);
                     }
 
                     if (intent.ContainsKey("LoginRequest"))
                     {
-                        //loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(intent.GetString("LoginRequest"));
                         loginRequest = DeSerialze<UserAuthenticationRequest>(intent.GetString("LoginRequest"));
                     }
 
@@ -80,20 +90,12 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     {
                         fromAppLaunch = intent.GetBoolean(Constants.FROM_APP_LAUNCH, false);
                     }
-
                 }
 
-
-                // Create your application here
-
-                TextViewUtils.SetMuseoSans300Typeface(txtMobileNo);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo);
-                TextViewUtils.SetMuseoSans500Typeface(btnSave);
-                TextViewUtils.SetMuseoSans300Typeface(lblVerifyMobileNo);
-
-                lblVerifyMobileNo.Text = GetLabelByLanguage("details");
+                TextViewUtils.SetMuseoSans500Typeface(btnSave, lblInfoLabel);
                 btnSave.Text = GetLabelCommonByLanguage("next");
-                txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
+                lblInfoLabel.Text = GetLabelByLanguage("infoTitle");
+
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))
                     .Content(GetString(Resource.String.update_mobile_progress_content))
@@ -104,47 +106,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
                 mPresenter = new UpdateMobilePresenter(this);
                 userActionsListener.Start();
-
-                //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-                //{
-                //    if (e.HasFocus)
-                //    {
-                //        if (string.IsNullOrEmpty(txtMobileNo.Text))
-                //        {
-                //            txtMobileNo.Append("+60");
-                //        }
-                //    }
-                //};
-
-                txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
-                txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
-
-
-                if (UserEntity.IsCurrentlyActive())
-                {
-                    UserEntity entity = UserEntity.GetActive();
-                    string MobileNo = entity.MobileNo;
-                    if (!MobileNo.Contains("+60"))
-                    {
-                        MobileNo = "+60" + MobileNo;
-                    }
-                    txtMobileNo.Text = MobileNo;
-                }
-                else if (intent.ContainsKey("PhoneNumber"))
-                {
-                    string MobileNo = Intent.GetStringExtra("PhoneNumber");
-                    if (!MobileNo.Contains("+60"))
-                    {
-                        MobileNo = "+60" + MobileNo;
-                    }
-                    txtMobileNo.Text = string.IsNullOrEmpty(MobileNo) ? "" : MobileNo;
-                }
-
-                if (string.IsNullOrEmpty(txtMobileNo.Text))
-                {
-                    txtMobileNo.Append("+60");
-                }
-                txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
 
                 if (forceUpdatePhoneNo)
                 {
@@ -157,36 +118,74 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     SetToolBarTitle(GetLabelByLanguage("updateMobileNumberTitle"));
                 }
 
+                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
+                infoLabelContainer.Click += delegate
+                {
+                    ShowWhatIsThisDialog();
+                };
+
+                dialogTitle = GetLabelByLanguage("infoPopupTitle");
+                dialogMessage = GetLabelByLanguage("infoPopupMessage");
+                dialogBtnLabel = GetLabelCommonByLanguage("gotIt");
+
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-        [Preserve]
-        private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
+
+        private void ShowWhatIsThisDialog()
         {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(dialogTitle)
+                .SetMessage(dialogMessage)
+                .SetCTALabel(dialogBtnLabel)
+                .Build().Show();
+        }
 
-
-            string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
-            if (checkedPhoneNumber != txtMobileNo.Text)
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            if (isValidated)
             {
-                txtMobileNo.Text = checkedPhoneNumber;
+                EnableSaveButton();
             }
-            this.userActionsListener.OnVerifyMobile(txtMobileNo.Text.ToString(), forceUpdatePhoneNo);
+            else
+            {
+                DisableSaveButton();
+            }
+        }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
         }
 
         [OnClick(Resource.Id.btnSave)]
         void OnSave(object sender, EventArgs eventArgs)
         {
-            if (ConnectionUtils.HasInternetConnection(this))
+            if (!this.GetIsClicked())
             {
-                string newMobile = txtMobileNo.Text.Trim();
-                this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
-            }
-            else
-            {
-                ShowNoInternetSnackbar();
+                this.SetIsClicked(true);
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    string newMobile = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+                    this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
+                }
+                else
+                {
+                    ShowNoInternetSnackbar();
+                }
             }
         }
 
@@ -250,7 +249,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            //No Impl
         }
 
         public void ShowProgress()
@@ -344,7 +343,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutMobileNo.Error = null;
+            //No Impl
         }
 
         public void EnableSaveButton()
@@ -362,16 +361,12 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         public void ShowMobile(string mobileNo)
         {
-            txtMobileNo.Text = mobileNo;
-            txtMobileNo.SetSelection(mobileNo.Length);
+            //No Impl
         }
 
         public override void OnBackPressed()
         {
-            //if (!forceUpdatePhoneNo)
-            //{
             base.OnBackPressed();
-            //}
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -379,10 +374,19 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             try
             {
                 base.OnActivityResult(requestCode, resultCode, data);
-                if (requestCode == Constants.REQUEST_VERIFICATION_SMS_TOEKN_CODE && resultCode == Result.Ok)
+                if (resultCode == Result.Ok)
                 {
-                    SetResult(Result.Ok);
-                    Finish();
+                    if (requestCode == Constants.REQUEST_VERIFICATION_SMS_TOEKN_CODE)
+                    {
+                        SetResult(Result.Ok);
+                        Finish();
+                    }
+                    else if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+                    {
+                        string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
+                        Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                        mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                    }
                 }
             }
             catch (Exception e)
@@ -391,10 +395,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             }
         }
 
-
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            //No Impl
         }
 
 

@@ -84,6 +84,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         private static SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager;
         private static SSMRMeterReadingThreePhaseScreensOCROffEntity SSMRMeterReadingThreePhaseScreensOCROffManager;
 
+        private static bool isWhatNewClicked = false;
+
+        private static bool isRewardClicked = false;
+
         public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
 			this.mView = mView;
@@ -389,6 +393,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideAccountName();
                     this.mView.ShowWhatsNewMenu();
 
+                    isWhatNewClicked = true;
+
                     if (this.mView.IsActive())
 					{
 						if (WhatsNewEntity.HasUnread())
@@ -410,6 +416,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
                     this.mView.ShowRewardsMenu();
+
+                    isRewardClicked = true;
 
                     if (this.mView.IsActive())
                     {
@@ -640,6 +648,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private void OnUpdateWhatsNewUnRead()
         {
+            if (isWhatNewClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            {
+                UserSessions.DoWhatNewShown(mSharedPref);
+            }
+
             if (WhatsNewEntity.HasUnread())
             {
                 this.mView.ShowUnreadWhatsNew(false);
@@ -650,6 +663,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 this.mView.HideUnreadWhatsNew(false);
 
             }
+
+            isWhatNewClicked = false;
         }
 
         public void OnResumeUpdateWhatsNewUnRead()
@@ -666,8 +681,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
+        private void OnResumeWhatsNewUnRead()
+        {
+            if (isWhatNewClicked && !UserSessions.HasWhatNewShown(mSharedPref))
+            {
+                UserSessions.DoWhatNewShown(mSharedPref);
+            }
+
+            if (WhatsNewEntity.HasUnread())
+            {
+                this.mView.ShowUnreadWhatsNew();
+
+            }
+            else
+            {
+                this.mView.HideUnreadWhatsNew();
+
+            }
+
+            isWhatNewClicked = false;
+        }
+
         private void OnUpdateRewardUnRead()
         {
+            if (isRewardClicked && !UserSessions.HasRewardShown(mSharedPref))
+            {
+                UserSessions.DoRewardShown(mSharedPref);
+            }
+
             if (RewardsEntity.HasUnread())
             {
                 this.mView.ShowUnreadRewards(false);
@@ -678,6 +719,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 this.mView.HideUnreadRewards(false);
 
             }
+
+            isRewardClicked = false;
         }
 
         public void OnResumeUpdateRewardUnRead()
@@ -693,10 +736,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
+        private void OnResumeRewardUnRead()
+        {
+            if (isRewardClicked && !UserSessions.HasRewardShown(mSharedPref))
+            {
+                UserSessions.DoRewardShown(mSharedPref);
+            }
+
+            if (RewardsEntity.HasUnread())
+            {
+                this.mView.ShowUnreadRewards();
+
+            }
+            else
+            {
+                this.mView.HideUnreadRewards();
+            }
+
+            isRewardClicked = false;
+        }
+
         public void OnValidateData()
 		{
-            OnResumeUpdateWhatsNewUnRead();
-            OnResumeUpdateRewardUnRead();
+            OnResumeWhatsNewUnRead();
+            OnResumeRewardUnRead();
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
             if(accountList.Count == 0)
@@ -1145,11 +1208,21 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             }
                         }
 
-                        mDisplayCategoryList.Add(new RewardsCategoryModel()
+                        List<RewardsEntity> reCheckList = mRewardsEntity.GetActiveItemsByCategory(mCategoryList[i].ID);
+
+                        if (reCheckList != null && reCheckList.Count > 0)
                         {
-                            ID = mCategoryList[i].ID,
-                            CategoryName = mCategoryList[i].CategoryName
-                        });
+                            mDisplayCategoryList.Add(new RewardsCategoryModel()
+                            {
+                                ID = mCategoryList[i].ID,
+                                CategoryName = mCategoryList[i].CategoryName
+                            });
+                        }
+                        else
+                        {
+                            mRewardsEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                            mRewardsCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                        }
                     }
                     else
                     {

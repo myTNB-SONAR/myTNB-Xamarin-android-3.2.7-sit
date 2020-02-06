@@ -796,7 +796,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = WhatsNewEntity.Count();
                         if (count > 0)
@@ -826,7 +826,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = WhatsNewEntity.Count();
                         if (count > 0)
@@ -856,7 +856,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadNewBottomView(flag, false, 0, promotionMenuItem);
                     }
@@ -878,7 +878,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (UserSessions.HasWhatsNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadNewBottomView(promotionMenuItem.IsChecked, false, 0, promotionMenuItem);
                     }
@@ -1466,7 +1466,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = RewardsEntity.Count();
                         if (count > 0)
@@ -1496,7 +1496,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         int count = RewardsEntity.Count();
                         if (count > 0)
@@ -1526,7 +1526,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadRewardNewBottomView(rewardMenuItem.IsChecked, false, 0, rewardMenuItem);
                     }
@@ -1548,7 +1548,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (rewardMenuItem != null)
                 {
-                    if (UserSessions.HasRewardsShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    if (UserSessions.HasRewardShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         SetReadUnReadRewardNewBottomView(flag, false, 0, rewardMenuItem);
                     }
@@ -1757,16 +1757,34 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 else
                                 {
                                     IsRootTutorialShown = true;
-                                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
-                                    .SetCTAaction(() =>
+
+                                    bool isExpired = wtManager.CheckIsExpired(rewardID);
+                                    if (!isExpired)
                                     {
-                                        IsRootTutorialShown = false;
-                                        OnSelectReward();
-                                    })
-                                    .Build().Show();
+                                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                            .SetTitle(Utility.GetLocalizedLabel("Error", "usedRewardTitle"))
+                                            .SetMessage(Utility.GetLocalizedLabel("Error", "usedRewardMsg"))
+                                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                            .SetCTAaction(() =>
+                                            {
+                                                IsRootTutorialShown = false;
+                                                OnSelectReward();
+                                            })
+                                            .Build().Show();
+                                    }
+                                    else
+                                    {
+                                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                            .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
+                                            .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
+                                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                            .SetCTAaction(() =>
+                                            {
+                                                IsRootTutorialShown = false;
+                                                OnSelectReward();
+                                            })
+                                            .Build().Show();
+                                    }
                                 }
                             }
                         }

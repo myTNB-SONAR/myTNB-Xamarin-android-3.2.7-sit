@@ -576,10 +576,17 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     if (userNotificationData.NotificationType != "ODN")
                                     {
-                                        if (UserEntity.GetActive().Email.Equals(userNotificationData.Email) &&
-                                            MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                        if (userNotificationData.ODNBatchSubcategory == "ODNAsBATCH")
                                         {
                                             listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                        }
+                                        else
+                                        {
+                                            if (UserEntity.GetActive().Email.Equals(userNotificationData.Email) &&
+                                            MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                            {
+                                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                            }
                                         }
                                     }
                                     else

@@ -72,7 +72,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show amount due
             /// </summary>
             /// <param name="accountDueAmount">AccountDueAmount</param>
-            void ShowAmountDue(AccountDueAmountData accountDueAmount);
+            void ShowAmountDue(AccountDueAmountData accountDueAmount, bool isPendingPayment);
 
             /// <summary>
             /// Enable pay button

@@ -91,10 +91,29 @@ namespace myTNB_Android.Src.FAQ.Activity
                         {
                             FAQsEntity wtManager = new FAQsEntity();
                             List<FAQsEntity> items = wtManager.GetAllItems();
-                            if (items != null)
+                            List<FAQsEntity> newList = new List<FAQsEntity>();
+                            if (items != null && items.Count > 0)
+                            {
+                                items.ForEach(item =>
+                                {
+                                    string quesiton = item.Question.Trim();
+                                    string answer = item.Answer.Trim();
+                                    if (!string.IsNullOrEmpty(quesiton) && !string.IsNullOrEmpty(answer))
+                                    {
+                                        newList.Add(new FAQsEntity()
+                                        {
+                                            ID = item.ID,
+                                            Question = quesiton,
+                                            Answer = answer
+                                        });
+                                    }
+                                });
+                            }
+
+                            if (newList != null && newList.Count > 0)
                             {
 
-                                faqs.AddRange(items);
+                                faqs.AddRange(newList);
                                 adapter = new FAQListAdapter(this, faqs);
                                 mFAQRecyclerView.SetAdapter(adapter);
                                 adapter.NotifyDataSetChanged();
@@ -102,7 +121,7 @@ namespace myTNB_Android.Src.FAQ.Activity
                                 if (!string.IsNullOrEmpty(FAQ_ID))
                                 {
                                     int index = 0;
-                                    foreach (FAQsEntity entity in items)
+                                    foreach (FAQsEntity entity in newList)
                                     {
                                         if (entity.ID.Equals(FAQ_ID))
                                         {

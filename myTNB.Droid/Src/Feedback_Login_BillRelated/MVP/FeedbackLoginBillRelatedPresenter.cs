@@ -279,7 +279,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             try
             {
                 this.mView.ClearErrors();
-                if (!TextUtils.IsEmpty(feedback) && !feedback.Equals(" "))
+                if (!TextUtils.IsEmpty(feedback.Trim()))
                 {
                     this.mView.EnableSubmitButton();
                 }
@@ -422,62 +422,21 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
         public void CheckRequiredFields(string mobile_no, string feedback)
         {
-            //if ( && !TextUtils.IsEmpty(feedback))
-
-
-            //{
             try
             {
                 this.mView.ClearErrors();
-
-                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
+                if (TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(feedback.Trim()))
                 {
-                    //this.mView.ShowEmptyFeedbackError();
                     this.mView.DisableSubmitButton();
                     return;
                 }
-
-
-                if (TextUtils.IsEmpty(mobile_no))
-                {
-                    this.mView.ShowEmptyMobileNoError();
-                    this.mView.DisableSubmitButton();
-                    return;
-                }
-
-                if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
-                {
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
-
-
-                if (!Utility.IsValidMobileNumber(mobile_no))
-                {
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
-
-
                 this.mView.EnableSubmitButton();
             }
             catch (Exception e)
             {
+                this.mView.DisableSubmitButton();
                 Utility.LoggingNonFatalError(e);
             }
-            //}
-            //else
-            //{
-            //    this.mView.DisableSubmitButton();
-            //}
         }
     }
 }

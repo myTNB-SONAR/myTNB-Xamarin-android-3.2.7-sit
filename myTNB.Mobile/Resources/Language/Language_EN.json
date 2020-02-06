@@ -95,7 +95,9 @@
     "illDoItLater": "I’ll Do It Later",
     "selectBillMaxDesc": "You may select up to <b>5 bills</b> to pay in each transaction. To pay the rest of your bills, complete this transaction first.",
     "pdfDownloadMessage": "Your document has been downloaded: {0}",
-    "open": "Open"
+    "open": "Open",
+    "paymentPendingMsg": "My payment is being processed",
+    "processing": "Processing"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -142,7 +144,14 @@
     "redeemRewardFailMsg": "Let’s do this one more time.",
     "plannedDownTimeMessage": "Looks like your page can't be loaded at the moment. Come back in a while.",
     "rewardsUnavailableTitle": "Rewards are currently unavailable.",
-    "rewardsUnavailableMsg": "But we'll be back soon so check back later!"
+    "rewardsUnavailableMsg": "But we'll be back soon so check back later!",
+    "whatsNewUnavailableTitle": "What's New is currently unavailable.",
+    "whatsNewUnavailableMsg": "But we'll be back soon so check back later!",
+    "whatsNewExpiredTitle": "This content is unavailable.",
+    "whatsNewExpiredMsg": "Looks like this promotion/announcement is over. Check back often to find out what else is new!",
+    "whatsNewExpiredBtnText": "Show Me What’s New!",
+    "receiptErrorMsg": "We can’t seem to fetch your receipt right now. Check back later!",
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -589,7 +598,7 @@
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
     "electricityAccount": "Electricity Accounts",
-    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "mobileNumberVerified": "You've successfully updated your phone number!",
     "passwordUpdateSuccess": "Your password has been changed successfully."
   },
   "NotificationSettings": {
@@ -629,7 +638,7 @@
     "accountSectionTitle": "TNB Electricity Supply Accounts",
     "logout": "Log Out",
     "logoutMessage": "Are you sure you want to log out from the myTNB app?",
-    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "mobileNumberVerified": "You've successfully updated your phone number!",
     "accountDeleteSuccess": "Your electricity supply account has been removed from myTNB account.",
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "noAccounts": "No Electricity Account",
@@ -685,7 +694,10 @@
     "verifyDeviceTitle": "Verify Device",
     "verifyDeviceMessage": "Please take a moment to verify your device.",
     "details": "For security purposes, please enter your mobile number to verify this device.",
-    "updateMobileNumberTitle": "Update Mobile Number"
+    "updateMobileNumberTitle": "Update Mobile Number",
+    "infoTitle": "What is this for?",
+    "infoPopupTitle": "This is just to update your myTNB contact details.",
+    "infoPopupMessage": "This will only update your contact details on myTNB, it will not affect or change any information tied to the electricity account(s) you have added here."
   },
   "VerifyPin": {
     "title": "Verify Mobile Number",
@@ -724,12 +736,14 @@
     "title4": "Pay your bills anytime, anywhere.",
     "title5": "Say hi to myTNB Rewards!",
     "title6": "What’s new with myTNB?",
+    "title7": "Use myTNB with Any Mobile Number.",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
     "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
-    "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah."
+    "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
+    "description7": "You can now register a myTNB account or update your existing one with an international phone number."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -813,8 +827,11 @@
     "invalidPoleNumber": "Invalid pole number",
     "noAccessTitle": "Location Access is not allowed",
     "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
-    "goToSettings": "Go to Settings"
+    "goToSettings": "Go to Settings",
     //Not Supported by MS Translation End
+    "selectOptions": "Select Options",
+    "takePhoto": "Take Photo",
+    "chooseFromLibrary": "Choose from Library"
   },
   "FeedbackDetails": {
     "feedbackID": "Feedback ID",
@@ -902,6 +919,18 @@
     "confirm": "Confirm",
     "unsave": "Unsave",
     "save": "Save",
-    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out.",
+    "redeemRewardNote": "Reward redeemed. Please show the merchant this screen before the timer runs out."
+  },
+  "WhatsNew": {
+    "title": "What's New",
+    "noPromotions": "Looks like there's nothing new... Yet! Check back soon.",
+    "viewAll": "View All",
+    "tutorialCategoryTitle": "Get Caught Up With TNB News.",
+    "tutorialCategoryDesc": "Switch Between the categories to view announcements and/or promotions relevant to you.",
+    "tutorialItemTitle": "Check Out What's New And Exciting.",
+    "tutorialItemDesc": "Tap on the promotion or announcement for more details."
+  },
+  "SelectCountry": {
+    "title": "Select Country"
   }
 }

@@ -10,7 +10,7 @@ using Android.Text.Style;
 using Android.Text.Method;
 using Android.Support.V7.Widget;
 
-namespace myTNB_Android.Src.SSMR.Util
+namespace myTNB_Android.Src.Utils
 {
     public class MyTNBAppToolTipBuilder
     {
@@ -197,13 +197,13 @@ namespace myTNB_Android.Src.SSMR.Util
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
 
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
+
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (this.ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipTitle.Text = this.title;
@@ -268,10 +268,7 @@ namespace myTNB_Android.Src.SSMR.Util
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (this.ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
             }
             else if (this.toolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
@@ -287,10 +284,7 @@ namespace myTNB_Android.Src.SSMR.Util
                 tooltipPrimaryCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipSecondaryCTA.Click += delegate
@@ -330,10 +324,7 @@ namespace myTNB_Android.Src.SSMR.Util
                 tooltipPrimaryCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipSecondaryCTA.Click += delegate
@@ -371,10 +362,7 @@ namespace myTNB_Android.Src.SSMR.Util
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (this.ctaAction != null)
-                    {
-                        this.ctaAction();
-                    }
+                    this.ctaAction?.Invoke();
                 };
 
                 tooltipTitle.Visibility = ViewStates.Gone;

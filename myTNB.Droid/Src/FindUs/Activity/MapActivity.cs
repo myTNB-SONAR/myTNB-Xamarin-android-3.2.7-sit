@@ -1,18 +1,24 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Gms.Common.Apis;
+using Android.Gms.Location;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
+using Android.Gms.Tasks;
 using Android.Locations;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
+using Java.Lang;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FindUs.Models;
@@ -25,13 +31,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.FindUs.Activity
 {
     [Activity(Label = "Find Us"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.FindUs")]
-    public class MapActivity : BaseActivityCustom, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener, ILocationListener, FindUsContract.IView
+    public class MapActivity : BaseActivityCustom, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener, FindUsContract.IView, Android.Gms.Tasks.IOnSuccessListener, Android.Gms.Tasks.IOnFailureListener, Android.Locations.ILocationListener
     {
         private readonly string TAG = "FindUSActivity";
         private readonly int SELECT_LOCATION_TYPE_CODE = 3410;
@@ -133,7 +140,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             {
                 LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -284,7 +291,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             {
                 LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -323,7 +330,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                     {
                         LoadingOverlayUtils.OnStopLoadingAnimation(this);
                     }
-                    catch (Exception e)
+                    catch (System.Exception e)
                     {
                         Utility.LoggingNonFatalError(e);
                     }
@@ -413,6 +420,387 @@ namespace myTNB_Android.Src.FindUs.Activity
         {
             if (IsNetworkAvailable())
             {
+                try
+                {
+                    LocationRequest locationRequest = LocationRequest.Create();
+                    locationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
+                    LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                                  .AddLocationRequest(locationRequest);
+
+                    LocationServices.GetSettingsClient(this).CheckLocationSettings(builder.Build())
+                        .AddOnFailureListener(this)
+                        .AddOnSuccessListener(this);
+
+                }
+                catch (System.Exception e)
+                {
+                    // e.printStackTrace();
+                    Log.Error("Error : Location",
+                            "Impossible to connect to LocationManager", e);
+                    Utility.LoggingNonFatalError(e);
+                }
+
+
+            }
+            Log.Debug(TAG, "Using " + _locationProvider + ".");
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Locations");
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            _locationManager.RemoveUpdates(this);
+        }
+
+        private void GMapMarkerClick(object sender, GoogleMap.MarkerClickEventArgs e)
+        {
+            Marker marker = e.Marker;
+            //marker.ShowInfoWindow();
+            if (marker != null)
+            {
+                FindClickedItem(new LatLng(marker.Position.Latitude, marker.Position.Longitude));
+            }
+        }
+
+        private void GMapInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Find clicked location from the map : detect weather user has clicked KT location or any other location
+        /// </summary>
+        public void FindClickedItem(LatLng clickedItem)
+        {
+            try
+            {
+                LocationData locationData = null;
+                GoogleApiResult googleApiResult = null;
+
+                locationData = locationsResponse.Find(x => x.Latitude == clickedItem.Latitude);
+                googleApiResult = googleLocationsResponse.Find(y => y.geometry.location.lat == clickedItem.Latitude);
+                if (locationData != null)
+                {
+                    Intent detailsView = new Intent(this, typeof(LocationDetailsActivity));
+                    detailsView.PutExtra("Title", KEDAI_TENAGA);
+                    detailsView.PutExtra("KT", JsonConvert.SerializeObject(locationData));
+                    detailsView.PutExtra("imagePath", selectedLocationType.ImagePath);
+                    StartActivity(detailsView);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+
+            }
+            //else if (googleApiResult != null)
+            //{
+            //    Intent detailsView = new Intent(this, typeof(LocationDetailsActivity));
+            //    LocationTypesEntity entity = LocationTypesEntity.GetById("2");
+            //    detailsView.PutExtra("Title", entity.Description);
+            //    detailsView.PutExtra("store", JsonConvert.SerializeObject(googleApiResult));
+            //    detailsView.PutExtra("imagePath", entity.ImagePath);
+            //    StartActivity(detailsView);
+            //}
+
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            try
+            {
+                if (requestCode == LocationRequest.PriorityHighAccuracy)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        alreadyAskedPermission = true;
+
+                        _ = System.Threading.Tasks.Task.Delay(100).ContinueWith(_ =>
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                OnRequestCheckLocation();
+                            });
+
+                            _ = System.Threading.Tasks.Task.Delay(100).ContinueWith((run) =>
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    if (_currentLocation != null)
+                                    {
+                                        SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
+                                        userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
+                                    }
+                                });
+                            });
+                        });
+                    }
+                }
+                else if (resultCode == Result.Ok)
+                {
+                    if (requestCode == SELECT_LOCATION_TYPE_CODE)
+                    {
+                        selectedLocationType = JsonConvert.DeserializeObject<LocationType>(data.GetStringExtra("selectedLocationType"));
+                        if (selectedLocationType != null)
+                        {
+                            if (_currentLocation != null)
+                            {
+                                selectorLocationType.Text = selectedLocationType.Description;
+                                userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), selectedLocationType.Title, selectedLocationType.Description);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+
+            }
+        }
+
+        /// <summary>
+        /// Check internet connection
+        /// </summary>
+        public bool IsNetworkAvailable()
+        {
+            ConnectivityManager connectivity = (ConnectivityManager)(Application.Context.ApplicationContext).GetSystemService(Context.ConnectivityService);
+            if (connectivity != null)
+            {
+                NetworkInfo[] info = connectivity.GetAllNetworkInfo();
+                if (info != null)
+                    for (int i = 0; i < info.Length; i++)
+                        if (info[i].GetState() == NetworkInfo.State.Connected)
+                        {
+                            return true;
+                        }
+
+            }
+            return false;
+        }
+
+
+        public bool OnMyLocationButtonClick()
+        {
+            SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
+            return false;
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
+            {
+                if (Utility.IsPermissionHasCount(grantResults))
+                {
+                    if (grantResults[0] == Permission.Granted)
+                    {
+                        alreadyAskedPermission = true;
+
+                        RunOnUiThread(() =>
+                        {
+                            OnLoad();
+                        });
+
+                        if (_currentLocation != null)
+                        {
+                            SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
+                            userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
+                        }
+                    }
+                    else
+                    {
+                        this.Finish();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check app permission weather it is allowed to access location service or not!
+        /// </summary>
+        public override void Ready()
+        {
+            if (!alreadyAskedPermission)
+            {
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
+                {
+
+
+                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
+                    {
+                        ShowRationale(LocationTitleRationale(), LocationContentRationale(), Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
+
+                    }
+                    else
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
+                    }
+                    return;
+                }
+                else
+                {
+                    RunOnUiThread(() =>
+                    {
+                        OnLoad();
+                    });
+                    alreadyAskedPermission = true;
+                }
+            }
+        }
+
+        public async System.Threading.Tasks.Task<string> GetUserLocationAsync()
+        {
+            System.Text.StringBuilder userAddress = new System.Text.StringBuilder();
+            try
+            {
+                if (_currentLocation == null)
+                {
+                    return string.Empty;
+                }
+
+                Geocoder geocoder = new Geocoder(Application.Context.ApplicationContext);
+                IList<Address> addressList = await geocoder.GetFromLocationAsync(_currentLocation.Latitude, _currentLocation.Longitude, 10);
+
+                Address address = addressList.FirstOrDefault();
+                if (address != null)
+                {
+
+                    for (int i = 0; i < address.MaxAddressLineIndex; i++)
+                    {
+                        userAddress.Append(address.GetAddressLine(i)).AppendLine(",");
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                Utility.LoggingNonFatalError(exception);
+                return "Location is disabled in user Phone Settings";
+
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+                return ex.Message;
+
+            }
+            return userAddress.ToString();
+        }
+
+        public void OnLocationChanged(Location location)
+        {
+            _currentLocation = location;
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public void ShowZeroLocationFoundDialog()
+        {
+            mNoLocationsDialog.Show();
+        }
+
+        void IOnSuccessListener.OnSuccess(Java.Lang.Object result)
+        {
+            RunOnUiThread(() =>
+            {
+                OnRequestCheckLocation();
+            });
+
+            if (_currentLocation != null)
+            {
+                SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
+                userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
+            }
+        }
+
+        void IOnFailureListener.OnFailure(Java.Lang.Exception e)
+        {
+            ApiException mException = e.JavaCast<ApiException>();
+            switch (mException.StatusCode)
+            {
+                case (int) LocationSettingsStatusCodes.ResolutionRequired:
+                    try
+                    {
+                        ResolvableApiException resolvable = (ResolvableApiException) mException;
+                        resolvable.StartResolutionForResult(
+                                        this,
+                                        LocationRequest.PriorityHighAccuracy);
+                    }
+                    catch (IntentSender.SendIntentException ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                        this.Finish();
+                    }
+                    catch (ClassCastException ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                        this.Finish();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                        this.Finish();
+                    }
+                    break;
+                default:
+                    this.Finish();
+                    break;
+            }
+        }
+
+
+        public void OnRequestCheckLocation()
+        {
+            if (IsNetworkAvailable())
+            {
 
                 //_locationManager = (LocationManager)(Application.Context.ApplicationContext).GetSystemService(Context.LocationService);
                 //Criteria criteria = new Criteria();
@@ -496,7 +884,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                     }
 
                 }
-                catch (Exception e)
+                catch (System.Exception e)
                 {
                     // e.printStackTrace();
                     Log.Error("Error : Location",
@@ -508,285 +896,6 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             Log.Debug(TAG, "Using " + _locationProvider + ".");
         }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-            try
-            {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Locations");
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-            _locationManager.RemoveUpdates(this);
-        }
-
-        private void GMapMarkerClick(object sender, GoogleMap.MarkerClickEventArgs e)
-        {
-            Marker marker = e.Marker;
-            //marker.ShowInfoWindow();
-            if (marker != null)
-            {
-                FindClickedItem(new LatLng(marker.Position.Latitude, marker.Position.Longitude));
-            }
-        }
-
-        private void GMapInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Find clicked location from the map : detect weather user has clicked KT location or any other location
-        /// </summary>
-        public void FindClickedItem(LatLng clickedItem)
-        {
-            try
-            {
-                LocationData locationData = null;
-                GoogleApiResult googleApiResult = null;
-
-                locationData = locationsResponse.Find(x => x.Latitude == clickedItem.Latitude);
-                googleApiResult = googleLocationsResponse.Find(y => y.geometry.location.lat == clickedItem.Latitude);
-                if (locationData != null)
-                {
-                    Intent detailsView = new Intent(this, typeof(LocationDetailsActivity));
-                    detailsView.PutExtra("Title", KEDAI_TENAGA);
-                    detailsView.PutExtra("KT", JsonConvert.SerializeObject(locationData));
-                    detailsView.PutExtra("imagePath", selectedLocationType.ImagePath);
-                    StartActivity(detailsView);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-
-            }
-            //else if (googleApiResult != null)
-            //{
-            //    Intent detailsView = new Intent(this, typeof(LocationDetailsActivity));
-            //    LocationTypesEntity entity = LocationTypesEntity.GetById("2");
-            //    detailsView.PutExtra("Title", entity.Description);
-            //    detailsView.PutExtra("store", JsonConvert.SerializeObject(googleApiResult));
-            //    detailsView.PutExtra("imagePath", entity.ImagePath);
-            //    StartActivity(detailsView);
-            //}
-
-        }
-
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            try
-            {
-                if (resultCode == Result.Ok)
-                {
-                    if (requestCode == SELECT_LOCATION_TYPE_CODE)
-                    {
-                        selectedLocationType = JsonConvert.DeserializeObject<LocationType>(data.GetStringExtra("selectedLocationType"));
-                        if (selectedLocationType != null)
-                        {
-                            if (_currentLocation != null)
-                            {
-                                selectorLocationType.Text = selectedLocationType.Description;
-                                userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), selectedLocationType.Title, selectedLocationType.Description);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-
-            }
-        }
-
-        /// <summary>
-        /// Check internet connection
-        /// </summary>
-        public bool IsNetworkAvailable()
-        {
-            ConnectivityManager connectivity = (ConnectivityManager)(Application.Context.ApplicationContext).GetSystemService(Context.ConnectivityService);
-            if (connectivity != null)
-            {
-                NetworkInfo[] info = connectivity.GetAllNetworkInfo();
-                if (info != null)
-                    for (int i = 0; i < info.Length; i++)
-                        if (info[i].GetState() == NetworkInfo.State.Connected)
-                        {
-                            return true;
-                        }
-
-            }
-            return false;
-        }
-
-
-        public bool OnMyLocationButtonClick()
-        {
-            SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
-            return false;
-        }
-
-        public override bool LocationPermissionRequired()
-        {
-            return true;
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
-        {
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
-            {
-                if (Utility.IsPermissionHasCount(grantResults))
-                {
-                    if (grantResults[0] == Permission.Granted)
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            OnLoad();
-                        });
-
-                        if (_currentLocation != null)
-                        {
-                            SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
-                            userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
-                        }
-                    }
-                    else
-                    {
-                        this.Finish();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Check app permission weather it is allowed to access location service or not!
-        /// </summary>
-        public override void Ready()
-        {
-            if (!alreadyAskedPermission)
-            {
-                //_locationManager = (LocationManager)GetSystemService(LocationService);
-
-                //Criteria criteriaForLocationService = new Criteria
-                //{
-                //    Accuracy = Accuracy.Coarse
-                //};
-
-                //IList<string> acceptableLocationProviders = _locationManager.GetProviders(criteriaForLocationService, true);
-
-                //if (acceptableLocationProviders.Any())
-                //{
-                //    _locationProvider = acceptableLocationProviders.First();
-                //    _locationManager.RequestLocationUpdates(_locationProvider , 0 , 0 , this);
-
-
-                //}
-                //else
-                //{
-                //    _locationProvider = string.Empty;
-                //}
-                RunOnUiThread(() =>
-                {
-                    OnLoad();
-                });
-                alreadyAskedPermission = true;
-            }
-        }
-
-        public async System.Threading.Tasks.Task<string> GetUserLocationAsync()
-        {
-            StringBuilder userAddress = new StringBuilder();
-            try
-            {
-                if (_currentLocation == null)
-                {
-                    return string.Empty;
-                }
-
-                Geocoder geocoder = new Geocoder(Application.Context.ApplicationContext);
-                IList<Address> addressList = await geocoder.GetFromLocationAsync(_currentLocation.Latitude, _currentLocation.Longitude, 10);
-
-                Address address = addressList.FirstOrDefault();
-                if (address != null)
-                {
-
-                    for (int i = 0; i < address.MaxAddressLineIndex; i++)
-                    {
-                        userAddress.Append(address.GetAddressLine(i)).AppendLine(",");
-                    }
-                }
-            }
-            catch (UnauthorizedAccessException exception)
-            {
-                Utility.LoggingNonFatalError(exception);
-                return "Location is disabled in user Phone Settings";
-
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-                return ex.Message;
-
-            }
-            return userAddress.ToString();
-        }
-
-        public void OnLocationChanged(Location location)
-        {
-            _currentLocation = location;
-        }
-
-        public void OnProviderDisabled(string provider)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnProviderEnabled(string provider)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
-        }
-
-        public override string GetPageId()
-        {
-            return PAGE_ID;
-        }
-
-        public void ShowZeroLocationFoundDialog()
-        {
-            mNoLocationsDialog.Show();
-        }
     }
+
 }

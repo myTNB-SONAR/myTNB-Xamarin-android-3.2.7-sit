@@ -27,6 +27,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.Profile.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.UpdatePassword.Activity;
@@ -53,9 +54,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         ProfileMenuPresenter mPresenter;
         private ProfileMenuItemContentComponent fullName, referenceNumber, email, mobileNumber, password, cards, electricityAccount;
         private bool mobileNoUpdated = false;
-        MaterialDialog logoutProgressDialog;
+        MyTNBAppToolTipBuilder logoutDialog;
 
         const string PAGE_ID = "Profile";
+
+        private int APP_LANGUAGE_REQUEST = 1234908;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -110,14 +113,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     }
                 }
 
-                logoutProgressDialog = new MaterialDialog.Builder(this.Activity)
-                    .Title(GetLabelByLanguage("logout"))
-                    .Content(GetLabelByLanguage("logoutMessage"))
-                    .PositiveText(GetLabelCommonByLanguage("ok"))
-                    .NeutralText(GetLabelCommonByLanguage("cancel"))
-                    .OnPositive((dialog, which) => mPresenter.OnLogout(this.DeviceId()))
-                    .OnNeutral((dialog, which) => dialog.Dismiss())
-                    .Build();
+                logoutDialog = MyTNBAppToolTipBuilder.Create(Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(GetLabelByLanguage("logout"))
+                        .SetMessage(GetLabelByLanguage("logoutMessage"))
+                        .SetCTALabel(GetLabelCommonByLanguage("ok"))
+                        .SetCTAaction(() => { mPresenter.OnLogout(this.DeviceId()); })
+                        .SetSecondaryCTALabel(GetLabelCommonByLanguage("cancel"))
+                        .Build();
 
                 ProfileMenuItemComponent myTNBAccountItem = GetMyTNBAccountItems();
                 myTNBAccountItem.SetHeaderTitle(GetLabelByLanguage("myTNBAccount"));
@@ -144,6 +146,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 mPresenter.Start();
                 bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
                 bool hasUpdatedPassword = MyTNBAccountManagement.GetInstance().IsPasswordUpdated();
+                bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
                 if (hasUpdatedMobile)
                 {
                     UserEntity userEntity = UserEntity.GetActive();
@@ -155,6 +158,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     ShowPasswordUpdateSuccess();
                     MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(false);
+                }
+
+                if (hasUpdateLanguage)
+                {
+                    ShowLanguageUpdateSuccess();
+                    MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                 }
 
                 try
@@ -439,16 +448,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             fullName.SetValue(user.DisplayName);
             try
             {
-                if (user.IdentificationNo.Count() >= 4)
-                {
-                    string lastDigit = user.IdentificationNo.Substring(user.IdentificationNo.Length - 4);
+                string maskedNo = !string.IsNullOrEmpty(user?.IdentificationNo) ? user.IdentificationNo : "";
 
-                    referenceNumber.SetValue(GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit);
-                }
-                else
+                if (!string.IsNullOrEmpty(maskedNo) && maskedNo.Count() > 4)
                 {
-                    referenceNumber.SetValue(GetString(Resource.String.my_account_ic_no_mask));
+                    string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
+
+                    maskedNo =  GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
                 }
+
+                referenceNumber.SetValue(maskedNo);
 
                 email.SetValue(user.Email);
                 mobileNumber.SetValue(user.MobileNo);
@@ -507,7 +516,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 this.SetIsClicked(true);
                 Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
-                StartActivityForResult(nextIntent, 1234908);
+                StartActivityForResult(nextIntent, APP_LANGUAGE_REQUEST);
             }
         }
 
@@ -832,7 +841,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 if (IsActive())
                 {
-                    logoutProgressDialog.Show();
+                    logoutDialog.Show();
                 }
             }
             catch (System.Exception e)
@@ -905,6 +914,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePassWordBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mLanguageSnackbar;
+        private void ShowLanguageUpdateSuccess()
+        {
+            try
+            {
+                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                {
+                    mLanguageSnackbar.Dismiss();
+                }
+
+                mLanguageSnackbar = Snackbar.Make(rootView,
+                    GetLabelByLanguage("changeLanguageSuccess"),
+                    Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = mLanguageSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLanguageSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)

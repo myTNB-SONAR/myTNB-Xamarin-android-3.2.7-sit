@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         AccountData selectedAccount;
         BillHistory selectedBill;
-        AccountReceiptResponse response = null;
+        GetPaymentReceiptResponse response = null;
         string selectedAccountNumber, detailedInfoNumber;
         bool isOwnedAccount, showAllReceipt;
         private string PAGE_ID = "Receipt";
@@ -238,239 +238,225 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
         }
 
-        public void createPDF(AccountReceiptResponse response)
+        public void createPDF(GetPaymentReceiptResponse response)
         {
             if (downloadClicked)
             {
-                if (response != null)
-                {
-                    if (response.receipt.ErrorCode == "7200")
-                    {
-                        mProgressBar.Visibility = ViewStates.Gone;
-                        ShowGetReceiptDialog();
+                mProgressBar.Visibility = ViewStates.Gone;
+                ShowGetReceiptDialog();
 
-                        RunOnUiThread(() =>
+                RunOnUiThread(() =>
+                {
+                    Log.Debug(TAG, "Receipt :" + response.GetData());
+                    RECEPT_NO = response.GetData().referenceNum;
+                    try
+                    {
+                        var directory = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory, "pdf").ToString();
+                        if (!Directory.Exists(directory))
                         {
-                            Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
-                            RECEPT_NO = response.receipt.receiptDetails.referenceNum;
-                            try
+                            Directory.CreateDirectory(directory);
+                        }
+
+                        var path = System.IO.Path.Combine(directory, RECEPT_NO + ".pdf");
+
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+                        var fs = new FileStream(path, FileMode.Create);
+
+
+                        iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30);
+
+                        PdfWriter writer = PdfWriter.GetInstance(document, fs);
+
+
+
+                        iTextSharp.text.Color blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
+                        var tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
+                        var silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
+
+
+                        AssetManager assets = this.Assets;
+                        var bytes = default(byte[]);
+                        using (StreamReader reader = new StreamReader(assets.Open("fonts/MuseoSans_500.otf")))
+                        {
+                            using (var memstream = new MemoryStream())
                             {
-                                var directory = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory, "pdf").ToString();
-                                if (!Directory.Exists(directory))
-                                {
-                                    Directory.CreateDirectory(directory);
-                                }
-
-                                var path = System.IO.Path.Combine(directory, RECEPT_NO + ".pdf");
-
-                                if (File.Exists(path))
-                                {
-                                    File.Delete(path);
-                                }
-                                var fs = new FileStream(path, FileMode.Create);
-
-
-                                iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30);
-
-                                PdfWriter writer = PdfWriter.GetInstance(document, fs);
-
-
-
-                                iTextSharp.text.Color blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
-                                var tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
-                                var silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
-
-
-                                AssetManager assets = this.Assets;
-                                var bytes = default(byte[]);
-                                using (StreamReader reader = new StreamReader(assets.Open("fonts/MuseoSans_500.otf")))
-                                {
-                                    using (var memstream = new MemoryStream())
-                                    {
-                                        reader.BaseStream.CopyTo(memstream);
-                                        bytes = memstream.ToArray();
-                                    }
-                                }
-
-                                BaseFont titleBf = BaseFont.CreateFont("MuseoSans_500.otf", BaseFont.IDENTITY_H, true, false, bytes, null);
-
-                                Font titleFont = new Font(titleBf, 30f, 0, blueColour);
-                                Font detailsFont = new Font(titleBf, 24f, 0, tunaGreyColour);
-                                Font labelFont = new Font(titleBf, 18f, 0, silverChaliceColour);
-                                Font totalAmounFont = new Font(titleBf, 48f, 0, tunaGreyColour);
-                                //Font titleFont = new Font(FontFactory.GetFont(titleBf, 30f, blueColour));
-                                //Font detailsFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 24f, tunaGreyColour));
-                                //Font labelFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 18f, silverChaliceColour));
-                                //Font totalAmounFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 48f, tunaGreyColour));
-
-                                //Font titleFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 30f, blueColour));
-                                //Font detailsFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 24f, tunaGreyColour));
-                                //Font labelFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 18f, silverChaliceColour));
-                                //Font totalAmounFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 48f, tunaGreyColour));
-
-
-                                Drawable d = ContextCompat.GetDrawable(this, Resource.Drawable.tnb_receipt_logo_header);
-                                Bitmap bitmap = ((BitmapDrawable)d).Bitmap;
-                                MemoryStream stream = new MemoryStream();
-                                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
-                                byte[] bitmapdata = stream.ToArray();
-
-                                //string filepath = Android.OS.Environment.;
-                                var headerImage = iTextSharp.text.Image.GetInstance(bitmapdata);
-
-                                document.Open();
-
-
-
-                                //document.Open();
-                                PdfContentByte cb = writer.DirectContent;
-
-                                PdfPTable grayLine = new PdfPTable(1);
-                                grayLine.TotalWidth = document.PageSize.Width - 40;
-                                WriteGrayContent(grayLine);
-
-                                headerImage.ScaleToFit(document.PageSize.Width, document.PageSize.Height);
-                                //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
-
-                                //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
-
-                                float y = document.PageSize.Height - document.TopMargin - headerImage.Height;
-
-                                if (y < 700)
-                                {
-                                    float diff = 700 - y;
-                                    y = y + diff;
-                                }
-
-                                headerImage.SetAbsolutePosition(0, y);
-
-                                document.Add(headerImage);
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
-                                document.Add(new Paragraph(GetLabelByLanguage("title"), titleFont));
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(new Paragraph(GetLabelByLanguage("salutation"), detailsFont));
-                                document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
-                                document.Add(new Paragraph(GetLabelByLanguage("messagePartOne"), detailsFont));
-                                document.Add(new Paragraph(string.Format(GetLabelByLanguage("messagePartTwo"),
-                                                                         response.receipt.receiptDetails.payMethod), detailsFont));
-
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(grayLine);
-                                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-
-                                document.Add(new Paragraph(GetLabelByLanguage("referenceNumber").ToUpper(), labelFont));
-                                document.Add(new Paragraph(response.receipt.receiptDetails.referenceNum, detailsFont));
-
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(grayLine);
-                                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-
-                                foreach (var item in response.receipt.receiptDetails.accMultiPay)
-                                {
-                                    document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
-                                    document.Add(new Paragraph(item.accountNum, detailsFont));
-                                    document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                                    document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
-                                    document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : System.Environment.NewLine, detailsFont));
-                                    document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                                    document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
-                                    document.Add(new Paragraph(item.itmAmt, detailsFont));
-
-                                    document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                    document.Add(grayLine);
-                                    document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                                }
-
-                                document.Add(new Paragraph(GetLabelByLanguage("trnDate").ToUpper(), labelFont));
-                                document.Add(new Paragraph(response.receipt.receiptDetails.payTransDate, detailsFont));
-
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(grayLine);
-                                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-
-                                document.Add(new Paragraph(GetLabelByLanguage("trnID").ToUpper(), labelFont));
-                                document.Add(new Paragraph(response.receipt.receiptDetails.payTransID, detailsFont));
-
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(grayLine);
-                                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-
-                                document.Add(new Paragraph(GetLabelByLanguage("trnMethod").ToUpper(), labelFont));
-                                document.Add(new Paragraph(response.receipt.receiptDetails.payMethod, detailsFont));
-
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(grayLine);
-                                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-
-                                document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
-                                document.Add(new Paragraph(response.receipt.receiptDetails.payAmt, totalAmounFont));
-
-                                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                                document.Add(grayLine);
-                                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-
-                                document.Add(new Paragraph(GetLabelByLanguage("note"), labelFont));
-
-
-                                document.Close();
-                                writer.Close();
-                                fs.Close();
-
-                                if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
-                                {
-                                    mErrorMessageSnackBar.Dismiss();
-                                }
-
-                                string downloadLinkLocation = string.Format(Utility.GetLocalizedCommonLabel("pdfDownloadMessage"), path);
-
-                                mErrorMessageSnackBar = Snackbar.Make(baseView, downloadLinkLocation, Snackbar.LengthIndefinite)
-                                .SetAction(Utility.GetLocalizedCommonLabel("open"), delegate
-                                {
-                                    Java.IO.File file = new Java.IO.File(path);
-                                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                            ApplicationContext.PackageName + ".provider", file);
-
-                                    Intent intent = new Intent(Intent.ActionView);
-                                    intent.SetDataAndType(fileUri, "application/pdf");
-                                    intent.AddFlags(ActivityFlags.GrantReadUriPermission);
-                                    StartActivity(intent);
-                                    mErrorMessageSnackBar.Dismiss();
-                                }
-                                );
-
-                                View v = mErrorMessageSnackBar.View;
-                                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                tv.SetMaxLines(5);
-                                Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
-                                btn.SetTextColor(Android.Graphics.Color.Yellow);
-                                mErrorMessageSnackBar.Show();
-                                downloadClicked = false;
-                                mProgressBar.Visibility = ViewStates.Gone;
-                                HideGetReceiptDialog();
-
+                                reader.BaseStream.CopyTo(memstream);
+                                bytes = memstream.ToArray();
                             }
-                            catch (Exception e)
-                            {
-                                Log.Debug("ViewReceiptActivity", e.StackTrace);
-                                downloadClicked = false;
-                                mProgressBar.Visibility = ViewStates.Gone;
-                                HideGetReceiptDialog();
-                                Utility.LoggingNonFatalError(e);
-                            }
-                        });
+                        }
+
+                        BaseFont titleBf = BaseFont.CreateFont("MuseoSans_500.otf", BaseFont.IDENTITY_H, true, false, bytes, null);
+
+                        Font titleFont = new Font(titleBf, 30f, 0, blueColour);
+                        Font detailsFont = new Font(titleBf, 24f, 0, tunaGreyColour);
+                        Font labelFont = new Font(titleBf, 18f, 0, silverChaliceColour);
+                        Font totalAmounFont = new Font(titleBf, 48f, 0, tunaGreyColour);
+                        //Font titleFont = new Font(FontFactory.GetFont(titleBf, 30f, blueColour));
+                        //Font detailsFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 24f, tunaGreyColour));
+                        //Font labelFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 18f, silverChaliceColour));
+                        //Font totalAmounFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 48f, tunaGreyColour));
+
+                        //Font titleFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 30f, blueColour));
+                        //Font detailsFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 24f, tunaGreyColour));
+                        //Font labelFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 18f, silverChaliceColour));
+                        //Font totalAmounFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 48f, tunaGreyColour));
+
+
+                        Drawable d = ContextCompat.GetDrawable(this, Resource.Drawable.tnb_receipt_logo_header);
+                        Bitmap bitmap = ((BitmapDrawable)d).Bitmap;
+                        MemoryStream stream = new MemoryStream();
+                        bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+                        byte[] bitmapdata = stream.ToArray();
+
+                        //string filepath = Android.OS.Environment.;
+                        var headerImage = iTextSharp.text.Image.GetInstance(bitmapdata);
+
+                        document.Open();
+
+
+
+                        //document.Open();
+                        PdfContentByte cb = writer.DirectContent;
+
+                        PdfPTable grayLine = new PdfPTable(1);
+                        grayLine.TotalWidth = document.PageSize.Width - 40;
+                        WriteGrayContent(grayLine);
+
+                        headerImage.ScaleToFit(document.PageSize.Width, document.PageSize.Height);
+                        //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
+
+                        //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
+
+                        float y = document.PageSize.Height - document.TopMargin - headerImage.Height;
+
+                        if (y < 700)
+                        {
+                            float diff = 700 - y;
+                            y = y + diff;
+                        }
+
+                        headerImage.SetAbsolutePosition(0, y);
+
+                        document.Add(headerImage);
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(GetLabelByLanguage("title"), titleFont));
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(GetLabelByLanguage("salutation"), detailsFont));
+                        document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(GetLabelByLanguage("messagePartOne"), detailsFont));
+                        document.Add(new Paragraph(string.Format(GetLabelByLanguage("messagePartTwo"),
+                                                                 response.GetData().payMethod), detailsFont));
+
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+                        document.Add(new Paragraph(GetLabelByLanguage("referenceNumber").ToUpper(), labelFont));
+                        document.Add(new Paragraph(response.GetData().referenceNum, detailsFont));
+
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+                        foreach (var item in response.GetData().accMultiPay)
+                        {
+                            document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
+                            document.Add(new Paragraph(item.accountNum, detailsFont));
+                            document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                            document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
+                            document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : System.Environment.NewLine, detailsFont));
+                            document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                            document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
+                            document.Add(new Paragraph(item.itmAmt, detailsFont));
+
+                            document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                            document.Add(grayLine);
+                            document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        }
+
+                        document.Add(new Paragraph(GetLabelByLanguage("trnDate").ToUpper(), labelFont));
+                        document.Add(new Paragraph(response.GetData().payTransDate, detailsFont));
+
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+                        document.Add(new Paragraph(GetLabelByLanguage("trnID").ToUpper(), labelFont));
+                        document.Add(new Paragraph(response.GetData().payTransID, detailsFont));
+
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+                        document.Add(new Paragraph(GetLabelByLanguage("trnMethod").ToUpper(), labelFont));
+                        document.Add(new Paragraph(response.GetData().payMethod, detailsFont));
+
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+                        document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
+                        document.Add(new Paragraph(response.GetData().payAmt, totalAmounFont));
+
+                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+                        document.Add(new Paragraph(GetLabelByLanguage("note"), labelFont));
+
+
+                        document.Close();
+                        writer.Close();
+                        fs.Close();
+
+                        if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+                        {
+                            mErrorMessageSnackBar.Dismiss();
+                        }
+
+                        string downloadLinkLocation = string.Format(Utility.GetLocalizedCommonLabel("pdfDownloadMessage"), path);
+
+                        mErrorMessageSnackBar = Snackbar.Make(baseView, downloadLinkLocation, Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("open"), delegate
+                        {
+                            Java.IO.File file = new Java.IO.File(path);
+                            Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                    ApplicationContext.PackageName + ".provider", file);
+
+                            Intent intent = new Intent(Intent.ActionView);
+                            intent.SetDataAndType(fileUri, "application/pdf");
+                            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                            StartActivity(intent);
+                            mErrorMessageSnackBar.Dismiss();
+                        }
+                        );
+
+                        View v = mErrorMessageSnackBar.View;
+                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        tv.SetMaxLines(5);
+                        Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
+                        btn.SetTextColor(Android.Graphics.Color.Yellow);
+                        mErrorMessageSnackBar.Show();
+                        downloadClicked = false;
+                        mProgressBar.Visibility = ViewStates.Gone;
+                        HideGetReceiptDialog();
+
                     }
-
-                }
-                else
-                {
-                    if (!ConnectionUtils.HasInternetConnection(this))
+                    catch (Exception e)
                     {
-                        ShowErrorMessage(GetString(Resource.String.no_internet_connection));
+                        Log.Debug("ViewReceiptActivity", e.StackTrace);
+                        downloadClicked = false;
+                        mProgressBar.Visibility = ViewStates.Gone;
+                        HideGetReceiptDialog();
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
+                });
             }
             downloadClicked = false;
         }
@@ -531,67 +517,61 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
-        public void OnShowReceiptDetails(AccountReceiptResponse response)
+        public void OnShowReceiptDetails(GetPaymentReceiptResponse response)
         {
             baseView.Visibility = ViewStates.Visible;
             try
             {
+
                 this.response = response;
-                if (response != null)
+                Log.Debug(TAG, "Receipt :" + response.GetData());
+                MultiReceiptDetails receiiptDetails = response.GetData();
+                RECEPT_NO = receiiptDetails.referenceNum;
+
+                List<AccMultiPay> accounts = receiiptDetails.accMultiPay;
+
+                pleasedText.Text = string.Format(GetLabelByLanguage("messagePartTwo"), receiiptDetails.payMethod);
+
+                referenceNumberValue.Text = receiiptDetails.referenceNum;
+
+                txnDateValue.Text = receiiptDetails.payTransDate;
+
+                txnIdValue.Text = receiiptDetails.payTransID;
+
+                txnMethodValue.Text = receiiptDetails.payMethod;
+
+                totalAmtValue.Text = receiiptDetails.payAmt;
+
+                if (accountLayout.ChildCount > 0)
                 {
-                    if (response.receipt.ErrorCode == "7200")
+                    accountLayout.RemoveAllViews();
+                }
+
+                if (accounts != null && accounts.Count() > 0)
+                {
+                    foreach (AccMultiPay acct in accounts)
                     {
-                        Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
-                        MultiReceiptDetails receiiptDetails = response.receipt.receiptDetails;
-                        RECEPT_NO = receiiptDetails.referenceNum;
-
-                        List<AccMultiPay> accounts = receiiptDetails.accMultiPay;
-
-                        pleasedText.Text = string.Format(GetLabelByLanguage("messagePartTwo"), receiiptDetails.payMethod);
-
-                        referenceNumberValue.Text = receiiptDetails.referenceNum;
-
-                        txnDateValue.Text = receiiptDetails.payTransDate;
-
-                        txnIdValue.Text = receiiptDetails.payTransID;
-
-                        txnMethodValue.Text = receiiptDetails.payMethod;
-
-                        totalAmtValue.Text = receiiptDetails.payAmt;
-
-                        if (accountLayout.ChildCount > 0)
-                        {
-                            accountLayout.RemoveAllViews();
-                        }
-
-                        if (accounts != null && accounts.Count() > 0)
-                        {
-                            foreach (AccMultiPay acct in accounts)
-                            {
-                                View view = LayoutInflater.From(this).Inflate(Resource.Layout.ViewBillReceiptAccountDetails, baseView, false);
-                                TextView accNumberText = view.FindViewById<TextView>(Resource.Id.acc_number_text);
-                                TextView accNumberValue = view.FindViewById<TextView>(Resource.Id.acc_number_value);
-                                TextView accNameText = view.FindViewById<TextView>(Resource.Id.acc_name_text);
-                                TextView accNameValue = view.FindViewById<TextView>(Resource.Id.acc_name_value);
-                                TextView accAmtText = view.FindViewById<TextView>(Resource.Id.acc_amt_text);
-                                TextView accAmtValue = view.FindViewById<TextView>(Resource.Id.acc_amt_value);
+                        View view = LayoutInflater.From(this).Inflate(Resource.Layout.ViewBillReceiptAccountDetails, baseView, false);
+                        TextView accNumberText = view.FindViewById<TextView>(Resource.Id.acc_number_text);
+                        TextView accNumberValue = view.FindViewById<TextView>(Resource.Id.acc_number_value);
+                        TextView accNameText = view.FindViewById<TextView>(Resource.Id.acc_name_text);
+                        TextView accNameValue = view.FindViewById<TextView>(Resource.Id.acc_name_value);
+                        TextView accAmtText = view.FindViewById<TextView>(Resource.Id.acc_amt_text);
+                        TextView accAmtValue = view.FindViewById<TextView>(Resource.Id.acc_amt_value);
 
 
-                                TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue, accNameText,
-                                                                      accNameValue, accAmtText, accAmtValue);
-                                accNumberText.Text = GetLabelCommonByLanguage("accountNo").ToUpper();
-                                accNameText.Text = GetLabelByLanguage("accountHolder").ToUpper();
-                                accAmtText.Text = GetLabelCommonByLanguage("amountRM").ToUpper();
+                        TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue, accNameText,
+                                                              accNameValue, accAmtText, accAmtValue);
+                        accNumberText.Text = GetLabelCommonByLanguage("accountNo").ToUpper();
+                        accNameText.Text = GetLabelByLanguage("accountHolder").ToUpper();
+                        accAmtText.Text = GetLabelCommonByLanguage("amountRM").ToUpper();
 
-                                accNumberValue.Text = acct.accountNum;
-                                accNameValue.Text = acct.accountOwnerName;
-                                accAmtValue.Text = acct.itmAmt;
+                        accNumberValue.Text = acct.accountNum;
+                        accNameValue.Text = acct.accountOwnerName;
+                        accAmtValue.Text = acct.itmAmt;
 
 
-                                accountLayout.AddView(view);
-
-                            }
-                        }
+                        accountLayout.AddView(view);
 
                     }
                 }
@@ -599,6 +579,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                ShowPaymentReceiptError();
             }
         }
 
@@ -656,6 +637,17 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void ShowPaymentReceiptError()
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedErrorLabel("defaultErrorTitle"))
+                .SetMessage(Utility.GetLocalizedErrorLabel("receiptErrorMsg"))
+                .SetContentGravity(GravityFlags.Center)
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                .SetCTAaction(Finish)
+                .Build().Show();
         }
     }
 }

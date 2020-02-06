@@ -204,7 +204,7 @@
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
-
+                public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
             }
         }

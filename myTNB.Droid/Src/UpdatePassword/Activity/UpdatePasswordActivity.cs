@@ -122,6 +122,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 if (!string.IsNullOrEmpty(currentPassword))
                 {
                     txtInputLayoutCurrentPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutCurrentPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
@@ -164,6 +165,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                         txtInputLayoutNewPassword.ErrorEnabled = false;
                     }
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
@@ -185,6 +187,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                         txtInputLayoutConfirmPassword.ErrorEnabled = false;
                     }
                     txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
@@ -229,6 +232,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                         txtInputLayoutConfirmPassword.ErrorEnabled = false;
                     }
                     txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {

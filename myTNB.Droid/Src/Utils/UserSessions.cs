@@ -112,13 +112,13 @@ namespace myTNB_Android.Src.Utils
 
         public static System.Boolean HasUpdateSkipped(ISharedPreferences prefs)
         {
-            return prefs.GetBoolean("hasUpdateSkipped190", false);
+            return prefs.GetBoolean(Utility.GetAppUpdateId(), false);
         }
 
         public static void DoUpdateSkipped(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("hasUpdateSkipped190", true);
+            editor.PutBoolean(Utility.GetAppUpdateId(), true);
             editor.Apply();
         }
 
@@ -182,6 +182,25 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasRewardShown(ISharedPreferences prefs)
+        {
+            bool flag = prefs.GetBoolean("hasRewardShown", false);
+
+            if (UserSessions.HasRewardsShown(prefs) && !flag)
+            {
+                DoRewardShown(prefs);
+                flag = true;
+            }
+            return flag;
+        }
+
+        public static void DoRewardShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasRewardShown", true);
+            editor.Apply();
+        }
+
         public static System.Boolean HasRewardsDetailShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasRewardsDetailShown", false);
@@ -203,6 +222,25 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("hasWhatsNewShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
+        {
+            bool flag = prefs.GetBoolean("hasWhatNewShown", false);
+
+            if (UserSessions.HasWhatsNewShown(prefs) && !flag)
+            {
+                DoWhatNewShown(prefs);
+                flag = true;
+            }
+            return flag;
+        }
+
+        public static void DoWhatNewShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasWhatNewShown", true);
             editor.Apply();
         }
 

@@ -412,6 +412,9 @@
     <Reference Include="Xamarin.Firebase.Dynamic.Links">
       <HintPath>..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\lib\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Location">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\lib\MonoAndroid80\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -2100,7 +2103,6 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\PhotoContainerBox.cs" />
     <AndroidResource Include="Resources\layout\CustomDialogWithImageHeader.axml" />
     <Compile Include="Src\SSMR\Util\MyTNBAppToolTip.cs" />
-    <Compile Include="Src\SSMR\Util\MyTNBAppToolTipBuilder.cs" />
     <Compile Include="Src\Base\MyTNBAppToolTipData.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\multiple_phase.png" />
     <AndroidResource Include="Resources\drawable-mdpi\multi_phase.png" />
@@ -4231,6 +4233,251 @@
     <Compile Include="Src\MyTNBService\Response\GetLocationListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetLocationListByKeywordResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\GetLocationListByKeywordRequest.cs" />
+    <Compile Include="Src\CompoundView\MobileNumberInputComponent.cs" />
+    <AndroidResource Include="Resources\layout\MobileNumberInputComponentLayout.axml" />
+    <AndroidResource Include="Resources\drawable\ph.png" />
+    <Compile Include="Src\Utils\CountryUtil.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\CountryModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\CountryService.cs" />
+    <Compile Include="Src\Common\Model\Country.cs" />
+    <Compile Include="Src\Common\Activity\SelectCountryActivity.cs" />
+    <AndroidResource Include="Resources\layout\SelectCountryLayout.axml" />
+    <Compile Include="Src\Common\Adapter\SelectCountryISDCodeAdapter.cs" />
+    <AndroidResource Include="Resources\layout\SelectCountryISDCodeItemLayout.axml" />
+    <AndroidResource Include="Resources\drawable\in.png" />
+    <AndroidResource Include="Resources\drawable\my.png" />
+    <AndroidResource Include="Resources\drawable\noflag.png" />
+    <AndroidResource Include="Resources\drawable\ad.png" />
+    <AndroidResource Include="Resources\drawable\ae.png" />
+    <AndroidResource Include="Resources\drawable\af.png" />
+    <AndroidResource Include="Resources\drawable\ag.png" />
+    <AndroidResource Include="Resources\drawable\ai.png" />
+    <AndroidResource Include="Resources\drawable\al.png" />
+    <AndroidResource Include="Resources\drawable\am.png" />
+    <AndroidResource Include="Resources\drawable\an.png" />
+    <AndroidResource Include="Resources\drawable\ao.png" />
+    <AndroidResource Include="Resources\drawable\ar.png" />
+    <AndroidResource Include="Resources\drawable\at.png" />
+    <AndroidResource Include="Resources\drawable\au.png" />
+    <AndroidResource Include="Resources\drawable\aw.png" />
+    <AndroidResource Include="Resources\drawable\ax.png" />
+    <AndroidResource Include="Resources\drawable\az.png" />
+    <AndroidResource Include="Resources\drawable\ba.png" />
+    <AndroidResource Include="Resources\drawable\bb.png" />
+    <AndroidResource Include="Resources\drawable\bd.png" />
+    <AndroidResource Include="Resources\drawable\be.png" />
+    <AndroidResource Include="Resources\drawable\bf.png" />
+    <AndroidResource Include="Resources\drawable\bg.png" />
+    <AndroidResource Include="Resources\drawable\bh.png" />
+    <AndroidResource Include="Resources\drawable\bi.png" />
+    <AndroidResource Include="Resources\drawable\bj.png" />
+    <AndroidResource Include="Resources\drawable\bm.png" />
+    <AndroidResource Include="Resources\drawable\bn.png" />
+    <AndroidResource Include="Resources\drawable\bo.png" />
+    <AndroidResource Include="Resources\drawable\br.png" />
+    <AndroidResource Include="Resources\drawable\bs.png" />
+    <AndroidResource Include="Resources\drawable\bt.png" />
+    <AndroidResource Include="Resources\drawable\bw.png" />
+    <AndroidResource Include="Resources\drawable\by.png" />
+    <AndroidResource Include="Resources\drawable\bz.png" />
+    <AndroidResource Include="Resources\drawable\ca.png" />
+    <AndroidResource Include="Resources\drawable\cd.png" />
+    <AndroidResource Include="Resources\drawable\cf.png" />
+    <AndroidResource Include="Resources\drawable\cg.png" />
+    <AndroidResource Include="Resources\drawable\ch.png" />
+    <AndroidResource Include="Resources\drawable\za.png" />
+    <AndroidResource Include="Resources\drawable\zm.png" />
+    <AndroidResource Include="Resources\drawable\zw.png" />
+    <AndroidResource Include="Resources\drawable\ws.png" />
+    <AndroidResource Include="Resources\drawable\ye.png" />
+    <AndroidResource Include="Resources\drawable\uy.png" />
+    <AndroidResource Include="Resources\drawable\uz.png" />
+    <AndroidResource Include="Resources\drawable\vc.png" />
+    <AndroidResource Include="Resources\drawable\ve.png" />
+    <AndroidResource Include="Resources\drawable\vg.png" />
+    <AndroidResource Include="Resources\drawable\vn.png" />
+    <AndroidResource Include="Resources\drawable\vu.png" />
+    <AndroidResource Include="Resources\drawable\us.png" />
+    <AndroidResource Include="Resources\drawable\tr.png" />
+    <AndroidResource Include="Resources\drawable\tt.png" />
+    <AndroidResource Include="Resources\drawable\tw.png" />
+    <AndroidResource Include="Resources\drawable\tz.png" />
+    <AndroidResource Include="Resources\drawable\ua.png" />
+    <AndroidResource Include="Resources\drawable\ug.png" />
+    <AndroidResource Include="Resources\drawable\to.png" />
+    <AndroidResource Include="Resources\drawable\tc.png" />
+    <AndroidResource Include="Resources\drawable\td.png" />
+    <AndroidResource Include="Resources\drawable\tg.png" />
+    <AndroidResource Include="Resources\drawable\th.png" />
+    <AndroidResource Include="Resources\drawable\tj.png" />
+    <AndroidResource Include="Resources\drawable\tl.png" />
+    <AndroidResource Include="Resources\drawable\tm.png" />
+    <AndroidResource Include="Resources\drawable\tn.png" />
+    <AndroidResource Include="Resources\drawable\sv.png" />
+    <AndroidResource Include="Resources\drawable\sy.png" />
+    <AndroidResource Include="Resources\drawable\sz.png" />
+    <AndroidResource Include="Resources\drawable\sr.png" />
+    <AndroidResource Include="Resources\drawable\st.png" />
+    <AndroidResource Include="Resources\drawable\sn.png" />
+    <AndroidResource Include="Resources\drawable\so.png" />
+    <AndroidResource Include="Resources\drawable\sk.png" />
+    <AndroidResource Include="Resources\drawable\sl.png" />
+    <AndroidResource Include="Resources\drawable\sm.png" />
+    <AndroidResource Include="Resources\drawable\ci.png" />
+    <AndroidResource Include="Resources\drawable\cl.png" />
+    <AndroidResource Include="Resources\drawable\cm.png" />
+    <AndroidResource Include="Resources\drawable\cn.png" />
+    <AndroidResource Include="Resources\drawable\co.png" />
+    <AndroidResource Include="Resources\drawable\cr.png" />
+    <AndroidResource Include="Resources\drawable\cu.png" />
+    <AndroidResource Include="Resources\drawable\cv.png" />
+    <AndroidResource Include="Resources\drawable\cy.png" />
+    <AndroidResource Include="Resources\drawable\cz.png" />
+    <AndroidResource Include="Resources\drawable\de.png" />
+    <AndroidResource Include="Resources\drawable\dj.png" />
+    <AndroidResource Include="Resources\drawable\dk.png" />
+    <AndroidResource Include="Resources\drawable\dm.png" />
+    <AndroidResource Include="Resources\drawable\doflag.png" />
+    <AndroidResource Include="Resources\drawable\dz.png" />
+    <AndroidResource Include="Resources\drawable\ec.png" />
+    <AndroidResource Include="Resources\drawable\ee.png" />
+    <AndroidResource Include="Resources\drawable\eg.png" />
+    <AndroidResource Include="Resources\drawable\er.png" />
+    <AndroidResource Include="Resources\drawable\es.png" />
+    <AndroidResource Include="Resources\drawable\et.png" />
+    <AndroidResource Include="Resources\drawable\fi.png" />
+    <AndroidResource Include="Resources\drawable\fj.png" />
+    <AndroidResource Include="Resources\drawable\fk.png" />
+    <AndroidResource Include="Resources\drawable\fm.png" />
+    <AndroidResource Include="Resources\drawable\fr.png" />
+    <AndroidResource Include="Resources\drawable\ga.png" />
+    <AndroidResource Include="Resources\drawable\gb.png" />
+    <AndroidResource Include="Resources\drawable\gd.png" />
+    <AndroidResource Include="Resources\drawable\ge.png" />
+    <AndroidResource Include="Resources\drawable\gg.png" />
+    <AndroidResource Include="Resources\drawable\gh.png" />
+    <AndroidResource Include="Resources\drawable\gi.png" />
+    <AndroidResource Include="Resources\drawable\gm.png" />
+    <AndroidResource Include="Resources\drawable\gn.png" />
+    <AndroidResource Include="Resources\drawable\gq.png" />
+    <AndroidResource Include="Resources\drawable\gr.png" />
+    <AndroidResource Include="Resources\drawable\gt.png" />
+    <AndroidResource Include="Resources\drawable\gw.png" />
+    <AndroidResource Include="Resources\drawable\gy.png" />
+    <AndroidResource Include="Resources\drawable\hk.png" />
+    <AndroidResource Include="Resources\drawable\hn.png" />
+    <AndroidResource Include="Resources\drawable\hr.png" />
+    <AndroidResource Include="Resources\drawable\ht.png" />
+    <AndroidResource Include="Resources\drawable\hu.png" />
+    <AndroidResource Include="Resources\drawable\id.png" />
+    <AndroidResource Include="Resources\drawable\ie.png" />
+    <AndroidResource Include="Resources\drawable\il.png" />
+    <AndroidResource Include="Resources\drawable\im.png" />
+    <AndroidResource Include="Resources\drawable\iq.png" />
+    <AndroidResource Include="Resources\drawable\ir.png" />
+    <AndroidResource Include="Resources\drawable\is.png" />
+    <AndroidResource Include="Resources\drawable\it.png" />
+    <AndroidResource Include="Resources\drawable\je.png" />
+    <AndroidResource Include="Resources\drawable\jm.png" />
+    <AndroidResource Include="Resources\drawable\jo.png" />
+    <AndroidResource Include="Resources\drawable\jp.png" />
+    <AndroidResource Include="Resources\drawable\ke.png" />
+    <AndroidResource Include="Resources\drawable\kg.png" />
+    <AndroidResource Include="Resources\drawable\kh.png" />
+    <AndroidResource Include="Resources\drawable\km.png" />
+    <AndroidResource Include="Resources\drawable\kn.png" />
+    <AndroidResource Include="Resources\drawable\kp.png" />
+    <AndroidResource Include="Resources\drawable\kr.png" />
+    <AndroidResource Include="Resources\drawable\kw.png" />
+    <AndroidResource Include="Resources\drawable\ky.png" />
+    <AndroidResource Include="Resources\drawable\kz.png" />
+    <AndroidResource Include="Resources\drawable\la.png" />
+    <AndroidResource Include="Resources\drawable\lb.png" />
+    <AndroidResource Include="Resources\drawable\lc.png" />
+    <AndroidResource Include="Resources\drawable\li.png" />
+    <AndroidResource Include="Resources\drawable\lk.png" />
+    <AndroidResource Include="Resources\drawable\lr.png" />
+    <AndroidResource Include="Resources\drawable\ls.png" />
+    <AndroidResource Include="Resources\drawable\lt.png" />
+    <AndroidResource Include="Resources\drawable\lu.png" />
+    <AndroidResource Include="Resources\drawable\lv.png" />
+    <AndroidResource Include="Resources\drawable\ly.png" />
+    <AndroidResource Include="Resources\drawable\ma.png" />
+    <AndroidResource Include="Resources\drawable\mc.png" />
+    <AndroidResource Include="Resources\drawable\md.png" />
+    <AndroidResource Include="Resources\drawable\me.png" />
+    <AndroidResource Include="Resources\drawable\mg.png" />
+    <AndroidResource Include="Resources\drawable\mk.png" />
+    <AndroidResource Include="Resources\drawable\ml.png" />
+    <AndroidResource Include="Resources\drawable\mm.png" />
+    <AndroidResource Include="Resources\drawable\mn.png" />
+    <AndroidResource Include="Resources\drawable\mo.png" />
+    <AndroidResource Include="Resources\drawable\mr.png" />
+    <AndroidResource Include="Resources\drawable\ms.png" />
+    <AndroidResource Include="Resources\drawable\mt.png" />
+    <AndroidResource Include="Resources\drawable\mu.png" />
+    <AndroidResource Include="Resources\drawable\mv.png" />
+    <AndroidResource Include="Resources\drawable\mw.png" />
+    <AndroidResource Include="Resources\drawable\mx.png" />
+    <AndroidResource Include="Resources\drawable\mz.png" />
+    <AndroidResource Include="Resources\drawable\na.png" />
+    <AndroidResource Include="Resources\drawable\ne.png" />
+    <AndroidResource Include="Resources\drawable\ng.png" />
+    <AndroidResource Include="Resources\drawable\ni.png" />
+    <AndroidResource Include="Resources\drawable\nl.png" />
+    <AndroidResource Include="Resources\drawable\no.png" />
+    <AndroidResource Include="Resources\drawable\np.png" />
+    <AndroidResource Include="Resources\drawable\nz.png" />
+    <AndroidResource Include="Resources\drawable\om.png" />
+    <AndroidResource Include="Resources\drawable\pa.png" />
+    <AndroidResource Include="Resources\drawable\pe.png" />
+    <AndroidResource Include="Resources\drawable\pf.png" />
+    <AndroidResource Include="Resources\drawable\pg.png" />
+    <AndroidResource Include="Resources\drawable\pk.png" />
+    <AndroidResource Include="Resources\drawable\pl.png" />
+    <AndroidResource Include="Resources\drawable\pr.png" />
+    <AndroidResource Include="Resources\drawable\pt.png" />
+    <AndroidResource Include="Resources\drawable\pw.png" />
+    <AndroidResource Include="Resources\drawable\py.png" />
+    <AndroidResource Include="Resources\drawable\qa.png" />
+    <AndroidResource Include="Resources\drawable\ro.png" />
+    <AndroidResource Include="Resources\drawable\rs.png" />
+    <AndroidResource Include="Resources\drawable\ru.png" />
+    <AndroidResource Include="Resources\drawable\rw.png" />
+    <AndroidResource Include="Resources\drawable\sa.png" />
+    <AndroidResource Include="Resources\drawable\sb.png" />
+    <AndroidResource Include="Resources\drawable\sc.png" />
+    <AndroidResource Include="Resources\drawable\sd.png" />
+    <AndroidResource Include="Resources\drawable\se.png" />
+    <AndroidResource Include="Resources\drawable\sg.png" />
+    <AndroidResource Include="Resources\drawable\sh.png" />
+    <AndroidResource Include="Resources\drawable\si.png" />
+    <AndroidResource Include="Resources\drawable\aq.png" />
+    <AndroidResource Include="Resources\drawable\as.png" />
+    <AndroidResource Include="Resources\drawable\bl.png" />
+    <AndroidResource Include="Resources\drawable\ck.png" />
+    <AndroidResource Include="Resources\drawable\cw.png" />
+    <AndroidResource Include="Resources\drawable\eh.png" />
+    <AndroidResource Include="Resources\drawable\gl.png" />
+    <AndroidResource Include="Resources\drawable\gp.png" />
+    <AndroidResource Include="Resources\drawable\gu.png" />
+    <AndroidResource Include="Resources\drawable\ki.png" />
+    <AndroidResource Include="Resources\drawable\mf.png" />
+    <AndroidResource Include="Resources\drawable\mh.png" />
+    <AndroidResource Include="Resources\drawable\mp.png" />
+    <AndroidResource Include="Resources\drawable\nc.png" />
+    <AndroidResource Include="Resources\drawable\nf.png" />
+    <AndroidResource Include="Resources\drawable\nr.png" />
+    <AndroidResource Include="Resources\drawable\nu.png" />
+    <AndroidResource Include="Resources\drawable\pm.png" />
+    <AndroidResource Include="Resources\drawable\pn.png" />
+    <AndroidResource Include="Resources\drawable\re.png" />
+    <AndroidResource Include="Resources\drawable\ss.png" />
+    <AndroidResource Include="Resources\drawable\tk.png" />
+    <AndroidResource Include="Resources\drawable\tv.png" />
+    <AndroidResource Include="Resources\drawable\va.png" />
+    <AndroidResource Include="Resources\drawable\xk.png" />
+    <AndroidResource Include="Resources\drawable\fo.png" />
     <AndroidResource Include="Resources\layout\WhatsNewListView.axml">
       <SubType></SubType>
       <Generator></Generator>
@@ -4274,6 +4521,57 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Utils\LoadingOverlayUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bill_payment_processing_banner.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Api\IPaymentStatusApi.cs" />
+    <Compile Include="Src\myTNBMenu\Requests\CheckPendingPaymentRequest.cs" />
+    <Compile Include="Src\Base\Models\DeviceInterface.cs" />
+    <Compile Include="Src\myTNBMenu\Models\CheckPendingPaymentsResponse.cs" />
+    <Compile Include="Src\Utils\MyTNBAppToolTipBuilder.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetPaymentReceiptRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetPaymentReceiptResponse.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_5.png" />
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughFifthBg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_5.png" />
+    <AndroidResource Include="Resources\drawable\bq.png" />
+    <AndroidResource Include="Resources\drawable\cc.png" />
+    <AndroidResource Include="Resources\drawable\cx.png" />
+    <AndroidResource Include="Resources\drawable\gf.png" />
+    <AndroidResource Include="Resources\drawable\io.png" />
+    <AndroidResource Include="Resources\drawable\mq.png" />
+    <AndroidResource Include="Resources\drawable\ps.png" />
+    <AndroidResource Include="Resources\drawable\sx.png" />
+    <AndroidResource Include="Resources\drawable\vi.png" />
+    <AndroidResource Include="Resources\drawable\wf.png" />
+    <AndroidResource Include="Resources\drawable\yt.png" />
+    <AndroidResource Include="Resources\drawable\ac.png" />
+    <AndroidResource Include="Resources\drawable\gs.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4653,6 +4951,7 @@
     <Folder Include="Src\NotificationDetails\Api\" />
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
+    <Folder Include="Src\Common\Activity\" />
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\" />
@@ -6859,4 +7158,5 @@
   <Import Project="..\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Dynamic.Links.targets')" />
+  <Import Project="..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Location.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Location.targets')" />
 </Project>

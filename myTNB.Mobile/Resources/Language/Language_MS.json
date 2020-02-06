@@ -31,13 +31,13 @@
     "ok": "Ok",
     "acctNickname": "Nama Akaun",
     "name": "Nama",
-    "done": "Selesai",
+    "done": "Mulakan",
     "yes": "Ya",
     "no": "Tidak",
     "selectAll": "Pilih Semua",
     "unselectAll": "Nyahpilih Semua",
     "totalAmount": "Jumlah Keseluruhan",
-    "totalAmountRM": "Jumlah Keseluruhan (RM)",
+    "totalAmountRM": "Jumlah (RM)",
     "amountRM": "Amaun (RM)",
     "back": "Kembali",
     "cards": "Kad Kredit / Debit",
@@ -49,7 +49,7 @@
     "password": "Kata Laluan",
     "mobileNo": "Nombor Telefon",
     "email": "E-mel",
-    "addAnotherAcct": "Tambah Akaun Lain",
+    "addAnotherAcct": "Tambah Akaun",
     "setAppLanguage": "Tetapkan Bahasa Aplikasi",
     "setAppLanguageDescription": "Pilih Bahasa",
     "english": "English",
@@ -62,7 +62,7 @@
     "retry": "Cuba Semula",
     "save": "Simpan",
     "fullname": "Nama Penuh",
-    "confirmPassword": "Sahkan Kata Laluan Baharu",
+    "confirmPassword": "Sahkan Kata Laluan",
     "accountNo": "Nombor Akaun",
     "accountType": "Jenis Akaun",
     "allNotifications": "Semua Pemberitahuan",
@@ -95,7 +95,9 @@
     "illDoItLater": "Kemudian",
     "selectBillMaxDesc": "Anda boleh memilih sehingga <b>5 bil</b> untuk dibayar dalam setiap transaksi. Untuk membayar bil yang lain, sila lengkapkan transaksi ini terlebih dahulu.",
     "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}",
-    "open": "Buka"
+    "open": "Buka",
+    "paymentPendingMsg": "Pembayaran sedang diproses",
+    "processing": "sedang diproses"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -121,11 +123,11 @@
     "invalid_password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
     "invalid_mismatchedPassword": "Kata laluan baharu anda tidak sepadan.",
     "invalid_fullname": "Nama penuh tidak sah",
-    "invalid_idnumber": "Nombor IC, ROC atau Pasport tidak sah",
+    "invalid_idnumber": "Nombor KP, ROC atau Pasport tidak sah",
     "invalid_mismatchedEmail": "Kedua-dua e-mel tidak padan",
     "error_duplicateAccountMessage": "Nombor akaun ini telah ditambah ke senarai.",
     "error_duplicateAccountTitle": "Akaun Yang Sama",
-    "invalid_icNumber": "Nombor IC tidak sah",
+    "invalid_icNumber": "Nombor KP, Pasport atau ROC tidak sah",
     "invalid_rocNumber": "Nombor ROC tidak sah",
     "accountLength": "Sila masukkan nombor akaun 12 digit yang sah.",
     "invalid_accountType": "Jenis Akaun tidak sah",
@@ -142,7 +144,14 @@
     "redeemRewardFailMsg": "Mari kita lakukan ini sekali lagi.",
     "plannedDownTimeMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "rewardsUnavailableTitle": "Ganjaran tidak tersedia buat masa ini.",
-    "rewardsUnavailableMsg": "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian."
+    "rewardsUnavailableMsg": "Tetapi kami akan kembali sebentar lagi jadi semak semula kemudian.",
+    "whatsNewUnavailableTitle": "Informasi terkini tidak tersedia buat masa ini.",
+    "whatsNewUnavailableMsg": "Sila semak semula selepas ini.",
+    "whatsNewExpiredTitle": "Kandungan ini tidak tersedia.",
+    "whatsNewExpiredMsg": "Promosi/pengumuman ini telah tamat & dikeluarkan. Semak semula selepas ini untuk mengetahui informasi terkini tentang TNB!",
+    "whatsNewExpiredBtnText": "Tunjukkan Terkini!",
+    "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!",
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -153,7 +162,7 @@
     "needHelp": "Perlu Bantuan?",
     "promotions": "Terkini",
     "addElectricityAcct": "Tambah Akaun Elektrik",
-    "searchPlaceholder": "Cari mengikut nama ringkas atau nombor",
+    "searchPlaceholder": "Cari ikut nama ringkas atau nombor",
     "refreshMessage": "Halaman ini terputus sambungan. 'Refresh' untuk sambung semula!",
     "refreshBtnText": "'Refresh' Sekarang",
     "paidExtra": "ada ekstra",
@@ -177,7 +186,7 @@
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda.",
     "tutorialSingleAcctTitle": "Selamat datang ke paparan halaman Utama baharu anda!",
-    "tutorialQuickAccessTitle": "Akses pantas akaun.",
+    "tutorialQuickAccessTitle": "Akses mudah akaun.",
     "tutorialQuickActionTitle": "Akses mudah.",
     "tutorialNeedHelpTitle": "Perlu bantuan?",
     "tutorialNoAcctDesc": "Tambah akaun elektrik ke myTNB untuk mengakses penggunaan dan perkhidmatan yang ditawarkan.",
@@ -452,7 +461,7 @@
     "minimumChargeDescription": "Akaun ini mempunyai caj minimum",
     "applicationCharges": "Caj sekali bayar",
     "tooltiptitle1": "Perkara daripada bil kertas/PDF anda",
-    "tooltiptitle2": "Butiran daripada surat tuntutan anda",
+    "tooltiptitle2": "Perkara daripada surat tuntutan anda",
     "tooltipdesc1": "Jumlah perlu dibayar|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
     "pay": "Bayar",
@@ -534,7 +543,7 @@
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
-    "noAcctFoundMsg": "Sila tekan butang di bawah untuk tambah akaun elektrik TNB anda.",
+    "noAcctFoundMsg": "Sila tekan butang di bawah untuk menambah akaun elektrik TNB anda.",
     "supplyAcctCount": "akaun elektrik ditemui!",
     "addAnotherAcct": "Tambah Akaun Lain",
     "addAccount": "Akaun Sedang Ditambah",
@@ -543,10 +552,10 @@
     "addAccountsMsg": "Ini mungkin akan ambil masa sedikit. Sila tunggu sebentar.",
     "noAccountsTitle": "Tiada Akaun Ditemui!",
     "additionalAccts": "Akaun tambahan",
-    "removeAcct": "Keluarkan Akaun",
-    "removeAcctMsg": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Layari Self-Service Portal atau kunjungi Kedai Tenaga untuk menutup akaun bekalan elektrik anda.",
+    "removeAcct": "Alih Keluar Akaun",
+    "removeAcctMsg": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun: <b>{1}</b><br><br>Layari Portal myTNB atau kunjungi Kedai Tenaga untuk menutup akaun elektrik anda.",
     "addAcctSuccessMsg": "Akaun Berjaya Ditambah",
-    "ownerICNumber": "Nombor KP / Pasport Pemilik",
+    "ownerICNumber": "Nombor KP / Pasport Pemilik / ROC",
     "rocNumber": "ROC Nombor",
     "whereIsMyAccountTitle": "Di mana nombor akaun saya?",
     "whereIsMyAccountDetails": "Nombor akaun 12 digit boleh didapati di bahagian atas sebelah kiri bil elektrik anda.",
@@ -589,7 +598,7 @@
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "electricityAccount": "Akaun Elektrik",
-    "mobileNumberVerified": "Nombor telefon anda telah berjaya disahkan.",
+    "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar."
   },
   "NotificationSettings": {
@@ -605,7 +614,7 @@
   },
   "FindUs": {
     "title": "Temui Kami",
-    "searchPlaceholder": "Cari mengikut nama jalan atau kawasan",
+    "searchPlaceholder": "Cari nama jalan atau kawasan",
     "zeroLocations": "0 Lokasi",
     "noKTFound": "Tiada Kedai Tenaga Ditemui",
     "no711Found": "Tiada Kedai 7-Eleven Ditemui",
@@ -626,14 +635,14 @@
   "MyAccount": {
     "title": "Akaun myTNB",
     "detailSectionTitle": "Akaun myTNB",
-    "accountSectionTitle": "Akaun Bekalan Elektrik TNB",
+    "accountSectionTitle": "Akaun Elektrik TNB",
     "logout": "Log Keluar",
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
-    "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
+    "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
-    "addAccountMessage": "Masukkan Akaun Bekalan Elektrik TNB sedia ada anda untuk melihat butiran penggunaan dan transaksi."
+    "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi."
   },
   "Prelogin": {
     "welcomeTitle": "Selamat datang ke myTNB",
@@ -685,7 +694,10 @@
     "verifyDeviceTitle": "Sahkan Nombor Telefon",
     "verifyDeviceMessage": "Sila sahkan no. telefon anda.",
     "details": "Untuk tujuan keselamatan, sila masukkan nombor telefon anda untuk pengesahan.",
-    "updateMobileNumberTitle": "Kemas kini Nombor Telefon"
+    "updateMobileNumberTitle": "Kemas kini Nombor Telefon",
+    "infoTitle": "Apakah tujuannya?",
+    "infoPopupTitle": "Ini bertujuan untuk mengemas kini butiran myTNB anda.",
+    "infoPopupMessage": "Ini hanya akan mengemas kini butiran anda pada myTNB. Ia tidak akan memberi kesan atau mengubah sebarang maklumat yang berkaitan dengan akaun elektrik sedia ada."
   },
   "VerifyPin": {
     "title": "Sahkan Nombor Telefon",
@@ -724,12 +736,14 @@
     "title4": "Bayar bil anda bila-bila masa, di mana sahaja.",
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
+    "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
-    "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below."
+    "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -777,9 +791,9 @@
     "title": "Resit Pembayaran",
     "accountHolder": "Nama Pemilik Akaun",
     "receiptFilename": "Resit-{0}.pdf",
-    "fullMessage": "Terima kasih kerana menggunakan myTNB.\nSukacita kami maklumkan bahawa pembayaran dalam talian melalui {0} telah berjaya:",
+    "fullMessage": "Terima kasih kerana menggunakan myTNB.\nSukacita dimaklumkan bahawa pembayaran dalam talian berikut menerusi {0} telah berjaya:",
     "messagePartOne": "Terima kasih kerana menggunakan myTNB.",
-    "messagePartTwo": "Sukacita kami maklumkan bahawa pembayaran dalam talian melalui {0} telah berjaya:",
+    "messagePartTwo": "Sukacita dimaklumkan bahawa pembayaran dalam talian berikut menerusi {0} telah berjaya:",
     "noReceipt": "Tiada resit dijumpai",
     "note": "NOTA: Resit ini dihasilkan komputer dan tandatangan tidak diperlukan.",
     "referenceNumber": "Nombor Rujukan",
@@ -813,8 +827,11 @@
     "invalidPoleNumber": "Invalid pole number",
     "noAccessTitle": "Location Access is not allowed",
     "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
-    "goToSettings": "Go to Settings"
+    "goToSettings": "Go to Settings",
     //Not Supported End
+    "selectOptions": "Buat Pilihan",
+    "takePhoto": "Tangkap Gambar",
+    "chooseFromLibrary": "Muat Naik Gambar"
   },
   "FeedbackDetails": {
     "feedbackID": "ID",
@@ -858,7 +875,7 @@
     "viewAll": "Lihat Semua",
     "noRewards": "Tidak ada ganjaran tersedia buat masa ini. Datang kembali untuk menikmati tawaran yang hebat!",
     "tutorialRewardTitle": "Pilih ganjaran yang anda gemari!",
-    "tutorialRewardDesc": "Sila tekan pada ganjaran yang dipilih untuk mengetahui lebih lanjut atau tekan pada hati untuk menyimpannya.",
+    "tutorialRewardDesc": "Sila tekan pada ganjaran yang dipilih untuk mengetahui lebih lanjut atau tekan pada ikon hati untuk menyimpannya.",
     "tutorialCategoryTitle": "Ganjaran untuk anda.",
     "tutorialCategoryDesc": "Tukar kategori untuk melihat pelbagai ganjaran berbeza.",
     "tutorialSaveTitle": "Kegemaran anda semuanya di satu tempat.",
@@ -903,5 +920,17 @@
     "unsave": "Alih Keluar",
     "save": "Simpan",
     "redeemRewardNote": "Ganjaran telah ditebus. Sila tunjukkan skrin ini kepada peniaga sebelum pemasa tamat."
+  },
+  "WhatsNew": {
+    "title": "Terkini",
+    "noPromotions": "Belum ada berita baharu... Cuba semak sebentar lagi!",
+    "viewAll": "Lihat Semua",
+    "tutorialCategoryTitle": "Dapatkan Informasi Terkini TNB.",
+    "tutorialCategoryDesc": "Lihat pelbagai kategori untuk ketahui pengumuman dan/atau promosi yang berkenaan dengan anda.",
+    "tutorialItemTitle": "Lihat Tawaran Terbaharu Dan Menarik.",
+    "tutorialItemDesc": "Tekan pada promosi atau pengumuman untuk butiran lanjut."
+  },
+  "SelectCountry": {
+    "title": "Pilih Negara"
   }
 }

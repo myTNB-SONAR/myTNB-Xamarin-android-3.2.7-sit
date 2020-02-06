@@ -21,7 +21,8 @@ namespace myTNB_Android.Src.Database.Model
             BILL_TOOLTIP,
             LANGUAGE_URL,
             LANGUAGE_EN,
-            LANGUAGE_MS
+            LANGUAGE_MS,
+            COUNTRY
         }
 
         public static void CreateTable()

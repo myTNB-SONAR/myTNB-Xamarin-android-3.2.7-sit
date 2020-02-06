@@ -97,6 +97,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     LoadAppMasterData();
                     GetSSMRWalkThrough();
+                    GetCountryList();
                 }
             }
             catch (Exception e)
@@ -874,6 +875,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+            });
+        }
+
+        public void GetCountryList()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                CountryUtil.Instance.SetCountryList();
             });
         }
     }

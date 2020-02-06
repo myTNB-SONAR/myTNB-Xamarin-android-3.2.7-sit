@@ -85,6 +85,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Utility.SetAppUpdateId(this);
             LanguageUtil.SetInitialAppLanguage();
             try
             {

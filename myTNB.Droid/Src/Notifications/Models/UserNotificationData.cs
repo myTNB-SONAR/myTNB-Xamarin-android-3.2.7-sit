@@ -58,6 +58,9 @@ namespace myTNB_Android.Src.Notifications.Models
         [JsonProperty("Code")]
         public string Code { get; set; }
 
+        [JsonProperty("ODNBatchSubcategory")]
+        public string ODNBatchSubcategory { get; set; }
+
         public bool ShowSelectButton
         {
             get{
@@ -98,7 +101,8 @@ namespace myTNB_Android.Src.Notifications.Models
                 CreatedDate = userNotification.CreatedDate,
                 Code = Code,
                 NotificationType = userNotification.NotificationType,
-                Target = userNotification.Target
+                Target = userNotification.Target,
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
             };
         }
     }

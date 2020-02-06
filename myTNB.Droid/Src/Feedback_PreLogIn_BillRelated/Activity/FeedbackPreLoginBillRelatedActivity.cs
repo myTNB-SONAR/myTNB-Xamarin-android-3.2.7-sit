@@ -20,11 +20,15 @@ using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Feedback_PreLogIn_BillRelated.Adapter;
 using myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP;
 using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -47,9 +51,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [BindView(Resource.Id.txtInputLayoutEmail)]
         TextInputLayout txtInputLayoutEmail;
 
-        [BindView(Resource.Id.txtInputLayoutMobileNo)]
-        TextInputLayout txtInputLayoutMobileNo;
-
         [BindView(Resource.Id.txtInputLayoutAccountNo)]
         TextInputLayout txtInputLayoutAccountNo;
 
@@ -61,9 +62,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
-
-        [BindView(Resource.Id.txtMobileNo)]
-        EditText txtMobileNo;
 
         [BindView(Resource.Id.txtAccountNo)]
         EditText txtAccountNo;
@@ -86,6 +84,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
 
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
+
         FeedbackPreLoginBillRelatedImageRecyclerAdapter adapter;
 
         GridLayoutManager layoutManager;
@@ -98,7 +99,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [BindView(Resource.Id.rootView)]
         FrameLayout rootView;
 
-
+        private MobileNumberInputComponent mobileNumberInputComponent;
+        private const int COUNTRY_CODE_SELECT_REQUEST = 1;
 
         public override int ResourceId()
         {
@@ -131,12 +133,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     .Cancelable(false)
                     .Build();
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutAccountNo, txtInputLayoutFeedback);
-                TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFullName, txtEmail, txtMobileNo, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutAccountNo, txtInputLayoutFeedback);
+                TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFullName, txtEmail, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
 
                 txtInputLayoutFullName.Hint = Utility.GetLocalizedCommonLabel("fullname");
-                txtInputLayoutMobileNo.Hint = Utility.GetLocalizedCommonLabel("mobileNo");
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedCommonLabel("email");
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedCommonLabel("accountNo");
                 txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackForm", "feedback");
@@ -183,25 +184,22 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
 
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, txtInputLayoutFullName));
-                txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));
                 txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
 
-
-
                 mPresenter = new FeedbackPreLoginBillRelatedPresenter(this);
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
+
                 this.userActionsListener.Start();
 
-                if (string.IsNullOrEmpty(txtMobileNo.Text))
-                {
-                    txtMobileNo.Append("+60");
-                }
-                txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
-
-
                 txtFullName.TextChanged += TxtFullName_TextChanged;
-                txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
                 txtEmail.TextChanged += TxtEmail_TextChanged;
                 txtAccountNo.TextChanged += TxtAccountNo_TextChanged;
                 txtFeedback.TextChanged += TxtFeedback_TextChanged;
@@ -223,7 +221,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -273,7 +271,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -291,7 +289,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -306,25 +304,35 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
-                if (checkedPhoneNumber != txtMobileNo.Text)
-                {
-                    txtMobileNo.Text = checkedPhoneNumber;
-                }
+            //try
+            //{
+            //    string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
+            //    if (checkedPhoneNumber != txtMobileNo.Text)
+            //    {
+            //        txtMobileNo.Text = checkedPhoneNumber;
+            //    }
 
-                string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
-                string email = txtEmail.Text.Trim();
-                string account_no = txtAccountNo.Text.Trim();
-                string feedback = txtFeedback.Text;
-                this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+            //    string fullname = txtFullName.Text.Trim();
+            //    string mobile_no = txtMobileNo.Text.Trim();
+            //    string email = txtEmail.Text.Trim();
+            //    string account_no = txtAccountNo.Text.Trim();
+            //    string feedback = txtFeedback.Text;
+            //    this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    Utility.LoggingNonFatalError(ex);
+            //}
+        }
+
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            string fullname = txtFullName.Text.Trim();
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            string email = txtEmail.Text.Trim();
+            string account_no = txtAccountNo.Text.Trim();
+            string feedback = txtFeedback.Text;
+            this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
         }
 
         [Preserve]
@@ -333,7 +341,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -362,7 +370,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     h.PostDelayed(myAction, 3000);
 
                     string fullname = txtFullName.Text.Trim();
-                    string mobile_no = txtMobileNo.Text.Trim();
+                    string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                     string email = txtEmail.Text.Trim();
                     string account_no = txtAccountNo.Text.Trim();
                     string feedback = txtFeedback.Text.Trim();
@@ -450,10 +458,19 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-
-            this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
-
-
+            if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
+                    Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                    mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                }
+            }
+            else
+            {
+                this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
+            }
         }
 
 
@@ -620,12 +637,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            //txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            //txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowEmptyEmaiError()
@@ -666,7 +683,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         {
             txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutFullName.Error = null;
-            txtInputLayoutMobileNo.Error = null;
+            //txtInputLayoutMobileNo.Error = null;
             txtInputLayoutEmail.Error = null;
             txtInputLayoutAccountNo.Error = null;
             txtInputLayoutFeedback.Error = null;
@@ -750,7 +767,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         public void EnableSubmitButton()
         {
             string fullname = txtFullName.Text.Trim();
-            string mobile_no = txtMobileNo.Text.Trim();
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text.Trim();
@@ -798,7 +815,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             txtEmail.Text = "";
             txtFeedback.Text = "";
             txtFullName.Text = "";
-            txtMobileNo.Text = "";
+            //txtMobileNo.Text = "";
             adapter.ClearAll();
             adapter.Add(new AttachedImage()
             {
@@ -888,6 +905,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
         }
     }
 }

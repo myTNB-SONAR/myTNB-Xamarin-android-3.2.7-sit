@@ -2,6 +2,7 @@
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Api;
 using myTNB_Android.Src.ViewReceipt.Model;
@@ -39,42 +40,29 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
             throw new NotImplementedException();
         }
 
-
-        //public async void GetReceiptDetailsAsync(string apiKeyId, string merchantTransId)
-        //{
-        //    this.mView.ShowGetReceiptDialog();
-        //    var api = RestService.For<GetMultiReceiptByTransId>(Constants.SERVER_URL.END_POINT);
-        //    try
-        //    {
-        //        GetMultiReceiptByTransIdResponse result = await api.GetMultiReceiptByTransId(new GetReceiptRequest(apiKeyId, merchantTransId));
-        //        this.mView.HideGetReceiptDialog();
-        //        this.mView.OnShowReceiptDetails(result);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        this.mView.HideGetReceiptDialog();
-        //        Log.Debug(TAG, e.StackTrace);
-        //        Utility.LoggingNonFatalError(e);
-        //        this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later.");
-        //    }
-        //}
-
         public async void GetPaymentReceipt(string selectedAccountNumber, string detailedInfoNumber, bool isOwnedAccount, bool showAllReceipt)
         {
             this.mView.ShowGetReceiptDialog();
-            var api = new BillingApiImpl();
             try
             {
-                AccountReceiptResponse result = await api.GetPaymentReceipt<AccountReceiptResponse>(new AccountReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt));
+                GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
+                    CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
                 this.mView.HideGetReceiptDialog();
-                this.mView.OnShowReceiptDetails(result);
+                if (result.IsSuccessResponse())
+                {
+                    this.mView.OnShowReceiptDetails(result);
+                }
+                else
+                {
+                    this.mView.ShowPaymentReceiptError();
+                }
             }
             catch (Exception e)
             {
                 this.mView.HideGetReceiptDialog();
                 Log.Debug(TAG, e.StackTrace);
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
+                this.mView.ShowPaymentReceiptError();
             }
         }
 

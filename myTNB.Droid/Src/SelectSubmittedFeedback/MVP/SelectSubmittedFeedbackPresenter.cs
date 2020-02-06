@@ -73,7 +73,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     }
                     else
                     {
-                        this.mView.ShowRetryOptionsCancelledException(null);
+                        string message = "";
+
+                        if (detailsResponse != null && detailsResponse.Response != null && !string.IsNullOrEmpty(detailsResponse.Response.DisplayMessage))
+                        {
+                            message = detailsResponse.Response.DisplayMessage;
+                        }
+
+                        this.mView.ShowRetryOptionsCancelledException(null, message);
                     }
                 }
             }
@@ -84,7 +91,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     this.mView.HideProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
+                this.mView.ShowRetryOptionsCancelledException(e, "");
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -94,7 +101,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     this.mView.HideProgressDialog();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
+                this.mView.ShowRetryOptionsApiException(apiException, "");
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -104,7 +111,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     this.mView.HideProgressDialog();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
+                this.mView.ShowRetryOptionsUnknownException(e, "");
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -149,8 +156,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                 }
                 else
                 {
-
-                    this.mView.ShowRetryOptionsCancelledException(null);
+                    this.mView.ShowRetryOptionsCancelledException(null, "");
                 }
             }
             catch (System.OperationCanceledException e)
@@ -160,7 +166,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     this.mView.HideProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
+                this.mView.ShowRetryOptionsCancelledException(e, "");
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -170,7 +176,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     this.mView.HideProgressDialog();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
+                this.mView.ShowRetryOptionsApiException(apiException, "");
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -180,7 +186,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     this.mView.HideProgressDialog();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
+                this.mView.ShowRetryOptionsUnknownException(e, "");
                 Utility.LoggingNonFatalError(e);
             }
 

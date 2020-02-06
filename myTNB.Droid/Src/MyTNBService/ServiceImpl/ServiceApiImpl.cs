@@ -408,5 +408,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetLocationsByKeyword<GetLocationListByKeywordResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetPaymentReceipt with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<GetPaymentReceiptResponse> GetPaymentReceipt([Body] Request.BaseRequest request, CancellationToken token)
+        {
+            return api.GetPaymentReceipt<GetPaymentReceiptResponse>(request, token);
+        }
     }
 }
