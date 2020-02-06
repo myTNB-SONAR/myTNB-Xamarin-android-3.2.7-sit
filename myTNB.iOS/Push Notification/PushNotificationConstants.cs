@@ -87,6 +87,9 @@ namespace myTNB.PushNotification
         public static string I18N_SubmitMeterReading = "submitMeterReading";
         public static string I18N_ReenableSSMR = "reenableSSMR";
         public static string I18N_ViewReadingHistory = "viewReadingHistory";
+        public static string I18N_PaymentHistory = "paymentHistory";
+        public static string I18N_ViewReceipt = "viewReceipt";
+
         //List
         public static string I18N_AllNotifications = "allNotifications";
         public static string I18N_DeleteMessage = "deleteMessage";

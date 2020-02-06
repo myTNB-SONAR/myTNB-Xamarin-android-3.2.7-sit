@@ -219,10 +219,11 @@ namespace myTNB
                     serviceManager.usrInf
                 };
 
+                _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotifications, requestParameter);
+
                 UserNotificationManager.SetData();
                 _userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
-                //_userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>
-                //    (PushNotificationConstants.Service_GetUserNotifications, requestParameter);
             });
         }
         /// <summary>

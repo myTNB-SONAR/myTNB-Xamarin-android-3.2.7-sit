@@ -438,7 +438,7 @@ namespace myTNB
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48))
                 };
                 UpdateCTA(ref _btnPrimary, false);
-                _btnPrimary.SetTitle("Payment History", UIControlState.Normal);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_PaymentHistory), UIControlState.Normal);
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnViewBill();
@@ -448,7 +448,7 @@ namespace myTNB
                     Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
                 };
                 UpdateCTA(ref _btnSecondary, true);
-                _btnSecondary.SetTitle("View Receipt", UIControlState.Normal);
+                _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReceipt), UIControlState.Normal);
                 _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnViewReceipt();

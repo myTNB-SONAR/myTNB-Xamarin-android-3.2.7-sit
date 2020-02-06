@@ -428,7 +428,6 @@ namespace myTNB.PushNotification
         {
             OnReset();
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
-            //DismissViewController(true, null);
             NavigationController.PopViewController(true);
         }
 
@@ -545,8 +544,8 @@ namespace myTNB.PushNotification
                     NotificationId = dataModel.Id,
                     dataModel.NotificationType
                 };
+                _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetailedInfo, requestParameter);
                 _detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
-                //_detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetailedInfo, requestParameter);
             });
         }
 
