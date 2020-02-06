@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             if (TextUtils.IsEmpty(num4))
             {
-                this.mView.ShowEmptyErrorPin_4();
+                //this.mView.ShowEmptyErrorPin_4();
                 return;
             }
 

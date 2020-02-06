@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             if (TextUtils.IsEmpty(num4))
             {
-                this.mView.ShowEmptyErrorPin_4();
+                //this.mView.ShowEmptyErrorPin_4();
                 return;
             }
             if (mView.IsActive())
@@ -213,7 +213,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     // TODO : ADD REGISTRATION ERROR
                     string message = userRegistrationResponse.Response.DisplayMessage;
                     this.mView.ShowError(message);
-                    this.mView.ShowEmptyErrorPin_4();
+                    this.mView.ShowEmptyErrorPin();
                 }
             }
             catch (System.OperationCanceledException e)

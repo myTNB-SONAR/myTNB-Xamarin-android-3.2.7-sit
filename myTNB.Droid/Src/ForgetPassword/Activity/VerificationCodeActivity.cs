@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
                 {
-                    ShowEmptyErrorPin_4();
+                    // ShowEmptyErrorPin_4();
                     return;
                 }
 

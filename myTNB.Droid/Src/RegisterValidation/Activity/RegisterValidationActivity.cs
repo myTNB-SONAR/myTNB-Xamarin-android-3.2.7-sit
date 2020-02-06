@@ -474,6 +474,14 @@ namespace myTNB_Android.Src.RegisterValidation
             txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
+        public void ShowEmptyErrorPin()
+        {
+            txtInputLayoutNumber_1.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
+            txtInputLayoutNumber_2.Error = " ";
+            txtInputLayoutNumber_3.Error = " ";
+            txtInputLayoutNumber_4.Error = " ";
+        }
+
         public void ClearErrors()
         {
             txtInputLayoutNumber_1.Error = null;
