@@ -153,24 +153,6 @@ namespace myTNB
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
-            //if (item != null && item.Tag == 2)
-            //{
-            //    NotifCenterUtility.PostNotificationName("WhatsNewWillChange", new NSObject());
-            //    InvokeInBackground(async () =>
-            //    {
-            //        await SitecoreServices.Instance.LoadPromotions();
-            //        NotifCenterUtility.PostNotificationName("WhatsNewDidChange", new NSObject());
-            //        Debug.WriteLine("LoadPromotions Done home tab bar");
-            //        InvokeOnMainThread(() =>
-            //        {
-            //            if (!ShowNewIndicator("2"))
-            //            {
-            //                UpdatePromotionTabBarIcon();
-            //            }
-            //        });
-            //    });
-            //}
-
             InvokeOnMainThread(() =>
             {
                 if (!ShowNewIndicator("2"))
@@ -195,6 +177,11 @@ namespace myTNB
                 else if (!AppLaunchMasterCache.IsRewardsDisabled && tabbar.SelectedItem.Tag == 3)
                 {
                     SetNewIndicator("3");
+                }
+
+                if (tabbar.Tag == 0)
+                {
+                    this.SelectedIndex = 0;
                 }
             });
         }

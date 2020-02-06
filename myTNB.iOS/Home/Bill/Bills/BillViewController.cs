@@ -57,7 +57,7 @@ namespace myTNB
             if (TabBarController != null && TabBarController.TabBar != null)
             {
                 TabBarController.TabBar.Hidden = false;
-                //TabBarController.SelectedIndex = 1;
+                TabBarController.SelectedIndex = 1;
             }
             base.ViewDidLoad();
             if ((DataManager.DataManager.SharedInstance.AccountRecordsList != null

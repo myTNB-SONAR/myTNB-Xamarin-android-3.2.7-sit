@@ -26,9 +26,9 @@ namespace myTNB
 
         public UITableView _homeTableView;
         private AccountListViewController _accountListViewController;
-        DashboardHomeHeader _dashboardHomeHeader;
-        RefreshScreenComponent _refreshScreenComponent;
-        UIStoryboard _usageStoryBoard;
+        private DashboardHomeHeader _dashboardHomeHeader;
+        private RefreshScreenComponent _refreshScreenComponent;
+        private UIStoryboard _usageStoryBoard;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
         private List<PromotionsModel> _promotions;

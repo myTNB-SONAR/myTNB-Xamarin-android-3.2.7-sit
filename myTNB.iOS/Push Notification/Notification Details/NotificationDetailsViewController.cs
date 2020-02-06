@@ -441,9 +441,7 @@ namespace myTNB
                 _btnPrimary.SetTitle("Payment History", UIControlState.Normal);
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
-                    //todo: payment history
-                    //OnViewBill();
-                    ViewHelper.DismissControllersAndSelectTab(this, 1, true);
+                    OnViewBill();
                 }));
                 _btnSecondary = new CustomUIButtonV2
                 {
@@ -651,9 +649,9 @@ namespace myTNB
 
         private void OnViewReceipt()
         {
-            NotificationInfo.DetailedInfoNumber = "340108502538";
             if (NotificationInfo == null || !NotificationInfo.DetailedInfoNumber.IsValid())
             {
+                DisplayServiceError(string.Empty);
                 return;
             }
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>

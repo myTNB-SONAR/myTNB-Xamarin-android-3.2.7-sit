@@ -123,6 +123,7 @@ namespace myTNB.PushNotification
                 UserNotificationModel response = userNotificationResponse.d;
                 if (response.IsSuccess && response.data != null)
                 {
+                    PushNotificationHelper.FilterNotifications();
                     _gradientViewComponent.SetOpacity(1);
                     UpdateNotificationDisplay();
                 }
@@ -428,7 +429,7 @@ namespace myTNB.PushNotification
             OnReset();
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
             //DismissViewController(true, null);
-            NavigationController.PopToRootViewController(true);
+            NavigationController.PopViewController(true);
         }
 
         private void OnDismiss()
@@ -710,7 +711,7 @@ namespace myTNB.PushNotification
             }
         }
 
-        Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
+        private Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
         {
             UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
@@ -726,7 +727,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        Task ReadUserNotification(List<UpdateNotificationModel> readNotificationList)
+        private Task ReadUserNotification(List<UpdateNotificationModel> readNotificationList)
         {
             UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0]

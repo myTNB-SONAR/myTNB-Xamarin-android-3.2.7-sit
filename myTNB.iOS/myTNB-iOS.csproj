@@ -1938,6 +1938,12 @@
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-PaymentFail.imageset\fail%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-PaymentSuccess.imageset\success%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-PaymentSuccess.imageset\success%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Notification-PaymentFail.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\Notification-PaymentSuccess.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\Notification-PaymentFail.imageset\paymentUnsuccessful%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Notification-PaymentFail.imageset\paymentUnsuccessful%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Notification-PaymentSuccess.imageset\paymentSuccess%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Notification-PaymentSuccess.imageset\paymentSuccess%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2117,6 +2123,8 @@
     <Folder Include="Assets\Flags.xcassets\VI.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Notification-Banner-PaymentSuccess.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Notification-Banner-PaymentFail.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\Notification-PaymentFail.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\Notification-PaymentSuccess.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

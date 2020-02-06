@@ -74,8 +74,8 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Maintenance, "Notification-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "Notification-SSMR" }
             , { BCRMNotificationEnum.None, "Notification-Generic" }
-            , { BCRMNotificationEnum.PaymentFail, ""}
-            , { BCRMNotificationEnum.PaymentSuccess, ""}
+            , { BCRMNotificationEnum.PaymentFail, "Notification-PaymentFail"}
+            , { BCRMNotificationEnum.PaymentSuccess, "Notification-PaymentSuccess"}
         };
 
         //I18N
