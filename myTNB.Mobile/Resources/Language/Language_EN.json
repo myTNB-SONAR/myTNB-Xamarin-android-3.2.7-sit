@@ -542,7 +542,9 @@
     "viewMyUsage": "View Usage",
     "submitMeterReading": "Submit Meter Reading",
     "reenableSSMR": "Re-start Self Meter Reading",
-    "viewReadingHistory": "View Reading History"
+    "viewReadingHistory": "View Reading History",
+    "paymentHistory": "Payment history",
+    "viewReceipt": "View Receipt"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
