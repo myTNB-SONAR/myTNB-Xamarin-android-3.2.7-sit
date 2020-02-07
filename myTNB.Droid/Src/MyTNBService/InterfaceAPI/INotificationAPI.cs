@@ -12,8 +12,8 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetUserNotifications<T>([Body] APIBaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetNotificationDetailedInfo")]
-        Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request, CancellationToken token);
+        [Post("/v6/mytnbappws.asmx/GetNotificationDetails")]
+        Task<T> GetNotificationDetails<T>([Body] APIBaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/DeleteUserNotification")]
