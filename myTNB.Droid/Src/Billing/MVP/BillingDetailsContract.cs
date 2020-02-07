@@ -17,6 +17,7 @@ namespace myTNB_Android.Src.Billing.MVP
             void ShowBillDetails(List<AccountChargeModel> accountChargeModelList);
             void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
             void OnUpdatePendingPayment(bool mIsPendingPayament);
+            void ShowViewBillError(string title, string message);
         }
 
         public interface IPresenter

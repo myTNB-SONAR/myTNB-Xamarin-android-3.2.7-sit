@@ -58,12 +58,12 @@ namespace myTNB_Android.Src.Billing.MVP
                     }
                     else
                     {
-                        this.mView.ShowBillPDF();
+                        this.mView.ShowViewBillError(billsHistoryResponse.Response.DisplayTitle, billsHistoryResponse.Response.DisplayMessage);
                     }
                 }
                 else
                 {
-                    this.mView.ShowBillPDF();
+                    this.mView.ShowBillErrorSnackBar();
                 }
 
             }
