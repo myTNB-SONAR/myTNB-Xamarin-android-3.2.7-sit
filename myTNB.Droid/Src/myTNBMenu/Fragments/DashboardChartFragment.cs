@@ -3044,7 +3044,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         for (int i = 0; i < barLength; i++)
                         {
-                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (i == barLength - 1 && GetIsMDMSDown())
+                            {
+                                float[] valList = new float[1];
+                                valList[0] = 0f;
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
+                                {
+                                    stackIndex = valList.Length - 1;
+                                }
+                                yVals1.Add(new BarEntry(i, valList));
+                            }
+                            else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
                                 if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                                 {
@@ -3298,7 +3308,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             for (int i = 0; i < barLength; i++)
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                                if (i == barLength - 1 && GetIsMDMSDown())
+                                {
+                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                }
+                                else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                                 {
                                     if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator || (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                     {
@@ -4022,7 +4036,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         for (int i = 0; i < barLength; i++)
                         {
-                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                            if (i == barLength - 1 && GetIsMDMSDown())
+                            {
+                                float[] valList = new float[1];
+                                valList[0] = 0f;
+                                if (i == (CurrentParentIndex == -1 ? barLength - 1 : CurrentParentIndex))
+                                {
+                                    stackIndex = valList.Length - 1;
+                                }
+                                yVals1.Add(new BarEntry(i, valList));
+                            }
+                            else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                             {
                                 List<float> newValList = new List<float>();
 
@@ -4242,7 +4266,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             for (int i = 0; i < barLength; i++)
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                                if (i == barLength - 1 && GetIsMDMSDown())
+                                {
+                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                }
+                                else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                                 {
                                     bool isSetColor = false;
 
