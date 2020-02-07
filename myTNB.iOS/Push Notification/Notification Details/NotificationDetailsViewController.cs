@@ -38,6 +38,10 @@ namespace myTNB
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationDetails;
             NavigationController.NavigationBarHidden = false;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             base.ViewDidLoad();
             _isViewDidload = true;
             AddSubview();

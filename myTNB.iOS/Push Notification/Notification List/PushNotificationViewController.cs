@@ -41,6 +41,11 @@ namespace myTNB.PushNotification
         public override void ViewDidLoad()
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationList;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
+
             base.ViewDidLoad();
             UpdateNotificationTypes();
             NotifCenterUtility.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
@@ -58,6 +63,10 @@ namespace myTNB.PushNotification
         public void OnNotificationFilterDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PushNotificationViewController OnNotificationFilterDidChange");
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             OnReset();
             SetNavigationBar();
             _pushNotificationTableView.TableHeaderView = null;
@@ -278,7 +287,6 @@ namespace myTNB.PushNotification
             _refreshViewComponent.SetIconImage(PushNotificationConstants.IMG_Empty);
             _refreshViewComponent.SetDescription(GetI18NValue(PushNotificationConstants.I18N_NoNotification));
             _refreshViewComponent.SetRefreshButtonHidden(true);
-
             View.AddSubview(_refreshViewComponent.GetUI());
         }
 
@@ -412,13 +420,16 @@ namespace myTNB.PushNotification
                 UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                 GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                     .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = GetI18NValue(PushNotificationConstants.I18N_SelectNotification);
-                viewController.Items = GetNotificationTypeList();
-                viewController.OnSelect = OnSelectAction;
-                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
+                if (viewController != null)
+                {
+                    viewController.Title = GetI18NValue(PushNotificationConstants.I18N_SelectNotification);
+                    viewController.Items = GetNotificationTypeList();
+                    viewController.OnSelect = OnSelectAction;
+                    viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
             }));
             _headerView.AddSubview(accountSelectionView);
             View.AddSubview(_headerView);

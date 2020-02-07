@@ -38,6 +38,11 @@ namespace myTNB
         #region LifeCycle
         public override void ViewDidLoad()
         {
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                this.ExtendedLayoutIncludesOpaqueBars = true;
+                this.EdgesForExtendedLayout = UIRectEdge.Bottom;
+            }
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
             if (IsGradientRequired)
