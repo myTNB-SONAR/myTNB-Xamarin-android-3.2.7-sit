@@ -4855,7 +4855,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnViewBill(selectedAccount);
+                Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
+                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+                StartActivity(viewBill);
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");

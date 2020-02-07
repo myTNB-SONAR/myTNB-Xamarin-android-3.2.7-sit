@@ -743,5 +743,68 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void ShowViewBillError(string title, string message)
+        {
+            try
+            {
+                this.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        this.RunOnUiThread(() =>
+                        {
+                            string errorTitle = string.IsNullOrEmpty(title) ? Utility.GetLocalizedErrorLabel("defaultErrorTitle") : title;
+                            string errorMessage = string.IsNullOrEmpty(message) ? Utility.GetLocalizedErrorLabel("defaultErrorMessage") : message;
+                            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                .SetTitle(errorTitle)
+                                .SetMessage(errorMessage)
+                                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                                .Build().Show();
+                            this.SetIsClicked(false);
+                        });
+                    }
+                    catch (System.Exception e)
+                    {
+                        this.SetIsClicked(false);
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mLoadBillSnackBar;
+        public void ShowBillErrorSnackBar()
+        {
+            try
+            {
+                if (mLoadBillSnackBar != null && mLoadBillSnackBar.IsShown)
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+
+                mLoadBillSnackBar = Snackbar.Make(baseView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+                );
+                View v = mLoadBillSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLoadBillSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
