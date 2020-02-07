@@ -612,5 +612,17 @@ namespace myTNB_Android.Src.Billing.MVP
 
             return i;
         }
+
+        public void ShowViewBillError(string title, string message)
+        {
+            string errorTitle = string.IsNullOrEmpty(title) ? Utility.GetLocalizedErrorLabel("defaultErrorTitle") : title;
+            string errorMessage = string.IsNullOrEmpty(message) ? Utility.GetLocalizedErrorLabel("defaultErrorMessage") : message;
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(errorTitle)
+                .SetMessage(errorMessage)
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                .Build().Show();
+            this.SetIsClicked(false);
+        }
     }
 }

@@ -27,9 +27,9 @@ namespace myTNB_Android.Src.MyTNBService.Notification
             return api.DeleteUserNotification<T>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
-        public Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request)
+        public Task<T> GetNotificationDetails<T>([Body] APIBaseRequest request)
         {
-            return api.GetNotificationDetailedInfo<T>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetNotificationDetails<T>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         public Task<T> GetUserNotifications<T>([Body] APIBaseRequest request)
