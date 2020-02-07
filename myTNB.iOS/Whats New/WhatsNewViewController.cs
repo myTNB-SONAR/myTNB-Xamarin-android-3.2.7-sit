@@ -46,6 +46,7 @@ namespace myTNB
             else
             {
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 SetSkeletonLoading();
             }
             _isViewDidLoad = false;
@@ -134,6 +135,7 @@ namespace myTNB
             {
                 NotifCenterUtility.PostNotificationName("WhatsNewFetchUpdate", new NSObject());
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
                 _whatsNewList = whatsNewEntity.GetAllItems();
                 if (_whatsNewList != null && _whatsNewList.Count > 0)
@@ -663,13 +665,14 @@ namespace myTNB
                             WhatsNewCache.RefreshWhatsNew = false;
                             DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
                             ResetViews();
+                            NavigationController.NavigationBar.Hidden = false;
                             SetSkeletonLoading();
                             InvokeInBackground(async () =>
                             {
                                 await SitecoreServices.Instance.LoadWhatsNew(true);
-                                DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                                 InvokeOnMainThread(() =>
                                 {
+                                    DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                                     if (WhatsNewCache.WhatsNewIsAvailable)
                                     {
                                         ProcessWhatsNew();
