@@ -416,124 +416,78 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     int currentRow = 0;
 
-                    for (int j = 0; j < buffer.Size(); j += 4)
+                    try
                     {
-                        float left = bufferItems[j];
-                        float top = bufferItems[j + 1];
-                        float right = bufferItems[j + 2];
-                        float bottom = bufferItems[j + 3];
-                        bool isCurrentSelected = false;
-
-                        /*if (!MViewPortHandler.IsInBoundsLeft(right))
-                            continue;
-
-                        if (!MViewPortHandler.IsInBoundsRight(left))
-                            break;*/
-
-                        int size = dataSet.StackSize;
-                        MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
-
-                        if (j == 0)
+                        for (int j = 0; j < buffer.Size(); j += 4)
                         {
-                            currentItem = left;
+                            float left = bufferItems[j];
+                            float top = bufferItems[j + 1];
+                            float right = bufferItems[j + 2];
+                            float bottom = bufferItems[j + 3];
+                            bool isCurrentSelected = false;
 
-                            isFirstTime = false;
+                            /*if (!MViewPortHandler.IsInBoundsLeft(right))
+                                continue;
 
-                            int nextIndex = j + 4;
-                            // Lin Siong Note: check if need to hightlight the entry
-                            // Lin Siong Note: if yes then set alpha to 255
-                            // Lin Siong Note: else get the default alpha, set to 50
-                            if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
+                            if (!MViewPortHandler.IsInBoundsRight(left))
+                                break;*/
+
+                            int size = dataSet.StackSize;
+                            MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+
+                            if (j == 0)
                             {
-                                MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
-                            }
-                            else
-                            {
-                                if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
-                                {
-                                    MRenderPaint.Alpha = 255;
-                                    isCurrentSelected = true;
-                                }
-                                else
+                                currentItem = left;
+
+                                isFirstTime = false;
+
+                                int nextIndex = j + 4;
+                                // Lin Siong Note: check if need to hightlight the entry
+                                // Lin Siong Note: if yes then set alpha to 255
+                                // Lin Siong Note: else get the default alpha, set to 50
+                                if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
                                 {
                                     MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
                                 }
-                            }
-
-                            if (lastMonthIndex != -1)
-                            {
-                                if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
-                                {
-                                    MBarBorderPaint.Color = new Color(255, 255, 255, 50);
-                                }
                                 else
                                 {
-                                    if (Math.Abs(lastMonthLeftPoint - currentSelectedDrawX) < 0.0001)
+                                    if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
                                     {
-                                        MBarBorderPaint.Color = new Color(255, 255, 255, 255);
+                                        MRenderPaint.Alpha = 255;
+                                        isCurrentSelected = true;
                                     }
                                     else
+                                    {
+                                        MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                                    }
+                                }
+
+                                if (lastMonthIndex != -1)
+                                {
+                                    if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
                                     {
                                         MBarBorderPaint.Color = new Color(255, 255, 255, 50);
                                     }
-                                }
-                            }
-
-                            if (currentChartType == ChartType.Day && !isZoomIn)
-                            {
-                                MRenderPaint.Alpha = 255;
-                            }
-
-                            if (nextIndex >= buffer.Size())
-                            {
-                                if (isStacked)
-                                {
-                                    canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                }
-                                else
-                                {
-                                    canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                }
-
-                                if (currentChartType == ChartType.Day && missingReadingList[currentRow])
-                                {
-                                    DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
-                                }
-
-                                if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
-                                {
-                                    if (isMDMSDown)
+                                    else
                                     {
-                                        if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                        if (Math.Abs(lastMonthLeftPoint - currentSelectedDrawX) < 0.0001)
                                         {
-                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                            MBarBorderPaint.Color = new Color(255, 255, 255, 255);
+                                        }
+                                        else
+                                        {
+                                            MBarBorderPaint.Color = new Color(255, 255, 255, 50);
                                         }
                                     }
-                                    else
-                                    {
-                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
-                                    }
                                 }
 
-                                currentRow++;
-                            }
-                            else
-                            {
-                                if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)
+                                if (currentChartType == ChartType.Day && !isZoomIn)
                                 {
-                                    count++;
-                                    if (isStacked)
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
-                                    }
-                                    else
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
-                                    }
+                                    MRenderPaint.Alpha = 255;
                                 }
-                                else
+
+                                if (nextIndex >= buffer.Size())
                                 {
-                                    count = 0;
                                     if (isStacked)
                                     {
                                         canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
@@ -565,103 +519,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                                     currentRow++;
                                 }
-                            }
-                        }
-                        else if (!isFirstTime)
-                        {
-                            int nextIndex = j + 4;
-                            currentItem = left;
-                            if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
-                            {
-                                MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
-                            }
-                            else
-                            {
-                                if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
-                                {
-                                    MRenderPaint.Alpha = 255;
-                                    isCurrentSelected = true;
-                                }
                                 else
-                                {
-                                    MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
-                                }
-                            }
-
-                            if (lastMonthIndex != -1)
-                            {
-                                if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
-                                {
-                                    MBarBorderPaint.Color = new Color(255, 255, 255, 50);
-                                }
-                                else
-                                {
-                                    if (Math.Abs(lastMonthLeftPoint - currentSelectedDrawX) < 0.0001)
-                                    {
-                                        MBarBorderPaint.Color = new Color(255, 255, 255, 255);
-                                    }
-                                    else
-                                    {
-                                        MBarBorderPaint.Color = new Color(255, 255, 255, 50);
-                                    }
-                                }
-                            }
-
-                            if (currentChartType == ChartType.Day && !isZoomIn)
-                            {
-                                MRenderPaint.Alpha = 255;
-                            }
-
-                            if (nextIndex >= buffer.Size())
-                            {
-                                if (count == 0)
-                                {
-                                    if (isStacked)
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                    }
-                                    else
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                    }
-                                }
-                                else
-                                {
-                                    if (isStacked)
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
-                                    }
-                                    else
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
-                                    }
-                                }
-
-                                if (currentChartType == ChartType.Day && missingReadingList[currentRow])
-                                {
-                                    DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
-                                }
-
-                                if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
-                                {
-                                    if (isMDMSDown)
-                                    {
-                                        if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
-                                        {
-                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
-                                    }
-                                }
-
-                                currentRow++;
-                            }
-                            else
-                            {
-                                if (count == 0)
                                 {
                                     if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)
                                     {
@@ -686,54 +544,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         {
                                             canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                         }
-                                        if (currentChartType == ChartType.Day && missingReadingList[currentRow])
-                                        {
-                                            DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
-                                        }
-
-                                        if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
-                                        {
-                                            if (isMDMSDown)
-                                            {
-                                                if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
-                                                {
-                                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
-                                            }
-                                        }
-
-                                        currentRow++;
-                                    }
-                                }
-                                else
-                                {
-                                    if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)
-                                    {
-                                        count++;
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        count = 0;
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
-                                        }
 
                                         if (currentChartType == ChartType.Day && missingReadingList[currentRow])
                                         {
@@ -759,10 +569,205 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                     }
                                 }
                             }
+                            else if (!isFirstTime)
+                            {
+                                int nextIndex = j + 4;
+                                currentItem = left;
+                                if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
+                                {
+                                    MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                                }
+                                else
+                                {
+                                    if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
+                                    {
+                                        MRenderPaint.Alpha = 255;
+                                        isCurrentSelected = true;
+                                    }
+                                    else
+                                    {
+                                        MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                                    }
+                                }
+
+                                if (lastMonthIndex != -1)
+                                {
+                                    if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
+                                    {
+                                        MBarBorderPaint.Color = new Color(255, 255, 255, 50);
+                                    }
+                                    else
+                                    {
+                                        if (Math.Abs(lastMonthLeftPoint - currentSelectedDrawX) < 0.0001)
+                                        {
+                                            MBarBorderPaint.Color = new Color(255, 255, 255, 255);
+                                        }
+                                        else
+                                        {
+                                            MBarBorderPaint.Color = new Color(255, 255, 255, 50);
+                                        }
+                                    }
+                                }
+
+                                if (currentChartType == ChartType.Day && !isZoomIn)
+                                {
+                                    MRenderPaint.Alpha = 255;
+                                }
+
+                                if (nextIndex >= buffer.Size())
+                                {
+                                    if (count == 0)
+                                    {
+                                        if (isStacked)
+                                        {
+                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
+                                        }
+                                        else
+                                        {
+                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (isStacked)
+                                        {
+                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
+                                        }
+                                        else
+                                        {
+                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
+                                        }
+                                    }
+
+                                    if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                    {
+                                        DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                    }
+
+                                    if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                    {
+                                        if (isMDMSDown)
+                                        {
+                                            if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                            {
+                                                DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                        }
+                                    }
+
+                                    currentRow++;
+                                }
+                                else
+                                {
+                                    if (count == 0)
+                                    {
+                                        if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)
+                                        {
+                                            count++;
+                                            if (isStacked)
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
+                                            }
+                                            else
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            count = 0;
+                                            if (isStacked)
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
+                                            }
+                                            else
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
+                                            }
+                                            if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                            {
+                                                DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                            }
+
+                                            if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                            {
+                                                if (isMDMSDown)
+                                                {
+                                                    if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                                    {
+                                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                                }
+                                            }
+
+                                            currentRow++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)
+                                        {
+                                            count++;
+                                            if (isStacked)
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
+                                            }
+                                            else
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            count = 0;
+                                            if (isStacked)
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
+                                            }
+                                            else
+                                            {
+                                                canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
+                                            }
+
+                                            if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                            {
+                                                DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                            }
+
+                                            if (currentChartType == ChartType.Month && currentChartDataType == ChartDataType.kWh && selectedSMHistoryData.ByMonth.Months[currentRow].DPCIndicator)
+                                            {
+                                                if (isMDMSDown)
+                                                {
+                                                    if (currentRow != selectedSMHistoryData.ByMonth.Months.Count - 1)
+                                                    {
+                                                        DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    DrawDPCOnCanvas(canvas, top, left, right, isCurrentSelected);
+                                                }
+                                            }
+
+                                            currentRow++;
+                                        }
+                                    }
+                                }
+                            }
                         }
-
                     }
-
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
 
                     if (currentChartType == ChartType.Month)
                     {
