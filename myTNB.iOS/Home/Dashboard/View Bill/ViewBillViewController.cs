@@ -218,9 +218,15 @@ namespace myTNB
                     }
                     else
                     {
-                        string errMsg = _billHistory?.d?.DisplayMessage ?? string.Empty;
-
-                        DisplayServiceError(errMsg, (obj) =>
+                        string title = _billHistory != null && _billHistory.d != null
+                            && _billHistory.d.DisplayTitle.IsValid()
+                                ? _billHistory.d.DisplayTitle
+                                : GetErrorI18NValue(Constants.Error_DefaultErrorTitle);
+                        string errMsg = _billHistory != null && _billHistory.d != null
+                            && _billHistory.d.DisplayMessage.IsValid()
+                                ? _billHistory.d.DisplayMessage
+                                : GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
+                        DisplayGenericAlert(title, errMsg, (obj) =>
                         {
                             if (IsFromHome && !IsFromHomeForSingleAcct)
                             {

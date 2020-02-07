@@ -47,6 +47,7 @@ namespace myTNB
             else
             {
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 SetSkeletonLoading();
             }
             _isViewDidLoad = false;
@@ -113,6 +114,7 @@ namespace myTNB
                             RewardsCache.RefreshReward = false;
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                             ResetViews();
+                            NavigationController.NavigationBar.Hidden = false;
                             SetSkeletonLoading();
                             InvokeInBackground(async () =>
                             {
@@ -120,23 +122,26 @@ namespace myTNB
                                 if (RewardsCache.RewardIsAvailable)
                                 {
                                     await RewardsServices.GetUserRewards();
-                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                                    if (RewardsCache.RewardIsAvailable)
+                                    InvokeOnMainThread(() =>
                                     {
-                                        InvokeOnMainThread(() =>
+                                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                        if (RewardsCache.RewardIsAvailable)
                                         {
                                             ProcessRewards();
-                                        });
-                                    }
-                                    else
-                                    {
-                                        SetRefreshScreen();
-                                    }
+                                        }
+                                        else
+                                        {
+                                            SetRefreshScreen();
+                                        }
+                                    });
                                 }
                                 else
                                 {
-                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                                    SetRefreshScreen();
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                        SetRefreshScreen();
+                                    });
                                 }
                             });
                         }
@@ -354,6 +359,7 @@ namespace myTNB
             {
                 NotifCenterUtility.PostNotificationName("RewardsFetchUpdate", new NSObject());
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
                 if (_rewardsList != null && _rewardsList.Count > 0)
