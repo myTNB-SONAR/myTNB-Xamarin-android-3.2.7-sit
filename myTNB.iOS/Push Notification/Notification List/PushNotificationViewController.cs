@@ -473,7 +473,7 @@ namespace myTNB.PushNotification
             _pushNotificationTableView.RegisterClassForCellReuse(typeof(NotificationViewCell), PushNotificationConstants.Cell_PushNotificationCell);
         }
 
-        internal void ExecuteGetNotificationDetailedInfoCall(UserNotificationDataModel dataModel)
+        internal void ExecuteGetNotificationDetailsCall(UserNotificationDataModel dataModel)
         {
             ActivityIndicator.Show();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -482,7 +482,7 @@ namespace myTNB.PushNotification
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        GetNotificationDetailedInfo(dataModel).ContinueWith(task =>
+                        GetNotificationDetails(dataModel).ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
@@ -528,7 +528,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        private Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
+        private Task GetNotificationDetails(UserNotificationDataModel dataModel)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -540,7 +540,7 @@ namespace myTNB.PushNotification
                     dataModel.NotificationType
                 };
                 //_detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
-                _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetailedInfo, requestParameter);
+                _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetails, requestParameter);
             });
         }
 
