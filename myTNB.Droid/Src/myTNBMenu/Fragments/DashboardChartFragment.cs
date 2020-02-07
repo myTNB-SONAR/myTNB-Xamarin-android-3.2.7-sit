@@ -6544,21 +6544,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         // txtWhyThisAmt.Visibility = ViewStates.Gone;
                                         selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                                         double calAmt = selectedAccount.AmtCustBal * -1;
-                                        if (calAmt <= 0)
+                                        txtTotalPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        reTotalPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        txtReNoPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        if (calAmt <= 0 && System.Math.Abs(calAmt) < 0.0001)
                                         {
-                                            calAmt = 0.00;
-                                        }
-                                        else
-                                        {
-                                            calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
-                                        }
+                                            rePayableLayout.Visibility = ViewStates.Gone;
+                                            reNoPayableLayout.Visibility = ViewStates.Visible;
+                                            txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
+                                            txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
 
-                                        if (System.Math.Abs(calAmt) < 0.0001)
-                                        {
-                                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
-                                            reTotalPayable.Text = decimalFormat.Format(calAmt);
-                                            txtDueDate.Text = "- -";
-                                            reDueDate.Text = "- -";
                                         }
                                         else
                                         {
