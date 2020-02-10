@@ -15,6 +15,10 @@ namespace myTNB_Android.Src.ViewBill.Activity
             void ShowProgressDialog();
 
             void HideProgressDialog();
+
+            void ShowViewBillError(string title, string message);
+
+            void ShowBillErrorSnackBar();
         }
 
         public interface IUserActionsListener : IBasePresenter

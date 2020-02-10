@@ -53,7 +53,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 {
                     if (billsHistoryResponse.GetData() != null && billsHistoryResponse.GetData().Count > 0)
                     {
-                        this.mView.ShowBillPDF(JsonConvert.SerializeObject(billsHistoryResponse.GetData()[0]));
+                        // this.mView.ShowBillPDF(JsonConvert.SerializeObject(billsHistoryResponse.GetData()[0]));
                         return;
                     }
                     else
