@@ -618,14 +618,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             string selectedAccountNumber = "220914778610";
             string detailedInfoNumber = "340108502772";
             bool isOwnedAccount = true;
-            bool showAllReceipt = false;
+            bool showAllReceipt = true;
             this.mView.ShowLoadingScreen();
             try
             {
                 GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
                     CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
                 
-                if (false)//result.IsSuccessResponse())
+                if (result.IsSuccessResponse())
                 {
                     this.mView.ShowPaymentReceipt(result);
                 }
