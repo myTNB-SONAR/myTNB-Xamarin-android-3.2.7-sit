@@ -46,18 +46,6 @@ namespace myTNB.DataManager
             });
         }
 
-        /// <summary>
-        /// Validates the base response.
-        /// </summary>
-        /// <returns><c>true</c>, if base response was validated, <c>false</c> otherwise.</returns>
-        /// <param name="response">Response.</param>
-        public static bool ValidateBaseResponse(BaseResponseModel response)
-        {
-            return response != null
-                && response?.d != null
-                && response?.d?.didSucceed == true;
-        }
-
         public static bool ValidateBaseResponse(BaseResponseModelV2 response)
         {
             return response != null
