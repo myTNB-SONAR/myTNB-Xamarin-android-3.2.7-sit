@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
             btnBillFilter.Text = GetLabelByLanguage("applyFilter");
-            txtFilterLabel.Text = GetLabelByLanguage("filterBy");
+            txtFilterLabel.Text = GetLabelByLanguage("filterBy").ToUpper();
             txtFilterSelected.Text = "";
             if (extras != null)
             {
