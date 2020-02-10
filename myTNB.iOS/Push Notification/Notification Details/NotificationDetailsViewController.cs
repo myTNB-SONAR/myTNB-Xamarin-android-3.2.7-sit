@@ -672,6 +672,7 @@ namespace myTNB
                         if (viewController != null)
                         {
                             viewController.DetailedInfoNumber = NotificationInfo.DetailedInfoNumber;
+                            viewController.showAllReceipts = true;
                             UINavigationController navController = new UINavigationController(viewController);
                             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);

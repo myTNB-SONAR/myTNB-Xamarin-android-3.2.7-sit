@@ -9,7 +9,6 @@ using Firebase.InstanceID;
 using Foundation;
 using myTNB.Model;
 using myTNB.PushNotification;
-using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -222,8 +221,8 @@ namespace myTNB
                 _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>
                     (PushNotificationConstants.Service_GetUserNotifications, requestParameter);
 
-                UserNotificationManager.SetData();
-                _userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
+                //UserNotificationManager.SetData();
+                //_userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
             });
         }
         /// <summary>

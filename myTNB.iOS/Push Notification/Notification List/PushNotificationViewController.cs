@@ -558,7 +558,7 @@ namespace myTNB.PushNotification
                     dataModel.NotificationType
                 };
                 _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetails, requestParameter);
-                _detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
+                //_detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
             });
         }
 
