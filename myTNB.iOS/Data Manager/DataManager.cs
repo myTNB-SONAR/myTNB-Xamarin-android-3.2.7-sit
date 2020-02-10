@@ -45,15 +45,10 @@ namespace myTNB.DataManager
         public bool IsBillUpdateNeeded = true;
         public int PreviousSelectedAccountIndex = 0;
         public int CurrentSelectedAccountIndex = 0;
-        public ChartDataModelBase CurrentChart = new ChartDataModelBase();
         public bool IsMontView = true; //Default to Month View
-        public ChartModeEnum CurrentChartMode = ChartModeEnum.Cost;
         public int CurrentChartIndex = 0; //Default to current chart
         public bool IsSmartMeterAvailable = false;
-        /// <summary>
-        /// Account Number as key and chart response data as value
-        /// </summary>
-        public Dictionary<string, ChartDataModelBase> AccountChartDictionary = new Dictionary<string, ChartDataModelBase>();
+
         //Credit Card
         public CreditCardInfoModel CreditCardInfo = new CreditCardInfoModel();
         public RegisteredCardsResponseModel RegisteredCards = new RegisteredCardsResponseModel();
@@ -132,7 +127,6 @@ namespace myTNB.DataManager
         private List<string> AccountNumbersForPaymentList;
 
         //Account Related
-        public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
         public bool AccountIsActive = false;
 
         //Language
@@ -205,13 +199,9 @@ namespace myTNB.DataManager
             IsBillUpdateNeeded = true;
             PreviousSelectedAccountIndex = 0;
             CurrentSelectedAccountIndex = 0;
-            CurrentChart = new ChartDataModelBase();
             IsMontView = true; //Default to Month View
-            CurrentChartMode = ChartModeEnum.Cost;
             CurrentChartIndex = 0; //Default to current chart
 
-            AccountChartDictionary?.Clear();
-            AccountChartDictionary = new Dictionary<string, ChartDataModelBase>();
             CreditCardInfo = new CreditCardInfoModel();
             RegisteredCards = new RegisteredCardsResponseModel();
             CustomerAccounts = new CustomerAccountResponseModel();
@@ -252,14 +242,12 @@ namespace myTNB.DataManager
             IsFromRewardsDeeplink = false;
 
             //Account Related
-            InstallationDetails = new InstallationDetailDataModel();
             AccountIsActive = false;
 
             //ResetAmountDues
             AmountDueCache.Reset();
 
             //Reset SSMR Onboarding
-            SSMRAccounts.IsHideOnboarding = true; //Always hide ssmr onboarding
             SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
             WhatsNewCache.Clear();
             RewardsCache.Clear();
@@ -592,34 +580,6 @@ namespace myTNB.DataManager
         }
 
         /// <summary>
-        /// Saves smart chart to usage history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveSmartChartToUsageHistory(SmartChartDataModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                SaveToUsageHistory(jsonStr, key);
-            }
-        }
-
-        /// <summary>
-        /// Saves the chart to usage history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveChartToUsageHistory(ChartDataModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                SaveToUsageHistory(jsonStr, key);
-            }
-        }
-
-        /// <summary>
         /// Saves to usage history.
         /// </summary>
         /// <param name="jsonStr">Json string.</param>
@@ -635,62 +595,6 @@ namespace myTNB.DataManager
                 entity.IsRefreshNeeded = false;
                 ChartEntity.InsertItem(entity);
             }
-        }
-
-        /// <summary>
-        /// Gets the smart account usage history.
-        /// </summary>
-        /// <returns>The smart account usage history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> refresh is needed.</param>
-        public SmartChartDataModel GetSmartAccountUsageHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            SmartChartDataModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = ChartEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<SmartChartDataModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
-        }
-
-        /// <summary>
-        /// Gets the account usage history.
-        /// </summary>
-        /// <returns>The account usage history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> refresh is needed.</param>
-        public ChartDataModel GetAccountUsageHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            ChartDataModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = ChartEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<ChartDataModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
         }
 
         /// <summary>
@@ -1034,74 +938,6 @@ namespace myTNB.DataManager
         }
 
         /// <summary>
-        /// Saves to payment history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveToPaymentHistory(PaymentHistoryModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                if (!string.IsNullOrEmpty(jsonStr))
-                {
-                    var entity = new PaymentHistoryEntity();
-                    entity.AccNum = key;
-                    entity.Data = jsonStr;
-                    entity.DateUpdated = DateHelper.FormatToUtc(DateTime.UtcNow);
-                    entity.IsRefreshNeeded = false;
-                    PaymentHistoryEntity.InsertItem(entity);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the details from payment history.
-        /// </summary>
-        /// <returns>The details from payment history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> is refresh needed.</param>
-        public PaymentHistoryModel GetDetailsFromPaymentHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            PaymentHistoryModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = PaymentHistoryEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<PaymentHistoryModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
-        }
-
-        /// <summary>
-        /// Gets the cached payment history.
-        /// </summary>
-        /// <returns>The cached payment history.</returns>
-        /// <param name="accountNum">Account number.</param>
-        public PaymentHistoryModel GetCachedPaymentHistory(string accountNum)
-        {
-            DateTime lastUpdate = default(DateTime);
-            bool isRefreshNeeded = default(bool);
-            var model = GetDetailsFromPaymentHistory(accountNum, ref lastUpdate, ref isRefreshNeeded);
-
-            if (model != null && lastUpdate.Date == DateTime.Today && !isRefreshNeeded)
-            {
-                return model;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Sets the payment history refresh status.
         /// </summary>
         /// <param name="key">Key.</param>
@@ -1167,7 +1003,5 @@ namespace myTNB.DataManager
         }
 
         #endregion
-
-
     }
 }

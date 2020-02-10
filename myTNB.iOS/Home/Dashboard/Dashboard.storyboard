@@ -6,100 +6,6 @@
     </dependencies>
     <scenes>
         <!--Dashboard View Controller-->
-        <scene sceneID="386">
-            <objects>
-                <viewController storyboardIdentifier="DashboardViewController" id="387" customClass="DashboardViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="384"/>
-                        <viewControllerLayoutGuide type="bottom" id="385"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="388">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAx-X7-V4c">
-                                <rect key="frame" x="18" y="72" width="378" height="64"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to fetch smart meter data! Please try later." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17X-49-oNX">
-                                        <rect key="frame" x="16" y="16" width="346" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="o2k-Yc-Wny"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="o2k-Yc-Wny"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
-                                            <mask key="constraints">
-                                                <include reference="o2k-Yc-Wny"/>
-                                            </mask>
-                                        </variation>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="17X-49-oNX" firstAttribute="top" secondItem="MAx-X7-V4c" secondAttribute="top" constant="14" id="TV4-nZ-3e2">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                    <constraint firstItem="17X-49-oNX" firstAttribute="leading" secondItem="MAx-X7-V4c" secondAttribute="leading" constant="8" id="iJ0-B9-Gyq">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                    <constraint firstAttribute="height" constant="64" id="kzN-Jx-V92"/>
-                                    <constraint firstAttribute="trailing" secondItem="17X-49-oNX" secondAttribute="trailing" constant="8" id="xIn-uk-69h">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="17X-49-oNX"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <exclude reference="kzN-Jx-V92"/>
-                                        <exclude reference="TV4-nZ-3e2"/>
-                                        <exclude reference="iJ0-B9-Gyq"/>
-                                        <exclude reference="xIn-uk-69h"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <color key="backgroundColor" red="0.98823529409999999" green="0.76078431369999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <mask key="subviews">
-                                        <include reference="17X-49-oNX"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <include reference="kzN-Jx-V92"/>
-                                        <include reference="TV4-nZ-3e2"/>
-                                        <include reference="iJ0-B9-Gyq"/>
-                                        <include reference="xIn-uk-69h"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="MAx-X7-V4c" firstAttribute="centerX" secondItem="388" secondAttribute="centerX" id="Wqp-AK-zoQ"/>
-                            <constraint firstItem="MAx-X7-V4c" firstAttribute="leading" secondItem="388" secondAttribute="leading" constant="18" id="sG3-gp-hhN"/>
-                            <constraint firstAttribute="trailing" secondItem="MAx-X7-V4c" secondAttribute="trailing" constant="18" id="yTN-8v-xY0"/>
-                            <constraint firstItem="MAx-X7-V4c" firstAttribute="top" secondItem="388" secondAttribute="top" constant="72" id="zi4-fG-W4K"/>
-                        </constraints>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
-                        </variation>
-                    </view>
-                    <navigationItem key="navigationItem" id="404"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="toastMessage" destination="17X-49-oNX" id="aaj-Iz-iSn"/>
-                        <outlet property="toastView" destination="MAx-X7-V4c" id="1Ug-2O-0cr"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="389" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="609.8" y="-942.5802"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="829">
             <objects>
@@ -327,9 +233,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="387" kind="relationship" relationship="rootViewController" id="YjX-LF-uRj"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyc-AY-B9Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

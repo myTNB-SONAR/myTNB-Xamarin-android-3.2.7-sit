@@ -41,6 +41,8 @@ namespace myTNB
             if (TabBarController != null && TabBarController.TabBar != null)
             {
                 TabBarController.TabBar.Hidden = true;
+                ExtendedLayoutIncludesOpaqueBars = true;
+                EdgesForExtendedLayout = UIRectEdge.Bottom;
             }
             base.ViewDidLoad();
             _isViewDidload = true;

@@ -71,7 +71,7 @@ namespace myTNB.Home.Components
             };
 
             var descMsg = _descriptionMessage ?? string.Empty;
-            var btnText = _buttonText ?? "Error_RefreshBtnTitle".Translate();
+            var btnText = _buttonText ?? LanguageUtility.GetCommonI18NValue(Constants.Common_RefreshNow);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {

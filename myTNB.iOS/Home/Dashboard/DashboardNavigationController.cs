@@ -1,4 +1,3 @@
-using myTNB.Dashboard;
 using System;
 using UIKit;
 
@@ -43,17 +42,6 @@ namespace myTNB
         {
             var storyBoard = UIStoryboard.FromName("Dashboard", null);
             var vc = storyBoard.InstantiateViewController("DashboardHomeViewController") as DashboardHomeViewController;
-            SetNavigationBarHidden(true, false);
-            SetViewControllers(new UIViewController[] { vc }, false);
-        }
-
-        /// <summary>
-        /// Shows the dashboard.
-        /// </summary>
-        private void ShowDashboard()
-        {
-            var storyBoard = UIStoryboard.FromName("Dashboard", null);
-            var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
             SetNavigationBarHidden(true, false);
             SetViewControllers(new UIViewController[] { vc }, false);
         }

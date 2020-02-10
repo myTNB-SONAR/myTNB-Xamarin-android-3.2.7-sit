@@ -584,20 +584,26 @@ namespace myTNB
         private void ExecuteRequestPayBillCall()
         {
             ActivityIndicator.Show();
-            InvokeOnMainThread(async () =>
+            InvokeOnMainThread(() =>
             {
-                GetPaymentTransactionIdResponseModel _paymentTransaction = await GetPaymentTransactionId();
-                if (_paymentTransaction != null && _paymentTransaction.d != null && _paymentTransaction.d.IsSuccess
-                    && _paymentTransaction.d.data != null)
+                InvokeInBackground(async () =>
                 {
-                    Debug.WriteLine("Success");
-                    NavigateToVC(_paymentTransaction);
-                }
-                else
-                {
-                    DisplayServiceError(_paymentTransaction?.d?.DisplayMessage ?? string.Empty);
-                }
-                ActivityIndicator.Hide();
+                    GetPaymentTransactionIdResponseModel _paymentTransaction = await GetPaymentTransactionId();
+                    InvokeOnMainThread(() =>
+                    {
+                        if (_paymentTransaction != null && _paymentTransaction.d != null && _paymentTransaction.d.IsSuccess
+                        && _paymentTransaction.d.data != null)
+                        {
+                            Debug.WriteLine("Success");
+                            NavigateToVC(_paymentTransaction);
+                        }
+                        else
+                        {
+                            DisplayServiceError(_paymentTransaction?.d?.DisplayMessage ?? string.Empty);
+                        }
+                        ActivityIndicator.Hide();
+                    });
+                });
             });
         }
 

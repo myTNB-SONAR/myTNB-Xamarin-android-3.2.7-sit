@@ -163,22 +163,6 @@ namespace myTNB
             return new List<CustomerAccountRecordModel>();
         }
 
-        public static bool IsHideOnboarding
-        {
-            set
-            {
-                value = true;
-                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                sharedPreference.SetBool(value, "SSMROnboarding");
-                sharedPreference.Synchronize();
-            }
-            get
-            {
-                //NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                return true;// sharedPreference.BoolForKey("SSMROnboarding");
-            }
-        }
-
         private static void SetPopupSelectorValues()
         {
             if (SMREligibilityPopUpDetails == null || SMREligibilityPopUpDetails.Count == 0
