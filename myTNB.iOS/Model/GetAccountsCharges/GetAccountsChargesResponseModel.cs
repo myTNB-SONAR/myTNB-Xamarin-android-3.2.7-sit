@@ -28,7 +28,7 @@ namespace myTNB
         public double AmountDue { set; get; } = 0;
         public string DueDate { set; get; } = string.Empty;
         public string BillDate { set; get; } = string.Empty;
-        public string IncrementREDueDateByDays { set; get; } = string.Empty;
+        public double IncrementREDueDateByDays { set; get; } = 0;
         public MandatoryChargesModel MandatoryCharges { set; get; } = new MandatoryChargesModel();
     }
 

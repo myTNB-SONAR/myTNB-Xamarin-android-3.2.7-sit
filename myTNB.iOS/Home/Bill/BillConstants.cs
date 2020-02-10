@@ -20,6 +20,7 @@
         public static string Format_DateParse = "yyyyMMdd";
         public static string Format_Date = "dd MMM yyyy";
         public static string Format_Default = "{0} {1}";
+        public static string Format_DateCache = @"dd/MM/yyyy";
 
         //ViewCell
         public static string Cell_BillHistory = "billHistoryTableViewCell";

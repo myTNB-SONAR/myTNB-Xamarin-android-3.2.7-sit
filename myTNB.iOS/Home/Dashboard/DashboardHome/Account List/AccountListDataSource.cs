@@ -66,7 +66,7 @@ namespace myTNB
                     else
                     {
                         cell.GetI18NValue = GetI18NValue;
-                        cell.SetAccountCell(_accountList[index]);
+                        cell.SetAccountCell(acctCached);
                     }
                 }
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
