@@ -2138,8 +2138,6 @@
     </Compile>
     <Compile Include="Registration\Customer Accounts\AccountRecordDataSource.cs" />
     <Compile Include="Helpers\LoadingOverlay.cs" />
-    <Compile Include="Model\AddAccountModel.cs" />
-    <Compile Include="Model\AddAccountListModel.cs" />
     <Compile Include="Helpers\TextFieldHelper.cs" />
     <Compile Include="Helpers\TNBGlobal.cs" />
     <Compile Include="Data Manager\DataManager.cs" />
