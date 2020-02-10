@@ -99,6 +99,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                 vh.Amount.AfterTextChanged += (sender, args) =>
                 {
+                    try
+                    {
+                        item.amount = double.Parse(vh.Amount.Text);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
                     if (vh.Amount.HasFocus)
                     {
                         if (vh.SelectAccountView.Checked)
