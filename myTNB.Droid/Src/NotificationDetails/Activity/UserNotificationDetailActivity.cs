@@ -23,6 +23,7 @@ using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.NotificationNewBill.Activity;
@@ -31,6 +32,7 @@ using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using Refit;
 
@@ -77,6 +79,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             MenuInflater.Inflate(Resource.Menu.NotificationDetailMenu, menu);
             return base.OnCreateOptionsMenu(menu);
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            HideLoadingScreen();
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -413,15 +421,29 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(DashboardIntent);
         }
 
+        public void ShowPaymentReceipt(GetPaymentReceiptResponse response)
+        {
+            Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
+            viewReceipt.PutExtra("ReceiptResponse", JsonConvert.SerializeObject(response));
+            StartActivity(viewReceipt);
+        }
+
+        public void ShowPaymentReceiptError()
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedErrorLabel("defaultErrorTitle"))
+                .SetMessage(Utility.GetLocalizedErrorLabel("receiptErrorMsg"))
+                .SetContentGravity(GravityFlags.Center)
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                .Build().Show();
+        }
+
         class ClickSpan : ClickableSpan
         {
             public Action<View> Click;
             public override void OnClick(View widget)
             {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
+                Click?.Invoke(widget);
             }
 
             public override void UpdateDrawState(TextPaint ds)

@@ -2,6 +2,7 @@
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Refit;
 
@@ -18,6 +19,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void SubmitMeterReading(AccountData mSelectedAccountData, SMRActivityInfoResponse SMRAccountActivityInfoResponse);
             void EnableSelfMeterReading(AccountData mSelectedAccountData);
             void ViewBillHistory(AccountData mSelectedAccountData);
+            void ShowPaymentReceipt(GetPaymentReceiptResponse response);
+            void ShowPaymentReceiptError();
             void ShowLoadingScreen();
             void HideLoadingScreen();
 

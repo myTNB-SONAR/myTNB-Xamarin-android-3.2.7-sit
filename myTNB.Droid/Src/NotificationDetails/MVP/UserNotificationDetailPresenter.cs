@@ -18,6 +18,7 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -214,7 +215,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewReceipt"),
-                                delegate () {  });
+                                delegate () { ShowPaymentReceipt(notificationDetails); });
                             ctaList.Add(secondaryCTA);
                             break;
                         }
@@ -609,6 +610,36 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             else
             {
                 this.mView.ShowRetryOptionsApiException(null);
+            }
+        }
+
+        private async void ShowPaymentReceipt(Models.NotificationDetails notificationDetails)
+        {
+            string selectedAccountNumber = "220914778610";
+            string detailedInfoNumber = "340108502772";
+            bool isOwnedAccount = true;
+            bool showAllReceipt = false;
+            this.mView.ShowLoadingScreen();
+            try
+            {
+                GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
+                    CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
+                
+                if (false)//result.IsSuccessResponse())
+                {
+                    this.mView.ShowPaymentReceipt(result);
+                }
+                else
+                {
+                    this.mView.HideLoadingScreen();
+                    this.mView.ShowPaymentReceiptError();
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(e);
+                this.mView.ShowPaymentReceiptError();
             }
         }
 
