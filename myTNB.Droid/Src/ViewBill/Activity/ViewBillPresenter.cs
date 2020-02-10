@@ -44,30 +44,30 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     }
                     else
                     {
-                        this.mView.ShowBillPDF();
+                        this.mView.ShowViewBillError(billsHistoryResponse.Response.DisplayTitle, billsHistoryResponse.Response.DisplayMessage);
                     }
                 }
                 else
                 {
-                    this.mView.ShowBillPDF();
+                    this.mView.ShowBillErrorSnackBar();
                 }
             }
             catch (System.OperationCanceledException e)
             {
                 this.mView.HideProgressDialog();
-                this.mView.ShowBillPDF();
+                this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 this.mView.HideProgressDialog();
-                this.mView.ShowBillPDF();
+                this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 this.mView.HideProgressDialog();
-                this.mView.ShowBillPDF();
+                this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -10,7 +10,7 @@ namespace myTNB_Android.Src.Billing.MVP
     {
         public interface IView
         {
-            void ShowBillPDF(string selectedBillJson = null);
+            void ShowBillPDF();
             void ShowProgressDialog();
             void HideProgressDialog();
             void ShowBillErrorSnackBar();
