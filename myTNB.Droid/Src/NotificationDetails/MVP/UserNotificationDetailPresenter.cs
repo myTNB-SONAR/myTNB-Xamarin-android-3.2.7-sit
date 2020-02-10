@@ -197,6 +197,27 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(primaryCTA);
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Try Again",
+                                delegate () { CallUs(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_payment_success_banner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Payment History",
+                                delegate () {  });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("View Receipt",
+                                delegate () {  });
+                            ctaList.Add(secondaryCTA);
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
