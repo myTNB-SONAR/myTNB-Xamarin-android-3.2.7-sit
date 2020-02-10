@@ -180,21 +180,21 @@ namespace myTNB_Android.Src.Notifications.MVP
             try
             {
                 this.mView.ShowProgress();
-                //UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationType);
-                //UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetails<UserNotificationDetailsResponse>(request);
-                //if (response.Data.ErrorCode == "7200")
-                //{
-                //    Utility.SetIsPayDisableNotFromAppLaunch(!response.Data.IsPayEnabled);
-                //    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
-                //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
-                //}
-                //else
-                //{
-                //    this.mView.ShowRetryOptionsCancelledException(null);
-                //}
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationType);
+                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetails<UserNotificationDetailsResponse>(request);
+                if (response.Data.ErrorCode == "7200")
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Data.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsCancelledException(null);
+                }
 
-                //MOCK RESPONSE
-                this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
                 this.mView.HideProgress();
             }
             catch (System.OperationCanceledException e)
@@ -502,23 +502,23 @@ namespace myTNB_Android.Src.Notifications.MVP
                     }
                 }
 
-                //MOCK DATA FOR TESTING - DO NOT DELETE
-                listOfNotifications.Clear();
-                UserNotificationData data = new UserNotificationData();
-                data.BCRMNotificationTypeId = Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID;
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "New Bill";
-                data.Message = "Dear customer, your TNB bill RM5…";
-                listOfNotifications.Add(data);
+                ////MOCK DATA FOR TESTING - DO NOT DELETE
+                //listOfNotifications.Clear();
+                //UserNotificationData data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID;
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "New Bill";
+                //data.Message = "Dear customer, your TNB bill RM5…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID;
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Bill Due";
-                data.Message = "Dear customer, your Sep 2017 bill… ";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID;
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Bill Due";
+                //data.Message = "Dear customer, your Sep 2017 bill… ";
+                //listOfNotifications.Add(data);
 
                 //data = new UserNotificationData();
                 //data.BCRMNotificationTypeId = "03";

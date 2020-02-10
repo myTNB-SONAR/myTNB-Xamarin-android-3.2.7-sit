@@ -597,26 +597,19 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
 
-            if (account != null)
-            {
-                accountData.AccountNickName = account.AccDesc;
-                accountData.AccountName = account.OwnerName;
-                accountData.AccountNum = account.AccNum;
-                accountData.AddStreet = account.AccountStAddress;
-                accountData.IsOwner = account.isOwned;
-                accountData.AccountCategoryId = account.AccountCategoryId;
-                this.mView.ViewBillHistory(accountData);
-            }
-            else
-            {
-                this.mView.ShowRetryOptionsApiException(null);
-            }
+            accountData.AccountNickName = account.AccDesc;
+            accountData.AccountName = account.OwnerName;
+            accountData.AccountNum = account.AccNum;
+            accountData.AddStreet = account.AccountStAddress;
+            accountData.IsOwner = account.isOwned;
+            accountData.AccountCategoryId = account.AccountCategoryId;
+            this.mView.ViewBillHistory(accountData);
         }
 
         private async void ShowPaymentReceipt(Models.NotificationDetails notificationDetails)
         {
-            string selectedAccountNumber = "220914778610";
-            string detailedInfoNumber = "340108502772";
+            string selectedAccountNumber = notificationDetails.AccountNum;
+            string detailedInfoNumber = notificationDetails.merchantTransactionID;
             bool isOwnedAccount = true;
             bool showAllReceipt = true;
             this.mView.ShowLoadingScreen();

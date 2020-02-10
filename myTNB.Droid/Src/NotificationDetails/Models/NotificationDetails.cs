@@ -46,6 +46,9 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("IsSMRPeriodOpen")]
         public bool IsSMRPeriodOpen { get; set; }
 
+        [JsonProperty("merchantTransactionID")]
+        public string merchantTransactionID { get; set; }
+
         [JsonProperty("AccountDetails", Required = Newtonsoft.Json.Required.AllowNull)]
         public AccountDetailsData AccountDetails;
 
