@@ -146,7 +146,6 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle("Receipt-Header")
             };
-            //imageView.ContentMode = UIViewContentMode.ScaleToFill;
 
             UILabel paymentTitle = GetLabel(LabelType.Value
                 , new CGRect(INNER_PADDING, imageView.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 26)
@@ -167,7 +166,7 @@ namespace myTNB
 
             UILabel lblReference = GetLabel(LabelType.Title
                 , new CGRect(INNER_PADDING, viewLineTop.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 16)
-                , GetI18NValue(ReceiptConstants.I18N_ReferenceNumber));
+                , GetI18NValue(ReceiptConstants.I18N_ReferenceNumber).ToUpper());
 
             UILabel lblReferenceValue = GetLabel(LabelType.Value
                 , new CGRect(INNER_PADDING, lblReference.Frame.GetMaxY(), _headerView.Frame.Width - LBL_WIDTH_PADDING, 16)
@@ -219,7 +218,7 @@ namespace myTNB
 
             UILabel lblTotalAmount = GetLabel(LabelType.Value
                 , new CGRect(INNER_PADDING, viewLine4.Frame.GetMaxY() + (INNER_PADDING + 10), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
-                , GetCommonI18NValue(Constants.Common_TotalAmountRM));
+                , GetCommonI18NValue(Constants.Common_TotalAmountRM).ToUpper());
 
             UILabel lblTotalAmountValue = GetLabel(LabelType.Value
                 , new CGRect(INNER_PADDING, lblTotalAmount.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 26)
@@ -293,7 +292,7 @@ namespace myTNB
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
-            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_ReferenceNumber), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_ReferenceNumber).ToUpper(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.referenceNum, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
@@ -302,13 +301,13 @@ namespace myTNB
 
             foreach (MultiPayDataModel item in _receipt?.d?.data?.accMultiPay)
             {
-                document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_AccountNo), labelFont));
+                document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_AccountNo).ToUpper(), labelFont));
                 document.Add(new Paragraph(item.accountNum, detailsFont));
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
-                document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_AccountHolder), labelFont));
+                document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_AccountHolder).ToUpper(), labelFont));
                 document.Add(new Paragraph(!string.IsNullOrEmpty(item.AccountOwnerName) ? item.AccountOwnerName : Environment.NewLine, detailsFont));
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
-                document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_AmountRM), labelFont));
+                document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_AmountRM).ToUpper(), labelFont));
                 document.Add(new Paragraph(item.itmAmt, detailsFont));
 
                 document.Add(new Paragraph(Environment.NewLine, titleFont));
@@ -316,28 +315,28 @@ namespace myTNB
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
             }
 
-            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnDate), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnDate).ToUpper(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payTransDate, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnID), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnID).ToUpper(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payTransID, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnMethod), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnMethod).ToUpper(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payMethod, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_TotalAmountRM), detailsFont));
+            document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_TotalAmountRM).ToUpper(), detailsFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payAmt, totalAmounFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));

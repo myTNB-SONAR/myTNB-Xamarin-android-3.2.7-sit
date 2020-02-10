@@ -207,7 +207,7 @@ namespace myTNB.Registration
             {
                 txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
                 imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
-                    ? Constants.IMG_HidePassword : Constants.IMG_ShowPassword);
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
             viewLinePassword = GenericLine.GetLine(new CGRect(0, 36, viewPassword.Frame.Width, 1));
             viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, lblPasswordError
@@ -250,7 +250,7 @@ namespace myTNB.Registration
             {
                 txtFieldConfirmPassword.SecureTextEntry = !txtFieldConfirmPassword.SecureTextEntry;
                 imgShowConfirmPassword.Image = UIImage.FromBundle(txtFieldConfirmPassword.SecureTextEntry
-                    ? Constants.IMG_HidePassword : Constants.IMG_ShowPassword);
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
             viewLineConfirmPassword = GenericLine.GetLine(new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1));
             viewConfirmPassword.AddSubview(viewLineConfirmPassword);

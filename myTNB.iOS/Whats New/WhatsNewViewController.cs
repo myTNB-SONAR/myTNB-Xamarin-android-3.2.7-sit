@@ -46,6 +46,7 @@ namespace myTNB
             else
             {
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 SetSkeletonLoading();
             }
             _isViewDidLoad = false;
@@ -134,6 +135,7 @@ namespace myTNB
             {
                 NotifCenterUtility.PostNotificationName("WhatsNewFetchUpdate", new NSObject());
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
                 _whatsNewList = whatsNewEntity.GetAllItems();
                 if (_whatsNewList != null && _whatsNewList.Count > 0)
@@ -663,13 +665,14 @@ namespace myTNB
                             WhatsNewCache.RefreshWhatsNew = false;
                             DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
                             ResetViews();
+                            NavigationController.NavigationBar.Hidden = false;
                             SetSkeletonLoading();
                             InvokeInBackground(async () =>
                             {
                                 await SitecoreServices.Instance.LoadWhatsNew(true);
-                                DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                                 InvokeOnMainThread(() =>
                                 {
+                                    DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                                     if (WhatsNewCache.WhatsNewIsAvailable)
                                     {
                                         ProcessWhatsNew();
@@ -695,7 +698,7 @@ namespace myTNB
                                     if (!_isViewDidLoad)
                                     {
                                         NotifCenterUtility.PostNotificationName("WhatsNewFetchUpdate", new NSObject());
-                                        OnReloadTableAction(_selectedCategoryIndex);
+                                        RefreshTable();
                                         _hotspotIsOn = !DeviceHelper.IsIphoneXUpResolution() && DeviceHelper.GetStatusBarHeight() > 20;
                                         CheckTutorialOverlay();
                                     }
@@ -749,7 +752,7 @@ namespace myTNB
             }
         }
 
-        public void OnItemSelection(WhatsNewModel whatsNew, int index)
+        public void OnItemSelection(WhatsNewModel whatsNew)
         {
             if (whatsNew != null)
             {
@@ -761,11 +764,11 @@ namespace myTNB
                 };
                 PresentViewController(navController, true, null);
                 WhatsNewServices.SetIsRead(whatsNew.ID);
-                OnUpdateReadWhatsNew(whatsNew, index);
+                OnUpdateReadWhatsNew(whatsNew);
             }
         }
 
-        private void OnUpdateReadWhatsNew(WhatsNewModel whatsNew, int index)
+        private void OnUpdateReadWhatsNew(WhatsNewModel whatsNew)
         {
             if (whatsNew == null)
                 return;
@@ -782,26 +785,23 @@ namespace myTNB
                 if (indx > -1 && indx < _whatsNewList.Count)
                 {
                     _whatsNewList[indx].IsRead = entityModel.IsRead;
-                    OnReloadTableAction(index);
+                    RefreshTable();
                 }
             }
         }
 
-        private void OnReloadTableAction(int index)
+        private void RefreshTable()
         {
-            if (_whatsNewList != null && _whatsNewList.Count > 0 && index > -1 && index < _whatsNewList.Count)
+            if (_whatsNewList != null && _whatsNewList.Count > 0)
             {
-                WhatsNewModel whatsNew = _whatsNewList[index];
-                var catIndx = _categoryList.FindIndex(x => x.CategoryID.Equals(whatsNew.CategoryID));
-
-                if (catIndx > -1 && catIndx < _mainScrollView.Subviews.Count())
+                for (int c = 0; c < _categoryList.Count; c++)
                 {
-                    UIView viewContainer = _mainScrollView.Subviews[catIndx];
+                    UIView viewContainer = _mainScrollView.Subviews[c];
                     if (viewContainer != null && viewContainer.Subviews.Count() > 0)
                     {
                         if (viewContainer.Subviews[0] is UITableView table)
                         {
-                            var filteredList = catIndx == 0 ? _whatsNewList : FilterWhatsNew(catIndx);
+                            var filteredList = c == 0 ? _whatsNewList : FilterWhatsNew(c);
                             table.ClearsContextBeforeDrawing = true;
                             table.Source = new WhatsNewDataSource(this, filteredList, GetI18NValue);
                             UIView.PerformWithoutAnimation(() =>
@@ -811,22 +811,6 @@ namespace myTNB
                                 table.EndUpdates();
                             });
                         }
-                    }
-                }
-
-                UIView viewAllView = _mainScrollView.Subviews[0];
-                if (viewAllView != null && viewAllView.Subviews.Count() > 0)
-                {
-                    if (viewAllView.Subviews[0] is UITableView table)
-                    {
-                        table.ClearsContextBeforeDrawing = true;
-                        table.Source = new WhatsNewDataSource(this, _whatsNewList, GetI18NValue);
-                        UIView.PerformWithoutAnimation(() =>
-                        {
-                            table.BeginUpdates();
-                            table.ReloadData();
-                            table.EndUpdates();
-                        });
                     }
                 }
             }

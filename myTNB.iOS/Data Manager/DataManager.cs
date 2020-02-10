@@ -175,6 +175,7 @@ namespace myTNB.DataManager
             sharedPreference.SetString("", "SiteCorePromotionTimeStamp");
             sharedPreference.SetString("", "SiteCoreWhatsNewTimeStamp");
             sharedPreference.SetString("", "SiteCoreRewardsTimeStamp");
+            sharedPreference.SetString("", WhatsNewConstants.Pref_WhatsNewReadFlags);
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.PhoneVerification);
             sharedPreference.Synchronize();
 

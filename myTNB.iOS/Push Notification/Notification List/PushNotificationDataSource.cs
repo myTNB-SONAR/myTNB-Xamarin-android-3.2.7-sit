@@ -83,7 +83,7 @@ namespace myTNB.PushNotification
             }
             else
             {
-                _controller.ExecuteGetNotificationDetailedInfoCall(_data[indexPath.Row]);
+                _controller.ExecuteGetNotificationDetailsCall(_data[indexPath.Row]);
             }
         }
 

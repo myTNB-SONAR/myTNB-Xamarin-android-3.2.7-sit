@@ -44,7 +44,7 @@ namespace myTNB.WhatsNew
             {
                 addtl = ScaleUtility.GetScaledHeight(17F);
             }
-            return WhatsNewConstants.WhatsNewCellHeight + addtl;
+            return ScaleUtility.GetScaledHeight(177F) + addtl;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -127,7 +127,7 @@ namespace myTNB.WhatsNew
             {
                 if (_controller != null)
                 {
-                    _controller.OnItemSelection(_whatsNewList[index], index);
+                    _controller.OnItemSelection(_whatsNewList[index]);
                 }
             }
         }

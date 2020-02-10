@@ -40,13 +40,14 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+            if (!DataManager.DataManager.SharedInstance.IsRewardsLoading && !AppLaunchMasterCache.IsRewardsDisabled)
             {
                 CheckForRewardUpdates();
             }
             else
             {
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 SetSkeletonLoading();
             }
             _isViewDidLoad = false;
@@ -113,6 +114,7 @@ namespace myTNB
                             RewardsCache.RefreshReward = false;
                             DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
                             ResetViews();
+                            NavigationController.NavigationBar.Hidden = false;
                             SetSkeletonLoading();
                             InvokeInBackground(async () =>
                             {
@@ -120,23 +122,26 @@ namespace myTNB
                                 if (RewardsCache.RewardIsAvailable)
                                 {
                                     await RewardsServices.GetUserRewards();
-                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                                    if (RewardsCache.RewardIsAvailable)
+                                    InvokeOnMainThread(() =>
                                     {
-                                        InvokeOnMainThread(() =>
+                                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                        if (RewardsCache.RewardIsAvailable)
                                         {
                                             ProcessRewards();
-                                        });
-                                    }
-                                    else
-                                    {
-                                        SetRefreshScreen();
-                                    }
+                                        }
+                                        else
+                                        {
+                                            SetRefreshScreen();
+                                        }
+                                    });
                                 }
                                 else
                                 {
-                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
-                                    SetRefreshScreen();
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                        SetRefreshScreen();
+                                    });
                                 }
                             });
                         }
@@ -144,7 +149,7 @@ namespace myTNB
                         {
                             if (RewardsCache.RewardIsAvailable)
                             {
-                                bool needsUpdate = RewardsServices.FilterExpiredRewards();
+                                bool needsUpdate = RewardsServices.FilterExpiredRewards() || RewardsServices.FilterUsedRewards();
                                 if (needsUpdate)
                                 {
                                     ValidateRewards();
@@ -251,6 +256,8 @@ namespace myTNB
 
         private void RefreshButtonOnTap()
         {
+            if (AppLaunchMasterCache.IsRewardsDisabled) { return; }
+
             if (NetworkUtility.isReachable)
             {
                 ResetViews();
@@ -342,6 +349,7 @@ namespace myTNB
         private void ProcessRewards()
         {
             RewardsServices.FilterExpiredRewards();
+            RewardsServices.FilterUsedRewards();
             ValidateRewards();
         }
 
@@ -351,6 +359,7 @@ namespace myTNB
             {
                 NotifCenterUtility.PostNotificationName("RewardsFetchUpdate", new NSObject());
                 ResetViews();
+                NavigationController.NavigationBar.Hidden = false;
                 RewardsEntity rewardsEntity = new RewardsEntity();
                 _rewardsList = rewardsEntity.GetAllItems();
                 if (_rewardsList != null && _rewardsList.Count > 0)
