@@ -202,7 +202,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedCommonLabel("tryAgain"),
-                                delegate () { CallUs(); });
+                                delegate () { ShowSelectBill(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);
                             break;
@@ -641,6 +641,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 Utility.LoggingNonFatalError(e);
                 this.mView.ShowPaymentReceiptError();
             }
+        }
+
+        private void ShowSelectBill(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            accountData.AccountNum = notificationDetails.AccountNum;
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+
+            this.mView.ShowSelectBill(accountData);
         }
 
         private void EvaluateAmountDue(AccountChargeModel accountChargeModel)

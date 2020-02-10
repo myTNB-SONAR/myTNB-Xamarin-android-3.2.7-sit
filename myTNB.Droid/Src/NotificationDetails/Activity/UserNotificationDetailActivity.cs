@@ -428,6 +428,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(viewReceipt);
         }
 
+        public void ShowSelectBill(AccountData mSelectedAccountData)
+        {
+            Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
+            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(payment_activity);
+        }
+
         public void ShowPaymentReceiptError()
         {
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)

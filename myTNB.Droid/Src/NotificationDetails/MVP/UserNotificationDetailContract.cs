@@ -20,6 +20,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void EnableSelfMeterReading(AccountData mSelectedAccountData);
             void ViewBillHistory(AccountData mSelectedAccountData);
             void ShowPaymentReceipt(GetPaymentReceiptResponse response);
+            void ShowSelectBill(AccountData mSelectedAccountData);
             void ShowPaymentReceiptError();
             void ShowLoadingScreen();
             void HideLoadingScreen();
