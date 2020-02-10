@@ -401,6 +401,18 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(ssmr_history_activity);
         }
 
+        public void ViewBillHistory(AccountData mSelectedAccountData)
+        {
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
+
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
+            DashboardIntent.PutExtra("MENU","BillMenu");
+            DashboardIntent.PutExtra("DATA",JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(DashboardIntent);
+        }
+
         class ClickSpan : ClickableSpan
         {
             public Action<View> Click;

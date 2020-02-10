@@ -200,7 +200,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Try Again",
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedCommonLabel("tryAgain"),
                                 delegate () { CallUs(); });
                             primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);
@@ -209,11 +209,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_payment_success_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Payment History",
-                                delegate () {  });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "paymentHistory"),
+                                delegate () { ViewBillHistory(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("View Receipt",
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewReceipt"),
                                 delegate () {  });
                             ctaList.Add(secondaryCTA);
                             break;
@@ -587,6 +587,29 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountChargeModelList.Add(accountChargeModel);
             });
             return accountChargeModelList;
+        }
+
+        private void ViewBillHistory(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+
+            if (account != null)
+            {
+                accountData.AccountNickName = account.AccDesc;
+                accountData.AccountName = account.OwnerName;
+                accountData.AccountNum = account.AccNum;
+                accountData.AddStreet = account.AccountStAddress;
+                accountData.IsOwner = account.isOwned;
+                accountData.AccountCategoryId = account.AccountCategoryId;
+                this.mView.ViewBillHistory(accountData);
+            }
+            else
+            {
+                this.mView.ShowRetryOptionsApiException(null);
+            }
         }
 
         private void EvaluateAmountDue(AccountChargeModel accountChargeModel)
