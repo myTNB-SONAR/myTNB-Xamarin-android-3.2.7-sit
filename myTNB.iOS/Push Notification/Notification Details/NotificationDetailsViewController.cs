@@ -439,9 +439,10 @@ namespace myTNB
             }
             else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.PaymentSuccess)
             {
+                nfloat width = NotificationInfo != null && NotificationInfo.MerchantTransId.IsValid() ? btnWidth : BaseMarginedWidth;
                 _btnPrimary = new CustomUIButtonV2
                 {
-                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), width, GetScaledHeight(48))
                 };
                 UpdateCTA(ref _btnPrimary, false);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_PaymentHistory), UIControlState.Normal);
@@ -449,18 +450,22 @@ namespace myTNB
                 {
                     OnViewBill();
                 }));
-                _btnSecondary = new CustomUIButtonV2
-                {
-                    Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
-                };
-                UpdateCTA(ref _btnSecondary, true);
-                _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReceipt), UIControlState.Normal);
-                _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    OnViewReceipt();
-                }));
+                _viewCTA.AddSubview(_btnPrimary);
 
-                _viewCTA.AddSubviews(new UIView[] { _btnPrimary, _btnSecondary });
+                if (NotificationInfo != null && NotificationInfo.MerchantTransId.IsValid())
+                {
+                    _btnSecondary = new CustomUIButtonV2
+                    {
+                        Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                    };
+                    UpdateCTA(ref _btnSecondary, true);
+                    _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReceipt), UIControlState.Normal);
+                    _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        OnViewReceipt();
+                    }));
+                    _viewCTA.AddSubview(_btnSecondary);
+                }
             }
             else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.PaymentFail)
             {
@@ -655,7 +660,7 @@ namespace myTNB
 
         private void OnViewReceipt()
         {
-            if (NotificationInfo == null || !NotificationInfo.DetailedInfoNumber.IsValid())
+            if (NotificationInfo == null || !NotificationInfo.MerchantTransId.IsValid())
             {
                 DisplayServiceError(string.Empty);
                 return;
@@ -671,7 +676,7 @@ namespace myTNB
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
                         if (viewController != null)
                         {
-                            viewController.DetailedInfoNumber = NotificationInfo.DetailedInfoNumber;
+                            viewController.DetailedInfoNumber = NotificationInfo.MerchantTransId;
                             viewController.showAllReceipts = true;
                             UINavigationController navController = new UINavigationController(viewController);
                             navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
