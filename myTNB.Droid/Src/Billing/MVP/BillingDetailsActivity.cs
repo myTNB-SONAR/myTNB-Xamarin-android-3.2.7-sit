@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.Billing.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                billingDetailsPresenter.GetBillHistory(selectedAccountData);
+                ShowBillPDF();
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
@@ -491,16 +491,11 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
-        public void ShowBillPDF(string selectedBillJson)
+        public void ShowBillPDF()
         {
-            //if (selectedBill != null && selectedBill.NrBill != null)
-            //{
-            //    selectedBill.NrBill = null;
-            //}
-
             Intent viewBill = new Intent(this, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-            viewBill.PutExtra(Constants.SELECTED_BILL, selectedBillJson);
+            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
         }
 
