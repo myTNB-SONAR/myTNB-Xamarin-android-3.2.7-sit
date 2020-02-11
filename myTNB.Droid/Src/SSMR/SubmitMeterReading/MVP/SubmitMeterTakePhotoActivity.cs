@@ -423,11 +423,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
+                takePhotoFragment.ResetZoom();
                 ShowImagePreView(false);
                 isFromSingleCapture = false;
                 UpdateTakePhotoNote();
             }
-
             EnableSubmitButton();
         }
 
