@@ -213,7 +213,6 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
-            txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
             txtReason.AddTextChangedListener(new InputFilterFormField(txtReason, txtInputLayoutTxtReason));
             txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
 
