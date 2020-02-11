@@ -619,8 +619,8 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
-                        UIStoryboard stroryboard = UIStoryboard.FromName("Usage", null);
-                        UsageViewController viewController = stroryboard.InstantiateViewController("UsageViewController") as UsageViewController;
+                        UIStoryboard storyboard = UIStoryboard.FromName("Usage", null);
+                        UsageViewController viewController = storyboard.InstantiateViewController("UsageViewController") as UsageViewController;
                         if (viewController != null)
                         {
                             NavigationController.PushViewController(viewController, true);
@@ -643,8 +643,8 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
-                        UIStoryboard stroryboard = UIStoryboard.FromName("Dashboard", null);
-                        BillViewController viewController = stroryboard.InstantiateViewController("BillViewController") as BillViewController;
+                        UIStoryboard storyboard = UIStoryboard.FromName("Dashboard", null);
+                        BillViewController viewController = storyboard.InstantiateViewController("BillViewController") as BillViewController;
                         if (viewController != null)
                         {
                             NavigationController.PushViewController(viewController, true);
