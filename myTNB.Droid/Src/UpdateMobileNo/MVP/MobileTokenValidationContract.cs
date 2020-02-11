@@ -165,6 +165,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             ///Show dashboard
             /// </summary>
             void ShowDashboard();
+
+            void ShowEmptyErrorPin();
         }
 
         public interface IUserActionsListener : IBasePresenter

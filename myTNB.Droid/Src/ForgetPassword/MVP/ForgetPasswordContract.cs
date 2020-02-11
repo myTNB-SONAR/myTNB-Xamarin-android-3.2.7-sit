@@ -153,6 +153,8 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// </summary>
             void ShowEmptyErrorPin_4();
 
+            void ShowEmptyErrorPin();
+
         }
 
         public interface IUserActionsListener : IBasePresenter

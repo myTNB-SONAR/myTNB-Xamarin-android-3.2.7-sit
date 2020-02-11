@@ -39,7 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_margin="10dp"
                         android:weightSum="4"
                         android:gravity="center_horizontal">
                         <android.support.design.widget.TextInputLayout
@@ -128,11 +128,11 @@
                     <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="14dp"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     android:layout_marginTop="-50dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginRight="21dp"
                     android:text="Invalid PIN"
                     android:textColor="@color/errorColor"
                     android:visibility="gone"
