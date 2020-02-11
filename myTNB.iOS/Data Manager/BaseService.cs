@@ -92,6 +92,7 @@ namespace myTNB
 
             request.AddHeader(CONTENT_TYPE, APPLICATION_JSON);
             request.AddJsonBody(requestParams);
+            Debug.WriteLine("Service ------> " + suffix);
 
             RestResponse response = (RestResponse)client.Execute(request);
 
@@ -106,7 +107,6 @@ namespace myTNB
                     response = ExecuteWebservice(suffix, requestParams, version, env, isRetry);
                 }
             }
-            Debug.WriteLine("Service ------> " + suffix);
             return response;
         }
 

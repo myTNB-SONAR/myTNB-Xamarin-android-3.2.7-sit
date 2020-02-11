@@ -9,19 +9,43 @@ namespace myTNB
     {
         public static CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
-            return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+            if (label != null)
+            {
+                if (label.Text != null)
+                {
+                    return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+                }
+                return label.Frame.Size;
+            }
+            return new CGSize();
         }
 
         public static nfloat GetLabelHeight(this UILabel label, nfloat maxHeight)
         {
-            CGSize size = label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, (float)maxHeight));
-            return size.Height;
+            if (label != null)
+            {
+                if (label.Text != null)
+                {
+                    CGSize size = label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, (float)maxHeight));
+                    return size.Height;
+                }
+                return label.Frame.Height;
+            }
+            return 0;
         }
 
         public static nfloat GetLabelWidth(this UILabel label, nfloat maxWidth)
         {
-            CGSize size = label.Text.StringSize(label.Font, new SizeF((float)maxWidth, (float)label.Frame.Height));
-            return size.Width;
+            if (label != null)
+            {
+                if (label.Text != null)
+                {
+                    CGSize size = label.Text.StringSize(label.Font, new SizeF((float)maxWidth, (float)label.Frame.Height));
+                    return size.Width;
+                }
+                return label.Frame.Width;
+            }
+            return 0;
         }
     }
 }

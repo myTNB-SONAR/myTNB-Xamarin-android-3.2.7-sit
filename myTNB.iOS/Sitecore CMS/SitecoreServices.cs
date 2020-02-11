@@ -444,6 +444,13 @@ namespace myTNB.SitecoreCMS
                     FAQsResponseModel faqResponse = iService.GetFAQsItems();
                     if (faqResponse != null && faqResponse.Data != null && faqResponse.Data.Count > 0)
                     {
+                        for (int i = faqResponse.Data.Count - 1; i > -1; i--)
+                        {
+                            if (!faqResponse.Data[i].Question.IsValid() && !faqResponse.Data[i].Answer.IsValid())
+                            {
+                                faqResponse.Data.RemoveAt(i);
+                            }
+                        }
                         wsManager.InsertListOfItems(faqResponse.Data);
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreFAQTimeStamp");
                         Debug.WriteLine("LoadFAQs Done");

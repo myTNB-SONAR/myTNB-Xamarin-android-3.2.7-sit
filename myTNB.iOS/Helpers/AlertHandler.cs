@@ -234,6 +234,11 @@ namespace myTNB
                     {
                         string key = absURL.Split(RedirectTypeList[0])[1];
                         key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
                         ViewHelper.GoToFAQScreenWithId(key);
                         viewParent.RemoveFromSuperview();
                     }

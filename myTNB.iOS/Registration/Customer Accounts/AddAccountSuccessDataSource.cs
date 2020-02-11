@@ -24,22 +24,15 @@ namespace myTNB.Registration
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            SuccessfullyAddedAccountCell cell = tableView.DequeueReusableCell("SuccessfullyAddedAccountCell", indexPath) as SuccessfullyAddedAccountCell;
-            if (_GetStartedList?.d?.Count > 0)
+            AddCASuccessCell cell = tableView.DequeueReusableCell("AddCASuccessCell", indexPath) as AddCASuccessCell;
+            if (_GetStartedList != null && _GetStartedList.d != null && _GetStartedList.d.Count > 0)
             {
                 CustomerAccountRecordModel account = indexPath.Row < _GetStartedList?.d?.Count
-                    ? _GetStartedList?.d[indexPath.Row] : new CustomerAccountRecordModel();
-                cell.NickNameLabel.TextColor = MyTNBColor.TunaGrey();
-                cell.NickNameLabel.Font = TNBFont.MuseoSans_14_500;
-                cell.AccountNumberLabel.TextColor = MyTNBColor.TunaGrey();
-                cell.AccountNumberLabel.Font = TNBFont.MuseoSans_12_300;
-                cell.AddressTextView.TextColor = MyTNBColor.TunaGrey();
-                cell.AddressTextView.Font = TNBFont.MuseoSans_12_300;
-                cell.NickNameLabel.Text = account.accountNickName != null ? account.accountNickName : string.Empty;
-                cell.AccountNumberLabel.Text = account.accNum != null ? account.accNum : string.Empty;
-                cell.AddressTextView.Text = account.accountStAddress != null ? account.accountStAddress : string.Empty;
-                CGSize addressSize = cell.AddressTextView.SizeThatFits(new CGSize(cell.AddressTextView.Frame.Width, 1000F));
-                ViewHelper.AdjustFrameHeight(cell.AddressTextView, addressSize.Height);
+                     ? _GetStartedList?.d[indexPath.Row] : new CustomerAccountRecordModel();
+
+                cell.Name = account.accountNickName != null ? account.accountNickName : string.Empty;
+                cell.CANumber = account.accNum != null ? account.accNum : string.Empty;
+                cell.Address = account.accountStAddress != null ? account.accountStAddress : string.Empty;
             }
             return cell;
         }
