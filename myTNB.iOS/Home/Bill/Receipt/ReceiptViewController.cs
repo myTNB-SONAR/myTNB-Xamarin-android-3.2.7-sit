@@ -62,8 +62,7 @@ namespace myTNB
                             await GetPaymentReceipt();
                             InvokeOnMainThread(() =>
                             {
-                                if (_receipt != null && _receipt.d != null &&
-                                    _receipt.d.IsSuccess && _receipt.d.data != null)
+                                if (_receipt != null && _receipt.d != null && _receipt.d.IsSuccess && _receipt.d.data != null)
                                 {
                                     paymentMethod = _receipt.d.data.payMethod ?? string.Empty;
                                     CreatePDF();
@@ -71,7 +70,8 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayGenericAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle), GetI18NValue(ReceiptConstants.I18N_ReceiptErrorMsg), (obj) => { BackButtonAction(); });
+                                    DisplayGenericAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle)
+                                        , GetI18NValue(ReceiptConstants.I18N_ReceiptErrorMsg), (obj) => { BackButtonAction(); });
                                 }
                                 ActivityIndicator.Hide();
                             });

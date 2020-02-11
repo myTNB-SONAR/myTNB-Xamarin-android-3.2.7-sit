@@ -9,52 +9,43 @@ namespace myTNB
     {
         public static CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
-            if (label != null && label.Text.IsValid())
+            if (label != null)
             {
-                return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
-            }
-            else if (label != null)
-            {
+                if (label.Text != null)
+                {
+                    return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+                }
                 return label.Frame.Size;
             }
-            else
-            {
-                return new CGSize();
-            }
+            return new CGSize();
         }
 
         public static nfloat GetLabelHeight(this UILabel label, nfloat maxHeight)
         {
-            if (label != null && label.Text.IsValid())
+            if (label != null)
             {
-                CGSize size = label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, (float)maxHeight));
-                return size.Height;
-            }
-            else if (label != null)
-            {
+                if (label.Text != null)
+                {
+                    CGSize size = label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, (float)maxHeight));
+                    return size.Height;
+                }
                 return label.Frame.Height;
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
         public static nfloat GetLabelWidth(this UILabel label, nfloat maxWidth)
         {
-            if (label != null && label.Text.IsValid())
+            if (label != null)
             {
-                CGSize size = label.Text.StringSize(label.Font, new SizeF((float)maxWidth, (float)label.Frame.Height));
-                return size.Width;
-            }
-            else if (label != null)
-            {
+                if (label.Text != null)
+                {
+                    CGSize size = label.Text.StringSize(label.Font, new SizeF((float)maxWidth, (float)label.Frame.Height));
+                    return size.Width;
+                }
                 return label.Frame.Width;
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
     }
 }

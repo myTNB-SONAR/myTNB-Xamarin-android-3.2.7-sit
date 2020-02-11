@@ -87,7 +87,6 @@ namespace myTNB
         private void ScrollToRow(List<FAQsModel> faqList, string fId)
         {
             int sectionIndex = faqList.FindIndex(x => x.ID == fId);
-
             if (sectionIndex > -1)
             {
                 NSIndexPath path = NSIndexPath.FromRowSection(0, sectionIndex);

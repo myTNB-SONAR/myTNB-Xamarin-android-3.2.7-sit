@@ -28,12 +28,15 @@ namespace myTNB
             SetupSuperViewBackground();
 
             AccountsTableView.Frame = new CGRect(BaseMarginWidth16, TopPadding, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight));
+            AccountsTableView.RegisterClassForCellReuse(typeof(AddCASuccessCell), "AddCASuccessCell");
             AccountsTableView.Source = new AddAccountSuccessDataSource(GetStartedList);
             AccountsTableView.Layer.CornerRadius = GetScaledHeight(4f);
             AccountsTableView.RowHeight = RowHeight;
             AccountsTableView.BackgroundColor = UIColor.White;
             AccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             AccountsTableView.Bounces = false;
+            AccountsTableView.EstimatedRowHeight = GetScaledHeight(61);
+            AccountsTableView.RowHeight = UITableView.AutomaticDimension;
 
             UIView headerView = new UIView((new CGRect(0, 0, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight))))
             {
