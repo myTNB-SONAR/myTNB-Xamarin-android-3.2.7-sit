@@ -13,12 +13,14 @@ namespace myTNB
         UIView _parentView;
         List<LegendItemModel> _tariffLegendList = new List<LegendItemModel>();
         nfloat _totalHeight;
+        private bool _isHighlighted;
         public Func<string, string> GetI18NValue;
 
-        public TariffLegendComponent(UIView parentView, List<LegendItemModel> tariffLegendList)
+        public TariffLegendComponent(UIView parentView, List<LegendItemModel> tariffLegendList, bool isHighlighted = false)
         {
             _parentView = parentView;
             _tariffLegendList = tariffLegendList;
+            _isHighlighted = isHighlighted;
         }
 
         private void CreateComponent()
@@ -31,7 +33,7 @@ namespace myTNB
             };
             for (int i = 0; i < _tariffLegendList.Count; i++)
             {
-                _containerView.AddSubview(LegendItemView(i));
+                _containerView.AddSubview(LegendItemView(i, _isHighlighted && i == 0));
             }
             if (_tariffLegendList.Count > 0)
             {
@@ -77,7 +79,7 @@ namespace myTNB
             _containerView.AddSubview(note);
         }
 
-        private UIView LegendItemView(int index)
+        private UIView LegendItemView(int index, bool isHighlighted = false)
         {
             nfloat viewHeight = GetScaledHeight(14f) + GetScaledHeight(11f);
             nfloat viewXPos = GetScaledWidth(24f);
@@ -113,7 +115,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_10_300,
-                TextColor = UIColor.White,
+                TextColor = isHighlighted ? MyTNBColor.SunGlow : UIColor.White,
                 TextAlignment = UITextAlignment.Left,
                 Text = _tariffLegendList[index].BlockRange
             };
@@ -123,7 +125,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_10_300,
-                TextColor = UIColor.White,
+                TextColor = isHighlighted ? MyTNBColor.SunGlow : UIColor.White,
                 TextAlignment = UITextAlignment.Right,
                 Text = _tariffLegendList[index].BlockPrice
             };

@@ -1073,7 +1073,7 @@ namespace myTNB
         }
         #endregion
         #region TARIFF LEGEND Methods
-        public void SetTariffLegendComponent(List<LegendItemModel> tariffList = null)
+        public void SetTariffLegendComponent(List<LegendItemModel> tariffList = null, bool isHighlighted = false)
         {
             if (!isREAccount)
             {
@@ -1085,7 +1085,7 @@ namespace myTNB
                     {
                         _legend.RemoveFromSuperview();
                     }
-                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList)
+                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList, isHighlighted)
                     {
                         GetI18NValue = GetI18NValue
                     };
@@ -1152,7 +1152,7 @@ namespace myTNB
                 }
             );
         }
-        private void LoadTariffLegendWithIndex(int index)
+        private void LoadTariffLegendWithIndex(int index, bool isHighlighted = false)
         {
             if (_rmKwhDropDownView != null)
             {
@@ -1198,7 +1198,7 @@ namespace myTNB
                                         }
                                     }
                                     _legendIsVisible = _tariffIsVisible;
-                                    SetTariffLegendComponent(_tariffList);
+                                    SetTariffLegendComponent(_tariffList, isHighlighted);
                                 }
                                 else
                                 {

@@ -68,7 +68,7 @@ namespace myTNB
             {
                 if (usageData != null && usageData.Count > 0)
                 {
-                    LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
+                    LoadTariffLegendWithIndex.Invoke(usageData.Count - 1, false);
                 }
             }
 
@@ -105,14 +105,12 @@ namespace myTNB
                 {
                     BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                     Tag = 2001,
-                    Hidden = IsTariffView
+                    Hidden = IsTariffView && !item.DPCIndicator
                 };
                 viewBar.AddSubview(viewCover);
-                /*if (!item.DPCIndicator)
-                {*/
+
                 AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1
                     , viewCover.Frame.Size, isSelected, item.DPCIndicator);
-                //}
 
                 nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
@@ -161,18 +159,30 @@ namespace myTNB
                     OnSegmentTap(index);
                     if (LoadTariffLegendWithIndex != null)
                     {
-                        LoadTariffLegendWithIndex.Invoke(index);
+                        LoadTariffLegendWithIndex.Invoke(index, false);
                     }
                 }));
 
-                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                if (ConsumptionState == RMkWhEnum.RM || (ConsumptionState == RMkWhEnum.kWh && !item.DPCIndicator))
+                {
+                    UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                     , () =>
                     {
                         viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
                         lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
                     }
                     , () => { }
-                );
+                    );
+                }
+                else
+                {
+                    viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
+                    lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
+                    viewBar.Hidden = true;
+                    lblAmount.Hidden = true;
+                    dpcIcon.Hidden = false;
+                    dpcIcon.Alpha = isSelected ? 1 : 0.5F;
+                }
             }
 
             _mainView.AddSubview(_segmentContainer);
@@ -198,9 +208,9 @@ namespace myTNB
             UIView viewTariffContainer = new UIView(new CGRect(0, 0, size.Width, size.Height))
             {
                 Tag = 2002,
-                Hidden = !IsTariffView,
+                Hidden = !IsTariffView || (IsTariffView && isDPC),
                 ClipsToBounds = true,
-                BackgroundColor = tariffCount > 0 && !isDPC ? UIColor.Clear : UIColor.White
+                BackgroundColor = tariffCount > 0 ? UIColor.Clear : UIColor.White
             };
 
             viewTariffContainer.Alpha = isLatestBar ? 1F : 0.5F;

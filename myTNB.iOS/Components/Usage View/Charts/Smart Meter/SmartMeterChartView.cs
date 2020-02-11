@@ -140,6 +140,8 @@ namespace myTNB
                         {
                             SetRMKwHButtonState.Invoke(AccountUsageSmartCache.IsMDMSDown);
                         }
+
+                        _lblDateRange.Hidden = AccountUsageSmartCache.IsMDMSDown;
                     }
                     else
                     {
@@ -156,6 +158,7 @@ namespace myTNB
                         {
                             SetRMKwHButtonState.Invoke(false);
                         }
+                        _lblDateRange.Hidden = false;
                     }
                     CreateSegment(smartMeterViewType);
                     if (_toggleBar.SelectedSegment == 0)
@@ -331,7 +334,7 @@ namespace myTNB
             UIView viewTariffContainer = new UIView(new CGRect(xLoc, yLoc, size.Width, size.Height))
             {
                 Tag = 2002,
-                Hidden = !_isTariffView,
+                Hidden = !_isTariffView || (_isTariffView && isDPC),
                 ClipsToBounds = true,
                 BackgroundColor = tariffCount > 0 ? UIColor.Clear : UIColor.White
             };
@@ -341,7 +344,7 @@ namespace myTNB
             }
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
 
-            if (tariffCount > 0)
+            if (tariffCount > 0 && !isDPC)
             {
                 baseHeigt -= ((GetTariffWithValueCount(tariffList) - 1) * GetHeightByScreenSize(1));
                 for (int i = 0; i < tariffList.Count; i++)
@@ -463,26 +466,30 @@ namespace myTNB
                     }
                 }
             }
-            OnBarSelected(index);
-            _selectedIndex = index;
+
+            bool isHighlighted = false;
 
             if (_viewType == SmartMeterConstants.SmartMeterViewType.Month)
             {
                 List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
                 int usageDataCount = usageData != null ? usageData.Count : 0;
+                isHighlighted = usageDataCount > 0 && index == (usageDataCount - 1);
                 if (usageDataCount > 0 && index == (usageDataCount - 1) && AccountUsageSmartCache.IsMDMSDown
                     && OnMDMSIconTap != null)
                 {
                     OnMDMSIconTap.Invoke();
                 }
             }
+
+            OnBarSelected(index, isHighlighted);
+            _selectedIndex = index;
         }
 
-        private void OnBarSelected(int index)
+        private void OnBarSelected(int index, bool isHighlighted)
         {
             if (LoadTariffLegendWithIndex != null)
             {
-                LoadTariffLegendWithIndex.Invoke(index);
+                LoadTariffLegendWithIndex.Invoke(index, isHighlighted);
             }
         }
 
