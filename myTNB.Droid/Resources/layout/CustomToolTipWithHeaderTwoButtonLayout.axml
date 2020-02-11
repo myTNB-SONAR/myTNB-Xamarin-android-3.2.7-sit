@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
   <LinearLayout
       android:orientation="vertical"
-      android:layout_width="320dp"
+      android:layout_width="310dp"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:id="@+id/rootView"
