@@ -22,8 +22,8 @@
     "days": "Hari",
     "viewBill": "Lihat Bil",
     "all": "Semua",
-    "maintenanceTitle": "We're fine-tuning!",
-    "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you.",
+    "maintenanceTitle": "Kami sedang membuat penambahbaikan!",
+    "maintenanceMsg": "Kami menambahbaik beberapa ciri untuk pengalaman myTNB yang lebih baik. Nantikan ketibaannya.",
     "day": "Hari",
     "month": "Bulan",
     "customerAccountNumber": "Nombor akaun pelanggan {0}",
@@ -31,7 +31,7 @@
     "ok": "Ok",
     "acctNickname": "Nama Akaun",
     "name": "Nama",
-    "done": "Mulakan",
+    "done": "Selesai",
     "yes": "Ya",
     "no": "Tidak",
     "selectAll": "Pilih Semua",
@@ -151,7 +151,9 @@
     "whatsNewExpiredMsg": "Promosi/pengumuman ini telah tamat & dikeluarkan. Semak semula selepas ini untuk mengetahui informasi terkini tentang TNB!",
     "whatsNewExpiredBtnText": "Tunjukkan Terkini!",
     "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    "usedRewardTitle": "Ganjaran telah digunakan.",
+    "usedRewardMsg": "Tidak mengapa, kami mempunyai lebih banyak ganjaran untuk anda meneroka!"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -197,7 +199,8 @@
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "Faham!",
-    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! "
+    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
+    "receivedExtra": "terima lebih"
   },
   "Tabbar": {
     "home": "Utama",
@@ -322,7 +325,7 @@
     "SMRPhotoPopUpDetails": [
       {
         "Title": "Muat naik daripada album anda?",
-        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
+        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Single_UploadPhoto"
       },
@@ -340,7 +343,7 @@
       },
       {
         "Title": "Muat naik daripada album anda?",
-        "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
+        "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_UploadPhoto"
       },
@@ -352,7 +355,7 @@
       },
       {
         "Title": "Muat naik daripada album anda?",
-        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
+        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_UploadPhoto_One_Missing"
       }
@@ -391,7 +394,7 @@
     "pay": "Bayar",
     "mdmsUnavailable": "Tidak Tersedia Buat Masa Ini",
     "mdmsUnavailableMsg": "Maklumat penggunaan harian anda tidak tersedia buat masa ini. Sila semak kemudian.",
-    "beenPaidExtra": "Saya telah dibayar lebih",
+    "beenPaidExtra": "Saya telah terima lebih",
     "tutorialSMRTitle": "Status bacaan anda sepintas lalu.",
     "tutorialSMRDesc": "Dapatkan status bacaan anda di sini. Kami juga akan memaklumkan apabila tiba masanya untuk menghantar bacaan.",
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
@@ -409,7 +412,7 @@
     "getBy": "dapat pada",
     "myEarnings": "Pendapatan saya",
     "myHistory": "Transaksi Saya",
-    "beenPaidExtra": "Saya telah dibayar lebih",
+    "beenPaidExtra": "Saya telah terima lebih",
     "noHistoryData": "Tiada rekod bacaan meter buat masa ini.",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar",
@@ -453,7 +456,7 @@
     "title": "Butiran",
     "billDetails": "Caj Saya",
     "outstandingCharges": "Tunggakan",
-    "billThisMonth": "Caj Semasa",
+    "billThisMonth": "Caj semasa",
     "needToPay": "Jumlah perlu dibayar",
     "by": "sebelum",
     "paidExtra": "Saya telah bayar ekstra",
@@ -524,7 +527,7 @@
     "deleteAllTitle": "Buang Semua Pemberitahuan",
     "deleteMessageMultiple": "Anda pasti mahu membuang pemberitahuan ini?",
     "deleteTitleMultiple": "Buang Pemberitahuan yang Dipilih",
-    "noNotification": "Anda tiada Pemberitahuan baharu pada masa ini.",
+    "noNotification": "Tiada Pemberitahuan baharu pada masa ini.",
     "notificationDeleted": "Pemberitahuan telah dibuang.",
     "notificationsDeleted": "Pemberitahuan telah dibuang.",
     "select": "Pilih",
@@ -539,13 +542,15 @@
     "viewMyUsage": "Lihat Penggunaan Saya",
     "submitMeterReading": "Hantar Bacaan Meter",
     "reenableSSMR": "Aktifkan semula SMR",
-    "viewReadingHistory": "Kembali ke Penggunaan"
+    "viewReadingHistory": "Kembali ke Penggunaan",
+    "paymentHistory": "Rekod bayaran",
+    "viewReceipt": "Melihat Resit"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
     "noAcctFoundMsg": "Sila tekan butang di bawah untuk menambah akaun elektrik TNB anda.",
     "supplyAcctCount": "akaun elektrik ditemui!",
-    "addAnotherAcct": "Tambah Akaun Lain",
+    "addAnotherAcct": "Tambah Akaun",
     "addAccount": "Akaun Sedang Ditambah",
     "addAccounts": "Akaun Sedang Ditambah",
     "addAccountMsg": "Ini mungkin akan ambil masa sedikit. Sila tunggu sebentar.",
@@ -599,7 +604,8 @@
     "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
     "electricityAccount": "Akaun Elektrik",
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
-    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar."
+    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
+    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah."
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -747,7 +753,7 @@
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
-    "noCards": "Tiada kad kedit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
+    "noCards": "Tiada kad kredit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
     "details": "Anda hanya boleh menambah kad kredit / debit baharu semasa membuat pembayaran.",
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
@@ -773,7 +779,7 @@
     "invalidName": "Nama Tidak Sah",
     "cardExpiry": "Tarikh Luput Kad",
     "invalidCardExpiry": "Tarikh Luput Kad Tidak Sah",
-    "hintCardExpiry": "Tarikh Luput Kad (MM/YY)",
+    "hintCardExpiry": "Tarikh Luput Kad (BB/TT)",
     "cvv": "CVV",
     "invalidCVV": "CVV Tidak Sah",
     "saveCardMessage": "Saya ingin menyimpan kad ini untuk kegunaan masa hadapan.",
@@ -789,7 +795,7 @@
   },
   "Receipt": {
     "title": "Resit Pembayaran",
-    "accountHolder": "Nama Pemilik Akaun",
+    "accountHolder": "Nama Pemegang Akaun",
     "receiptFilename": "Resit-{0}.pdf",
     "fullMessage": "Terima kasih kerana menggunakan myTNB.\nSukacita dimaklumkan bahawa pembayaran dalam talian berikut menerusi {0} telah berjaya:",
     "messagePartOne": "Terima kasih kerana menggunakan myTNB.",
@@ -854,7 +860,7 @@
     "pay": "Bayar"
   },
   "RatingResults": {
-    "description": "Penarafan anda akan membantu kami meningkatkan mutu perkhidmatan kepada anda.",
+    "description": "Penarafan anda akan membantu kami melayan anda dengan lebih baik.",
     "thankyou": "Terima Kasih.",
     "backToHome": "Kembali ke Utama"
   },

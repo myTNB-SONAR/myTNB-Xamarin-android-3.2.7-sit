@@ -10,13 +10,14 @@ namespace myTNB_Android.Src.Billing.MVP
     {
         public interface IView
         {
-            void ShowBillPDF(string selectedBillJson = null);
+            void ShowBillPDF();
             void ShowProgressDialog();
             void HideProgressDialog();
             void ShowBillErrorSnackBar();
             void ShowBillDetails(List<AccountChargeModel> accountChargeModelList);
             void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
             void OnUpdatePendingPayment(bool mIsPendingPayament);
+            void ShowViewBillError(string title, string message);
         }
 
         public interface IPresenter
