@@ -507,6 +507,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         }
 
+        public void ShowEmptyErrorPin()
+        {
+
+        }
+
         private void EmailTextChange(object sender, TextChangedEventArgs e)
         {
             try

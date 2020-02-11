@@ -41,6 +41,7 @@ using myTNB_Android.Src.ViewReceipt.Activity;
 using static Android.Views.View;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -213,9 +214,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             if (extras != null && extras.ContainsKey("FROM_NOTIFICATION"))
             {
-                mPresenter.OnAccountSelectDashBoard();
-                isFromNotification = true;
-                alreadyStarted = true;
+                if (extras.ContainsKey("MENU"))
+                {
+                    if (extras.GetString("MENU") == "BillMenu")
+                    {
+                        AccountData selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("DATA"));
+                        alreadyStarted = true;
+                        ShowBillMenu(selectedAccountData);
+                    }
+                }
+                else
+                {
+                    mPresenter.OnAccountSelectDashBoard();
+                    isFromNotification = true;
+                    alreadyStarted = true;
+                }
             }
 
             if (extras != null && extras.ContainsKey("urlSchemaData"))
@@ -385,6 +398,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowBillMenu(AccountData selectedAccount)
         {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowBackButton(false);
             txtAccountName.Visibility = ViewStates.Gone;
             currentFragment = new ItemisedBillingMenuFragment();

@@ -145,6 +145,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             void ShowRetryOptionsUnknownException(Exception exception);
 
             void ShowNotificationCount(int count);
+
+            void ShowEmptyErrorPin();
         }
 
         public interface IUserActionsListener : IBasePresenter

@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.Notifications.MVP
         {
             //UserNotificationData userNotificationData = recyclerView.GetAdapter();
             NotificationRecyclerAdapter notificationAdapter = (NotificationRecyclerAdapter)recyclerView.GetAdapter();
-            if (notificationAdapter.GetItemObject(viewHolder.AdapterPosition).IsRead)
+            if (viewHolder != null && viewHolder.AdapterPosition > -1 && notificationAdapter.GetItemObject(viewHolder.AdapterPosition).IsRead)
             {
                 return MakeMovementFlags(0, ItemTouchHelper.Left);
             }
@@ -114,7 +114,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                         itemView.Right + (int)dX, itemView.Top, itemView.Right, itemView.Bottom);
                 bg.Draw(c);
 
-                rightButton = new RectF(itemView.Right - (buttonWidth - 20), itemView.Top, itemView.Right, itemView.Bottom);
+                rightButton = new RectF(itemView.Right - (buttonWidth - 5), itemView.Top, itemView.Right, itemView.Bottom);
                 p.Color = Color.Red;
                 c.DrawRoundRect(rightButton, 0, 0, p);
 

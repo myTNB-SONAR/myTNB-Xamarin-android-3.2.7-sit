@@ -26,8 +26,7 @@ using System.Runtime;
 
 namespace myTNB_Android.Src.Login.Activity
 {
-    [Activity(NoHistory = true
-              , Icon = "@drawable/ic_launcher"
+    [Activity(Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Login")]
     public class LoginActivity : BaseActivityCustom, LoginContract.IView
@@ -124,13 +123,7 @@ namespace myTNB_Android.Src.Login.Activity
                 txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, txtInputLayoutPassword));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
-                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
-                string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
-
-                txtEmail.Append(savedEmail);
-
                 GenerateTopLayoutLayout();
-
 
                 if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
                 {
@@ -138,11 +131,31 @@ namespace myTNB_Android.Src.Login.Activity
                     txtPassword.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
                 }
 
+                ClearFields();
+
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ClearFields()
+        {
+            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
+            string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
+            if (!string.IsNullOrEmpty(savedEmail.Trim()))
+            {
+                txtEmail.Append(savedEmail.Trim());
+            }
+            else
+            {
+                txtEmail.Text = "";
+            }
+
+            txtPassword.Text = "";
+            txtEmail.ClearFocus();
+            txtPassword.ClearFocus();
         }
 
         private bool onLongClick(object sender, View.LongClickEventArgs e)

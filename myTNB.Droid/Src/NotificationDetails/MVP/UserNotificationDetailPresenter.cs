@@ -18,6 +18,7 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -195,6 +196,29 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             //pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "contactTNB"), delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedCommonLabel("tryAgain"),
+                                delegate () { ShowSelectBill(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_payment_success_banner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "paymentHistory"),
+                                delegate () { ViewBillHistory(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+                            if (notificationDetails.MerchantTransId != null)
+                            {
+                                secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewReceipt"),
+                                delegate () { ShowPaymentReceipt(notificationDetails); });
+                                ctaList.Add(secondaryCTA);
+                            }
                             break;
                         }
                     default:
@@ -566,6 +590,62 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountChargeModelList.Add(accountChargeModel);
             });
             return accountChargeModelList;
+        }
+
+        private void ViewBillHistory(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+
+            accountData.AccountNickName = account.AccDesc;
+            accountData.AccountName = account.OwnerName;
+            accountData.AccountNum = account.AccNum;
+            accountData.AddStreet = account.AccountStAddress;
+            accountData.IsOwner = account.isOwned;
+            accountData.AccountCategoryId = account.AccountCategoryId;
+            this.mView.ViewBillHistory(accountData);
+        }
+
+        private async void ShowPaymentReceipt(Models.NotificationDetails notificationDetails)
+        {
+            string selectedAccountNumber = notificationDetails.AccountNum;
+            string detailedInfoNumber = notificationDetails.MerchantTransId;
+            bool isOwnedAccount = true;
+            bool showAllReceipt = true;
+            this.mView.ShowLoadingScreen();
+            try
+            {
+                GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
+                    CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
+                
+                if (result.IsSuccessResponse())
+                {
+                    this.mView.ShowPaymentReceipt(result);
+                }
+                else
+                {
+                    this.mView.HideLoadingScreen();
+                    this.mView.ShowPaymentReceiptError();
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(e);
+                this.mView.ShowPaymentReceiptError();
+            }
+        }
+
+        private void ShowSelectBill(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            accountData.AccountNum = notificationDetails.AccountNum;
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+
+            this.mView.ShowSelectBill(accountData);
         }
 
         private void EvaluateAmountDue(AccountChargeModel accountChargeModel)

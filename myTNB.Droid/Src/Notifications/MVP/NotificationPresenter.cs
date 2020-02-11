@@ -194,6 +194,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                     this.mView.ShowRetryOptionsCancelledException(null);
                 }
 
+                ////MOCK RESPONSE
                 //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
                 this.mView.HideProgress();
             }
@@ -453,105 +454,6 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         }
 
-//        public async void QueryNotifications(string deviceId)
-//        {
-//            cts = new CancellationTokenSource();
-//            if (mView.IsActive())
-//            {
-//                this.mView.ShowQueryProgress();
-//            }
-//#if DEBUG
-//            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-//            var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
-//#else
-//            var api = RestService.For<AppLaunch.Api.INotificationApi>(Constants.SERVER_URL.END_POINT);
-//#endif
-
-//            try
-//            {
-//                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-//                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
-//                {
-
-//                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-//                        response.Data.ResponseData.UserNotificationList.Count > 0)
-//                    {
-//                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
-//                        {
-//                            // tODO : SAVE ALL NOTIFICATIONs
-//                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-//                        }
-//                    }
-//                }
-
-//                UserEntity loggedUser = UserEntity.GetActive();
-//                var userNotificationResponse = await api.GetUserNotifications(new AppLaunch.Requests.UserNotificationRequest()
-//                {
-//                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-//                    Email = loggedUser.Email,
-//                    DeviceId = deviceId
-
-//                }, cts.Token);
-
-//                if (mView.IsActive())
-//                {
-//                    this.mView.HideQueryProgress();
-//                }
-
-//                if (userNotificationResponse != null && userNotificationResponse.Data != null && userNotificationResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-//                {
-//                    this.mView.ShowRefreshView(userNotificationResponse.Data.RefreshMessage, userNotificationResponse.Data.RefreshBtnText);
-//                }
-//                else if (userNotificationResponse != null && userNotificationResponse.Data != null && !userNotificationResponse.Data.IsError)
-//                {
-//                    if (userNotificationResponse.Data.Data.Count() > 0)
-//                    {
-//                        try
-//                        {
-//                            UserNotificationEntity.RemoveAll();
-//                        }
-//                        catch (System.Exception ne)
-//                        {
-//                            Utility.LoggingNonFatalError(ne);
-//                        }
-//                    }
-//                    foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
-//                    {
-//                        // tODO : SAVE ALL NOTIFICATIONs
-//                        UserNotificationEntity.InsertOrReplace(userNotification);
-//                    }
-//                    this.mView.ShowView();
-//                    this.mView.ClearAdapter();
-//                    this.ShowFilteredList();
-//                }
-//                else
-//                {
-//                    this.mView.ShowRefreshView(null, null);
-//                }
-//            }
-//            catch (ApiException apiException)
-//            {
-
-//                if (mView.IsActive())
-//                {
-//                    this.mView.HideQueryProgress();
-//                }
-//                this.mView.ShowRefreshView(null, null);
-//                Utility.LoggingNonFatalError(apiException);
-//            }
-//            catch (Exception e)
-//            {
-
-//                if (mView.IsActive())
-//                {
-//                    this.mView.HideQueryProgress();
-//                }
-//                this.mView.ShowRefreshView(null, null);
-//                Utility.LoggingNonFatalError(e);
-//            }
-
-//        }
-
         public void Start()
         {
             ShowFilteredList();
@@ -641,10 +543,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                     }
                 }
 
-                ////MOCK DATA
+                ////MOCK DATA FOR TESTING - DO NOT DELETE
                 //listOfNotifications.Clear();
                 //UserNotificationData data = new UserNotificationData();
-                //data.BCRMNotificationTypeId = "01";
+                //data.BCRMNotificationTypeId = Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID;
                 //data.CreatedDate = "9/1/2019 5:00:00 PM";
                 //data.IsRead = false;
                 //data.Title = "New Bill";
@@ -652,7 +554,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 //listOfNotifications.Add(data);
 
                 //data = new UserNotificationData();
-                //data.BCRMNotificationTypeId = "02";
+                //data.BCRMNotificationTypeId = Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID;
                 //data.CreatedDate = "9/1/2019 5:00:00 PM";
                 //data.IsRead = false;
                 //data.Title = "Bill Due";
