@@ -41,11 +41,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
         {
         }
 
-        //public NotificationRecyclerAdapter(Context context, bool notify) : base(notify)
-        //{
-        //    notifyContext = context;
-        //}
-
         public NotificationRecyclerAdapter(Context context, NotificationContract.IView notificatonListener, bool notify) : base(notify)
         {
             notifyContext = context;
@@ -131,6 +126,14 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MAINTENANCE_ID))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_settings));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_PAYMENT_FAILED_ID))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_payment_failed));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_payment_success));
                 }
                 else
                 {
