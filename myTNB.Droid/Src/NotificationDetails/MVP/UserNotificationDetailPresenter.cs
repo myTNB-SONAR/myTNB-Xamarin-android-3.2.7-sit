@@ -213,10 +213,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "paymentHistory"),
                                 delegate () { ViewBillHistory(notificationDetails); });
                             ctaList.Add(primaryCTA);
-
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewReceipt"),
+                            if (notificationDetails.MerchantTransId != null)
+                            {
+                                secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewReceipt"),
                                 delegate () { ShowPaymentReceipt(notificationDetails); });
-                            ctaList.Add(secondaryCTA);
+                                ctaList.Add(secondaryCTA);
+                            }
                             break;
                         }
                     default:
@@ -609,7 +611,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         private async void ShowPaymentReceipt(Models.NotificationDetails notificationDetails)
         {
             string selectedAccountNumber = notificationDetails.AccountNum;
-            string detailedInfoNumber = notificationDetails.merchantTransactionID;
+            string detailedInfoNumber = notificationDetails.MerchantTransId;
             bool isOwnedAccount = true;
             bool showAllReceipt = true;
             this.mView.ShowLoadingScreen();
