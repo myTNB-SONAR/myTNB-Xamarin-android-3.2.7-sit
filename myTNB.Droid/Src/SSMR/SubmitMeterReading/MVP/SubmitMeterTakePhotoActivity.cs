@@ -462,6 +462,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             Finish();
         }
 
+        public void ShowMeterReadingPageWithError()
+        {
+            SetResult(Result.Ok);
+            Finish();
+        }
+
         private void ShowTakePhotoTooltip()
         {
             List<string> needMeterCaptureList = new List<string>();
