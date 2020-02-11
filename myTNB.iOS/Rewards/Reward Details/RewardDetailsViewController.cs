@@ -132,6 +132,7 @@ namespace myTNB
             }
             _exitSeconds = _currentSeconds;
             _exitTime = DateTime.Now;
+            _countdownHasStarted = _exitSeconds > 0;
         }
 
         private void OnChangeStatusBarFrame(NSNotification notification)
