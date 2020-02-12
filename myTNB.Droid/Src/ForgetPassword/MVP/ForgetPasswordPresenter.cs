@@ -131,7 +131,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 {
                     string errorMessage = forgetPasswordResponse.Response.DisplayMessage;
                     this.mView.ShowError(errorMessage);
-                    this.mView.ShowEmptyErrorPin_4();
+                    this.mView.ShowEmptyErrorPin();
                 }
                 else
                 {

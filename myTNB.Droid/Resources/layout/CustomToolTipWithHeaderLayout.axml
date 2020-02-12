@@ -6,9 +6,11 @@
     android:layout_height="wrap_content">
   <LinearLayout
       android:orientation="vertical"
-      android:layout_width="284dp"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      android:layout_marginLeft="18dp"
+      android:layout_marginRight="18dp"
       android:id="@+id/rootView"
       android:background="@drawable/custom_round_white_dialog_shadow">
     <TextView

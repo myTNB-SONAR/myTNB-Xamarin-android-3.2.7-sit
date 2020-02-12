@@ -5093,6 +5093,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
+                                    if (smStatisticContainer.Visibility == ViewStates.Visible && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                                    {
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                    }
+
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
                                     SetVirtualHeightParams(6f);
@@ -5454,7 +5459,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                                    {
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                    }
                                 }
                             }
                         }
@@ -6412,7 +6420,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         re_img.Visibility = ViewStates.Visible;
                                         rePayableLayout.Visibility = ViewStates.Visible;
-                                        // txtWhyThisAmt.Visibility = ViewStates.Gone;
                                         selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                                         double calAmt = selectedAccount.AmtCustBal * -1;
 
@@ -6541,24 +6548,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         re_img.Visibility = ViewStates.Visible;
                                         rePayableLayout.Visibility = ViewStates.Visible;
-                                        // txtWhyThisAmt.Visibility = ViewStates.Gone;
                                         selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                                         double calAmt = selectedAccount.AmtCustBal * -1;
+                                        txtTotalPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        reTotalPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
+                                        txtReNoPayable.Text = decimalFormat.Format(System.Math.Abs(selectedAccount.AmtCustBal));
                                         if (calAmt <= 0)
                                         {
-                                            calAmt = 0.00;
-                                        }
-                                        else
-                                        {
-                                            calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
-                                        }
-
-                                        if (System.Math.Abs(calAmt) < 0.0001)
-                                        {
-                                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
-                                            reTotalPayable.Text = decimalFormat.Format(calAmt);
-                                            txtDueDate.Text = "- -";
-                                            reDueDate.Text = "- -";
+                                            rePayableLayout.Visibility = ViewStates.Gone;
+                                            reNoPayableLayout.Visibility = ViewStates.Visible;
+                                            if (System.Math.Abs(calAmt) < 0.0001)
+                                            {
+                                                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
+                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            }
+                                            else
+                                            {
+                                                txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
+                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            }
                                         }
                                         else
                                         {
@@ -6569,14 +6579,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                                         double calAmt = selectedAccount.AmtCustBal;
-                                        if (calAmt <= 0.00 && System.Math.Abs(calAmt) < 0.0001)
+                                        if (calAmt <= 0.00)
                                         {
                                             totalPayableLayout.Visibility = ViewStates.Gone;
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                                            txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
-                                            txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                            txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            if (System.Math.Abs(calAmt) < 0.0001)
+                                            {
+                                                txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
+                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            }
+                                            else
+                                            {
+                                                txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
+                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                            }
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
 
@@ -7184,6 +7203,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             }
                                             rootView.SetBackgroundResource(Resource.Color.greyBackground);
                                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+
+                                            if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                                            {
+                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                            }
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7245,6 +7269,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         rootView.SetBackgroundResource(Resource.Color.greyBackground);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+
+                                        if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                                        {
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                        }
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }

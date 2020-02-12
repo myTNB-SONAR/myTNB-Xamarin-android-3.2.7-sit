@@ -190,7 +190,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNumber");
             contactDetailConsent.Text = GetLabelByLanguage("editContactInfo");
             terminationReasonTitle.Text = GetLabelByLanguage("terminateTitle");
-            txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason");
+            txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason").ToUpper();
             btnDisconnectionSubmit.Text = GetLabelCommonByLanguage("submit");
             txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
 
@@ -213,6 +213,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
+            txtReason.AddTextChangedListener(new InputFilterFormField(txtReason, txtInputLayoutTxtReason));
             txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
 
             txtSelectReason.EnableClick();

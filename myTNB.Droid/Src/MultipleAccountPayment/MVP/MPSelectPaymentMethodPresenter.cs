@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 Log.Debug(TAG, e.StackTrace);
                 this.mView.HideGetRegisteredCardDialog();
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage("Unable to fetch card information");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
             }
 
         }

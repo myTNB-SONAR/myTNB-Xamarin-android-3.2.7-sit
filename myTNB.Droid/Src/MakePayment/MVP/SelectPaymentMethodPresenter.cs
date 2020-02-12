@@ -147,7 +147,7 @@ namespace myTNB_Android.Src.MakePayment.MVP
                 {
                     this.mView.HideGetRegisteredCardDialog();
                 }
-                this.mView.ShowErrorMessage("Unable to fetch card information");
+                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(e);
             }
 
