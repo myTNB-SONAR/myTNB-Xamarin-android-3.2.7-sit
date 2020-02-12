@@ -419,5 +419,27 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetPaymentReceipt<GetPaymentReceiptResponse>(request, token);
         }
+
+
+
+        public Task<UserNotificationResponse> GetUserNotifications([Body] Request.BaseRequest request)
+        {
+            return api.GetUserNotifications<UserNotificationResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        public Task<GetPaymentReceiptResponse> GetNotificationDetails([Body] Request.BaseRequest request)
+        {
+            return api.GetNotificationDetails<GetPaymentReceiptResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        public Task<GetPaymentReceiptResponse> DeleteUserNotification([Body] Request.BaseRequest request)
+        {
+            return api.DeleteUserNotification<GetPaymentReceiptResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        public Task<GetPaymentReceiptResponse> ReadUserNotification([Body] Request.BaseRequest request)
+        {
+            return api.ReadUserNotification<GetPaymentReceiptResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

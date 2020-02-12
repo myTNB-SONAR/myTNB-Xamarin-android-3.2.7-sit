@@ -306,10 +306,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
-                                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                                if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
-                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
+                                    if (response.GetData() != null && response.GetData().UserNotificationList != null)
                                     {
                                         try
                                         {
@@ -320,7 +320,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             Utility.LoggingNonFatalError(ne);
                                         }
 
-                                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                         {
                                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                         }
@@ -331,20 +331,20 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     }
                                     else
                                     {
-                                        this.mView.ShowRefreshView(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                        this.mView.ShowRefreshView(true, response.Response.RefreshMessage, response.Response.RefreshBtnText);
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen
                                     string contentTxt = "";
-                                    if (response != null && response.Data != null)
+                                    if (response != null && response.Response != null)
                                     {
-                                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                                        if (!string.IsNullOrEmpty(response.Response.DisplayMessage))
                                         {
-                                            contentTxt = response.Data.DisplayMessage;
+                                            contentTxt = response.Response.DisplayMessage;
                                         }
                                     }
                                     this.mView.ShowRefreshView(false, contentTxt, "");
@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 else
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                    this.mView.ShowRefreshView(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                    this.mView.ShowRefreshView(true, response.Response.RefreshMessage, response.Response.RefreshBtnText);
                                 }
 
                                 this.mView.HideQueryProgress();

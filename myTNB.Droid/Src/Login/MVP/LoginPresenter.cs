@@ -283,11 +283,10 @@ namespace myTNB_Android.Src.Login.MVP
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
-                                NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                                if(response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                                if(response.IsSuccessResponse())
                                 {
-                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
+                                    if (response.GetData() != null)
                                     {
                                         try
                                         {
@@ -298,7 +297,7 @@ namespace myTNB_Android.Src.Login.MVP
                                             Utility.LoggingNonFatalError(ne);
                                         }
 
-                                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                         {
                                             // tODO : SAVE ALL NOTIFICATIONs
                                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
@@ -311,7 +310,7 @@ namespace myTNB_Android.Src.Login.MVP
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                 }

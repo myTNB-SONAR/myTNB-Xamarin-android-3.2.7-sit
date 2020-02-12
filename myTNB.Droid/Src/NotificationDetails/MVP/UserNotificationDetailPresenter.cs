@@ -26,7 +26,6 @@ using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
-using static myTNB_Android.Src.AppLaunch.Models.UserNotificationResponse;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
