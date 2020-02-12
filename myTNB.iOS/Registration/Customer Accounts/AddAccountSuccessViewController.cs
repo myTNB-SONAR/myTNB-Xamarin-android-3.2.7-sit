@@ -31,11 +31,10 @@ namespace myTNB
             AccountsTableView.RegisterClassForCellReuse(typeof(AddCASuccessCell), "AddCASuccessCell");
             AccountsTableView.Source = new AddAccountSuccessDataSource(GetStartedList);
             AccountsTableView.Layer.CornerRadius = GetScaledHeight(4f);
-            AccountsTableView.RowHeight = RowHeight;
-            AccountsTableView.BackgroundColor = UIColor.White;
+            AccountsTableView.BackgroundColor = UIColor.Clear;
             AccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             AccountsTableView.Bounces = false;
-            AccountsTableView.EstimatedRowHeight = GetScaledHeight(61);
+            AccountsTableView.EstimatedRowHeight = GetScaledHeight(74);
             AccountsTableView.RowHeight = UITableView.AutomaticDimension;
 
             UIView headerView = new UIView((new CGRect(0, 0, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight))))
@@ -83,15 +82,9 @@ namespace myTNB
             View.AddSubview(btnStart);
 
             float maxTableHeight = (float)(View.Frame.Height - btnStart.Frame.Height - DeviceHelper.GetScaledHeight(TopPadding * 2));
-            float tableHeight = (float)AccountsTableView.Frame.Height;
             if (GetStartedList != null && GetStartedList?.d != null && GetStartedList?.d?.Count > 0)
             {
-                tableHeight += (RowHeight * GetStartedList.d.Count);
-                if (tableHeight > maxTableHeight)
-                {
-                    tableHeight = maxTableHeight;
-                }
-                ViewHelper.AdjustFrameSetHeight(AccountsTableView, tableHeight);
+                ViewHelper.AdjustFrameSetHeight(AccountsTableView, maxTableHeight);
             }
         }
 
