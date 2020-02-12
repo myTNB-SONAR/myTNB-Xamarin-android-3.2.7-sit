@@ -34,7 +34,7 @@ namespace myTNB.Registration.CustomerAccounts
             if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
                 && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null)
             {
-                foreach (var account in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d)
+                foreach (CustomerAccountRecordModel account in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d)
                 {
                     if (account.isLocal == false)
                     {
@@ -142,7 +142,7 @@ namespace myTNB.Registration.CustomerAccounts
                 BackgroundColor = MyTNBColor.SectionGrey
             };
 
-            var lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(18), 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(36), ScaleUtility.GetScaledHeight(140)));
+            UILabel lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(18), 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(36), ScaleUtility.GetScaledHeight(140)));
 
             if (section == 0)
             {
@@ -156,7 +156,7 @@ namespace myTNB.Registration.CustomerAccounts
                         : GetI18NValue(AddAccountConstants.I18N_NoAcctsTitle)
                     };
 
-                    var txtViewSubDetails = new UITextView(new CGRect(ScaleUtility.GetScaledWidth(14), ScaleUtility.GetScaledHeight(36), tableView.Frame.Width - ScaleUtility.GetScaledWidth(30), ScaleUtility.GetScaledHeight(60)))
+                    UITextView txtViewSubDetails = new UITextView(new CGRect(ScaleUtility.GetScaledWidth(14), ScaleUtility.GetScaledHeight(36), tableView.Frame.Width - ScaleUtility.GetScaledWidth(30), ScaleUtility.GetScaledHeight(60)))
                     {
                         Font = TNBFont.MuseoSans_14_300,
                         TextColor = MyTNBColor.TunaGrey(),
@@ -203,8 +203,7 @@ namespace myTNB.Registration.CustomerAccounts
             CustomerAccountRecordModel localAcount = new CustomerAccountRecordModel();
             CustomerAccountRecordModel acount = new CustomerAccountRecordModel();
 
-            var cell = tableView.DequeueReusableCell("accountCell", indexPath) as AccountRecordsTableViewCell;
-            cell.SetScale();
+            AccountRecordsTableViewCell cell = tableView.DequeueReusableCell("accountCell", indexPath) as AccountRecordsTableViewCell;
             cell.SeparatorView.BackgroundColor = MyTNBColor.SectionGrey;
             cell.NicknameTextField.Placeholder = LanguageUtility.GetCommonI18NValue(Constants.Common_AccountNickname);
             TextFieldHelper tfHelper = new TextFieldHelper();
@@ -252,8 +251,8 @@ namespace myTNB.Registration.CustomerAccounts
 
             cell.DeleteButton.TouchUpInside += (object sender, EventArgs e) =>
             {
-                var nickName = acount?.accDesc ?? string.Empty;
-                var accountNumber = acount?.accNum ?? string.Empty;
+                string nickName = acount?.accDesc ?? string.Empty;
+                string accountNumber = acount?.accNum ?? string.Empty;
 
                 _controller.DisplayCustomAlert(GetI18NValue(AddAccountConstants.I18N_RemoveAcct)
                     , string.Format(GetI18NValue(AddAccountConstants.I18N_RemoveAcctMsg), nickName, accountNumber)
@@ -264,6 +263,9 @@ namespace myTNB.Registration.CustomerAccounts
             };
 
             cell.NickNameTitle = LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_AcctNickname).ToUpper();
+
+            cell.NicknameTextField.LeftViewMode = cell.NicknameTextField.Text.IsValid() ? UITextFieldViewMode.Never : UITextFieldViewMode.UnlessEditing;
+            cell.SetScale();
 
             UITextField txtFieldNickname = cell.NicknameTextField;
             UILabel title = cell.NickNameTitleLabel;
@@ -363,10 +365,7 @@ namespace myTNB.Registration.CustomerAccounts
             };
             textField.EditingDidEnd += (sender, e) =>
             {
-                if (textField.Text.Length == 0)
-                {
-                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
-                }
+                textField.LeftViewMode = textField.Text.Length == 0 ? UITextFieldViewMode.UnlessEditing : UITextFieldViewMode.Never;
                 _controller?.UpdateControlStates();
             };
             textField.ShouldChangeCharacters = (txtField, range, replacementString) =>
