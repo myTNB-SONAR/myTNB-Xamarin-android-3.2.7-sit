@@ -77,6 +77,9 @@ namespace myTNB_Android.Src.UpdateMobileNo
         [BindView(Resource.Id.txtInputLayoutNumber_4)]
         TextInputLayout txtInputLayoutNumber_4;
 
+        [BindView(Resource.Id.txtErrorPin)]
+        TextView txtErrorPin;
+
         //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
@@ -129,11 +132,14 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
+                TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
 
                 txtInfoTitle.Text = string.Format(Utility.GetLocalizedLabel("VerifyPin", "otpMobileUpdate"), newPhoneNo);
                 txtDidntReceive.Text = Utility.GetLocalizedLabel("VerifyPin","smsNotReceived");
                 btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 OnCompleteResend.Text = Utility.GetLocalizedCommonLabel("resend");
+                txtErrorPin.Text = Utility.GetLocalizedErrorLabel("invalid_pin");
+                txtErrorPin.Visibility = ViewStates.Gone;
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -244,7 +250,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
                 if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
                 {
-                    ShowEmptyErrorPin_4();
+                    //ShowEmptyErrorPin_4();
                     return;
                 }
                 if (ConnectionUtils.HasInternetConnection(this))
@@ -462,12 +468,22 @@ namespace myTNB_Android.Src.UpdateMobileNo
             txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
+        public void ShowEmptyErrorPin()
+        {
+            txtInputLayoutNumber_1.Error = " ";
+            txtInputLayoutNumber_2.Error = " ";
+            txtInputLayoutNumber_3.Error = " ";
+            txtInputLayoutNumber_4.Error = " ";
+            txtErrorPin.Visibility = ViewStates.Visible;
+        }
+
         public void ClearErrors()
         {
             txtInputLayoutNumber_1.Error = null;
             txtInputLayoutNumber_2.Error = null;
             txtInputLayoutNumber_3.Error = null;
             txtInputLayoutNumber_4.Error = null;
+            txtErrorPin.Visibility = ViewStates.Gone;
         }
 
         private Snackbar mCancelledExceptionSnackBar;

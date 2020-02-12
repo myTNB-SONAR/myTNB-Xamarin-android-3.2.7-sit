@@ -12997,8 +12997,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e0533
 			public const int txtDialogMessage = 2131625267;
 			
-			// aapt resource value: 0x7f0e02ae
-			public const int txtDidntReceive = 2131624622;
+			// aapt resource value: 0x7f0e02af
+			public const int txtDidntReceive = 2131624623;
 			
 			// aapt resource value: 0x7f0e03c3
 			public const int txtDoubleTapDismiss = 2131624899;
@@ -13032,6 +13032,9 @@ namespace myTNB_Android
 			
 			// aapt resource value: 0x7f0e029f
 			public const int txtEnterEmailTitle = 2131624607;
+			
+			// aapt resource value: 0x7f0e02ae
+			public const int txtErrorPin = 2131624622;
 			
 			// aapt resource value: 0x7f0e0233
 			public const int txtFaq10Content = 2131624499;
@@ -13675,14 +13678,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0e0053
 			public const int useLogo = 2131624019;
 			
+			// aapt resource value: 0x7f0e02b3
+			public const int verifyCodeBtnLogin = 2131624627;
+			
 			// aapt resource value: 0x7f0e02b2
-			public const int verifyCodeBtnLogin = 2131624626;
+			public const int verifyCodeTxtContentInfo = 2131624626;
 			
 			// aapt resource value: 0x7f0e02b1
-			public const int verifyCodeTxtContentInfo = 2131624625;
-			
-			// aapt resource value: 0x7f0e02b0
-			public const int verifyCodeTxtTitleInfo = 2131624624;
+			public const int verifyCodeTxtTitleInfo = 2131624625;
 			
 			// aapt resource value: 0x7f0e0082
 			public const int vertical = 2131624066;

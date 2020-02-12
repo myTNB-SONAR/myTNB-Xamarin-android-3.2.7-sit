@@ -77,6 +77,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         [BindView(Resource.Id.txtInputLayoutNumber_4)]
         TextInputLayout txtInputLayoutNumber_4;
 
+        [BindView(Resource.Id.txtErrorPin)]
+        TextView txtErrorPin;
+
         private string email;
         private bool resendCalled = false;
 
@@ -103,10 +106,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
+                TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
 
                 txtDidntReceive.Text = GetLabelByLanguage("emailNotReceived");
                 btnResend.Text = Utility.GetLocalizedLabel("Common", "resend");
                 OnCompleteResend.Text = Utility.GetLocalizedLabel("Common", "resend");
+                txtErrorPin.Text = Utility.GetLocalizedErrorLabel("invalid_pin");
+                txtErrorPin.Visibility = ViewStates.Gone;
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -225,7 +231,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
                 if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
                 {
-                    ShowEmptyErrorPin_4();
+                    // ShowEmptyErrorPin_4();
                     return;
                 }
 
@@ -245,12 +251,22 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             mPresenter.ResendCode(email);
         }
 
+        public void ShowEmptyErrorPin()
+        {
+            txtInputLayoutNumber_1.Error = " ";
+            txtInputLayoutNumber_2.Error = " ";
+            txtInputLayoutNumber_3.Error = " ";
+            txtInputLayoutNumber_4.Error = " ";
+            txtErrorPin.Visibility = ViewStates.Visible;
+        }
+
         public void ClearErrors()
         {
             txtInputLayoutNumber_1.Error = null;
             txtInputLayoutNumber_2.Error = null;
             txtInputLayoutNumber_3.Error = null;
             txtInputLayoutNumber_4.Error = null;
+            txtErrorPin.Visibility = ViewStates.Gone;
         }
 
         public bool IsActive()

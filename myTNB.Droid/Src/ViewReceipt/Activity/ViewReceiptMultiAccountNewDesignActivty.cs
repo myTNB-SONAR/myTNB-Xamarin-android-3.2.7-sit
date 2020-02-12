@@ -155,29 +155,37 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                 Bundle extras = Intent.Extras;
 
-                if (extras.ContainsKey("SELECTED_ACCOUNT_NUMBER"))
+                if (extras != null && extras.ContainsKey("ReceiptResponse"))
                 {
-                    selectedAccountNumber = extras.GetString("SELECTED_ACCOUNT_NUMBER");
-                }
-                if (extras.ContainsKey("DETAILED_INFO_NUMBER"))
-                {
-                    detailedInfoNumber = extras.GetString("DETAILED_INFO_NUMBER");
-                }
-                if (extras.ContainsKey("IS_OWNED_ACCOUNT"))
-                {
-                    isOwnedAccount = extras.GetBoolean("IS_OWNED_ACCOUNT");
-                }
-                if (extras.ContainsKey("IS_SHOW_ALL_RECEIPT"))
-                {
-                    showAllReceipt = extras.GetBoolean("IS_SHOW_ALL_RECEIPT");
-                }
-                if (ConnectionUtils.HasInternetConnection(this))
-                {
-                    this.iPresenter.GetReceiptDetails(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt);
+                    GetPaymentReceiptResponse result = JsonConvert.DeserializeObject<GetPaymentReceiptResponse>(extras.GetString("ReceiptResponse"));
+                    OnShowReceiptDetails(result);
                 }
                 else
                 {
-                    ShowErrorMessage(Utility.GetLocalizedErrorLabel("noDataConnectionMessage"));
+                    if (extras.ContainsKey("SELECTED_ACCOUNT_NUMBER"))
+                    {
+                        selectedAccountNumber = extras.GetString("SELECTED_ACCOUNT_NUMBER");
+                    }
+                    if (extras.ContainsKey("DETAILED_INFO_NUMBER"))
+                    {
+                        detailedInfoNumber = extras.GetString("DETAILED_INFO_NUMBER");
+                    }
+                    if (extras.ContainsKey("IS_OWNED_ACCOUNT"))
+                    {
+                        isOwnedAccount = extras.GetBoolean("IS_OWNED_ACCOUNT");
+                    }
+                    if (extras.ContainsKey("IS_SHOW_ALL_RECEIPT"))
+                    {
+                        showAllReceipt = extras.GetBoolean("IS_SHOW_ALL_RECEIPT");
+                    }
+                    if (ConnectionUtils.HasInternetConnection(this))
+                    {
+                        this.iPresenter.GetReceiptDetails(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt);
+                    }
+                    else
+                    {
+                        ShowErrorMessage(Utility.GetLocalizedErrorLabel("noDataConnectionMessage"));
+                    }
                 }
             }
             catch (Exception e)

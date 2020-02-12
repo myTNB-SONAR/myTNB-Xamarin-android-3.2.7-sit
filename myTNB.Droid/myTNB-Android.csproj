@@ -4572,6 +4572,26 @@
     <AndroidResource Include="Resources\drawable\yt.png" />
     <AndroidResource Include="Resources\drawable\ac.png" />
     <AndroidResource Include="Resources\drawable\gs.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_payment_failed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_payment_failed_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_payment_success.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_payment_success_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_payment_failed.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_payment_failed_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_payment_success.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_payment_success_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_payment_failed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_payment_failed_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_payment_success.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_payment_success_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_payment_failed.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_payment_failed_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_payment_success.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_payment_success_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_failed.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_failed_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_success.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_success_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

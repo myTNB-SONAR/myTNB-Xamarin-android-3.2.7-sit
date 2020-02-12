@@ -21,12 +21,14 @@ using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using Refit;
 
@@ -72,6 +74,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             MenuInflater.Inflate(Resource.Menu.NotificationDetailMenu, menu);
             return base.OnCreateOptionsMenu(menu);
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            HideLoadingScreen();
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -387,15 +395,48 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(ssmr_history_activity);
         }
 
+        public void ViewBillHistory(AccountData mSelectedAccountData)
+        {
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
+
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
+            DashboardIntent.PutExtra("MENU","BillMenu");
+            DashboardIntent.PutExtra("DATA",JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(DashboardIntent);
+        }
+
+        public void ShowPaymentReceipt(GetPaymentReceiptResponse response)
+        {
+            Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
+            viewReceipt.PutExtra("ReceiptResponse", JsonConvert.SerializeObject(response));
+            StartActivity(viewReceipt);
+        }
+
+        public void ShowSelectBill(AccountData mSelectedAccountData)
+        {
+            Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
+            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(payment_activity);
+        }
+
+        public void ShowPaymentReceiptError()
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedErrorLabel("defaultErrorTitle"))
+                .SetMessage(Utility.GetLocalizedErrorLabel("receiptErrorMsg"))
+                .SetContentGravity(GravityFlags.Center)
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                .Build().Show();
+        }
+
         class ClickSpan : ClickableSpan
         {
             public Action<View> Click;
             public override void OnClick(View widget)
             {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
+                Click?.Invoke(widget);
             }
 
             public override void UpdateDrawState(TextPaint ds)

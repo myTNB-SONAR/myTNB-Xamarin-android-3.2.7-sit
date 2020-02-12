@@ -99,6 +99,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
 
+                txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
+
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
