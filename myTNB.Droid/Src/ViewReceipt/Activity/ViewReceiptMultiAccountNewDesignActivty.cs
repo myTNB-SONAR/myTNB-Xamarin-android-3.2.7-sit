@@ -21,6 +21,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.MVP;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
