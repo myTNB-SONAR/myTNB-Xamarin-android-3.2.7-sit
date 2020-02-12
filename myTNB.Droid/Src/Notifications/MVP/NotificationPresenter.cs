@@ -22,7 +22,6 @@ using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.NotificationDetails.Requests;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Notifications.Api;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Base;
@@ -40,12 +39,10 @@ namespace myTNB_Android.Src.Notifications.MVP
         private NotificationContract.IView mView;
         CancellationTokenSource cts;
         List<UserNotificationData> selectedNotificationList;
-        NotificationApiImpl notificationAPI;
         public NotificationPresenter(NotificationContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
-            notificationAPI = new NotificationApiImpl();
         }
 
         private async Task InvokeNotificationApi(API_ACTION apiAction)
@@ -68,8 +65,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 switch (apiAction)
                 {
                     case API_ACTION.DELETE:
-                        notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));
-                        if (notificationDeleteResponse.Data.ErrorCode == "7200")
+                        notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(selectedNotificationList));
+                        if (notificationDeleteResponse.IsSuccessResponse())
                         {
                             foreach (UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -83,13 +80,13 @@ namespace myTNB_Android.Src.Notifications.MVP
                             {
                                 this.mView.HideProgress();
                             }
-                            this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Data.ErrorMessage);
+                            this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Response.ErrorMessage);
                             this.mView.OnFailedNotificationAction();
                         }
                         break;
                     case API_ACTION.READ:
-                        notificationReadResponse = await notificationAPI.ReadUserNotification<UserNotificationReadResponse>(new UserNotificationReadRequest(selectedNotificationList));
-                        if (notificationReadResponse.Data.ErrorCode == "7200")
+                        notificationReadResponse = await ServiceApiImpl.Instance.ReadUserNotification(new UserNotificationReadRequest(selectedNotificationList));
+                        if (notificationReadResponse.IsSuccessResponse())
                         {
                             foreach(UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -103,7 +100,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                             {
                                 this.mView.HideProgress();
                             }
-                            this.mView.ShowFailedErrorMessage(notificationReadResponse.Data.ErrorMessage);
+                            this.mView.ShowFailedErrorMessage(notificationReadResponse.Response.ErrorMessage);
                             this.mView.OnFailedNotificationAction();
                         }
                         break;

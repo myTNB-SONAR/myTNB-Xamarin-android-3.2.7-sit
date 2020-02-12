@@ -2599,7 +2599,6 @@
     <Compile Include="Src\MyTNBService\InterfaceAPI\INotificationAPI.cs" />
     <Compile Include="Src\MyTNBService\Request\UserNotificationRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationResponse.cs" />
-    <Compile Include="Src\MyTNBService\Notification\NotificationApiImpl.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_bill_due.png" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_disconnection.png" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_dunning_disconnection.png" />

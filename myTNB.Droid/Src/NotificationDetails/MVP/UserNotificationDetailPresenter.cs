@@ -15,7 +15,6 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -240,14 +239,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             this.mView.ShowLoadingScreen();
             try
             {
-                NotificationApiImpl notificationAPI = new NotificationApiImpl();
                 List<Notifications.Models.UserNotificationData> selectedNotificationList = new List<Notifications.Models.UserNotificationData>();
                 Notifications.Models.UserNotificationData data = new Notifications.Models.UserNotificationData();
                 data.Id = notificationDetails.Id;
                 data.NotificationType = notificationDetails.NotificationType;
                 selectedNotificationList.Add(data);
-                UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));
-                if (notificationDeleteResponse.Data.ErrorCode == "7200")
+                UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(selectedNotificationList));
+                if (notificationDeleteResponse.IsSuccessResponse())
                 {
                     UserNotificationEntity.UpdateIsDeleted(notificationDetails.Id, true);
                     this.mView.ShowNotificationListAsDeleted();

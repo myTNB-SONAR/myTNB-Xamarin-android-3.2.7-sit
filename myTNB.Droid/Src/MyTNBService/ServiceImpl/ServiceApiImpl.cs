@@ -440,14 +440,24 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.GetNotificationDetails<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
-        public Task<GetPaymentReceiptResponse> DeleteUserNotification([Body] Request.BaseRequest request)
+        /// <summary>
+        /// Call DeleteUserNotification with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationDeleteResponse> DeleteUserNotification([Body] Request.BaseRequest request)
         {
-            return api.DeleteUserNotification<GetPaymentReceiptResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.DeleteUserNotification<UserNotificationDeleteResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
-        public Task<GetPaymentReceiptResponse> ReadUserNotification([Body] Request.BaseRequest request)
+        /// <summary>
+        /// Call ReadUserNotification with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationReadResponse> ReadUserNotification([Body] Request.BaseRequest request)
         {
-            return api.ReadUserNotification<GetPaymentReceiptResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ReadUserNotification<UserNotificationReadResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }

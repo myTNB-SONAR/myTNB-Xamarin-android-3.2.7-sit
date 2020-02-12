@@ -29,7 +29,6 @@ using myTNB_Android.Src.myTNBMenu.Requests;
 using System.Net.Http;
 using myTNB_Android.Src.myTNBMenu.Api;
 using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;

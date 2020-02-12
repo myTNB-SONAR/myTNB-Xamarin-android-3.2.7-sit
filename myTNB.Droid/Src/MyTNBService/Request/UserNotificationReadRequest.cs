@@ -5,7 +5,7 @@ using myTNB_Android.Src.Notifications.Models;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class UserNotificationReadRequest : APIBaseRequest
+    public class UserNotificationReadRequest : BaseRequest
     {
         public List<NotificationData> updatedNotifications;
         public NotificationData notificationData;
