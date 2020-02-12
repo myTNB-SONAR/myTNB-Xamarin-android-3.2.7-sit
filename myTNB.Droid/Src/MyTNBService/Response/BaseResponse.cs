@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {
@@ -40,6 +41,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "IsRewardsDisabled")]
             public bool IsRewardsDisabled { get; set; }
+
+            [JsonProperty(PropertyName = "IsPayEnabled")]
+            public bool IsPayEnabled { get; set; }
 
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }

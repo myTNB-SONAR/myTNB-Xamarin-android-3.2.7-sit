@@ -181,12 +181,12 @@ namespace myTNB_Android.Src.Notifications.MVP
             {
                 this.mView.ShowProgress();
                 UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationType);
-                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetails<UserNotificationDetailsResponse>(request);
-                if (response.Data.ErrorCode == "7200")
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
+                if (response.IsSuccessResponse())
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Data.IsPayEnabled);
-                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
-                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.GetData().UserNotificationDetail, userNotification, position);
                 }
                 else
                 {
