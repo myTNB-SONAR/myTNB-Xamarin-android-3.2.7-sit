@@ -73,7 +73,14 @@ namespace myTNB.Registration.CustomerAccounts
         {
             set
             {
-                lblAddress.Text = value;
+                if (value.IsValid())
+                {
+                    lblAddress.Text = value.Trim();
+                }
+                else
+                {
+                    lblAddress.Text = string.Empty;
+                }
             }
             get
             {
@@ -139,11 +146,8 @@ namespace myTNB.Registration.CustomerAccounts
 
             lblAddress.Font = TNBFont.MuseoSans_12_300;
             lblAddress.TextColor = MyTNBColor.TunaGrey();
-            CGSize size = lblAddress.SizeThatFits(new CGSize(lblAddress.Frame.Width, 1000f));
-            ViewHelper.AdjustFrameSetHeight(lblAddress, size.Height);
-            ViewHelper.AdjustFrameSetWidth(lblAddress, ScaleUtility.GetScaledWidth(236));
-            ViewHelper.AdjustFrameSetX(lblAddress, ScaleUtility.GetScaledWidth(18));
-            ViewHelper.AdjustFrameSetY(lblAddress, lblAccountNo.Frame.GetMaxY());
+            CGSize size = CustomUILabel.GetLabelSize(lblAddress, ScaleUtility.GetScaledWidth(244), 1000F);
+            lblAddress.Frame = new CGRect(lblAddress.Frame.X, lblAccountNo.Frame.GetMaxY(), ScaleUtility.GetScaledWidth(244), size.Height);
 
             ViewHelper.AdjustFrameSetHeight(btnDelete, ScaleUtility.GetScaledHeight(24));
             ViewHelper.AdjustFrameSetWidth(btnDelete, ScaleUtility.GetScaledWidth(24));
