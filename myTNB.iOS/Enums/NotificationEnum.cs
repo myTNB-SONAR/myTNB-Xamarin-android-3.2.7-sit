@@ -11,7 +11,9 @@
         Promotion,
         News,
         Maintenance,
-        SSMR
+        SSMR,
+        PaymentFail,
+        PaymentSuccess
     }
 
     public enum SSMRNotificationEnum

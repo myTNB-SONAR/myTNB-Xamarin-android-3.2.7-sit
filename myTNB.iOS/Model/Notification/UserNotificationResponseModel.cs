@@ -38,7 +38,8 @@ namespace myTNB.Model
         public string Target { set; get; } = string.Empty;
         public bool IsSMRPeriodOpen { set; get; }
         public string ODNBatchSubcategory { set; get; } = string.Empty;
-
+        public string MerchantTransId { set; get; } = string.Empty;
+        
         public class AccountDetailsModel
         {
             public string BillDate { set; get; } = string.Empty;
@@ -129,6 +130,12 @@ namespace myTNB.Model
                         case "0010":
                         case "0011":
                             notificationType = BCRMNotificationEnum.SSMR;
+                            break;
+                        case "71":
+                            notificationType = BCRMNotificationEnum.PaymentFail;
+                            break;
+                        case "72":
+                            notificationType = BCRMNotificationEnum.PaymentSuccess;
                             break;
                     }
                 }

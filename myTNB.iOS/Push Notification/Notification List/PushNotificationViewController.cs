@@ -41,6 +41,13 @@ namespace myTNB.PushNotification
         public override void ViewDidLoad()
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationList;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+                ExtendedLayoutIncludesOpaqueBars = true;
+                EdgesForExtendedLayout = UIRectEdge.Bottom;
+            }
+
             base.ViewDidLoad();
             UpdateNotificationTypes();
             NotifCenterUtility.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
@@ -58,6 +65,10 @@ namespace myTNB.PushNotification
         public void OnNotificationFilterDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PushNotificationViewController OnNotificationFilterDidChange");
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             OnReset();
             SetNavigationBar();
             _pushNotificationTableView.TableHeaderView = null;
@@ -123,6 +134,7 @@ namespace myTNB.PushNotification
                 UserNotificationModel response = userNotificationResponse.d;
                 if (response.IsSuccess && response.data != null)
                 {
+                    PushNotificationHelper.FilterNotifications();
                     _gradientViewComponent.SetOpacity(1);
                     UpdateNotificationDisplay();
                 }
@@ -225,6 +237,10 @@ namespace myTNB.PushNotification
 
         public override void ViewWillAppear(bool animated)
         {
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             base.ViewWillAppear(animated);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -273,7 +289,6 @@ namespace myTNB.PushNotification
             _refreshViewComponent.SetIconImage(PushNotificationConstants.IMG_Empty);
             _refreshViewComponent.SetDescription(GetI18NValue(PushNotificationConstants.I18N_NoNotification));
             _refreshViewComponent.SetRefreshButtonHidden(true);
-
             View.AddSubview(_refreshViewComponent.GetUI());
         }
 
@@ -407,13 +422,16 @@ namespace myTNB.PushNotification
                 UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                 GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                     .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = GetI18NValue(PushNotificationConstants.I18N_SelectNotification);
-                viewController.Items = GetNotificationTypeList();
-                viewController.OnSelect = OnSelectAction;
-                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
+                if (viewController != null)
+                {
+                    viewController.Title = GetI18NValue(PushNotificationConstants.I18N_SelectNotification);
+                    viewController.Items = GetNotificationTypeList();
+                    viewController.OnSelect = OnSelectAction;
+                    viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
             }));
             _headerView.AddSubview(accountSelectionView);
             View.AddSubview(_headerView);
@@ -423,7 +441,7 @@ namespace myTNB.PushNotification
         {
             OnReset();
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
-            DismissViewController(true, null);
+            NavigationController.PopViewController(true);
         }
 
         private void OnDismiss()
@@ -539,8 +557,8 @@ namespace myTNB.PushNotification
                     NotificationId = dataModel.Id,
                     dataModel.NotificationType
                 };
-                //_detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
                 _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>(PushNotificationConstants.Service_GetNotificationDetails, requestParameter);
+                //_detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
             });
         }
 
@@ -705,7 +723,7 @@ namespace myTNB.PushNotification
             }
         }
 
-        Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
+        private Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
         {
             UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
@@ -721,7 +739,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        Task ReadUserNotification(List<UpdateNotificationModel> readNotificationList)
+        private Task ReadUserNotification(List<UpdateNotificationModel> readNotificationList)
         {
             UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0]

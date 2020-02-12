@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CoreFoundation;
 using Firebase.CloudMessaging;
 using Firebase.Core;
 using Firebase.InstanceID;
@@ -86,12 +87,13 @@ namespace myTNB
             await GetUserNotifications();
 
             DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
-            res = _userNotifications?.d?.didSucceed == true;
 
             if (_userNotifications != null && _userNotifications?.d != null && _userNotifications.d.IsSuccess
                 && _userNotifications.d.data != null && _userNotifications.d.data.UserNotificationList != null)
             {
+                res = true;
                 DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data.UserNotificationList;
+                FilterNotifications();
                 DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
             }
             else
@@ -113,6 +115,76 @@ namespace myTNB
             }
             return res;
         }
+
+        public static void FilterNotifications()
+        {
+            if (DataManager.DataManager.SharedInstance.UserNotificationResponse != null
+                && DataManager.DataManager.SharedInstance.UserNotificationResponse.d != null
+                && DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data != null
+                && DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data.UserNotificationList != null)
+            {
+                List<UserNotificationDataModel> nList = DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data.UserNotificationList;
+                List<UserNotificationDataModel> removeList = new List<UserNotificationDataModel>();
+                List<UpdateNotificationModel> deleteList = new List<UpdateNotificationModel>();
+                foreach (UserNotificationDataModel item in nList)
+                {
+                    if (item.BCRMNotificationType == Enums.BCRMNotificationEnum.BillDue
+                        || item.BCRMNotificationType == Enums.BCRMNotificationEnum.Dunning)
+                    {
+                        DueAmountDataModel due = AmountDueCache.GetDues(item.AccountNum);
+                        if (due != null && due.amountDue <= 0)
+                        {
+                            UpdateNotificationModel mdl = new UpdateNotificationModel()
+                            {
+                                IsRead = true,
+                                NotificationId = item.Id,
+                                NotificationType = item.NotificationType
+                            };
+                            deleteList.Add(mdl);
+                            removeList.Add(item);
+                        }
+                    }
+                }
+                foreach (UserNotificationDataModel item in removeList)
+                {
+                    nList.Remove(item);
+                }
+                DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data.UserNotificationList = nList;
+                try
+                {
+                    DispatchQueue.MainQueue.DispatchAsync(() =>
+                    {
+                        NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
+                    });
+                    if (deleteList.Count > 0)
+                    {
+                        new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+                        {
+                            DeleteUserNotification(deleteList);
+                        })).Start();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in FilterNotifications: " + e.Message);
+                }
+            }
+        }
+
+        private static Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    serviceManager.usrInf,
+                    updatedNotifications = deleteNotificationList,
+                };
+                DeleteNotificationResponseModel response = serviceManager.OnExecuteAPIV6<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
+            });
+        }
+
         /// <summary>
         /// Gets the notification count.
         /// </summary>
@@ -146,10 +218,11 @@ namespace myTNB
                     serviceManager.usrInf
                 };
 
-                //UserNotificationManager.SetData();
-                //_userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
                 _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>
                     (PushNotificationConstants.Service_GetUserNotifications, requestParameter);
+
+                //UserNotificationManager.SetData();
+                //_userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
             });
         }
         /// <summary>

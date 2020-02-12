@@ -49,6 +49,8 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Maintenance, "Notification-Banner-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "SSMR-Reading-History-Banner" }
             , { BCRMNotificationEnum.None, "Notification-Banner-Generic" }
+            , { BCRMNotificationEnum.PaymentFail, "Notification-Banner-PaymentFail"}
+            , { BCRMNotificationEnum.PaymentSuccess, "Notification-Banner-PaymentSuccess"}
         };
 
         //SSMR Banner Dictionary
@@ -72,6 +74,8 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Maintenance, "Notification-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "Notification-SSMR" }
             , { BCRMNotificationEnum.None, "Notification-Generic" }
+            , { BCRMNotificationEnum.PaymentFail, "Notification-PaymentFail"}
+            , { BCRMNotificationEnum.PaymentSuccess, "Notification-PaymentSuccess"}
         };
 
         //I18N
@@ -83,6 +87,9 @@ namespace myTNB.PushNotification
         public static string I18N_SubmitMeterReading = "submitMeterReading";
         public static string I18N_ReenableSSMR = "reenableSSMR";
         public static string I18N_ViewReadingHistory = "viewReadingHistory";
+        public static string I18N_PaymentHistory = "paymentHistory";
+        public static string I18N_ViewReceipt = "viewReceipt";
+
         //List
         public static string I18N_AllNotifications = "allNotifications";
         public static string I18N_DeleteMessage = "deleteMessage";

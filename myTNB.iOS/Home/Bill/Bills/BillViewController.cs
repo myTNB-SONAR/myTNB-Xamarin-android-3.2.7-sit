@@ -9,6 +9,7 @@ using CoreGraphics;
 using Force.DeepCloner;
 using Foundation;
 using myTNB.Home.Bill;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -54,6 +55,11 @@ namespace myTNB
             }
             if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = false;
+                TabBarController.SelectedIndex = 1;
+            }
             base.ViewDidLoad();
             if ((DataManager.DataManager.SharedInstance.AccountRecordsList != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
@@ -659,6 +665,7 @@ namespace myTNB
                 {
                     SetHeaderLoading(false);
                     AccountChargesCache.SetData(_accountCharges);
+                    SetAmountDueCache(_accountCharges.d.data.AccountCharges[0]);
                     EvaluateBillData(_accountCharges.d.data.AccountCharges[0]);
                 }
                 else if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
@@ -761,6 +768,7 @@ namespace myTNB
             if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
                 && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null)
             {
+                SetAmountDueCache(_accountCharges.d.data.AccountCharges[0]);
                 bool hasPendingPayment = HasPendingPayment(_billHistory?.d?.data?.BillPayHistories);
                 UpdateHeaderData(_accountCharges.d.data.AccountCharges[0], hasPendingPayment);
                 return;
@@ -918,6 +926,39 @@ namespace myTNB
                     isGetAcctBillPayHistoryLoading = false;
                 });
             });
+        }
+
+        private void SetAmountDueCache(AccountChargesModel model)
+        {
+            if (model != null)
+            {
+                var account = DataManager.DataManager.SharedInstance.SelectedAccount;
+                string dateString = string.Empty;
+                try
+                {
+                    DateTime due = DateTime.ParseExact(model.DueDate, BillConstants.Format_DateParse, DateHelper.DateCultureInfo);
+                    if (account.IsREAccount)
+                    {
+                        due = due.AddDays(model.IncrementREDueDateByDays);
+                    }
+                    dateString = due.ToString(BillConstants.Format_DateCache);
+                }
+                catch (FormatException)
+                {
+                    Debug.WriteLine("Unable to parse '{0}'", dateString);
+                }
+                var item = new DueAmountDataModel
+                {
+                    accNum = account.accNum,
+                    accNickName = account.accountNickName,
+                    IsReAccount = account.IsREAccount,
+                    amountDue = model.AmountDue,
+                    billDueDate = dateString,
+                    IncrementREDueDateByDays = model.IncrementREDueDateByDays,
+                    IsPayEnabled = _accountCharges.d.IsPayEnabled
+                };
+                AmountDueCache.SaveDues(item);
+            }
         }
 
         private void OnAccountChagesRefresh()

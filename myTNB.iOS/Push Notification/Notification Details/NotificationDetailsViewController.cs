@@ -38,6 +38,12 @@ namespace myTNB
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationDetails;
             NavigationController.NavigationBarHidden = false;
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+                ExtendedLayoutIncludesOpaqueBars = true;
+                EdgesForExtendedLayout = UIRectEdge.Bottom;
+            }
             base.ViewDidLoad();
             _isViewDidload = true;
             AddSubview();
@@ -46,6 +52,10 @@ namespace myTNB
 
         public override void ViewWillAppear(bool animated)
         {
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                TabBarController.TabBar.Hidden = true;
+            }
             base.ViewWillAppear(animated);
             NavigationController.SetNavigationBarHidden(true, true);
             int unreadCount = PushNotificationHelper.GetNotificationCount();
@@ -427,6 +437,50 @@ namespace myTNB
             {
                 EvaluateSSMRCTA();
             }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.PaymentSuccess)
+            {
+                nfloat width = NotificationInfo != null && NotificationInfo.MerchantTransId.IsValid() ? btnWidth : BaseMarginedWidth;
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), width, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_PaymentHistory), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewBill();
+                }));
+                _viewCTA.AddSubview(_btnPrimary);
+
+                if (NotificationInfo != null && NotificationInfo.MerchantTransId.IsValid())
+                {
+                    _btnSecondary = new CustomUIButtonV2
+                    {
+                        Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                    };
+                    UpdateCTA(ref _btnSecondary, true);
+                    _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReceipt), UIControlState.Normal);
+                    _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        OnViewReceipt();
+                    }));
+                    _viewCTA.AddSubview(_btnSecondary);
+                }
+            }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.PaymentFail)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnPrimary, true);
+                _btnPrimary.SetTitle(GetCommonI18NValue(Constants.Common_TryAgain), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnPay();
+                }));
+                _viewCTA.AddSubview(_btnPrimary);
+            }
         }
 
         private void EvaluateSSMRCTA()
@@ -565,11 +619,68 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
-                        UIStoryboard stroryboard = UIStoryboard.FromName("Usage", null);
-                        UsageViewController viewController = stroryboard.InstantiateViewController("UsageViewController") as UsageViewController;
+                        UIStoryboard storyboard = UIStoryboard.FromName("Usage", null);
+                        UsageViewController viewController = storyboard.InstantiateViewController("UsageViewController") as UsageViewController;
                         if (viewController != null)
                         {
                             NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewBill()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard storyboard = UIStoryboard.FromName("Dashboard", null);
+                        BillViewController viewController = storyboard.InstantiateViewController("BillViewController") as BillViewController;
+                        if (viewController != null)
+                        {
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewReceipt()
+        {
+            if (NotificationInfo == null || !NotificationInfo.MerchantTransId.IsValid())
+            {
+                DisplayServiceError(string.Empty);
+                return;
+            }
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
+                        ReceiptViewController viewController =
+                            storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
+                        if (viewController != null)
+                        {
+                            viewController.DetailedInfoNumber = NotificationInfo.MerchantTransId;
+                            viewController.showAllReceipts = true;
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                            PresentViewController(navController, true, null);
                         }
                     }
                     else
