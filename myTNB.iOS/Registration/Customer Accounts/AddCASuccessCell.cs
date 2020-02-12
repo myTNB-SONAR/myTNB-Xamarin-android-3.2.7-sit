@@ -13,7 +13,7 @@ namespace myTNB
         public AddCASuccessCell(IntPtr handle) : base(handle)
         {
             cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width - GetScaledWidth(32);
-            _view = new UIView(new CGRect(0, 0, cellWidth, GetScaledHeight(61)))
+            _view = new UIView(new CGRect(0, 0, cellWidth, GetScaledHeight(74)))
             {
                 ClipsToBounds = true,
                 BackgroundColor = UIColor.White
