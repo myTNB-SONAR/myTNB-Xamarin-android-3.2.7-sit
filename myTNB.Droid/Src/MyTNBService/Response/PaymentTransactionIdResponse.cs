@@ -4,41 +4,12 @@ using Refit;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {
-    public class PaymentTransactionIdResponse
+    public class PaymentTransactionIdResponse : BaseResponse<PaymentTransactionIdResponse.InitiatePaymentResult>
     {
-		[JsonProperty(PropertyName = "d")]
-		[AliasAs("d")]
-		public RequestPayBill requestPayBill { get; set; }
-
-		public class RequestPayBill
-		{
-			[JsonProperty(PropertyName = "__type")]
-			public string Type { get; set; }
-
-			[JsonProperty(PropertyName = "status")]
-			[AliasAs("status")]
-			public string Status { get; set; }
-
-            [JsonProperty(PropertyName = "ErrorCode")]
-            [AliasAs("ErrorCode")]
-            public string ErrorCode { get; set; }
-
-            [JsonProperty(PropertyName = "ErrorMessage")]
-            [AliasAs("ErrorMessage")]
-            public string ErrorMessage { get; set; }
-
-            [JsonProperty(PropertyName = "DisplayTitle")]
-            [AliasAs("DisplayTitle")]
-            public string DisplayTitle { get; set; }
-
-            [JsonProperty(PropertyName = "DisplayMessage")]
-            [AliasAs("DisplayMessage")]
-            public string DisplayMessage { get; set; }
-
-            [JsonProperty(PropertyName = "data")]
-			[AliasAs("data")]
-			public InitiatePaymentResult initiatePaymentResult { get; set; }
-		}
+		public InitiatePaymentResult GetData()
+        {
+            return Response.Data;
+        }
 
         public class InitiatePaymentResult
         {

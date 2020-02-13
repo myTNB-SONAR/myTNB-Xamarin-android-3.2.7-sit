@@ -489,5 +489,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetPaymentTransactionId with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<PaymentTransactionIdResponse> GetPaymentTransactionId([Body] Request.BaseRequest request)
+        {
+            return api.GetPaymentTransactionId<PaymentTransactionIdResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }
