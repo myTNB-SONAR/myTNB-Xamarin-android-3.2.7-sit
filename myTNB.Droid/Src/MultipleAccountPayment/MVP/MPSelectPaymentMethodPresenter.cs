@@ -52,11 +52,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 this.mView.ShowPaymentRequestDialog();
                 var newApi = new BillingApiImpl();
                 PaymentTransactionIdRequest paymentTransactionIdRequest = new PaymentTransactionIdRequest(custName, custPhone, platform, registeredCardId,paymentMode, totalAmount, paymentItems);
-                //var api = RestService.For<MPRequestPaymentApi>(Constants.SERVER_URL.END_POINT);
-
-                //MPInitiatePaymentResponse result = await api.InitiatePayment(new MPInitiatePaymentRequestV3(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, totalAmount, paymentItems));
-                //this.mView.SaveInitiatePaymentResponse(result);
-                //this.mView.HidePaymentRequestDialog();
                 var dump = JsonConvert.SerializeObject(paymentTransactionIdRequest);
                 PaymentTransactionIdResponse response = await ServiceApiImpl.Instance.GetPaymentTransactionId(paymentTransactionIdRequest);
                 this.mView.SetInitiatePaymentResponse(response);
