@@ -138,39 +138,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
 
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var api = RestService.For<AddMultipleAccountsToUserApi>(httpClient);
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
 
-#else
-                var api = RestService.For<AddMultipleAccountsToUserApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
-
-
-            var reqObject = new
-            {
-                billAccounts = accounts,
-                usrInf = new
-                {
-                    eid = email,
-                    sspuid = sspUserID,
-                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
-                    sec_auth_k1 = apiKeyId,
-                    sec_auth_k2 = "test",
-                    ses_param1 = "test",
-                    ses_param2 = "test"
-                }
-            };
-                var result = await api.AddMultipleAccounts(reqObject);
-
-                if (result != null && result.response != null && result.response.ErrorCode == "7200")
+                if (result.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountSuccess(result.response);
+                    mView.ShowAddAccountSuccess(result.GetData());
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
                 }
@@ -180,7 +156,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountFail(result.response.DisplayMessage);
+                    mView.ShowAddAccountFail(result.Response.DisplayMessage);
                 }
 
             }

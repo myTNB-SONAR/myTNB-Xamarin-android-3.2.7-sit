@@ -173,31 +173,31 @@ namespace myTNB_Android.Src.Billing.MVP
                     accountList,
                     selectedAccount.IsOwner
                     );
-                AccountChargesResponse accountChargeseResponse = await billingApi.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
                 this.mView.HideProgressDialog();
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                if (accountChargeseResponse.IsSuccessResponse())
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
-                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Response.IsPayEnabled);
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.GetData().AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.GetData().MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(accountChargeModelList);
                 }
-                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400")
+                else if (accountChargeseResponse.Response != null && accountChargeseResponse.Response.ErrorCode == "8400")
                 {
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Response != null && !string.IsNullOrEmpty(accountChargeseResponse.Response.DisplayMessage))
                     {
-                        contentText = accountChargeseResponse.Data.DisplayMessage;
+                        contentText = accountChargeseResponse.Response.DisplayMessage;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Response != null && !string.IsNullOrEmpty(accountChargeseResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        btnText = accountChargeseResponse.Response.RefreshBtnText;
                     }
 
-                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Response.IsPayEnabled);
 
                     this.mView.ShowBillDetailsError(false, btnText, contentText);
                 }
@@ -206,19 +206,19 @@ namespace myTNB_Android.Src.Billing.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Response != null && !string.IsNullOrEmpty(accountChargeseResponse.Response.RefreshMessage))
                     {
-                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                        contentText = accountChargeseResponse.Response.RefreshMessage;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    if (accountChargeseResponse != null && accountChargeseResponse.Response != null && !string.IsNullOrEmpty(accountChargeseResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        btnText = accountChargeseResponse.Response.RefreshBtnText;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null)
+                    if (accountChargeseResponse != null && accountChargeseResponse.Response != null)
                     {
-                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Response.IsPayEnabled);
                     }
 
                     this.mView.ShowBillDetailsError(true, btnText, contentText);
