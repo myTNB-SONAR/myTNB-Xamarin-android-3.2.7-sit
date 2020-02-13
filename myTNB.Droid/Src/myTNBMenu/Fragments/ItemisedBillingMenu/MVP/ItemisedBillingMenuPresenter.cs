@@ -60,27 +60,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 accountList.Add(contractAccountValue);
                 mView.ShowAvailableBillContent();
 
-                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
+                AccountsChargesRequest accountChargesRequest = new AccountsChargesRequest(
                     accountList,
                     isOwnedAccountValue
                     );
-                AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                AccountChargesResponse accountChargesResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargesRequest);
+                if (accountChargesResponse.IsSuccessResponse())
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
-                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargesResponse.GetData().AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargesResponse.GetData().MandatoryChargesPopUpDetails));
                 }
-                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400")
+                else if (accountChargesResponse.Response != null && accountChargesResponse.Response.ErrorCode == "8400")
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
                     showChargeMaintenanceState = true;
                 }
                 else
                 {
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null)
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null)
                     {
-                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
                     }
                     showChargeRefreshState = true;
                 }
@@ -111,14 +111,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.DisplayMessage))
                     {
-                        contentText = accountChargeseResponse.Data.DisplayMessage;
+                        contentText = accountChargesResponse.Response.DisplayMessage;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        btnText = accountChargesResponse.Response.RefreshBtnText;
                     }
 
                     mView.ShowUnavailableContent(false, btnText, contentText);
@@ -128,14 +128,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshMessage))
                     {
-                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                        contentText = accountChargesResponse.Response.RefreshMessage;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        btnText = accountChargesResponse.Response.RefreshBtnText;
                     }
 
                     mView.ShowUnavailableContent(true, btnText, contentText);
@@ -147,14 +147,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                        if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.DisplayMessage))
                         {
-                            contentText = accountChargeseResponse.Data.DisplayMessage;
+                            contentText = accountChargesResponse.Response.DisplayMessage;
                         }
 
-                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                        if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshBtnText))
                         {
-                            btnText = accountChargeseResponse.Data.RefreshBtnText;
+                            btnText = accountChargesResponse.Response.RefreshBtnText;
                         }
 
                         mView.ShowUnavailableChargeContent(false, btnText, contentText);
@@ -164,14 +164,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                        if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshMessage))
                         {
-                            contentText = accountChargeseResponse.Data.RefreshMessage;
+                            contentText = accountChargesResponse.Response.RefreshMessage;
                         }
 
-                        if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                        if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshBtnText))
                         {
-                            btnText = accountChargeseResponse.Data.RefreshBtnText;
+                            btnText = accountChargesResponse.Response.RefreshBtnText;
                         }
 
                         mView.ShowUnavailableChargeContent(true, btnText, contentText);
@@ -416,23 +416,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     accountList,
                     isOwnedAccountValue
                     );
-                AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                AccountChargesResponse accountChargesResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
+                if (accountChargesResponse.IsSuccessResponse())
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
-                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargesResponse.GetData().AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargesResponse.GetData().MandatoryChargesPopUpDetails));
                 }
-                else if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "8400")
+                else if (accountChargesResponse.Response != null && accountChargesResponse.Response.ErrorCode == "8400")
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+                    Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
                     showChargeMaintenanceState = true;
                 }
                 else
                 {
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null)
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null)
                     {
-                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargeseResponse.Data.IsPayEnabled);
+                        Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
                     }
                     showChargeRefreshState = true;
                 }
@@ -442,14 +442,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.DisplayMessage))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.DisplayMessage))
                     {
-                        contentText = accountChargeseResponse.Data.DisplayMessage;
+                        contentText = accountChargesResponse.Response.DisplayMessage;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        btnText = accountChargesResponse.Response.RefreshBtnText;
                     }
 
                     mView.ShowUnavailableChargeContent(false, btnText, contentText);
@@ -459,14 +459,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshMessage))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshMessage))
                     {
-                        contentText = accountChargeseResponse.Data.RefreshMessage;
+                        contentText = accountChargesResponse.Response.RefreshMessage;
                     }
 
-                    if (accountChargeseResponse != null && accountChargeseResponse.Data != null && !string.IsNullOrEmpty(accountChargeseResponse.Data.RefreshBtnText))
+                    if (accountChargesResponse != null && accountChargesResponse.Response != null && !string.IsNullOrEmpty(accountChargesResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountChargeseResponse.Data.RefreshBtnText;
+                        btnText = accountChargesResponse.Response.RefreshBtnText;
                     }
 
                     mView.ShowUnavailableChargeContent(true, btnText, contentText);

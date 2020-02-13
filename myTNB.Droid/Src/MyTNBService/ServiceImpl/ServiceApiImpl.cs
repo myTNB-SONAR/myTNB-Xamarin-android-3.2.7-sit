@@ -469,5 +469,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.AddMultipleAccounts<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetAccountsCharges with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<AccountChargesResponse> GetAccountsCharges([Body] Request.BaseRequest request)
+        {
+            return api.GetAccountsCharges<AccountChargesResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

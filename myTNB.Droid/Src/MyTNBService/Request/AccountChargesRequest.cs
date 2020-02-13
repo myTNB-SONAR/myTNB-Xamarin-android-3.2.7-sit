@@ -4,7 +4,7 @@ using myTNB_Android.Src.Base.Request;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class AccountsChargesRequest : APIBaseRequest
+    public class AccountsChargesRequest : BaseRequest
     {
         public List<string> accounts;
         public bool isOwnedAccount;

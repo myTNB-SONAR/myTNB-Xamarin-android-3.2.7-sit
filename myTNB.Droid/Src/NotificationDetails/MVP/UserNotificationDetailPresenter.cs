@@ -288,13 +288,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         accountList,
                         true
                         );
-                AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
                 this.mView.HideLoadingScreen();
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                if (accountChargeseResponse.IsSuccessResponse())
                 {
                     AccountData accountData = new AccountData();
-                    accountChargeModelList = GetAccountChargeModelList(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(accountChargeseResponse.Data.ResponseData.AccountCharges[0].ContractAccount);
+                    accountChargeModelList = GetAccountChargeModelList(accountChargeseResponse.GetData().AccountCharges);
+                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(accountChargeseResponse.GetData().AccountCharges[0].ContractAccount);
                     if (account != null)
                     {
                         accountData.AccountNum = account.AccNum;

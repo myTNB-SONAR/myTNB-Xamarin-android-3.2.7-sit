@@ -762,12 +762,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     accountList,
                     selectedAccount.IsOwner
                     );
-                AccountChargesResponse accountChargeseResponse = await billingApi.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
                 this.mView.HideProgress();
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                if (accountChargeseResponse.IsSuccessResponse())
                 {
-                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.GetData().AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.GetData().MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(selectedAccount, accountChargeModelList);
                 }
                 else
