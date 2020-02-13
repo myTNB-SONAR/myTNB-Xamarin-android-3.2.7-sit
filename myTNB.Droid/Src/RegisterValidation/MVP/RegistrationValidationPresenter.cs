@@ -8,8 +8,8 @@ using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
@@ -123,11 +123,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
-                            NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                            Base.Request.APIBaseRequest getUserNotificationRequest = new Base.Request.APIBaseRequest();
+                            BaseRequest getUserNotificationRequest = new BaseRequest();
                             getUserNotificationRequest.usrInf.eid = userCredentialsEntity.Email;
-                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(getUserNotificationRequest);
-                            if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(getUserNotificationRequest);
+                            if (response.IsSuccessResponse())
                             {
                                 try
                                 {
@@ -138,10 +137,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                     Utility.LoggingNonFatalError(ne);
                                 }
 
-                                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                                    response.Data.ResponseData.UserNotificationList.Count > 0)
+                                if (response.GetData() != null && response.GetData().UserNotificationList != null &&
+                                    response.GetData().UserNotificationList.Count > 0)
                                 {
-                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                    foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                     {
                                         // tODO : SAVE ALL NOTIFICATIONs
                                         int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);

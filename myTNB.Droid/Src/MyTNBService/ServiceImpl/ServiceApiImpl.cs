@@ -419,5 +419,45 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetPaymentReceipt<GetPaymentReceiptResponse>(request, token);
         }
+
+        /// <summary>
+        /// Call GetUserNotifications with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationResponse> GetUserNotifications([Body] Request.BaseRequest request)
+        {
+            return api.GetUserNotifications<UserNotificationResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetNotificationDetails with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationDetailsResponse> GetNotificationDetails([Body] Request.BaseRequest request)
+        {
+            return api.GetNotificationDetails<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call DeleteUserNotification with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationDeleteResponse> DeleteUserNotification([Body] Request.BaseRequest request)
+        {
+            return api.DeleteUserNotification<UserNotificationDeleteResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call ReadUserNotification with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationReadResponse> ReadUserNotification([Body] Request.BaseRequest request)
+        {
+            return api.ReadUserNotification<UserNotificationReadResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

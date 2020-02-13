@@ -10,6 +10,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             void ShowOCRLoading();
             void ShowMeterReadingPage(string resultResponse);
+            void ShowMeterReadingPageWithError();
         }
 
         public interface IPresenter

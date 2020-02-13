@@ -11,7 +11,6 @@ using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -361,9 +360,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             }
                         }
 
-                        NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                        MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                        if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                        UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                        if (response.IsSuccessResponse())
                         {
                             try
                             {
@@ -374,10 +372,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 Utility.LoggingNonFatalError(ne);
                             }
 
-                            if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                                response.Data.ResponseData.UserNotificationList.Count > 0)
+                            if (response.GetData() != null && response.GetData().UserNotificationList != null &&
+                                response.GetData().UserNotificationList.Count > 0)
                             {
-                                foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                 {
                                     // tODO : SAVE ALL NOTIFICATIONs
                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
@@ -459,15 +457,13 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 if (UserEntity.IsCurrentlyActive())
                 {
                     UserEntity loggedUser = UserEntity.GetActive();
-
-                    NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                    MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                    if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                    if (response.IsSuccessResponse())
                     {
-                        if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                            response.Data.ResponseData.UserNotificationList.Count > 0)
+                        if (response.GetData() != null && response.GetData().UserNotificationList != null &&
+                            response.GetData().UserNotificationList.Count > 0)
                         {
-                            foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                            foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                             {
                                 // tODO : SAVE ALL NOTIFICATIONs
                                 int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);

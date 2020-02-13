@@ -423,11 +423,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
+                takePhotoFragment.ResetZoom();
                 ShowImagePreView(false);
                 isFromSingleCapture = false;
                 UpdateTakePhotoNote();
             }
-
             EnableSubmitButton();
         }
 
@@ -459,6 +459,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             Intent intent = new Intent();
             intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
             SetResult(Result.Ok, intent);
+            Finish();
+        }
+
+        public void ShowMeterReadingPageWithError()
+        {
+            SetResult(Result.Ok);
             Finish();
         }
 

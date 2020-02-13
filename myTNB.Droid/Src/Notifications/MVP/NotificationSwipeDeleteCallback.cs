@@ -8,7 +8,6 @@ using Android.Support.V7.Widget.Helper;
 using Android.Text;
 using Android.Views;
 using myTNB_Android.Src.Notifications.Adapter;
-using static myTNB_Android.Src.AppLaunch.Models.UserNotificationResponse;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {

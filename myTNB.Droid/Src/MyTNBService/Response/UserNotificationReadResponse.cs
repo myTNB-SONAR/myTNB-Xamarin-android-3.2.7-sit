@@ -4,14 +4,16 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {
-    public class UserNotificationReadResponse
+    public class UserNotificationReadResponse : BaseResponse<UserNotificationReadResponse.APIResponse>
     {
-		[JsonProperty(PropertyName = "d")]
-		public APIResponse Data { get; set; }
+		public APIResponse GetData()
+        {
+            return Response.Data;
+        }
 
-		public class APIResponse : APIBaseResponse
+		public class APIResponse
 		{
-
+            //No Impl
 		}
 	}
 }

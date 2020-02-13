@@ -156,5 +156,21 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetPaymentReceipt")]
         Task<T> GetPaymentReceipt<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetUserNotifications")]
+        Task<T> GetUserNotifications<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetNotificationDetails")]
+        Task<T> GetNotificationDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/DeleteUserNotification")]
+        Task<T> DeleteUserNotification<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ReadUserNotification")]
+        Task<T> ReadUserNotification<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
     }
 }
