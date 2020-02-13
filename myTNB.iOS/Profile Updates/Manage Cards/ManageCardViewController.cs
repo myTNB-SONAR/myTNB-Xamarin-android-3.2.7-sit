@@ -7,6 +7,7 @@ using myTNB.Model;
 using System.Threading.Tasks;
 using myTNB.DataManager;
 using myTNB.MyAccount;
+using System.Collections.Generic;
 
 namespace myTNB
 {
@@ -130,6 +131,22 @@ namespace myTNB
                                         InvokeOnMainThread(() =>
                                         {
                                             OnDeleteCardDone(lastDigits);
+
+                                            if (DataManager.DataManager.SharedInstance.RegisteredCards != null && DataManager.DataManager.SharedInstance.RegisteredCards.d != null)
+                                            {
+                                                if (!DataManager.DataManager.SharedInstance.RegisteredCards.d.IsSuccess)
+                                                {
+                                                    DisplayCustomAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                                                    GetErrorI18NValue(Constants.Error_ProfileCCErrorMsg),
+                                                    new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_Ok), null } });
+                                                }
+                                            }
+                                            else
+                                            {
+                                                DisplayCustomAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                                                    GetErrorI18NValue(Constants.Error_ProfileCCErrorMsg),
+                                                    new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_Ok), null } });
+                                            }
                                         });
                                     });
                                 }
