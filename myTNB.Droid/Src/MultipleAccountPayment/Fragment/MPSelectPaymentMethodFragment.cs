@@ -231,6 +231,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else
                     {
+                        HideErrorMessageSnakebar();
                         AddNewCard();
                     }
                 };
@@ -245,6 +246,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else
                     {
+                        HideErrorMessageSnakebar();
                         selectedPaymentMethod = METHOD_FPX;
                         selectedCard = null;
                         InitiatePaymentRequest();
@@ -310,6 +312,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
                 else
                 {
+                    HideErrorMessageSnakebar();
                     selectedPaymentMethod = METHOD_CREDIT_CARD;
                     if (IsValidPayableAmount())
                     {
@@ -676,6 +679,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             mErrorMessageSnackBar.Show();
         }
 
+        public void ShowErrorMessageWithOK(string message)
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+
+            mErrorMessageSnackBar = Snackbar.Make(baseView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(6);
+
+            mErrorMessageSnackBar.Show();
+        }
+
+        private void HideErrorMessageSnakebar()
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+        }
+
         public void InitiateWebView(string response)
         {
             Bundle bundle = new Bundle();
@@ -797,8 +825,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     if (!response.IsSuccessResponse())
                     {
-                        //Note: Failed response will not be handled.
-                        //ShowErrorMessage(response.Response.DisplayMessage);
+                        ShowErrorMessageWithOK(Utility.GetLocalizedErrorLabel("paymentCCErrorMsg"));
                     }
                     else
                     {

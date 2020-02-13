@@ -991,5 +991,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        private Snackbar mCCErrorSnakebar;
+        public void ShowCCErrorSnakebar()
+        {
+            try
+            {
+                if (mCCErrorSnakebar != null && mCCErrorSnakebar.IsShown)
+                {
+                    mCCErrorSnakebar.Dismiss();
+                }
+
+                mCCErrorSnakebar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("profileCCErrorMsg"), Snackbar.LengthIndefinite)
+                .SetAction(GetLabelCommonByLanguage("ok"), delegate
+                {
+
+                    mCCErrorSnakebar.Dismiss();
+                }
+                );
+                View v = mCCErrorSnakebar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(6);
+                mCCErrorSnakebar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
