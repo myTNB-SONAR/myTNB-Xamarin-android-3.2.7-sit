@@ -2,6 +2,7 @@
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Utils;
 using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -203,6 +204,24 @@ namespace myTNB_Android.Src.Database.Model
             return filteredList;
             //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
             //}
+        }
+
+        public static List<UserNotificationEntity> ListFilteredNotificationsByBCRMType(string accNum , string bcrmNotificationTypeId)
+        {
+            List<UserNotificationEntity> list = new List<UserNotificationEntity>();
+
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<UserNotificationEntity> filteredList = new List<UserNotificationEntity>();
+                list = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE AccountNum = ? AND IsDeleted = ? AND BCRMNotificationTypeId = ?", accNum, false, bcrmNotificationTypeId).ToList<UserNotificationEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return list;
         }
 
         public static int Count()
