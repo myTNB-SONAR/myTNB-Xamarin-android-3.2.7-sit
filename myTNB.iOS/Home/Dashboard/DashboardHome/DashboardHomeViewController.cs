@@ -600,7 +600,6 @@ namespace myTNB
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
-            _homeTableView.RegisterClassForCellReuse(typeof(PromotionTableViewCell), DashboardHomeConstants.Cell_Promotion);
             _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             View.AddSubview(_homeTableView);
         }
@@ -609,10 +608,6 @@ namespace myTNB
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
             PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-            //UINavigationController navController = new UINavigationController(viewController);
-            //navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            //PresentViewController(navController, true, null);
-            //viewController.HidesBottomBarWhenPushed = false;
             NavigationController.PushViewController(viewController, true);
         }
 

@@ -3,7 +3,6 @@ using System;
 using UIKit;
 using CoreAnimation;
 using myTNB.Model;
-using Cirrious.FluentLayouts.Touch;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using myTNB.SitecoreCMS.Model;
@@ -48,18 +47,12 @@ namespace myTNB
         {
             base.ViewDidLoad();
 
-            imgViewAppLaunch = new UIImageView(UIImage.FromBundle("AppLaunch"));
-            imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+            imgViewAppLaunch = new UIImageView(new CGRect(new CGPoint(0, 0), View.Frame.Size))
+            {
+                Image = UIImage.FromBundle("AppLaunch"),
+                ContentMode = UIViewContentMode.ScaleAspectFill
+            };
             View.AddSubview(imgViewAppLaunch);
-
-            View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
-
-            View.AddConstraints(
-                imgViewAppLaunch.AtTopOf(View, 0),
-                imgViewAppLaunch.AtBottomOf(View, 0),
-                imgViewAppLaunch.AtLeftOf(View, 0),
-                imgViewAppLaunch.AtRightOf(View, 0)
-            );
 
             //Create DB
             SQLiteHelper.CreateDB();

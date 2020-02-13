@@ -115,9 +115,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Cirrious.FluentLayouts.Touch">
-      <HintPath>..\packages\Cirrious.FluentLayout.2.6.0\lib\Xamarin.iOS10\Cirrious.FluentLayouts.Touch.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
@@ -297,15 +294,9 @@
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Expand-Down.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Arrow-Left.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Arrow-Left.imageset\ic_slider_left%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Arrow-Left.imageset\ic_slider_left%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Left-Blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Arrow-Right.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Arrow-Right.imageset\ic_slider_right%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Arrow-Right.imageset\ic_slider_right%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Up.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Up.imageset\up%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Arrow-Up.imageset\up%403x.png" />
@@ -433,9 +424,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Feedback.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback.imageset\Feedback%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback.imageset\Feedback%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Feedback-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Blue.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%403x.png" />
@@ -460,9 +448,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted.imageset\submittedFeedback%402x-1.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted.imageset\submittedFeedback%403x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Feedback-Submitted-Generic.imageset\submittedFeedback%403x.png" />
@@ -607,27 +592,15 @@
     <ImageAsset Include="Assets\Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-X-Gray.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Info-Black-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Info-White-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Itemized-Tooltip1.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Itemized-Tooltip2.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Label.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Label.imageset\Label%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Label.imageset\Label%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Loaded.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Loaded.imageset\icButtonResendLoaded%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Loaded.imageset\icButtonResendLoaded%403x.png" />
@@ -643,14 +616,9 @@
     <ImageAsset Include="Assets\Assets.xcassets\Locate-Blue.imageset\Locate.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Locate-Blue.imageset\Locate%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Locate-Blue.imageset\Locate%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Logo-Combined.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Logo-Title.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\LogOut.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Logout-Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%403x.png" />
@@ -678,15 +646,9 @@
     <ImageAsset Include="Assets\Assets.xcassets\Mobile.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Mobile.imageset\Mobile%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Mobile.imageset\Mobile%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Mobile-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Mobile-White.imageset\Mobile-white%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Mobile-White.imageset\Mobile-white%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Name.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Name.imageset\Name%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Name.imageset\Name%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Name-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Name-White.imageset\Name-white%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Name-White.imageset\Name-white%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\New-Launch-Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%403x.png" />
@@ -717,12 +679,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-New-Bill.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%402x-1.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%403x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-News.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-Reconnection.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-Reconnection.imageset\headerReconnected%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Banner-Reconnection.imageset\headerReconnected%403x.png" />
@@ -774,12 +730,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Notification-News.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-News.imageset\icNotificationNews2%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-News.imageset\icNotificationNews2%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Promo.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Reconnection.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Reconnection.imageset\icConnection%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Reconnection.imageset\icConnection%403x.png" />
@@ -828,9 +778,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Password-Old.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Password-Old.imageset\Password%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Password-Old.imageset\Password%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Payment.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Payment.imageset\Payment%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Payment.imageset\Payment%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
@@ -993,12 +940,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Stub-Promotion-1.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Stub-Promotion-1.imageset\image1%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Stub-Promotion-1.imageset\image1%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Stub-Promotion-2.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\Stub-Promotion-2.imageset\image2%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\Stub-Promotion-2.imageset\image2%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Supply.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Supply.imageset\Supply%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Supply.imageset\Supply%403x.png" />
@@ -1977,7 +1918,6 @@
     <Folder Include="Model\GetSMRTerminationReasons\" />
     <Folder Include="Model\GetMeterReadingOCRValue\" />
     <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
-    <Folder Include="Home\Dashboard\DashboardHome\Promotion\" />
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Home\Components\Refresh Screen\" />
     <Folder Include="Model\GetAccountsSMREligibility\" />
@@ -2541,7 +2481,6 @@
     <Compile Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\MeterReadSSMRWalkthroughModel.cs" />
     <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntity.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Promotion\PromotionTableViewCell.cs" />
     <Compile Include="Model\SSMR\SMRSubmitMeterReadingResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughServiceV2.cs" />
     <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntityV2.cs" />
