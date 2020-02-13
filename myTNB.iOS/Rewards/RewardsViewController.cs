@@ -722,7 +722,7 @@ namespace myTNB
         {
             if (lastView != null)
             {
-                if (lastView.Frame.GetMaxX() < ViewWidth)
+                if (Convert.ToInt32(lastView.Frame.GetMaxX()) < Convert.ToInt32(ViewWidth))
                 {
                     nfloat diff = ViewWidth - lastView.Frame.GetMaxX();
                     nfloat xtraPadding = diff / (_categoryList.Count * 2);
