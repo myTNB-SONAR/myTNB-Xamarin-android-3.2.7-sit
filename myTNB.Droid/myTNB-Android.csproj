@@ -428,7 +428,6 @@
     <Compile Include="Src\AddAccount\Adapter\AccountTypeAdapter.cs" />
     <Compile Include="Src\AddAccount\Adapter\AddedAccountsAdapter.cs" />
     <Compile Include="Src\AddAccount\Adapter\AdditionalAccountListAdapter.cs" />
-    <Compile Include="Src\AddAccount\Api\AddMultipleAccountsToUserApi.cs" />
     <Compile Include="Src\AddAccount\Api\GetCustomerAccounts.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountByRightsFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountFormFragment.cs" />
@@ -4592,6 +4591,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_failed_banner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_success.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_success_banner.png" />
+    <Compile Include="Src\MyTNBService\Response\AddAccountsResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\AddAccountsRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

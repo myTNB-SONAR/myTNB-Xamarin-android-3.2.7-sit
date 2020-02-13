@@ -551,26 +551,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             try
             {
                 string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = paymentResponse.GetData();
+                string action = initiatePaymentResult.action;
+                string merchantId = initiatePaymentResult.payMerchantID;
+                string merchantTransId = initiatePaymentResult.payMerchant_transID;
+                string currencyCode = initiatePaymentResult.payCurrencyCode;
+                string payAm = initiatePaymentResult.payAmount;
 
-                string action = paymentResponse.requestPayBill.initiatePaymentResult.action;
-                string merchantId = paymentResponse.requestPayBill.initiatePaymentResult.payMerchantID;
-                string merchantTransId = paymentResponse.requestPayBill.initiatePaymentResult.payMerchant_transID;
-                string currencyCode = paymentResponse.requestPayBill.initiatePaymentResult.payCurrencyCode;
-                string payAm = paymentResponse.requestPayBill.initiatePaymentResult.payAmount;
-
-                string custEmail = paymentResponse.requestPayBill.initiatePaymentResult.payCustEmail;
-                string custName = paymentResponse.requestPayBill.initiatePaymentResult.payCustName;
-                string des = paymentResponse.requestPayBill.initiatePaymentResult.payProdDesc;
-                string returnURL = paymentResponse.requestPayBill.initiatePaymentResult.payReturnUrl;
-                string signature = paymentResponse.requestPayBill.initiatePaymentResult.paySign;
-                string mparam1 = paymentResponse.requestPayBill.initiatePaymentResult.payMParam;
-                string payMethod = paymentResponse.requestPayBill.initiatePaymentResult.payMethod;
-                string platform = paymentResponse.requestPayBill.initiatePaymentResult.platform;
+                string custEmail = initiatePaymentResult.payCustEmail;
+                string custName = initiatePaymentResult.payCustName;
+                string des = initiatePaymentResult.payProdDesc;
+                string returnURL = initiatePaymentResult.payReturnUrl;
+                string signature = initiatePaymentResult.paySign;
+                string mparam1 = initiatePaymentResult.payMParam;
+                string payMethod = initiatePaymentResult.payMethod;
+                string platform = initiatePaymentResult.platform;
                 string accNum = selectedAccount.AccountNum;
 
-                string transType = paymentResponse.requestPayBill.initiatePaymentResult.transactionType;
-                string tokenizedHashCodeCC = paymentResponse.requestPayBill.initiatePaymentResult.tokenizedHashCodeCC;
-                string custPhone = paymentResponse.requestPayBill.initiatePaymentResult.payCustPhoneNum;
+                string transType = initiatePaymentResult.transactionType;
+                string tokenizedHashCodeCC = initiatePaymentResult.tokenizedHashCodeCC;
+                string custPhone = initiatePaymentResult.payCustPhoneNum;
 
                 Bundle bundle = new Bundle();
                 bundle.PutString("apiKeyID", apiKeyID);
@@ -687,11 +687,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             try
             {
+                PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = response.GetData();
                 string parameter1 = "Param1=3";
-                string parameter2 = "Param2=" + response.requestPayBill.initiatePaymentResult.payMerchant_transID;
+                string parameter2 = "Param2=" + initiatePaymentResult.payMerchant_transID;
                 string parameter3 = "Param3=" + param3;
                 string langProp = "lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                var uri = Android.Net.Uri.Parse(response.requestPayBill.initiatePaymentResult.action +
+                var uri = Android.Net.Uri.Parse(initiatePaymentResult.action +
                     "?" + parameter1 + "&" + parameter2 + "&" + parameter3 + "&" + langProp);
 
                 Bundle bundle = new Bundle();
@@ -1014,10 +1015,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             try
             {
-                if (response != null && response.requestPayBill != null)
+                if (response != null && response.Response != null)
                 {
                     Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
-                    if (response.requestPayBill.ErrorCode == "7200")
+                    if (response.IsSuccessResponse())
                     { 
                         if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
                         {
@@ -1028,17 +1029,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             InitiateFPXPayment(response);
                         }
                     }
-                    else if (response.requestPayBill.ErrorCode == "7000")
+                    else if (response.Response.ErrorCode == "7000")
                     {
                         string title = "";
                         string message = "";
-                        if (!string.IsNullOrEmpty(response.requestPayBill.DisplayTitle))
+                        if (!string.IsNullOrEmpty(response.Response.DisplayTitle))
                         {
-                            title = response.requestPayBill.DisplayTitle;
+                            title = response.Response.DisplayTitle;
                         }
-                        if (!string.IsNullOrEmpty(response.requestPayBill.DisplayMessage))
+                        if (!string.IsNullOrEmpty(response.Response.DisplayMessage))
                         {
-                            message = response.requestPayBill.DisplayMessage;
+                            message = response.Response.DisplayMessage;
                         }
                         Intent maintenanceScreen = new Intent(this.Activity, typeof(MaintenanceActivity));
                         maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, title);
@@ -1048,15 +1049,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     else
                     {
                         string txt = "";
-                        if (!string.IsNullOrEmpty(response.requestPayBill.DisplayMessage))
+                        if (!string.IsNullOrEmpty(response.Response.DisplayMessage))
                         {
-                            txt = response.requestPayBill.DisplayMessage;
+                            txt = response.Response.DisplayMessage;
                         }
                         else
                         {
                             txt = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                         }
-                        ShowErrorMessage(response.requestPayBill.DisplayMessage);
+                        ShowErrorMessage(response.Response.DisplayMessage);
                     }
 
                 }
