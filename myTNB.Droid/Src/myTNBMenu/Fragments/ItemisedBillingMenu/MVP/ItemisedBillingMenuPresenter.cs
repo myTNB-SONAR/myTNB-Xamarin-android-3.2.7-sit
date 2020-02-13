@@ -22,7 +22,7 @@ using Android.Gms.Common.Apis;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
-using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -852,10 +852,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             {
                 if (accountList != null && accountList.Count > 0)
                 {
-                    NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                    UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(accountList));
+                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
 
-                    if (notificationDeleteResponse != null && notificationDeleteResponse.Data != null && notificationDeleteResponse.Data.ErrorCode == "7200")
+                    if (notificationDeleteResponse.IsSuccessResponse())
                     {
 
                     }

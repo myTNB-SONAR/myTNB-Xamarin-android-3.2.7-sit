@@ -13,7 +13,6 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -1324,10 +1323,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 if (accountList != null && accountList.Count > 0)
                 {
-                    NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                    UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(accountList));
+                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
 
-                    if (notificationDeleteResponse != null && notificationDeleteResponse.Data != null && notificationDeleteResponse.Data.ErrorCode == "7200")
+                    if (notificationDeleteResponse.IsSuccessResponse())
                     {
 
                     }

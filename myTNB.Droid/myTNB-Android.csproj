@@ -2596,7 +2596,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\MyTNBService\InterfaceAPI\INotificationAPI.cs" />
     <Compile Include="Src\MyTNBService\Request\UserNotificationRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationResponse.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_bill_due.png" />

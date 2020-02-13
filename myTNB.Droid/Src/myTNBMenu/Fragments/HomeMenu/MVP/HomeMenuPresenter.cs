@@ -2719,10 +2719,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (accountList != null && accountList.Count > 0)
                 {
-                    NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                    UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(accountList));
+                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
 
-                    if (notificationDeleteResponse != null && notificationDeleteResponse.Data != null && notificationDeleteResponse.Data.ErrorCode == "7200")
+                    if (notificationDeleteResponse.IsSuccessResponse())
                     {
 
                     }
