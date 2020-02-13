@@ -91,13 +91,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     isOwnedAccountValue,
                     accountTypeValue);
 
-                AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(accountBillPayRequest);
-                if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
+                AccountBillPayHistoryResponse accountBillPayResponse = await ServiceApiImpl.Instance.GetAccountBillPayHistory(accountBillPayRequest);
+                if (accountBillPayResponse.IsSuccessResponse())
                 {
-                    billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
-                    billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.Data.ResponseData.BillPayFilterData);
+                    billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.GetData().BillPayHistories);
+                    billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.GetData().BillPayFilterData);
                 }
-                else if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "8400")
+                else if (accountBillPayResponse.Response != null && accountBillPayResponse.Response.ErrorCode == "8400")
                 {
                     showBillMaintenanceState = true;
                 }
@@ -196,14 +196,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
+                        if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.DisplayMessage))
                         {
-                            contentText = accountBillPayResponse.Data.DisplayMessage;
+                            contentText = accountBillPayResponse.Response.DisplayMessage;
                         }
 
-                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                        if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.RefreshBtnText))
                         {
-                            btnText = accountBillPayResponse.Data.RefreshBtnText;
+                            btnText = accountBillPayResponse.Response.RefreshBtnText;
                         }
 
                         mView.ShowUnavailableBillContent(false, btnText, contentText);
@@ -213,14 +213,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         string btnText = "";
                         string contentText = "";
 
-                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshMessage))
+                        if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.RefreshMessage))
                         {
-                            contentText = accountBillPayResponse.Data.RefreshMessage;
+                            contentText = accountBillPayResponse.Response.RefreshMessage;
                         }
 
-                        if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                        if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.RefreshBtnText))
                         {
-                            btnText = accountBillPayResponse.Data.RefreshBtnText;
+                            btnText = accountBillPayResponse.Response.RefreshBtnText;
                         }
 
                         mView.ShowUnavailableBillContent(true, btnText, contentText);
@@ -300,13 +300,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     isOwnedAccountValue,
                     accountTypeValue);
 
-                AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(accountBillPayRequest);
-                if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
+                AccountBillPayHistoryResponse accountBillPayResponse = await ServiceApiImpl.Instance.GetAccountBillPayHistory(accountBillPayRequest);
+                if (accountBillPayResponse.IsSuccessResponse())
                 {
-                    billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
-                    billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.Data.ResponseData.BillPayFilterData);
+                    billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.GetData().BillPayHistories);
+                    billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.GetData().BillPayFilterData);
                 }
-                else if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "8400")
+                else if (accountBillPayResponse.Response != null && accountBillPayResponse.Response.ErrorCode == "8400")
                 {
                     showBillMaintenanceState = true;
                 }
@@ -320,14 +320,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.DisplayMessage))
+                    if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.DisplayMessage))
                     {
-                        contentText = accountBillPayResponse.Data.DisplayMessage;
+                        contentText = accountBillPayResponse.Response.DisplayMessage;
                     }
 
-                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                    if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountBillPayResponse.Data.RefreshBtnText;
+                        btnText = accountBillPayResponse.Response.RefreshBtnText;
                     }
 
                     mView.ShowUnavailableBillContent(false, btnText, contentText);
@@ -337,14 +337,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string btnText = "";
                     string contentText = "";
 
-                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshMessage))
+                    if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.RefreshMessage))
                     {
-                        contentText = accountBillPayResponse.Data.RefreshMessage;
+                        contentText = accountBillPayResponse.Response.RefreshMessage;
                     }
 
-                    if (accountBillPayResponse != null && accountBillPayResponse.Data != null && !string.IsNullOrEmpty(accountBillPayResponse.Data.RefreshBtnText))
+                    if (accountBillPayResponse != null && accountBillPayResponse.Response != null && !string.IsNullOrEmpty(accountBillPayResponse.Response.RefreshBtnText))
                     {
-                        btnText = accountBillPayResponse.Data.RefreshBtnText;
+                        btnText = accountBillPayResponse.Response.RefreshBtnText;
                     }
 
                     mView.ShowUnavailableBillContent(true, btnText, contentText);
