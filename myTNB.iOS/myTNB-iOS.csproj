@@ -2018,7 +2018,6 @@
     <InterfaceDefinition Include="Home\More\Find Us\FindUs.storyboard" />
     <InterfaceDefinition Include="Home\Bill\Receipt\Receipt.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\Select Store Type\SelectStoreType.storyboard" />
-    <InterfaceDefinition Include="Browser\Browser.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\Location Details\LocationDetails.storyboard" />
     <InterfaceDefinition Include="Rating\Rating.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
@@ -2041,6 +2040,7 @@
     <InterfaceDefinition Include="Profile Updates\Update Mobile Number\UpdateMobileNoViewController.xib" />
     <InterfaceDefinition Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryViewController.xib" />
     <InterfaceDefinition Include="Whats New\Whats New Details\WhatsNewDetailsViewController.xib" />
+    <InterfaceDefinition Include="Browser\BrowserViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2230,10 +2230,6 @@
     <Compile Include="Home\More\Find Us\Select Store Type\SelectStoreTypeDataSource.cs" />
     <Compile Include="Home\More\Find Us\AnnotationModel.cs" />
     <Compile Include="Model\GetWebLinks\WebLinksDataModel.cs" />
-    <Compile Include="Browser\BrowserViewController.cs" />
-    <Compile Include="Browser\BrowserViewController.designer.cs">
-      <DependentUpon>BrowserViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\IsUserAuthenticate\UserAuthenticationResponseModel.cs" />
     <Compile Include="Model\GetLocationTypes\LocationTypeDataModel.cs" />
     <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.cs" />
@@ -2801,6 +2797,10 @@
     <Compile Include="Components\Tutorial Overlay\WhatsNewTutorialOverlay.cs" />
     <Compile Include="Model\Usage\PendingPaymentModel.cs" />
     <Compile Include="Registration\Customer Accounts\AddCASuccessCell.cs" />
+    <Compile Include="Browser\BrowserViewController.cs" />
+    <Compile Include="Browser\BrowserViewController.designer.cs">
+      <DependentUpon>BrowserViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
