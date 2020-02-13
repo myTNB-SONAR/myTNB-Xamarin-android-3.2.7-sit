@@ -5095,7 +5095,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                     if (smStatisticContainer.Visibility == ViewStates.Visible && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                                     {
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                        TextPaint textPaint = new TextPaint();
+                                        try
+                                        {
+                                            Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                                            textPaint.SetTypeface(plain);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
+                                        textPaint.TextAlign = Paint.Align.Left;
+
+
+                                        StaticLayout staticLayout = new StaticLayout(txtTariffBlockLegendDisclaimer.TextFormatted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+                                        int lineCount = staticLayout.LineCount;
+                                        if (lineCount == 4)
+                                        {
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                        }
                                     }
 
                                     isDPCBarClicked = true;
@@ -5461,7 +5480,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                     if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                                     {
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                        TextPaint textPaint = new TextPaint();
+                                        try
+                                        {
+                                            Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                                            textPaint.SetTypeface(plain);
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
+                                        textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
+                                        textPaint.TextAlign = Paint.Align.Left;
+
+
+                                        StaticLayout staticLayout = new StaticLayout(txtTariffBlockLegendDisclaimer.TextFormatted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+                                        int lineCount = staticLayout.LineCount;
+                                        if (lineCount == 4)
+                                        {
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                        }
                                     }
                                 }
                             }
@@ -7206,7 +7244,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                             if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                                             {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                                ICharSequence text;
+
+                                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                                {
+                                                    text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage, FromHtmlOptions.ModeLegacy);
+                                                }
+                                                else
+                                                {
+                                                    text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage);
+                                                }
+
+                                                TextPaint textPaint = new TextPaint();
+                                                try
+                                                {
+                                                    Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                                                    textPaint.SetTypeface(plain);
+                                                }
+                                                catch (System.Exception e)
+                                                {
+                                                    Utility.LoggingNonFatalError(e);
+                                                }
+                                                textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
+                                                textPaint.TextAlign = Paint.Align.Left;
+
+
+                                                StaticLayout staticLayout = new StaticLayout(text, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+                                                int lineCount = staticLayout.LineCount;
+                                                if (lineCount == 4)
+                                                {
+                                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                                }
                                             }
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
@@ -7272,7 +7340,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                         if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                                         {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                            ICharSequence text;
+
+                                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                            {
+                                                text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage, FromHtmlOptions.ModeLegacy);
+                                            }
+                                            else
+                                            {
+                                                text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage);
+                                            }
+
+                                            TextPaint textPaint = new TextPaint();
+                                            try
+                                            {
+                                                Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                                                textPaint.SetTypeface(plain);
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                            textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
+                                            textPaint.TextAlign = Paint.Align.Left;
+
+
+                                            StaticLayout staticLayout = new StaticLayout(text, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+                                            int lineCount = staticLayout.LineCount;
+                                            if (lineCount == 4)
+                                            {
+                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                            }
                                         }
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
