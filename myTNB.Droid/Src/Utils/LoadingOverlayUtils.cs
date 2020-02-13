@@ -44,7 +44,8 @@ namespace myTNB_Android.Src.Utils
 
                 try
                 {
-                    lottieLoadingImage.Progress = 0f;
+                    lottieLoadingImage.SetMinAndMaxProgress(0.05f, 0.8f);
+                    lottieLoadingImage.Progress = 0.05f;
                     lottieLoadingImage.PlayAnimation();
                 }
                 catch (Exception e)
