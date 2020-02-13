@@ -3,7 +3,7 @@ using myTNB_Android.Src.Base.Request;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class UserNotificationDetailsRequest : APIBaseRequest
+    public class UserNotificationDetailsRequest : BaseRequest
     {
         public string NotificationType;
         public string NotificationId;

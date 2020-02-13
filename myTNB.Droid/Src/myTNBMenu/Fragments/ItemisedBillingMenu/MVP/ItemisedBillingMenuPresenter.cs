@@ -22,6 +22,7 @@ using Android.Gms.Common.Apis;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -186,6 +187,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         {
                             mainAccountChargeModelList = new List<AccountChargeModel>();
                         }
+
+                        OnCleanUpNotifications(contractAccountValue, accountChargeModelList);
                     }
 
                     if (showBillMaintenanceState)
@@ -481,6 +484,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     }
 
                     OnCheckToCallItemizedTutorial();
+
+                    OnCleanUpNotifications(contractAccountValue, accountChargeModelList);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -777,6 +782,96 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             }
 
             return newList;
+        }
+
+        private void OnCleanUpNotifications(string accNum, List<AccountChargeModel> accountChargeModelList)
+        {
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsNotificationServiceCompleted())
+                {
+                    List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
+
+                    AccountChargeModel accountChargeModel = accountChargeModelList[0];
+
+                    double amtDue = 0.00;
+                    if (storedAccountTypeValue == "RE")
+                    {
+                        amtDue = accountChargeModel.AmountDue * -1;
+                    }
+                    else
+                    {
+                        amtDue = accountChargeModel.AmountDue;
+                    }
+
+                    if (amtDue <= 0.00)
+                    {
+                        List<UserNotificationEntity> billDueList = UserNotificationEntity.ListFilteredNotificationsByBCRMType(accNum, Constants.BCRM_NOTIFICATION_BILL_DUE_ID);
+                        if (billDueList != null && billDueList.Count > 0)
+                        {
+                            for (int j = 0; j < billDueList.Count; j++)
+                            {
+                                UserNotificationEntity.UpdateIsDeleted(billDueList[j].Id, true);
+                                Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                temp.Id = billDueList[j].Id;
+                                temp.NotificationType = billDueList[j].NotificationType;
+                                ToBeDeleteList.Add(temp);
+                            }
+                        }
+
+                        List<UserNotificationEntity> disconnectNoticeList = UserNotificationEntity.ListFilteredNotificationsByBCRMType(accNum, Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID);
+                        if (disconnectNoticeList != null && disconnectNoticeList.Count > 0)
+                        {
+                            for (int j = 0; j < disconnectNoticeList.Count; j++)
+                            {
+                                UserNotificationEntity.UpdateIsDeleted(disconnectNoticeList[j].Id, true);
+                                Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                temp.Id = disconnectNoticeList[j].Id;
+                                temp.NotificationType = disconnectNoticeList[j].NotificationType;
+                                ToBeDeleteList.Add(temp);
+                            }
+                        }
+                    }
+
+                    if (ToBeDeleteList != null && ToBeDeleteList.Count > 0)
+                    {
+                        _ = OnBatchDeleteNotifications(ToBeDeleteList);
+                    }
+                }
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
+
+        }
+
+        private async Task OnBatchDeleteNotifications(List<Notifications.Models.UserNotificationData> accountList)
+        {
+            try
+            {
+                if (accountList != null && accountList.Count > 0)
+                {
+                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
+
+                    if (notificationDeleteResponse.IsSuccessResponse())
+                    {
+
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
     }
 }

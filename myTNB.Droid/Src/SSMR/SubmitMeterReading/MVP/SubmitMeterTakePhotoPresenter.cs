@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Graphics;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
 
@@ -25,29 +26,37 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public async void GetMeterReadingOCRValue(string contractAccount)
         {
-            GetMeterReadingOCRValueRequest request;
-            GetMeterReadingOCRResponse response;
-            mView.ShowOCRLoading();
-            List<Task<GetMeterReadingOCRResponse>> ocrSubmitTasks = new List<Task<GetMeterReadingOCRResponse>>();
-            List<MeterImageModel> modelWithMeterImages = meterImageList.FindAll(meter=> { return meter.ImageData != null; });
-            foreach (MeterImageModel meterImageModel in modelWithMeterImages)
+            try
             {
-                if (meterImageModel.ImageData != null)
+                GetMeterReadingOCRValueRequest request;
+                GetMeterReadingOCRResponse response;
+                mView.ShowOCRLoading();
+                List<Task<GetMeterReadingOCRResponse>> ocrSubmitTasks = new List<Task<GetMeterReadingOCRResponse>>();
+                List<MeterImageModel> modelWithMeterImages = meterImageList.FindAll(meter => { return meter.ImageData != null; });
+                foreach (MeterImageModel meterImageModel in modelWithMeterImages)
                 {
-                    MeterImage meterImage = new MeterImage();
-                    meterImage.RequestReadingUnit = meterImageModel.RequestReadingUnit;
-                    meterImage.ImageId = meterImageModel.ImageId;
-                    meterImage.ImageSize = meterImageModel.ImageData.ByteCount.ToString();
-                    meterImage.ImageData = Utils.ImageUtils.GetBase64FromBitmap(meterImageModel.ImageData, OCR_IMAGE_QUALITY);
+                    if (meterImageModel.ImageData != null)
+                    {
+                        MeterImage meterImage = new MeterImage();
+                        meterImage.RequestReadingUnit = meterImageModel.RequestReadingUnit;
+                        meterImage.ImageId = meterImageModel.ImageId;
+                        meterImage.ImageSize = meterImageModel.ImageData.ByteCount.ToString();
+                        meterImage.ImageData = Utils.ImageUtils.GetBase64FromBitmap(meterImageModel.ImageData, OCR_IMAGE_QUALITY);
 
-                    request = new GetMeterReadingOCRValueRequest(contractAccount, meterImage);
-                    ocrSubmitTasks.Add(api.GetMeterReadingOCRValue(request));
+                        request = new GetMeterReadingOCRValueRequest(contractAccount, meterImage);
+                        ocrSubmitTasks.Add(api.GetMeterReadingOCRValue(request));
+                    }
                 }
-            }
 
-            var results = await Task.WhenAll(ocrSubmitTasks);
-            string resultResponse = JsonConvert.SerializeObject(results);
-            mView.ShowMeterReadingPage(resultResponse);
+                var results = await Task.WhenAll(ocrSubmitTasks);
+                string resultResponse = JsonConvert.SerializeObject(results);
+                mView.ShowMeterReadingPage(resultResponse);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                mView.ShowMeterReadingPageWithError();
+            }
         }
 
         public List<MeterImageModel> GetMeterImages()

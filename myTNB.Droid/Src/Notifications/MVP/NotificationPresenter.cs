@@ -22,11 +22,11 @@ using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.NotificationDetails.Requests;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Notifications.Api;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -40,12 +40,10 @@ namespace myTNB_Android.Src.Notifications.MVP
         private NotificationContract.IView mView;
         CancellationTokenSource cts;
         List<UserNotificationData> selectedNotificationList;
-        NotificationApiImpl notificationAPI;
         public NotificationPresenter(NotificationContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
-            notificationAPI = new NotificationApiImpl();
         }
 
         private async Task InvokeNotificationApi(API_ACTION apiAction)
@@ -68,8 +66,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 switch (apiAction)
                 {
                     case API_ACTION.DELETE:
-                        notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));
-                        if (notificationDeleteResponse.Data.ErrorCode == "7200")
+                        notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(selectedNotificationList));
+                        if (notificationDeleteResponse.IsSuccessResponse())
                         {
                             foreach (UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -83,13 +81,13 @@ namespace myTNB_Android.Src.Notifications.MVP
                             {
                                 this.mView.HideProgress();
                             }
-                            this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Data.ErrorMessage);
+                            this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Response.ErrorMessage);
                             this.mView.OnFailedNotificationAction();
                         }
                         break;
                     case API_ACTION.READ:
-                        notificationReadResponse = await notificationAPI.ReadUserNotification<UserNotificationReadResponse>(new UserNotificationReadRequest(selectedNotificationList));
-                        if (notificationReadResponse.Data.ErrorCode == "7200")
+                        notificationReadResponse = await ServiceApiImpl.Instance.ReadUserNotification(new UserNotificationReadRequest(selectedNotificationList));
+                        if (notificationReadResponse.IsSuccessResponse())
                         {
                             foreach(UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -103,7 +101,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                             {
                                 this.mView.HideProgress();
                             }
-                            this.mView.ShowFailedErrorMessage(notificationReadResponse.Data.ErrorMessage);
+                            this.mView.ShowFailedErrorMessage(notificationReadResponse.Response.ErrorMessage);
                             this.mView.OnFailedNotificationAction();
                         }
                         break;
@@ -181,12 +179,12 @@ namespace myTNB_Android.Src.Notifications.MVP
             {
                 this.mView.ShowProgress();
                 UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationType);
-                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetails<UserNotificationDetailsResponse>(request);
-                if (response.Data.ErrorCode == "7200")
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
+                if (response.IsSuccessResponse())
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Data.IsPayEnabled);
-                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
-                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.GetData().UserNotificationDetail, userNotification, position);
                 }
                 else
                 {
@@ -239,6 +237,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+            List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
             cts = new CancellationTokenSource();
             this.mView.ShowQueryProgress();
 
@@ -306,10 +305,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
-                                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                                if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
-                                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
+                                    if (response.GetData() != null && response.GetData().UserNotificationList != null)
                                     {
                                         try
                                         {
@@ -320,8 +319,42 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             Utility.LoggingNonFatalError(ne);
                                         }
 
-                                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                         {
+                                            try
+                                            {
+                                                if ((userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_BILL_DUE_ID) || userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID)) && !userNotification.IsDeleted && !TextUtils.IsEmpty(userNotification.NotificationTypeId))
+                                                {
+                                                    CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(userNotification.AccountNum);
+                                                    if (selected.billingDetails != null)
+                                                    {
+                                                        SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                                                        double amtDue = 0.00;
+                                                        if (cached.AccType == "2")
+                                                        {
+                                                            amtDue = double.Parse(cached.AmountDue) * -1;
+                                                        }
+                                                        else
+                                                        {
+                                                            amtDue = double.Parse(cached.AmountDue);
+                                                        }
+
+                                                        if (amtDue <= 0.00)
+                                                        {
+                                                            userNotification.IsDeleted = true;
+                                                            Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                                            temp.Id = userNotification.Id;
+                                                            temp.NotificationType = userNotification.NotificationType;
+                                                            ToBeDeleteList.Add(temp);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            catch (System.Exception ene)
+                                            {
+                                                Utility.LoggingNonFatalError(ene);
+                                            }
+
                                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                         }
                                         this.mView.ShowView();
@@ -331,20 +364,20 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     }
                                     else
                                     {
-                                        this.mView.ShowRefreshView(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                        this.mView.ShowRefreshView(true, response.Response.RefreshMessage, response.Response.RefreshBtnText);
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen
                                     string contentTxt = "";
-                                    if (response != null && response.Data != null)
+                                    if (response != null && response.Response != null)
                                     {
-                                        if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                                        if (!string.IsNullOrEmpty(response.Response.DisplayMessage))
                                         {
-                                            contentTxt = response.Data.DisplayMessage;
+                                            contentTxt = response.Response.DisplayMessage;
                                         }
                                     }
                                     this.mView.ShowRefreshView(false, contentTxt, "");
@@ -352,7 +385,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 else
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                    this.mView.ShowRefreshView(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                    this.mView.ShowRefreshView(true, response.Response.RefreshMessage, response.Response.RefreshBtnText);
                                 }
 
                                 this.mView.HideQueryProgress();
@@ -392,6 +425,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                     this.mView.HideQueryProgress();
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     this.mView.ShowRefreshView(true, null, null);
+                }
+
+                if (ToBeDeleteList != null && ToBeDeleteList.Count > 0)
+                {
+                    _ = OnBatchDeleteNotifications(ToBeDeleteList);
                 }
             }
             catch (ApiException apiException)
@@ -626,6 +664,34 @@ namespace myTNB_Android.Src.Notifications.MVP
             data.Title = "Testing of Reseed validation";
             data.Message = "Your bill is {0}. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>Account: #accountName#";
             return data;
+        }
+
+        private async Task OnBatchDeleteNotifications(List<Notifications.Models.UserNotificationData> accountList)
+        {
+            try
+            {
+                if (accountList != null && accountList.Count > 0)
+                {
+                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
+
+                    if (notificationDeleteResponse.IsSuccessResponse())
+                    {
+
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
     }
 }

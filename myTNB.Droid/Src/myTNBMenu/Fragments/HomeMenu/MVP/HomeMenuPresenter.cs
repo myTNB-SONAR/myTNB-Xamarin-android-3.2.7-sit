@@ -29,10 +29,12 @@ using myTNB_Android.Src.myTNBMenu.Requests;
 using System.Net.Http;
 using myTNB_Android.Src.myTNBMenu.Api;
 using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.Request;
+using Android.Text;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -178,6 +180,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         isSummaryDone = true;
                         OnCheckToCallHomeMenuTutorial();
+
+                        OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
                     {
@@ -295,6 +299,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
 
+                        OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
                     {
@@ -2393,6 +2398,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 try
                 {
+                    this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                     _ = InvokeGetUserNotifications();
                 }
                 catch (System.Exception ne)
@@ -2412,11 +2418,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
-                NotificationApiImpl notificationAPI = new NotificationApiImpl();
-				MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                if (response.Data != null && response.Data.ErrorCode == "7200")
+
+                List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
+                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                if (response.IsSuccessResponse())
                 {
-                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null)
+                    if (response.GetData() != null && response.GetData().UserNotificationList != null)
                     {
                         try
                         {
@@ -2427,8 +2434,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Utility.LoggingNonFatalError(ne);
                         }
 
-						foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+						foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                         {
+                            try
+                            {
+                                if ((userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_BILL_DUE_ID) || userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID)) && !userNotification.IsDeleted && !TextUtils.IsEmpty(userNotification.NotificationTypeId))
+                                {
+                                    CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(userNotification.AccountNum);
+                                    if (selected.billingDetails != null)
+                                    {
+                                        SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                                        double amtDue = 0.00;
+                                        if (cached.AccType == "2")
+                                        {
+                                            amtDue = double.Parse(cached.AmountDue) * -1;
+                                        }
+                                        else
+                                        {
+                                            amtDue = double.Parse(cached.AmountDue);
+                                        }
+
+                                        if (amtDue <= 0.00)
+                                        {
+                                            userNotification.IsDeleted = true;
+                                            Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                            temp.Id = userNotification.Id;
+                                            temp.NotificationType = userNotification.NotificationType;
+                                            ToBeDeleteList.Add(temp);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (System.Exception ene)
+                            {
+                                Utility.LoggingNonFatalError(ene);
+                            }
+
                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                         }
                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
@@ -2438,7 +2479,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 						MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     }
                 }
-                else if(response != null && response.Data != null && response.Data.ErrorCode == "8400")
+                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
                 {
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                 }
@@ -2447,6 +2488,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 					MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                 }
                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+
+                if (ToBeDeleteList != null && ToBeDeleteList.Count > 0)
+                {
+                    _ = OnBatchDeleteNotifications(ToBeDeleteList);
+                }
             }
             catch (System.Exception ne)
             {
@@ -2602,6 +2648,97 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             return newList;
+        }
+
+        private void OnCleanUpNotifications(List<SummaryDashBoardDetails> summaryDetails)
+        {
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsNotificationServiceCompleted())
+                {
+                    List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
+                    for (int i = 0; i < summaryDetails.Count; i++)
+                    {
+                        double amtDue = 0.00;
+                        if (summaryDetails[i].AccType == "2")
+                        {
+                            amtDue = double.Parse(summaryDetails[i].AmountDue) * -1;
+                        }
+                        else
+                        {
+                            amtDue = double.Parse(summaryDetails[i].AmountDue);
+                        }
+
+                        if (amtDue <= 0.00)
+                        {
+                            List<UserNotificationEntity> billDueList = UserNotificationEntity.ListFilteredNotificationsByBCRMType(summaryDetails[i].AccNumber, Constants.BCRM_NOTIFICATION_BILL_DUE_ID);
+                            if (billDueList != null && billDueList.Count > 0)
+                            {
+                                for (int j = 0; j < billDueList.Count; j++)
+                                {
+                                    UserNotificationEntity.UpdateIsDeleted(billDueList[j].Id, true);
+                                    Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                    temp.Id = billDueList[j].Id;
+                                    temp.NotificationType = billDueList[j].NotificationType;
+                                    ToBeDeleteList.Add(temp);
+                                }
+                            }
+
+                            List<UserNotificationEntity> disconnectNoticeList = UserNotificationEntity.ListFilteredNotificationsByBCRMType(summaryDetails[i].AccNumber, Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID);
+                            if (disconnectNoticeList != null && disconnectNoticeList.Count > 0)
+                            {
+                                for (int j = 0; j < disconnectNoticeList.Count; j++)
+                                {
+                                    UserNotificationEntity.UpdateIsDeleted(disconnectNoticeList[j].Id, true);
+                                    Notifications.Models.UserNotificationData temp = new Notifications.Models.UserNotificationData();
+                                    temp.Id = disconnectNoticeList[j].Id;
+                                    temp.NotificationType = disconnectNoticeList[j].NotificationType;
+                                    ToBeDeleteList.Add(temp);
+                                }
+                            }
+                        }
+                    }
+
+                    if (ToBeDeleteList != null && ToBeDeleteList.Count > 0)
+                    {
+                        this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                        _ = OnBatchDeleteNotifications(ToBeDeleteList);
+                    }
+                }
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
+
+        }
+
+        private async Task OnBatchDeleteNotifications(List<Notifications.Models.UserNotificationData> accountList)
+        {
+            try
+            {
+                if (accountList != null && accountList.Count > 0)
+                {
+                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
+
+                    if (notificationDeleteResponse.IsSuccessResponse())
+                    {
+
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
     }
 }

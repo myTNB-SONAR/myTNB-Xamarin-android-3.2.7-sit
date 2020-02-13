@@ -2557,6 +2557,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
+                SetNotificationIndicator();
+
                 if (count <= 0)
                 {
                     ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.Activity);
@@ -2565,8 +2567,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.Activity, count);
                 }
-
-                SetNotificationIndicator();
             }
             catch (System.Exception e)
             {

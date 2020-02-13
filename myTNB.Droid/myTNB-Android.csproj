@@ -484,7 +484,6 @@
     <Compile Include="Src\AppLaunch\Models\PhoneVerifyStatus.cs" />
     <Compile Include="Src\AppLaunch\Models\PhoneVerifyStatusResponse.cs" />
     <Compile Include="Src\AppLaunch\Models\UserNotification.cs" />
-    <Compile Include="Src\AppLaunch\Models\UserNotificationResponse.cs" />
     <Compile Include="Src\AppLaunch\Models\Weblink.cs" />
     <Compile Include="Src\AppLaunch\Models\WeblinkResponse.cs" />
     <Compile Include="Src\AppLaunch\MVP\AppLaunchContract.cs" />
@@ -2589,10 +2588,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\MyTNBService\InterfaceAPI\INotificationAPI.cs" />
     <Compile Include="Src\MyTNBService\Request\UserNotificationRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationResponse.cs" />
-    <Compile Include="Src\MyTNBService\Notification\NotificationApiImpl.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_bill_due.png" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_disconnection.png" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_dunning_disconnection.png" />

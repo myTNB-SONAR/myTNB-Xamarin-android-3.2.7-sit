@@ -216,8 +216,19 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 if (resultCode == Result.Ok)
                 {
-                    Bundle extras = data.Extras;
-                    mPresenter.EvaluateOCRReadingResponse(extras.GetString("OCR_RESULTS"));
+                    if (data != null)
+                    {
+                        Bundle extras = data.Extras;
+                        mPresenter.EvaluateOCRReadingResponse(extras.GetString("OCR_RESULTS"));
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(Utility.GetLocalizedErrorLabel("defaultErrorTitle"))
+                            .SetMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"))
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                            .Build().Show();
+                    }
                 }
             }
             if (resultCode == Result.Canceled)

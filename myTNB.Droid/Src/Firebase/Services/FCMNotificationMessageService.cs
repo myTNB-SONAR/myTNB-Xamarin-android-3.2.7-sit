@@ -8,7 +8,6 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.Utils;
 using Refit;
