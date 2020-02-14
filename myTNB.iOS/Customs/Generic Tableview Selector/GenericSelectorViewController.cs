@@ -74,7 +74,7 @@ namespace myTNB
                 SeparatorStyle = UITableViewCellSeparatorStyle.None,
                 BackgroundColor = MyTNBColor.SectionGrey
             };
-            genericTableView.RegisterClassForCellReuse(typeof(UITableViewCell), "genericViewCell");
+            genericTableView.RegisterClassForCellReuse(typeof(GenericSelectorCell), "genericSelectorTableViewCell");
             genericTableView.ReloadData();
             View.AddSubview(genericTableView);
             if (HasCTA)

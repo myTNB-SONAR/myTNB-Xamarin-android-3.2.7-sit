@@ -62,38 +62,20 @@ namespace myTNB
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            UITableViewCell cell = tableView.DequeueReusableCell("genericViewCell", indexPath);
+            GenericSelectorCell cell = tableView.DequeueReusableCell("genericSelectorTableViewCell") as GenericSelectorCell;
             string text = _controller.Items[indexPath.Row] ?? string.Empty;
-            cell.TextLabel.Text = text;
-            cell.TextLabel.Font = TNBFont.MuseoSans_16_300;
-            cell.TextLabel.TextColor = MyTNBColor.CharcoalGrey;
-            cell.TextLabel.Lines = 0;
-            cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
-            cell.TextLabel.BackgroundColor = UIColor.Clear;
+            cell.SetText(text);
 
-            cell.BackgroundColor = UIColor.White;
-            nfloat accWidth = ScaleUtility.GetScaledWidth(24);
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
-                cell.AccessoryView = new UIView(new CGRect(0, 0, accWidth, accWidth));
-                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, accWidth, accWidth))
-                {
-                    Image = UIImage.FromBundle("Table-Tick")
-                };
-                cell.AccessoryView.AddSubview(imgViewTick);
+                cell.AccessoryView = new UIView(new CGRect(0, 0, cell.ImgViewTick.Frame.Width, cell.ImgViewTick.Frame.Height));
+                cell.AccessoryView.AddSubview(cell.ImgViewTick);
             }
             else
             {
                 RemoveAccessory(cell);
             }
-            UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - ScaleUtility.GetScaledHeight(1)
-                , tableView.Frame.Width, ScaleUtility.GetScaledHeight(1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
-            cell.AddSubview(viewLine);
-            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }
 
