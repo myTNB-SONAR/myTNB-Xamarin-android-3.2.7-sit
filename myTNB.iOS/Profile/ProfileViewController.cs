@@ -32,7 +32,6 @@ namespace myTNB
             _isMasterDataDone = false;
             SetTableView();
             SetFooterView();
-            OnGetRegisteredCards();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -60,6 +59,7 @@ namespace myTNB
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
+            OnGetRegisteredCards();
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -113,6 +113,22 @@ namespace myTNB
                                     NSIndexPath indexPath = NSIndexPath.Create(0, 5);
                                     _profileTableview.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                                     _profileTableview.EndUpdates();
+
+                                    if (DataManager.DataManager.SharedInstance.RegisteredCards != null && DataManager.DataManager.SharedInstance.RegisteredCards.d != null)
+                                    {
+                                        if (!DataManager.DataManager.SharedInstance.RegisteredCards.d.IsSuccess)
+                                        {
+                                            DisplayCustomAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                                            GetErrorI18NValue(Constants.Error_ProfileCCErrorMsg),
+                                            new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_Ok), null } });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        DisplayCustomAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle),
+                                            GetErrorI18NValue(Constants.Error_ProfileCCErrorMsg),
+                                            new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_Ok), null } });
+                                    }
                                 });
                             });
                         });

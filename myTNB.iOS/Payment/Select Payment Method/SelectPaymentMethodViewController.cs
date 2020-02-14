@@ -130,6 +130,22 @@ namespace myTNB
                 {
                     InitializedTableView();
                     ActivityIndicator.Hide();
+
+                    if (_registeredCards != null && _registeredCards.d != null)
+                    {
+                        if (!_registeredCards.d.IsSuccess)
+                        {
+                            DisplayCustomAlert(GetErrorI18NValue(Constants.Error_PaymentCCErrorTitle),
+                            GetErrorI18NValue(Constants.Error_PaymentCCErrorMsg),
+                            new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_Ok), null } });
+                        }
+                    }
+                    else
+                    {
+                        DisplayCustomAlert(GetErrorI18NValue(Constants.Error_PaymentCCErrorTitle),
+                            GetErrorI18NValue(Constants.Error_PaymentCCErrorMsg),
+                            new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_Ok), null } });
+                    }
                 });
             });
         }

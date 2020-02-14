@@ -151,6 +151,9 @@ namespace myTNB
         public static string Error_WhatsNewExpiredMsg = "whatsNewExpiredMsg";
         public static string Error_WhatsNewExpiredBtnText = "whatsNewExpiredBtnText";
         public static string Error_BcrmDownMessage = "bcrmDownMessage";
+        public static string Error_PaymentCCErrorTitle = "paymentCCErrorTitle";
+        public static string Error_PaymentCCErrorMsg = "paymentCCErrorMsg";
+        public static string Error_ProfileCCErrorMsg = "profileCCErrorMsg";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
