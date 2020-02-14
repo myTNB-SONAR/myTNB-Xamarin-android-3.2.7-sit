@@ -56,6 +56,8 @@ namespace myTNB
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
             if (viewController != null)
             {
+                viewController.IsFromUsage = true;
+                viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty;
                 UINavigationController navController = new UINavigationController(viewController);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);

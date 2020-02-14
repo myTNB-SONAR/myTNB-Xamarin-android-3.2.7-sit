@@ -34,6 +34,7 @@ namespace myTNB
 
         public bool IsFromHome;
         public bool IsFromNotification;
+        public bool IsFromUsage;
         public bool FromStatusPage;
         public bool IsRoot;
         public string AccountNumber;
@@ -84,46 +85,35 @@ namespace myTNB
             }
             else
             {
-                if (IsFromHome || IsFromNotification)
+                InvokeOnMainThread(async () =>
                 {
-                    InvokeOnMainThread(async () =>
+                    ActivityIndicator.Show();
+                    await GetEligibility();
+                    if (_eligibilityAccount != null && _eligibilityAccount.d != null
+                        && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
+                        && _eligibilityAccount.d.data.accountEligibilities != null)
                     {
-                        ActivityIndicator.Show();
-                        await GetEligibility();
-                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
-                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
-                            && _eligibilityAccount.d.data.accountEligibilities != null)
+                        SSMRAccounts.SetData(_eligibilityAccount.d);
+                        SSMRAccounts.SetFilteredEligibleAccounts(true);
+                        if (SSMRAccounts.HasSSMRAccount)
                         {
-                            SSMRAccounts.SetData(_eligibilityAccount.d);
-                            SSMRAccounts.SetFilteredEligibleAccounts(true);
-                            if (SSMRAccounts.HasSSMRAccount)
-                            {
-                                SetCurrentIndex();
-                                accName = _currAcc?.accountNickName ?? string.Empty;
-                                _ssmrHeaderComponent.AccountName = accName;
-                                EvaluateEntry();
-                            }
-                            else
-                            {
-                                _currentIndex = -1;
-                                ActivityIndicator.Hide();
-                            }
+                            SetCurrentIndex();
+                            accName = _currAcc?.accountNickName ?? string.Empty;
+                            _ssmrHeaderComponent.AccountName = accName;
+                            EvaluateEntry();
                         }
                         else
                         {
-                            DisplayServiceError(_eligibilityAccount?.d?.DisplayMessage ?? string.Empty);
+                            _currentIndex = -1;
                             ActivityIndicator.Hide();
                         }
-                    });
-                }
-                else
-                {
-                    _currAcc = DataManager.DataManager.SharedInstance.SelectedAccount;
-                    _currentIndex = SSMRAccounts.GetEligibleAccountList().FindIndex(x => x.accNum == _currAcc.accNum);
-                    _ssmrHeaderComponent.AccountName = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
-                    UpdateTable();
-                    IsLoading = false;
-                }
+                    }
+                    else
+                    {
+                        DisplayServiceError(_eligibilityAccount?.d?.DisplayMessage ?? string.Empty);
+                        ActivityIndicator.Hide();
+                    }
+                });
             }
         }
 
@@ -150,7 +140,7 @@ namespace myTNB
         {
             _currentIndex = 0;
             _currAcc = SSMRAccounts.GetFirstSSMRAccount();
-            if (IsFromNotification)
+            if (IsFromNotification || IsFromUsage)
             {
                 int index = SSMRAccounts.GetEligibleAccountList().FindIndex(x => x.accNum == AccountNumber);
                 if (index > -1)
