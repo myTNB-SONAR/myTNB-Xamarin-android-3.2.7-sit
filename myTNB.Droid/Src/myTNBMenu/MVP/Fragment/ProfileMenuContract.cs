@@ -84,6 +84,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <param name="creditCard">CreditCardData</param>
             /// <param name="numOfCards">integer</param>
             void ShowRemovedCardSuccess(CreditCardData creditCard, int numOfCards);
+
+            void ShowCCErrorSnakebar();
         }
 
         public interface IUserActionsListener : IBasePresenter

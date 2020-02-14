@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 Log.Debug(TAG, e.StackTrace);
                 this.mView.HideGetRegisteredCardDialog();
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
+                this.mView.ShowErrorMessageWithOK(Utility.GetLocalizedErrorLabel("paymentCCErrorMsg"));
             }
 
         }
