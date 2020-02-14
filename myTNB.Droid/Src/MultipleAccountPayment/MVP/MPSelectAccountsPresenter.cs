@@ -6,7 +6,6 @@ using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Requests;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -29,14 +28,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
         private static readonly string TAG = "MPSelectAccountsPresenter";
         private MPSelectAccountsContract.IView mView;
         public bool isFromBillDetails = false;
-        BillingApiImpl api;
         List<AccountChargeModel> accountChargeModelList;
 
         public MPSelectAccountsPresenter(MPSelectAccountsContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
-            api = new BillingApiImpl();
             accountChargeModelList = new List<AccountChargeModel>();
         }
 

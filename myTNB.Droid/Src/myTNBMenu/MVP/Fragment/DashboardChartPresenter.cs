@@ -11,7 +11,6 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -38,7 +37,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
     {
         private DashboardChartContract.IView mView;
         CancellationTokenSource cts;
-        BillingApiImpl billingApi;
         ISharedPreferences mPref;
         private bool isSMRReady = false;
         private bool isDashboardReady = false;
@@ -50,7 +48,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView = mView;
             this.mView.SetPresenter(this);
             this.mPref = pref;
-            billingApi = new BillingApiImpl();
         }
 
         public void OnByDay()
