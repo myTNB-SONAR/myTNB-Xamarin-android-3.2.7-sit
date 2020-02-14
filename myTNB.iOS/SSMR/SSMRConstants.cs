@@ -66,8 +66,6 @@ namespace myTNB.SSMR
         public static string I18N_NoEligibleAccount = "noEligibleAccount";
 
         //Image
-        public static string IMG_BGOnboarding1 = "SSMR_Background_1";
-        public static string IMG_BGOnboarding2 = "SSMR_Background_2";
         public static string IMG_Mark = "Payment-Checkbox-Active";
         public static string IMG_Unmark = "Payment-Checkbox-Inactive";
         public static string IMG_Dropdow = "IC-Action-Dropdown";

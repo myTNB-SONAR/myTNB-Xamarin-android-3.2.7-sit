@@ -781,12 +781,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%403x.png" />
