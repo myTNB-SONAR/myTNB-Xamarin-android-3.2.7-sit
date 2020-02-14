@@ -4,48 +4,14 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {
-    public class AccountBillPayHistoryResponse
+    public class AccountBillPayHistoryResponse : BaseResponse<AccountBillPayHistoryResponse.AccountBillPayHistoryData>
     {
-		[JsonProperty(PropertyName = "d")]
-		public APIResponseResult Data { get; set; }
-
-		public class APIResponseResult
-		{
-			[JsonProperty(PropertyName = "__type")]
-			public string Type { get; set; }
-
-			[JsonProperty(PropertyName = "data")]
-			public AccountBillPayHistoryData ResponseData { get; set; }
-
-			[JsonProperty(PropertyName = "status")]
-			public string Status { get; set; }
-
-			[JsonProperty(PropertyName = "message")]
-			public string Message { get; set; }
-
-			[JsonProperty(PropertyName = "ErrorCode")]
-			public string ErrorCode { get; set; }
-
-			[JsonProperty(PropertyName = "ErrorMessage")]
-			public string ErrorMessage { get; set; }
-
-			[JsonProperty(PropertyName = "DisplayMessage")]
-			public string DisplayMessage { get; set; }
-
-			[JsonProperty(PropertyName = "DisplayType")]
-			public string DisplayType { get; set; }
-
-			[JsonProperty(PropertyName = "DisplayTitle")]
-			public string DisplayTitle { get; set; }
-
-            [JsonProperty(PropertyName = "RefreshMessage")]
-            public string RefreshMessage { get; set; }
-
-            [JsonProperty(PropertyName = "RefreshBtnText")]
-            public string RefreshBtnText { get; set; }
+		public AccountBillPayHistoryData GetData()
+        {
+            return Response.Data;
         }
 
-		public class AccountBillPayHistoryData
+        public class AccountBillPayHistoryData
 		{
 			[JsonProperty(PropertyName = "BillPayHistories")]
 			public List<BillPayHistory> BillPayHistories { get; set; }

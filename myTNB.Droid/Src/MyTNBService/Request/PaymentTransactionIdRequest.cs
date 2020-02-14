@@ -4,7 +4,7 @@ using myTNB_Android.Src.Base.Request;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class PaymentTransactionIdRequest : APIBaseRequest
+    public class PaymentTransactionIdRequest : BaseRequest
     {
         public string customerName { get; set; }
         public string phoneNo { get; set; }

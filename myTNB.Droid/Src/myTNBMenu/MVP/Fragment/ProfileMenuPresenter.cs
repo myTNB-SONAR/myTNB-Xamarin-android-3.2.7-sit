@@ -85,6 +85,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.DisableManageCards();
                     this.mView.ShowUserData(userEntity, 0);
+                    this.mView.ShowCCErrorSnakebar();
                 }
 
             }
@@ -97,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 // ADD OPERATION CANCELLED HERE
                 this.mView.DisableManageCards();
                 this.mView.ShowUserData(userEntity, 0);
-                this.mView.ShowRetryOptionsCancelledException(e);
+                this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -109,7 +110,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.DisableManageCards();
                 this.mView.ShowUserData(userEntity, 0);
-                this.mView.ShowRetryOptionsApiException(apiException);
+                this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -121,7 +122,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.DisableManageCards();
                 this.mView.ShowUserData(userEntity, 0);
-                this.mView.ShowRetryOptionsUnknownException(e);
+                this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
 

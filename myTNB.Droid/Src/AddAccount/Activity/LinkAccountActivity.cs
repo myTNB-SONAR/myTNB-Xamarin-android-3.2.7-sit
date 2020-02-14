@@ -849,7 +849,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
         }
 
-        public void ShowAddAccountSuccess(AddMultipleAccountResponse.Response response)
+        public void ShowAddAccountSuccess(List<Models.AddAccount> responseData)
         {
 
             try
@@ -857,7 +857,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 int ctr = 0;
 
                 List<NewAccount> finalAccountList = new List<NewAccount>();
-                foreach (Models.AddAccount item in response.Data)
+                foreach (Models.AddAccount item in responseData)
                 {
                     foreach (NewAccount newAccount in accountList)
                     {

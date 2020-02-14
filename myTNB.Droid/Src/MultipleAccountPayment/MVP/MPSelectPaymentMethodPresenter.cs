@@ -1,7 +1,6 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Requests;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -50,15 +49,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             try
             {
                 this.mView.ShowPaymentRequestDialog();
-                var newApi = new BillingApiImpl();
                 PaymentTransactionIdRequest paymentTransactionIdRequest = new PaymentTransactionIdRequest(custName, custPhone, platform, registeredCardId,paymentMode, totalAmount, paymentItems);
-                //var api = RestService.For<MPRequestPaymentApi>(Constants.SERVER_URL.END_POINT);
-
-                //MPInitiatePaymentResponse result = await api.InitiatePayment(new MPInitiatePaymentRequestV3(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, totalAmount, paymentItems));
-                //this.mView.SaveInitiatePaymentResponse(result);
-                //this.mView.HidePaymentRequestDialog();
                 var dump = JsonConvert.SerializeObject(paymentTransactionIdRequest);
-                PaymentTransactionIdResponse response = await newApi.GetPaymentTransactionId<PaymentTransactionIdResponse>(paymentTransactionIdRequest);
+                PaymentTransactionIdResponse response = await ServiceApiImpl.Instance.GetPaymentTransactionId(paymentTransactionIdRequest);
                 this.mView.SetInitiatePaymentResponse(response);
                 this.mView.HidePaymentRequestDialog();
             }
@@ -103,7 +96,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 Log.Debug(TAG, e.StackTrace);
                 this.mView.HideGetRegisteredCardDialog();
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
+                this.mView.ShowErrorMessageWithOK(Utility.GetLocalizedErrorLabel("paymentCCErrorMsg"));
             }
 
         }

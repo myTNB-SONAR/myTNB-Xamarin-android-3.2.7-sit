@@ -87,6 +87,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Save Initiate payment response to start payment flow with payment gateway
             /// </summary>
             void SetInitiatePaymentResponse(PaymentTransactionIdResponse response);
+
+            void ShowErrorMessageWithOK(string message);
         }
 
         public interface IUserActionsListener : IBasePresenter

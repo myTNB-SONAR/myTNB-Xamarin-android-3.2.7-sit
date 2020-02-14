@@ -6,11 +6,11 @@ using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Requests;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -28,14 +28,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
         private static readonly string TAG = "MPSelectAccountsPresenter";
         private MPSelectAccountsContract.IView mView;
         public bool isFromBillDetails = false;
-        BillingApiImpl api;
         List<AccountChargeModel> accountChargeModelList;
 
         public MPSelectAccountsPresenter(MPSelectAccountsContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
-            api = new BillingApiImpl();
             accountChargeModelList = new List<AccountChargeModel>();
         }
 
@@ -66,13 +64,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                     accountList,
                     true
                     );
-                AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
+                if (accountChargeseResponse.IsSuccessResponse())
                 {
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
-                    accountChargeModelList.AddRange(BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges));
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.GetData().MandatoryChargesPopUpDetails));
+                    accountChargeModelList.AddRange(BillingResponseParser.GetAccountCharges(accountChargeseResponse.GetData().AccountCharges));
                     List<MPAccount> newAccountList = new List<MPAccount>();
-                    accountChargeseResponse.Data.ResponseData.AccountCharges.ForEach(accountCharge =>
+                    accountChargeseResponse.GetData().AccountCharges.ForEach(accountCharge =>
                     {
                         CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountCharge.ContractAccount);
                         double dueAmount = accountCharge.AmountDue;
@@ -132,7 +130,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 }
                 else
                 {
-                    this.mView.ShowError(accountChargeseResponse.Data.DisplayMessage);
+                    this.mView.ShowError(accountChargeseResponse.Response.DisplayMessage);
                     this.mView.DisablePayButton();
                 }
                 this.mView.HideProgressDialog();

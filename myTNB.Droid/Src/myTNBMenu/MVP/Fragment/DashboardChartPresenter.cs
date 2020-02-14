@@ -11,7 +11,6 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -38,7 +37,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
     {
         private DashboardChartContract.IView mView;
         CancellationTokenSource cts;
-        BillingApiImpl billingApi;
         ISharedPreferences mPref;
         private bool isSMRReady = false;
         private bool isDashboardReady = false;
@@ -50,7 +48,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView = mView;
             this.mView.SetPresenter(this);
             this.mPref = pref;
-            billingApi = new BillingApiImpl();
         }
 
         public void OnByDay()
@@ -762,12 +759,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     accountList,
                     selectedAccount.IsOwner
                     );
-                AccountChargesResponse accountChargeseResponse = await billingApi.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
                 this.mView.HideProgress();
-                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                if (accountChargeseResponse.IsSuccessResponse())
                 {
-                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.GetData().AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.GetData().MandatoryChargesPopUpDetails));
                     this.mView.ShowBillDetails(selectedAccount, accountChargeModelList);
                 }
                 else

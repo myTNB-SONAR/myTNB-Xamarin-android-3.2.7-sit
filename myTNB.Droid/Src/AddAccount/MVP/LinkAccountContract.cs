@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// <summary>
             /// Show add account success with service response
             /// </summary>
-            void ShowAddAccountSuccess(AddMultipleAccountResponse.Response response);
+            void ShowAddAccountSuccess(List<Models.AddAccount> responseData);
 
             /// <summary>
             /// Show error message for add account response
