@@ -13,7 +13,6 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -34,7 +33,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         UserNotificationDetailContract.IView mView;
         public NotificationDetailModel notificationDetailModel;
         List<NotificationDetailModel.NotificationCTA> ctaList;
-        BillingApiImpl api;
         SSMRTerminateImpl terminationApi;
         AccountData mSelectedAccountData;
         bool isTaggedSMR = true;
@@ -42,7 +40,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view)
         {
             mView = view;
-            api = new BillingApiImpl();
             terminationApi = new SSMRTerminateImpl();
         }
 

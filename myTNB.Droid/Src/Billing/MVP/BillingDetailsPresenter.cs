@@ -14,7 +14,6 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using Newtonsoft.Json;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.Base;
@@ -26,12 +25,10 @@ namespace myTNB_Android.Src.Billing.MVP
     public class BillingDetailsPresenter : BillingDetailsContract.IPresenter
     {
         BillingDetailsContract.IView mView;
-        BillingApiImpl billingApi;
 
         public BillingDetailsPresenter(BillingDetailsContract.IView view)
         {
             mView = view;
-            billingApi = new BillingApiImpl();
         }
 
         public void GetBillHistory(AccountData selectedAccount)

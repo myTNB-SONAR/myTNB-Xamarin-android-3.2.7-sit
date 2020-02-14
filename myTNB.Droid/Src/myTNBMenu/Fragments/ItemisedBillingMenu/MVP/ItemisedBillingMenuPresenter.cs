@@ -9,7 +9,6 @@ using myTNB_Android.Src.SiteCore;
 using myTNB.SitecoreCMS.Model;
 using Android.App;
 using Newtonsoft.Json;
-using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -28,7 +27,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     public class ItemisedBillingMenuPresenter
     {
-        BillingApiImpl api;
         ItemisedBillingContract.IView mView;
         AccountChargesModel mAccountChargesModel;
         string storedAccountTypeValue = "";
@@ -39,7 +37,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view, ISharedPreferences pref)
         {
             mView = view;
-            api = new BillingApiImpl();
             mPref = pref;
         }
 
