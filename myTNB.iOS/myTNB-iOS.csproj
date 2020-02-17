@@ -2022,6 +2022,7 @@
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
     <None Include="GoogleService-Info.plist" />
+    <None Include="Resources\internalReleaseNote.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

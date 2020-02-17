@@ -71,6 +71,13 @@ namespace myTNB
             maintenanceView = gradientViewComponent.GetUI();
             LanguageUtility.SetLanguageGlobals();
             DataManager.DataManager.SharedInstance.ImageSize = DeviceHelper.GetImageSize();
+            if (!LanguageUtility.IsSaveSuccess)
+            {
+                InvokeInBackground(() =>
+                {
+                    LanguageUtility.SaveLanguagePreference().ContinueWith(langTask => { });
+                });
+            }
         }
 
         void HandleAppWillEnterForeground(NSNotification notification)
