@@ -2776,6 +2776,7 @@
     <Compile Include="Browser\BrowserViewController.designer.cs">
       <DependentUpon>BrowserViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Customs\Generic Tableview Selector\GenericSelectorCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
