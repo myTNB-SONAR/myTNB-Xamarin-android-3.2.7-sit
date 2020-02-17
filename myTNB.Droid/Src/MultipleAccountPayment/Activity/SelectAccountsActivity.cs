@@ -282,23 +282,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                         .Build().Show();
                 }
-#if STUB
-                else if (position != -2)
-                {
-                    List<MPAccount> list = adapter.GetSelectedAccounts();
-                    Log.Debug("Selected Accounts", " List " + list);
-                    MPAccount selectedAccount = list[position];
-                    if(selectedAccount.tooltipPopUp)
-                    {
-                        if(selectedAccount.isSelected && !selectedAccount.isTooltipShow && selectedAccount.OpenChargeTotal != 0)
-                        {
-                            ShowTooltip(selectedAccount);
-                            list[position].isTooltipShow = true;
-                        }
-                    }
-                    UpdateTotal(list);
-                }
-#endif
                 else
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
@@ -321,90 +304,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void ShowTooltip(MPAccount item)
-        {
-            try
-            {
-                mWhyThisAmtCardDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
-                    .Cancelable(false)
-                    .CanceledOnTouchOutside(false)
-                    .Build();
-
-                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-
-                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
-                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
-                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
-                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
-                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(item.MandatoryChargesMessage) ? Html.FromHtml(this.GetString(Resource.String.itemized_bill_third_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(item.MandatoryChargesMessage, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(item.MandatoryChargesMessage) ? Html.FromHtml(this.GetString(Resource.String.itemized_bill_third_message)) : Html.FromHtml(item.MandatoryChargesMessage);
-                }
-                txtItemizedTitle.Text = string.IsNullOrEmpty(item.MandatoryChargesTitle) ? this.GetString(Resource.String.itemized_bill_third_title) : item.MandatoryChargesTitle;
-                btnGotIt.Text = string.IsNullOrEmpty(item.MandatoryChargesSecButtonText) ? this.GetString(Resource.String.itemized_bill_got_it) : item.MandatoryChargesSecButtonText;
-                btnBringMeThere.Text = string.IsNullOrEmpty(item.MandatoryChargesPriButtonText) ? this.GetString(Resource.String.itemized_bill_bring_me_there) : item.MandatoryChargesPriButtonText;
-                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
-                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
-                btnGotIt.Click += delegate
-                {
-                    mWhyThisAmtCardDialog.Dismiss();
-                };
-                btnBringMeThere.Click += delegate
-                {
-                    mWhyThisAmtCardDialog.Dismiss();
-                    try
-                    {
-                        NavigateBillScreen(item);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-                };
-
-                mWhyThisAmtCardDialog.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void NavigateBillScreen(MPAccount item)
-        {
-            try
-            {
-                ShowProgressDialog();
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
-                this.userActionsListener.OnSelectAccount(customerAccount);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-
-        public void ShowDashboardChart(AccountData accountData)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                Intent result = new Intent();
-                result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-                result.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
-                SetResult(Result.FirstUser, result);
-                Finish();
-            }
-        }
-
-
         public void UpdateTotal(List<MPAccount> selectedAccounts)
         {
             try
@@ -413,12 +312,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 foreach (MPAccount account in selectedAccounts)
                 {
                     total += account.amount;
-#if STUB
-                    if (account.OpenChargeTotal != 0)
-                    {
-                        total += account.OpenChargeTotal;
-                    }
-#endif
                 }
                 textTotalPayable.Text = total.ToString("#,##0.00");
                 if (selectedAccounts.Count > 0)
@@ -599,11 +492,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                     accountAddress = customerBillingAccount.AccountStAddress,
                                     isSelected = (selectedAccount!= null && selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum)) ? true && dueAmount > 0 : false,
                                     isTooltipShow = false,
-#if STUB
-                                    OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,
-#else
                                     OpenChargeTotal = 0.00,
-#endif
                                     amount = dueAmount,
                                     MandatoryChargesTitle = response.accountDueAmountResponse.MandatoryChargesTitle,
                                     MandatoryChargesMessage = response.accountDueAmountResponse.MandatoryChargesMessage,

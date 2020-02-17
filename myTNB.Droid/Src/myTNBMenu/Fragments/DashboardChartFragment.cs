@@ -5592,31 +5592,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     ((DashboardHomeActivity)Activity).OnTapRefresh();
                 }
-                else if (resultCode == Result.FirstUser)
-                {
-                    Bundle extras = data.Extras;
-                    if (extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
-                    {
-                        AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                        bool isOwned = true;
-                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-                        if (customerBillingAccount != null)
-                        {
-                            isOwned = customerBillingAccount.isOwned;
-                            selectedAccount.IsOwner = isOwned;
-                            selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-
-                        }
-                        try
-                        {
-                            ((DashboardHomeActivity)Activity).BillsMenuAccess(selectedAccount);
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    }
-                }
             }
             else if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
             {
@@ -6500,16 +6475,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                     else
                                     {
-#if STUB
-                            if(accountDueAmount.OpenChargesTotal == 0)
-                            {
-                                txtWhyThisAmt.Visibility = ViewStates.Gone;
-                            }
-                            else
-                            {
-                                txtWhyThisAmt.Visibility = ViewStates.Visible;
-                            }
-#endif
                                         txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                                         selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                                         double calAmt = selectedAccount.AmtCustBal;
