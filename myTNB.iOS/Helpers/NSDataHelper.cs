@@ -19,6 +19,7 @@ namespace myTNB
             {
                 return NSData.FromArray(byteArray);
             }
+            catch (MonoTouchException m) { Debug.WriteLine("Error in parsing byte array to nsdata: " + m.Message); }
             catch (Exception e)
             {
                 Debug.WriteLine("Error in parsing byte array to nsdata: " + e.Message);

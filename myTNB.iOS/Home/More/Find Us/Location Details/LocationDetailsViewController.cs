@@ -164,6 +164,7 @@ namespace myTNB
                     UIApplication.SharedApplication.OpenUrl(url);
                 }
             }
+            catch (MonoTouchException m) { Debug.WriteLine("Error in CallNumber: " + m.Message); }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);

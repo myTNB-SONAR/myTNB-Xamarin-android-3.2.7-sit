@@ -301,6 +301,15 @@ namespace myTNB
                         });
                         dataTask.Resume();
                     }
+                    catch (MonoTouchException m)
+                    {
+                        Debug.WriteLine("Image load Error: " + m.Message);
+                        InvokeOnMainThread(() =>
+                        {
+                            imageView.Image = UIImage.FromBundle(RewardsConstants.Img_RewardDefaultBanner);
+                            if (RewardModel.IsUsed) { imageView.Image = RewardsServices.ConvertToGrayScale(imageView.Image); }
+                        });
+                    }
                     catch (Exception e)
                     {
                         Debug.WriteLine("Image load Error: " + e.Message);
@@ -790,6 +799,11 @@ namespace myTNB
             try
             {
                 return _footerView.Frame.Y + NavigationController.NavigationBar.Frame.GetMaxY() + GetScaledHeight(16F);
+            }
+            catch (MonoTouchException m)
+            {
+                Debug.WriteLine("Error: " + m.Message);
+                return 0;
             }
             catch (Exception e)
             {

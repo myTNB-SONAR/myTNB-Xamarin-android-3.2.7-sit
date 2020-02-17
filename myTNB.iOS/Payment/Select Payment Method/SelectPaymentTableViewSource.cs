@@ -87,12 +87,25 @@ namespace myTNB.Payment
                     }
                     else
                     {
+                        imgView.Image = UIImage.FromBundle(string.Empty);
                     }
 
                     UILabel lblCardNumber = new UILabel(new CGRect(65, 19, 150, 18));
                     lblCardNumber.Font = MyTNBFont.MuseoSans14;
-                    string ccNumber = card.LastDigits;
-                    lblCardNumber.Text = "•••• •••• •••• " + ccNumber.Substring(ccNumber.Length - 4);
+                    string ccNumber = card != null && card.LastDigits.IsValid() ? card.LastDigits : string.Empty;
+                    string suffix = string.Empty;
+                    try
+                    {
+                        if (ccNumber.IsValid())
+                        {
+                            suffix = ccNumber.IsValid() ? ccNumber.Substring(ccNumber.Length - 4) : string.Empty;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Error in GetCell: " + e.Message);
+                    }
+                    lblCardNumber.Text = "•••• •••• •••• " + suffix;
                     cell.AddSubview(lblCardNumber);
                     return cell;
                 }

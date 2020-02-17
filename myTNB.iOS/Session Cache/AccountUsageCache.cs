@@ -156,6 +156,7 @@ namespace myTNB
                     userDefaults.Synchronize();
                 }
             }
+            catch (MonoTouchException m) { Debug.WriteLine("SaveToCache Error: " + m.Message); }
             catch (Exception e)
             {
                 Debug.WriteLine("SaveToCache Error: " + e.Message);

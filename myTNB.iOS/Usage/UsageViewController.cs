@@ -1,3 +1,4 @@
+using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -668,6 +669,16 @@ namespace myTNB
                             HideREAmountView();
                         }
                         NormalChartIsLoading = false;
+                    });
+                }
+                catch (MonoTouchException m)
+                {
+                    Debug.WriteLine("Error in services: " + m.Message);
+                    InvokeOnMainThread(() =>
+                    {
+                        SetRefreshScreen();
+                        HideSSMRView();
+                        HideREAmountView();
                     });
                 }
                 catch (Exception e)

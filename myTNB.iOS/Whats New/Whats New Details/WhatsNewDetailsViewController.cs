@@ -189,6 +189,14 @@ namespace myTNB
                         });
                         dataTask.Resume();
                     }
+                    catch (MonoTouchException m)
+                    {
+                        Debug.WriteLine("Image load Error: " + m.Message);
+                        InvokeOnMainThread(() =>
+                        {
+                            imageView.Image = UIImage.FromBundle(WhatsNewConstants.Img_WhatsNewDefaultBanner);
+                        });
+                    }
                     catch (Exception e)
                     {
                         Debug.WriteLine("Image load Error: " + e.Message);
