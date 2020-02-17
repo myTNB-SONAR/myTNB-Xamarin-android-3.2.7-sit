@@ -14,7 +14,6 @@ using myTNB_Android.Src.FAQ.Adapter;
 using myTNB_Android.Src.FAQ.Model;
 using myTNB_Android.Src.FAQ.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -38,8 +37,6 @@ namespace myTNB_Android.Src.FAQ.Activity
         [BindView(Resource.Id.progressBar)]
         public ProgressBar mProgressBar;
 
-        private LoadingOverlay loadingOverlay;
-
         [BindView(Resource.Id.faq_list_recycler_view)]
         public RecyclerView mFAQRecyclerView;
 
@@ -53,11 +50,7 @@ namespace myTNB_Android.Src.FAQ.Activity
         {
             try
             {
-                //mProgressBar.Visibility = ViewStates.Gone;
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -221,13 +214,9 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         public void ShowProgressBar()
         {
-            //mProgressBar.Visibility = ViewStates.Visible;
             try
             {
-                if (loadingOverlay != null)
-                {
-                    loadingOverlay.Show();
-                }
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -246,7 +235,6 @@ namespace myTNB_Android.Src.FAQ.Activity
                 {
                     FAQ_ID = extras.GetString(Constants.FAQ_ID_PARAM);
                 }
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
                 ShowProgressBar();
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 mFAQRecyclerView.SetLayoutManager(layoutManager);

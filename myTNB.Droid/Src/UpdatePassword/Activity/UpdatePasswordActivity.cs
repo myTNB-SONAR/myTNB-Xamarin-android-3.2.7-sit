@@ -12,7 +12,6 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.UpdatePassword.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Runtime;
@@ -51,7 +50,6 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
 
         MaterialDialog progress;
-        private LoadingOverlay loadingOverlay;
         private string PAGE_ID = "UpdatePassword";
 
         UpdatePasswordContract.IUserActionsListener userActionsListener;
@@ -400,39 +398,21 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
         public void ShowProgress()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         public void HideProgress()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

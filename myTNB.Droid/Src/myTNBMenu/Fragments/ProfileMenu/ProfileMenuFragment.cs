@@ -32,7 +32,6 @@ using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.UpdatePassword.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 
@@ -53,7 +52,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         Button btnLogout;
 
         ProfileMenuPresenter mPresenter;
-        private LoadingOverlay loadingOverlay;
         private ProfileMenuItemContentComponent fullName, referenceNumber, email, mobileNumber, password, cards, electricityAccount;
         private bool mobileNoUpdated = false;
         MyTNBAppToolTipBuilder logoutDialog;
@@ -693,13 +691,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {
@@ -711,10 +703,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {

@@ -1,8 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android;
 using Android.App;
 using Android.Content;
@@ -23,14 +21,8 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SSMRBase.MVP;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.Listener;
-using myTNB_Android.Src.SSMR.Util;
-using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
@@ -119,8 +111,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private List<SSMRMeterReadingModel> singlePhaseList;
         private List<SSMRMeterReadingModel> threePhaseList;
-
-        LoadingOverlay loadingOverlay;
 
         List <SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
         AccountData selectedAccount;
@@ -793,13 +783,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -811,10 +795,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

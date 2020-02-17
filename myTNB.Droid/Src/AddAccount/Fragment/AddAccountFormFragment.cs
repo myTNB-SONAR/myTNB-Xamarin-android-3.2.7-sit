@@ -17,7 +17,6 @@ using myTNB_Android.Src.Barcode.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -35,7 +34,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         LinearLayout ownerDetailsLayout;
         Button addAccount;
 
-        private LoadingOverlay loadingOverlay;
         private Snackbar mSnackBar;
         private MaterialDialog dialogWhereMyAccountNo;
 
@@ -94,13 +92,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void HideAddingAccountProgressDialog()
         {
-            if (IsActive())
+            try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                    loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -115,7 +113,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             isOwner = Arguments.GetBoolean("isOwner");
             hasRights = Arguments.GetBoolean("hasRights");
             mPresenter = new AddAccountPresenter(this);
-            loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
         }
 
 
@@ -459,12 +456,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowAddingAccountProgressDialog()
         {
-            if (IsActive())
+            try
             {
-                if (loadingOverlay != null)
-                {
-                    loadingOverlay.Show();
-                }
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

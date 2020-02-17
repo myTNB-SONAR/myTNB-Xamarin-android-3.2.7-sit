@@ -25,13 +25,9 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewBill.Activity;
-using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.MyTNBService.Model.AccountBillPayHistoryModel;
 
@@ -123,7 +119,6 @@ namespace myTNB_Android.Src.Billing.MVP
         BillingHistoryData billingHistoryData;
         AccountData selectedAccountData;
         BillingDetailsContract.IPresenter billingDetailsPresenter;
-        private LoadingOverlay loadingOverlay;
 		private bool fromSelectAccountPage;
         private const string PAGE_ID = "BillDetails";
         ISharedPreferences mPref;
@@ -508,13 +503,7 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -531,10 +520,7 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

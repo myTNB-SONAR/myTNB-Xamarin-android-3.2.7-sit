@@ -18,7 +18,6 @@ using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.UpdateMobileNo.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -53,7 +52,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         UpdateMobilePresenter mPresenter;
 
         MaterialDialog progress;
-        private LoadingOverlay loadingOverlay;
 
         private bool forceUpdatePhoneNo = false;
 
@@ -195,10 +193,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -261,13 +256,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {

@@ -6,7 +6,6 @@ using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.V4.App;
 using Android.Support.V4.View;
 using Android.Util;
 using Android.Views;
@@ -15,14 +14,10 @@ using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
@@ -54,7 +49,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         NewWalkthroughAdapter newWalkthroughAdapter;
 
         string currentAppNavigation;
-        private LoadingOverlay loadingOverlay;
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
@@ -290,13 +284,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -308,10 +296,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

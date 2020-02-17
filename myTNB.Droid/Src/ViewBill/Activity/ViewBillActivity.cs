@@ -18,7 +18,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Syncfusion.SfPdfViewer.Android;
 using System;
 using System.IO;
@@ -70,8 +69,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         //[BindView(Resource.Id.pdfviewercontrol)]
         SfPdfViewer pdfViewer;
-
-        private LoadingOverlay loadingOverlay;
 
         ViewBillContract.IUserActionsListener userActionsListener;
         ViewBillPresenter mPresenter;
@@ -382,14 +379,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             try
             {
-                //mProgressBar.Visibility = ViewStates.Visible;
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                try
                 {
-                    loadingOverlay.Dismiss();
+                    LoadingOverlayUtils.OnRunLoadingAnimation(this);
                 }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
                 await Task.Run(() =>
                 {
@@ -418,9 +415,13 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     }
                 }
 
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                try
                 {
-                    loadingOverlay.Dismiss();
+                    LoadingOverlayUtils.OnStopLoadingAnimation(this);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
             catch (Exception e)
@@ -711,13 +712,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 RunOnUiThread(() =>
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    try
                     {
-                        loadingOverlay.Dismiss();
+                        LoadingOverlayUtils.OnRunLoadingAnimation(this);
                     }
-
-                    loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                    loadingOverlay.Show();
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 });
             }
             catch (System.Exception e)
@@ -732,9 +734,13 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 RunOnUiThread(() =>
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    try
                     {
-                        loadingOverlay.Dismiss();
+                        LoadingOverlayUtils.OnStopLoadingAnimation(this);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
                     }
                 });
             }

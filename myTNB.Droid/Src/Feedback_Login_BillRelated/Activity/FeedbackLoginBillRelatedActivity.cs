@@ -30,7 +30,6 @@ using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Runtime;
@@ -84,7 +83,6 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         FeedbackLoginBillRelatedImageRecyclerAdapter adapter;
 
         MaterialDialog submitDialog;
-        LoadingOverlay loadingOverlay;
         GridLayoutManager layoutManager;
         FeedbackLoginBillRelatedContract.IUserActionsListener userActionsListener;
         FeedbackLoginBillRelatedPresenter mPresenter;
@@ -569,20 +567,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void ShowProgressDialog()
         {
-            //if (submitDialog != null && !submitDialog.IsShowing)
-            //{
-            //    submitDialog.Show();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -592,16 +579,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void HideProgressDialog()
         {
-            //if (submitDialog != null && submitDialog.IsShowing)
-            //{
-            //    submitDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

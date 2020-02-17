@@ -23,7 +23,6 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -80,7 +79,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
-        private LoadingOverlay loadingOverlay;
         private Snackbar mErrorMessageSnackBar;
 
 
@@ -448,19 +446,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void ShowPaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && !this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -470,16 +458,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void HidePaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -779,19 +760,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void ShowGetRegisteredCardDialog()
         {
-            //if (this.mGetRegisteredCardsDialog != null && !this.mGetRegisteredCardsDialog.IsShowing)
-            //{
-            //    this.mGetRegisteredCardsDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -801,16 +772,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void HideGetRegisteredCardDialog()
         {
-            //if (this.mGetRegisteredCardsDialog != null && this.mGetRegisteredCardsDialog.IsShowing)
-            //{
-            //    this.mGetRegisteredCardsDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {

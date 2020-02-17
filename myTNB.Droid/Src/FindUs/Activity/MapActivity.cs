@@ -25,7 +25,6 @@ using myTNB_Android.Src.FindUs.Models;
 using myTNB_Android.Src.FindUs.MVP;
 using myTNB_Android.Src.FindUs.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -61,8 +60,6 @@ namespace myTNB_Android.Src.FindUs.Activity
         private LocationType selectedLocationType;
 
         private LinearLayout rootView;
-        //private AlertDialog mGetLocationsDialog;
-        private LoadingOverlay loadingOverlay;
         private AlertDialog mNoLocationsDialog;
         private Snackbar mErrorMessageSnackBar;
 
@@ -139,26 +136,14 @@ namespace myTNB_Android.Src.FindUs.Activity
 
         public void ShowGetLocationsDialog()
         {
-            //if (this.mGetLocationsDialog != null && !this.mGetLocationsDialog.IsShowing)
-            //{
-            //    this.mGetLocationsDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-
             }
-            //progressBar.Visibility = ViewStates.Invisible;
         }
 
         public void ShowGetLocationsError(string message)
@@ -302,23 +287,14 @@ namespace myTNB_Android.Src.FindUs.Activity
 
         public void HideGetLocationsDialog()
         {
-            //if (this.mGetLocationsDialog != null && this.mGetLocationsDialog.IsShowing)
-            //{
-            //    this.mGetLocationsDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-
             }
-            //progressBar.Visibility = ViewStates.Gone;
         }
 
         public bool IsActive()
@@ -350,9 +326,13 @@ namespace myTNB_Android.Src.FindUs.Activity
                .SetCancelable(true)
                 .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"), (senderAlert, args) =>
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    try
                     {
-                        loadingOverlay.Dismiss();
+                        LoadingOverlayUtils.OnStopLoadingAnimation(this);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
                     }
                 })
                .Create();

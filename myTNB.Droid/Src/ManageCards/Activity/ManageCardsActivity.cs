@@ -14,7 +14,6 @@ using myTNB_Android.Src.ManageCards.Adapter;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.ManageCards.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -60,7 +59,6 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         MaterialDialog progress;
 
-        private LoadingOverlay loadingOverlay;
         private string PAGE_ID = "ManageCards";
 
         AlertDialog removeDialog;
@@ -205,19 +203,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public void ShowProgressDialog()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -227,16 +215,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public void HideProgressDialog()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

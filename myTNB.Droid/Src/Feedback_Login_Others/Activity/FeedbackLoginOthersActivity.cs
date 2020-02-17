@@ -26,7 +26,6 @@ using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.SelectFeedbackType.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -86,7 +85,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         FeedbackLoginOthersPresenter mPresenter;
 
         MaterialDialog submitDialog;
-        LoadingOverlay loadingOverlay;
 
         FeedbackType currentFeedbackType;
 
@@ -525,19 +523,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void ShowProgressDialog()
         {
-            //if (submitDialog != null && !submitDialog.IsShowing)
-            //{
-            //    submitDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -547,16 +535,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void HideProgressDialog()
         {
-            //if (submitDialog != null && submitDialog.IsShowing)
-            //{
-            //    submitDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

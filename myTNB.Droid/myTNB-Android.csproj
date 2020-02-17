@@ -703,7 +703,6 @@
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsMonthFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SMSelectedMarkerView.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMChartHScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMDashboardScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Models\AccountDueAmount.cs" />
@@ -730,8 +729,6 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\MoreFragmentContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\MoreFragmentPresenter.cs" />
     <Compile Include="Src\myTNBMenu\Requests\AccountDueAmountRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\BillHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\PaymentHistoryRequest.cs" />
@@ -928,7 +925,6 @@
     <Compile Include="Src\RegisterValidation\Activity\RegisterValidationActivity.cs" />
     <Compile Include="Src\RegisterValidation\MVP\RegistrationValidationContract.cs" />
     <Compile Include="Src\RegisterValidation\MVP\RegistrationValidationPresenter.cs" />
-    <Compile Include="Src\Utils\Custom\ProgressDialog\LoadingOverlay.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingOverlayViewOverride.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingSurfaceView.cs" />
     <Compile Include="Src\Utils\Custom\Charts\DayAxisValueFormatter.cs" />
@@ -1324,10 +1320,6 @@
     <AndroidResource Include="Resources\drawable\meter_capture_holder_inactive.xml" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
     <AndroidResource Include="Resources\drawable\overlay_crop_image.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\ocr_reading.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ocr_reading.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ocr_reading.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ocr_reading.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_no.png" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
     <AndroidResource Include="Resources\layout\OCRLoadingFragmentLayout.axml" />
@@ -4517,6 +4509,11 @@
     <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailActivity.cs" />
     <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailContract.cs" />
     <Compile Include="Src\WhatsNewDetail\MVP\WhatsNewDetailPresenter.cs" />
+    <AndroidResource Include="Resources\layout\GeneralLoadingLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\LoadingOverlayUtils.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\bill_payment_processing_banner.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -4696,9 +4693,6 @@
     <AndroidResource Include="Resources\layout\FeedbackMenuView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\MoreMenuView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\NotificationView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -4851,7 +4845,6 @@
     <AndroidResource Include="Resources\layout\SelectAccountListItemView.axml" />
     <AndroidResource Include="Resources\layout\SelectMultipleAccountsView.axml" />
     <AndroidResource Include="Resources\layout\AppUpdateDialog.axml" />
-    <AndroidResource Include="Resources\layout\LoadingOverlayView.axml" />
     <AndroidResource Include="Resources\layout\RateUsQuestionItemView.axml" />
     <AndroidResource Include="Resources\layout\rating_activity_view.axml" />
     <AndroidResource Include="Resources\layout\SubmitRatingView.axml" />
@@ -4859,6 +4852,8 @@
     <AndroidResource Include="Resources\layout\ViewBillReceiptNewDesign.axml" />
     <AndroidResource Include="Resources\layout\ViewBillReceiptAccountDetails.axml" />
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
+    <AndroidAsset Include="Assets\tnb_general_loading.json" />
+    <AndroidAsset Include="Assets\ocr_loading_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -6847,9 +6842,6 @@
     <AndroidResource Include="Resources\drawable\gradient_horizontal.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\LoadingViewAnim.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\radio_button_off.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -6872,54 +6864,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\silver_chalice_button_outline.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_02.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_03.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_04.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_05.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_06.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_07.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_08.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_09.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_10.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_11.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_12.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_13.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_14.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_15.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\tnb_loading_frame_16.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\white_background_rect.xml" />

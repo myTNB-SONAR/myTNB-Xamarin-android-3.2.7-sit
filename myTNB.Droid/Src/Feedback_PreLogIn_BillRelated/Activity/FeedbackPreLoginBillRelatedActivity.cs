@@ -28,7 +28,6 @@ using myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP;
 using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -96,7 +95,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         FeedbackPreLoginBillRelatedPresenter mPresenter;
 
         MaterialDialog submitDialog;
-        LoadingOverlay loadingOverlay;
 
         [BindView(Resource.Id.rootView)]
         FrameLayout rootView;
@@ -698,21 +696,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void ShowProgressDialog()
         {
-            //if (submitDialog != null && !submitDialog.IsShowing)
-            //{
-            //    submitDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -720,18 +708,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void HideProgressDialog()
         {
-            //if (submitDialog != null && submitDialog.IsShowing)
-            //{
-            //    submitDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

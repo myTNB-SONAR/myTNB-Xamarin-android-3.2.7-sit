@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -9,7 +8,6 @@ using Android.Support.Design.Widget;
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -26,12 +24,10 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
-using myTNB_Android.Src.NotificationNewBill.Activity;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using Refit;
@@ -62,7 +58,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
-        private LoadingOverlay loadingOverlay;
         ClickSpan clickableSpan;
 
         public override int ResourceId()
@@ -328,13 +323,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -346,10 +335,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

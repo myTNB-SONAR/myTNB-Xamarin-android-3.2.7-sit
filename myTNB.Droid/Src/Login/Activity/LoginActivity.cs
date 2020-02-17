@@ -17,7 +17,6 @@ using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -77,8 +76,6 @@ namespace myTNB_Android.Src.Login.Activity
 
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
-
-        private LoadingOverlay loadingOverlay;
 
         const string PAGE_ID = "Login";
 
@@ -254,16 +251,9 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void HideProgressDialog()
         {
-            //if (mProgressDialog != null && mProgressDialog.IsShowing)
-            //{
-            //    mProgressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -273,19 +263,9 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowProgressDialog()
         {
-            //if (mProgressDialog != null && !mProgressDialog.IsShowing)
-            //{
-            //    mProgressDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {

@@ -18,7 +18,6 @@ using Firebase.DynamicLinks;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -64,8 +63,6 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		private string Title = "What’s New";
 
 		private IMenu menu;
-
-		private LoadingOverlay loadingOverlay;
 
 		private bool linkGenerationSuccessful = false;
 
@@ -462,36 +459,27 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 		public void ShowProgressDialog()
 		{
-			try
-			{
-				if (loadingOverlay != null && loadingOverlay.IsShowing)
-				{
-					loadingOverlay.Dismiss();
-				}
-
-				loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-				loadingOverlay.Show();
-			}
-			catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
-		}
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 		public void HideProgressDialog()
 		{
-			try
-			{
-				if (loadingOverlay != null && loadingOverlay.IsShowing)
-				{
-					loadingOverlay.Dismiss();
-				}
-			}
-			catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
-		}
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 		void Android.Gms.Tasks.IOnSuccessListener.OnSuccess(Java.Lang.Object result)
 		{

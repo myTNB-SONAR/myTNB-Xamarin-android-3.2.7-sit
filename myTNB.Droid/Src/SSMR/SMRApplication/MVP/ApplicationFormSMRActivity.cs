@@ -16,7 +16,6 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -57,7 +56,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         Button btnSubmitRegistration;
 
         ApplicationFormSMRPresenter mPresenter;
-        LoadingOverlay loadingOverlay;
 
         bool checkForEditingInfo = false;
 
@@ -221,13 +219,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -239,10 +231,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

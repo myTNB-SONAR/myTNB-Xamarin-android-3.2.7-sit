@@ -10,9 +10,7 @@ using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Adapter;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Rating.MVP;
-using myTNB_Android.Src.Rating.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 
@@ -23,9 +21,6 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         private SubmitRatingPresenter mPresenter;
         private SubmitRatingContract.IUserActionsListener userActionsListener;
-
-        private LoadingOverlay loadingOverlay;
-
 
         private FrameLayout rootView;
 
@@ -148,9 +143,13 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void HideProgressDialog()
         {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -204,13 +203,7 @@ namespace myTNB_Android.Src.Rating.Fargment
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {

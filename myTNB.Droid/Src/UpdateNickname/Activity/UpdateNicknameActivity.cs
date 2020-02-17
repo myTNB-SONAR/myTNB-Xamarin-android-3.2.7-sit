@@ -13,7 +13,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -44,7 +43,6 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         UpdateNicknamePresenter mPresenter;
 
         MaterialDialog progress;
-        private LoadingOverlay loadingOverlay;
         const string PAGE_ID = "UpdateNickname";
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -137,17 +135,9 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         public void HideProgressDialog()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -187,19 +177,9 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         public void ShowProgressDialog()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {

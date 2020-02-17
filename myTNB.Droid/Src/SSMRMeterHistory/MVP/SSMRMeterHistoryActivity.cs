@@ -26,7 +26,6 @@ using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
 using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,7 +57,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private bool isTutorialShown = false;
         private bool isSMR = false;
 
-        LoadingOverlay loadingOverlay;
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
         [BindView(Resource.Id.smr_submitted_img)]
@@ -523,13 +521,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -541,10 +533,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

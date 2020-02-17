@@ -19,7 +19,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.RegisterValidation.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressButton;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Linq;
@@ -84,7 +83,6 @@ namespace myTNB_Android.Src.UpdateMobileNo
         //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
-        private LoadingOverlay loadingOverlay;
 
         private string newPhoneNo;
 
@@ -650,19 +648,9 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         public void ShowRegistrationProgress()
         {
-            //if (registrationDialog != null && !registrationDialog.IsShowing)
-            //{
-            //    registrationDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -672,16 +660,9 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         public void HideRegistrationProgress()
         {
-            //if (registrationDialog != null && registrationDialog.IsShowing)
-            //{
-            //    registrationDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

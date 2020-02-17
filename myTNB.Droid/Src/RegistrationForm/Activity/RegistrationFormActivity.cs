@@ -7,7 +7,6 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
-using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
@@ -21,7 +20,6 @@ using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.MVP;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -41,7 +39,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         private AlertDialog mVerificationProgressDialog;
         private AlertDialog mRegistrationProgressDialog;
-        private LoadingOverlay loadingOverlay;
         const string PAGE_ID = "Register";
         private MobileNumberInputComponent mobileNumberInputComponent;
         const int COUNTRY_CODE_SELECT_REQUEST = 1;
@@ -755,13 +752,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -773,10 +764,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

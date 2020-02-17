@@ -20,7 +20,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.MVP;
 using Newtonsoft.Json;
 using System;
@@ -109,8 +108,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         string selectedAccountNumber, detailedInfoNumber;
         bool isOwnedAccount, showAllReceipt;
         private string PAGE_ID = "Receipt";
-
-        private LoadingOverlay loadingOverlay;
 
         string pleaseTextStr = "We are pleased to inform you that the following online payment via {0} is Successful:";
 
@@ -475,19 +472,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void ShowGetReceiptDialog()
         {
-            //if (this.mGetReceiptDialog != null && !this.mGetReceiptDialog.IsShowing)
-            //{
-            //    this.mGetReceiptDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -497,16 +484,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void HideGetReceiptDialog()
         {
-            //if (this.mGetReceiptDialog != null && this.mGetReceiptDialog.IsShowing)
-            //{
-            //    this.mGetReceiptDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
