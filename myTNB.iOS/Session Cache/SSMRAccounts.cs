@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Force.DeepCloner;
-using Foundation;
 using myTNB.Model;
-using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB
 {
