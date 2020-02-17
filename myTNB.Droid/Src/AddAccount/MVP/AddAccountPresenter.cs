@@ -1,6 +1,5 @@
 ﻿using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.Database.Model;
