@@ -572,6 +572,7 @@ namespace myTNB
                     webClient.DownloadDataAsync(new Uri(url));
                 }
             }
+            catch (MonoTouchException m) { Debug.WriteLine("Image load Error: " + m.Message); }
             catch (Exception e)
             {
                 Debug.WriteLine("Image load Error: " + e.Message);

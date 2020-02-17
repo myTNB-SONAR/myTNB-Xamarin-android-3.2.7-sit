@@ -12,6 +12,7 @@ namespace myTNB
             {
                 NSNotificationCenter.DefaultCenter.RemoveObserver(aName);
             }
+            catch (MonoTouchException m) { Debug.WriteLine("AddObserver Error: " + m.Message); }
             catch (Exception e) { Debug.WriteLine("AddObserver Error: " + e.Message); }
             NSNotificationCenter.DefaultCenter.AddObserver(aName, notify);
         }

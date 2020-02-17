@@ -550,6 +550,8 @@ namespace myTNB
                         }
                     }
                 }
+
+                catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Error: " + e.Message);
@@ -931,6 +933,11 @@ namespace myTNB
             try
             {
                 return NavigationController.NavigationBar.Frame.GetMaxY();
+            }
+            catch (MonoTouchException m)
+            {
+                Debug.WriteLine("Error in services: " + m.Message);
+                return 0;
             }
             catch (Exception e)
             {

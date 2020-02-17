@@ -103,6 +103,7 @@ namespace myTNB
                     {
                         RemoveAccessory(tableView.CellAt(NSIndexPath.Create(0, i)));
                     }
+                    catch (MonoTouchException m) { Debug.WriteLine("Error in RemoveAccessory: " + m.Message); }
                     catch (Exception e) { Debug.WriteLine("Error in RemoveAccessory: " + e.Message); }
                 }
                 UITableViewCell cell = tableView.CellAt(indexPath);

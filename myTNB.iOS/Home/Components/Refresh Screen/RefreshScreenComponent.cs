@@ -95,6 +95,7 @@ namespace myTNB.Home.Components
                     }
                 }
             }
+            catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
             catch (Exception e)
             {
                 Debug.WriteLine("Error: " + e.Message);

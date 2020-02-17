@@ -119,6 +119,11 @@ namespace myTNB
                                 displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_billsTooltipData[i].Image)));
                             }
                         }
+                        catch (MonoTouchException m)
+                        {
+                            Debug.WriteLine("Image load Error: " + m.Message);
+                            displayImage = UIImage.FromBundle(imgStr);
+                        }
                         catch (Exception e)
                         {
                             Debug.WriteLine("Image load Error: " + e.Message);
@@ -327,6 +332,18 @@ namespace myTNB
                         try
                         {
                             displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_ssmrData[i].Image)));
+                        }
+                        catch (MonoTouchException m)
+                        {
+                            Debug.WriteLine("Image load Error: " + m.Message);
+                            displayImage = UIImage.FromBundle(string.Empty);
+                            if (_ssmrDefaultData != null)
+                            {
+                                if (i > -1 && i < _ssmrDefaultData.Count)
+                                {
+                                    displayImage = UIImage.FromBundle(_ssmrDefaultData[i].Image);
+                                }
+                            }
                         }
                         catch (Exception e)
                         {

@@ -79,10 +79,8 @@ namespace myTNB
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error: " + e.Message);
-            }
+            catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
+            catch (Exception e) {  Debug.WriteLine("Error: " + e.Message); }
         }
 
         /// <summary>
@@ -172,6 +170,7 @@ namespace myTNB
                         })).Start();
                     }
                 }
+                catch (MonoTouchException m) { Debug.WriteLine("Error in FilterNotifications: " + m.Message); }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Error in FilterNotifications: " + e.Message);

@@ -47,6 +47,11 @@ namespace myTNB.Home.Feedback
                 UIImage image = UIImage.LoadFromData(imageData);
                 return image;
             }
+            catch (MonoTouchException m)
+            {
+                Debug.WriteLine(m.Message);
+                return UIImage.FromBundle(string.Empty);
+            }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
