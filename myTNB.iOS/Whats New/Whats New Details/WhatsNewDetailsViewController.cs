@@ -277,9 +277,7 @@ namespace myTNB
             {
                 if (url != null)
                 {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                    BrowserViewController viewController =
-                        storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                    BrowserViewController viewController = new BrowserViewController();
                     if (viewController != null)
                     {
                         viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);

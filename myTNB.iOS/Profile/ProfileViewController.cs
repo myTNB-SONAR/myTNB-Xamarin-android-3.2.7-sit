@@ -536,7 +536,6 @@ namespace myTNB
                     {
                         InvokeOnMainThread(() =>
                         {
-                            //Todo: Check success and fail States
                             ClearCache();
                             languageViewController.DismissViewController(true, null);
                             Debug.WriteLine("Change Language Done");

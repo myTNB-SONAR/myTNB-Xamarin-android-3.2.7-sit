@@ -1,5 +1,4 @@
-using Foundation;
-using System;
+﻿using Foundation;
 using UIKit;
 using CoreGraphics;
 
@@ -7,11 +6,7 @@ namespace myTNB
 {
     public partial class BrowserViewController : CustomUIViewController
     {
-        public BrowserViewController(IntPtr handle) : base(handle)
-        {
-        }
-
-        UIWebView _webView;
+        private UIWebView _webView;
 
         public string NavigationTitle = string.Empty;
         public string URL = string.Empty;
@@ -29,18 +24,18 @@ namespace myTNB
             base.ViewWillAppear(animated);
         }
 
-        void SetNavigationItems()
+        private void SetNavigationItems()
         {
-            NavigationItem.Title = string.IsNullOrEmpty(NavigationTitle) ? "Browser" : NavigationTitle;
+            NavigationItem.Title = NavigationTitle.IsValid() ? NavigationTitle : string.Empty;
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                DismissViewController(true, null);
-            });
+                {
+                    DismissViewController(true, null);
+                });
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        void SetSubviews()
+        private void SetSubviews()
         {
             _webView = new UIWebView(new CGRect(0, 0, ViewWidth, ViewHeight));
             if (IsDelegateNeeded)

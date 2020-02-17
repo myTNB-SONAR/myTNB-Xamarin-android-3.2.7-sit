@@ -20,6 +20,7 @@ namespace myTNB.PushNotification
         private ReadNotificationResponseModel _readNotificationResponse = new ReadNotificationResponseModel();
         private UserNotificationResponseModel userNotificationResponse = new UserNotificationResponseModel();
         public bool _isSelectionMode;
+        public bool IsModal;
         private bool _isDeletionMode;
         private bool _isAllSelected;
 
@@ -441,7 +442,8 @@ namespace myTNB.PushNotification
         {
             OnReset();
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
-            NavigationController.PopViewController(true);
+            if (IsModal) { DismissViewController(true, null); }
+            else { NavigationController.PopViewController(true); }
         }
 
         private void OnDismiss()
