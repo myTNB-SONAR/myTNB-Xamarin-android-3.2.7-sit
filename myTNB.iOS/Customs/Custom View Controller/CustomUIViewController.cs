@@ -119,6 +119,7 @@ namespace myTNB
                 {
                     return DeviceHelper.BottomSafeAreaInset;
                 }
+                catch (MonoTouchException m) { Debug.WriteLine("Error in Bottom Safe Area Inset: " + m.Message); }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Error in Bottom Safe Area Inset: " + e.Message);

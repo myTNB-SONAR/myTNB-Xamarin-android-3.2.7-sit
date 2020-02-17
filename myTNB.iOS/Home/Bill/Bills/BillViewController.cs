@@ -804,7 +804,6 @@ namespace myTNB
             }
             else
             {
-                //Todo: Display Top as Refresh
                 Debug.WriteLine("Display Top as Refresh");
                 _bgImageView.Image = UIImage.FromBundle(Constants.IMG_BannerRefresh);
                 lblMessage.Text = _accountCharges != null && _accountCharges.d != null && _accountCharges.d.RefreshMessage.IsValid()

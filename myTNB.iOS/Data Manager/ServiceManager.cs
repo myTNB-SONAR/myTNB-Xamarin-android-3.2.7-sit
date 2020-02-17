@@ -8,6 +8,7 @@ using System;
 using UIKit;
 using myTNB.Maintenance;
 using CoreFoundation;
+using Foundation;
 
 namespace myTNB
 {
@@ -66,6 +67,10 @@ namespace myTNB
                 return (string.IsNullOrEmpty(rawResponse.Content)
                     || string.IsNullOrWhiteSpace(rawResponse.Content)) ? customClass
                     : JsonConvert.DeserializeObject<T>(rawResponse.Content);
+            }
+            catch (MonoTouchException m)
+            {
+                Debug.WriteLine("Service Exception: {0} - {1} ", suffix, m.Message);
             }
             catch (Exception e)
             {

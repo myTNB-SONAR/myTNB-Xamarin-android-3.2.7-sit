@@ -851,6 +851,7 @@ namespace myTNB
                 _viewCamera.Layer.AddSublayer(videoPreviewLayer);
                 _captureSession.StartRunning();
             }
+            catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
             catch (Exception e)
             {
                 Debug.WriteLine("Error in camera: " + e.Message);

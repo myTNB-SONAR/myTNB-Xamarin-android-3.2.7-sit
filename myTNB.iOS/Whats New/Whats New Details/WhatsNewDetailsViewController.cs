@@ -189,6 +189,14 @@ namespace myTNB
                         });
                         dataTask.Resume();
                     }
+                    catch (MonoTouchException m)
+                    {
+                        Debug.WriteLine("Image load Error: " + m.Message);
+                        InvokeOnMainThread(() =>
+                        {
+                            imageView.Image = UIImage.FromBundle(WhatsNewConstants.Img_WhatsNewDefaultBanner);
+                        });
+                    }
                     catch (Exception e)
                     {
                         Debug.WriteLine("Image load Error: " + e.Message);
@@ -277,9 +285,7 @@ namespace myTNB
             {
                 if (url != null)
                 {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                    BrowserViewController viewController =
-                        storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                    BrowserViewController viewController = new BrowserViewController();
                     if (viewController != null)
                     {
                         viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);

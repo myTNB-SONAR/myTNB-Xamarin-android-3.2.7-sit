@@ -58,23 +58,29 @@ namespace myTNB
                     {
                         UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
                         PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                        UINavigationController navController = new UINavigationController(viewController);
 
                         UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                         UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
 
                         if (topVc != null)
                         {
-                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                            topVc.PresentViewController(navController, true, null);
+                            if (topVc.NavigationController != null)
+                            {
+                                topVc.NavigationController.PushViewController(viewController, true);
+                            }
+                            else
+                            {
+                                viewController.IsModal = true;
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                topVc.PresentViewController(navController, true, null);
+                            }
                         }
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error: " + e.Message);
-            }
+            catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
+            catch (Exception e) {  Debug.WriteLine("Error: " + e.Message); }
         }
 
         /// <summary>
@@ -164,6 +170,7 @@ namespace myTNB
                         })).Start();
                     }
                 }
+                catch (MonoTouchException m) { Debug.WriteLine("Error in FilterNotifications: " + m.Message); }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Error in FilterNotifications: " + e.Message);

@@ -13,6 +13,7 @@ namespace myTNB
         private static readonly List<string> SupportedLanguage = new List<string> { "EN", "MS" };
         private static readonly List<string> LanguageCodeDisplay = new List<string> { "EN", "BM" };
         private static readonly string LanguageContentKey = "LanguageContent";
+        private static readonly string LanguageSavedSuccessKey = "LanguageSavedSuccess";
 
         public static bool IsLanguageSet
         {
@@ -227,9 +228,18 @@ namespace myTNB
 
         public static bool IsSaveSuccess
         {
+            set
+            {
+                bool isSuccess = SaveLanguageResponse != null && SaveLanguageResponse.d != null && SaveLanguageResponse.d.IsSuccess;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(isSuccess, LanguageSavedSuccessKey);
+                sharedPreference.Synchronize();
+            }
             get
             {
-                return SaveLanguageResponse != null && SaveLanguageResponse.d != null && SaveLanguageResponse.d.IsSuccess;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                bool isSuccess = sharedPreference.BoolForKey(LanguageSavedSuccessKey);
+                return isSuccess;
             }
         }
 
@@ -301,6 +311,7 @@ namespace myTNB
                     langPref = TNBGlobal.APP_LANGUAGE
                 };
                 SaveLanguageResponse = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_SaveLanguage, requestParameter);
+                IsSaveSuccess = true;
             });
         }
 

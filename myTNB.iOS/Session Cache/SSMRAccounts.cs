@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Force.DeepCloner;
-using Foundation;
 using myTNB.Model;
-using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB
 {
@@ -94,35 +93,29 @@ namespace myTNB
             return SSMRCombinedList != null ? SSMRCombinedList : new List<CustomerAccountRecordModel>();
         }
 
-        public static CustomerAccountRecordModel GetAccountbyAccountNumber(string accNo)
-        {
-            if (string.IsNullOrEmpty(accNo) || string.IsNullOrWhiteSpace(accNo)) { return null; }
-            if (SSMRCombinedList != null && SSMRCombinedList.Count > 0)
-            {
-                int index = SSMRCombinedList.FindIndex(x => x.accNum == accNo);
-                if (index > -1)
-                {
-                    return SSMRCombinedList[index];
-                }
-            }
-            return null;
-        }
-
         public static List<string> GetFilteredAccountNumberList()
         {
-            if (SSMRCombinedList != null && SSMRCombinedList.Count > 0)
+            try
             {
-                var enumString = SSMRCombinedList.Select(x => x.accNum);
-                if (enumString != null)
+                if (SSMRCombinedList != null && SSMRCombinedList.Count > 0)
                 {
-                    List<string> accountList = enumString.ToList();
-                    if (accountList != null)
+                    var enumString = SSMRCombinedList.Select(x => x.accNum);
+                    if (enumString != null)
                     {
-                        return accountList;
+                        List<string> accountList = enumString.ToList();
+                        if (accountList != null)
+                        {
+                            return accountList;
+                        }
                     }
                 }
+                return new List<string>();
             }
-            return new List<string>();
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in GetFilteredAccountNumberList: " + e.Message);
+                return new List<string>();
+            }
         }
 
         public static int FilteredListCount

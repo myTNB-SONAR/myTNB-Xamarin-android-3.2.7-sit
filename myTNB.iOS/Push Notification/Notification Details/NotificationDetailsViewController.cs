@@ -330,6 +330,11 @@ namespace myTNB
                     {
                         string key = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
                         key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
                         ViewHelper.GoToFAQScreenWithId(key);
                     }
                     else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
@@ -339,9 +344,7 @@ namespace myTNB
                         var topVc = AppDelegate.GetTopViewController(baseRootVc);
                         if (topVc != null)
                         {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                            BrowserViewController viewController =
-                                storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                            BrowserViewController viewController = new BrowserViewController();
                             if (viewController != null)
                             {
                                 viewController.URL = urlString;

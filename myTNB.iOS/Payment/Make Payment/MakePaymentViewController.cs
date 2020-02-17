@@ -74,6 +74,7 @@ namespace myTNB
                 {
                     _webView.LoadRequest(new NSUrlRequest(new Uri(_url)));
                 }
+                catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Error: " + e.Message);

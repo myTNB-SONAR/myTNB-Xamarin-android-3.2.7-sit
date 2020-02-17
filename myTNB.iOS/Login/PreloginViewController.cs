@@ -406,7 +406,6 @@ namespace myTNB
                 {
                     InvokeOnMainThread(() =>
                     {
-                        //Todo: Check success and fail States
                         ClearCache();
                         Debug.WriteLine("Change Language Done");
                         NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());

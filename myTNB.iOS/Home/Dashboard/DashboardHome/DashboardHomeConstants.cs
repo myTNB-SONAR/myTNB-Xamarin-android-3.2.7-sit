@@ -17,7 +17,6 @@ namespace myTNB
         public static string Cell_Accounts = "accountsTableViewCell";
         public static string Cell_Help = "helpTableViewCell";
         public static string Cell_Services = "servicesTableViewCell";
-        public static string Cell_Promotion = "promotionTableViewCell";
         public static string Cell_AccountList = "accountListTableViewCell";
         public static string Cell_AccountListEmpty = "accountListEmptyTableViewCell";
         public static string Cell_RearrangeAccount = "rearrangeAccountTableViewCell";

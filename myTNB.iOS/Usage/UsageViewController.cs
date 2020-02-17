@@ -1,3 +1,4 @@
+using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -56,6 +57,8 @@ namespace myTNB
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
             if (viewController != null)
             {
+                viewController.IsFromUsage = true;
+                viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty;
                 UINavigationController navController = new UINavigationController(viewController);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
@@ -666,6 +669,16 @@ namespace myTNB
                             HideREAmountView();
                         }
                         NormalChartIsLoading = false;
+                    });
+                }
+                catch (MonoTouchException m)
+                {
+                    Debug.WriteLine("Error in services: " + m.Message);
+                    InvokeOnMainThread(() =>
+                    {
+                        SetRefreshScreen();
+                        HideSSMRView();
+                        HideREAmountView();
                     });
                 }
                 catch (Exception e)
