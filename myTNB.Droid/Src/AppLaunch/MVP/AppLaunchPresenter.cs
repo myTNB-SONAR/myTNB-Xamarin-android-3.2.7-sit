@@ -220,9 +220,24 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
 
-                                        if (!UserSessions.HasCleanSSMRMeterReadingCache(this.mSharedPref))
+                                        if (!UserSessions.HasCleanUpdateReceiveCache(this.mSharedPref))
                                         {
-                                            UserSessions.DoCleanSSMRMeterReadingCache(this.mSharedPref);
+                                            UserSessions.DoCleanUpdateReceiveCache(this.mSharedPref);
+                                            try
+                                            {
+                                                TimeStampEntity TimeStampEntityManager = new TimeStampEntity();
+                                                TimeStampEntityManager.DeleteTable();
+                                                TimeStampEntityManager.CreateTable();
+
+                                                FAQsParentEntity FAQsParentEntityManager = new FAQsParentEntity();
+                                                FAQsParentEntityManager.DeleteTable();
+                                                FAQsParentEntityManager.CreateTable();
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+
                                             SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                         }
 
