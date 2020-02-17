@@ -792,9 +792,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Unread.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Unread.imageset\unreadSm%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Notification-Unread.imageset\unreadSm%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\OCR-Reading.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\OCR-Reading.imageset\ocrReading%402x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\OCR-Reading.imageset\ocrReading%403x-1.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-1-Install.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-1-Install.imageset\wt1%402x-1.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Onboarding-Image-1-Install.imageset\wt1%403x-1.png" />
@@ -2887,6 +2884,7 @@
     <BundleResource Include="Resources\JSON\AppUpdateOnboarding.json" />
     <BundleResource Include="Resources\JSON\FreshInstallOnboarding.json" />
     <BundleResource Include="Resources\Fonts\MuseoSans-300Italic.otf" />
+    <BundleResource Include="Resources\OCR Reading.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">

@@ -76,7 +76,6 @@ namespace myTNB.SSMR
         public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_Info = "IC-Info";
-        public static string IMG_OCRReading = "OCR-Reading";
         public static string IMG_CameraThumb = "Camera-Thumb";
         public static string IMG_MultiPhase = "SSMR-MultiPhase";
         public static string IMG_SinglePhase = "SSMR-SinglePhase";
@@ -110,7 +109,7 @@ namespace myTNB.SSMR
         public static string I18N_TutorialHeaderDesc = "tutorialHeaderDesc";
         public static string I18N_TutorialGotIt = "tutorialGotIt";
         public static string I18N_PrevReadingEmptyTitle = "prevReadingEmptyTitle";
-        public static string I18N_PrevReadingEmptyMsg="prevReadingEmptyMsg";
+        public static string I18N_PrevReadingEmptyMsg = "prevReadingEmptyMsg";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
