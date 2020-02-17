@@ -428,7 +428,6 @@
     <Compile Include="Src\AddAccount\Adapter\AccountTypeAdapter.cs" />
     <Compile Include="Src\AddAccount\Adapter\AddedAccountsAdapter.cs" />
     <Compile Include="Src\AddAccount\Adapter\AdditionalAccountListAdapter.cs" />
-    <Compile Include="Src\AddAccount\Api\GetCustomerAccounts.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountByRightsFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountFormFragment.cs" />
     <Compile Include="Src\AddAccount\Fragment\AddAccountTypeFragment.cs" />
@@ -4974,6 +4973,7 @@
     <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\" />
     <Folder Include="Src\WhatsNewDetail\" />
     <Folder Include="Src\WhatsNewDetail\MVP\" />
+    <Folder Include="Src\AddAccount\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
