@@ -87,6 +87,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private static bool isRewardClicked = false;
 
+        internal int trackBottomNavigationMenu = Resource.Id.menu_dashboard;
+
         public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
 			this.mView = mView;
@@ -259,34 +261,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             this.mView.ShowBillMenu(accountData);
                         }
 					}
-					// NO INTERNET RESPONSE
-					else if (resultCode == Result.FirstUser)
-					{
-						Bundle extras = data.Extras;
-						if (extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
-						{
-							AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-							bool isOwned = true;
-							CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-							if (customerBillingAccount != null)
-							{
-								isOwned = customerBillingAccount.isOwned;
-								selectedAccount.IsOwner = isOwned;
-								selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-
-							}
-							try
-							{
-                                this.mView.ShowAccountName();
-                                this.mView.BillsMenuAccess(selectedAccount);
-							}
-							catch (System.Exception e)
-							{
-								Utility.LoggingNonFatalError(e);
-							}
-						}
-					}
-
 				}
 			}
 			catch (System.Exception e)
@@ -297,6 +271,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnMenuSelect(int resourceId)
 		{
+            if (!this.mView.GetAlreadyStarted())
+            {
+                this.mView.SetAlreadyStarted(true);
+            }
+            else
+            {
+                if (trackBottomNavigationMenu == resourceId)
+                {
+                    return;
+                }
+            }
+
 			ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
 			List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
@@ -309,6 +295,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			switch (resourceId)
 			{
 				case Resource.Id.menu_dashboard:
+                    trackBottomNavigationMenu = Resource.Id.menu_dashboard;
                     OnUpdateWhatsNewUnRead();
                     if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
 						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment)))
@@ -338,6 +325,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.RemoveHeaderDropDown();
                     if (accountList.Count > 0)
 					{
+                        trackBottomNavigationMenu = Resource.Id.menu_bill;
                         CustomerBillingAccount selected;
 						if (CustomerBillingAccount.HasSelected())
 						{
@@ -389,6 +377,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				case Resource.Id.menu_promotion:
                     this.mView.RemoveHeaderDropDown();
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
+                    trackBottomNavigationMenu = Resource.Id.menu_promotion;
                     this.mView.HideAccountName();
                     this.mView.ShowWhatsNewMenu();
 
@@ -412,6 +401,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				case Resource.Id.menu_reward:
                     OnUpdateWhatsNewUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    trackBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
                     this.mView.ShowRewardsMenu();
@@ -433,21 +423,28 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     break;
 				case Resource.Id.menu_more:
-                    this.mView.RemoveHeaderDropDown();
-                    OnUpdateWhatsNewUnRead();
-                    currentBottomNavigationMenu = Resource.Id.menu_more;
-					this.mView.HideAccountName();
-                    OnUpdateRewardUnRead();
-                    this.mView.ShowMoreMenu();
-					break;
+                    OnLoadMoreMenu();
+                    break;
 			}
 		}
+
+        public void OnLoadMoreMenu()
+        {
+            this.mView.RemoveHeaderDropDown();
+            OnUpdateWhatsNewUnRead();
+            currentBottomNavigationMenu = Resource.Id.menu_more;
+            trackBottomNavigationMenu = Resource.Id.menu_more;
+            this.mView.HideAccountName();
+            OnUpdateRewardUnRead();
+            this.mView.ShowMoreMenu();
+        }
 
 		public void DoLoadHomeDashBoardFragment()
 		{
 			this.mView.ShowHomeDashBoard();
 			currentBottomNavigationMenu = Resource.Id.menu_dashboard;
-			this.mView.SetToolbarTitle(Resource.String.dashboard_activity_title);
+            trackBottomNavigationMenu = Resource.Id.menu_dashboard;
+            this.mView.SetToolbarTitle(Resource.String.dashboard_activity_title);
 			this.mView.EnableDropDown(false);
 			this.mView.HideAccountName();
 		}
@@ -778,6 +775,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				{
                     DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
 					currentBottomNavigationMenu = Resource.Id.menu_dashboard;
+                    trackBottomNavigationMenu = Resource.Id.menu_dashboard;
                     if (CustomerBillingAccount.HasSelected())
 					{
 						CustomerBillingAccount selected = new CustomerBillingAccount();
@@ -950,59 +948,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             return currentBottomNavigationMenu;
         }
 
-        public void BillMenuStartRefresh()
+        public void UpdateTrackDashboardMenu(int resId)
         {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-            if (accountList.Count > 0)
-            {
-                CustomerBillingAccount selected;
-                if (CustomerBillingAccount.HasSelected())
-                {
-                    selected = CustomerBillingAccount.GetSelected();
-                    PreNavigateBllMenu(selected);
-                    this.mView.SetAccountName(selected.AccDesc);
-                }
-                else
-                {
-                    CustomerBillingAccount.SetSelected(accountList[0].AccNum);
-                    selected = accountList[0];
-                    PreNavigateBllMenu(selected);
-                    this.mView.SetAccountName(accountList[0].AccDesc);
-                }
-                if (selected != null)
-                {
-                    List<CustomerBillingAccount> list = CustomerBillingAccount.List();
-                    bool enableDropDown = accountList.Count > 0 ? true : false;
-
-                    if (selected.AccountCategoryId.Equals("2"))
-                    {
-                        this.mView.ShowREAccount(enableDropDown);
-                    }
-                    else
-                    {
-                        this.mView.EnableDropDown(enableDropDown);
-                    }
-                }
-                this.mView.ShowHideActionBar(true);
-                //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-
-                AccountData accountData = new AccountData();
-                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
-                accountData.AccountNickName = selected.AccDesc;
-                accountData.AccountName = selected.OwnerName;
-                accountData.AccountNum = selected.AccNum;
-                accountData.AddStreet = selected.AccountStAddress;
-                accountData.IsOwner = customerBillingAccount.isOwned;
-                accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-                this.mView.ShowBillMenu(accountData);
-
-            }
-            else
-            {
-                this.mView.DisableBillMenu();
-            }
+            currentBottomNavigationMenu = resId;
+            trackBottomNavigationMenu = resId;
         }
 
         private bool IsCheckHaveByMonthData(UsageHistoryData data)

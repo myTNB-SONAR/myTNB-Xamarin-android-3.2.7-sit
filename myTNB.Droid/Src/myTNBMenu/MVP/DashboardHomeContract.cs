@@ -121,12 +121,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			string GetDeviceId();
 
-			void BillsMenuAccess();
-
-			void BillsMenuAccess(AccountData selectedAccount);
-
-			void BillsMenuRefresh(AccountData accountData);
-
             void SetDashboardHomeCheck();
 
             void ShowHideActionBar(bool flag);
@@ -178,6 +172,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnCheckUserWhatsNew(bool isSitecoreApiFailed);
 
             void OnCheckWhatsNewTab();
+
+            bool GetAlreadyStarted();
+
+            void SetAlreadyStarted(bool flag);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -214,8 +212,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnTapToRefresh();
 
             int CheckCurrentDashboardMenu();
-
-            void BillMenuStartRefresh();
 
             void OnResumeUpdateRewardUnRead();
 
@@ -256,6 +252,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnStartWhatsNewThread();
 
             void UpdateWhatsNewRead(string itemID, bool flag);
+
+            void UpdateTrackDashboardMenu(int resId);
+
+            void OnLoadMoreMenu();
         }
 	}
 }

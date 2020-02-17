@@ -82,7 +82,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         AccountData SelectedAccountData;
 
-        bool alreadyStarted = false;
+        private bool alreadyStarted = false;
 
         bool mobileNoUpdated = false;
 
@@ -107,6 +107,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private bool isSetToolbarClick = false;
 
         private bool IsRootTutorialShown = false;
+
+        private static bool isFirstInitiate = false;
 
         public bool IsActive()
         {
@@ -220,6 +222,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         AccountData selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("DATA"));
                         alreadyStarted = true;
+                        this.mPresenter.UpdateTrackDashboardMenu(Resource.Id.menu_bill);
                         ShowBillMenu(selectedAccountData);
                     }
                 }
@@ -472,13 +475,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void BillsMenuRefresh(AccountData accountData)
-        {
-            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
-            ShowAccountName();
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
-            ShowBillMenu(accountData);
-        }
         public void EnableDropDown(bool enable)
         {
             if (enable)
@@ -793,27 +789,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 txtAccountName.SetCompoundDrawablesWithIntrinsicBounds(leafIcon, null, null, null);
                 txtAccountName.CompoundDrawablePadding = 10;
             }
-        }
-
-        public void BillsMenuAccess()
-        {
-            ShowProgressDialog();
-            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
-            ShowAccountName();
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
-            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
-        }
-
-        public void BillsMenuAccess(AccountData selectedAccount)
-        {
-            ShowProgressDialog();
-            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
-            ShowAccountName();
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
-            CustomerBillingAccount.RemoveSelected();
-            CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
-            ShowBillMenu(selectedAccount);
-            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
         public void ShowUnreadWhatsNew(bool flag)
@@ -1402,18 +1377,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             RemoveToolbarBackground();
         }
 
-        public void BillMenuRecalled()
-        {
-            try
-            {
-                this.mPresenter.BillMenuStartRefresh();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         public void OnSelectAccount()
         {
             this.userActionsListener.SelectSupplyAccount();
@@ -1900,7 +1863,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ReloadProfileMenu()
         {
-            bottomNavigationView.SelectedItemId = Resource.Id.menu_more;
+            this.mPresenter.OnLoadMoreMenu();
             SetBottomNavigationLabels();
         }
 
@@ -2104,6 +2067,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public bool GetAlreadyStarted()
+        {
+            return alreadyStarted;
+        }
+
+        public void SetAlreadyStarted(bool flag)
+        {
+            alreadyStarted = flag;
         }
     }
 }

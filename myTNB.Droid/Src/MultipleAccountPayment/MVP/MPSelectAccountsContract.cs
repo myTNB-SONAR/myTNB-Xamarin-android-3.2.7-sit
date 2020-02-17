@@ -67,8 +67,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// </summary>
             void GetAccountDueAmountResult(List<MPAccount> accounts);
 
-            void ShowDashboardChart(AccountData accountData);
-
             void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList);
 
             void ShowHasMinimumAmoutToPayTooltip(MPAccount accounts, AccountChargeModel accountChargeModel);
@@ -76,7 +74,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
             void GetAccountsCharges(List<string> accountList, string preSelectedAccount);
         }
     }

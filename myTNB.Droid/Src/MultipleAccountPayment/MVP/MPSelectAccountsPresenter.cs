@@ -42,19 +42,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         }
 
-        public void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling)
-        {
-            try
-            {
-            AccountData accountData = AccountData.Copy(selectedCustomerBilling, true);
-            this.mView.ShowDashboardChart(accountData);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         public async void GetAccountsCharges(List<string> accountList, string preSelectedAccount)
         {
             try
@@ -87,11 +74,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                             accountAddress = customerBillingAccount.AccountStAddress,
                             isSelected = isSelectedAccount,
                             isTooltipShow = false,
-#if STUB
-                                    OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,
-#else
                             OpenChargeTotal = 0.00,
-#endif
                             amount = dueAmount,
                             orgAmount = dueAmount,
                             minimumAmountDue = accountCharge.MandatoryCharges.TotalAmount
