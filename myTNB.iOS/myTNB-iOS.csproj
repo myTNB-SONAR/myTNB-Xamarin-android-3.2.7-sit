@@ -651,10 +651,7 @@
     <ImageAsset Include="Assets\Assets.xcassets\Next-White.imageset\Next-White%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\No-Internet-Connection.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%403x.png" />    
-    <ImageAsset Include="Assets\Assets.xcassets\OCR-Reading.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\OCR-Reading.imageset\ocrReading%402x-1.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\OCR-Reading.imageset\ocrReading%403x-1.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Password.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\Password.imageset\icFieldPassword%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Password.imageset\icFieldPassword%403x.png" />
@@ -2802,6 +2799,7 @@
     <BundleResource Include="Resources\JSON\AppUpdateOnboarding.json" />
     <BundleResource Include="Resources\JSON\FreshInstallOnboarding.json" />
     <BundleResource Include="Resources\Fonts\MuseoSans-300Italic.otf" />
+    <BundleResource Include="Resources\OCR Reading.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">

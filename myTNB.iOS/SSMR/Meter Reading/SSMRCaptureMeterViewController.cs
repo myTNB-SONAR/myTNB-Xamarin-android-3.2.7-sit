@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
+using Airbnb.Lottie;
 
 namespace myTNB
 {
@@ -760,13 +761,17 @@ namespace myTNB
             if (_viewLoading == null)
             {
                 _viewLoading = new UIView(new CGRect(0, 0, ViewWidth, ViewHeight)) { BackgroundColor = UIColor.White, Hidden = true };
-                nfloat imgHeigth = UIScreen.MainScreen.Bounds.Height * 0.255F;
-                nfloat imgWidth = imgHeigth * 0.768F;
-                UIImageView imgLoading = new UIImageView(new CGRect((ViewWidth - imgWidth) / 2, GetScaledHeight(90), imgWidth, imgHeigth))
-                { Image = UIImage.FromBundle(SSMRConstants.IMG_OCRReading), ContentMode = UIViewContentMode.ScaleAspectFill };
+                nfloat animationWidth = ScaleUtility.GetScaledWidth(186F);
+                nfloat animationHeight = ScaleUtility.GetScaledHeight(176F);
+
+                LOTAnimationView animation = LOTAnimationView.AnimationNamed("OCR Reading");
+                animation.Frame = new CGRect((ViewWidth - animationWidth) / 2, GetScaledHeight(90), animationWidth, animationHeight);
+                animation.ContentMode = UIViewContentMode.ScaleAspectFit;
+                animation.LoopAnimation = true;
+                animation.Play();
 
                 UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(20)
-                    , GetYLocationFromFrame(imgLoading.Frame, 24), ViewWidth - GetScaledWidth(40), GetScaledHeight(48)))
+                    , GetYLocationFromFrame(animation.Frame, 24), ViewWidth - GetScaledWidth(40), GetScaledHeight(48)))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_16_300,
@@ -779,7 +784,7 @@ namespace myTNB
                 CGSize newSize = GetLabelSize(lblDescription, lblDescription.Frame.Width, 120);
                 lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, newSize.Height);
 
-                _viewLoading.AddSubviews(new UIView[] { imgLoading, lblDescription });
+                _viewLoading.AddSubviews(new UIView[] { animation, lblDescription });
                 View.AddSubview(_viewLoading);
             }
             _viewLoading.Hidden = false;
