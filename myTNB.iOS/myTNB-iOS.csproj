@@ -2862,6 +2862,7 @@
     <Compile Include="Components\Tutorial Overlay\WhatsNewTutorialOverlay.cs" />
     <Compile Include="Model\Usage\PendingPaymentModel.cs" />
     <Compile Include="Registration\Customer Accounts\AddCASuccessCell.cs" />
+    <Compile Include="Customs\Generic Tableview Selector\GenericSelectorCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

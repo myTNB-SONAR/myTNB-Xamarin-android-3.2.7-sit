@@ -102,7 +102,6 @@ namespace myTNB
         public static string Common_RewardNotAvailableDesc = "rewardNotAvailableDesc";
         public static string Common_ShowMoreRewards = "showMoreRewards";
         public static string Common_IllDoItLater = "illDoItLater";
-        public static string Common_RedeemRewardFailMsg = "redeemRewardFailMsg";
         public static string Common_TryAgain = "tryAgain";
         public static string Common_SelectBillMaxDesc = "selectBillMaxDesc";
         public static string Common_MaintenanceTitle = "maintenanceTitle";
@@ -154,6 +153,7 @@ namespace myTNB
         public static string Error_PaymentCCErrorTitle = "paymentCCErrorTitle";
         public static string Error_PaymentCCErrorMsg = "paymentCCErrorMsg";
         public static string Error_ProfileCCErrorMsg = "profileCCErrorMsg";
+        public static string Error_RedeemRewardFailMsg = "redeemRewardFailMsg";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
