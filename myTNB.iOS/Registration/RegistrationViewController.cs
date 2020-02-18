@@ -35,7 +35,7 @@ namespace myTNB.Registration
             , _fullName = string.Empty, _icNo = string.Empty, _mobileNo = string.Empty;
 
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string PASSWORD_PATTERN = @"^.{8,}$";
+        private string PASSWORD_PATTERN = TNBGlobal.PasswordPattern;
 
         public override void ViewDidLoad()
         {

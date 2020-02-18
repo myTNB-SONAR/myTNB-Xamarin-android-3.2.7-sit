@@ -53,6 +53,7 @@ namespace myTNB
         public static string NumbersOnlyPattern = @"^[0-9]*$";
         public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12}$";
         public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
+        public static string PasswordPattern = @"^(?=.*[A-Za-z])(?=.*\d)[^.]{8,}$";
 
         /// <summary>
         /// Gets the payment URL.

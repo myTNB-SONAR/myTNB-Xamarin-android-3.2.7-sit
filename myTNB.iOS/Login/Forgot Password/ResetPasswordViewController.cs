@@ -23,7 +23,7 @@ namespace myTNB.Login.ForgotPassword
 
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private BaseResponseModelV2 _changePasswordList = new BaseResponseModelV2();
-        const string PASSWORD_PATTERN = @"^.{8,}$"; // @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
+        private string PASSWORD_PATTERN = TNBGlobal.PasswordPattern;
 
         public override void ViewDidLoad()
         {
