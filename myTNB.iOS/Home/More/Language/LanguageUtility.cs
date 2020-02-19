@@ -310,8 +310,16 @@ namespace myTNB
                     serviceManager.usrInf,
                     langPref = TNBGlobal.APP_LANGUAGE
                 };
-                SaveLanguageResponse = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_SaveLanguage, requestParameter);
-                IsSaveSuccess = true;
+                object usrInf = requestParameter.GetType().GetProperty("usrInf").GetValue(requestParameter, null);
+                if (usrInf != null)
+                {
+                    string eid = usrInf.GetType().GetProperty("eid").GetValue(usrInf, null).ToString();
+                    if (eid.IsValid())
+                    {
+                        SaveLanguageResponse = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_SaveLanguage, requestParameter);
+                        IsSaveSuccess = true;
+                    }
+                }
             });
         }
 

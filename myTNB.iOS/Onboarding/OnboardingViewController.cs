@@ -17,7 +17,6 @@ namespace myTNB
         public List<OnboardingItemModel> model = new List<OnboardingItemModel>();
         public OnboardingEnum onboardingEnum;
         public bool isLogin, isToUpdateMobileNo;
-        private bool _isMasterDataDone, _isSitecoreDone;
         private WalkthroughComponent _component;
 
         public override void ViewDidLoad()
@@ -94,11 +93,8 @@ namespace myTNB
         }
 
         #region Language
-        /*Todo: Do service calls and set lang
-         * 1. Call site core
-         * 2. Call Applaunch master data
-         * 3. Clear Usage cache for service call content
-        */
+        private bool _isMasterDataDone, _isSitecoreDone;
+        private int _currentLanguageIndex = LanguageUtility.CurrentLanguageIndex;
         private void OnChangeLanguage(int index)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -108,14 +104,39 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
+                        _currentLanguageIndex = LanguageUtility.CurrentLanguageIndex;
                         LanguageUtility.SetAppLanguageByIndex(index);
                         InvokeOnMainThread(async () =>
                         {
-                            List<Task> taskList = new List<Task>{
-                                OnGetAppLaunchMasterData(),
-                                OnExecuteSiteCore()
-                           };
-                            await Task.WhenAll(taskList.ToArray());
+                            AppLaunchResponseModel response = await ServiceCall.GetAppLaunchMasterData();
+                            if (response != null && response.d != null && response.d.IsSuccess)
+                            {
+                                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                                _isMasterDataDone = true;
+                                List<Task> taskList = new List<Task>{
+                                    OnExecuteSiteCore()
+                                };
+                                await Task.WhenAll(taskList.ToArray());
+
+                                if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                                {
+                                    InvokeInBackground(() =>
+                                    {
+                                        LanguageUtility.SaveLanguagePreference().ContinueWith(saveLangTask =>
+                                        { });
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                LanguageUtility.SetAppLanguageByIndex(_currentLanguageIndex);
+                                if (_component != null)
+                                {
+                                    _component.SelectedToggle = _currentLanguageIndex;
+                                }
+                                DisplayServiceError(response?.d?.DisplayMessage ?? string.Empty);
+                                ActivityIndicator.Hide();
+                            }
                         });
                     }
                     else

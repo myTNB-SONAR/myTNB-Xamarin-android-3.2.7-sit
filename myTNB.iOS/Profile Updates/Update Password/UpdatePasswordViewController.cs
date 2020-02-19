@@ -14,7 +14,7 @@ namespace myTNB
     {
         public UpdatePasswordViewController(IntPtr handle) : base(handle) { }
 
-        const string PASSWORD_PATTERN = @"^.{8,}$"; // @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
+        private string PASSWORD_PATTERN = TNBGlobal.PasswordPattern;
 
         private BaseResponseModelV2 _saveResponse = new BaseResponseModelV2();
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();

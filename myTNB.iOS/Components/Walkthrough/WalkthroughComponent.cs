@@ -17,6 +17,7 @@ namespace myTNB
         private int _currentPageIndex;
         private UIPageControl _pageControl;
         private UILabel _skipLabel;
+        private UISegmentedControl _toggleBar;
         private nfloat ViewHeight;
 
         public List<OnboardingItemModel> OnboardingModel;
@@ -278,8 +279,8 @@ namespace myTNB
                 nfloat toggleWidth = GetScaledWidth(122);
                 nfloat toggleHeight = GetScaledHeight(26);
 
-                UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
-                    , 0, toggleWidth, toggleHeight));
+                _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
+                   , 0, toggleWidth, toggleHeight));
                 _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeForDisplayByIndex(0), 0, false);
                 _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeForDisplayByIndex(1), 1, false);
                 _toggleBar.TintColor = MyTNBColor.WaterBlue;
@@ -303,9 +304,12 @@ namespace myTNB
                     AlertHandler.DisplayCustomAlert(GetFormattedString(Constants.Common_ChangeLanguageTitle)
                      , GetFormattedString(Constants.Common_ChangeLanguageMessage)
                      , new Dictionary<string, Action> {
-                            { GetFormattedString(Constants.Common_ChangeLanguageNo), ()=>{_toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex; } }
+                            { GetFormattedString(Constants.Common_ChangeLanguageNo)
+                            , ()=>{
+                                _toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex;
+                            } }
                             ,{ GetFormattedString(Constants.Common_ChangeLanguageYes)
-                            ,()=>{
+                            , ()=>{
                                 if (ChangeLanguageAction!=null)
                                 {
                                     ChangeLanguageAction.Invoke((int)((UISegmentedControl)sender).SelectedSegment);
@@ -417,6 +421,17 @@ namespace myTNB
 
                 _controller._currentPageIndex = newPageIndex;
                 _controller.ScrollViewHasPaginated();
+            }
+        }
+
+        public int SelectedToggle
+        {
+            set
+            {
+                if (_toggleBar != null && value > -1 && value < _toggleBar.NumberOfSegments)
+                {
+                    _toggleBar.SelectedSegment = value;
+                }
             }
         }
     }
