@@ -339,6 +339,7 @@ namespace myTNB_Android.Src.Utils
         public const string SHARED_PREF_LANGUAGE_KEY = "myTNB.account.pref.language";
         public const string SHARED_PREF_LANGUAGE_IS_CHANGE_KEY = "myTNB.account.pref.language.is.changed";
         public const string SHARED_PREF_DEVICE_ID_KEY = "myTNB.account.pref.device.id";
+        public const string SHARED_PREF_SAVED_LANG_PREF_RESULT_KEY = "myTNB.account.pref.saved.lang.pref.result";
 
         //Service Error Codes
         internal static readonly string SERVICE_CODE_SUCCESS = "7200";

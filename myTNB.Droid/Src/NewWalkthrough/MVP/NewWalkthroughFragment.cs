@@ -7,6 +7,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
@@ -296,6 +297,10 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             return Task.Run(() =>
             {
                 LanguageUtil.SaveAppLanguage(language);
+                if (UserEntity.IsCurrentlyActive())
+                {
+                    _ = LanguageUtil.SaveUpdatedLanguagePreference();
+                }
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 _ = CheckAppMasterDataDone();
             });
