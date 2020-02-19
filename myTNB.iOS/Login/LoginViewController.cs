@@ -500,7 +500,7 @@ namespace myTNB
                             SetLoginLocalData();
                             if (LanguageUtility.DidUserChangeLanguage)
                             {
-                                LanguageUtility.SaveLanguagePreference().ContinueWith(langTask =>
+                                LanguageUtility.SaveLanguagePreference().ContinueWith(saveLangTask =>
                                 {
                                     InvokeOnMainThread(() =>
                                     {
@@ -511,10 +511,19 @@ namespace myTNB
                             }
                             else
                             {
-                                LanguageUtility.GetLanguagePreference().ContinueWith(langTask =>
+                                LanguageUtility.GetLanguagePreference().ContinueWith(getLangTask =>
                                 {
                                     InvokeOnMainThread(() =>
                                     {
+                                        if (!LanguageUtility.IsGetSuccess)
+                                        {
+                                            InvokeInBackground(() =>
+                                            {
+                                                LanguageUtility.SaveLanguagePreference().ContinueWith(saveLangTask =>
+                                                { });
+                                            });
+                                        }
+
                                         if (!LanguageUtility.IsSameAsCurrentLanguage)
                                         {
                                             OnChangeLanguage((bool)userAuthenticationModel?.data?.IsVerifiedPhone);
@@ -636,7 +645,7 @@ namespace myTNB
             });
         }
 
-        private void ExecuteGetBillAccountDetailsCall()
+        /*private void ExecuteGetBillAccountDetailsCall()
         {
             GetBillingAccountDetails().ContinueWith(task =>
             {
@@ -680,7 +689,7 @@ namespace myTNB
                 };
                 _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
-        }
+        }*/
 
         private void SetupSubViews()
         {
@@ -801,12 +810,8 @@ namespace myTNB
         }
 
         #region Language
-        /*Todo: Do service calls and set lang
-         * 1. Call site core
-         * 2. Call Applaunch master data
-         * 3. Clear Usage cache for service call content
-        */
         private bool _isMasterDataDone, _isSitecoreDone;
+        private int _currentLanguageIndex = LanguageUtility.CurrentLanguageIndex;
         private void OnChangeLanguage(bool isPhoneVerified)
         {
             int index = 0;
@@ -823,11 +828,22 @@ namespace myTNB
                         LanguageUtility.SetAppLanguageByIndex(index);
                         InvokeOnMainThread(async () =>
                         {
-                            List<Task> taskList = new List<Task>{
-                                OnGetAppLaunchMasterData(isPhoneVerified),
-                                OnExecuteSiteCore(isPhoneVerified)
-                           };
-                            await Task.WhenAll(taskList.ToArray());
+                            AppLaunchResponseModel response = await ServiceCall.GetAppLaunchMasterData();
+                            if (response != null && response.d != null && response.d.IsSuccess)
+                            {
+                                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                                _isMasterDataDone = true;
+                                List<Task> taskList = new List<Task>{
+                                    OnExecuteSiteCore(isPhoneVerified)
+                                };
+                                await Task.WhenAll(taskList.ToArray());
+                            }
+                            else
+                            {
+                                LanguageUtility.SetAppLanguageByIndex(_currentLanguageIndex);
+                                DisplayServiceError(response?.d?.DisplayMessage ?? string.Empty);
+                                ActivityIndicator.Hide();
+                            }
                         });
                     }
                     else

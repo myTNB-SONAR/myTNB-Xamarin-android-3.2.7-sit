@@ -18,7 +18,6 @@ namespace myTNB
 
         private UIView _viewNotificationMsg;
         private UILabel _lblAppVersion, _lblNotificationDetails;
-        private bool _isSitecoreDone, _isMasterDataDone;
         private GenericSelectorViewController languageViewController;
         private CustomUIButtonV2 _btnLogout;
         private UITableView _profileTableview;
@@ -433,6 +432,8 @@ namespace myTNB
         }
 
         #region Language
+        private bool _isSitecoreDone, _isMasterDataDone;
+        private int _currentLanguageIndex = LanguageUtility.CurrentLanguageIndex;
         private void GoToLanguageSettings()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
@@ -440,6 +441,7 @@ namespace myTNB
                 .InstantiateViewController("GenericSelectorViewController");
             if (languageViewController != null)
             {
+                _currentLanguageIndex = LanguageUtility.CurrentLanguageIndex;
                 languageViewController.Title = LanguageUtility.LanguageTitle;
                 languageViewController.Items = LanguageUtility.SupportedLanguageList;
                 languageViewController.HasSectionTitle = true;
@@ -487,11 +489,6 @@ namespace myTNB
             return GetCommonI18NValue(string.Format("{0}_{1}", key, TNBGlobal.APP_LANGUAGE));
         }
 
-        /*Todo: Do service calls and set lang
-         * 1. Call site core
-         * 2. Call Applaunch master data
-         * 3. Clear Usage cache for service call content
-        */
         private void OnChangeLanguage(int index)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -501,14 +498,27 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
+                        _currentLanguageIndex = LanguageUtility.CurrentLanguageIndex;
                         LanguageUtility.SetAppLanguageByIndex(index);
                         InvokeOnMainThread(async () =>
                         {
-                            List<Task> taskList = new List<Task>{
-                                OnGetAppLaunchMasterData(),
-                                OnExecuteSiteCore()
-                           };
-                            await Task.WhenAll(taskList.ToArray());
+                            AppLaunchResponseModel response = await ServiceCall.GetAppLaunchMasterData();
+                            if (response != null && response.d != null && response.d.IsSuccess)
+                            {
+                                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                                _isMasterDataDone = true;
+                                List<Task> taskList = new List<Task>{
+                                    OnExecuteSiteCore()
+                                };
+                                await Task.WhenAll(taskList.ToArray());
+                            }
+                            else
+                            {
+                                LanguageUtility.SetAppLanguageByIndex(_currentLanguageIndex);
+                                languageViewController.DismissViewController(true, null);
+                                DisplayServiceError(response?.d?.DisplayMessage ?? string.Empty);
+                                ActivityIndicator.Hide();
+                            }
                         });
                     }
                     else
@@ -552,17 +562,6 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.IsSameAccount = false;
             AccountUsageCache.ClearCache();
             AccountUsageSmartCache.ClearCache();
-        }
-
-        private Task OnGetAppLaunchMasterData()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                AppLaunchResponseModel response = ServiceCall.GetAppLaunchMasterData().Result;
-                AppLaunchMasterCache.AddAppLaunchResponseData(response);
-                _isMasterDataDone = true;
-                ChangeLanguageCallback();
-            });
         }
 
         private Task OnExecuteSiteCore()
