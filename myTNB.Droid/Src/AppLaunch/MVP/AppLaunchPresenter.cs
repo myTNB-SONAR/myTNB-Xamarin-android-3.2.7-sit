@@ -241,6 +241,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                         }
 
+                                        //Checks for saved language preference
+                                        LanguageUtil.SaveLanguagePrefInBackground();
+
                                         //If has Notification
                                         bool hasNotification = UserSessions.HasNotification(mSharedPref);
                                         //If Notification Type is equals to ODN (On-Demand Notification)

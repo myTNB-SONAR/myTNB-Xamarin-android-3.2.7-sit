@@ -211,11 +211,13 @@ namespace myTNB_Android.Src.Utils
             return timestamp;
         }
 
-        public static async Task CheckUpdatedLanguage()
+        public static async Task SaveUpdatedLanguagePreference()
         {
             try
             {
                 string appLanguage = GetAppLanguage();
+                //Checks if language is not set yet from app
+                //If not set, get the saved language from GetLanguagePreference service
                 if (!IsLanguageChanged())
                 {
                     var response = await ServiceApiImpl.Instance.GetLanguagePreference(new MyTNBService.Request.BaseRequest());
@@ -224,10 +226,42 @@ namespace myTNB_Android.Src.Utils
                         if (!string.IsNullOrEmpty(response.GetData().lang))
                         {
                             appLanguage = response.GetData().lang;
+                            SaveAppLanguage(appLanguage);
                         }
                     }
+                    else
+                    {
+                        SaveLanguagePreferenceResponse saveLanguagePreferenceResponse = await ServiceApiImpl.Instance.SaveLanguagePreference(new MyTNBService.Request.SaveLanguagePreferenceRequest(appLanguage));
+                        UserSessions.SavedLanguagePrefResult(saveLanguagePreferenceResponse.IsSuccessResponse()
+                            && saveLanguagePreferenceResponse.GetData() != null && !string.IsNullOrEmpty(saveLanguagePreferenceResponse.GetData().lang));
+                    }
                 }
-                _ = ServiceApiImpl.Instance.SaveLanguagePreference(new MyTNBService.Request.SaveLanguagePreferenceRequest(appLanguage));
+                else
+                {
+                    SaveLanguagePreferenceResponse saveLanguagePreferenceResponse = await ServiceApiImpl.Instance.SaveLanguagePreference(new MyTNBService.Request.SaveLanguagePreferenceRequest(appLanguage));
+                    UserSessions.SavedLanguagePrefResult(saveLanguagePreferenceResponse.IsSuccessResponse()
+                        && saveLanguagePreferenceResponse.GetData() != null && !string.IsNullOrEmpty(saveLanguagePreferenceResponse.GetData().lang));
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void SaveLanguagePrefInBackground()
+        {
+            try
+            {
+                if (!UserSessions.IsSavedLanguagePrefResultSuccess())
+                {
+                    string appLanguage = GetAppLanguage();
+                    Task.Factory.StartNew(async () => {
+                        SaveLanguagePreferenceResponse saveLanguagePreferenceResponse = await ServiceApiImpl.Instance.SaveLanguagePreference(new MyTNBService.Request.SaveLanguagePreferenceRequest(appLanguage));
+                        UserSessions.SavedLanguagePrefResult(saveLanguagePreferenceResponse.IsSuccessResponse()
+                            && saveLanguagePreferenceResponse.GetData() != null && !string.IsNullOrEmpty(saveLanguagePreferenceResponse.GetData().lang));
+                    });
+                }
             }
             catch (Exception e)
             {
