@@ -153,6 +153,12 @@ namespace myTNB
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
+            int tabbarcount = tabbar != null && tabbar.Items != null ? tabbar.Items.Count() : 0;
+            if (tabbarcount > 0 && tabbar.SelectedItem.Tag == tabbarcount - 1)
+            {
+                return;
+            }
+
             InvokeOnMainThread(() =>
             {
                 if (!ShowNewIndicator("2"))
