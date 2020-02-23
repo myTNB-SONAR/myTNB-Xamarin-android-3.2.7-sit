@@ -16,6 +16,11 @@ namespace myTNB_Android.Src.MyTNBService.Request
         {
             usrInf.eid = userName;
         }
+
+        public void SetSSPID(string sspID)
+        {
+            usrInf.sspuid = sspID;
+        }
     }
 
     public class UserInfo
