@@ -6,6 +6,7 @@ using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
@@ -315,6 +316,45 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     AccountDataEntity.RemoveAll();
                     SummaryDashBoardAccountEntity.RemoveAll();
                     SelectBillsEntity.RemoveAll();
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    UserSessions.RemoveSessionData();
+                    NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                    NewFAQParentManager.DeleteTable();
+                    NewFAQParentManager.CreateTable();
+                    SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                    SSMRMeterReadingScreensParentManager.DeleteTable();
+                    SSMRMeterReadingScreensParentManager.CreateTable();
+                    SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                    SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                    SSMRMeterReadingScreensOCROffParentManager.CreateTable();
+                    SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                    SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                    SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                    SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                    SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
+                    EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                    EnergySavingTipsParentManager.DeleteTable();
+                    EnergySavingTipsParentManager.CreateTable();
+
+                    try
+                    {
+                        RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                        mRewardParentEntity.DeleteTable();
+                        mRewardParentEntity.CreateTable();
+                        RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                        mRewardCategoryEntity.DeleteTable();
+                        mRewardCategoryEntity.CreateTable();
+                        RewardsEntity mRewardEntity = new RewardsEntity();
+                        mRewardEntity.DeleteTable();
+                        mRewardEntity.CreateTable();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
                     int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                     if (Id > 0)
                     {
@@ -341,27 +381,50 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             }
                         }
 
+                        UserNotificationEntity.RemoveAll();
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                         UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
-                        if (response.IsSuccessResponse())
+                        if(response.IsSuccessResponse())
                         {
-                            try
+                            if (response.GetData() != null)
                             {
-                                UserNotificationEntity.RemoveAll();
-                            }
-                            catch (System.Exception ne)
-                            {
-                                Utility.LoggingNonFatalError(ne);
-                            }
+                                try
+                                {
+                                    UserNotificationEntity.RemoveAll();
+                                }
+                                catch (System.Exception ne)
+                                {
+                                    Utility.LoggingNonFatalError(ne);
+                                }
 
-                            if (response.GetData() != null && response.GetData().UserNotificationList != null &&
-                                response.GetData().UserNotificationList.Count > 0)
-                            {
                                 foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                 {
                                     // tODO : SAVE ALL NOTIFICATIONs
                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                 }
+
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
                             }
+                            else
+                            {
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                            }
+                        }
+                        else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                        {
+                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                        }
+                        else
+                        {
+                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                        }
+
+                        //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                         }
 
                         if (mView.IsActive())
