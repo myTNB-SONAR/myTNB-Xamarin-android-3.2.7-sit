@@ -85,6 +85,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.ClearErrors();
 
             string oldPhoneNo = "";
+
             if (UserEntity.IsCurrentlyActive() && !verfiyPhone)
             {
                 UserEntity entity = UserEntity.GetActive();
@@ -102,7 +103,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 if (this.authenticationRequest != null)
                 {
                     updateNewPhoneNumberRequest.SetUserName(this.authenticationRequest.UserName);
+                    if (!UserEntity.IsCurrentlyActive())
+                    {
+                        updateNewPhoneNumberRequest.SetSSPID(this.authenticationRequest.ActiveUserName);
+                    }
                 }
+
                 var verifyTokenResponse = await ServiceApiImpl.Instance.UpdatePhoneNumber(updateNewPhoneNumberRequest);
 
                 if (mView.IsActive())
