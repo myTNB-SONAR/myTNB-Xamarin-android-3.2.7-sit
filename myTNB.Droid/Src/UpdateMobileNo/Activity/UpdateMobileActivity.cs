@@ -93,8 +93,10 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 }
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, lblInfoLabel);
+                TextViewUtils.SetMuseoSans300Typeface(lblVerifyMobileNo);
                 btnSave.Text = GetLabelCommonByLanguage("next");
                 lblInfoLabel.Text = GetLabelByLanguage("infoTitle");
+                lblVerifyMobileNo.Text = GetLabelByLanguage("details");
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))
