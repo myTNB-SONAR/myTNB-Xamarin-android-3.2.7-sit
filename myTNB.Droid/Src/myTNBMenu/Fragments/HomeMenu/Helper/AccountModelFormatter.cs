@@ -2,6 +2,7 @@
 using Java.Text;
 using myTNB_Android.Src.Base.Helper;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 {
@@ -15,7 +16,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 
         public static string GetFormatAmount(string amountDue)
         {
-            DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
+            DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
             string formattedValue = "";
             if (amountDue != null && amountDue != "")
             {

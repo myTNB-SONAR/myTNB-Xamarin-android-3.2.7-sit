@@ -1,4 +1,4 @@
-﻿using myTNB_Android.Src.MakePayment.Models;
+﻿using myTNB_Android.Src.MultipleAccountPayment.Models;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ManageCards.Models

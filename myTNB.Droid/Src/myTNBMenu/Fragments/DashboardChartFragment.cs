@@ -55,7 +55,7 @@ using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.Charts;
+using myTNB_Android.Src.Utils.Custom;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Refit;
@@ -501,7 +501,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private static bool isREAccount = false;
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
         IAxisValueFormatter XLabelsFormatter;
@@ -601,8 +601,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool mIsPendingPayment = false;
 
 
-        private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00");
-        private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0");
+        private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
+        private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         ScaleGestureDetector mScaleDetector;
 
@@ -879,8 +879,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnToggleMonth.Text = Utility.GetLocalizedCommonLabel("month");
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
 
                 isZoomIn = false;
 

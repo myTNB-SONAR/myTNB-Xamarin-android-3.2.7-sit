@@ -1,7 +1,7 @@
 ﻿using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Utils;
 using System;

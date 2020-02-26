@@ -1,5 +1,5 @@
 ﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using System.Collections.Generic;

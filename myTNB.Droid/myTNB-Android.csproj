@@ -640,17 +640,6 @@
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
-    <Compile Include="Src\MakePayment\Api\SubmitPaymentApi.cs" />
-    <Compile Include="Src\MakePayment\Models\CreditCard.cs" />
-    <Compile Include="Src\MakePayment\Models\GetRegisteredCardsRequest.cs" />
-    <Compile Include="Src\MakePayment\Models\GetRegisteredCardsResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\HtmlResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\SubmitPaymentRequest.cs" />
-    <Compile Include="Src\MakePayment\Models\SubmitPaymentResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\SubmitPaymentResult.cs" />
-    <Compile Include="Src\MakePayment\MVP\SelectPaymentMethodContract.cs" />
-    <Compile Include="Src\MakePayment\MVP\SelectPaymentMethodPresenter.cs" />
-    <Compile Include="Src\MakePayment\Requests\SubmitPaymentRequestPG.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
@@ -692,10 +681,6 @@
     <Compile Include="Src\MyAccount\Adapter\MyAccountAdapter.cs" />
     <Compile Include="Src\MyAccount\MVP\MyAccountContract.cs" />
     <Compile Include="Src\MyAccount\MVP\MyAccountPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\BillsListAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\ItemizedBillingDetailsAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\PaymentListAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\REPaymentListAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Api\IAmountDueApi.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsDayFormatter.cs" />
@@ -927,10 +912,6 @@
     <Compile Include="Src\RegisterValidation\MVP\RegistrationValidationPresenter.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingOverlayViewOverride.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingSurfaceView.cs" />
-    <Compile Include="Src\Utils\Custom\Charts\DayAxisValueFormatter.cs" />
-    <Compile Include="Src\Utils\Custom\Charts\MyAxisValueFormatter.cs" />
-    <Compile Include="Src\Utils\Custom\Charts\XYMarkerView.cs" />
-    <Compile Include="Src\Utils\Custom\MarkerTextView\TitleView.cs" />
     <Compile Include="Src\Utils\DayZoomOutPinchUtil.cs" />
     <Compile Include="Src\Utils\DeviceIdUtils.cs" />
     <Compile Include="Src\Utils\DPUtils.cs" />
@@ -970,17 +951,6 @@
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountPresenter.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptPresenter.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingScannerFragment.cs" />
-    <Compile Include="Src\MakePayment\Activity\MakePaymentActivity.cs" />
-    <Compile Include="Src\MakePayment\Adapter\AddCardAdapter.cs" />
-    <Compile Include="Src\MakePayment\Fragment\PaymentSuccessFragment.cs" />
-    <Compile Include="Src\MakePayment\Fragment\PaymentWebViewFragment.cs" />
-    <Compile Include="Src\MakePayment\Fragment\SelectPaymentMethodFragment.cs" />
-    <Compile Include="Src\MakePayment\Models\CardDetails.cs" />
-    <Compile Include="Src\MakePayment\Models\InitiatePaymentResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\InitiatePaymentResult.cs" />
-    <Compile Include="Src\MakePayment\Api\RequestPaymentApi.cs" />
-    <Compile Include="Src\MakePayment\Requests\InitiatePaymentRequestV3.cs" />
-    <Compile Include="Src\MakePayment\Models\InitiatePaymentRequest.cs" />
     <Compile Include="Src\WebLink\Activity\WeblinkActivity.cs" />
     <AndroidResource Include="Resources\drawable\resend_inactive_with_border_progress.xml" />
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
@@ -4570,6 +4540,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_success_banner.png" />
     <Compile Include="Src\MyTNBService\Response\AddAccountsResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\AddAccountsRequest.cs" />
+    <Compile Include="Src\MultipleAccountPayment\Model\CardDetails.cs" />
+    <Compile Include="Src\MultipleAccountPayment\Model\CreditCard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

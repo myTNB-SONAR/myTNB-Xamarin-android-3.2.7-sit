@@ -13,7 +13,7 @@ using myTNB_Android.Src.AddCard.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Maintenance.Activity;
-using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
+using myTNB_Android.Src.Utils.Custom;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -83,7 +84,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
 
         private SummaryDashBordRequest summaryDashBoardRequest = null;
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
 

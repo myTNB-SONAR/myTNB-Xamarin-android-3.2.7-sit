@@ -16,6 +16,7 @@ using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         private bool IsShowMoreEnable = true;
         private static Action ShowMoreAction = null;
 
-        private DecimalFormat payableFormatter = new DecimalFormat("###############0.00");
+        private DecimalFormat payableFormatter = new DecimalFormat("###############0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         public SelectAccountListAdapter(BaseToolbarAppCompatActivity activity, List<MPAccount> data)
         {
