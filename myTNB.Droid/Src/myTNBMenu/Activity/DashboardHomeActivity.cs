@@ -401,9 +401,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowBackButton(false);
             txtAccountName.Visibility = ViewStates.Gone;
-            currentFragment = new ItemisedBillingMenuFragment();
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
             FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, ItemisedBillingMenuFragment.NewInstance(selectedAccount))
+                .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
         }
 
@@ -670,8 +675,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowFeedbackMenu()
         {
             ShowBackButton(false);
-            FeedbackMenuFragment fragment = new FeedbackMenuFragment();
-            currentFragment = fragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new FeedbackMenuFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                      .CommitAllowingStateLoss();
@@ -681,10 +690,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             ShowBackButton(false);
             SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
-            WhatsNewMenuFragment fragment = new WhatsNewMenuFragment();
-            currentFragment = fragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new WhatsNewMenuFragment();
             FragmentManager.BeginTransaction()
-                        .Replace(Resource.Id.content_layout, fragment)
+                        .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
 
         }
@@ -693,10 +706,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             ShowBackButton(false);
             SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
-            RewardMenuFragment fragment = new RewardMenuFragment();
-            currentFragment = fragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new RewardMenuFragment();
             FragmentManager.BeginTransaction()
-                        .Replace(Resource.Id.content_layout, fragment)
+                        .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
 
         }
@@ -705,7 +722,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             ShowBackButton(false);
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
-            currentFragment = profileMenuFragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
             if (mobileNoUpdated)
             {
                 Bundle extras = new Bundle();
@@ -713,8 +734,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 profileMenuFragment.Arguments = extras;
                 mobileNoUpdated = false;
             }
+            currentFragment = profileMenuFragment;
             FragmentManager.BeginTransaction()
-                     .Replace(Resource.Id.content_layout, profileMenuFragment)
+                     .Replace(Resource.Id.content_layout, currentFragment)
                      .CommitAllowingStateLoss();
         }
 
@@ -1210,10 +1232,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowHomeDashBoard()
         {
             DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
-            HomeMenuFragment homeFragment = new HomeMenuFragment();
-            currentFragment = homeFragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new HomeMenuFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, homeFragment)
+                           .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
         }
 
@@ -1371,9 +1397,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new DashboardChartFragment();
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = DashboardChartFragment.NewInstance(response, selectedAccount, errorCode, errorMsg);
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount, errorCode, errorMsg),
+                           .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             ShowBackButton(true);
@@ -1383,9 +1414,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new DashboardChartFragment();
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = DashboardChartFragment.NewInstance(response, selectedAccount);
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount),
+                           .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             ShowBackButton(true);

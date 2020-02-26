@@ -450,6 +450,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 currentNavigation = AppLaunchNavigation.Nothing;
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
+#if DEBUG
                     Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
                     if (FirebaseTokenEntity.HasLatest())
                     {
@@ -459,6 +460,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
                         }
                     }
+#endif
 
                     if (!hasBeenCalled)
                     {

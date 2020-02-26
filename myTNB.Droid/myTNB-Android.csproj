@@ -1080,7 +1080,6 @@
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
-    <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
     <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
     <AndroidResource Include="Resources\drawable\round_circle.xml" />
     <AndroidResource Include="Resources\menu\DashboardNewBottonMenu.xml" />
@@ -1110,7 +1109,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled.png" />
-    <AndroidResource Include="Resources\drawable\custom_card_view.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\check_status.png" />
     <AndroidResource Include="Resources\drawable-hdpi\feedback.png" />
     <AndroidResource Include="Resources\drawable-hdpi\submit_meter.png" />
@@ -1160,7 +1158,6 @@
     <Compile Include="Src\Base\Models\UserInterface.cs" />
     <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
     <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
-    <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Service\HomeMenuServiceImpl.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
     <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
@@ -2067,12 +2064,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\CustomDashboardGradientAccountSelector.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_bg.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-mdpi\search_cancel.png" />
@@ -2230,10 +2221,6 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterReadingModel.cs" />
     <Compile Include="Src\Database\Model\OnboardingSSMRParentEntity.cs" />
     <AndroidResource Include="Resources\layout\SelectSMRAccountInfoLayout.axml" />
-    <AndroidResource Include="Resources\drawable\dashboard_chart_nm_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\NewHorizontalGradientBackground.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -3535,10 +3522,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_filled.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\usage_bottom_sheet_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -5192,9 +5175,6 @@
     <AndroidResource Include="Resources\values\PreLoginStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\CUSTOMER_CHARTER_resize.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\blue_out_line.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -5202,12 +5182,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\promotion.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\toggle_widget_background.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\toggle_widget_textcolor.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Delete.png" />
@@ -5362,9 +5336,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_loaded.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\white_button_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\white_selector_pressable.xml" />
@@ -5734,9 +5705,6 @@
     <AndroidResource Include="Resources\values\GetAccessSuccessStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\GetAccessSuccessWhiteBackground.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_delete.png" />
   </ItemGroup>
   <ItemGroup>
@@ -5861,18 +5829,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\card_no.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_active_tab_button_shape.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_tab_button_selector.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_tab_button_text_selector.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_inactive_tab_button_shape.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_loaded.png" />
@@ -6567,9 +6523,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_progress_loader.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\white_rounded_button_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_display_prelogin.png" />

@@ -21,7 +21,7 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
-    [Activity(Label = "NewWalkthroughActivity"
+    [Activity(Label = "@string/app_name"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Dashboard"
         , NoHistory = true
