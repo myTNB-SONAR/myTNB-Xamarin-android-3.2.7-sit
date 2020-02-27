@@ -546,7 +546,6 @@
     <Compile Include="Src\Database\Model\UserNotificationTypesEntity.cs" />
     <Compile Include="Src\Database\Model\WalkthroughScreensEntity.cs" />
     <Compile Include="Src\Database\Model\WeblinkEntity.cs" />
-    <Compile Include="Src\FAQ\Activity\FAQActivity.cs" />
     <Compile Include="Src\FAQ\Activity\FAQListActivity.cs" />
     <Compile Include="Src\FAQ\Adapter\FAQListAdapter.cs" />
     <Compile Include="Src\FAQ\MVP\FAQContract.cs" />
@@ -750,12 +749,6 @@
     <Compile Include="Src\Notifications\Models\UserNotificationData.cs" />
     <Compile Include="Src\Notifications\MVP\NotificationContract.cs" />
     <Compile Include="Src\Notifications\MVP\NotificationPresenter.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Activity\PaymentSuccessExperienceRatingActivity.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Api\SubmitExperienceRatingApi.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingContract.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
@@ -934,8 +927,6 @@
     <Compile Include="Src\Utils\UserSessions.cs" />
     <Compile Include="Src\Utils\Utility.cs" />
     <Compile Include="Src\ViewBill\Activity\ViewBillActivity.cs" />
-    <Compile Include="Src\ViewReceipt\Activity\ViewReceiptActivity.cs" />
-    <Compile Include="Src\ViewReceipt\Activity\ViewReceiptMultiAccountActivity.cs" />
     <Compile Include="Src\ViewReceipt\Activity\ViewReceiptMultiAccountNewDesignActivty.cs" />
     <Compile Include="Src\ViewReceipt\Api\GetMultiReceiptByTransIdApi.cs" />
     <Compile Include="Src\ViewReceipt\Api\GetReceiptApi.cs" />
@@ -944,14 +935,11 @@
     <Compile Include="Src\ViewReceipt\Model\GetReceiptResponse.cs" />
     <Compile Include="Src\ViewReceipt\Model\MultiReceiptDetails.cs" />
     <Compile Include="Src\ViewReceipt\Model\ReceiptDetails.cs" />
-    <Compile Include="Src\ViewReceipt\MVP\ViewReceiptContract.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountContract.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountNewDesignContract.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountNewDesignPresenter.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountPresenter.cs" />
-    <Compile Include="Src\ViewReceipt\MVP\ViewReceiptPresenter.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingScannerFragment.cs" />
-    <Compile Include="Src\WebLink\Activity\WeblinkActivity.cs" />
     <AndroidResource Include="Resources\drawable\resend_inactive_with_border_progress.xml" />
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
     <AndroidResource Include="Resources\drawable\launch_screen.xml" />
@@ -4542,6 +4530,10 @@
     <Compile Include="Src\MyTNBService\Request\AddAccountsRequest.cs" />
     <Compile Include="Src\MultipleAccountPayment\Model\CardDetails.cs" />
     <Compile Include="Src\MultipleAccountPayment\Model\CreditCard.cs" />
+    <AndroidResource Include="Resources\menu\DashboardToolbarMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4605,9 +4597,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SelectSupplyAccountView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ViewBillView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BillsRowView.axml">
@@ -4703,9 +4692,6 @@
     <AndroidResource Include="Resources\layout\AddAccountsSuccess.axml" />
     <AndroidResource Include="Resources\layout\WhereIsMyAccountView.axml" />
     <AndroidResource Include="Resources\layout\SelectAccountTypeView.axml" />
-    <AndroidResource Include="Resources\layout\WeblinkWebView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\FIndUsView.axml" />
     <AndroidResource Include="Resources\layout\GoogleMapView.axml" />
     <AndroidResource Include="Resources\layout\LocationDetailsView.axml" />
@@ -4774,9 +4760,6 @@
     <AndroidResource Include="Resources\layout\FeedbackDetailImageRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\PaymentSuccessExperienceRatingView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ForgotPasswordEnterCodeView.axml" />
     <AndroidResource Include="Resources\layout\FeedbackDetailsFullscreenImageView.axml">
       <SubType>Designer</SubType>
@@ -4790,9 +4773,6 @@
     <AndroidResource Include="Resources\layout\PhoneListItemView.axml" />
     <AndroidResource Include="Resources\layout\ServiceListItemView.axml" />
     <AndroidResource Include="Resources\layout\ViewBillPDFView.axml" />
-    <AndroidResource Include="Resources\layout\FAQView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountRow.axml" />
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountView.axml" />
     <AndroidResource Include="Resources\layout\FAQListItemView.axml" />
@@ -5285,11 +5265,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Dimen.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\menu\DashboardToolbarMenu.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\RegisterValidationMenu.xml" />
