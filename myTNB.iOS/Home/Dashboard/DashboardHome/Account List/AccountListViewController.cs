@@ -49,6 +49,10 @@ namespace myTNB
         protected override void LanguageDidChange(NSNotification notification)
         {
             base.LanguageDidChange(notification);
+            if (_addLbl != null)
+            {
+                _addLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Add);
+            }
             if (_searchLbl != null && _addLbl != null && _searchIcon != null && _addIcon != null)
             {
                 _searchLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Search);
@@ -64,7 +68,6 @@ namespace myTNB
                 _pipeView.Frame = new CGRect(new CGPoint(searchView.Frame.GetMinX() - GetScaledWidth(1F), _pipeView.Frame.Y)
                     , _pipeView.Frame.Size);
 
-                _addLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Add);
                 CGSize addSize = _addLbl.SizeThatFits(new CGSize(1000F, 1000F));
                 ViewHelper.AdjustFrameSetWidth(_addLbl, addSize.Width);
 
