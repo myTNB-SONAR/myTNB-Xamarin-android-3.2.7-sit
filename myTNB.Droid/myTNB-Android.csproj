@@ -4376,6 +4376,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\LocaleUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
