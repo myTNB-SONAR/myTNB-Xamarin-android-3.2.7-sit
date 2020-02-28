@@ -898,7 +898,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 try
                 {
-                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                     ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
                 catch (System.Exception e)
@@ -7021,7 +7021,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
@@ -7039,7 +7039,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
@@ -7066,7 +7066,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
@@ -7085,7 +7085,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
@@ -7123,7 +7123,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
@@ -7142,7 +7142,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
@@ -7462,7 +7462,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
@@ -7480,7 +7480,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
@@ -7507,7 +7507,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
@@ -7526,7 +7526,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
@@ -7570,7 +7570,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
@@ -7589,7 +7589,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
@@ -9571,7 +9571,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isChangeBackgroundNeeded = true;
                 try
                 {
-                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                     ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
                 catch (System.Exception e)

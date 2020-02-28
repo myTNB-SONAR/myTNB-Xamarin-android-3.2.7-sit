@@ -229,7 +229,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 isCheckPendingPaymentNeeded = true;
                 isPendingPayment = false;
             }
-			SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+			SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
