@@ -500,8 +500,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private static bool isREAccount = false;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
-        SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
         IAxisValueFormatter XLabelsFormatter;
         private string errorMSG = null;
 
@@ -6308,7 +6308,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         Calendar c = Calendar.Instance;
                                         c.Time = d;
                                         c.Add(CalendarField.Date, incrementDays);
-                                        SimpleDateFormat df = new SimpleDateFormat("dd MMM");
+                                        SimpleDateFormat df = new SimpleDateFormat("dd MMM", LocaleUtils.GetCurrentLocale());
                                         Date newDate = c.Time;
                                         string dateString = df.Format(newDate);
                                         if (calAmt <= 0)

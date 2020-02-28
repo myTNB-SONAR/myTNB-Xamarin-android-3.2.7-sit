@@ -151,11 +151,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
 
-        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", new Locale(LanguageUtil.GetAppLanguage()));
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
-        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
-        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
+        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
 
         IMenuItem billFilterMenuItem;
 

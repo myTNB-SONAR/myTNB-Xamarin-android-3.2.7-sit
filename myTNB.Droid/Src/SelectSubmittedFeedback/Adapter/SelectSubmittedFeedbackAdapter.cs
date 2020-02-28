@@ -36,8 +36,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
 
-            SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
+            SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
             SubmitFeedbackViewHolder vh = null;
 
             if (convertView == null)

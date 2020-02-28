@@ -64,8 +64,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
         CancellationTokenSource cts;
 
         //17/07/2017
-        SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy", LocaleUtils.GetCurrentLocale());
 
         //[BindView(Resource.Id.pdfviewercontrol)]
         SfPdfViewer pdfViewer;

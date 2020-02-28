@@ -16,6 +16,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Java.Text;
+using Java.Util;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -108,21 +109,15 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.btnBillingDetailefresh)]
         Button btnBillingDetailefresh;
 
-
-        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
-
-        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
         AccountChargeModel selectedAccountChargeModel;
-        BillingHistoryData billingHistoryData;
         AccountData selectedAccountData;
         BillingDetailsContract.IPresenter billingDetailsPresenter;
 		private bool fromSelectAccountPage;
         private const string PAGE_ID = "BillDetails";
         ISharedPreferences mPref;
-        private bool isTutorialShown = false;
 
         private bool isPendingPayment = false;
         private bool isCheckPendingPaymentNeeded = false;
@@ -206,10 +201,6 @@ namespace myTNB_Android.Src.Billing.MVP
             if (extras.ContainsKey("SELECTED_BILL_DETAILS"))
             {
                 selectedAccountChargeModel = JsonConvert.DeserializeObject<AccountChargeModel>(extras.GetString("SELECTED_BILL_DETAILS"));
-            }
-            if (extras.ContainsKey("LATEST_BILL_HISTORY"))
-            {
-                billingHistoryData = JsonConvert.DeserializeObject<BillingHistoryData>(extras.GetString("LATEST_BILL_HISTORY"));
             }
 			if (extras.ContainsKey("PEEK_BILL_DETAILS"))
 			{
