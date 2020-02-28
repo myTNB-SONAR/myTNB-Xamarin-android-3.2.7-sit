@@ -1700,36 +1700,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\rectangle_rounded_button_bg.xml">
       <SubType>
       </SubType>
@@ -1997,12 +1967,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_extended_bg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\TariffBlockLegendItem.axml">
       <SubType>
       </SubType>
@@ -2265,30 +2229,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_sm_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\ItemisedBillingMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\ItemisedBillingMenuLayout.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\bill_screen_filter_icon.png" />
@@ -2482,30 +2422,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\smr_meter_dashboard.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_smr_extended_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -3358,54 +3274,6 @@
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughContract.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughAdapter.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughFragment.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_smr_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_smr_extended_extended_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
     <Compile Include="Src\NewAppTutorial\MVP\NewAppTutorialDialogFragment.cs" />
     <AndroidResource Include="Resources\drawable\white_circle.xml">

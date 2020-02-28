@@ -1,5 +1,6 @@
-﻿using AFollestad.MaterialDialogs;
-using Android.Animation;
+﻿using System;
+using System.Collections.Generic;
+using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -14,7 +15,6 @@ using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
-using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
@@ -31,9 +31,7 @@ using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
 using MikePhil.Charting.Jobs;
 using MikePhil.Charting.Listener;
-using MikePhil.Charting.Util;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
@@ -52,18 +50,12 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
-using Refit;
-using System;
-using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using static myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
@@ -484,6 +476,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.txtReNoPayableCurrency)]
         TextView txtReNoPayableCurrency;
+
+        [BindView(Resource.Id.dashboard_bottom_view)]
+        LinearLayout dashboard_bottom_view;
+
+        [BindView(Resource.Id.dashboard_top_view)]
+        LinearLayout dashboard_top_view;
 
         private static bool isZoomIn = false;
 
@@ -908,6 +906,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     Utility.LoggingNonFatalError(e);
                 }
 
+                dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
+
                 if (selectedAccount != null)
                 {
                     txtAddress.Text = selectedAccount.AddStreet;
@@ -942,7 +942,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
-                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
@@ -957,11 +956,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             isChangeVirtualHeightNeed = true;
                             SetVirtualHeightParams(6f);
                             isChangeBackgroundNeeded = true;
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
                         }
                         else
                         {
                             HideSSMRDashboardView();
+                            dashboard_bottom_view.SetBackgroundResource(0);
                             isChangeVirtualHeightNeed = true;
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
@@ -1030,6 +1029,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     HideSSMRDashboardView();
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     rootView.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
                     isChangeVirtualHeightNeed = true;
@@ -2120,10 +2120,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 graphBottomPadding = 6;
                 mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(216f);
-            }
-            else if (isSMR)
-            {
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(200f);
             }
             else
             {
@@ -4952,18 +4948,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
-                        if (isSMAccount)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                        }
-                        else if (isSMR)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                        }
-                        else
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                        }
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                     }
                     DashboardCustomScrolling(0);
 
@@ -4982,14 +4967,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
                     {
-                        if (isSMR)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
-                        }
-                        else
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
-                        }
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                     }
 
                     isClickedShowTariff = true;
@@ -5091,30 +5069,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    if (smStatisticContainer.Visibility == ViewStates.Visible && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                    {
-                                        TextPaint textPaint = new TextPaint();
-                                        try
-                                        {
-                                            Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                            textPaint.SetTypeface(plain);
-                                        }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                        textPaint.TextAlign = Paint.Align.Left;
-
-
-                                        StaticLayout staticLayout = new StaticLayout(txtTariffBlockLegendDisclaimer.TextFormatted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                        int lineCount = staticLayout.LineCount;
-                                        if (lineCount == 4)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                        }
-                                    }
-
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
                                     SetVirtualHeightParams(6f);
@@ -5123,7 +5077,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (smStatisticContainer.Visibility == ViewStates.Visible)
                                     {
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                     }
 
                                     if (isDPCBarClicked)
@@ -5154,7 +5108,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                 }
 
                                 isDPCBarClicked = true;
@@ -5165,7 +5119,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                 }
 
                                 if (isDPCBarClicked)
@@ -5181,7 +5135,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (isSMR && smStatisticContainer.Visibility == ViewStates.Visible)
                         {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                         }
 
                         if (isDPCBarClicked)
@@ -5289,37 +5243,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, isHighlightNeed);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
-                            if (isSMR)
-                            {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                }
-                                else if (newTariffList.Count >= 4)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                }
-                                else
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
-                                }
-                            }
-                            else if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                }
-                                else if (newTariffList.Count >= 1 && newTariffList.Count < 4)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                }
-                                else
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
-                                }
-                            }
-
                             LayoutAnimationController controller =
                                     AnimationUtils.LoadLayoutAnimation(this.Activity, Resource.Animation.layout_animation_fall_down);
 
@@ -5331,15 +5254,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-
-                            if (isSMR)
-                            {
-                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                            }
-                            else if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                            }
                         }
                     }
                     else if (ChartType == ChartType.Day && isSMAccount)
@@ -5391,22 +5305,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
-                            if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                }
-                                else if (newTariffList.Count >= 1 && newTariffList.Count < 4)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                }
-                                else
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
-                                }
-                            }
-
                             LayoutAnimationController controller =
                                     AnimationUtils.LoadLayoutAnimation(this.Activity, Resource.Animation.layout_animation_fall_down);
 
@@ -5418,11 +5316,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-
-                            if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                            }
                         }
                     }
                     else
@@ -5475,30 +5368,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
-
-                                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                    {
-                                        TextPaint textPaint = new TextPaint();
-                                        try
-                                        {
-                                            Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                            textPaint.SetTypeface(plain);
-                                        }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                        textPaint.TextAlign = Paint.Align.Left;
-
-
-                                        StaticLayout staticLayout = new StaticLayout(txtTariffBlockLegendDisclaimer.TextFormatted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                        int lineCount = staticLayout.LineCount;
-                                        if (lineCount == 4)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -5519,11 +5388,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 else
                                 {
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
-                                }
-
-                                if (isSMR)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                                 }
                             }
                         }
@@ -5685,6 +5549,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
+                            dashboard_bottom_view.SetBackgroundResource(0);
                             try
                             {
                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
@@ -6877,6 +6742,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         rootView.SetBackgroundResource(0);
                         scrollViewContent.SetBackgroundResource(0);
+                        dashboard_bottom_view.SetBackgroundResource(0);
                         try
                         {
                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
@@ -7019,6 +6885,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isChangeBackgroundNeeded = false;
                 rootView.SetBackgroundResource(0);
                 scrollViewContent.SetBackgroundResource(0);
+                dashboard_bottom_view.SetBackgroundResource(0);
                 isChangeVirtualHeightNeed = true;
                 SetVirtualHeightParams(6f);
                 try
@@ -7110,6 +6977,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             rootView.SetBackgroundResource(0);
                                             scrollViewContent.SetBackgroundResource(0);
+                                            dashboard_bottom_view.SetBackgroundResource(0);
                                             try
                                             {
                                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7128,6 +6996,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             rootView.SetBackgroundResource(0);
                                             scrollViewContent.SetBackgroundResource(0);
+                                            dashboard_bottom_view.SetBackgroundResource(0);
                                             try
                                             {
                                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7159,7 +7028,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7176,7 +7046,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7202,43 +7073,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-
-                                            if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                            {
-                                                ICharSequence text;
-
-                                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                                                {
-                                                    text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage, FromHtmlOptions.ModeLegacy);
-                                                }
-                                                else
-                                                {
-                                                    text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage);
-                                                }
-
-                                                TextPaint textPaint = new TextPaint();
-                                                try
-                                                {
-                                                    Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                                    textPaint.SetTypeface(plain);
-                                                }
-                                                catch (System.Exception e)
-                                                {
-                                                    Utility.LoggingNonFatalError(e);
-                                                }
-                                                textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                                textPaint.TextAlign = Paint.Align.Left;
-
-
-                                                StaticLayout staticLayout = new StaticLayout(text, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                                int lineCount = staticLayout.LineCount;
-                                                if (lineCount == 4)
-                                                {
-                                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                                }
-                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7255,14 +7092,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-
-                                            if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                            {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                            }
-
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7298,43 +7130,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-
-                                        if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                        {
-                                            ICharSequence text;
-
-                                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                                            {
-                                                text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage, FromHtmlOptions.ModeLegacy);
-                                            }
-                                            else
-                                            {
-                                                text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage);
-                                            }
-
-                                            TextPaint textPaint = new TextPaint();
-                                            try
-                                            {
-                                                Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                                textPaint.SetTypeface(plain);
-                                            }
-                                            catch (System.Exception e)
-                                            {
-                                                Utility.LoggingNonFatalError(e);
-                                            }
-                                            textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                            textPaint.TextAlign = Paint.Align.Left;
-
-
-                                            StaticLayout staticLayout = new StaticLayout(text, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                            int lineCount = staticLayout.LineCount;
-                                            if (lineCount == 4)
-                                            {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                            }
-                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7351,12 +7149,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                        if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7621,6 +7416,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         rootView.SetBackgroundResource(0);
                                         scrollViewContent.SetBackgroundResource(0);
+                                        dashboard_bottom_view.SetBackgroundResource(0);
                                         try
                                         {
                                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7640,6 +7436,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         rootView.SetBackgroundResource(0);
                                         scrollViewContent.SetBackgroundResource(0);
+                                        dashboard_bottom_view.SetBackgroundResource(0);
                                         try
                                         {
                                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7672,7 +7469,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7689,7 +7487,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7715,8 +7514,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7733,12 +7533,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                        if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7780,8 +7577,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7798,12 +7596,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                            if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                            {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -8221,12 +8016,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 shimmrtGraph.StartShimmer();
                 shimmrtGraphView.Visibility = ViewStates.Visible;
-                if (isSMR)
-                {
-                    RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
-                    param.Height = (int)DPUtils.ConvertDPToPx(170);
-                }
-                else if (isREAccount)
+                if (isREAccount)
                 {
                     RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
                     param.Height = (int)DPUtils.ConvertDPToPx(200);
@@ -8525,6 +8315,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (GetIsMDMSDown())
                 {
                     rootView.SetBackgroundResource(0);
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
                     try
                     {
@@ -8746,6 +8537,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     rootView.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     try
                     {
                         ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
@@ -9483,18 +9275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
-                        if (isSMAccount)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                        }
-                        else if (isSMR)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                        }
-                        else
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                        }
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                     }
 
                     mChart.Clear();
@@ -9788,7 +9569,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isChangeVirtualHeightNeed = true;
                 SetVirtualHeightParams(6f);
                 isChangeBackgroundNeeded = true;
-                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+                rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
             }
         }
 
@@ -9813,6 +9604,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
+                            dashboard_bottom_view.SetBackgroundResource(0);
                             try
                             {
                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
