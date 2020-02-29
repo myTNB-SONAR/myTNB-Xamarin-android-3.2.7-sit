@@ -208,7 +208,8 @@ namespace myTNB
         {
             DateTime currentDate = DateTime.Now;
             DateTime cachedDate = DateTime.Parse(date);
-            return cachedDate.Date.AddDays(1) == currentDate.Date;
+            return cachedDate.Date < currentDate.Date;
+            // return cachedDate.Date.AddDays(1) == currentDate.Date;
         }
         #endregion
 
