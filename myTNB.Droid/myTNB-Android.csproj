@@ -108,12 +108,6 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AFollestad.MaterialDialogs.Core, Version=0.9.4.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AFollestad.MaterialDialogs.Core.0.9.4.4\lib\MonoAndroid71\AFollestad.MaterialDialogs.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AndroidSegmentedControl.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AndroidSegmentedControl.Droid.Binding.1.0.2\lib\MonoAndroid\AndroidSegmentedControl.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Bolts.AppLinks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bolts.1.4.0.1\lib\MonoAndroid403\Bolts.AppLinks.dll</HintPath>
     </Reference>
@@ -128,9 +122,6 @@
     </Reference>
     <Reference Include="Cheeseknife, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MisterJimson.Cheeseknife.1.1.0\lib\MonoAndroid10\Cheeseknife.dll</HintPath>
-    </Reference>
-    <Reference Include="CircleIndicator, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Karamunting.Android.Ongakuer.CircleIndicator.1.2.2\lib\monoandroid71\CircleIndicator.dll</HintPath>
     </Reference>
     <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
@@ -319,9 +310,6 @@
     <Reference Include="XamiTextSharpLGPL.Droid, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\XamiTextSharpLGPL.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="ZhangHai.Android.MaterialProgressBar, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZhangHai.Android.MaterialProgressBar.1.4.1\lib\MonoAndroid71\ZhangHai.Android.MaterialProgressBar.dll</HintPath>
-    </Reference>
     <Reference Include="ZXing.Net.Mobile.Core, Version=2.2.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.Mobile.2.2.9\lib\MonoAndroid403\ZXing.Net.Mobile.Core.dll</HintPath>
     </Reference>
@@ -414,6 +402,15 @@
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Location">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\lib\MonoAndroid80\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="ZhangHai.Android.MaterialProgressBar">
+      <HintPath>..\packages\ZhangHai.Android.MaterialProgressBar.1.4.2\lib\MonoAndroid80\ZhangHai.Android.MaterialProgressBar.dll</HintPath>
+    </Reference>
+    <Reference Include="AFollestad.MaterialDialogs.Core">
+      <HintPath>..\packages\AFollestad.MaterialDialogs.Core.0.9.6\lib\MonoAndroid81\AFollestad.MaterialDialogs.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AndroidSegmentedControl.Droid">
+      <HintPath>..\packages\AndroidSegmentedControl.Droid.Binding.1.0.8\lib\MonoAndroid\AndroidSegmentedControl.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
