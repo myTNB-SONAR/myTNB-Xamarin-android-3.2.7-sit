@@ -1851,15 +1851,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void OnCheckMyServiceNewFAQState()
         {
             isMyServiceDone = false;
-            isNeedHelpDone = false;
             isHomeMenuTutorialShown = false;
-            RestoreCurrentMyServiceState();
-            Handler h = new Handler();
-            Action myAction = () =>
+            if (UserSessions.HasHomeTutorialShown(this.mPref))
             {
-                GetSavedNewFAQTimeStamp();
-            };
-            h.PostDelayed(myAction, 50);
+                isNeedHelpDone = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    CheckSavedNewFAQTimeStamp();
+                };
+                h.PostDelayed(myAction, 50);
+            }
+            RestoreCurrentMyServiceState();
         }
 
         public void OnCheckNewFAQState()
@@ -2073,6 +2076,56 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (Exception e)
             {
                 ReadNewFAQFromCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckSavedNewFAQTimeStamp()
+        {
+            try
+            {
+                FAQTokenSource = new CancellationTokenSource();
+                Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        FAQTokenSource.Token.ThrowIfCancellationRequested();
+                        string density = DPUtils.GetDeviceDensity(Application.Context);
+                        GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+                        HelpTimeStampResponseModel responseModel = getItemsService.GetHelpTimestampItem();
+                        FAQTokenSource.Token.ThrowIfCancellationRequested();
+                        if (responseModel != null && responseModel.Status.Equals("Success"))
+                        {
+                            if (responseModel.Data != null && responseModel.Data.Count > 0)
+                            {
+                                if (NewFAQParentManager == null)
+                                {
+                                    NewFAQParentManager = new NewFAQParentEntity();
+                                }
+                                NewFAQParentManager.DeleteTable();
+                                NewFAQParentManager.CreateTable();
+                                NewFAQParentManager.InsertListOfItems(responseModel.Data);
+
+                                HelpTimeStamp checkItem = responseModel.Data[0];
+                                if (checkItem != null && !checkItem.ShowNeedHelp)
+                                {
+                                    this.mView.HideNewFAQ();
+                                    UpdateNewFAQCompleteState();
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }).ContinueWith((Task previous) =>
+                {
+                }, FAQTokenSource.Token);
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

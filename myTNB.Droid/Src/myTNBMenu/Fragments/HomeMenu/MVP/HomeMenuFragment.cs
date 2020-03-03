@@ -1952,12 +1952,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     this.presenter.RestoreCurrentAccountState();
                 }
 
-                Handler h = new Handler();
-                Action myAction = () =>
-                {
-                    this.presenter.ReadNewFAQFromCache();
-                };
-                h.PostDelayed(myAction, 10);
+                this.presenter.ReadNewFAQFromCache();
             }
         }
 
