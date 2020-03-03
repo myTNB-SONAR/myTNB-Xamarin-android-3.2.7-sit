@@ -6093,6 +6093,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             try
             {
+                ShowBackButton(true);
+                ((DashboardHomeActivity)this.Activity).HideAccountName();
+                ((DashboardHomeActivity)this.Activity).SetAccountToolbarTitle(selectedAccount.AccountNickName);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+            try
+            {
                 if (SMRPopUpUtils.GetFromUsageFlag())
                 {
                     SMRPopUpUtils.SetFromUsageFlag(false);
@@ -6161,6 +6173,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

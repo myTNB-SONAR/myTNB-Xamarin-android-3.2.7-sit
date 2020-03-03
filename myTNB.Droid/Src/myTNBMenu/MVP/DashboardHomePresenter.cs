@@ -130,16 +130,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 						{
-                            if (selectedAccount.AccountCategoryId.Equals("2"))
-                            {
-                                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                            }
-                            else
-                            {
-                                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                            }
-                            this.mView.SetAccountToolbarTitle(selectedAccount.AccDesc);
-                            this.mView.HideAccountName();
                             if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
 							{
                                 if (!string.IsNullOrEmpty(selectedAccount.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
@@ -231,21 +221,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     LoadSMUsageHistory(selectedAccount);
                                 }
                             }
-                            if (selectedAccount != null)
-                            {
-                                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                                bool enableDropDown = accountList.Count > 0 ? true : false;
-
-                                if (selectedAccount.AccountCategoryId.Equals("2"))
-                                {
-                                    this.mView.ShowREAccount(enableDropDown);
-                                }
-                                else
-                                {
-                                    this.mView.EnableDropDown(enableDropDown);
-                                }
-                                this.mView.SetAccountName(selectedAccount.AccDesc);
-                            }
                         }
 						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 						{
@@ -300,19 +275,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
 						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment)))
 					{
-						mView.ShowBackButton(false);
 						DoLoadHomeDashBoardFragment();
 					}
 					else
 					{
 						if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
 						{
-
                             OnAccountSelectDashBoard();
 						}
 						else
 						{
-							mView.ShowBackButton(false);
 							DoLoadHomeDashBoardFragment();
 						}
 
@@ -322,7 +294,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     break;
 				case Resource.Id.menu_bill:
                     OnUpdateWhatsNewUnRead();
-                    this.mView.RemoveHeaderDropDown();
                     if (accountList.Count > 0)
 					{
                         trackBottomNavigationMenu = Resource.Id.menu_bill;
@@ -354,8 +325,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 this.mView.EnableDropDown(enableDropDown);
                             }
                         }
-                        this.mView.ShowHideActionBar(true);
-                        //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 
                         AccountData accountData = new AccountData();
                         CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
@@ -375,10 +344,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
-                    this.mView.RemoveHeaderDropDown();
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
                     trackBottomNavigationMenu = Resource.Id.menu_promotion;
-                    this.mView.HideAccountName();
                     this.mView.ShowWhatsNewMenu();
 
                     isWhatNewClicked = true;
@@ -402,8 +369,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdateWhatsNewUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     trackBottomNavigationMenu = Resource.Id.menu_reward;
-                    this.mView.HideAccountName();
-                    this.mView.SetToolbarTitle(Resource.String.reward_menu_activity_title);
                     this.mView.ShowRewardsMenu();
 
                     isRewardClicked = true;
@@ -430,11 +395,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         public void OnLoadMoreMenu()
         {
-            this.mView.RemoveHeaderDropDown();
             OnUpdateWhatsNewUnRead();
             currentBottomNavigationMenu = Resource.Id.menu_more;
             trackBottomNavigationMenu = Resource.Id.menu_more;
-            this.mView.HideAccountName();
             OnUpdateRewardUnRead();
             this.mView.ShowMoreMenu();
         }
@@ -444,9 +407,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			this.mView.ShowHomeDashBoard();
 			currentBottomNavigationMenu = Resource.Id.menu_dashboard;
             trackBottomNavigationMenu = Resource.Id.menu_dashboard;
-            this.mView.SetToolbarTitle(Resource.String.dashboard_activity_title);
-			this.mView.EnableDropDown(false);
-			this.mView.HideAccountName();
 		}
 
 		public void SelectSupplyAccount()
@@ -555,18 +515,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
             try
             {
-                this.mView.HideAccountName();
-                if (accountSelected.AccountCategoryId.Equals("2"))
-                {
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                }
-                else
-                {
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                }
-
-                this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
-
                 if (smDataError)
                 {
                     smDataError = false;
@@ -580,28 +528,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
             catch (System.Exception e)
             {
-                this.mView.HideAccountName();
-                if (accountSelected.AccountCategoryId.Equals("2"))
-                {
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                }
-                else
-                {
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                }
-
-                this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
-
-                if (smDataError)
-                {
-                    smDataError = false;
-                    this.mView.ShowNMREChart(usageHistoryResponse, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage);
-                }
-                else
-                {
-                    this.mView.ShowNMREChart(usageHistoryResponse, AccountData.Copy(accountSelected, true), null, null);
-                }
-                usageHistoryResponse = null;
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -612,13 +538,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
             try
             {
-                this.mView.HideAccountName();
-                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-
                 this.mView.ShowSMChart(smUsageHistoryResponse, AccountData.Copy(accountSelected, true));
                 smUsageHistoryResponse = null;
-
-				this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
             }
             catch (System.Exception e)
             {
@@ -633,7 +554,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 AccountData accountData = AccountData.Copy(selectedAccount, true);
                 this.mView.SetAccountName(selectedAccount.AccDesc);
-                //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
                 currentBottomNavigationMenu = Resource.Id.menu_bill;
             }
             catch (System.Exception e)
@@ -872,22 +792,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     LoadUsageHistory(selected);
 								}
 							}
-
-							if (selected.AccountCategoryId.Equals("2"))
-							{
-								this.mView.ShowREAccount(true);
-							}
-							else
-							{
-								this.mView.EnableDropDown(true);
-							}
-							if (!string.IsNullOrEmpty(selected.AccDesc))
-							{
-								this.mView.SetAccountName(selected.AccDesc);
-							}
 						}
-                        //this.mView.ShowAccountName();
-                        //this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
                     }
 					else
 					{
@@ -906,20 +811,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								{
 									LoadUsageHistory(selected);
 								}
-
-								if (selected.AccountCategoryId.Equals("2"))
-								{
-									this.mView.ShowREAccount(true);
-								}
-								else
-								{
-									this.mView.EnableDropDown(true);
-								}
-								if (!string.IsNullOrEmpty(selected.AccDesc))
-								{
-									this.mView.SetAccountName(selected.AccDesc);
-								}
-
 							}
 						}
 					}

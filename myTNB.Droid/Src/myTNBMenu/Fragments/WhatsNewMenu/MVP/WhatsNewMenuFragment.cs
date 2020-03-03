@@ -182,6 +182,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Show();
                 ShowBackButton(false);
+
+                ((DashboardHomeActivity)this.Activity).RemoveHeaderDropDown();
+                ((DashboardHomeActivity)this.Activity).HideAccountName();
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
             }
             catch (System.Exception e)
             {

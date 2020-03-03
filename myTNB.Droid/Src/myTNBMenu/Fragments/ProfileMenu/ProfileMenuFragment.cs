@@ -165,15 +165,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ShowLanguageUpdateSuccess();
                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                 }
-
-                try
-                {
-                    ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
-                }
-                catch (System.Exception ex)
-                {
-                    Utility.LoggingNonFatalError(ex);
-                }
             }
             catch (System.Exception e)
             {
@@ -194,6 +185,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
             try
             {
+                ShowBackButton(false);
+                ((DashboardHomeActivity)this.Activity).RemoveHeaderDropDown();
+                ((DashboardHomeActivity)this.Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
                 if (SMRPopUpUtils.GetSSMRMeterReadingRefreshNeeded())
                 {
                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(false);
@@ -207,6 +210,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

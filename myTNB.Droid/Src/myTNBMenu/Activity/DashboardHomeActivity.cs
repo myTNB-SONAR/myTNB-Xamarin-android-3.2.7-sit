@@ -399,7 +399,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowBillMenu(AccountData selectedAccount)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
-            ShowBackButton(false);
             txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
             {
@@ -688,8 +687,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowWhatsNewMenu()
         {
-            ShowBackButton(false);
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
             if (currentFragment != null)
             {
                 FragmentManager.PopBackStack();
@@ -704,8 +701,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowRewardsMenu()
         {
-            ShowBackButton(false);
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
             if (currentFragment != null)
             {
                 FragmentManager.PopBackStack();
@@ -720,7 +715,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMoreMenu()
         {
-            ShowBackButton(false);
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
             if (currentFragment != null)
             {
@@ -1396,7 +1390,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg)
         {
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
+            txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
             {
                 FragmentManager.PopBackStack();
@@ -1407,13 +1401,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                            .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         public void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount)
         {
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
+            txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
             {
                 FragmentManager.PopBackStack();
@@ -1424,7 +1417,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                            .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         // Show Bottom Navigation Bar in Fragment

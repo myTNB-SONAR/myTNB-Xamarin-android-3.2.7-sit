@@ -456,11 +456,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 SetRefreshLayoutParams();
 
-                ((DashboardHomeActivity)Activity).EnableDropDown(false);
-                ((DashboardHomeActivity)Activity).HideAccountName();
-                ((DashboardHomeActivity)Activity).ShowBackButton(false);
-                ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.dashboard_activity_title);
-
                 try
                 {
                     newFAQListRecycleView.Focusable = false;
@@ -1158,6 +1153,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
                     ShowRearrangeAccountSuccessful();
                 }
+
+                ((DashboardHomeActivity)Activity).EnableDropDown(false);
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).RemoveHeaderDropDown();
             }
             catch (System.Exception e)
             {
