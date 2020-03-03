@@ -109,7 +109,7 @@ namespace myTNB.Registration
 
         private string GetContent()
         {
-            if (IsFromSiteCore())
+            if (IsFromSitecore)
             {
                 string content = string.Empty;
                 content += _tncItems[0].Title;
@@ -125,11 +125,14 @@ namespace myTNB.Registration
             }
         }
 
-        private bool IsFromSiteCore()
+        private bool IsFromSitecore
         {
-            TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
-            _tncItems = tncEntity.GetAllItems();
-            return _tncItems != null && _tncItems.Count != 0 && _tncItems[0] != null;
+            get
+            {
+                TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
+                _tncItems = tncEntity.GetAllItems();
+                return _tncItems != null && _tncItems.Count != 0 && _tncItems[0] != null;
+            }
         }
     }
 }
