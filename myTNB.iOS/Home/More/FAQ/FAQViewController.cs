@@ -1,11 +1,8 @@
 using System;
 using UIKit;
-using myTNB.Model;
 using Newtonsoft.Json;
 using CoreGraphics;
 using myTNB.Home.More.FAQ;
-using System.Threading.Tasks;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SitecoreCMS.Model;
 using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
@@ -18,8 +15,7 @@ namespace myTNB
 {
     public partial class FAQViewController : CustomUIViewController
     {
-        private FAQModel _faq = new FAQModel();
-        private string _imageSize = string.Empty;
+        private List<FAQsModel> _faq = new List<FAQsModel>();
         public string faqId;
         public FAQViewController(IntPtr handle) : base(handle)
         {
@@ -37,8 +33,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
-            tableviewFAQ.Source = new FAQDataSource(new List<FAQDataModel>());
+            tableviewFAQ.Source = new FAQDataSource(new List<FAQsModel>());
             tableviewFAQ.ReloadData();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -52,22 +47,19 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 FAQEntity wsManager = new FAQEntity();
-                                List<FAQsModel> faqList = wsManager.GetAllItems();
-                                if (faqList != null && faqList.Count > 0)
-                                {
-                                    tableviewFAQ.Source = new FAQDataSource(faqList, true);
-                                    tableviewFAQ.ReloadData();
-                                    if (!string.IsNullOrEmpty(faqId))
-                                    {
-                                        ScrollToRow(faqList, faqId);
-                                    }
-                                }
-                                else
+                                _faq = wsManager.GetAllItems();
+
+                                if (_faq == null || (_faq != null && _faq.Count == 0))
                                 {
                                     GetFAQContent();
-                                    tableviewFAQ.Source = new FAQDataSource(_faq.data);
-                                    tableviewFAQ.ReloadData();
                                 }
+                                tableviewFAQ.Source = new FAQDataSource(_faq);
+                                tableviewFAQ.ReloadData();
+                                if (!string.IsNullOrEmpty(faqId))
+                                {
+                                    ScrollToRow(_faq, faqId);
+                                }
+
                                 ActivityIndicator.Hide();
                             });
                         });
@@ -79,11 +71,7 @@ namespace myTNB
                 });
             });
         }
-        /// <summary>
-        /// Scrolls to specific table row based on faqID parameter.
-        /// </summary>
-        /// <param name="faqList">FAQ list.</param>
-        /// <param name="fId">F identifier.</param>
+
         private void ScrollToRow(List<FAQsModel> faqList, string fId)
         {
             int sectionIndex = faqList.FindIndex(x => x.ID == fId);
@@ -111,12 +99,12 @@ namespace myTNB
             try
             {
                 string faqContent = FAQManager.Instance.GetFAQ(TNBGlobal.APP_LANGUAGE == "EN" ? FAQManager.Language.EN : FAQManager.Language.MS);
-                _faq = JsonConvert.DeserializeObject<FAQModel>(faqContent);
+                _faq = JsonConvert.DeserializeObject<List<FAQsModel>>(faqContent);
             }
             catch (Exception e)
             {
                 Debug.WriteLine("ERROR: " + e.Message);
-                _faq = new FAQModel();
+                _faq = new List<FAQsModel>();
             }
         }
     }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using CoreGraphics;
 using Foundation;
-using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -11,24 +10,16 @@ namespace myTNB.Home.More.FAQ
 {
     public class FAQDataSource : UITableViewSource
     {
-        List<FAQDataModel> _faqList = new List<FAQDataModel>();
-        List<FAQsModel> _siteCoreFaqList = new List<FAQsModel>();
-        bool _isSiteCoreContent = false;
+        private List<FAQsModel> _siteCoreFaqList = new List<FAQsModel>();
 
-        public FAQDataSource(List<FAQDataModel> faqList)
-        {
-            _faqList = faqList;
-        }
-
-        public FAQDataSource(List<FAQsModel> faqList, bool isSiteCoreContent)
+        public FAQDataSource(List<FAQsModel> faqList)
         {
             _siteCoreFaqList = faqList;
-            _isSiteCoreContent = isSiteCoreContent;
         }
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return _isSiteCoreContent ? _siteCoreFaqList.Count : _faqList.Count;
+            return _siteCoreFaqList != null ? _siteCoreFaqList.Count : 0;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
@@ -38,24 +29,28 @@ namespace myTNB.Home.More.FAQ
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            string question = _isSiteCoreContent ? _siteCoreFaqList[(int)section].Question : _faqList[(int)section].title;
+            string question = _siteCoreFaqList[(int)section].Question ?? string.Empty;
             CGSize newSize = GetLabelSize(question, MyTNBFont.MuseoSans16);
-            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, newSize.Height + 32));
-            view.BackgroundColor = MyTNBColor.SectionGrey;
-            UILabel lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width - 36, newSize.Height));
-            lblSectionTitle.Text = question;
-            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
-            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
-            lblSectionTitle.Lines = 0;
-            lblSectionTitle.LineBreakMode = UILineBreakMode.WordWrap;
-            lblSectionTitle.TextAlignment = UITextAlignment.Left;
+            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, newSize.Height + 32))
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
+            UILabel lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width - 36, newSize.Height))
+            {
+                Text = question,
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                TextAlignment = UITextAlignment.Left
+            };
             view.Add(lblSectionTitle);
             return view;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            string answer = _isSiteCoreContent ? _siteCoreFaqList[indexPath.Section].Answer : _faqList[indexPath.Section].details;
+            string answer = _siteCoreFaqList[indexPath.Section].Answer ?? string.Empty;
             CGSize newSize = GetLabelSize(answer, MyTNBFont.MuseoSans14);
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             var cell = tableView.DequeueReusableCell("FAQViewCell", indexPath) as FAQViewCell;
@@ -110,17 +105,13 @@ namespace myTNB.Home.More.FAQ
 
         public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
-            return (_isSiteCoreContent
-                    ? GetLabelSize(_siteCoreFaqList[(int)section].Question, MyTNBFont.MuseoSans16).Height
-                    : GetLabelSize(_faqList[(int)section].title, MyTNBFont.MuseoSans16).Height) + 32;
+            return GetLabelSize(_siteCoreFaqList[(int)section].Question ?? string.Empty, MyTNBFont.MuseoSans16).Height + 32;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            string content = _isSiteCoreContent
-                ? _siteCoreFaqList[indexPath.Section].Answer
-                : _faqList[indexPath.Section].details;
+            string content = _siteCoreFaqList[indexPath.Section].Answer ?? string.Empty;
 
             NSMutableParagraphStyle style = new NSMutableParagraphStyle();
             style.Alignment = UITextAlignment.Justified;
@@ -162,7 +153,7 @@ namespace myTNB.Home.More.FAQ
             return answerNewSize.Height + 32;
         }
 
-        CGSize GetLabelSize(string text, UIFont font)
+        private CGSize GetLabelSize(string text, UIFont font)
         {
             UILabel label = new UILabel(new CGRect(18, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000));
             label.Font = font;

@@ -1876,7 +1876,6 @@
     <Folder Include="Model\GetSubmittedFeedbackList\" />
     <Folder Include="Model\GetSubmittedFeedbackDetails\" />
     <Folder Include="Home\More\FAQ\" />
-    <Folder Include="Model\FAQ\" />
     <Folder Include="Payment\Select Bills\" />
     <Folder Include="Resources\Base.lproj\" />
     <Folder Include="Extensions\" />
@@ -2258,8 +2257,6 @@
     <Compile Include="Home\More\FAQ\FAQViewController.designer.cs">
       <DependentUpon>FAQViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\FAQ\FAQModel.cs" />
-    <Compile Include="Model\FAQ\FAQDataModel.cs" />
     <Compile Include="Home\More\FAQ\FAQDataSource.cs" />
     <Compile Include="Sitecore CMS\Service\FAQsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\FAQEntity.cs" />
