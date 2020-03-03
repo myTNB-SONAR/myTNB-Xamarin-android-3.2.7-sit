@@ -926,7 +926,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                            txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
                             {
@@ -1018,7 +1018,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                        txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
                         {
@@ -1095,7 +1095,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                        txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
                         {
@@ -1164,7 +1164,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                            txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
                             {

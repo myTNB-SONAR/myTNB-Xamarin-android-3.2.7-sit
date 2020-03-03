@@ -35,6 +35,7 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
+using Android.OS;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1853,7 +1854,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             isNeedHelpDone = false;
             isHomeMenuTutorialShown = false;
             RestoreCurrentMyServiceState();
-            GetSavedNewFAQTimeStamp();
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                GetSavedNewFAQTimeStamp();
+            };
+            h.PostDelayed(myAction, 50);
         }
 
         public void OnCheckNewFAQState()

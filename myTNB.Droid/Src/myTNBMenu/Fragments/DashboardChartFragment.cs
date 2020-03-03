@@ -6318,14 +6318,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                         }
                                         else if (calAmt > 0)
@@ -6348,14 +6348,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                                             }
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
@@ -6372,8 +6372,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             totalPayableLayout.Visibility = ViewStates.Gone;
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             txtNoPayableTitle.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
-                                            txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
-                                            txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                            txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
+                                            txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
                                         }
@@ -6426,14 +6426,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                         }
                                         else
@@ -6453,14 +6453,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                                             }
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
@@ -6470,8 +6470,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 totalPayableLayout.Visibility = ViewStates.Gone;
                                                 noPayableLayout.Visibility = ViewStates.Visible;
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
                                                 txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                                 txtDueDate.Text = "- -";
                                             }
@@ -7210,8 +7210,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
                 rmKwhLabel.Text = "kWh";
-                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                kwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                rmLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.new_grey)));
                 isShowAnimationDisable = true;
                 ShowByKwh();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Clicked");
@@ -7230,8 +7230,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
                 rmKwhLabel.Text = "RM  ";
-                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                rmLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                kwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.new_grey)));
                 isShowAnimationDisable = true;
                 ShowByRM();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Clicked");
@@ -9257,8 +9257,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
                 rmKwhLabel.Text = "RM  ";
-                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                rmLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                kwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.new_grey)));
                 isShowAnimationDisable = true;
                 ShowByRM();
             }

@@ -10,7 +10,6 @@ namespace myTNB_Android.Src.Base
     public class MyTNBAppWalkthroughData
     {
         private static MyTNBAppWalkthroughData Instance;
-        private List<OnBoardingDataModel> onBoardingDataModelList;
         public MyTNBAppWalkthroughData(){}
 
         public static MyTNBAppWalkthroughData GetInstance()
