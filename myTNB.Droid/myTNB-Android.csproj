@@ -2583,7 +2583,6 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetIsSmrApplyAllowedApi.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\GetIsSmrApplyAllowedRequest.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetIsSmrApplyAllowedResponse.cs" />
-    <Compile Include="Src\Base\MyTNBAppWalkthroughData.cs" />
     <AndroidResource Include="Resources\values\DashboardHomeStyle.xml">
       <SubType></SubType>
       <Generator></Generator>
