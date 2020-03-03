@@ -1563,6 +1563,56 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void ShowFAQFromHide()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        if (newFAQTitle.Visibility == ViewStates.Gone)
+                        {
+                            if (CheckNewFaqList() > 0)
+                            {
+                                if (mListener != null)
+                                {
+                                    newFAQListRecycleView.RemoveOnScrollListener(mListener);
+                                    mListener = null;
+                                }
+
+                                if (indicatorContainer != null && indicatorContainer.ChildCount > 0)
+                                {
+                                    indicatorContainer.RemoveAllViews();
+                                }
+
+                                newFAQListRecycleView.SetAdapter(null);
+
+                                newFAQAdapter = null;
+                                currentNewFAQList.Clear();
+
+                            }
+
+                            SetupNewFAQShimmerEffect();
+                            this.presenter.OnGetFAQs();
+                        }
+                        else
+                        {
+                            this.presenter.UpdateNewFAQCompleteState();
+                        }
+                    }
+                    catch (System.Exception exp)
+                    {
+                        Utility.LoggingNonFatalError(exp);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         public void ShowAccountDetails(string accountNumber)
         {
             if (accountNumber != null)

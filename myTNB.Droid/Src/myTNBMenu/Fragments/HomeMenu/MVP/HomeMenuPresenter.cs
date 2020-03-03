@@ -2107,17 +2107,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 NewFAQParentManager.InsertListOfItems(responseModel.Data);
 
                                 HelpTimeStamp checkItem = responseModel.Data[0];
-                                if (checkItem != null && !checkItem.ShowNeedHelp)
+                                if (checkItem != null)
                                 {
-                                    this.mView.HideNewFAQ();
+                                    if (!checkItem.ShowNeedHelp)
+                                    {
+                                        this.mView.HideNewFAQ();
+                                        UpdateNewFAQCompleteState();
+                                    }
+                                    else
+                                    {
+                                        this.mView.ShowFAQFromHide();
+                                    }
+                                }
+                                else
+                                {
                                     UpdateNewFAQCompleteState();
                                 }
                             }
+                            else
+                            {
+                                UpdateNewFAQCompleteState();
+                            }
 
+                        }
+                        else
+                        {
+                            UpdateNewFAQCompleteState();
                         }
                     }
                     catch (Exception e)
                     {
+                        UpdateNewFAQCompleteState();
                         Utility.LoggingNonFatalError(e);
                     }
                 }).ContinueWith((Task previous) =>
@@ -2126,6 +2146,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (Exception e)
             {
+                UpdateNewFAQCompleteState();
                 Utility.LoggingNonFatalError(e);
             }
         }
