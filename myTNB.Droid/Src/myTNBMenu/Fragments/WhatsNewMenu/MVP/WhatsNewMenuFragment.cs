@@ -451,11 +451,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         {
                             if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew();
                             }
                         }
                         catch (System.Exception ex)
@@ -611,11 +611,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         {
                             if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew();
                             }
                         }
                         catch (System.Exception ex)
@@ -673,11 +673,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         {
                             if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew();
                             }
                         }
                         catch (System.Exception ex)

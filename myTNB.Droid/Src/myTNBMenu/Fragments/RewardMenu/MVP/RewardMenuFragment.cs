@@ -476,11 +476,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (RewardsEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards();
                             }
                         }
                         catch (System.Exception ex)
@@ -642,11 +642,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (RewardsEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards();
                             }
                         }
                         catch (System.Exception ex)
@@ -710,11 +710,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (RewardsEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards();
                             }
                         }
                         catch (System.Exception ex)
