@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.Enums;
 using myTNB.Model;
@@ -24,6 +25,16 @@ namespace myTNB.DataManager
         public int AccountsAddedCount = 0;
         public bool SummaryNeedsRefresh = false;
         public int AccountRecordIndex = -1;
+        public bool AccountIsSSMR = false;
+
+        //Dashboard Home
+        public List<HelpModel> HelpList = new List<HelpModel>();
+        public List<ServiceItemModel> ServicesList = new List<ServiceItemModel>();
+        public List<ServiceItemModel> ActiveServicesList = new List<ServiceItemModel>();
+        public List<CustomerAccountRecordModel> CurrentAccountList = new List<CustomerAccountRecordModel>();
+        public List<DueAmountDataModel> ActiveAccountList = new List<DueAmountDataModel>();
+        public bool AccountListIsLoaded;
+        public bool IsOnSearchMode;
 
         //Chart Related Data
         //Contains selected account from AccountRecordsList
@@ -34,14 +45,10 @@ namespace myTNB.DataManager
         public bool IsBillUpdateNeeded = true;
         public int PreviousSelectedAccountIndex = 0;
         public int CurrentSelectedAccountIndex = 0;
-        public ChartDataModelBase CurrentChart = new ChartDataModelBase();
         public bool IsMontView = true; //Default to Month View
-        public ChartModeEnum CurrentChartMode = ChartModeEnum.Cost;
         public int CurrentChartIndex = 0; //Default to current chart
-        /// <summary>
-        /// Account Number as key and chart response data as value
-        /// </summary>
-        public Dictionary<string, ChartDataModelBase> AccountChartDictionary = new Dictionary<string, ChartDataModelBase>();
+        public bool IsSmartMeterAvailable = false;
+
         //Credit Card
         public CreditCardInfoModel CreditCardInfo = new CreditCardInfoModel();
         public RegisteredCardsResponseModel RegisteredCards = new RegisteredCardsResponseModel();
@@ -56,6 +63,7 @@ namespace myTNB.DataManager
         public bool IsRegisteredForRemoteNotification = false;
         public string FCMToken = string.Empty;
         public bool IsFromPushNotification = false;
+        public UserNotificationResponseModel UserNotificationResponse = new UserNotificationResponseModel();
 
         //Notification Service Response
         public NotificationTypeResponseModel NotificationTypeResponse = new NotificationTypeResponseModel();
@@ -107,12 +115,27 @@ namespace myTNB.DataManager
         public List<OtherFeedbackTypeDataModel> OtherFeedbackType = new List<OtherFeedbackTypeDataModel>();
         public bool IsPreloginFeedback = false;
 
-        //Promotion
-        public bool IsPromotionFirstLoad = false;
+        //WhatsNew
+        public bool IsWhatsNewLoading;
+        public bool IsFromWhatsNewDeeplink;
+
+        //Rewards
+        public bool IsRewardsLoading = false;
+        public bool IsFromRewardsDeeplink;
 
         //Payment
-        public bool IsPaymentDone = false;
         private List<string> AccountNumbersForPaymentList;
+
+        //Account Related
+        public bool AccountIsActive = false;
+
+        //Language
+        public Dictionary<string, string> CommonI18NDictionary;
+        public Dictionary<string, string> HintI18NDictionary;
+        public Dictionary<string, string> ErrorI18NDictionary;
+
+        //ImageSize
+        public string ImageSize = string.Empty;
 
         public static DataManager SharedInstance
         {
@@ -131,6 +154,8 @@ namespace myTNB.DataManager
         /// </summary>
         public void ClearLoginState()
         {
+            AccountUsageCache.ClearCache();
+            AccountUsageSmartCache.ClearCache();
             UserEntity uManager = new UserEntity();
             uManager.DeleteTable();
             UserAccountsEntity uaManager = new UserAccountsEntity();
@@ -141,9 +166,16 @@ namespace myTNB.DataManager
             DueEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
             PromotionsEntity.DeleteTable();
+            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+            whatsNewEntity.DeleteTable();
+            RewardsEntity rewardsEntity = new RewardsEntity();
+            rewardsEntity.DeleteTable();
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.LoginState);
             sharedPreference.SetString("", "SiteCorePromotionTimeStamp");
+            sharedPreference.SetString("", "SiteCoreWhatsNewTimeStamp");
+            sharedPreference.SetString("", "SiteCoreRewardsTimeStamp");
+            sharedPreference.SetString("", WhatsNewConstants.Pref_WhatsNewReadFlags);
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.PhoneVerification);
             sharedPreference.Synchronize();
 
@@ -153,19 +185,23 @@ namespace myTNB.DataManager
             AccountNumber = string.Empty;
             AccountsAddedCount = 0;
 
+            HelpList = new List<HelpModel>();
+            ServicesList = new List<ServiceItemModel>();
+            ActiveServicesList = new List<ServiceItemModel>();
+            CurrentAccountList = new List<CustomerAccountRecordModel>();
+            ActiveAccountList = new List<DueAmountDataModel>();
+            AccountListIsLoaded = false;
+            IsOnSearchMode = false;
+
             SelectedAccount = new CustomerAccountRecordModel();
             BillingAccountDetails = new BillingAccountDetailsDataModel();
             IsSameAccount = false;
             IsBillUpdateNeeded = true;
             PreviousSelectedAccountIndex = 0;
             CurrentSelectedAccountIndex = 0;
-            CurrentChart = new ChartDataModelBase();
             IsMontView = true; //Default to Month View
-            CurrentChartMode = ChartModeEnum.Cost;
             CurrentChartIndex = 0; //Default to current chart
 
-            AccountChartDictionary?.Clear();
-            AccountChartDictionary = new Dictionary<string, ChartDataModelBase>();
             CreditCardInfo = new CreditCardInfoModel();
             RegisteredCards = new RegisteredCardsResponseModel();
             CustomerAccounts = new CustomerAccountResponseModel();
@@ -200,7 +236,188 @@ namespace myTNB.DataManager
             SelectedLocationTypeTitle = "All";
             isLocationSearch = false;
 
-            IsPromotionFirstLoad = false;
+            IsWhatsNewLoading = false;
+            IsFromWhatsNewDeeplink = false;
+            IsRewardsLoading = false;
+            IsFromRewardsDeeplink = false;
+
+            //Account Related
+            AccountIsActive = false;
+
+            //ResetAmountDues
+            AmountDueCache.Reset();
+
+            //Reset SSMR Onboarding
+            SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
+            WhatsNewCache.Clear();
+            RewardsCache.Clear();
+        }
+
+        public void RemoveAccountFromArrangedList(string accountNo)
+        {
+            if (!accountNo.IsValid()) { return; }
+
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+            var userInfo = UserEntity?.Count > 0
+                      ? UserEntity[0]
+                      : new UserEntity();
+            if (userInfo.email.IsValid())
+            {
+                var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                if (stringData.IsValid())
+                {
+                    CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                    if (accountListModel != null && accountListModel.d != null)
+                    {
+                        int index = accountListModel.d.FindIndex(x => x.accNum == accountNo);
+                        if (index > -1)
+                        {
+                            accountListModel.d.RemoveAt(index);
+                            string acctListData = JsonConvert.SerializeObject(accountListModel);
+                            userDefaults.SetString(acctListData, string.Format("{0}-{1}", env, userInfo.email));
+                            userDefaults.Synchronize();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void UpdateNicknameFromArrangedList(string accountNo, string nickname)
+        {
+            if (!accountNo.IsValid() || !nickname.IsValid()) { return; }
+
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+            var userInfo = UserEntity?.Count > 0
+                      ? UserEntity[0]
+                      : new UserEntity();
+            if (userInfo.email.IsValid())
+            {
+                var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                if (stringData.IsValid())
+                {
+                    CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                    if (accountListModel != null && accountListModel.d != null)
+                    {
+                        int index = accountListModel.d.FindIndex(x => x.accNum == accountNo);
+                        if (index > -1)
+                        {
+                            accountListModel.d[index].accDesc = nickname;
+                            string acctListData = JsonConvert.SerializeObject(accountListModel);
+                            userDefaults.SetString(acctListData, string.Format("{0}-{1}", env, userInfo.email));
+                            userDefaults.Synchronize();
+                        }
+                    }
+                }
+            }
+        }
+
+        public List<CustomerAccountRecordModel> GetSortedAcctList(List<CustomerAccountRecordModel> acctsList)
+        {
+            var sortedAccounts = new List<CustomerAccountRecordModel>();
+            var results = acctsList.GroupBy(x => x.IsREAccount);
+            if (results != null && results?.Count() > 0)
+            {
+                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                reAccts.AddRange(normalAccts);
+                sortedAccounts = reAccts;
+            }
+            return sortedAccounts;
+        }
+
+        public List<CustomerAccountRecordModel> GetCombinedAcctList(List<CustomerAccountRecordModel> arrangedAcctList = null)
+        {
+            List<CustomerAccountRecordModel> newArrangedList = new List<CustomerAccountRecordModel>();
+            if (arrangedAcctList == null || arrangedAcctList.Count <= 0)
+            {
+                APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                var userInfo = UserEntity?.Count > 0
+                          ? UserEntity[0]
+                          : new UserEntity();
+                if (userInfo.email.IsValid())
+                {
+                    var stringData = userDefaults.StringForKey(string.Format("{0}-{1}", env, userInfo.email));
+                    if (stringData.IsValid())
+                    {
+                        CustomerAccountRecordListModel accountListModel = JsonConvert.DeserializeObject<CustomerAccountRecordListModel>(stringData);
+                        if (accountListModel != null && accountListModel.d != null)
+                        {
+                            newArrangedList = accountListModel.d;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                newArrangedList = arrangedAcctList.DeepClone();
+            }
+            List<CustomerAccountRecordModel> combinedAccounts = new List<CustomerAccountRecordModel>();
+            List<CustomerAccountRecordModel> sortedAccounts;
+            List<CustomerAccountRecordModel> removedAccounts = new List<CustomerAccountRecordModel>();
+            var currentAcctList = AccountRecordsList?.d;
+            if (currentAcctList != null && currentAcctList.Count > 0)
+            {
+                sortedAccounts = GetSortedAcctList(currentAcctList);
+                if (newArrangedList != null && newArrangedList.Count > 0)
+                {
+                    foreach (var aAcct in newArrangedList)
+                    {
+                        bool isRemoved = true;
+                        foreach (var sAcct in sortedAccounts)
+                        {
+                            if (aAcct.accNum.Equals(sAcct.accNum))
+                            {
+                                isRemoved = false;
+                                if (!aAcct.accDesc.Equals(sAcct.accDesc))
+                                {
+                                    UpdateNicknameFromArrangedList(sAcct.accNum, sAcct.accDesc);
+                                    combinedAccounts.Add(sAcct);
+                                }
+                                else
+                                {
+                                    combinedAccounts.Add(aAcct);
+                                }
+                                break;
+                            }
+                        }
+                        if (isRemoved)
+                        {
+                            removedAccounts.Add(aAcct);
+                        }
+                    }
+                    if (removedAccounts != null && removedAccounts.Count > 0)
+                    {
+                        foreach (var rAcct in removedAccounts)
+                        {
+                            RemoveAccountFromArrangedList(rAcct.accNum);
+                        }
+                    }
+                    foreach (var sAcct in sortedAccounts)
+                    {
+                        bool acctIsNew = true;
+                        foreach (var cAcct in combinedAccounts)
+                        {
+                            if (sAcct.accNum.Equals(cAcct.accNum))
+                            {
+                                acctIsNew = false;
+                                break;
+                            }
+                        }
+                        if (acctIsNew)
+                        {
+                            combinedAccounts.Add(sAcct);
+                        }
+                    }
+                }
+                else
+                {
+                    combinedAccounts = sortedAccounts;
+                }
+            }
+            return combinedAccounts;
         }
 
         /// <summary>
@@ -210,6 +427,7 @@ namespace myTNB.DataManager
         {
             UserAccountsEntity uaManager = new UserAccountsEntity();
             AccountRecordsList = uaManager.GetCustomerAccountRecordList();
+            AccountRecordsList.d = GetCombinedAcctList();
             string currentSelectedAccountNum = SelectedAccount.accNum;
             int selectedAccountIndex = AccountRecordsList.d.FindIndex(x => x.accNum == currentSelectedAccountNum);
 
@@ -362,34 +580,6 @@ namespace myTNB.DataManager
         }
 
         /// <summary>
-        /// Saves smart chart to usage history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveSmartChartToUsageHistory(SmartChartDataModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                SaveToUsageHistory(jsonStr, key);
-            }
-        }
-
-        /// <summary>
-        /// Saves the chart to usage history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveChartToUsageHistory(ChartDataModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                SaveToUsageHistory(jsonStr, key);
-            }
-        }
-
-        /// <summary>
         /// Saves to usage history.
         /// </summary>
         /// <param name="jsonStr">Json string.</param>
@@ -405,62 +595,6 @@ namespace myTNB.DataManager
                 entity.IsRefreshNeeded = false;
                 ChartEntity.InsertItem(entity);
             }
-        }
-
-        /// <summary>
-        /// Gets the smart account usage history.
-        /// </summary>
-        /// <returns>The smart account usage history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> refresh is needed.</param>
-        public SmartChartDataModel GetSmartAccountUsageHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            SmartChartDataModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = ChartEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<SmartChartDataModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
-        }
-
-        /// <summary>
-        /// Gets the account usage history.
-        /// </summary>
-        /// <returns>The account usage history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> refresh is needed.</param>
-        public ChartDataModel GetAccountUsageHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            ChartDataModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = ChartEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<ChartDataModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
         }
 
         /// <summary>
@@ -496,7 +630,7 @@ namespace myTNB.DataManager
         /// Updates the promos database.
         /// </summary>
         /// <param name="promotions">Promotions.</param>
-        public void UpdatePromosDb(List<PromotionsModelV2> promotions)
+        public void UpdatePromosDb(List<PromotionsModel> promotions)
         {
             if (promotions == null)
                 return;
@@ -510,14 +644,6 @@ namespace myTNB.DataManager
 
         #region Dues
         /// <summary>
-        /// Creates the dues table.
-        /// </summary>
-        public void CreateDuesTable()
-        {
-            DueEntity.CreateTable();
-        }
-
-        /// <summary>
         /// Gets the due.
         /// </summary>
         /// <returns>The due.</returns>
@@ -527,12 +653,7 @@ namespace myTNB.DataManager
             DueAmountDataModel model = null;
             if (!string.IsNullOrEmpty(key))
             {
-                var entity = DueEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = new DueAmountDataModel();
-                    model.UpdateFromEntity(entity);
-                }
+                model = AmountDueCache.GetDues(key);
             }
             return model;
         }
@@ -545,8 +666,7 @@ namespace myTNB.DataManager
         {
             foreach (var item in accountDues)
             {
-                var entity = item.ToEntity();
-                DueEntity.InsertItem(entity);
+                AmountDueCache.SaveDues(item);
             }
         }
 
@@ -556,8 +676,7 @@ namespace myTNB.DataManager
         /// <param name="item">Item.</param>
         public void SaveDue(DueAmountDataModel item)
         {
-            var entity = item.ToEntity();
-            DueEntity.InsertItem(entity);
+            AmountDueCache.SaveDues(item);
         }
 
         /// <summary>
@@ -569,12 +688,15 @@ namespace myTNB.DataManager
         {
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(newName))
             {
-                var entity = DueEntity.GetItem(key);
-                if (entity != null)
-                {
-                    entity.accNickName = newName;
-                    DueEntity.UpdateItem(entity);
-                }
+                AmountDueCache.UpdateNickname(key, newName);
+            }
+        }
+
+        public void UpdateDueIsSSMR(string key, string flag)
+        {
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(flag))
+            {
+                AmountDueCache.UpdateIsSSMR(key, flag);
             }
         }
 
@@ -586,7 +708,7 @@ namespace myTNB.DataManager
         {
             if (!string.IsNullOrEmpty(key))
             {
-                DueEntity.DeleteItem(key);
+                AmountDueCache.DeleteDue(key);
             }
         }
 
@@ -816,74 +938,6 @@ namespace myTNB.DataManager
         }
 
         /// <summary>
-        /// Saves to payment history.
-        /// </summary>
-        /// <param name="model">Model.</param>
-        /// <param name="key">Key.</param>
-        public void SaveToPaymentHistory(PaymentHistoryModel model, string key)
-        {
-            if (model != null && !string.IsNullOrEmpty(key))
-            {
-                var jsonStr = JsonConvert.SerializeObject(model);
-                if (!string.IsNullOrEmpty(jsonStr))
-                {
-                    var entity = new PaymentHistoryEntity();
-                    entity.AccNum = key;
-                    entity.Data = jsonStr;
-                    entity.DateUpdated = DateHelper.FormatToUtc(DateTime.UtcNow);
-                    entity.IsRefreshNeeded = false;
-                    PaymentHistoryEntity.InsertItem(entity);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the details from payment history.
-        /// </summary>
-        /// <returns>The details from payment history.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="lastUpdate">Last update.</param>
-        /// <param name="isRefreshNeeded">If set to <c>true</c> is refresh needed.</param>
-        public PaymentHistoryModel GetDetailsFromPaymentHistory(string key, ref DateTime lastUpdate, ref bool isRefreshNeeded)
-        {
-            PaymentHistoryModel model = null;
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                var entity = PaymentHistoryEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<PaymentHistoryModel>(entity.Data);
-                    if (!string.IsNullOrEmpty(entity.DateUpdated))
-                    {
-                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-                    }
-                    isRefreshNeeded = entity.IsRefreshNeeded;
-                }
-            }
-
-            return model;
-        }
-
-        /// <summary>
-        /// Gets the cached payment history.
-        /// </summary>
-        /// <returns>The cached payment history.</returns>
-        /// <param name="accountNum">Account number.</param>
-        public PaymentHistoryModel GetCachedPaymentHistory(string accountNum)
-        {
-            DateTime lastUpdate = default(DateTime);
-            bool isRefreshNeeded = default(bool);
-            var model = GetDetailsFromPaymentHistory(accountNum, ref lastUpdate, ref isRefreshNeeded);
-
-            if (model != null && lastUpdate.Date == DateTime.Today && !isRefreshNeeded)
-            {
-                return model;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Sets the payment history refresh status.
         /// </summary>
         /// <param name="key">Key.</param>
@@ -928,7 +982,8 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns><c>true</c>, if paid account number was ised, <c>false</c> otherwise.</returns>
         /// <param name="accountNumber">Account number.</param>
-        public bool IsPaidAccountNumber(string accountNumber) {
+        public bool IsPaidAccountNumber(string accountNumber)
+        {
             if (AccountNumbersForPaymentList == null)
             {
                 return false;
@@ -948,7 +1003,5 @@ namespace myTNB.DataManager
         }
 
         #endregion
-
-
     }
 }

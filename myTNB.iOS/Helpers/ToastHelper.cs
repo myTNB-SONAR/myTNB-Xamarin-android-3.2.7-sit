@@ -1,4 +1,6 @@
 ﻿using System;
+using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace myTNB
@@ -24,9 +26,11 @@ namespace myTNB
             viewDialog.Layer.ZPosition = TNBGlobal.ToastZPosition;
             viewDialog.Hidden = false;
             viewDialog.Alpha = 1.0f;
-            UIView.Animate(10, 1, UIViewAnimationOptions.CurveEaseOut, () => {
+            UIView.Animate(10, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            {
                 viewDialog.Alpha = 0.0f;
-            }, () => {
+            }, () =>
+            {
                 viewDialog.Hidden = true;
                 viewDialog.Hidden = false;
             });
@@ -40,14 +44,14 @@ namespace myTNB
         /// <param name="message">Message.</param>
         public static void ShowToast(UIView viewDialog, ref bool isAnimating, string message)
         {
-            if(!string.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(message))
             {
                 var lblMessage = viewDialog.ViewWithTag(TNBGlobal.Tags.ToastMessageLabel) as UILabel;
-                if(lblMessage != null)
+                if (lblMessage != null)
                 {
                     lblMessage.Text = message;
-                    lblMessage.Font = myTNBFont.MuseoSans12_300();
-                    lblMessage.TextColor = myTNBColor.TunaGrey();
+                    lblMessage.Font = MyTNBFont.MuseoSans12_300;
+                    lblMessage.TextColor = MyTNBColor.TunaGrey();
                 }
 
             }
@@ -61,13 +65,14 @@ namespace myTNB
         /// <param name="title">Title.</param>
         /// <param name="message">Message.</param>
         /// <param name="handler">Handler.</param>
-        public static void DisplayAlertView(UIViewController view, string title, string message, Action<UIAlertAction> handler = null)
+        public static void DisplayAlertView(UIViewController view, string title, string message
+            , Action<UIAlertAction> handler = null, string actionTitle = null)
         {
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, handler));
+            alert.AddAction(UIAlertAction.Create(string.IsNullOrEmpty(actionTitle) ? LanguageUtility.GetCommonI18NValue(Constants.Common_Ok) : actionTitle
+                , UIAlertActionStyle.Cancel, handler));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             view.PresentViewController(alert, animated: true, completionHandler: null);
         }
-
     }
-
 }

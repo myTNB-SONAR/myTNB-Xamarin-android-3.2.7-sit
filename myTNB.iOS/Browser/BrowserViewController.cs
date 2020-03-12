@@ -1,21 +1,16 @@
-using Foundation;
-using System;
+﻿using Foundation;
 using UIKit;
 using CoreGraphics;
 
 namespace myTNB
 {
-    public partial class BrowserViewController : UIViewController
+    public partial class BrowserViewController : CustomUIViewController
     {
-        public BrowserViewController(IntPtr handle) : base(handle)
-        {
-        }
-
-        UIWebView _webView;
+        private UIWebView _webView;
 
         public string NavigationTitle = string.Empty;
         public string URL = string.Empty;
-        public bool IsDelegateNeeded = false;
+        public bool IsDelegateNeeded;
 
         public override void ViewDidLoad()
         {
@@ -29,19 +24,20 @@ namespace myTNB
             base.ViewWillAppear(animated);
         }
 
-        void SetNavigationItems()
+        private void SetNavigationItems()
         {
-            NavigationItem.Title = NavigationTitle;
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                DismissViewController(true, null);
-            });
+            NavigationItem.Title = NavigationTitle.IsValid() ? NavigationTitle : string.Empty;
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back)
+                , UIBarButtonItemStyle.Done, (sender, e) =>
+                {
+                    DismissViewController(true, null);
+                });
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        void SetSubviews()
+        private void SetSubviews()
         {
-            _webView = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+            _webView = new UIWebView(new CGRect(0, 0, ViewWidth, ViewHeight));
             if (IsDelegateNeeded)
             {
                 _webView.Delegate = new WebViewDelegate(View);

@@ -1,111 +1,106 @@
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
+using myTNB.Rating;
 using System;
 using UIKit;
-using myTNB.Extensions;
 
 namespace myTNB
 {
-    public partial class RatingResultsViewController : UIViewController
+    public partial class RatingResultsViewController : CustomUIViewController
     {
-        public RatingResultsViewController(IntPtr handle) : base(handle)
-        {
-        }
-
-        UIButton _btnDashBoard;
+        public RatingResultsViewController(IntPtr handle) : base(handle) { }
+        private UIButton _btnDashBoard;
 
         public override void ViewDidLoad()
         {
+            PageName = RatingConstants.Pagename_RatingResults;
             base.ViewDidLoad();
             SetupSuperViewBackground();
             InitiliazeViews();
             SetEvents();
-            this.NavigationController.NavigationBarHidden = true;
-
+            NavigationController.NavigationBarHidden = true;
         }
 
-        internal void SetupSuperViewBackground()
+        private void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = View.Bounds;
+            UIColor startColor = MyTNBColor.GradientPurpleDarkElement;
+            UIColor endColor = MyTNBColor.GradientPurpleLightElement;
+            CAGradientLayer gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor },
+                Locations = new NSNumber[] { 0, 1 },
+                Frame = View.Bounds
+            };
             View.Layer.InsertSublayer(gradientLayer, 0);
         }
 
-        internal void InitiliazeViews()
+        private void InitiliazeViews()
         {
-            var locY = !DeviceHelper.IsIphoneXUpResolution() ? 36 : 56;
-            var viewContainer = new UIView((new CGRect(18, locY, View.Frame.Width - 36, 140)));
-            viewContainer.BackgroundColor = UIColor.White;
+            int locY = !DeviceHelper.IsIphoneXUpResolution() ? 36 : 56;
+            UIView viewContainer = new UIView((new CGRect(18, locY, View.Frame.Width - 36, 140)))
+            {
+                BackgroundColor = UIColor.White
+            };
             viewContainer.Layer.CornerRadius = 4f;
             View.AddSubview(viewContainer);
 
-            UIImageView imgViewCheck = new UIImageView(new CGRect((viewContainer.Frame.Width - 64) / 2, 16, 64, 64));
-            imgViewCheck.Image = UIImage.FromBundle("Circle-With-Check-Green");
+            UIImageView imgViewCheck = new UIImageView(new CGRect((viewContainer.Frame.Width - 64) / 2, 16, 64, 64))
+            {
+                Image = UIImage.FromBundle("Circle-With-Check-Green")
+            };
             viewContainer.AddSubview(imgViewCheck);
 
-            var lblFeedback = new UILabel(new CGRect(0, imgViewCheck.Frame.GetMaxY() + 5, viewContainer.Frame.Width, 18));
-            lblFeedback.Font = myTNBFont.MuseoSans16();
-            lblFeedback.TextColor = myTNBColor.PowerBlue();
-            lblFeedback.Text = "Thank you.";
-            lblFeedback.TextAlignment = UITextAlignment.Center;
+            UILabel lblFeedback = new UILabel(new CGRect(16, imgViewCheck.Frame.GetMaxY() + 5, viewContainer.Frame.Width - 32, 18))
+            {
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue,
+                Text = GetI18NValue(RatingConstants.I18N_Thankyou),
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+
+            nfloat newThankyouHeight = lblFeedback.GetLabelHeight(GetScaledHeight(60F));
+            lblFeedback.Frame = new CGRect(lblFeedback.Frame.Location, new CGSize(lblFeedback.Frame.Width, newThankyouHeight));
+
             viewContainer.AddSubview(lblFeedback);
 
-            var lblDetail = new UILabel(new CGRect(0, lblFeedback.Frame.GetMaxY() + 1, viewContainer.Frame.Width, 16));
-            lblDetail.Font = myTNBFont.MuseoSans12();
-            lblDetail.TextColor = myTNBColor.TunaGrey();
-            lblDetail.Text = "Your rating will help us serve you better.";
-            lblDetail.TextAlignment = UITextAlignment.Center;
+            UILabel lblDetail = new UILabel(new CGRect(16, lblFeedback.Frame.GetMaxY() + 1, viewContainer.Frame.Width - 32, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = GetI18NValue(RatingConstants.I18N_Description),
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+
+            nfloat newTitleHeight = lblDetail.GetLabelHeight(GetScaledHeight(60F));
+            lblDetail.Frame = new CGRect(lblDetail.Frame.Location, new CGSize(lblDetail.Frame.Width, newTitleHeight));
             viewContainer.AddSubview(lblDetail);
 
-            //var lblSubDetail = new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16));
-            //lblSubDetail.Font = myTNBFont.MuseoSans12();
-            //lblSubDetail.TextColor = myTNBColor.TunaGrey();
-            //lblSubDetail.Text = "Please try again later.";
-            //lblSubDetail.TextAlignment = UITextAlignment.Center;
-            //viewContainer.AddSubview(lblSubDetail);
+            viewContainer.Frame = new CGRect(viewContainer.Frame.Location, new CGSize(viewContainer.Frame.Width, lblDetail.Frame.GetMaxY() + 16));
 
             //Back to Dashboard Button
-            _btnDashBoard = new UIButton(UIButtonType.Custom);
-            _btnDashBoard.Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48);
-            _btnDashBoard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
-            _btnDashBoard.Font = myTNBFont.MuseoSans16();
+            _btnDashBoard = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48),
+                Font = MyTNBFont.MuseoSans16,
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            _btnDashBoard.SetTitle(GetI18NValue(RatingConstants.I18N_BackToHome), UIControlState.Normal);
             _btnDashBoard.Layer.CornerRadius = 5.0f;
-            _btnDashBoard.BackgroundColor = myTNBColor.FreshGreen();
             View.AddSubview(_btnDashBoard);
-
         }
 
-        internal void SetEvents()
+        private void SetEvents()
         {
             _btnDashBoard.TouchUpInside += (sender, e) =>
             {
-#if true // CREATE_TABBAR
+                DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
                 ViewHelper.DismissControllersAndSelectTab(this, 0, true, true);
-#else
-                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                var topVc = AppDelegate.GetTopViewController(baseRootVc);
-
-                var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
-                var newPresenting = newtopVc?.PresentingViewController;
-                if (!(newPresenting is HomeTabBarController))
-                {
-                    Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
-                    //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                    //var vc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                    //ShowViewController(vc, this);
-                }
-
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                var vc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                ShowViewController(vc, this);
-#endif
             };
-
         }
     }
 }

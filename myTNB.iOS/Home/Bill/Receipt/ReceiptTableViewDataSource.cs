@@ -1,15 +1,14 @@
 ﻿using System;
 using UIKit;
-using myTNB.Model;
 using Foundation;
 
 namespace myTNB.Home.Bill.Receipt
 {
     public class ReceiptTableViewDataSource : UITableViewSource
     {
-        ReceiptResponseModel _receipt = new ReceiptResponseModel();
+        private GetPaymentReceiptResponseModel _receipt = new GetPaymentReceiptResponseModel();
 
-        public ReceiptTableViewDataSource(ReceiptResponseModel receipt)
+        public ReceiptTableViewDataSource(GetPaymentReceiptResponseModel receipt)
         {
             _receipt = receipt;
         }
@@ -35,7 +34,7 @@ namespace myTNB.Home.Bill.Receipt
             var item = _receipt?.d?.data?.accMultiPay?[indexPath.Row];
             cell.lblAcctNoValue.Text = item?.accountNum;
             cell.lblAcctNameValue.Text = item?.AccountOwnerName ?? string.Empty;
-            cell.lblAmountValue.Text = item?.itmAmt;
+            cell.lblAmountValue.Text = item?.itmAmt ?? string.Empty;
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }

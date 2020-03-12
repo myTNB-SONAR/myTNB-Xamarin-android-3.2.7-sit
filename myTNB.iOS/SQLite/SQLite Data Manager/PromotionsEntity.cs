@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using myTNB.SitecoreCMS.Model;
 using SQLite;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
-    public class PromotionsEntity : PromotionsModelV2
+    public class PromotionsEntity : PromotionsModel
     {
         /// <summary>
         /// Creates the table.
@@ -19,7 +20,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Create Table : {0}", e.Message);
+                Debug.WriteLine("Error in Create Table : {0}", e.Message);
             }
         }
         /// <summary>
@@ -34,13 +35,13 @@ namespace myTNB.SQLite.SQLiteDataManager
                 {
                     int newRecord = SQLiteHelper._db.InsertOrReplace(item);
 #if DEBUG
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                    Debug.WriteLine("Insert Record: {0}", newRecord);
 #endif
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Insert Item in Table : {0}", e.Message);
+                Debug.WriteLine("Error in Insert Item in Table : {0}", e.Message);
             }
         }
 
@@ -61,7 +62,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Reading from Table : {0}", e.Message);
+                Debug.WriteLine("Error in Reading from Table : {0}", e.Message);
             }
             return item;
         }
@@ -78,7 +79,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Update Item in Table : {0}", e.Message);
+                Debug.WriteLine("Error in Update Item in Table : {0}", e.Message);
             }
         }
 
@@ -125,7 +126,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Get All Items : {0}", e.Message);
+                Debug.WriteLine("Error in Get All Items : {0}", e.Message);
             }
             return itemList;
         }
@@ -172,7 +173,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Delete Table : {0}", e.Message);
+                Debug.WriteLine("Error in Delete Table : {0}", e.Message);
             }
         }
 
@@ -180,13 +181,13 @@ namespace myTNB.SQLite.SQLiteDataManager
         /// Inserts the list of items.
         /// </summary>
         /// <param name="itemList">Item list.</param>
-        public void InsertListOfItemsV2(List<PromotionsModelV2> itemList)
+        public void InsertListOfItemsV2(List<PromotionsModel> itemList)
         {
             if (itemList != null)
             {
                 try
                 {
-                    foreach (PromotionsModelV2 obj in itemList)
+                    foreach (PromotionsModel obj in itemList)
                     {
                         PromotionsEntity item = new PromotionsEntity();
                         item.Title = obj.Title;
@@ -211,7 +212,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error in Insert Promo Items : {0}", e.Message);
+                    Debug.WriteLine("Error in Insert Promo Items : {0}", e.Message);
                 }
             }
         }
@@ -220,14 +221,14 @@ namespace myTNB.SQLite.SQLiteDataManager
         /// Gets all items.
         /// </summary>
         /// <returns>The all items.</returns>
-        public List<PromotionsModelV2> GetAllItemsV2()
+        public List<PromotionsModel> GetAllItemsV2()
         {
-            List<PromotionsModelV2> itemList = new List<PromotionsModelV2>();
+            List<PromotionsModel> itemList = new List<PromotionsModel>();
             List<PromotionsEntity> entityItems = GetAllEntityItems();
-            PromotionsModelV2 promotionItem;
+            PromotionsModel promotionItem;
             foreach (var item in entityItems)
             {
-                promotionItem = new PromotionsModelV2();
+                promotionItem = new PromotionsModel();
                 promotionItem.Title = item.Title;
                 promotionItem.Text = item.Text;
                 promotionItem.SubText = item.SubText;

@@ -4,29 +4,61 @@ using CoreGraphics;
 
 namespace myTNB
 {
-    public partial class AccountsViewCell : UITableViewCell
+    public partial class AccountsViewCell : CustomUITableViewCell
     {
         public UILabel lblAccountName;
-        public UIImageView imgLeaf;
+        public UIImageView reIconView;
         public UIView viewLine;
+        private nfloat _imgWidth = ScaleUtility.GetScaledWidth(20F);
         public AccountsViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat cellHeight = Frame.Height;
+            lblAccountName = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(18F), GetNicknameWidth(), GetScaledHeight(24F)))
+            {
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey
+            };
 
-            lblAccountName = new UILabel(new CGRect(18, 16, 100, 24));
-            lblAccountName.LineBreakMode = UILineBreakMode.TailTruncation;
-            lblAccountName.Font = myTNBFont.MuseoSans16();
-            lblAccountName.TextColor = myTNBColor.TunaGrey();
-
-            imgLeaf = new UIImageView(new CGRect(150, 16, 24, 24));
-            imgLeaf.Image = UIImage.FromBundle("IC-RE-Leaf-Green");
-
-            viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            reIconView = new UIImageView(new CGRect(0, GetScaledHeight(20F), _imgWidth, _imgWidth));
+            viewLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(60F), cellWidth, GetScaledHeight(1F)));
             viewLine.Hidden = false;
+            AddSubviews(new UIView[] { lblAccountName, reIconView, viewLine });
+        }
 
-            AddSubviews(new UIView[] { lblAccountName, imgLeaf, viewLine });
+        public string ImageIcon
+        {
+            set
+            {
+                if (reIconView != null &&
+                    lblAccountName != null &&
+                    !string.IsNullOrEmpty(value) &&
+                    !string.IsNullOrWhiteSpace(value))
+                {
+                    reIconView.Hidden = false;
+                    nfloat width = GetNicknameWidth() - GetScaledWidth(28F);
+                    reIconView.Image = UIImage.FromBundle(value);
+                    CGSize nameSize = lblAccountName.SizeThatFits(new CGSize(width, GetScaledHeight(16F)));
+                    ViewHelper.AdjustFrameSetWidth(lblAccountName, nameSize.Width <= width ? nameSize.Width : width);
+                    nfloat addtl = nameSize.Width <= width ? GetScaledWidth(4F) : 0;
+                    ViewHelper.AdjustFrameSetX(reIconView, lblAccountName.Frame.GetMaxX() + addtl);
+                }
+                else
+                {
+                    if (reIconView != null && lblAccountName != null)
+                    {
+                        reIconView.Hidden = true;
+                        ViewHelper.AdjustFrameSetWidth(lblAccountName, GetNicknameWidth());
+                    }
+                }
+            }
+        }
+
+        private nfloat GetNicknameWidth()
+        {
+            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            nfloat width = cellWidth - (BaseMarginWidth16 * 2) - GetScaledWidth(24F);
+            return width;
         }
     }
 }

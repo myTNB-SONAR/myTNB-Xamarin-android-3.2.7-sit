@@ -1,7 +1,7 @@
 ﻿namespace myTNB.Model
 {
-    public class BaseResponseModel
+    public class BaseResponseModelV2
     {
-        public BaseModel d { set; get; }
+        public BaseModelV2 d { set; get; }
     }
 }

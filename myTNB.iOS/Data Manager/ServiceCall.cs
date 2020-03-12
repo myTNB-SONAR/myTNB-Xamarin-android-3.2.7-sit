@@ -24,48 +24,33 @@ namespace myTNB.DataManager
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = emailAddress
+                    serviceManager.usrInf,
+                    isOwnedAccount = true
                 };
                 DataManager.SharedInstance.RegisteredCards = serviceManager
-                    .GetRegisteredCards("GetRegisteredCards", requestParameter);
+                    .OnExecuteAPIV6<RegisteredCardsResponseModel>("GetRegisteredCards", requestParameter);
             });
         }
 
         /// <summary>
-        /// Gets the customer billing account list.
+        /// Gets the CAs linked to the myTNB account
         /// </summary>
-        /// <returns>The customer billing account list.</returns>
-        public static Task GetCustomerBillingAccountList()
+        /// <returns></returns>
+        public static Task GetAccounts()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                var userId = string.Empty;
-                if (DataManager.SharedInstance.UserEntity?.Count > 0)
-                {
-                    userId = DataManager.SharedInstance.UserEntity[0].userID;
-                }
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    userID = userId
-                };
-                DataManager.SharedInstance.CustomerAccounts = serviceManager
-                    .GetCustomerBillingAccountList("GetCustomerBillingAccountList", requestParameter);
+                object request = new { serviceManager.usrInf };
+                DataManager.SharedInstance.CustomerAccounts = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>("GetAccounts", request);
             });
         }
 
-        /// <summary>
-        /// Validates the base response.
-        /// </summary>
-        /// <returns><c>true</c>, if base response was validated, <c>false</c> otherwise.</returns>
-        /// <param name="response">Response.</param>
-        public static bool ValidateBaseResponse(BaseResponseModel response)
+        public static bool ValidateBaseResponse(BaseResponseModelV2 response)
         {
             return response != null
-                && response?.d != null
-                && response?.d?.didSucceed == true;
+                && response.d != null
+                && response.d.IsSuccess;
         }
 
         /// <summary>
@@ -117,34 +102,39 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns>The update phone token sms.</returns>
         /// <param name="mobileNumber">Mobile number.</param>
-        public static async Task<BaseResponseModel> SendUpdatePhoneTokenSMS(string mobileNumber)
+        public static async Task<BaseResponseModelV2> SendUpdatePhoneTokenSMS(string mobileNumber)
         {
             ServiceManager serviceManager = new ServiceManager();
-            BaseResponseModel response;
-            var userId = string.Empty;
-            var emailAddress = string.Empty;
+            BaseResponseModelV2 response;
+            string userId = string.Empty;
+            string emailAddress = string.Empty;
             if (DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 userId = DataManager.SharedInstance.UserEntity[0].userID;
                 emailAddress = DataManager.SharedInstance.UserEntity[0].email;
             }
+            string fcmToken = DataManager.SharedInstance.FCMToken != null
+                ? DataManager.SharedInstance.FCMToken : string.Empty;
             object requestParameter = new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                ipAddress = TNBGlobal.API_KEY_ID,
-                clientType = TNBGlobal.API_KEY_ID,
-                activeUserName = TNBGlobal.API_KEY_ID,
-                devicePlatform = TNBGlobal.API_KEY_ID,
-                deviceVersion = TNBGlobal.API_KEY_ID,
-                deviceCordova = TNBGlobal.API_KEY_ID,
-                username = emailAddress,
-                userEmail = emailAddress,
+                usrInf = new
+                {
+                    eid = emailAddress,
+                    sspuid = DataManager.SharedInstance.User.UserID,
+                    did = DataManager.SharedInstance.UDID,
+                    ft = fcmToken,
+                    lang = TNBGlobal.APP_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                },
                 mobileNo = mobileNumber,
-                sspUserId = userId
+                updateEvent = string.Empty
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.BaseServiceCall("SendUpdatePhoneTokenSMS", requestParameter);
+                return serviceManager.BaseServiceCallV6("SendUpdatePhoneTokenSMS", requestParameter);
             });
 
             return response;
@@ -157,24 +147,35 @@ namespace myTNB.DataManager
         /// <param name="mobileNumber">Mobile number.</param>
         /// <param name="tokenStr">Token string.</param>
         /// <param name="isFromLogin">If set to <c>true</c> is from login.</param>
-        public static async Task<BaseResponseModel> UpdatePhoneNumber(string mobileNumber, string tokenStr, bool isFromLogin)
+        public static async Task<BaseResponseModelV2> UpdatePhoneNumber(string mobileNumber, string tokenStr, bool isFromLogin)
         {
-            BaseResponseModel response;
+            BaseResponseModelV2 response;
             ServiceManager serviceManager = new ServiceManager();
-            var userId = string.Empty;
-            var emailAddress = string.Empty;
-            var phoneNumber = string.Empty;
+            string userId = string.Empty;
+            string emailAddress = string.Empty;
+            string phoneNumber = string.Empty;
             if (DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 userId = DataManager.SharedInstance.UserEntity[0].userID;
                 emailAddress = DataManager.SharedInstance.UserEntity[0].email;
                 phoneNumber = DataManager.SharedInstance.UserEntity[0].mobileNo;
             }
+            string fcmToken = DataManager.SharedInstance.FCMToken != null
+                  ? DataManager.SharedInstance.FCMToken : string.Empty;
             object requestParameter = new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                sspUserId = userId,
-                email = emailAddress,
+                usrInf = new
+                {
+                    eid = emailAddress,
+                    sspuid = userId,
+                    did = DataManager.SharedInstance.UDID,
+                    ft = fcmToken,
+                    lang = TNBGlobal.APP_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                },
                 oldPhoneNumber = isFromLogin ? string.Empty : phoneNumber,
                 newPhoneNumber = mobileNumber,
                 token = tokenStr
@@ -182,7 +183,7 @@ namespace myTNB.DataManager
 
             response = await Task.Run(() =>
             {
-                return serviceManager.BaseServiceCall("UpdatePhoneNumber_v2", requestParameter);
+                return serviceManager.BaseServiceCallV6("UpdatePhoneNumber", requestParameter);
             });
 
             return response;
@@ -204,7 +205,7 @@ namespace myTNB.DataManager
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                return serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
 
             return response;
@@ -215,22 +216,21 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns>The rate us questions.</returns>
         /// <param name="questionCategory">Question category.</param>
-        public static async Task<FeedbackQuestionRequestModel> GetRateUsQuestions(QuestionCategoryEnum questionCategory)
+        public static async Task<FeedbackQuestionResponseModel> GetRateUsQuestions(QuestionCategoryEnum questionCategory)
         {
-            FeedbackQuestionRequestModel questionResponse = null;
+            FeedbackQuestionResponseModel questionResponse = null;
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
-                ApiKeyID = TNBGlobal.API_KEY_ID,
+                serviceManager.usrInf,
                 QuestionCategoryId = (int)questionCategory
             };
             questionResponse = await Task.Run(() =>
             {
-                return serviceManager.GetRateUsQuestions("GetRateUsQuestions", requestParameter);
+                return serviceManager.OnExecuteAPIV6<FeedbackQuestionResponseModel>("GetRateUsQuestions", requestParameter);
             });
 
             return questionResponse;
-
         }
 
         /// <summary>
@@ -245,73 +245,63 @@ namespace myTNB.DataManager
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    InputAnswer = answer
+                    serviceManager.usrInf,
+                    InputAnswer = answer,
+                    ApiKeyID = TNBGlobal.API_KEY_ID
                 };
-                BaseResponseModel response = serviceManager.BaseServiceCall("SubmitRateUs", requestParameter);
+                BaseResponseModelV2 response = serviceManager.BaseServiceCallV6("SubmitRateUs", requestParameter);
             });
         }
 
         /// <summary>
-        /// Gets the linked accounts summary info.
+        /// Gets the linked CAs due amounts and due dates
         /// </summary>
-        /// <returns>The linked accounts summary info.</returns>
-        /// <param name="accountsList">Accounts list.</param>
-        public static async Task<AmountDueStatusResponseModel> GetLinkedAccountsSummaryInfo(List<string> accountsList)
+        /// <param name="accountsList"></param>
+        /// <returns></returns>
+        public static async Task<AmountDueStatusResponseModel> GetAccountsBillSummary(List<string> accountsList)
         {
             AmountDueStatusResponseModel response = null;
             ServiceManager serviceManager = new ServiceManager();
 
-            var userId = string.Empty;
-
-            if (DataManager.SharedInstance.UserEntity?.Count > 0)
-            {
-                userId = DataManager.SharedInstance.UserEntity[0].userID;
-            }
-
             object requestParameter = new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                SSPUserId = userId,
-                accounts = accountsList ?? new List<string>()
+                accounts = accountsList ?? new List<string>(),
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetLinkedAccountsSummaryInfo("GetLinkedAccountsSummaryInfo", requestParameter);
+                return serviceManager.OnExecuteAPIV6<AmountDueStatusResponseModel>("GetAccountsBillSummary", requestParameter);
             });
 
             return response;
-
         }
 
         /// <summary>
         /// Gets the app launch master data.
         /// </summary>
         /// <returns>The app launch master data.</returns>
-        public static async Task<MasterDataResponseModel> GetAppLaunchMasterData()
+        public static async Task<AppLaunchResponseModel> GetAppLaunchMasterData()
         {
-            MasterDataResponseModel response = null;
+            AppLaunchResponseModel response = null;
             ServiceManager serviceManager = new ServiceManager();
 
-            string userEmail = string.Empty;
-            if (DataManager.SharedInstance.UserEntity != null && DataManager.SharedInstance.UserEntity?.Count > 0)
+            object deviceInf = new
             {
-                userEmail = DataManager.SharedInstance.UserEntity[0].email;
-            }
+                DeviceId = DataManager.SharedInstance.UDID,
+                AppVersion = AppVersionHelper.GetAppShortVersion(),
+                OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                OsVersion = DeviceHelper.GetOSVersion(),
+                DeviceDesc = TNBGlobal.APP_LANGUAGE
+            };
 
             object requestParameter = new
             {
-                ApiKeyID = TNBGlobal.API_KEY_ID,
-                SSPUserId = string.Empty,
-                Email = userEmail,
-                DeviceId = DataManager.SharedInstance.UDID,
-                AppVersion = AppVersionHelper.GetBuildVersion(),
-                OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
-                OsVersion = DeviceHelper.GetOSVersion()
+                deviceInf,
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetAppLaunchMasterData("GetAppLaunchMasterData", requestParameter);
+                return serviceManager.OnExecuteAPIV6<AppLaunchResponseModel>("GetAppLaunchMasterData", requestParameter);
             });
 
             return response;
@@ -336,18 +326,37 @@ namespace myTNB.DataManager
 
             object requestParameter = new
             {
-                ApiKeyID = TNBGlobal.API_KEY_ID,
-                SSPUserID = sspId,
-                Email = userEmail,
-                DeviceID = DataManager.SharedInstance.UDID
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetPhoneVerificationStatus("GetPhoneVerifyStatus", requestParameter);
+                return serviceManager.OnExecuteAPIV6<PhoneVerificationStatusResponseModel>("GetPhoneVerifyStatus", requestParameter);
             });
 
             return response;
         }
 
+        /// <summary>
+        /// Gets the Accounts SMR Status
+        /// </summary>
+        /// <param name="accountsList"></param>
+        /// <returns></returns>
+        public static async Task<SMRAccountStatusResponseModel> GetAccountsSMRStatus(List<string> accountsList)
+        {
+            SMRAccountStatusResponseModel response = null;
+            ServiceManager serviceManager = new ServiceManager();
+
+            object requestParameter = new
+            {
+                contractAccounts = accountsList ?? new List<string>(),
+                serviceManager.usrInf
+            };
+            response = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<SMRAccountStatusResponseModel>("GetAccountsSMRStatus", requestParameter);
+            });
+
+            return response;
+        }
     }
 }

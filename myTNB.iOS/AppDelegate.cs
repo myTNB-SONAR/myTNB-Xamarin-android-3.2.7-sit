@@ -8,8 +8,11 @@ using Firebase.CloudMessaging;
 using System.Text.RegularExpressions;
 using myTNB.Dashboard;
 using Facebook.CoreKit;
-using Firebase.Core;
 using Firebase.Crashlytics;
+using System.Diagnostics;
+using Firebase.DynamicLinks;
+using System.Collections.Generic;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -29,128 +32,6 @@ namespace myTNB
 
         public MakePaymentViewController _makePaymentVC;
         public SelectBillsViewController _selectBillsVC;
-        public DashboardViewController _dashboardVC;
-
-        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
-        {
-            var baseVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-            var topVc = GetTopViewController(baseVc);
-
-            if (url.ToString().Contains("mytnbapp://action=recipt&transid") && _dashboardVC != null)
-            {
-                string absoluteURL = url.ToString();
-                Regex regex = new Regex("\\btransid.*\\b");
-                Match match = regex.Match(absoluteURL);
-                if (match.Success)
-                {
-                    string transID = match.Value.Replace("transid=", "");
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
-                    ReceiptViewController viewController =
-                        storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                    if (viewController != null)
-                    {
-                        viewController.MerchatTransactionID = transID;
-                        viewController.isCCFlow = false;
-                        var navController = new UINavigationController(viewController);
-                        if (!(topVc is ReceiptViewController))
-                        {
-                            topVc?.PresentViewController(navController, true, null);
-                        }
-                    }
-                }
-            }
-
-            if (url.ToString().Contains("mytnbapp://action=payoptions"))
-            {
-                if (!(topVc is SelectPaymentMethodViewController))
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
-                    SelectPaymentMethodViewController viewController =
-                        storyBoard.InstantiateViewController("SelectPaymentMethodViewController") as SelectPaymentMethodViewController;
-                    if (viewController != null)
-                    {
-                        var navController = new UINavigationController(viewController);
-                        if (_selectBillsVC != null)
-                        {
-                            viewController.AccountsForPayment = _selectBillsVC._accountsForPayment;
-                            viewController.TotalAmount = _selectBillsVC.totalAmount;
-                            _selectBillsVC.PresentViewController(navController, true, null);
-                        }
-                        else if (_dashboardVC != null)
-                        {
-                            _dashboardVC.PresentViewController(navController, true, null);
-                        }
-                    }
-                }
-            }
-
-            if (url.ToString().Contains("mytnbapp://action=dashboard"))
-            {
-                if (_makePaymentVC != null)
-                {
-                    _makePaymentVC.DismissViewController(true, null);
-                }
-                if (_selectBillsVC != null)
-                {
-                    _selectBillsVC.DismissViewController(true, null);
-                }
-
-                topVc = GetTopViewController(baseVc);
-                if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
-                {
-                    ViewHelper.DismissControllersAndSelectTab(topVc, 0, true, true);
-                }
-            }
-
-            if (url.ToString().Contains("rating"))
-            {
-                if (!(topVc is RatingViewController))
-                {
-                    string rateString = default(string);
-                    string transId = default(string);
-                    var paramsStr = url.Host;
-
-                    var parameters = paramsStr.Split('&');
-                    foreach (var pair in parameters)
-                    {
-                        var item = pair.Split('=');
-                        if (item.Length == 2)
-                        {
-                            var key = item[0];
-                            if (key == "rating")
-                            {
-                                rateString = item[1];
-                            }
-                            else if (key == "transid")
-                            {
-                                transId = item[1];
-                            }
-                        }
-                    }
-
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
-                    RatingViewController viewController =
-                        storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                    if (viewController != null)
-                    {
-                        viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
-                        viewController.TransId = transId;
-
-
-                        var navController = new UINavigationController(viewController);
-                        topVc?.PresentViewController(navController, true, null);
-                    }
-                }
-            }
-
-            bool fbHandled = ApplicationDelegate.SharedInstance.OpenUrl(app, url, options);
-            if (fbHandled)
-            {
-                return true;
-            }
-
-            return true;
-        }
 
         /// <summary>
         /// Gets the top view controller.
@@ -198,7 +79,7 @@ namespace myTNB
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
                 UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) =>
                 {
-                    Console.WriteLine("isGranted: " + granted);
+                    Debug.WriteLine("Push Notification Permission: " + granted);
                     DataManager.DataManager.SharedInstance.IsRegisteredForRemoteNotification = granted;
                 });
 
@@ -217,8 +98,8 @@ namespace myTNB
             }
             PushNotificationHelper.RegisterDevice();
             Crashlytics.Configure();
+            LanguageUtility.InitializeLanguage();
             ApplicationDelegate.SharedInstance.FinishedLaunching(application, launchOptions);
-
             return true;
         }
 
@@ -237,7 +118,7 @@ namespace myTNB
 
             //Messaging.SharedInstance.Disconnect();
             Messaging.SharedInstance.ShouldEstablishDirectChannel = false;
-            Console.WriteLine("Disconnected from FCM");
+            Debug.WriteLine("Disconnected from FCM");
         }
 
         public override void WillEnterForeground(UIApplication application)
@@ -273,8 +154,8 @@ namespace myTNB
             var navigationBarFrame = new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, 64);
 
             //Setup the colors that will be use
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             //Create an instance of gradient layer with custom setup
             var gradientLayer = new CAGradientLayer
@@ -296,15 +177,215 @@ namespace myTNB
             //Setup the Navigation Bar background
             UINavigationBar.Appearance.SetBackgroundImage(image, UIBarMetrics.Default);
 
-            //Setup the Navigation Bar title
-            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
-            {
-                TextColor = UIColor.White,
-                Font = myTNBFont.MuseoSans16()
-            });
-
             //Setup the Navigation Bar tint color 
             UINavigationBar.Appearance.TintColor = UIColor.White;
+        }
+
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            return DynamicLinks.SharedInstance.HandleUniversalLink(userActivity.WebPageUrl, (dynamicLink, error) =>
+            {
+                if (error != null)
+                {
+                    Debug.WriteLine(error.LocalizedDescription);
+                    return;
+                }
+                if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                {
+                    if (dynamicLink != null && dynamicLink.Url != null)
+                    {
+                        string absoluteURL = dynamicLink.Url.ToString();
+                        if (absoluteURL.Contains("rewards/redirect.aspx/rid") && !AppLaunchMasterCache.IsRewardsDisabled)
+                        {
+                            Regex regex = new Regex("\\brid.*\\b");
+                            Match match = regex.Match(absoluteURL);
+                            if (match.Success)
+                            {
+                                string rewardId = match.Value.Replace("rid=", "");
+                                DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = rewardId.IsValid();
+
+                                if (rewardId.IsValid())
+                                {
+                                    RewardsCache.DeeplinkRewardId = rewardId;
+                                    if (NetworkUtility.isReachable)
+                                    {
+                                        InvokeOnMainThread(() =>
+                                        {
+                                            var baseRootVc1 = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                            var topVc1 = GetTopViewController(baseRootVc1);
+                                            if (topVc1 != null)
+                                            {
+                                                if (!(topVc1 is AppLaunchViewController))
+                                                {
+                                                    ActivityIndicator.Show();
+                                                }
+                                            }
+                                            InvokeInBackground(async () =>
+                                            {
+                                                bool hasUpdate = await RewardsServices.RewardListHasUpdates();
+                                                if (hasUpdate)
+                                                {
+                                                    DataManager.DataManager.SharedInstance.IsRewardsLoading = true;
+                                                    await RewardsServices.GetLatestRewards();
+                                                    if (RewardsCache.RewardIsAvailable)
+                                                    {
+                                                        await RewardsServices.GetUserRewards();
+                                                        if (RewardsCache.RewardIsAvailable)
+                                                        {
+                                                            InvokeOnMainThread(() =>
+                                                            {
+                                                                ActivityIndicator.Hide();
+                                                                DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                                                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                                var topVc = GetTopViewController(baseRootVc);
+                                                                if (topVc != null)
+                                                                {
+                                                                    if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                    {
+                                                                        DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                                        RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            InvokeOnMainThread(() =>
+                                                            {
+                                                                ActivityIndicator.Hide();
+                                                                DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                                                RewardsServices.ShowRewardUnavailable();
+                                                                DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                            });
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            DataManager.DataManager.SharedInstance.IsRewardsLoading = false;
+                                                            RewardsServices.ShowRewardUnavailable();
+                                                            DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                        });
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (!DataManager.DataManager.SharedInstance.IsRewardsLoading)
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                            var topVc = GetTopViewController(baseRootVc);
+                                                            if (topVc != null)
+                                                            {
+                                                                if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                {
+                                                                    RewardsServices.OpenRewardDetails(rewardId, topVc);
+                                                                    DataManager.DataManager.SharedInstance.IsFromRewardsDeeplink = false;
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                        else if (absoluteURL.Contains("whatsnew/redirect.aspx/wnid"))
+                        {
+                            Regex regex = new Regex("\\bwnid.*\\b");
+                            Match match = regex.Match(absoluteURL);
+                            if (match.Success)
+                            {
+                                string whatsNewId = match.Value.Replace("wnid=", "");
+                                DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = whatsNewId.IsValid();
+
+                                if (whatsNewId.IsValid())
+                                {
+                                    WhatsNewCache.DeeplinkWhatsNewId = whatsNewId;
+                                    if (NetworkUtility.isReachable)
+                                    {
+                                        InvokeOnMainThread(() =>
+                                        {
+                                            var baseRootVc1 = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                            var topVc1 = GetTopViewController(baseRootVc1);
+                                            if (topVc1 != null)
+                                            {
+                                                if (!(topVc1 is AppLaunchViewController))
+                                                {
+                                                    ActivityIndicator.Show();
+                                                }
+                                            }
+                                            InvokeInBackground(async () =>
+                                            {
+                                                bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates();
+                                                if (hasUpdate)
+                                                {
+                                                    DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
+                                                    await SitecoreServices.Instance.LoadWhatsNew(true);
+                                                    if (WhatsNewCache.WhatsNewIsAvailable)
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                                                            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                            var topVc = GetTopViewController(baseRootVc);
+                                                            if (topVc != null)
+                                                            {
+                                                                if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                {
+                                                                    DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
+                                                                    WhatsNewServices.OpenWhatsNewDetails(whatsNewId, topVc);
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                                                            WhatsNewServices.ShowWhatsNewUnavailable();
+                                                            DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
+                                                        });
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+                                                    {
+                                                        InvokeOnMainThread(() =>
+                                                        {
+                                                            ActivityIndicator.Hide();
+                                                            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                                                            var topVc = GetTopViewController(baseRootVc);
+                                                            if (topVc != null)
+                                                            {
+                                                                if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
+                                                                {
+                                                                    WhatsNewServices.OpenWhatsNewDetails(whatsNewId, topVc);
+                                                                    DataManager.DataManager.SharedInstance.IsFromWhatsNewDeeplink = false;
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         #region FCM
@@ -320,14 +401,14 @@ namespace myTNB
 
             // Do your magic to handle the notification data
             Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
-            Console.WriteLine(userInfo);
+            Debug.WriteLine(userInfo);
 
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
 
-            Console.WriteLine("debug: DidReceiveRemoteNotification");
+            Debug.WriteLine("debug: DidReceiveRemoteNotification");
 
         }
 
@@ -336,36 +417,32 @@ namespace myTNB
         public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
         {
             // Do your magic to handle the notification data
-            Console.WriteLine(notification?.Request?.Content?.UserInfo);
-            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
-            {
-                DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
-            }
-            Console.WriteLine("debug: WillPresentNotification");
-
+            Debug.WriteLine(notification?.Request?.Content?.UserInfo);
+            Debug.WriteLine("debug: WillPresentNotification");
         }
 
         // Receive data message on iOS 10 devices.
         public void ApplicationReceivedRemoteMessage(RemoteMessage remoteMessage)
         {
-            Console.WriteLine(remoteMessage?.AppData);
+            Debug.WriteLine(remoteMessage?.AppData);
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
-            Console.WriteLine("debug: ApplicationReceivedRemoteMessage");
+            Debug.WriteLine("debug: ApplicationReceivedRemoteMessage");
 
         }
 
         [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
         public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
         {
-            Console.WriteLine(response?.Notification?.Request?.Content?.UserInfo);
+            Debug.WriteLine(response?.Notification?.Request?.Content?.UserInfo);
+            PushNotificationCache.SetData(response);
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
-            Console.WriteLine("debug: DidReceiveNotificationResponse");
+            Debug.WriteLine("debug: DidReceiveNotificationResponse");
 
             completionHandler?.Invoke();
         }

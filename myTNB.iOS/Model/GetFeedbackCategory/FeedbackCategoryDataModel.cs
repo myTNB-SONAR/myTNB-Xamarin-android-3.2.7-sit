@@ -4,5 +4,6 @@
     {
         public string FeedbackCategoryId { set; get; }
         public string FeedbackCategoryName { set; get; }
+        public string FeedbackCategoryDesc { set; get; }
     }
 }

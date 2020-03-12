@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB.Model.Feedback
+﻿namespace myTNB.Model.Feedback
 {
     public class FeedbackRowModel
     {
@@ -7,6 +6,5 @@ namespace myTNB.Model.Feedback
         public string ID { set; get; }
         public string Subtitle { set; get; }
         public string Icon { set; get; }
-
     }
 }

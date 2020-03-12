@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Register-->
+        <!--Registration View Controller-->
         <scene sceneID="198">
             <objects>
                 <viewController storyboardIdentifier="RegistrationViewController" id="199" customClass="RegistrationViewController" sceneMemberID="viewController">
@@ -18,17 +14,17 @@
                         <viewControllerLayoutGuide type="bottom" id="197"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="200">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Register" id="760"/>
+                    <navigationItem key="navigationItem" id="760"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="201" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="510" y="-78"/>
         </scene>
-        <!--Verify Pin-->
+        <!--Verify Pin View Controller-->
         <scene sceneID="216">
             <objects>
                 <viewController storyboardIdentifier="VerifyPinViewController" id="217" customClass="VerifyPinViewController" sceneMemberID="viewController">
@@ -37,17 +33,17 @@
                         <viewControllerLayoutGuide type="bottom" id="215"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="218">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Verify Pin" id="4108"/>
+                    <navigationItem key="navigationItem" id="4108"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="219" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1009" y="-79"/>
+            <point key="canvasLocation" x="520" y="-924"/>
         </scene>
-        <!--Add Supply Account-->
+        <!--Add Account View Controller-->
         <scene sceneID="237">
             <objects>
                 <viewController storyboardIdentifier="AddAccountViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="238" customClass="AddAccountViewController" sceneMemberID="viewController">
@@ -56,24 +52,24 @@
                         <viewControllerLayoutGuide type="bottom" id="236"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="239">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Supply Account" id="4257">
+                    <navigationItem key="navigationItem" id="4257">
                         <barButtonItem key="backBarButtonItem" title="Back" id="5628"/>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="240" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1812" y="-82"/>
+            <point key="canvasLocation" x="1617" y="-918"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="996">
             <objects>
                 <navigationController id="997" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="999">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -89,7 +85,7 @@
             <objects>
                 <navigationController id="4001" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4003">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -98,14 +94,14 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4004" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1008" y="-795"/>
+            <point key="canvasLocation" x="-25" y="-925"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4213">
             <objects>
                 <navigationController id="4214" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4216">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -114,14 +110,14 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4217" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="-793"/>
+            <point key="canvasLocation" x="1044" y="-918"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="51947">
             <objects>
                 <navigationController id="51948" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="51950">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -130,9 +126,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="51951" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2308" y="-793"/>
+            <point key="canvasLocation" x="1031" y="-81"/>
         </scene>
-        <!--Add Supply Account-->
+        <!--Barcode Scanner View Controller-->
         <scene sceneID="52219">
             <objects>
                 <viewController storyboardIdentifier="BarcodeScannerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="52220" customClass="BarcodeScannerViewController" sceneMemberID="viewController">
@@ -141,22 +137,22 @@
                         <viewControllerLayoutGuide type="bottom" id="52218"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="52221">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Supply Account" id="52293"/>
+                    <navigationItem key="navigationItem" id="52293"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52222" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2312" y="-78"/>
+            <point key="canvasLocation" x="1618" y="-74"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="52951">
             <objects>
                 <navigationController id="52952" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="52954">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -165,9 +161,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52955" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2928" y="-790"/>
+            <point key="canvasLocation" x="1032" y="739"/>
         </scene>
-        <!--Terms & Condition-->
+        <!--Terms And Condition View Controller-->
         <scene sceneID="53144">
             <objects>
                 <viewController storyboardIdentifier="TermsAndConditionViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="53145" customClass="TermsAndConditionViewController" sceneMemberID="viewController">
@@ -176,146 +172,15 @@
                         <viewControllerLayoutGuide type="bottom" id="53143"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="53146">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Terms &amp; Condition" id="53162"/>
+                    <navigationItem key="navigationItem" id="53162"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53147" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2926" y="-75"/>
-        </scene>
-        <!--Select Account Type-->
-        <scene sceneID="54313">
-            <objects>
-                <viewController storyboardIdentifier="SelectAccountTypeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="54314" customClass="SelectAccountTypeViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="54311"/>
-                        <viewControllerLayoutGuide type="bottom" id="54312"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="54315">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="54760">
-                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelectAccountTypeCell" rowHeight="56" id="54761" customClass="SelectAccountTypeCell">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="56"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="54761" id="54762">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="55.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Registration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55451">
-                                                    <rect key="frame" x="18" y="16" width="254" height="24"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="24" id="55460"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="55460"/>
-                                                        </mask>
-                                                    </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
-                                                        <mask key="constraints">
-                                                            <include reference="55460"/>
-                                                        </mask>
-                                                    </variation>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="55451" firstAttribute="leading" secondItem="54762" secondAttribute="leading" constant="18" id="55458"/>
-                                                <constraint firstItem="55451" firstAttribute="top" secondItem="54762" secondAttribute="top" constant="16" id="55459"/>
-                                                <constraint firstAttribute="trailing" secondItem="55451" secondAttribute="trailing" constant="103" id="55462"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="subviews">
-                                                    <exclude reference="55451"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <exclude reference="55458"/>
-                                                    <exclude reference="55459"/>
-                                                    <exclude reference="55462"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=compact">
-                                                <mask key="subviews">
-                                                    <include reference="55451"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <include reference="55458"/>
-                                                    <include reference="55459"/>
-                                                    <include reference="55462"/>
-                                                </mask>
-                                            </variation>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="lblAccountType" destination="55451" id="name-outlet-55451"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="54760" firstAttribute="top" secondItem="54311" secondAttribute="bottom" id="54934"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="54760" secondAttribute="leading" constant="16" id="54992"/>
-                            <constraint firstItem="54760" firstAttribute="trailing" secondItem="54315" secondAttribute="trailingMargin" constant="16" id="55050"/>
-                            <constraint firstItem="54760" firstAttribute="bottom" secondItem="54315" secondAttribute="bottom" id="55108"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="54760"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="54934"/>
-                                <exclude reference="54992"/>
-                                <exclude reference="55050"/>
-                                <exclude reference="55108"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="54760"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="54934"/>
-                                <include reference="54992"/>
-                                <include reference="55050"/>
-                                <include reference="55108"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <navigationItem key="navigationItem" title="Select Account Type" id="54643"/>
-                    <connections>
-                        <outlet property="SelectAccounTypeTableView" destination="54760" id="name-outlet-54760"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="54316" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1392" y="-84"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="54390">
-            <objects>
-                <navigationController id="54391" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="54393">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="54314" kind="relationship" relationship="rootViewController" id="54644"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="54394" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1437" y="-774"/>
+            <point key="canvasLocation" x="1615" y="749"/>
         </scene>
         <!--Title-->
         <scene sceneID="56329">
@@ -326,112 +191,26 @@
                         <viewControllerLayoutGuide type="bottom" id="56328"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="56331">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="56392" fixedFrame="YES">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="56392">
                                 <rect key="frame" x="18" y="36" width="339" height="535"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="14" minY="0.0" maxX="14" maxY="0.0"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SuccessfullyAddedAccountCell" rowHeight="115" id="56393" customClass="SuccessfullyAddedAccountCell">
-                                        <rect key="frame" x="0.0" y="28" width="339" height="115"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56393" id="56394">
-                                            <rect key="frame" x="0.0" y="0.0" width="339" height="114.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" id="58472" translatesAutoresizingMaskIntoConstraints="NO">
-                                                    <rect key="frame" x="16" y="0.0" width="307" height="1"/>
-                                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.8901960784313725" green="0.8901960784313725" blue="0.8901960784313725" alpha="1"/>
-                                                    <constraints>
-                                                        <constraint id="59234" firstAttribute="height" constant="1"/>
-                                                    </constraints>
-                                                </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56420">
-                                                    <rect key="frame" x="20" y="9" width="310" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="56427"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56421">
-                                                    <rect key="frame" x="20" y="25" width="310" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="56431"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56423">
-                                                    <rect key="frame" x="16" y="51" width="314" height="55"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="26" id="56434">
-                                                            <variation key="heightClass=regular-widthClass=compact" constant="55"/>
-                                                        </constraint>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="56420" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="9" id="56424"/>
-                                                <constraint firstItem="56420" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="20" id="56425"/>
-                                                <constraint firstAttribute="trailing" secondItem="56420" secondAttribute="trailing" constant="9" id="56426"/>
-                                                <constraint firstItem="56421" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="25" id="56428"/>
-                                                <constraint firstItem="56421" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="20" id="56429"/>
-                                                <constraint firstAttribute="trailing" secondItem="56421" secondAttribute="trailing" constant="9" id="56430"/>
-                                                <constraint firstAttribute="bottom" secondItem="56423" secondAttribute="bottom" constant="8.5" id="56432"/>
-                                                <constraint firstAttribute="trailing" secondItem="56423" secondAttribute="trailing" constant="9" id="56433"/>
-                                                <constraint firstItem="56423" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="16" id="56435"/>
-                                                <constraint firstItem="56423" firstAttribute="top" secondItem="56421" secondAttribute="bottom" constant="5" id="sdV-q2-A3J"/>
-                                                <constraint id="59235" firstAttribute="trailing" secondItem="58472" secondAttribute="trailing" constant="16"/>
-                                                <constraint id="59236" firstItem="58472" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="16"/>
-                                                <constraint id="59530" firstAttribute="trailing" secondItem="58472" secondAttribute="trailing" constant="16"/>
-                                                <constraint id="60070" firstItem="56420" firstAttribute="top" secondItem="58472" secondAttribute="bottom" constant="8"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="lblAccountNumber" destination="56421" id="name-outlet-56421"/>
-                                            <outlet property="lblNickName" destination="56420" id="name-outlet-56420"/>
-                                            <outlet property="txtViewAddress" destination="56423" id="name-outlet-56423"/>
-                                            <outlet property="viewLine" destination="58472" id="name-outlet-58472"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="57064">
-                                <rect key="frame" x="18" y="595" width="339" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="u7F-eo-kxO"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="57064" firstAttribute="leading" secondItem="56331" secondAttribute="leadingMargin" constant="2" id="4g8-2L-UGd"/>
-                            <constraint firstItem="56328" firstAttribute="top" secondItem="57064" secondAttribute="bottom" constant="24" id="Dzh-cY-Vcq"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="57064" secondAttribute="trailing" constant="2" id="nax-OZ-HPP"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="56389"/>
                     <connections>
                         <outlet property="AccountsTableView" destination="56392" id="name-outlet-56392"/>
-                        <outlet property="btnStart" destination="57064" id="name-outlet-57064"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="56332" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="532" y="-739"/>
+            <point key="canvasLocation" x="-23" y="742"/>
         </scene>
     </scenes>
 </document>

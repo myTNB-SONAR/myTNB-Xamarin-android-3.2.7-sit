@@ -5,12 +5,22 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using myTNB.SitecoreCMS.Services;
+using System.Diagnostics;
 
 namespace myTNB.SitecoreCMS.Extensions
 {
     public static class SitecoreItemExtensions
     {
-        private static string[] SizeList = { "main", "2x", "3x", "hdpi", "mdpi", "xhdpi", "xxhdpi", "xxxhdpi" };
+        private static readonly string[] SizeList = { "main", "2x", "3x", "hdpi", "mdpi", "xhdpi", "xxhdpi", "xxxhdpi" };
+
+        public static int GetIntValueFromField(this ISitecoreItem item, string fieldName)
+        {
+            if (item == null)
+                return 0;
+
+            int.TryParse(item[fieldName].RawValue, out int parsedValue);
+            return parsedValue;
+        }
 
         public static string GetValueFromField(this ISitecoreItem item, string fieldName)
         {
@@ -68,8 +78,9 @@ namespace myTNB.SitecoreCMS.Extensions
             return mediaId;
         }
 
-        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string mediafieldName, string websiteUrl = null)
+        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string fieldNameOrSize, string websiteUrl = null, bool hasSize = true)
         {
+            string mediafieldName = hasSize ? GetImageFieldName(fieldNameOrSize) : fieldNameOrSize;
             XElement xmlElement = GetXElement(item, mediafieldName);
 
             if (xmlElement == null)
@@ -82,9 +93,9 @@ namespace myTNB.SitecoreCMS.Extensions
             Guid id = Guid.Parse(mediaId);
 
             if (string.IsNullOrWhiteSpace(websiteUrl))
-                return String.Format("-/media/{0}.ashx", id.ToString("N"));
+                return String.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
 
-            return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N"));
+            return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
         }
 
         public static string GetImageUrlFromMediaId(this string mediaId, string websiteUrl = null)
@@ -182,9 +193,10 @@ namespace myTNB.SitecoreCMS.Extensions
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
+                return null;
             }
 
             return item.GetImageUrlFromMediaField("Image");
@@ -244,9 +256,10 @@ namespace myTNB.SitecoreCMS.Extensions
 
                 return droplinkFieldNameValue;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
+                return string.Empty;
             }
         }
 
@@ -271,12 +284,12 @@ namespace myTNB.SitecoreCMS.Extensions
 
                     multilistFieldNameList.Add(multilistFieldNameValue);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    throw ex;
+                    Debug.WriteLine("Exception: " + e.Message);
+                    return new List<string>();
                 }
             }
-
             return multilistFieldNameList;
         }
 
@@ -294,6 +307,46 @@ namespace myTNB.SitecoreCMS.Extensions
                 return null;
 
             return XElement.Parse(fieldValue);
+        }
+
+        public static string GetFileURLFromFieldName(this ISitecoreItem item, string fieldName, string websiteUrl = null)
+        {
+            XElement xmlElement = GetXElement(item, fieldName);
+
+            if (xmlElement == null) { return string.Empty; }
+
+            XAttribute attribute = xmlElement.Attributes().FirstOrDefault(attr => attr.Name == "mediaid");
+            string mediaId = attribute.Value;
+            Guid id = Guid.Parse(mediaId);
+
+            if (string.IsNullOrWhiteSpace(websiteUrl))
+            {
+                return string.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
+            }
+            return string.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
+        }
+
+        private static string GetImageFieldName(string imgSize)
+        {
+            switch (imgSize)
+            {
+                case "2x":
+                    return Constants.Sitecore.Fields.ImageName.Image_2X;
+                case "3x":
+                    return Constants.Sitecore.Fields.ImageName.Image_3X;
+                case "hdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_HDPI;
+                case "mdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_MDPI;
+                case "xhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XHDPI;
+                case "xxhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XXHDPI;
+                case "xxxhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XXXHDPI;
+                default:
+                    return Constants.Sitecore.Fields.ImageName.Image;
+            }
         }
     }
 }

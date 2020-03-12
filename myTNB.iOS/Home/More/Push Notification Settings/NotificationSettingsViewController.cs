@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -7,24 +6,17 @@ using myTNB.Home.More.PushNotificationSettings;
 using System.Collections.Generic;
 using myTNB.Model;
 using System.Threading.Tasks;
-using System.Linq;
-using myTNB.Extensions;
+using myTNB.Profile;
 
 namespace myTNB
 {
-    public partial class NotificationSettingsViewController : UIViewController
+    public partial class NotificationSettingsViewController : CustomUIViewController
     {
-        public NotificationSettingsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public NotificationSettingsViewController(IntPtr handle) : base(handle) { }
 
-        internal List<string> NotificationSettingsTitle = new List<string>
-        {
-            "Select the type of notifications you wish to receive from TNB",
-            "Select how you wish to receive your notifications"
-        };
+        private List<string> NotificationSettingsTitle;
 
-        NotificationPreferenceUpdateResponseModel _notificationPreferenceUpdate = new NotificationPreferenceUpdateResponseModel();
+        private NotificationPreferenceUpdateResponseModel _notificationPreferenceUpdate = new NotificationPreferenceUpdateResponseModel();
 
         internal List<NotificationPreferenceModel> SelectedNotificationTypeList = new List<NotificationPreferenceModel>();
         internal List<NotificationPreferenceModel> SelectedNotificationChannelList = new List<NotificationPreferenceModel>();
@@ -33,7 +25,13 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_NotificationSettings;
             base.ViewDidLoad();
+            NotificationSettingsTitle = new List<string>
+            {
+               GetI18NValue(ProfileConstants.I18N_TypeDescription),
+               GetI18NValue(ProfileConstants.I18N_ModeDescription)
+            };
             SetNavigationBar();
             SetSubViews();
         }
@@ -53,15 +51,15 @@ namespace myTNB
             notificationSettingsTableView.ReloadData();
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Notifications Settings");
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
@@ -71,20 +69,14 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void SetSubViews()
+        private void SetSubViews()
         {
-            notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
+            notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
+                ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
             notificationSettingsTableView.RowHeight = 54f;
             notificationSettingsTableView.SectionHeaderHeight = 66f;
             notificationSettingsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            notificationSettingsTableView.BackgroundColor = myTNBColor.SectionGrey();
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
+            notificationSettingsTableView.BackgroundColor = MyTNBColor.SectionGrey;
         }
 
         internal void ExecuteSaveUserNotificationPreferenceCall(bool isNotificationType, NotificationPreferenceModel preference)
@@ -102,10 +94,9 @@ namespace myTNB
                             {
                                 if (_notificationPreferenceUpdate == null
                                    || _notificationPreferenceUpdate.d == null
-                                   || _notificationPreferenceUpdate.d.isError.ToLower() == "true"
-                                    || _notificationPreferenceUpdate.d.status.ToLower() != "success")
+                                   || !_notificationPreferenceUpdate.d.IsSuccess)
                                 {
-                                    DisplayAlertMessage("Error", "Unable to update your preferences. Please try later");
+                                    DisplayServiceError(_notificationPreferenceUpdate?.d?.DisplayMessage ?? string.Empty);
                                 }
                                 else
                                 {
@@ -119,31 +110,29 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        DisplayNoDataAlert();
                         ActivityIndicator.Hide();
                     }
                 });
             });
         }
 
-        internal Task SaveUserNotificationPreference(bool isNotificationType, NotificationPreferenceModel preference)
+        private Task SaveUserNotificationPreference(bool isNotificationType, NotificationPreferenceModel preference)
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
+                    serviceManager.deviceInf,
                     id = preference.Id,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID,
                     channelTypeId = preference.MasterId,
                     notificationTypeId = preference.MasterId,
                     isOpted = preference.IsOpted
                 };
-                string suffix = isNotificationType ? "SaveUserNotificationTypePreference" : "SaveUserNotificationChannelPreference";
-                _notificationPreferenceUpdate = serviceManager.SaveUserNotificationPreference(suffix, requestParameter);
+                string suffix = isNotificationType ? ProfileConstants.Service_SaveNotificationType : ProfileConstants.Service_SaveNotificationChannel;
+                _notificationPreferenceUpdate = serviceManager.OnExecuteAPIV6<NotificationPreferenceUpdateResponseModel>(suffix, requestParameter);
             });
         }
     }

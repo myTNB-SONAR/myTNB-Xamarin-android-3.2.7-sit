@@ -1,0 +1,47 @@
+{
+  "Data": [
+    {
+      "Title": "title1",
+      "Description": "description1",
+      "Image": "Onboarding-Image-1-Install",
+      "ID": "1",
+      "IsLanguageEntry": true
+    },
+    {
+      "Title": "title2",
+      "Description": "description2",
+      "Image": "Onboarding-Image-2",
+      "ID": "2"
+    },
+    {
+      "Title": "title3",
+      "Description": "description3",
+      "Image": "Onboarding-Image-3",
+      "ID": "3"
+    },
+    {
+      "Title": "title4",
+      "Description": "description4",
+      "Image": "Onboarding-Image-4",
+      "ID": "4"
+    },
+    {
+      "Title": "title5",
+      "Description": "description5",
+      "Image": "Onboarding-Image-5-Install",
+      "ID": "5"
+    },
+    {
+      "Title": "title7",
+      "Description": "description7",
+      "Image": "Onboarding-Image-6-Install",
+      "ID": "6"
+    },
+    {
+      "Title": "title7",
+      "Description": "description7",
+      "Image": "Onboarding-Image-7-Install",
+      "ID": "7"
+    }
+  ]
+}
