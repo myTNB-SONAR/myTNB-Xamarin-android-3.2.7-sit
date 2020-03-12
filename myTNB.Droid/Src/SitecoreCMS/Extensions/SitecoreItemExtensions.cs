@@ -93,8 +93,9 @@ namespace myTNB.SitecoreCMS.Extensions
             }
         }
 
-        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string mediafieldName, string websiteUrl = null)
+        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string imgSize, string websiteUrl = null, bool hasSize = true)
         {
+            string mediafieldName = hasSize ? GetImageFieldName(imgSize) : imgSize;
             XElement xmlElement = GetXElement(item, mediafieldName);
 
             if (xmlElement == null)
@@ -109,13 +110,36 @@ namespace myTNB.SitecoreCMS.Extensions
                 Guid id = Guid.Parse(mediaId);
 
                 if (string.IsNullOrWhiteSpace(websiteUrl))
-                    return String.Format("-/media/{0}.ashx", id.ToString("N"));
+                    return String.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
 
-                return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N"));
+                return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
             }
             catch
             {
                 return string.Empty;
+            }
+        }
+
+        public static string GetImageFieldName(string imgSize)
+        {
+            switch (imgSize)
+            {
+                case "2x":
+                    return Constants.Sitecore.Fields.ImageName.Image_2X;
+                case "3x":
+                    return Constants.Sitecore.Fields.ImageName.Image_3X;
+                case "hdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_HDPI;
+                case "mdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_MDPI;
+                case "xhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XHDPI;
+                case "xxhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XXHDPI;
+                case "xxxhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XXXHDPI;
+                default:
+                    return Constants.Sitecore.Fields.ImageName.Image;
             }
         }
 
@@ -326,6 +350,23 @@ namespace myTNB.SitecoreCMS.Extensions
                 return null;
 
             return XElement.Parse(fieldValue);
+        }
+
+        public static string GetFileURLFromFieldName(this ISitecoreItem item, string fieldName, string websiteUrl = null)
+        {
+            XElement xmlElement = GetXElement(item, fieldName);
+
+            if (xmlElement == null) { return string.Empty; }
+
+            XAttribute attribute = xmlElement.Attributes().FirstOrDefault(attr => attr.Name == "mediaid");
+            string mediaId = attribute.Value;
+            Guid id = Guid.Parse(mediaId);
+
+            if (string.IsNullOrWhiteSpace(websiteUrl))
+            {
+                return string.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
+            }
+            return string.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
         }
     }
 }

@@ -47,6 +47,7 @@
                             android:singleLine="true"
                             android:drawableLeft="@drawable/placeholder_account_no"
                             android:inputType="number"
+                            android:maxLength="12"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
                             android:id="@+id/account_no_edittext" />
                     </android.support.design.widget.TextInputLayout>
@@ -68,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/btnWhereIsMyAccountNo"
                     android:layout_gravity="right|bottom"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:textColor="@color/powerBlue"
                     android:paddingBottom="5dp"
                     android:paddingRight="6dp" />
@@ -94,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAccountType"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:textColor="@color/tunaGrey"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
@@ -104,7 +105,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:paddingRight="6dp"
                     android:paddingTop="4dp"
                     android:paddingBottom="1dp"
@@ -117,7 +118,7 @@
                 <View
                     android:layout_height="1dp"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="16dp"
                     android:background="@color/platinumGrey" />
                 <LinearLayout

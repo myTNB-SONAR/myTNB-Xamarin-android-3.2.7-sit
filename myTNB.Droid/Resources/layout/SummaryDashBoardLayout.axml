@@ -88,7 +88,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:text="downtime message"
@@ -96,18 +96,44 @@
                         android:textColorLink="@color/white"
                         android:gravity="center" />
                 </LinearLayout>
+                <LinearLayout 
+                    android:id="@+id/layout_api_refresh"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:visibility="gone">
+                    <ImageView
+                        android:id="@+id/refresh_image"
+                        android:layout_height="86dp"
+                        android:layout_width="86dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/refresh_on_bg"/>
+                    <TextView
+                        android:id="@+id/refresh_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="4dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="14dp"
+                        android:maxLines="2"
+                        android:text="@string/text_new_refresh_content"
+                        android:textColor="@color/white"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="@string/text_new_refresh"
+                        android:id="@+id/btnRefresh"
+                        style="@style/Theme.RefreshWhiteButton" />
+                </LinearLayout>
             </LinearLayout>
-        <!--    <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="top"s
-                android:layout_marginBottom="48dp"
-                app:layout_collapseMode="pin" />
-          <include
-            layout="@layout/toolbar"
-            android:id="@+id/toolbar"
-                app:layout_collapseMode="pin"/>-->
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.widget.NestedScrollView
@@ -122,40 +148,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone">
-            <LinearLayout android:id="@+id/layout_refresh"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-                          android:gravity="center"
-                          android:padding="10dp"
-            android:visibility="gone">
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textSize="14sp"
-                        android:layout_gravity="center"
-                        android:textColor="@color/white"
-                        android:paddingTop="12dp"
-                        android:text="@string/summary_dashboard_error_refresh"
-                        android:id="@+id/txtRefreshMessage"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                        android:textColorLink="@color/white"
-                        android:gravity="center" />
-                <Button
-                        android:id="@+id/btnTapRefresh"
-                        android:text="@string/text_refresh"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                        style="@style/Theme.LearnMoreButton"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp" />
-            </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ReaccountList"
                 android:layout_width="match_parent"
@@ -199,7 +191,7 @@
                 android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:background="@drawable/white_button_background"
                 android:text="@string/add_another_account" />
         </LinearLayout>

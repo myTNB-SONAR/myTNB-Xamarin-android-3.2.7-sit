@@ -17,14 +17,7 @@
 
         public void OnNotification()
         {
-            if (this.mView.HasInternet())
-            {
-                this.mView.ShowNotification();
-            }
-            else
-            {
-                this.mView.ShowNoInternetSnackbar();
-            }
+            this.mView.ShowNotification();
         }
 
         public void Start()

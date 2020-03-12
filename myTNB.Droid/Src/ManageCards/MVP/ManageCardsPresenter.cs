@@ -1,5 +1,6 @@
-﻿using myTNB_Android.Src.ManageCards.Api;
-using myTNB_Android.Src.ManageCards.Models;
+﻿using myTNB_Android.Src.ManageCards.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -24,40 +25,28 @@ namespace myTNB_Android.Src.ManageCards.MVP
 
         public async void OnRemove(CreditCardData Data, int position)
         {
-            cts = new CancellationTokenSource();
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var manageCardsApi = RestService.For<IManageCardsApi>(httpClient);
-#else
-            var manageCardsApi = RestService.For<IManageCardsApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                var removeCardsResponse = await manageCardsApi.RemoveCard(new Request.RemoveRegisteredCardRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    RegisteredCardId = Data.Id
-                }, cts.Token);
+
+                var removeCardsResponse = await ServiceApiImpl.Instance.RemoveRegisteredCard(new RemoveRegisteredCardRequest(Data.Id));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!removeCardsResponse.Data.IsError)
+                if (removeCardsResponse.IsSuccessResponse())
                 {
                     this.mView.ShowRemoveSuccess(Data, position);
                 }
                 else
                 {
-                    this.mView.ShowErrorMessage(removeCardsResponse.Data.Message);
+                    this.mView.ShowErrorMessage(removeCardsResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

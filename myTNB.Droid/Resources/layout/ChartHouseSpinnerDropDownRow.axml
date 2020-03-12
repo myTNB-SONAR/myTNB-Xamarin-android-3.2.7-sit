@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtChartName"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:gravity="right"
         android:ellipsize="end"
         android:maxEms="15"

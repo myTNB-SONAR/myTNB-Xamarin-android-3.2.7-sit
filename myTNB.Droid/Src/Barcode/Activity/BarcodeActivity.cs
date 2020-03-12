@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.Barcode.Activity
     [Activity(Label = "@string/barcode_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.BarCode")]
-    public class BarcodeActivity : BaseToolbarAppCompatActivity, BarcodeContract.IView
+    public class BarcodeActivity : BaseActivityCustom, BarcodeContract.IView
     {
         readonly static string TAG = typeof(BarcodeActivity).Name;
         ZXingScannerFragment scanFragment;
@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.Barcode.Activity
 
         private BarcodeContract.IUserActionsListener userActionsListener;
         private BarcodePresenter mPresenter;
+        private string PAGE_ID = "AddAccount";
 
         public override int ResourceId()
         {
@@ -67,36 +68,49 @@ namespace myTNB_Android.Src.Barcode.Activity
             };
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitle);
+            txtTitle.Text = GetLabelByLanguage("scanMessage");
         }
 
         protected override void OnResume()
         {
             base.OnResume();
 
-            var needsPermissionRequest = ZXing.Net.Mobile.Android.PermissionsHandler.NeedsPermissionRequest(this);
+            try
+            {
+                var needsPermissionRequest = ZXing.Net.Mobile.Android.PermissionsHandler.NeedsPermissionRequest(this);
 
-            if (needsPermissionRequest)
-            {
-                ZXing.Net.Mobile.Android.PermissionsHandler.RequestPermissionsAsync(this);
-            }
-            else
-            {
-                if (scanFragment == null)
+                if (needsPermissionRequest)
                 {
-                    scanFragment = new ZXingScannerFragment();
-                    SupportFragmentManager.BeginTransaction()
-                        .Replace(Resource.Id.barCodeView, scanFragment)
-
-                        .Commit()
-                        ;
-                    SupportFragmentManager.ExecutePendingTransactions();
+                    ZXing.Net.Mobile.Android.PermissionsHandler.RequestPermissionsAsync(this);
                 }
+                else
+                {
+                    if (scanFragment == null)
+                    {
+                        scanFragment = new ZXingScannerFragment();
+                        SupportFragmentManager.BeginTransaction()
+                            .Replace(Resource.Id.barCodeView, scanFragment)
+                            .CommitAllowingStateLoss();
+                        SupportFragmentManager.ExecutePendingTransactions();
+                    }
 
-                scan();
+                    scan();
 
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
 
-
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account -> Barcode Scan");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -110,6 +124,7 @@ namespace myTNB_Android.Src.Barcode.Activity
             if (scanFragment != null)
             {
                 scanFragment?.StopScanning();
+                scanFragment = null;
             }
 
 
@@ -184,11 +199,37 @@ namespace myTNB_Android.Src.Barcode.Activity
                 return;
             }
 
-            Task.Run(async () =>
+            try
             {
-                await Task.Delay(2000);
-                RunOnUiThread(() => scanFragment.AutoFocus());
-            });
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await Task.Delay(2000);
+                        RunOnUiThread(() => {
+                            try
+                            {
+                                if (scanFragment != null)
+                                {
+                                    scanFragment.AutoFocus();
+                                }
+                            }
+                            catch (System.Exception exe)
+                            {
+                                Utility.LoggingNonFatalError(exe);
+                            }
+                        });
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
         private Snackbar mSnackbarMessage;
         public void ShowInvalidBarCodeError()
@@ -199,15 +240,18 @@ namespace myTNB_Android.Src.Barcode.Activity
                 mSnackbarMessage.Dismiss();
             }
 
-            scanFragment.SetErrorMessage(GetString(Resource.String.barcode_form_invalid_barcode));
-            mSnackbarMessage = Snackbar.Make(rootView, GetString(Resource.String.barcode_form_invalid_barcode), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.barcode_form_btn_snackbar_close), delegate
+            scanFragment.SetErrorMessage(GetLabelByLanguage("invalidBarcode"));
+            mSnackbarMessage = Snackbar.Make(rootView, GetLabelByLanguage("invalidBarcode"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mSnackbarMessage.Dismiss();
 
             }
             );
+            View v = mSnackbarMessage.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mSnackbarMessage.Show();
         }
 
@@ -251,6 +295,11 @@ namespace myTNB_Android.Src.Barcode.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

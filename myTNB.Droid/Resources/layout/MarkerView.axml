@@ -12,6 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtMarker"
-        android:textSize="9sp"
+        android:textSize="9dp"
         android:textColor="@color/white" />
 </LinearLayout>

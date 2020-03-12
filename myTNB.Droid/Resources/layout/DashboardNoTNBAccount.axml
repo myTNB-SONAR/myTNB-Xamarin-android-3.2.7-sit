@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:gravity="center_vertical" />
                 <TextView
                     android:id="@+id/dashboard_chartview_no_account_content"
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:gravity="center" />
                 <Button
                     android:id="@+id/btnAddAccount"
@@ -87,8 +87,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="16sp"
-                    android:text="@string/total_amount_due"
+                    android:textSize="16dp"
+                    android:text="@string/total_amount_due_bill"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="0.00"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="24sp"
+                    android:textSize="24dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -111,7 +111,8 @@
                     android:layout_toLeftOf="@+id/txtTotalPayable"
                     android:layout_toStartOf="@+id/txtTotalPayable"
                     android:text="RM"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
+                    android:layout_marginRight="7dp"
                     android:textColor="@color/tunaGrey" />
             </RelativeLayout>
             <LinearLayout

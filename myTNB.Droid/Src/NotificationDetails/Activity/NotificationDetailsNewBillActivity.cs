@@ -199,16 +199,34 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Detailed Info");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.newBillUserActionsListener.OnPayment(notificationDetails);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.newBillUserActionsListener.OnPayment(notificationDetails);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -218,10 +236,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                this.newBillUserActionsListener.OnViewDetails(notificationDetails);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.newBillUserActionsListener.OnViewDetails(notificationDetails);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

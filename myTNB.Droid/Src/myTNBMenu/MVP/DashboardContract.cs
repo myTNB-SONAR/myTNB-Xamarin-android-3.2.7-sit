@@ -3,7 +3,9 @@ using Android.Content;
 using Android.Runtime;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Requests;
 using System;
 using System.Threading.Tasks;
 
@@ -47,6 +49,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <param name="selectedAccount">AccountData</param>
             void ShowBillMenu(AccountData selectedAccount);
 
+            void ShowBillMenuWithError(string contextTxt, string btnTxt, AccountData selectedAccount);
+
             /// <summary>
             /// Enable bill menu
             /// </summary>
@@ -79,11 +83,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowSelectSupplyAccount();
 
             /// <summary>
-            /// Show no account in dashboard
-            /// </summary>
-            void ShowNoAccountDashboardChartMenu();
-
-            /// <summary>
             /// Show no account in bill menu
             /// </summary>
             void ShowNoAccountBillMenu();
@@ -92,13 +91,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// Show no internet connection in dashboard
             /// </summary>
             /// <param name="accountName">string</param>
-            void ShowOwnerDashboardNoInternetConnection(string accountName);
+            void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount);
 
             /// <summary>
             /// Show no internet connection in bill menu
             /// </summary>
             /// <param name="selectedAccount"></param>
             void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount);
+
+            void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText, AccountData selectedAccount);
 
             /// <summary>
             /// NOT USED
@@ -109,12 +110,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// NOT USED
             /// </summary>
             void ShowOwnerNonSmartMeterMonth();
-
-            /// <summary>
-            /// Show owner data
-            /// </summary>
-            /// <param name="selectedAccount">AccountData</param>
-            void ShowNonOWner(AccountData selectedAccount);
 
             /// <summary>
             /// Set toolbar title
@@ -237,6 +232,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 
             string GetDeviceId();
+
+            void BillsMenuAccess();
+
+            void BillsMenuAccess(AccountData selectedAccount);
 
         }
 

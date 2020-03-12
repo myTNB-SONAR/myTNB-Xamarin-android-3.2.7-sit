@@ -100,6 +100,7 @@ namespace myTNB_Android.Src.AddAccount
             DeleteView.Click += (sender, e) => listener(base.LayoutPosition);
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
+            textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
             AccountLabel.FocusChange += (sender, e) =>
@@ -112,11 +113,11 @@ namespace myTNB_Android.Src.AddAccount
                         item.accountLabel = AccountLabel.Text.Trim();
                         if (!string.IsNullOrEmpty(item.accountLabel))
                         {
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                         }
                         else
                         {
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                         }
                     }
                 }
@@ -154,11 +155,11 @@ namespace myTNB_Android.Src.AddAccount
                     item.accountLabel = AccountLabel.Text.Trim();
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
-                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }
                     else
                     {
-                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }
                 };
             }

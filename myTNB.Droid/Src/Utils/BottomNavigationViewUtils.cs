@@ -3,6 +3,7 @@ using Android.Support.Design.Internal;
 using Android.Support.Design.Widget;
 using Android.Util;
 using Android.Views;
+using Android.Widget;
 using System;
 
 namespace myTNB_Android.Src.Utils
@@ -60,7 +61,7 @@ namespace myTNB_Android.Src.Utils
         /// <param name="bottomNavigationView"></param>
         /// <param name="sizeInDp"></param>
         /// <param name="topPadding"></param>
-        public static void SetImageSize(this BottomNavigationView bottomNavigationView, int sizeInDp, int topPadding)
+        public static void SetImageFontSize(this BottomNavigationView bottomNavigationView, Activity mActivity, int sizeInDp, int topPadding, float textSize)
         {
             DisplayMetrics displayMetrics = Application.Context.Resources.DisplayMetrics;
             var bottomNavigationMenuView = bottomNavigationView.GetChildAt(0) as BottomNavigationMenuView;
@@ -71,8 +72,32 @@ namespace myTNB_Android.Src.Utils
                 ViewGroup.LayoutParams layoutParams = iconView.LayoutParameters;
                 var paddingTop = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, topPadding, displayMetrics);
                 iconView.SetPadding(0, paddingTop, 0, 0);
-                layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
-                layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
+                if (bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_promotion || bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_reward)
+                {
+                    layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
+                    layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 60f, displayMetrics);
+                }
+                else
+                {
+                    layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
+                    layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
+                }
+
+                iconView.LayoutParameters = layoutParams;
+
+                TextView selectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.largeLabel);
+                TextView unselectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.smallLabel);
+
+                selectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.powerBlue));
+                unselectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.charcoalGrey));
+                selectedTextView.SetTextSize(ComplexUnitType.Dip, textSize);
+                unselectedTextView.SetTextSize(ComplexUnitType.Dip, textSize);
+                selectedTextView.SetPadding(0, 0, 0, paddingTop);
+                unselectedTextView.SetPadding(0, 0, 0, paddingTop);
+
+                TextViewUtils.SetMuseoSans500Typeface(selectedTextView);
+                TextViewUtils.SetMuseoSans300Typeface(unselectedTextView);
+
             }
         }
     }

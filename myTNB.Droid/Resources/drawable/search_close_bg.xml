@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   <item 
+    android:gravity="center_vertical|right"
+    android:drawable="@drawable/ic_header_cancel"
+    android:right="6dp"
+    android:height="16dp"
+    android:width="16dp"/>
+</layer-list>

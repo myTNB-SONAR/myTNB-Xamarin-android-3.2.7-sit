@@ -2,7 +2,8 @@
 using Android.Telephony;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.RegistrationForm.Api;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;
@@ -95,19 +96,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                         this.mView.ClearNotEqualConfirmPasswordError();
                     }
 
-
-                    if (!Utility.IsValidMobileNumber(mobile_no))
-                    {
-                        this.mView.ShowInvalidMobileNoError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else
-                    {
-                        this.mView.ClearInvalidMobileError();
-
-                    }
-
                     this.mView.EnableRegisterButton();
                 }
                 else
@@ -147,26 +135,11 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 return;
             }
 
-
             if (TextUtils.IsEmpty(icno))
             {
                 this.mView.ShowEmptyICNoError();
                 return;
             }
-
-            if (TextUtils.IsEmpty(mobile_no))
-            {
-                this.mView.ShowEmptyMobileNoError();
-                return;
-            }
-
-            if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
-            {
-                this.mView.ShowInvalidMobileNoError();
-                return;
-            }
-
-
 
             if (TextUtils.IsEmpty(email))
             {
@@ -218,37 +191,16 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 return;
             }
 
-            this.mView.ShowRegistrationProgressDialog();
+            this.mView.ShowProgressDialog();
             this.mView.ClearAllErrorFields();
-
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IGetVerificationCode>(httpClient);
-#else
-            var api = RestService.For<IGetVerificationCode>(Constants.SERVER_URL.END_POINT);
-#endif
-
 
             try
             {
+                SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(mobile_no);
+                sendRegistrationTokenSMSRequest.SetUserName(email);
+                var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
 
-                var verificationResponse = await api.GetVerificationCodeThruSMSV2(new VerificationCodeRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    userEmail = email,
-                    username = email,
-                    mobileNo = mobile_no,
-                    ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = Constants.APP_CONFIG.API_KEY_ID,
-                    activeUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    devicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-
-                });
-
-                if (!verificationResponse.verificationCode.isError)
+                if (verificationResponse.IsSuccessResponse())
                 {
                     var userCredentials = new UserCredentialsEntity()
                     {
@@ -267,7 +219,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 }
                 else
                 {
-                    this.mView.ShowInvalidAcquiringTokenThruSMS(verificationResponse.verificationCode.message);
+                    this.mView.ShowInvalidAcquiringTokenThruSMS(verificationResponse.Response.DisplayMessage);
                 }
 
             }
@@ -291,11 +243,10 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-
-
-
-
-            this.mView.HideRegistrationProgressDialog();
+            finally
+            {
+                this.mView.HideProgressDialog();
+            }
         }
 
         public void Start()
@@ -303,7 +254,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             try
             {
                 this.mView.DisableRegisterButton();
-                this.mView.ClearFields();
 
                 bool isGranted = this.mView.IsGrantedSMSReceivePermission();
                 if (!isGranted)

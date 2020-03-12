@@ -29,6 +29,10 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 /// </summary>
                 /// <param name="list">List<paramref name="AttachedImage"/></param>
                 void ShowImages(List<AttachedImage> list);
+
+                void ShowProgressDialog();
+
+                void HideProgressDialog();
             }
 
             public interface IUserActionsListener : IBasePresenter
@@ -59,6 +63,10 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 /// </summary>
                 /// <param name="list">List<paramref name="AttachedImage"/></param>
                 void ShowImages(List<AttachedImage> list);
+
+                void ShowProgressDialog();
+
+                void HideProgressDialog();
             }
 
             public interface IUserActionsListener : IBasePresenter
@@ -87,6 +95,10 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 /// </summary>
                 /// <param name="list">List<paramref name="AttachedImage"/></param>
                 void ShowImages(List<AttachedImage> list);
+
+                void ShowProgressDialog();
+
+                void HideProgressDialog();
             }
 
             public interface IUserActionsListener : IBasePresenter

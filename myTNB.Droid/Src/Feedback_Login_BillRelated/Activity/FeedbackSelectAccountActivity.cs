@@ -46,6 +46,8 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
             Bundle extras = Intent.Extras;
 
+            SetToolBarTitle(Utility.GetLocalizedCommonLabel("selectElectricityAccount"));
+
             if (extras != null)
             {
                 if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -76,6 +78,19 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             }
             listView.ItemClick += OnItemClick;
 
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback -> Select Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [Preserve]

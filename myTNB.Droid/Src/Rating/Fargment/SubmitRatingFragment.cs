@@ -5,13 +5,12 @@ using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Adapter;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Rating.MVP;
-using myTNB_Android.Src.Rating.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 
@@ -22,9 +21,6 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         private SubmitRatingPresenter mPresenter;
         private SubmitRatingContract.IUserActionsListener userActionsListener;
-
-        private LoadingOverlay loadingOverlay;
-
 
         private FrameLayout rootView;
 
@@ -78,6 +74,8 @@ namespace myTNB_Android.Src.Rating.Fargment
                 recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
                 rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
                 btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
+
+                btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
 
                 layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
                 adapter = new RateUsQuestionsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
@@ -145,9 +143,13 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void HideProgressDialog()
         {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -158,25 +160,29 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowError(string exception)
         {
-            Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_cards_btn_close),
+            Snackbar showErrorSnackbar = Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"),
                 (view) =>
                 {
 
                     // EMPTY WILL CLOSE SNACKBAR
                 }
-            ).Show();
+            );
+            View v = showErrorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            showErrorSnackbar.Show();
         }
 
-        public void ShowGetQuestionSuccess(GetRateUsQuestionsResponse response)
+        public void ShowGetQuestionSuccess(GetRateUsQuestionResponse response)
         {
             try
             {
                 if (response != null)
                 {
-                    if (response.feedbackQuestionStatus.rateUsQuestionList.Count > 0)
+                    if (response.GetData().Count > 0)
                     {
-                        foreach (RateUsQuestion que in response.feedbackQuestionStatus.rateUsQuestionList)
+                        foreach (RateUsQuestion que in response.GetData())
                         {
                             if (que.IsActive)
                             {
@@ -197,13 +203,7 @@ namespace myTNB_Android.Src.Rating.Fargment
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {

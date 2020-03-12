@@ -14,6 +14,34 @@ namespace myTNB_Android.Src.Utils
             return px;
         }
 
+        internal static float ConvertDPToPx(float dp)
+        {
+            var scale = global::Android.App.Application.Context.Resources.DisplayMetrics.Density;
+            var px = dp * scale;
+            return px;
+        }
+
+        internal static float ConvertPxToDP(float px)
+        {
+            var scale = Android.App.Application.Context.Resources.DisplayMetrics.Density;
+            var dp = px / scale;
+            return dp;
+        }
+
+        internal static float GetDensity()
+        {
+            return Android.App.Application.Context.Resources.DisplayMetrics.Density;
+        }
+
+        internal static int GetWidth()
+        {
+            return global::Android.App.Application.Context.Resources.DisplayMetrics.WidthPixels;
+        }
+
+        internal static int GetHeight()
+        {
+            return global::Android.App.Application.Context.Resources.DisplayMetrics.HeightPixels;
+        }
 
         internal static String GetDeviceDensity(Context context)
         {

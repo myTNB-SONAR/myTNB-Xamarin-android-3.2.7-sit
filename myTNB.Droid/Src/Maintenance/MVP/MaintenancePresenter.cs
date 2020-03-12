@@ -1,12 +1,14 @@
 ﻿using Android.Content;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
 using System.Net.Http;
 using System.Threading;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataRequest;
 
 namespace myTNB_Android.Src.Maintenance.MVP
 {
@@ -41,58 +43,77 @@ namespace myTNB_Android.Src.Maintenance.MVP
             try
             {
                 Context mContext = MyTNBApplication.Context;
-                string email = null, sspUserID = null;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = "",
+                    sspuid = "",
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
                 if (UserEntity.IsCurrentlyActive())
                 {
-                    email = UserEntity.GetActive().UserName;
-                    sspUserID = UserEntity.GetActive().UserID;
+                    currentUsrInf.eid = UserEntity.GetActive().Email;
+                    currentUsrInf.sspuid = UserEntity.GetActive().UserID;
                 }
+
+                MasterDataRequest.DeviceInterface currentDeviceInf = new MasterDataRequest.DeviceInterface()
+                {
+                    DeviceId = this.mView.GetDeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = int.Parse(Constants.DEVICE_PLATFORM),
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
+
+                };
 
                 var masterDataResponse = await masterDataApi.GetAppLaunchMasterData(new MasterDataRequest()
                 {
-                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceId = this.mView.GetDeviceId(),
-                    AppVersion = DeviceIdUtils.GetAppVersionName(),
-                    Email = email,
-                    SSPUserId = sspUserID,
-                    OsType = Constants.DEVICE_PLATFORM,
-                    OsVersion = DeviceIdUtils.GetAndroidVersion()
+                    deviceInf = currentDeviceInf,
+                    usrInf = currentUsrInf
                 }, cts.Token);
 
-                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
-                    this.mView.ShowLaunchViewActivity();
+                    if (masterDataResponse.Data.ErrorCode == "7200")
+                    {
+                        this.mView.ShowLaunchViewActivity();
+                    }
+                    else if (masterDataResponse.Data.ErrorCode == "7000")
+                    {
+                        string title = "";
+                        string message = "";
+
+                        if (!string.IsNullOrEmpty(masterDataResponse.Data.DisplayTitle))
+                        {
+                            title = masterDataResponse.Data.DisplayTitle;
+                        }
+
+                        if (!string.IsNullOrEmpty(masterDataResponse.Data.DisplayMessage))
+                        {
+                            message = masterDataResponse.Data.DisplayMessage;
+                        }
+
+                        this.mView.OnUpdateMaintenanceWord(title, message);
+                    }
                 }
-                else if (masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
-                {
-
-                }
-                else
-                {
-                    Console.WriteLine("Excution time enters else");
-                    // TODO : SHOW ERROR
-                    this.mView.ShowRetryOptionApiException(null);
-                }
-
-
-
             }
             catch (ApiException apiException)
             {
-                //Log.Debug(TAG, "Api Exception " + apiException.GetContentAs<string>());
-                //Log.Debug(TAG, "Api Exception " + apiException.StatusCode);
-                //Log.Debug(TAG, "Api Exception " + apiException);
-                this.mView.ShowRetryOptionApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
-                this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
             catch (Exception e)
             {
-                this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
         }

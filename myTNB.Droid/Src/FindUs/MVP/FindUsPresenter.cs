@@ -2,6 +2,9 @@
 using myTNB_Android.Src.FindUs.Api;
 using myTNB_Android.Src.FindUs.Request;
 using myTNB_Android.Src.FindUs.Response;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -36,23 +39,10 @@ namespace myTNB_Android.Src.FindUs.MVP
 
         private async void GetLocationAsync(string apiKeyId, string googleApiKey, string latitude, string longitude, string locationType, string locationDes)
         {
-            cts = new CancellationTokenSource();
-
             if (mView.IsActive())
             {
                 this.mView.ShowGetLocationsDialog();
             }
-
-            // TODO : UPDATE Replace string with Constants.SERVER_URL
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetLocationsApi>(httpClient);
-
-#else
-            var api = RestService.For<GetLocationsApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
             ////remove google api call to search 7 eleven
             //var httpClientForGoogle = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri("https://maps.googleapis.com") };
             //var googelApi = RestService.For<GetGoogleLocationApi>(httpClientForGoogle);
@@ -63,7 +53,26 @@ namespace myTNB_Android.Src.FindUs.MVP
                 GetGoogleLocationsResponse results = null;// new GetGoogleLocationsResponse();
                 if (locationType.ToLower().Equals("kt") || locationType.ToLower().Equals("all"))
                 {
-                    result = await api.GetLocationsV5(new GetLocationsRequest(apiKeyId, latitude, longitude, "KT"), cts.Token);
+                    GetLocationListResponse locationListResponse = await ServiceApiImpl.Instance.GetLocations(new GetLocationListRequest(latitude, longitude, "KT"));
+
+                    if (!locationListResponse.IsSuccessResponse())
+                    {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideGetLocationsDialog();
+                        }
+                        this.mView.ShowZeroLocationFoundDialog();
+                    }
+                    else
+                    {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideGetLocationsDialog();
+                        }
+                        result.D = new GetLocationsResponse.LocationsResponse();
+                        result.D.LocationList = locationListResponse.GetData();
+                        this.mView.ShowGetLocationsSuccess(result, results);
+                    }
                 }
 
                 //if (!locationType.ToLower().Equals("kt") || locationType.ToLower().Equals("all"))
@@ -72,25 +81,6 @@ namespace myTNB_Android.Src.FindUs.MVP
                 //    locationDes = "7-Eleven";
                 //    results = await googelApi.GetLocationsFromGoogle(googleApiKey, latitude + "," + longitude, "5000", locationDes, locationDes, cts.Token);
                 //}
-
-
-
-                if (result.D != null && result.D.IsError)
-                {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetLocationsDialog();
-                    }
-                    this.mView.ShowGetLocationsError(result.D.Message);
-                }
-                else
-                {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetLocationsDialog();
-                    }
-                    this.mView.ShowGetLocationsSuccess(result, results);
-                }
             }
             catch (System.OperationCanceledException cancelledException)
             {
@@ -98,7 +88,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 {
                     this.mView.HideGetLocationsDialog();
                 }
-                this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                this.mView.ShowGetLocationsError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
@@ -107,7 +97,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 {
                     this.mView.HideGetLocationsDialog();
                 }
-                this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                this.mView.ShowGetLocationsError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
@@ -116,7 +106,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 {
                     this.mView.HideGetLocationsDialog();
                 }
-                this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                this.mView.ShowGetLocationsError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -130,22 +120,11 @@ namespace myTNB_Android.Src.FindUs.MVP
 
         private async void GetLocationsByKewordAsync(string apiKeyId, string googleApiKey, string latitude, string longitude, string locationType, string locationDes, string keyword)
         {
-            cts = new CancellationTokenSource();
-
             if (mView.IsActive())
             {
                 this.mView.ShowGetLocationsDialog();
             }
-            // TODO : UPDATE Replace string with Constants.SERVER_URL
 
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<GetLocationsByKeywordApi>(httpClient);
-
-#else
-            var api = RestService.For<GetLocationsByKeywordApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
             ////remove google api call to search 7 eleven
             //var httpClientForGoogle = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri("https://maps.googleapis.com") };
             //var googelApi = RestService.For<GetGoogleLocationApi>(httpClientForGoogle);
@@ -157,28 +136,33 @@ namespace myTNB_Android.Src.FindUs.MVP
 
                 if (locationType.ToLower().Equals("kt") || locationType.ToLower().Equals("all"))
                 {
-                    result = await api.GetLocationsByKeyword(new GetLocationsByKeywordRequest(apiKeyId, latitude, longitude, "KT", keyword), cts.Token);
+                    GetLocationListByKeywordResponse locationListResponse = await ServiceApiImpl.Instance.GetLocationsByKeyword(new GetLocationListByKeywordRequest(latitude, longitude, "KT", keyword));
+
+                    if (!locationListResponse.IsSuccessResponse())
+                    {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideGetLocationsDialog();
+                        }
+                        this.mView.ShowZeroLocationFoundDialog();
+                    }
+                    else
+                    {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideGetLocationsDialog();
+                        }
+                        result = new GetLocationsResponse();
+                        result.D = new GetLocationsResponse.LocationsResponse();
+                        result.D.LocationList = locationListResponse.GetData();
+                        this.mView.ShowGetLocationsSuccess(result, results);
+                    }
+
                 }
                 //if (!locationType.ToLower().Equals("kt") || locationType.ToLower().Equals("all"))
                 //{
                 //    results = await googelApi.GetLocationsFromGoogle(googleApiKey, latitude + "," + longitude, "1000", keyword, locationDes, cts.Token);
                 //}
-
-                if (result.D != null && result.D.IsError)
-                {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetLocationsDialog();
-                    }
-                }
-                else
-                {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetLocationsDialog();
-                    }
-                    this.mView.ShowGetLocationsSuccess(result, results);
-                }
             }
             catch (System.OperationCanceledException cancelledException)
             {

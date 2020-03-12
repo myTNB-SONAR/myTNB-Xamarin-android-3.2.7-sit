@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using myTNB_Android.Src.Utils;
+using SQLite;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -55,11 +56,18 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM FirebaseTokenEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM FirebaseTokenEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static bool HasLatest()

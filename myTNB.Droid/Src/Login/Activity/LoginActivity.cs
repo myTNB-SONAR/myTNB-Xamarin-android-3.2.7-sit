@@ -17,7 +17,6 @@ using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -26,11 +25,10 @@ using System.Runtime;
 
 namespace myTNB_Android.Src.Login.Activity
 {
-    [Activity(NoHistory = true
-              , Icon = "@drawable/ic_launcher"
+    [Activity(Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Login")]
-    public class LoginActivity : BaseToolbarAppCompatActivity, LoginContract.IView
+    public class LoginActivity : BaseActivityCustom, LoginContract.IView
     {
         public readonly static string TAG = typeof(LoginActivity).Name;
         private LoginPresenter mPresenter;
@@ -51,9 +49,6 @@ namespace myTNB_Android.Src.Login.Activity
 
         [BindView(Resource.Id.txtPassword)]
         EditText txtPassword;
-
-        [BindView(Resource.Id.txtWelcomeBack)]
-        TextView txtWelcomeBack;
 
         [BindView(Resource.Id.txtAccountLogin)]
         TextView txtAccountLogin;
@@ -76,7 +71,13 @@ namespace myTNB_Android.Src.Login.Activity
         [BindView(Resource.Id.chk_remember_me)]
         CheckBox chkRemeberMe;
 
-        private LoadingOverlay loadingOverlay;
+        [BindView(Resource.Id.img_logo)]
+        ImageView img_logo;
+
+        [BindView(Resource.Id.img_display)]
+        ImageView img_display;
+
+        const string PAGE_ID = "Login";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -100,22 +101,26 @@ namespace myTNB_Android.Src.Login.Activity
                     .SetCancelable(false)
                     .Create();
 
-                TextViewUtils.SetMuseoSans500Typeface(txtWelcomeBack);
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountLogin, txtEmail, txtPassword, txtNoAccount, txtForgotPassword);
-                TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount);
+                TextViewUtils.SetMuseoSans300Typeface(chkRemeberMe, txtEmail, txtPassword, txtNoAccount);
+                TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount, txtAccountLogin, txtForgotPassword);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
-                TextViewUtils.SetMuseoSans500Typeface(chkRemeberMe);
+
+                txtAccountLogin.Text = GetLabelByLanguage("loginTitle");
+                chkRemeberMe.Text = GetLabelByLanguage("rememberEmail");
+                txtForgotPassword.Text = GetLabelByLanguage("forgotPassword");
+                txtNoAccount.Text = GetLabelByLanguage("dontHaveAcct");
+                txtRegisterAccount.Text = GetLabelByLanguage("registerAcctNow");
+                btnLogin.Text = GetLabelByLanguage("login");
+
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                txtInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
 
                 txtPassword.TextChanged += TextChange;
                 txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, txtInputLayoutPassword));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
-                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
-                string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
-                txtEmail.Append(savedEmail);
-
-
+                GenerateTopLayoutLayout();
 
                 if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
                 {
@@ -123,11 +128,31 @@ namespace myTNB_Android.Src.Login.Activity
                     txtPassword.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
                 }
 
+                ClearFields();
+
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ClearFields()
+        {
+            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
+            string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
+            if (!string.IsNullOrEmpty(savedEmail.Trim()))
+            {
+                txtEmail.Append(savedEmail.Trim());
+            }
+            else
+            {
+                txtEmail.Text = "";
+            }
+
+            txtPassword.Text = "";
+            txtEmail.ClearFocus();
+            txtPassword.ClearFocus();
         }
 
         private bool onLongClick(object sender, View.LongClickEventArgs e)
@@ -164,6 +189,61 @@ namespace myTNB_Android.Src.Login.Activity
             return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
+        private void GenerateTopLayoutLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentLogoImg = img_logo.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgWidth = GetDeviceHorizontalScaleInPixel(0.125f);
+
+                currentLogoImg.Height = imgWidth;
+                currentLogoImg.Width = imgWidth;
+
+                LinearLayout.LayoutParams currentDisplayLogoImg = img_display.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgDisplayWidth = GetDeviceHorizontalScaleInPixel(0.634f);
+
+                float heightRatio = 132f / 203f;
+                int imgDisplayHeight = (int)(imgDisplayWidth * (heightRatio));
+
+                currentDisplayLogoImg.Height = imgDisplayHeight;
+                currentDisplayLogoImg.Width = imgDisplayWidth;
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Login");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.LoginView;
@@ -171,16 +251,9 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void HideProgressDialog()
         {
-            //if (mProgressDialog != null && mProgressDialog.IsShowing)
-            //{
-            //    mProgressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -190,19 +263,9 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowProgressDialog()
         {
-            //if (mProgressDialog != null && !mProgressDialog.IsShowing)
-            //{
-            //    mProgressDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -217,22 +280,87 @@ namespace myTNB_Android.Src.Login.Activity
             this.userActionsListener = userActionListener;
         }
 
+        private Snackbar mEmptyEmailSnackBar;
         public void ShowEmptyEmailError()
         {
             ClearErrors();
-            this.txtInputLayoutEmail.Error = GetString(Resource.String.login_validation_email_empty_error);
+            // TODO : SHOW SNACKBAR ERROR MESSAGE
+            if (mEmptyEmailSnackBar != null && mEmptyEmailSnackBar.IsShown)
+            {
+                mEmptyEmailSnackBar.Dismiss();
+                mEmptyEmailSnackBar.Show();
+            }
+            else
+            {
+                string errorText = GetLabelByLanguage("emailRequired");
+                if (!errorText.Contains("."))
+                {
+                    errorText = errorText + ".";
+                }
+                mEmptyEmailSnackBar = Snackbar.Make(rootView, errorText, Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyEmailSnackBar.Dismiss(); }
+                );
+                View v = mEmptyEmailSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mEmptyEmailSnackBar.Show();
+            }
+
+            this.SetIsClicked(false);
         }
 
+        private Snackbar mEmptyPasswordSnackBar;
         public void ShowEmptyPasswordError()
         {
             ClearErrors();
-            this.txtInputLayoutPassword.Error = GetString(Resource.String.login_validation_password_empty_error);
+            // TODO : SHOW SNACKBAR ERROR MESSAGE
+            if (mEmptyPasswordSnackBar != null && mEmptyPasswordSnackBar.IsShown)
+            {
+                mEmptyPasswordSnackBar.Dismiss();
+                mEmptyPasswordSnackBar.Show();
+            }
+            else
+            {
+                mEmptyPasswordSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("passwordRequired"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mEmptyPasswordSnackBar.Dismiss(); }
+                );
+                View v = mEmptyPasswordSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mEmptyPasswordSnackBar.Show();
+            }
+
+            this.SetIsClicked(false);
         }
 
+        private Snackbar mInvalidEmailSnackBar;
         public void ShowInvalidEmailError()
         {
             ClearErrors();
-            this.txtInputLayoutEmail.Error = GetString(Resource.String.login_validation_email_invalid_error);
+            // TODO : SHOW SNACKBAR ERROR MESSAGE
+            if (mInvalidEmailSnackBar != null && mInvalidEmailSnackBar.IsShown)
+            {
+                mInvalidEmailSnackBar.Dismiss();
+                mInvalidEmailSnackBar.Show();
+            }
+            else
+            {
+                string errorText = Utility.GetLocalizedErrorLabel("invalid_email");
+                if (!errorText.Contains("."))
+                {
+                    errorText = errorText + ".";
+                }
+
+                mInvalidEmailSnackBar = Snackbar.Make(rootView, errorText, Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mInvalidEmailSnackBar.Dismiss(); }
+                );
+                View v = mInvalidEmailSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mInvalidEmailSnackBar.Show();
+            }
+
+            this.SetIsClicked(false);
         }
         private Snackbar mSnackBar;
         public void ShowInvalidEmailPasswordError(string errorMessage)
@@ -247,12 +375,15 @@ namespace myTNB_Android.Src.Login.Activity
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mSnackBar.Dismiss(); }
                 );
+                View v = mSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mSnackBar.Show();
             }
 
-
+            this.SetIsClicked(false);
 
         }
 
@@ -260,7 +391,7 @@ namespace myTNB_Android.Src.Login.Activity
         public void ShowDashboard()
         {
             // TODO : START ACTIVITY DASHBOARD
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }
@@ -283,9 +414,13 @@ namespace myTNB_Android.Src.Login.Activity
         {
             try
             {
-                string em_str = txtEmail.Text.ToString().Trim();
-                string pass_str = txtPassword.Text;
-                this.userActionsListener.LoginAsync(em_str, pass_str, this.DeviceId(), chkRemeberMe.Checked);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    string em_str = txtEmail.Text.ToString().Trim();
+                    string pass_str = txtPassword.Text;
+                    this.userActionsListener.LoginAsync(em_str, pass_str, this.DeviceId(), chkRemeberMe.Checked);
+                }
             }
             catch (Exception ex)
             {
@@ -296,13 +431,21 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.txtForgotPassword)]
         void OnForgetPassword(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.NavigateToForgetPassword();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToForgetPassword();
+            }
         }
 
         [OnClick(Resource.Id.txtRegisterAccount)]
         void OnRegisterAccount(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.NavigateToRegistrationForm();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToRegistrationForm();
+            }
         }
 
         public void DisableLoginButton()
@@ -324,8 +467,8 @@ namespace myTNB_Android.Src.Login.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -334,7 +477,12 @@ namespace myTNB_Android.Src.Login.Activity
                 this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
+
+            this.SetIsClicked(false);
 
         }
 
@@ -346,8 +494,8 @@ namespace myTNB_Android.Src.Login.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -356,7 +504,12 @@ namespace myTNB_Android.Src.Login.Activity
                 this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
+
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -368,8 +521,8 @@ namespace myTNB_Android.Src.Login.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -378,7 +531,12 @@ namespace myTNB_Android.Src.Login.Activity
                 this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
+
+            this.SetIsClicked(false);
 
         }
 
@@ -526,6 +684,11 @@ namespace myTNB_Android.Src.Login.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

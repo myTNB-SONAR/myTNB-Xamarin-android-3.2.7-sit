@@ -20,13 +20,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
+					android:id="@+id/layout_api_refresh"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingTop="24dp">
+                        <ImageView
+                            android:id="@+id/refresh_image"
+                            android:layout_height="96dp"
+                            android:layout_width="96dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/refresh_on_bg"/>
+                        <TextView
+                            android:id="@+id/refresh_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="24dp"
+                            android:gravity="center"
+                            android:lineSpacingExtra="4dp"
+                            android:paddingLeft="18dp"
+                            android:paddingRight="18dp"
+                            android:textSize="16dp"
+                            android:text="@string/text_new_refresh_content"
+                            android:textColor="@color/white"/>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginLeft="18dp"
+                            android:layout_marginRight="18dp"
+                            android:text="@string/text_new_refresh"
+                            android:id="@+id/btnRefresh"
+                            style="@style/Theme.RefreshWhiteButton" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_graph_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="9sp"
+                        android:textSize="9dp"
                         android:textAllCaps="true"
                         android:layout_gravity="center"
                         android:visibility="gone"
@@ -48,9 +92,9 @@
                             android:layout_width="@dimen/_122sdp"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            segmentedgroup:sc_checked_text_color="@color/white"
+                            segmentedgroup:sc_checked_text_color="@color/barchartColor"
                             segmentedgroup:sc_corner_radius="100dp"
-                            segmentedgroup:sc_tint_color="@color/barchartColor">
+                            segmentedgroup:sc_tint_color="@color/white">
                         <!--<RadioButton
                                 android:id="@+id/btnToggleHour"
                                 style="@style/RadioButton"
@@ -58,7 +102,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/dashboard_chartview_hour"
-                                android:textSize="12sp" />-->
+                                android:textSize="12dp" />-->
                             <RadioButton
                                 android:id="@+id/btnToggleDay"
                                 style="@style/RadioButton"
@@ -66,7 +110,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/dashboard_chartview_day"
-                                android:textSize="12sp" />
+                                android:textSize="12dp" />
                             <RadioButton
                                 android:id="@+id/btnToggleMonth"
                                 style="@style/RadioButton"
@@ -75,7 +119,7 @@
                                 android:layout_weight="1"
                                 android:checked="true"
                                 android:text="@string/dashboard_chartview_month"
-                                android:textSize="12sp" />
+                                android:textSize="12dp" />
                         </info.hoang8f.android.segmented.SegmentedGroup>
                     </RelativeLayout>
                     <LinearLayout
@@ -94,7 +138,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="16dp"
                             android:textStyle="bold"
                             android:gravity="center"
                             android:textColor="@color/sunGlow"
@@ -130,14 +174,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="16dp" />
                         <TextView
                             android:id="@+id/dashboard_chartview_no_data_content"
                             android:text="@string/dashboard_chartview_no_data_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                         <Button
                             android:id="@+id/btnLearnMore"
                             android:text="@string/dashboard_chartview_no_data_learnmore"
@@ -152,43 +196,78 @@
                             android:enabled="false"
                             android:paddingBottom="12dp" />
                     </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/no_internet_layout"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="28dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                        <TextView
-                            android:id="@+id/dashboard_chartview_no_internet_title"
-                            android:text="@string/dashboard_chartview_no_internet_title"
-                            android:layout_width="wrap_content"
+                        android:minHeight="30dp"
+                        android:paddingTop="40dp"
+                        android:layout_marginRight="43dp"
+                        android:layout_marginLeft="43dp"
+                        android:visibility="visible">
+                        <RadioGroup
+                            android:id="@+id/sm_graph_radio_group"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                        <TextView
-                            android:id="@+id/dashboard_chartview_no_internet_content"
-                            android:text="@string/dashboard_chartview_no_internet_content"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-                        <Button
-                            android:id="@+id/btnTapRefresh"
-                            android:text="@string/dashboard_chartview_no_internet_tap_refresh"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAllCaps="false"
-                            android:layout_marginTop="15dp"
-                            style="@style/Theme.LearnMoreButton"
-                            android:paddingLeft="37dp"
-                            android:paddingRight="37dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp" />
-                    </LinearLayout>
+                            android:layout_centerHorizontal="true"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rbtnRM"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:text="@string/text_rm"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:checked="true"
+                                android:textSize="14dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/barchartColorHighlighted"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                            <RadioButton
+                                android:id="@+id/rbtnkWh"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/barchartColorHighlighted"
+                                android:text="@string/text_kwh"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                            <RadioButton
+                                android:id="@+id/rbtnCO2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@drawable/radio_button_text"
+                                android:text="@string/text_co2"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                        </RadioGroup>
+                    </RelativeLayout>
                     <LinearLayout
                         android:id="@+id/no_sm_data_layout"
                         android:layout_width="match_parent"
@@ -234,7 +313,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:checked="true"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -251,7 +330,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -269,7 +348,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:textSize="14sp"
+                                android:textSize="14dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:textColor="@drawable/radio_button_text"
@@ -312,7 +391,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="16sp"
+                                    android:textSize="14dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/white"
                                     android:text="@string/current_charges"
@@ -322,7 +401,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="14sp"
+                                    android:textSize="12dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/barchartColorHighlighted"
                                     android:text="@string/as_of"
@@ -339,7 +418,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="14sp"
+                                    android:textSize="12dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="RM"
@@ -348,7 +427,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="20sp"
+                                    android:textSize="16dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="00.00"
@@ -356,7 +435,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="14sp"
+                                    android:textSize="14dp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="kWh"
@@ -395,13 +474,13 @@
                             <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="0dp"
-                                android:layout_weight="0.5"
+                                android:layout_weight="0.7"
                                 android:layout_marginLeft="@dimen/_5sdp"
                                 android:orientation="vertical">
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="16sp"
+                                    android:textSize="14dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/white"
                                     android:text="@string/projected_cost"
@@ -411,7 +490,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="14sp"
+                                    android:textSize="12dp"
                                     android:textStyle="bold"
                                     android:textColor="@color/barchartColorHighlighted"
                                     android:singleLine="true"
@@ -422,29 +501,39 @@
                             <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="0dp"
-                                android:layout_weight="0.4"
+                                android:layout_weight="0.2"
                                 android:gravity="right"
                                 android:orientation="horizontal">
-                                <TextView
+                                <LinearLayout
                                     android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:textSize="14sp"
-                                    android:textStyle="normal"
-                                    android:textColor="@color/white"
-                                    android:text="RM"
-                                    android:layout_marginRight="@dimen/_2sdp"
-                                    android:id="@+id/txtProjectedCostUnit1"
-                                    android:gravity="right" />
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:textSize="20sp"
-                                    android:textStyle="normal"
-                                    android:textColor="@color/white"
-                                    android:text="00.00"
-                                    android:singleLine="true"
-                                    android:id="@+id/txtProjectedCostValue"
-                                    android:gravity="right" />
+                                    android:layout_width="match_parent"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_gravity="right"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_height="wrap_content"
+                                            android:layout_width="wrap_content"
+                                            android:textSize="12dp"
+                                            android:textStyle="normal"
+                                            android:textColor="@color/white"
+                                            android:text="RM"
+                                            android:layout_marginRight="@dimen/_2sdp"
+                                            android:id="@+id/txtProjectedCostUnit1"/>
+                                        <TextView
+                                            android:layout_height="wrap_content"
+                                            android:layout_width="wrap_content"
+                                            android:textSize="16dp"
+                                            android:textStyle="normal"
+                                            android:textColor="@color/white"
+                                            android:text="00.00"
+                                            android:singleLine="true"
+                                            android:id="@+id/txtProjectedCostValue"/>
+                                    </LinearLayout>
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
                         <View
@@ -474,7 +563,7 @@
                                 android:layout_width="match_parent"
                                 android:textColor="@color/white"
                                 android:text="@string/note_text_sm"
-                                android:textSize="12sp" />
+                                android:textSize="12dp" />
                         </LinearLayout>
                         <View
                             android:id="@+id/noteDivider"
@@ -485,27 +574,73 @@
                             android:layout_marginLeft="@dimen/_5sdp"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:alpha="0.3"
-                            android:background="@color/barchartColorHighlighted"
-                            android:visibility="gone"/>
+                            android:background="@color/barchartColorHighlighted" />
+                            <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:layout_marginTop="12dp"
+                                android:layout_gravity="right">
+                                <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:textSize="12dp"
+                                    android:textStyle="normal"
+                                    android:textColor="@color/sunGlow"
+                                    android:singleLine="true"
+                                    android:layout_gravity="right"
+                                    android:gravity="right"
+                                    android:id="@+id/txtWhatIsThis"
+                                    android:clickable="true"/>
+                            </LinearLayout>
+                            <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_weight="0.6"
+                                android:textSize="12dp"
+                                android:textStyle="bold"
+                                android:padding="24dp"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:text="@string/dashboard_chartview_address_sample"
+                                android:id="@+id/txtAddress"
+                                android:gravity="center" />
+                                <View
+                                        android:id="@+id/addressDivider"
+                                        android:layout_height="1dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_marginTop="@dimen/_2sdp"
+                                        android:layout_marginBottom="@dimen/_2sdp"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginRight="@dimen/_5sdp"
+                                        android:alpha="0.3"
+                                        android:background="@color/barchartColorHighlighted"
+                                        android:visibility="gone"/>
+                                        <TextView
+                                            android:id="@+id/txtAccountStatus"
+                                            android:layout_height="wrap_content"
+                                            android:layout_width="match_parent"
+                                            android:textColor="@color/white"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="12dp"
+                                            android:gravity="center"
+                                            android:text="Electricity Connection:"
+                                            android:textSize="12dp"
+                                            android:visibility="gone"/>
+                                            <TextView
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_width="match_parent"
+                                                    android:textSize="12dp"
+                                                    android:layout_marginTop="4dp"
+                                                    android:textColor="@color/sunGlow"
+                                                    android:layout_gravity="center"
+                                                    android:gravity="center"
+                                                    android:id="@+id/txtWhatAccountStatus"
+                                                    android:clickable="true"
+                                                    android:visibility="gone"/>
                     </LinearLayout>
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="0.6"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:padding="28dp"
-                        android:layout_gravity="center"
-                        android:textColor="@color/white"
-                        android:text="@string/dashboard_chartview_address_sample"
-                        android:id="@+id/txtAddress"
-                        android:gravity="center" />
-                    <LinearLayout
-                        android:id="@+id/content_extension"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        />
                     <View
                         android:id="@+id/bottomView"
                         android:layout_height="wrap_content"
@@ -565,9 +700,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/total_amount_due"
+                    android:text="@string/total_amount_due_bill"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/txtTotalPayable"
                     android:layout_width="wrap_content"
@@ -577,7 +712,7 @@
                     android:layout_alignParentTop="true"
                     android:text="0.00"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="24sp" />
+                    android:textSize="24dp" />
                 <TextView
                     android:id="@+id/txtTotalPayableCurrency"
                     android:layout_width="wrap_content"
@@ -587,18 +722,32 @@
                     android:layout_toLeftOf="@+id/txtTotalPayable"
                     android:layout_toStartOf="@+id/txtTotalPayable"
                     android:text="RM"
+                    android:layout_marginRight="7dp"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <TextView
                     android:id="@+id/txtDueDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtTotalPayableTitle"
-                    android:textSize="11sp"
+                    android:textSize="11dp"
+                    android:layout_marginTop="9dp"
                     android:paddingTop="@dimen/_1sdp"
                     android:textColor="@color/silverChalice"
                     android:text="" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12dp"
+                    android:textStyle="normal"
+                    android:layout_alignBaseline="@+id/txtDueDate"
+                    android:textColor="@color/powerBlue"
+                    android:singleLine="true"
+                    android:text="@string/why_this_amount"
+                    android:id="@+id/txtWhyThisAmt"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"/>
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"

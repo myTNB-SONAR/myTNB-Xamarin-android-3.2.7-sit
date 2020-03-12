@@ -2,8 +2,10 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MyTNBService.Response;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -96,6 +98,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void OnSiteCoreServiceFailed(string message);
 
 
+            void OnSavedAppLaunchTimeStampRecievd(string timestamp);
+
+            void OnAppLaunchTimeStampRecieved(string timestamp);
+
             /// <summary>
             /// Action to show request SMS Permission
             /// </summary>
@@ -126,7 +132,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             ///<summary>
             /// Lgout function created to update device id after removing persmissin
             ///</summary>
-            void ShowUpdateAvailable();
+            void ShowUpdateAvailable(string title, string message, string btnLabel);
 
             ///<summary>
             /// Lgout function created to update device id after removing persmissin
@@ -141,7 +147,24 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             ///<summary>
             /// Show Maintenance Screen
             ///</summary>
-            void ShowMaintenance(MasterDataResponse masterDataResponse);
+            void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse);
+
+            void SetAppLaunchSuccessfulFlag(bool flag, AppLaunchNavigation navigationWay);
+
+            bool GetAppLaunchSiteCoreDoneFlag();
+
+            void SetDefaultAppLaunchImage();
+
+            void SetCustomAppLaunchImage(AppLaunchModel item);
+
+            void OnGoAppLaunchEvent();
+
+            void SetAppLaunchSiteCoreDoneFlag(bool flag);
+
+            /// <summary>
+            /// Show something went wrong Snackbar
+            /// </summary>
+            void ShowSomethingWrongException();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -164,7 +187,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// </summary>
             void NavigateNotification();
 
+            void GetSavedAppLaunchTimeStamp();
+
             Task OnGetTimeStamp();
+
+            void OnGetAppLaunchTimeStamp();
+
+            void OnGetAppLaunchItem();
 
             void GetSavedTimeStamp();
 
@@ -185,6 +214,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Lgout function created to update device id after removing persmissin
             ///</summary>
             void OnUpdateApp();
+
+            Task OnGetAppLaunchCache();
+
+            Task OnWaitSplashScreenDisplay(int millisecondDelay);
         }
     }
 }

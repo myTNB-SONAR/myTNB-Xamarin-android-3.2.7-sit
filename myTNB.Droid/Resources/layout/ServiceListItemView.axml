@@ -3,6 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="2dp"
     android:weightSum="1">
     <TextView
         android:id="@+id/text_bullet"
@@ -10,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_weight="0.1"
         android:gravity="center"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textColor="@color/tunaGrey"
         android:text="•" />
     <TextView
@@ -19,6 +20,6 @@
         android:layout_width="0dp"
         android:layout_weight="0.9"
         android:textColor="@color/tunaGrey"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:text="service" />
 </LinearLayout>

@@ -1,0 +1,37 @@
+﻿<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"  
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <LinearLayout
+        android:layout_width="match_parent"  
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="vertical">
+        <FrameLayout  
+            android:layout_height="146dp"
+            android:layout_width="156dp"
+            android:layout_gravity="center">
+            <com.airbnb.lottie.LottieAnimationView
+	        android:id="@+id/loadingImage"
+            android:layout_width="match_parent"  
+            android:layout_height="match_parent" 
+            android:layout_gravity="center"
+            app:lottie_fileName="ocr_loading_animation.json"
+	        app:lottie_loop="true" />
+        </FrameLayout> 
+        <TextView
+            android:id="@+id/loadingMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:textColor="#8b8b8b"
+            android:text="Please wait for a moment while we read your photos…"
+            android:textSize="16dp"/>
+    </LinearLayout>
+</RelativeLayout>

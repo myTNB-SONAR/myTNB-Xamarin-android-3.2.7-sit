@@ -1,11 +1,19 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Runtime;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.NotificationDetails.Requests;
+using myTNB_Android.Src.Notifications.Api;
 using myTNB_Android.Src.Notifications.Models;
 using Refit;
-using System;
-using System.Collections.Generic;
+using static Android.Widget.CompoundButton;
+
 namespace myTNB_Android.Src.Notifications.MVP
 {
     public class NotificationContract
@@ -75,6 +83,10 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             void ClearAdapter();
 
+            void ShowView();
+
+            void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt);
+
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry
@@ -95,6 +107,12 @@ namespace myTNB_Android.Src.Notifications.MVP
             void ShowRetryOptionsUnknownException(Exception exception);
 
             /// <summary>
+            /// Shows a failed error call with an option to cancel
+            /// </summary>
+            /// <param name="message">the returned exception</param>
+            void ShowFailedErrorMessage(string errorMessage);
+
+            /// <summary>
             /// Show query progress dialog
             /// </summary>
             void ShowQueryProgress();
@@ -109,17 +127,32 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             /// <returns>unique id alphanumeric strings</returns>
             string GetDeviceId();
+
+            void DeleteNotificationByPosition(int notificationPos);
+
+            void ReadNotificationByPosition(int notificationPos);
+
+            void UpdatedSelectedNotifications();
+
+            List<UserNotificationData> GetNotificationList();
+
+            void UpdateSelectedNotification();
+
+            void OnFailedNotificationAction();
+
+			void ShowNotificationDetails(int notificationItemPosition);
+
+            void UpdateDeleteNotifications();
+
+            void UpdateReadNotifications();
+
+            void ShowEditMode();
+
+            void SetNotificationItemClickable(bool isClickable);
         }
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Action to navigate to selected notification
-            /// </summary>
-            /// <param name="userNotification">UserNotificationData</param>
-            /// <param name="position">integer</param>
-            void OnSelectedNotificationItem(UserNotificationData userNotification, int position);
-
             /// <summary>
             /// The returned result from another activity
             /// </summary>
@@ -138,6 +171,35 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             /// <param name="deviceId">string</param>
             void QueryOnLoad(string deviceId);
+
+            //void QueryNotifications(string deviceId);
+
+            /// <summary>
+            /// Action to edit notification list
+            /// </summary>
+            void EditNotification();
+
+            /// <summary>
+            /// Delete all selected notifications.
+            /// </summary>
+            void DeleteAllSelectedNotifications();
+
+            /// <summary>
+            /// Read all selected notifications.
+            /// </summary>
+            void ReadAllSelectedNotifications();
+
+            void ShowFilteredList();
+
+            void OnShowNotificationDetails(UserNotificationData userNotification, int position);
+
+            void InitialSetFilterName();
+        }
+
+        public interface IApiNotification
+        {
+            Task<NotificationApiResponse> DeleteUserNotification(string deviceId, List<UserNotificationData> userNotificationList);
+            Task<NotificationApiResponse> ReadUserNotification(string deviceId, List<UserNotificationData> userNotificationList);
         }
     }
 }

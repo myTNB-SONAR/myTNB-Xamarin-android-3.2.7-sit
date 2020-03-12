@@ -6,14 +6,16 @@ using Firebase.Iid;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -34,8 +36,6 @@ namespace myTNB_Android.Src.Login.MVP
         private ISharedPreferences mSharedPref;
 
         CancellationTokenSource cts;
-
-        private string savedPromoTimeStamp = "0000000";
 
         public LoginPresenter(LoginContract.IView mView, ISharedPreferences mSharedPref)
         {
@@ -71,7 +71,6 @@ namespace myTNB_Android.Src.Login.MVP
 
         public async void LoginAsync(string usrNme, string pwd, string deviceId, bool rememberMe)
         {
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(usrNme))
             {
                 this.mView.ShowEmptyEmailError();
@@ -97,35 +96,9 @@ namespace myTNB_Android.Src.Login.MVP
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if STUB
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-#elif DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IAuthenticateUser>(httpClient);
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-#else
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-#endif
             Log.Debug(TAG, "Awaiting...");
             try
             {
-                //var userResponse = await api.DoLoginV5(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID,
-                //   username,
-                //   password,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID,
-                //   Constants.APP_CONFIG.API_KEY_ID), cts.Token);
-
-                //if (userResponse.userData != null)
-                //{
-                //    Log.Debug(TAG , "User Response = " + userResponse.userData.status);
-                //}
                 string fcmToken = String.Empty;
 
                 if (FirebaseTokenEntity.HasLatest())
@@ -137,37 +110,37 @@ namespace myTNB_Android.Src.Login.MVP
                     fcmToken = FirebaseInstanceId.Instance.Token;
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
+                UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
+                userAuthRequest.SetUserName(usrNme);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
 
-                var userResponse = await api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    UserName = usrNme,
-                    Password = pwd,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = DeviceIdUtils.GetAppVersionName(),
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.DEVICE_PLATFORM,
-                    DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceId = deviceId,
-                    FcmToken = fcmToken,
-
-
-
-
-                }, cts.Token);
-
-
-
-                if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
+                if (!userResponse.IsSuccessResponse())
                 {
                     if (this.mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
-                        this.mView.ShowInvalidEmailPasswordError(userResponse.Data.Message);
+                        this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayMessage);
                     }
                 }
                 else
                 {
+                    try
+                    {
+                        WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                        mWhatsNewParentEntity.DeleteTable();
+                        mWhatsNewParentEntity.CreateTable();
+                        WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                        mWhatsNewEntity.DeleteTable();
+                        mWhatsNewEntity.CreateTable();
+                        WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                        mWhatsNewCategoryEntity.DeleteTable();
+                        mWhatsNewCategoryEntity.CreateTable();
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
                     ///<summary>
                     ///THIS TO SAVE UPDATE THAT LOGOUT HAS BEEN DONE - WHILE UPGRADING VERSION 6 TO 7
                     ///</summary>
@@ -193,7 +166,7 @@ namespace myTNB_Android.Src.Login.MVP
                             this.mView.ShowResetPassword(usrNme, pwd);
                         }
                     }
-                    else if (!userResponse.Data.User.isPhoneVerified)
+                    else if (!userResponse.GetData().isPhoneVerified)
                     {
                         UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
@@ -201,7 +174,7 @@ namespace myTNB_Android.Src.Login.MVP
                             Password = pwd,
                             IpAddress = Constants.APP_CONFIG.API_KEY_ID,
                             ClientType = DeviceIdUtils.GetAppVersionName(),
-                            ActiveUserName = userResponse.Data.User.UserId,
+                            ActiveUserName = userResponse.GetData().UserId,
                             DevicePlatform = Constants.DEVICE_PLATFORM,
                             DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
                             DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
@@ -213,7 +186,7 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.Data.User.MobileNo);
+                        this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.GetData().MobileNo);
                     }
                     else
                     {
@@ -228,182 +201,139 @@ namespace myTNB_Android.Src.Login.MVP
                         AccountDataEntity.RemoveAll();
                         SummaryDashBoardAccountEntity.RemoveAll();
                         SelectBillsEntity.RemoveAll();
-                        int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
+                        UserSessions.RemoveSessionData();
+                        NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                        NewFAQParentManager.DeleteTable();
+                        NewFAQParentManager.CreateTable();
+                        SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                        SSMRMeterReadingScreensParentManager.DeleteTable();
+                        SSMRMeterReadingScreensParentManager.CreateTable();
+                        SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                        SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingScreensOCROffParentManager.CreateTable();
+                        SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
+                        EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                        EnergySavingTipsParentManager.DeleteTable();
+                        EnergySavingTipsParentManager.CreateTable();
+
+                        try
+                        {
+                            RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                            mRewardParentEntity.DeleteTable();
+                            mRewardParentEntity.CreateTable();
+                            RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                            mRewardCategoryEntity.DeleteTable();
+                            mRewardCategoryEntity.CreateTable();
+                            RewardsEntity mRewardEntity = new RewardsEntity();
+                            mRewardEntity.DeleteTable();
+                            mRewardEntity.CreateTable();
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+                        try
+                        {
+                            UserEntity.UpdatePhoneNumber(userResponse.GetData().MobileNo);
+                            UserSessions.SavePhoneVerified(mSharedPref, true);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
+                        int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
+                            UserEntity.UpdateDeviceId(deviceId);
 
-
-#if STUB
-                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-
-#elif DEBUG
-                            var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
-#else
-                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-#endif
-
-                            var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId));
-                            if (!customerAccountsResponse.D.IsError && customerAccountsResponse.D.AccountListData.Count > 0)
+                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new BaseRequest());
+                            if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                             {
-                                int ctr = 0;
-                                foreach (Account acc in customerAccountsResponse.D.AccountListData)
+                                if (customerAccountListResponse.GetData().Count > 0)
                                 {
-                                    bool isSelected = ctr == 0 ? true : false;
-                                    int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
-                                    ctr++;
+                                    ProcessCustomerAccount(customerAccountListResponse.GetData());
 
                                 }
-                            }
-
-                            List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
-                            NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Constants.ZERO_INDEX_TITLE, true);
-                            foreach (NotificationTypesEntity notificationType in notificationTypes)
-                            {
-                                if (notificationType.ShowInFilterList)
+                                else
                                 {
-                                    NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                                    AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
                                 }
-                            }
 
-                            var userNotificationResponse = await notificationsApi.GetUserNotifications(new UserNotificationRequest()
-                            {
-                                ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                Email = userResponse.Data.User.Email,
-                                DeviceId = this.mView.GetDeviceId()
-
-                            }, cts.Token);
-
-                            if (!userNotificationResponse.Data.IsError)
-                            {
-                                foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
+                                NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                                foreach (NotificationTypesEntity notificationType in notificationTypes)
                                 {
-                                    // tODO : SAVE ALL NOTIFICATIONs
-                                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                                }
-                            }
-
-                            // Save promotions
-                            try
-                            {
-                                PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                                wtManager.CreateTable();
-                                List<PromotionsParentEntityV2> saveditems = wtManager.GetAllItems();
-                                if (saveditems != null && saveditems.Count > 0)
-                                {
-                                    PromotionsParentEntityV2 entity = saveditems[0];
-                                    if (entity != null)
+                                    if (notificationType.ShowInFilterList)
                                     {
-                                        savedPromoTimeStamp = entity.Timestamp;
+                                        NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
                                     }
                                 }
-
-                                //Get Sitecore promotion timestamp
-                                bool getSiteCorePromotions = false;
-                                cts = new CancellationTokenSource();
-                                await Task.Factory.StartNew(() =>
+                                UserNotificationEntity.RemoveAll();
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                                if(response.IsSuccessResponse())
                                 {
-                                    try
-                                    {
-                                        string density = DPUtils.GetDeviceDensity(Application.Context);
-                                        GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                                        string json = getItemsService.GetPromotionsTimestampItem();
-                                        PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
-                                        if (responseModel.Status.Equals("Success"))
-                                        {
-                                            //PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                                            wtManager.DeleteTable();
-                                            wtManager.CreateTable();
-                                            wtManager.InsertListOfItems(responseModel.Data);
-                                            List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-                                            if (items != null)
-                                            {
-                                                PromotionsParentEntityV2 entity = items[0];
-                                                if (entity != null)
-                                                {
-                                                    if (!entity.Timestamp.Equals(savedPromoTimeStamp))
-                                                    {
-                                                        getSiteCorePromotions = true;
-                                                    }
-                                                    else
-                                                    {
-                                                        getSiteCorePromotions = false;
-                                                    }
-                                                }
-                                            }
-
-                                            Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
-                                        }
-                                        else
-                                        {
-                                            getSiteCorePromotions = true;
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        if (mView.IsActive())
-                                        {
-                                            this.mView.HideProgressDialog();
-                                        }
-                                        Log.Error("API Exception", e.StackTrace);
-                                        Utility.LoggingNonFatalError(e);
-                                    }
-                                }).ContinueWith((Task previous) =>
-                                {
-                                }, cts.Token);
-
-
-
-                                if (getSiteCorePromotions)
-                                {
-                                    cts = new CancellationTokenSource();
-                                    await Task.Factory.StartNew(() =>
+                                    if (response.GetData() != null)
                                     {
                                         try
                                         {
-                                            string density = DPUtils.GetDeviceDensity(Application.Context);
-                                            GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                                            string json = getItemsService.GetPromotionsV2Item();
-                                            PromotionsV2ResponseModel promoResponseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
-                                            if (promoResponseModel.Status.Equals("Success"))
-                                            {
-                                                PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                                                wtManager2.DeleteTable();
-                                                wtManager2.CreateTable();
-                                                wtManager2.InsertListOfItems(promoResponseModel.Data);
-                                                Log.Debug("DashboardPresenter", promoResponseModel.Data.ToString());
-                                            }
-
+                                            UserNotificationEntity.RemoveAll();
                                         }
-                                        catch (Exception e)
+                                        catch (System.Exception ne)
                                         {
-                                            Log.Error("API Exception", e.StackTrace);
-                                            Utility.LoggingNonFatalError(e);
+                                            Utility.LoggingNonFatalError(ne);
                                         }
-                                    }).ContinueWith((Task previous) =>
+
+                                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                        {
+                                            // tODO : SAVE ALL NOTIFICATIONs
+                                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                        }
+
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                                    }
+                                    else
                                     {
-                                    }, cts.Token);
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                    }
                                 }
+                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                {
+                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                                }
+                                else
+                                {
+                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                }
+
+                                //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                                if (this.mView.IsActive())
+                                {
+                                    this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                }
+                                await LanguageUtil.SaveUpdatedLanguagePreference();
+                                this.mView.ShowDashboard();
                             }
-                            catch (Exception e)
+                            else
                             {
-                                if (mView.IsActive())
+                                if (this.mView.IsActive())
                                 {
                                     this.mView.HideProgressDialog();
+                                    this.mView.ShowRetryOptionsCancelledException(null);
                                 }
-                                Log.Error("DB Exception", e.StackTrace);
-                                Utility.LoggingNonFatalError(e);
+                                ClearDataCache();
                             }
-
-
-                            //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
-                            if (this.mView.IsActive())
-                            {
-                                this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                            }
-                            //UserSessions.SavePhoneVerified(mSharedPref, true);
-                            this.mView.ShowDashboard();
-
                         }
                         if (this.mView.IsActive())
                         {
@@ -425,6 +355,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsCancelledException(e);
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -435,6 +366,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -447,6 +379,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.ShowRetryOptionsUnknownException(e);
 
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -457,6 +390,43 @@ namespace myTNB_Android.Src.Login.MVP
             }
 
 
+        }
+
+        private void ClearDataCache()
+        {
+            try
+            {
+                UserEntity.RemoveActive();
+                UserRegister.RemoveActive();
+                CustomerBillingAccount.RemoveActive();
+                NotificationFilterEntity.RemoveAll();
+                UserNotificationEntity.RemoveAll();
+                SubmittedFeedbackEntity.Remove();
+                SMUsageHistoryEntity.RemoveAll();
+                UsageHistoryEntity.RemoveAll();
+                BillHistoryEntity.RemoveAll();
+                PaymentHistoryEntity.RemoveAll();
+                REPaymentHistoryEntity.RemoveAll();
+                AccountDataEntity.RemoveAll();
+                SummaryDashBoardAccountEntity.RemoveAll();
+                SelectBillsEntity.RemoveAll();
+                NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                NewFAQParentManager.DeleteTable();
+                SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                SSMRMeterReadingScreensParentManager.DeleteTable();
+                SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                EnergySavingTipsParentManager.DeleteTable();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -479,6 +449,130 @@ namespace myTNB_Android.Src.Login.MVP
         public void Start()
         {
             // NO IMPL
+        }
+
+        private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+        {
+            try
+            {
+                int ctr = 0;
+                if (AccountSortingEntity.HasItems(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV))
+                {
+                    List<CustomerBillingAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                    List<CustomerBillingAccount> fetchList = new List<CustomerBillingAccount>();
+
+                    List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
+                    List<int> newExisitingListArray = new List<int>();
+                    List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
+
+                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    {
+                        int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+
+                        var newRecord = new CustomerBillingAccount()
+                        {
+                            Type = acc.Type,
+                            AccNum = acc.AccountNumber,
+                            AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
+                            UserAccountId = acc.UserAccountID,
+                            ICNum = acc.IcNum,
+                            AmtCurrentChg = acc.AmCurrentChg,
+                            IsRegistered = acc.IsRegistered,
+                            IsPaid = acc.IsPaid,
+                            isOwned = acc.IsOwned,
+                            AccountTypeId = acc.AccountTypeId,
+                            AccountStAddress = acc.AccountStAddress,
+                            OwnerName = acc.OwnerName,
+                            AccountCategoryId = acc.AccountCategoryId,
+                            SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
+                            IsSelected = false
+                        };
+
+                        if (index != -1)
+                        {
+                            newExisitingListArray.Add(index);
+                        }
+                        else
+                        {
+                            newAccountList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExisitingListArray.Count > 0)
+                    {
+                        newExisitingListArray.Sort();
+
+                        foreach(int index in newExisitingListArray)
+                        {
+                            CustomerBillingAccount oldAcc = existingSortedList[index];
+
+                            CustomerAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+
+                            var newRecord = new CustomerBillingAccount()
+                            {
+                                Type = newAcc.Type,
+                                AccNum = newAcc.AccountNumber,
+                                AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
+                                UserAccountId = newAcc.UserAccountID,
+                                ICNum = newAcc.IcNum,
+                                AmtCurrentChg = newAcc.AmCurrentChg,
+                                IsRegistered = newAcc.IsRegistered,
+                                IsPaid = newAcc.IsPaid,
+                                isOwned = newAcc.IsOwned,
+                                AccountTypeId = newAcc.AccountTypeId,
+                                AccountStAddress = newAcc.AccountStAddress,
+                                OwnerName = newAcc.OwnerName,
+                                AccountCategoryId = newAcc.AccountCategoryId,
+                                SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
+                                IsSelected = false
+                            };
+
+                            newExistingList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExistingList.Count > 0)
+                    {
+                        newExistingList[0].IsSelected = true;
+                        foreach (CustomerBillingAccount acc in newExistingList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+
+                        string accountList = JsonConvert.SerializeObject(newExistingList);
+
+                        AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, accountList);
+                    }
+                    else
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                    }
+
+                    if (newAccountList.Count > 0)
+                    {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (CustomerBillingAccount acc in newAccountList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    {
+                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
+                    }
+                    CustomerBillingAccount.MakeFirstAsSelected();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

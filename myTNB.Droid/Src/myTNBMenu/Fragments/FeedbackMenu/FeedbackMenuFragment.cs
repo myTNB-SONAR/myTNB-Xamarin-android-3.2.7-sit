@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.Constraints;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -16,7 +17,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -25,9 +25,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 {
     public class FeedbackMenuFragment : BaseFragment, FeedbackMenuContract.IView
     {
-        [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
-
+        [BindView(Resource.Id.feedbackContent)]
+        CoordinatorLayout feedbackContent;
 
         [BindView(Resource.Id.txtFeedbackBillingAndPayment)]
         TextView txtFeedbackBillingAndPayment;
@@ -74,12 +73,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [BindView(Resource.Id.spaceOthers)]
         View spaceOthers;
 
-
         MaterialDialog progressDialog;
-        LoadingOverlay loadingOverlay;
+
+        [BindView(Resource.Id.feedbackMenuHeaderImage)]
+        ImageView feedbackMenuHeaderImage;
+        
 
         FeedbackMenuContract.IUserActionsListener userActionsListener;
         FeedbackMenuPresenter mPresenter;
+
+        string feedbackBillRelatedTitle = "";
+        string feedbackStreetLampTitle = "";
+        string feedbackOthersTitle = "";
+
+        string submittedFeedbackTitle = "";
 
 
         public override int ResourceId()
@@ -116,6 +123,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                         txtSubmittedFeedback,
                         txtFeedbackOthers);
 
+            ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
+
+            feedbackMenuHeaderImage.Visibility = ViewStates.Gone;
+
             this.userActionsListener.Start();
 
 
@@ -126,14 +137,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Feedback");
             }
             catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -144,6 +161,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             base.OnResume();
             this.userActionsListener.OnResume();
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public void SetPresenter(FeedbackMenuContract.IUserActionsListener userActionListener)
@@ -159,6 +180,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         public void ShowBillingPayment()
         {
             var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackLoginBillRelatedActivity));
+            billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
             StartActivity(billingPaymentFeedback);
         }
 
@@ -167,6 +189,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             // TODO : ADD FAULTY STREE
             var faultyStreetLamps = new Intent(this.Activity, typeof(FeedbackLoginFaultyStreetLampsActivity));
+            faultyStreetLamps.PutExtra("TITLE",feedbackStreetLampTitle);
             StartActivity(faultyStreetLamps);
         }
 
@@ -174,12 +197,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             // TODO : ADD OTHERS
             var feedbackOthers = new Intent(this.Activity, typeof(FeedbackLoginOthersActivity));
+            feedbackOthers.PutExtra("TITLE",feedbackOthersTitle);
             StartActivity(feedbackOthers);
         }
 
         public void ShowSubmittedFeedback()
         {
             var submittedFeedback = new Intent(this.Activity, typeof(SelectSubmittedFeedbackActivity));
+            submittedFeedback.PutExtra("TITLE", submittedFeedbackTitle);
             StartActivity(submittedFeedback);
         }
 
@@ -188,55 +213,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [OnClick(Resource.Id.billRelatedContraint)]
         void OnBillingAndPayment(object sender, EventArgs eventArgs)
         {
-
-            if (DownTimeEntity.IsBCRMDown())
+            if (!this.GetIsClicked())
             {
-                OnBCRMDownTimeErrorMessage();
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnBillingPayment();
+                }
             }
-            else
-            {
-                this.userActionsListener.OnBillingPayment();
-            }
-
         }
 
         [OnClick(Resource.Id.faultyStreetLampsContraint)]
         void OnFaultyStreetLamps(object sender, EventArgs eventArgs)
         {
-            if (DownTimeEntity.IsBCRMDown())
+            if (!this.GetIsClicked())
             {
-                OnBCRMDownTimeErrorMessage();
-            }
-            else
-            {
-                this.userActionsListener.OnFaultyStreetLamps();
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnFaultyStreetLamps();
+                }
             }
         }
 
         [OnClick(Resource.Id.othersContraint)]
         void OnOthers(object sender, EventArgs eventArgs)
         {
-            if (DownTimeEntity.IsBCRMDown())
+            if (!this.GetIsClicked())
             {
-                OnBCRMDownTimeErrorMessage();
-            }
-            else
-            {
-                this.userActionsListener.OnOthers();
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnOthers();
+                }
             }
         }
 
         [OnClick(Resource.Id.submittedFeedbackConstraint)]
         void OnSubmittedFeedback(object sender, EventArgs eventArgs)
         {
-            //if (DownTimeEntity.IsBCRMDown())
-            //{
-            //    OnBCRMDownTimeErrorMessage();
-            //}
-            //else
-            //{
-            this.userActionsListener.OnSubmittedFeedback();
-            //}
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnSubmittedFeedback();
+            }
         }
 
 
@@ -253,20 +288,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void ShowProgressDialog()
         {
-            //if (progressDialog != null && !progressDialog.IsShowing)
-            //{
-            //    progressDialog.Show();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {
@@ -276,16 +300,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void HideProgressDialog()
         {
-            //if (progressDialog != null && progressDialog.IsShowing)
-            //{
-            //    progressDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (System.Exception e)
             {
@@ -301,15 +318,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(feedbackContent, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
             }
             );
+            View snackbarView = mCancelledExceptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -321,15 +342,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(feedbackContent, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
             }
             );
+            View snackbarView = mApiExcecptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -341,15 +366,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(feedbackContent, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
             }
             );
+            View snackbarView = mUknownExceptionSnackBar.View;
+            TextView tv = snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -369,16 +398,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
+                        feedbackBillRelatedTitle = fc.Name;
+                        txtFeedbackBillingAndPayment.Text = fc.Name;
+                        txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
                         faultyStreetLampsContraint.Visibility = ViewStates.Visible;
                         spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
+                        feedbackStreetLampTitle = fc.Name;
+                        txtFeedbackFaultyStreetLamps.Text = fc.Name;
+                        txtFeedbackFaultyStreetLampsContent.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("3"))
                     {
                         othersContraint.Visibility = ViewStates.Visible;
                         spaceOthers.Visibility = ViewStates.Visible;
+                        feedbackOthersTitle = fc.Name;
+                        txtFeedbackOthers.Text = fc.Name;
+                        txtFeedbackOthersContent.Text = fc.Desc;
+                    }
+                    else if (fc.Id.Equals("10"))
+                    {
+                        submittedFeedbackTitle = fc.Name;
+                        txtSubmittedFeedback.Text = fc.Name;
+                        txtSubmittedFeedbackContent.Text = fc.Desc;
                     }
 
                 }
@@ -427,22 +471,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     }
                     else
                     {
-                        message = GetString(Resource.String.app_launch_http_exception_error);
+                        message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                     }
 
                 }
 
-                mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+                mErrorMessageSnackBar = Snackbar.Make(feedbackContent, message, Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
                 );
                 View v = mErrorMessageSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
                 v.SetPadding(0, 0, 0, 50);
                 mErrorMessageSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

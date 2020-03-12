@@ -1,21 +1,18 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.Database.Model
 {
     [Table("CustomerBillingAccountEntity")]
     public class CustomerBillingAccount
     {
-        //"__type": "Billing.BillingRegListSSP",
-        //   "accNum": "220163099904",
-        //   "userAccountID": null,
-        //   "accDesc": "MANUFACTURE SDN. BHD. BEST FORM BRAKE",
-        //   "icNum": null,
-        //   "amCurrentChg": 4710.4,
-        //   "isRegistered": "False",
-        //   "isPaid": "False",
         [Column("__type")]
         public string Type { get; set; }
 
@@ -61,14 +58,42 @@ namespace myTNB_Android.Src.Database.Model
         [Column("smartMeterCode")]
         public string SmartMeterCode { get; set; }
 
+        [Column("isTaggedSMR")]
+        public bool IsTaggedSMR { get; set; }
+
+        [Column("IsPeriodOpen")]
+        public bool IsPeriodOpen { get; set; }
+        [Column("IsSMROnBoardingDontShowAgain")]
+        public bool IsSMROnBoardingDontShowAgain { get; set; }
+
+        [Column("billingDetails")]
+        public string billingDetails { get; set; }
+
+        [Column("IsSMROnboardingShown")]
+        public bool IsSMROnboardingShown { get; set; }
+
+        [Column("IsSMRMeterReadingOnBoardShown")]
+        public bool IsSMRMeterReadingOnBoardShown { get; set; }
+
+        [Column("IsSMRMeterReadingThreePhaseOnBoardShown")]
+        public bool IsSMRMeterReadingThreePhaseOnBoardShown { get; set; }
+
+        [Column("IsSMRTakePhotoOnBoardShown")]
+        public bool IsSMRTakePhotoOnBoardShown { get; set; }
+
+        [Column("IsWhatNewShown")]
+        public bool IsWhatNewShown { get; set; }
+
+        [Column("IsPayBillShown")]
+        public bool IsPayBillShown { get; set; }
+
+        [Column("IsViewBillShown")]
+        public bool IsViewBillShown { get; set; }
+        
         public static int CreateTable()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
             return (int)db.CreateTable<CustomerBillingAccount>();
-            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -76,100 +101,8 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<CustomerBillingAccount>();
         }
 
-        /// <summary>
-        /// Insert or Replace 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="accNum"></param>
-        /// <param name="accDesc"></param>
-        /// <param name="userAccountID"></param>
-        /// <param name="icNum"></param>
-        /// <param name="amtCurrentChg"></param>
-        /// <param name="isRegistered"></param>
-        /// <param name="isPaid"></param>
-        /// <param name="isSelected"></param>
-        /// <param name="smartMeterCode"></param>
-        /// <returns>Rows changed</returns>
-        public static int InsertOrReplace(string type
-            , string accNum
-            , string accDesc
-            , string userAccountID
-            , string icNum
-            , string amtCurrentChg
-            , bool isRegistered
-            , bool isPaid
-            , string accountTypeId
-            , string accountStAddress
-            , string ownerName
-            , string accountCategoryId
-            , string smartMeterCode
-            , bool isSelected)
-        {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            var newRecord = new CustomerBillingAccount()
-            {
-                Type = type,
-                AccNum = accNum,
-                AccDesc = accDesc,
-                UserAccountId = userAccountID,
-                ICNum = icNum,
-                AmtCurrentChg = amtCurrentChg,
-                IsRegistered = isRegistered,
-                IsPaid = isPaid,
-                AccountTypeId = accountTypeId,
-                AccountStAddress = accountStAddress,
-                OwnerName = ownerName,
-                AccountCategoryId = accountCategoryId,
-                SmartMeterCode = smartMeterCode == null ? "0" : smartMeterCode,
-                IsSelected = isSelected
-            };
-
-            int newRecordRow = db.InsertOrReplace(newRecord);
-
-            return newRecordRow;
-            //}
-        }
-
-
-        public static int InsertOrReplace(Account accountResponse)
-        {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            var newRecord = new CustomerBillingAccount()
-            {
-                Type = accountResponse.Type,
-                AccNum = accountResponse.AccountNumber,
-                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
-                UserAccountId = accountResponse.UserAccountID,
-                ICNum = accountResponse.IcNum,
-                AmtCurrentChg = accountResponse.AmCurrentChg,
-                IsRegistered = accountResponse.IsRegistered,
-                IsPaid = accountResponse.IsPaid,
-                isOwned = accountResponse.IsOwned,
-                AccountTypeId = accountResponse.AccountTypeId,
-                AccountStAddress = accountResponse.AccountStAddress,
-                OwnerName = accountResponse.OwnerName,
-                AccountCategoryId = accountResponse.AccountCategoryId,
-                SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
-                IsSelected = false
-            };
-
-            int newRecordRow = db.InsertOrReplace(newRecord);
-
-            return newRecordRow;
-            //}
-        }
-
         public static int InsertOrReplace(NewAccount accountResponse, bool isSelected)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
             var newRecord = new CustomerBillingAccount()
             {
@@ -187,21 +120,18 @@ namespace myTNB_Android.Src.Database.Model
                 OwnerName = accountResponse.ownerName,
                 AccountCategoryId = accountResponse.accountCategoryId,
                 SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
-                IsSelected = isSelected
+                IsSelected = isSelected,
+                IsTaggedSMR = accountResponse.IsTaggedSMR
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
 
             return newRecordRow;
-            //}
         }
 
 
         public static int InsertOrReplace(Account accountResponse, bool isSelected)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
 
             var newRecord = new CustomerBillingAccount()
@@ -220,87 +150,209 @@ namespace myTNB_Android.Src.Database.Model
                 OwnerName = accountResponse.OwnerName,
                 AccountCategoryId = accountResponse.AccountCategoryId,
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
-                isOwned = accountResponse.IsOwned
+                IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
+                isOwned = accountResponse.IsOwned,
+                IsSMROnBoardingDontShowAgain = false,
+                IsPeriodOpen = false
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
 
             return newRecordRow;
-            //}
         }
 
-        public static IEnumerable<CustomerBillingAccount> Enumerate()
+        public static int InsertOrReplace(CustomerAccountListResponse.CustomerAccountData accountResponse, bool isSelected)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
-            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity");
-            //}
+
+            var newRecord = new CustomerBillingAccount()
+            {
+                Type = accountResponse.Type,
+                AccNum = accountResponse.AccountNumber,
+                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
+                UserAccountId = accountResponse.UserAccountID,
+                ICNum = accountResponse.IcNum,
+                AmtCurrentChg = accountResponse.AmCurrentChg,
+                IsRegistered = accountResponse.IsRegistered,
+                IsPaid = accountResponse.IsPaid,
+                IsSelected = isSelected,
+                AccountTypeId = accountResponse.AccountTypeId,
+                AccountStAddress = accountResponse.AccountStAddress,
+                OwnerName = accountResponse.OwnerName,
+                AccountCategoryId = accountResponse.AccountCategoryId,
+                SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
+                IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
+                isOwned = accountResponse.IsOwned,
+                IsSMROnBoardingDontShowAgain = false,
+                IsPeriodOpen = false
+            };
+
+            int newRecordRow = db.InsertOrReplace(newRecord);
+
+            return newRecordRow;
         }
 
+        public static int InsertOrReplace(CustomerBillingAccount account)
+        {
 
+            var db = DBHelper.GetSQLiteConnection();
+
+            int newRecordRow = db.InsertOrReplace(account);
+
+            return newRecordRow;
+
+        }
 
         public static List<CustomerBillingAccount> List()
         {
-            /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-            // return Enumerate().ToList();
-            /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-            List<CustomerBillingAccount> ReAccount = REAccountList();
-            List<CustomerBillingAccount> NonReAccount = NonREAccountList();
+            List<CustomerBillingAccount> sortedList = new List<CustomerBillingAccount>();
+            UserEntity activeUser = UserEntity.GetActive();
 
-            List<CustomerBillingAccount> customerAccounts = new List<CustomerBillingAccount>();
-            if (ReAccount != null && ReAccount.Count() > 0)
+            if (activeUser != null)
             {
-                customerAccounts.AddRange(ReAccount.OrderBy(x => x.AccDesc).ToList());
+                if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                {
+                    sortedList.AddRange(AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV));
+                    List<CustomerBillingAccount> excludeREList = REAccountListExclude(sortedList);
+                    List<CustomerBillingAccount> excludeNonREList = NonREAccountListExclude(sortedList);
+                    if (excludeREList != null && excludeREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeREList);
+                    }
+                    if (excludeNonREList != null && excludeNonREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeNonREList);
+                    }
+                }
+                else
+                {
+                    sortedList.AddRange(REAccountList());
+                    sortedList.AddRange(NonREAccountList());
+                }
             }
-
-            if (NonReAccount != null && NonReAccount.Count() > 0)
+            else
             {
-                customerAccounts.AddRange(NonReAccount.OrderBy(x => x.AccDesc).ToList());
+                sortedList.AddRange(REAccountList());
+                sortedList.AddRange(NonREAccountList());
             }
-
-            return customerAccounts;
+            return sortedList;
         }
 
         public static bool HasSelected()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            CustomerBillingAccount selected = updatedList.Find(x => x.IsSelected);
+
+                            if (selected != null)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var db = DBHelper.GetSQLiteConnection();
             return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).Count > 0;
-            //}
         }
 
         public static bool HasItems()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            return updatedList.Count > 0;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var db = DBHelper.GetSQLiteConnection();
-            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity ").Count > 0;
-            //}
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity").Count > 0;
         }
 
         public static CustomerBillingAccount GetSelected()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            CustomerBillingAccount selected =  updatedList.Find(x => x.IsSelected);
+                            if (selected != null)
+                            {
+                                return selected;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var db = DBHelper.GetSQLiteConnection();
             return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).ToList()[0];
-            //}
         }
 
         public static CustomerBillingAccount GetFirst()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity", true).ToList()[0];
-            //}
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            return updatedList[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+            return GetSortedCustomerBillingAccounts()[0];
         }
 
         public static CustomerBillingAccount GetSelectedOrFirst()
@@ -316,85 +368,244 @@ namespace myTNB_Android.Src.Database.Model
             return null;
         }
 
-        public static int RemoveSelected()
+        public static void RemoveSelected()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("UPDATE CustomerBillingAccountEntity SET isSelected = ? WHERE isSelected = ?", false, true);
-            //}
+            db.Execute("UPDATE CustomerBillingAccountEntity SET isSelected = ? WHERE isSelected = ?", false, true);
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSelected = false;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
-        public static int Update(string accNum, bool isSelected)
+        public static void UpdateIsSMRTagged(string accNum, bool isTaggedSMR)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
             var existingRecord = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ? ", accNum);
 
             if (existingRecord != null && existingRecord.Count > 0)
             {
                 var customerBARecord = existingRecord[0];
-                customerBARecord.IsSelected = isSelected;
-                return db.Update(customerBARecord);
+                customerBARecord.IsTaggedSMR = isTaggedSMR;
+                db.Update(customerBARecord);
+
+                try
+                {
+                    UserEntity activeUser = UserEntity.GetActive();
+                    if (activeUser != null)
+                    {
+                        if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                        {
+                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, customerBARecord);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        public static void RemoveActive()
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+
+                UserEntity activeUser = UserEntity.GetActive();
+
+                try
+                {
+                    if (activeUser != null)
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(activeUser.Email, Constants.APP_CONFIG.ENV);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                db.Execute("Delete from CustomerBillingAccountEntity ");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        public static void Remove(string AccountNum)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Delete from CustomerBillingAccountEntity WHERE accNum = ?", AccountNum);
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        AccountSortingEntity.RemoveSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, AccountNum);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void UpdateAccountName(string newAccountName, string accNum)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET accDesc = ? WHERE accNum = ?", newAccountName, accNum);
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        CustomerBillingAccount updatedAccount = FindByAccNum(accNum);
+                        if (updatedAccount != null)
+                        {
+                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void UpdateBillingDetails(List<SummaryDashBoardAccountEntity> summaryDetails)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isUpdateNeeded = false;
+
+            UserEntity activeUser = UserEntity.GetActive();
+
+            try
+            {
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        isUpdateNeeded = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
 
-            return 0;
-            //}
-        }
-        public static int RemoveActive()
-        {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("Delete from CustomerBillingAccountEntity ");
-            //}
+            foreach (SummaryDashBoardAccountEntity billingDetails in summaryDetails)
+            {
+                db.Execute("Update CustomerBillingAccountEntity SET billingDetails = ? WHERE accNum = ?", billingDetails.JsonResponse, billingDetails.AccountNo);
+
+                if (isUpdateNeeded && activeUser != null)
+                {
+                    try
+                    {
+                        CustomerBillingAccount acc = FindByAccNum(billingDetails.AccountNo);
+                        AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, acc);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+            }
         }
 
-        public static int Remove(string AccountNum)
+        public static void RemoveCustomerBillingDetails()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("Delete from CustomerBillingAccountEntity WHERE accNum = ?", AccountNum);
-            //}
-        }
+            db.Execute("Update CustomerBillingAccountEntity SET billingDetails = null");
 
-        public static int UpdateAccountName(string newAccountName, string accNum)
-        {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("Update CustomerBillingAccountEntity SET accDesc = ? WHERE accNum = ?", newAccountName, accNum);
-            //}
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.billingDetails = null;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public static void SetSelected(string accNum)
         {
-            //using(var db = DBHelper.GetSQLiteConnection()) {
-            //    db.Execute("Update CustomerBillingAccountEntity SET IsSelected = ? WHERE accNum = ?", true, accNum);
-            //}
-
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
             db.Execute("Update CustomerBillingAccountEntity SET IsSelected = ? WHERE accNum = ?", true, accNum);
-            //db.Close();
-            //}
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        CustomerBillingAccount updatedAccount = FindByAccNum(accNum);
+                        if (updatedAccount != null)
+                        {
+                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public static CustomerBillingAccount FindByAccNum(string accNum)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //{
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
             var record = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum =?", accNum);
 
@@ -403,58 +614,588 @@ namespace myTNB_Android.Src.Database.Model
                 return record[0];
             }
             return null;
-            //}
         }
 
 
         public static List<CustomerBillingAccount> REAccountList()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //{
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
             reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-            //db.Close();
             return reAccountList;
-            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-            //}
+        }
+
+        public static List<CustomerBillingAccount> REAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 AND accNum NOT IN ("+ excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
+        public static List<CustomerBillingAccount> NonREAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
         }
 
 
         public static List<CustomerBillingAccount> NonREAccountList()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //{
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
             var db = DBHelper.GetSQLiteConnection();
-            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             List<CustomerBillingAccount> nonREAccountList = new List<CustomerBillingAccount>();
             nonREAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-            //db.Close();
             return nonREAccountList;
-            //}
+        }
+
+        public static List<CustomerBillingAccount> GetSortedCustomerBillingAccounts()
+        {
+            List<CustomerBillingAccount> sortedList = new List<CustomerBillingAccount>();
+            UserEntity activeUser = UserEntity.GetActive();
+
+            if (activeUser != null)
+            {
+                if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                {
+                    sortedList.AddRange(AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV));
+                    List<CustomerBillingAccount> excludeREList = REAccountListExclude(sortedList);
+                    List<CustomerBillingAccount> excludeNonREList = NonREAccountListExclude(sortedList);
+                    if (excludeREList != null && excludeREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeREList);
+                    }
+                    if (excludeNonREList != null && excludeNonREList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeNonREList);
+                    }
+                }
+                else
+                {
+                    sortedList.AddRange(REAccountList());
+                    sortedList.AddRange(NonREAccountList());
+                }
+            }
+            else
+            {
+                sortedList.AddRange(REAccountList());
+                sortedList.AddRange(NonREAccountList());
+            }
+            return sortedList;
+        }
+
+        public static bool HasOneItemOnly()
+        {
+            List<CustomerBillingAccount> sortedList = GetSortedCustomerBillingAccounts();
+
+            return sortedList != null && sortedList.Count == 1;
+        }
+
+        public static List<CustomerBillingAccount> GetDefaultSortedCustomerBillingAccounts()
+        {
+            List<CustomerBillingAccount> sortedList = new List<CustomerBillingAccount>();
+            sortedList.AddRange(REAccountList());
+            sortedList.AddRange(NonREAccountList());
+            return sortedList;
+        }
+
+        public static List<CustomerBillingAccount> EligibleSMRAccountList()
+        {
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && !x.IsTaggedSMR && x.isOwned));
+                        List<CustomerBillingAccount> existingList = EligibleSMRAccountListExclude(eligibleSMRAccounts);
+                        if (existingList != null && existingList.Count > 0)
+                        {
+                            eligibleSMRAccounts.AddRange(existingList);
+                        }
+
+                        return eligibleSMRAccounts;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            var db = DBHelper.GetSQLiteConnection();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMRAccounts;
+        }
+
+        public static List<CustomerBillingAccount> EligibleSMRAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
+        public static List<CustomerBillingAccount> SMAccountList()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0'").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMAccounts;
+        }
+
+        public static List<CustomerBillingAccount> GetEligibleAndSMRAccountList()
+        {
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.isOwned));
+                        List<CustomerBillingAccount> existingList = GetEligibleAndSMRAccountListExclude(eligibleSMRAccounts);
+                        if (existingList != null && existingList.Count > 0)
+                        {
+                            eligibleSMRAccounts.AddRange(existingList);
+                        }
+                        return eligibleSMRAccounts;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            var db = DBHelper.GetSQLiteConnection();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1").ToList().OrderBy(x => !x.IsTaggedSMR).ToList();
+            return eligibleSMRAccounts;
+        }
+
+        public static List<CustomerBillingAccount> GetEligibleAndSMRAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
+        public static List<CustomerBillingAccount> CurrentSMRAccountList()
+        {
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR && x.isOwned));
+                        List<CustomerBillingAccount> existingList = CurrentSMRAccountListExclude(eligibleSMRAccounts);
+                        if (existingList != null && existingList.Count > 0)
+                        {
+                            eligibleSMRAccounts.AddRange(existingList);
+                        }
+                        return eligibleSMRAccounts;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            var db = DBHelper.GetSQLiteConnection();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 1 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMRAccounts;
+        }
+
+        public static List<CustomerBillingAccount> CurrentSMRAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 1 AND isOwned = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
         }
 
         public static void MakeFirstAsSelected()
         {
-            List<CustomerBillingAccount> ReAccount = REAccountList();
-            if (ReAccount != null && ReAccount.Count() > 0)
+            SetSelected(GetSortedCustomerBillingAccounts()[0].AccNum);
+        }
+
+        public static bool HasUpdatedBillingDetails(string accountNumber)
+        {
+            bool isUpdated = false;
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("SELECT billingDetails FROM CustomerBillingAccountEntity WHERE accNum = ?", accountNumber);
+            if (customerBillingAccounts.Count > 0)
             {
-                SetSelected(ReAccount[0].AccNum);
+                isUpdated = customerBillingAccounts[0].billingDetails != null;
             }
-            else
+            return isUpdated;
+        }
+
+        public static void UpdateIsSMROnboardingShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMROnboardingShown = 1");
+
+            try
             {
-                List<CustomerBillingAccount> NonReAccount = NonREAccountList();
-                if (NonReAccount != null && NonReAccount.Count() > 0)
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
                 {
-                    SetSelected(NonReAccount[0].AccNum);
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMROnboardingShown = true;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static bool GetIsSMROnboardingShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMROnboardingShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMROnboardingShown;
+            }
+            return isShown;
+        }
+
+        public static void SetIsSMRMeterReadingOnePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingOnBoardShown = 1");
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingOnBoardShown = true;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void UnSetIsSMRMeterReadingOnePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingOnBoardShown = 0");
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingOnBoardShown = false;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static bool GetIsSMRMeterReadingOnePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMRMeterReadingOnBoardShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMRMeterReadingOnBoardShown;
+            }
+            return isShown;
+        }
+
+        public static void SetIsSMRMeterReadingThreePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingThreePhaseOnBoardShown = 1");
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingThreePhaseOnBoardShown = true;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void UnSetIsSMRMeterReadingThreePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingThreePhaseOnBoardShown = 0");
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRMeterReadingThreePhaseOnBoardShown = false;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void SetIsSMRTakePhotoOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRTakePhotoOnBoardShown = 1");
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> updatedList = new List<CustomerBillingAccount>();
+                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        if (updatedList != null && updatedList.Count > 0)
+                        {
+                            foreach (CustomerBillingAccount acc in updatedList)
+                            {
+                                acc.IsSMRTakePhotoOnBoardShown = true;
+                            }
+                            string updatedListString = JsonConvert.SerializeObject(updatedList);
+                            AccountSortingEntity.InsertOrReplace(activeUser.Email, Constants.APP_CONFIG.ENV, updatedListString);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 
+        public static bool GetIsSMRMeterReadingThreePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMRMeterReadingThreePhaseOnBoardShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMRMeterReadingThreePhaseOnBoardShown;
+            }
+            return isShown;
+        }
+
+        public static bool GetIsSMRTakePhotoOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMRTakePhotoOnBoardShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMRTakePhotoOnBoardShown;
+            }
+            return isShown;
+        }
+
+        public static bool GetIsPayBillEnabled()
+        {
+            bool enabled = false;
+
+            if (NonREAccountList().Count > 0)
+            {
+                enabled = true;
+            }
+
+            return enabled;
+        }
+
+        public static bool GetIsViewBillEnabled()
+        {
+            bool enabled = false;
+
+            if (HasItems())
+            {
+                enabled = true;
+            }
+
+            return enabled;
         }
 
     }

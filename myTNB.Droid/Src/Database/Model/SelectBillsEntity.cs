@@ -151,11 +151,18 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM SelectBillsEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SelectBillsEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static void RemoveAccountData(string accNo)

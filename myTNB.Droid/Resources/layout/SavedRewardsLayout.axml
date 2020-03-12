@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/reward_background"
+        android:id="@+id/rewardMainLayout"
+        android:visibility="visible"
+        android:paddingTop="8dp">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rewardRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollIndicators="none" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rewardEmptyLayout"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/rewardEmptyImg"
+            android:layout_height="94dp"
+            android:layout_width="102dp"
+            android:layout_marginTop="88dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_saved_reward_empty"/>
+        <TextView
+            android:id="@+id/txtEmptyReward"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="#8b8b8b"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Your saved rewards will appear here."
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
+    </LinearLayout>
+</LinearLayout>

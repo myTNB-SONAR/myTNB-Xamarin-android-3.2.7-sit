@@ -4,6 +4,9 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -20,7 +23,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
               , Icon = "@drawable/ic_launcher"
    , ScreenOrientation = ScreenOrientation.Portrait
    , Theme = "@style/Theme.ForgetPassword")]
-    public class ForgetPasswordActivity : BaseToolbarAppCompatActivity, ForgetPasswordContract.IView
+    public class ForgetPasswordActivity : BaseActivityCustom, ForgetPasswordContract.IView
     {
 
         private ForgetPasswordPresenter mPresenter;
@@ -58,6 +61,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         Button btnSubmit;
 
         private Snackbar mSnackBar;
+        const string PAGE_ID = "ForgotPassword";
 
         public void ClearErrorMessages()
         {
@@ -83,6 +87,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         public void ShowEmptyEmailError()
         {
             txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_empty_email_error);
+            this.SetIsClicked(false);
         }
 
         public void ShowError(string errorMessage)
@@ -95,30 +100,18 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.forget_password_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
+                View v = mSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mSnackBar.Show();
             }
+            this.SetIsClicked(false);
         }
 
         public void ShowSuccess(string message)
         {
-            //if (mSnackBar != null && mSnackBar.IsShown)
-            //{
-            //    mSnackBar.Dismiss();
-            //    mSnackBar.Show();
-            //}
-            //else
-            //{
-            //    mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            //    .SetAction(GetString(Resource.String.forget_password_btn_close), delegate { mSnackBar.Dismiss(); }
-            //    );
-            //    View v = mSnackBar.View;
-            //    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            //    tv.SetMaxLines(5);
-            //    mSnackBar.Show();
-            //}
-
             Intent nextInent = new Intent(this, typeof(VerificationCodeActivity));
             nextInent.PutExtra("email", txtEmail.Text);
             StartActivity(nextInent);
@@ -126,14 +119,35 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Forgot Password");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowInvalidEmailError()
         {
-            txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_invalid_email_error);
+            txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
+            this.SetIsClicked(false);
+        }
+
+        public void ShowCodeVerifiedSuccess()
+        {
+
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+
 
             try
             {
@@ -151,6 +165,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                    .SetCancelable(false)
                    .Create();
 
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
                 TextViewUtils.SetMuseoSans500Typeface(txtEmailTitle);
 
@@ -159,6 +175,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, textInputLayoutVerificationCode);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+
+                txtEmailTitle.Text = GetLabelByLanguage("subTitle");
+                txtEmailLinkInfo.Text = GetLabelByLanguage("details");
+                btnSubmit.Text = GetLabelCommonByLanguage("submit");
+
+                txtEmail.TextChanged += EmailTextChange;
+                DisableSubmitButton();
             }
             catch (Exception e)
             {
@@ -177,18 +200,24 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnGetCode(object sender, EventArgs eventArgs)
         {
-            string email = txtEmail.Text;
-            this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                string email = txtEmail.Text;
+                this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+            }
         }
 
         public void EnableSubmitButton()
         {
             btnSubmit.Enabled = true;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
         public void DisableSubmitButton()
         {
             btnSubmit.Enabled = false;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         public void ShowProgressDialog()
@@ -229,8 +258,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -239,7 +268,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -251,8 +284,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -261,8 +294,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
@@ -273,8 +309,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -283,8 +319,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -296,10 +335,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             try
             {
-                if (mVerificationProgressDialog != null && !mVerificationProgressDialog.IsShowing)
-                {
-                    mVerificationProgressDialog.Show();
-                }
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -311,10 +347,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             try
             {
-                if (mVerificationProgressDialog != null && mVerificationProgressDialog.IsShowing)
-                {
-                    mVerificationProgressDialog.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -335,8 +368,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCodeCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCodeCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_code_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_code_cancelled_exception_btn_retry), delegate
+            mCodeCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCodeCancelledExceptionSnackBar.Dismiss();
@@ -344,7 +377,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
             }
             );
+            View v = mCodeCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCodeCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         private Snackbar mCodeApiExceptionSnackBar;
@@ -355,8 +392,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCodeApiExceptionSnackBar.Dismiss();
             }
 
-            mCodeApiExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_code_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_code_cancelled_exception_btn_retry), delegate
+            mCodeApiExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCodeApiExceptionSnackBar.Dismiss();
@@ -364,7 +401,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
             }
             );
+            View v = mCodeApiExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCodeApiExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
         private Snackbar mCodeUnknownException;
         public void ShowRetryOptionsCodeUnknownException(Exception exception)
@@ -374,8 +415,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 mCodeUnknownException.Dismiss();
             }
 
-            mCodeUnknownException = Snackbar.Make(rootView, GetString(Resource.String.forget_password_code_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_code_cancelled_exception_btn_retry), delegate
+            mCodeUnknownException = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCodeUnknownException.Dismiss();
@@ -383,7 +424,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
             }
             );
+            View v = mCodeUnknownException.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCodeUnknownException.Show();
+            this.SetIsClicked(false);
         }
 
         public void ClearTextFields()
@@ -423,6 +468,67 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public void ShowEmptyErrorPin_1()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin_2()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin_3()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin_4()
+        {
+
+        }
+
+        public void ShowEmptyErrorPin()
+        {
+
+        }
+
+        private void EmailTextChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                string email = txtEmail.Text;
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    if (!Patterns.EmailAddress.Matcher(email).Matches())
+                    {
+                        ShowInvalidEmailError();
+                        DisableSubmitButton();
+                    }
+                    else
+                    {
+                        EnableSubmitButton();
+                        ClearErrorMessages();
+                    }
+                }
+                else
+                {
+                    DisableSubmitButton();
+                    ClearErrorMessages();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
     }

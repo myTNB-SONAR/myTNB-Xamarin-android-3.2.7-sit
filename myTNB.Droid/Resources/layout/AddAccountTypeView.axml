@@ -22,7 +22,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:text="@string/suppy_account_question_one"
-                    android:textSize="18sp"
+                    android:textSize="18dp"
                     android:textColor="@color/blue"
                     android:layout_margin="14dp" />
                 <LinearLayout
@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:text="@string/yes"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
                         android:textColor="@color/tunaGrey" />
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:text="@string/owner_constrain"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:textColor="@color/tunaGrey" />
@@ -77,16 +77,15 @@
                         android:text="@string/no"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:textColor="@color/tunaGrey" />
                     <TextView
                         android:id="@+id/txtNonOwnerConstrain"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:text="@string/non_owner_constrain"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
                         android:textColor="@color/tunaGrey" />
                     <LinearLayout
                         android:id="@+id/layoutOtherInfo"
@@ -94,14 +93,14 @@
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="16dp"
                         android:visibility="gone">
                         <TextView
                             android:id="@+id/txtTitleInfo"
+                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="@string/add_account_user_view_title"
-                            android:textSize="18sp"
+                            android:textSize="18dp"
                             android:textColor="@color/tunaGrey" />
                         <TextView
                             android:id="@+id/txtOutstandingPayment"
@@ -109,7 +108,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="@string/add_account_outstanding_payment"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:padding="5dp"
                             android:drawablePadding="5dp" />
@@ -119,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="@string/add_account_current_bill"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:padding="5dp"
                             android:drawablePadding="5dp" />
@@ -129,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="@string/add_account_bill_history"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:padding="5dp"
                             android:drawablePadding="5dp" />
@@ -139,7 +138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="@string/add_account_all_transaction_details"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:padding="5dp"
                             android:drawablePadding="5dp" />
@@ -149,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="@string/add_account_usage_history"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:textColor="@color/tunaGrey"
                             android:padding="5dp"
                             android:drawablePadding="5dp" />

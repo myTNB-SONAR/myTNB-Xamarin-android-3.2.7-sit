@@ -16,7 +16,7 @@ namespace myTNB_Android.Src.Rating.Activity
     [Activity(Label = "Rating"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.PaymentSuccessExperienceRating")]
-    public class RatingActivity : BaseToolbarAppCompatActivity
+    public class RatingActivity : BaseActivityCustom
     {
 
         private Android.Support.V7.Widget.Toolbar toolbar;
@@ -30,6 +30,7 @@ namespace myTNB_Android.Src.Rating.Activity
         private string merchantTransID;
         private string deviceID;
         private int selectedRating;
+        private string PAGE_ID = "Rating";
 
         public override int ResourceId()
         {
@@ -123,6 +124,19 @@ namespace myTNB_Android.Src.Rating.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Post-Payment Rating");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnLoadMainFragment()
         {
             Android.App.Fragment submitRatingFragment = new SubmitRatingFragment();
@@ -190,6 +204,11 @@ namespace myTNB_Android.Src.Rating.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

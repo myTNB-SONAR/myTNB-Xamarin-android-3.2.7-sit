@@ -117,6 +117,19 @@ namespace myTNB_Android.Src.MakePayment.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Payment Methods");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnBackPressed()
         {
             try
@@ -137,13 +150,13 @@ namespace myTNB_Android.Src.MakePayment.Activity
                     if (currentFragment is PaymentWebViewFragment)
                     {
                         mCancelPaymentDialog = new MaterialDialog.Builder(this)
-                            .Title("Abort Payment!")
-                            .Content(GetString(Resource.String.error_abort_payment))
+                            .Title(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
+                            .Content(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
                             .Cancelable(false)
-                            .PositiveText("Abort")
+                            .PositiveText(Utility.GetLocalizedCommonLabel("yes"))
                             .PositiveColor(Resource.Color.black)
                             .OnPositive((dialog, which) => this.FragmentManager.PopBackStack())
-                            .NeutralText("Cancel")
+                            .NeutralText(Utility.GetLocalizedCommonLabel("no"))
                             .NeutralColor(Resource.Color.black)
                             .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
                     }

@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("FeedbackCategoryName")]
         public string Name { get; set; }
+
+        [Column("FeedbackCategoryDesc")]
+        public string Desc { get; set; }
 
 
         public static int CreateTable()
@@ -32,7 +36,8 @@ namespace myTNB_Android.Src.Database.Model
             var newRecord = new FeedbackCategoryEntity()
             {
                 Id = feedback.FeedbackCategoryId,
-                Name = feedback.FeedbackCategoryName
+                Name = feedback.FeedbackCategoryName,
+                Desc = feedback.FeedbackCategoryDesc
             };
 
 
@@ -46,11 +51,18 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveActive()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM FeedbackCategoryEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM FeedbackCategoryEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 

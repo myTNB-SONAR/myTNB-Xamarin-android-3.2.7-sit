@@ -18,8 +18,8 @@ using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MakePayment.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,6 @@ namespace myTNB_Android.Src.MakePayment.Fragment
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
-        private LoadingOverlay loadingOverlay;
         private Snackbar mErrorMessageSnackBar;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
@@ -333,19 +332,9 @@ namespace myTNB_Android.Src.MakePayment.Fragment
 
         public void ShowPaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && !this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -355,16 +344,9 @@ namespace myTNB_Android.Src.MakePayment.Fragment
 
         public void HidePaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -551,7 +533,7 @@ namespace myTNB_Android.Src.MakePayment.Fragment
             }
 
             mErrorMessageSnackBar = Snackbar.Make(baseView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -574,7 +556,7 @@ namespace myTNB_Android.Src.MakePayment.Fragment
             StartActivity(intent);
             ((MakePaymentActivity)Activity).SetResult(Result.Ok);
             ((MakePaymentActivity)Activity).Finish();
-            DashboardActivity activity = DashboardActivity.dashboardActivity;
+            DashboardHomeActivity activity = DashboardHomeActivity.dashboardHomeActivity;
             activity.OnFinish();
 
         }
@@ -651,23 +633,23 @@ namespace myTNB_Android.Src.MakePayment.Fragment
             }
         }
 
-        public void GetRegisterCardsResult(GetRegisteredCardsResponse response)
+        public void GetRegisterCardsResult(RegisteredCardsResponse response)
         {
             try
             {
                 if (response != null)
                 {
-                    if (response.Data.IsError)
+                    if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Data.Message);
+                        ShowErrorMessage(response.Response.DisplayMessage);
                     }
                     else
                     {
-                        if (response.Data.creditCard != null)
+                        if (response.GetData() != null)
                         {
-                            if (response.Data.creditCard.Count() > 0)
+                            if (response.GetData().Count() > 0)
                             {
-                                List<CreditCard> cards = response.Data.creditCard;
+                                List<CreditCard> cards = response.GetData();
                                 foreach (CreditCard card in cards)
                                 {
                                     registerdCards.Add(card);

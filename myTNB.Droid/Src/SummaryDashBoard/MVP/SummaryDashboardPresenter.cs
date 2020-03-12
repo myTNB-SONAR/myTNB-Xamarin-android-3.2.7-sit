@@ -30,6 +30,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         int curentLoadMoreCount = 0;
         int billingAccoutCount = 0;
 
+        bool refreshContent = false;
+
         public SummaryDashboardPresenter(SummaryDashboardContract.IView mView)
         {
             this.mView = mView;
@@ -43,13 +45,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         {
             try
             {
-                //if (CustomerBillingAccount.List().Count() != SummaryDashBoardAccountEntity.GetAllItems().Count())
                 if (SummaryDashBoardAccountEntity.GetAllItems().Count() == 0 || makeSummaryApiCall)
                 {
-                    //if (mView.IsActive())
-                    //{
                     this.mView.ShowProgressDialog();
-                    //}
+
                     FetchUserData();
                     if (summaryDashboardRequest != null)
                     {
@@ -132,28 +131,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 List<String> accounts = new List<string>();
                 for (; i < forLoopCount; i++)
                 {
-
-                    //if (CustomerBillingAccount.List().Count() != SummaryDashBoardAccountEntity.GetAllItems().Count())
-                    //{
-                    //    SummaryDashBoardAccountEntity accountEntity = SummaryDashBoardAccountEntity.GetItemByAccountNo(customerBillingAccounts[i].AccNum);
-                    //    if(accountEntity != null)
-                    //    {
-                    //        SummaryDashBoardDetails accountDetails = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(accountEntity.JsonResponse);
-                    //        summaryDetailList.Add(accountDetails);
-                    //    }
-                    //    else
-                    //    {
-                    //        accounts.Add(customerBillingAccounts[i].AccNum);
-                    //    }
-
-                    //}
-                    //else
-                    //{
                     if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
                     {
                         accounts.Add(customerBillingAccounts[i].AccNum);
                     }
-                    //}
                 }
 
                 summaryDashboardRequest = new SummaryDashBordRequest();
@@ -174,25 +155,13 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         private async void SummaryDashBoardApiCall()
         {
             cts = new CancellationTokenSource();
-            //if (mView.IsActive()) {
-            //this.mView.ShowProgressDialog();
-            //}
 #if STUB
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            httpClient.Timeout = TimeSpan.FromSeconds(10);
             var api = RestService.For<ISummaryDashBoard>(httpClient);
 #elif DEVELOP
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
-
-            //api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID) {
-            //    AccountNum = accountSelected.AccNum
-            //}, cts.Token)
-            //.ReturnsForAnyArgs(
-            //    Task.Run<UsageHistoryResponse>(
-            //        () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-            //    ));
 #else
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
 #endif
@@ -206,125 +175,83 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
+
                 if (response != null)
                 {
-                    if (response.Data != null)
+                    if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                    {
+                        mView.ShowRefreshSummaryDashboard(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                        LoadEmptySummaryDetails();
+                    }
+                    else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
                         var summaryDetails = response.Data.data;
-                        if (summaryDetails != null && summaryDetails.Count > 0)
+                        for (int i = 0; i < summaryDetails.Count; i++)
                         {
-                            for (int i = 0; i < summaryDetails.Count; i++)
-                            {
-                                CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
-                                summaryDetails[i].AccName = cbAccount.AccDesc;
-                                summaryDetails[i].AccType = cbAccount.AccountCategoryId;
-                                summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
+                            CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
+                            summaryDetails[i].AccName = cbAccount.AccDesc;
+                            summaryDetails[i].AccType = cbAccount.AccountCategoryId;
+                            summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
 
-                                /*** Save account data For the Day***/
-                                SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                                accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                                accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
-                                accountModel.AccountNo = summaryDetails[i].AccNumber;
-                                SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                                /*****/
-                            }
-
-                            SummaryData(summaryDetails);
+                            /*** Save account data For the Day***/
+                            SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
+                            accountModel.Timestamp = DateTime.Now.ToLocalTime();
+                            accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
+                            accountModel.AccountNo = summaryDetails[i].AccNumber;
+                            SummaryDashBoardAccountEntity.InsertItem(accountModel);
+                            /*****/
                         }
 
+                        SummaryData(summaryDetails);
+                        mView.ShowRefreshSummaryDashboard(false, null, null);
                     }
-                    mView.ShowRefreshSummaryDashboard(false);
+                    else
+                    {
+                        mView.ShowRefreshSummaryDashboard(true, null, null);
+                        LoadEmptySummaryDetails();
+                    }
                 }
-
-                //    if (accountSelected.isOwned)
-                //    {
-
-                //        if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-                //        {
-                //            this.mView.ShowAccountName();
-                //            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                //            if (smDataError)
-                //            {
-                //                smDataError = false;
-                //                if (smErrorCode.Equals("204"))
-                //                {
-                //                    this.mView.ShowChartWithError(response.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), smErrorCode);
-                //                }
-                //            }
-                //            else
-                //            {
-                //                this.mView.ShowChart(response.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
-                //            }
-                //        }
-                //        else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-                //        {
-                //            this.mView.ShowAccountName();
-                //            this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-                //            LoadBills(accountSelected);
-                //        }
-
-
-                //    }
-                //    else
-                //    {
-                //        this.mView.ShowNonOWner(AccountData.Copy(accountSelected, true));
-                //    }
-                //    this.mView.SetAccountName(accountSelected.AccDesc);
-
-                //}
-                //else
-                //{
-                //    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
-                //    this.mView.SetAccountName(accountSelected.AccDesc);
-                //}
+                else
+                {
+                    mView.ShowRefreshSummaryDashboard(true, null, null);
+                    LoadEmptySummaryDetails();
+                }
             }
             catch (System.OperationCanceledException e)
             {
-                Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
-                //this.mView.ShowRetryOptionsCancelledException(e);
-                //this.mView.ShowOwnerNoInternetConnection(accountSelected.AccDesc);
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+
+                this.mView.ShowRefreshSummaryDashboard(true, null, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
-                    //this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
                 }
 
                 Utility.LoggingNonFatalError(apiException);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
-                Log.Debug(TAG, "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
-                    //this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
-
-            //if (this.mView.IsActive())
-            //{
-            //    this.mView.HideProgressDialog();
-            //}
         }
 
 
@@ -349,7 +276,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 customerBillingAccounts = new List<CustomerBillingAccount>();
 
                 userEntity = UserEntity.GetActive();
-                //customerBillingAccounts = CustomerBillingAccount.List();
 
                 var reAccount = CustomerBillingAccount.REAccountList();
 
@@ -357,18 +283,12 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                 if (reAccount != null && reAccount.Count() > 0)
                 {
-                    /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-                    //reAccount = FindSelectedAccountAndMoveToTop(reAccount);
-                    /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
                     customerBillingAccounts.AddRange(reAccount);
                 }
 
 
                 if (nonReAccount != null && nonReAccount.Count() > 0)
                 {
-                    /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-                    //nonReAccount = FindSelectedAccountAndMoveToTop(nonReAccount);
-                    /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
                     customerBillingAccounts.AddRange(nonReAccount);
                 }
 
@@ -422,7 +342,24 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (summaryDetails != null && summaryDetails.Count > 0)
                 {
-                    summaryDetailList.AddRange(summaryDetails);
+                    if (refreshContent)
+                    {
+                        refreshContent = false;
+                        foreach(SummaryDashBoardDetails detail in summaryDetails)
+                        {
+                            int selectedIndex = summaryDetailList.FindIndex(x => x.AccNumber == detail.AccNumber);
+                            if (selectedIndex >= 0)
+                            {
+                                summaryDetailList.RemoveAt(selectedIndex);
+                            }
+
+                            summaryDetailList.Add(detail);
+                        }
+                    }
+                    else
+                    {
+                        summaryDetailList.AddRange(summaryDetails);
+                    }
                 }
 
 
@@ -466,8 +403,21 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (billingAccoutCount > summaryDetailList.Count())
                 {
-                    //FetchUserData();
-                    FetchAccountSummary(true);
+                    this.mView.ShowProgressDialog();
+                    LoadMoreAccountPrepare();
+                    if (summaryDashboardRequest != null)
+                    {
+                        refreshContent = true;
+                        SummaryDashBoardApiCall();
+                    }
+                    else
+                    {
+                        refreshContent = false;
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
+                    }
                     if (billingAccoutCount == summaryDetailList.Count())
                     {
                         mView.IsLoadMoreButtonVisible(false);
@@ -487,21 +437,11 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         public void OnNotification()
         {
-            if (this.mView.HasNetworkConnection())
-            {
-                this.mView.ShowNotification();
-            }
-            else
-            {
-                this.mView.ShowNoInternetSnackbar();
-            }
+            this.mView.ShowNotification();
         }
 
         private List<CustomerBillingAccount> FindSelectedAccountAndMoveToTop(List<CustomerBillingAccount> customerBillingAccount)
         {
-            //var selectedAccount = (from item in summaryDetailList 
-            //where item.IsAccSelected == true select item).ToList();
-
             try
             {
                 int i = customerBillingAccount.FindIndex(x => x.IsSelected);
@@ -534,8 +474,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         private List<SummaryDashBoardDetails> FindSelectedAccountAndMoveToTop(List<SummaryDashBoardDetails> SummaryDetails)
         {
-            //var selectedAccount = (from item in summaryDetailList 
-            //where item.IsAccSelected == true select item).ToList();
             try
             {
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelected();
@@ -567,10 +505,136 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         }
 
+        private void LoadMoreAccountPrepare()
+        {
+            try
+            {
+                int forLoopCount = 0;
+
+                int previousCount = 0;
+
+                int i = 0;
+
+                List<String> accounts = new List<string>();
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                    foreach(SummaryDashBoardDetails account in summaryDetailList)
+                    {
+                        int searchedIndex = list.FindIndex(x => x.AccountNo == account.AccNumber);
+                        if (searchedIndex < 0)
+                        {
+                            accounts.Add(account.AccNumber);
+                        }
+                    }
+                }
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    curentLoadMoreCount = (summaryDetailList.Count() / Constants.SUMMARY_DASHBOARD_PAGE_COUNT);
+                }
+
+                if (billingAccoutCount > Constants.SUMMARY_DASHBOARD_PAGE_COUNT)
+                {
+                    previousCount = curentLoadMoreCount;
+                    curentLoadMoreCount = curentLoadMoreCount + 1;
+                    forLoopCount = curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                    i = previousCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                    if (billingAccoutCount < forLoopCount)
+                    {
+                        int diff = forLoopCount - billingAccoutCount;
+                        diff = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - diff;
+                        forLoopCount = i + diff;
+                    }
+                }
+                else
+                {
+                    forLoopCount = billingAccoutCount;
+                }
+
+                for (; i < forLoopCount; i++)
+                {
+                    if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                    {
+                        accounts.Add(customerBillingAccounts[i].AccNum);
+                    }
+                }
+
+                summaryDashboardRequest = new SummaryDashBordRequest();
+                if (accounts != null && accounts.Count() > 0)
+                {
+                    summaryDashboardRequest.AccNum = accounts;
+                    summaryDashboardRequest.SspUserId = userEntity.UserID;
+                    summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void RefreshAccountSummary()
         {
-            summaryDetailList.Clear();
-            SummaryDashBoardApiCall();
+            try
+            {
+                int forLoopCount = 0;
+
+                int i = 0;
+
+                List<String> accounts = new List<string>();
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                    foreach(SummaryDashBoardDetails account in summaryDetailList)
+                    {
+                        int searchedIndex = list.FindIndex(x => x.AccountNo == account.AccNumber);
+                        if (searchedIndex < 0)
+                        {
+                            accounts.Add(account.AccNumber);
+                        }
+                    }
+                }
+                else
+                {
+                    forLoopCount = 5;
+                    for (; i < forLoopCount; i++)
+                    {
+                        if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                        {
+                            accounts.Add(customerBillingAccounts[i].AccNum);
+                        }
+                    }
+                }
+
+                summaryDashboardRequest = new SummaryDashBordRequest();
+                if (accounts != null && accounts.Count() > 0)
+                {
+                    summaryDashboardRequest.AccNum = accounts;
+                    summaryDashboardRequest.SspUserId = userEntity.UserID;
+                    summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                }
+
+                if (summaryDashboardRequest != null)
+                {
+                    refreshContent = true;
+                    SummaryDashBoardApiCall();
+                }
+                else
+                {
+                    refreshContent = false;
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void LoadEmptySummaryDetails()
@@ -592,13 +656,12 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     smDetails.AccNumber = cbAccount.AccNum;
                     smDetails.AccType = cbAccount.AccountCategoryId;
                     smDetails.IsAccSelected = cbAccount.IsSelected;
-                    smDetails.AmountDue = "0.00";
+                    smDetails.AmountDue = "--";
                     smDetails.BillDueDate = "--";
                     summaryDetails.Add(smDetails);
                 }
 
                 SummaryData(summaryDetails);
-                mView.IsLoadMoreButtonVisible(false);
             }
         }
     }

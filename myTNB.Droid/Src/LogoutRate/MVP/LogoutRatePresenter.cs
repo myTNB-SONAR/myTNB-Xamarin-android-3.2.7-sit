@@ -1,5 +1,6 @@
 ﻿using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.LogoutRate.Api;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -32,31 +33,17 @@ namespace myTNB_Android.Src.LogoutRate.MVP
                 this.mView.ShowProgressDialog();
             }
 
-
-
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-
-            var logoutApi = RestService.For<ILogoutApi>(httpClient);
-#else
-            var logoutApi = RestService.For<ILogoutApi>(Constants.SERVER_URL.END_POINT);
-#endif
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
-                var logoutResponse = await logoutApi.LogoutUser(new Request.LogoutRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = userEntity.Email,
-                    DeviceId = deviceId
-                }, cts.Token);
+                var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!logoutResponse.Data.IsError)
+                if (logoutResponse.IsSuccessResponse())
                 {
                     UserEntity.RemoveActive();
                     UserRegister.RemoveActive();
@@ -75,7 +62,7 @@ namespace myTNB_Android.Src.LogoutRate.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessage(logoutResponse.Data.Message);
+                    this.mView.ShowErrorMessage(logoutResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

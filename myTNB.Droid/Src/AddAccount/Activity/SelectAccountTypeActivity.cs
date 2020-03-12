@@ -7,6 +7,7 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectAccountActivity : BaseToolbarAppCompatActivity
+    public class SelectAccountActivity : BaseActivityCustom
     {
 
         ListView listView;
         private AccountType selectedAccountType;
+        private string PAGE_ID = "AddAccount";
 
         private AccountTypeAdapter accountType;
         private List<AccountType> acctTypes = new List<AccountType>();
@@ -40,13 +42,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
             }
 
+            SetToolBarTitle(GetLabelByLanguage("selectAccountType"));
             AccountType Residential = new AccountType();
             Residential.Id = "1";
-            Residential.Type = "Residential";
+            Residential.Type = GetLabelByLanguage("residential");
 
             AccountType Commercial = new AccountType();
             Commercial.Id = "2";
-            Commercial.Type = "Commercial";
+            Commercial.Type = GetLabelByLanguage("commercial");
 
             //AccountType Government = new AccountType();
             //Government.Id = "3";
@@ -92,14 +95,35 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            selectedAccountType = accountType.GetItemObject(e.Position);
-            selectedAccountType.IsSelected = true;
-            Intent link_activity = new Intent(this, typeof(AddAccountActivity));
-            link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
-            SetResult(Result.Ok, link_activity);
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                selectedAccountType = accountType.GetItemObject(e.Position);
+                selectedAccountType.IsSelected = true;
+                Intent link_activity = new Intent(this, typeof(AddAccountActivity));
+                link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
+                SetResult(Result.Ok, link_activity);
+                Finish();
+            }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account -> Select Account Type");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
 
         public override bool ShowCustomToolbarTitle()
         {
@@ -127,6 +151,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

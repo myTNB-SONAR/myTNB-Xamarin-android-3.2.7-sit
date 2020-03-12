@@ -11,7 +11,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.LogoutEnd.Activity;
 using myTNB_Android.Src.LogoutRate.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Refit;
 using System;
 using System.Runtime;
@@ -41,7 +40,6 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
         MaterialDialog progress;
 
-        private LoadingOverlay loadingOverlay;
 
         public bool IsActive()
         {
@@ -103,6 +101,19 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             Finish();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Log Out Rating");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
@@ -112,13 +123,16 @@ namespace myTNB_Android.Src.LogoutRate.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.logout_rate_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_cancelled_exception_btn_close), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -131,13 +145,16 @@ namespace myTNB_Android.Src.LogoutRate.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.logout_rate_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_api_exception_btn_close), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -150,33 +167,26 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.logout_rate_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_unknown_exception_btn_close), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
         }
 
         public void ShowProgressDialog()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -186,16 +196,9 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
         public void HideProgressDialog()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -205,14 +208,18 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
         public void ShowErrorMessage(string message)
         {
-            Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                        .SetAction(GetString(Resource.String.logout_rate_btn_close),
+            Snackbar errorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
                          (view) =>
                          {
 
                              // EMPTY WILL CLOSE SNACKBAR
                          }
-                        ).Show();
+                        );
+                        View v = errorSnackbar.View;
+                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        tv.SetMaxLines(5);
+                        errorSnackbar.Show();
         }
 
         public override bool TelephonyPermissionRequired()

@@ -26,7 +26,6 @@ using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.SelectFeedbackType.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -99,15 +98,20 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
         FeedbackPreLoginOthersPresenter mPresenter;
 
         MaterialDialog submitDialog;
-        LoadingOverlay loadingOverlay;
 
         FeedbackType currentFeedbackType;
 
+        public override Boolean ShowCustomToolbarTitle()
+        {
+            return true;
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
+                Intent intent = Intent;
+                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 submitDialog = new MaterialDialog.Builder(this)
                     .Title(Resource.String.feedback_submit_dialog_title)
                     .Content(Resource.String.feedback_submit_dialog_message)
@@ -294,12 +298,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             return Resource.Layout.FeedbackPreLoginOthersView;
         }
 
-
-        public override bool ShowCustomToolbarTitle()
-        {
-            return true;
-        }
-
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs e)
         {
@@ -385,26 +383,26 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
         {
             try
             {
-                string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
-                               GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
-                               GetString(Resource.String.bill_related_feedback_selection_cancel)};
+                string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
+                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                                Utility.GetLocalizedCommonLabel("cancel")};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
+                    .SetTitle(Utility.GetLocalizedLabel("FeedbackForm", "selectOptions"));
                 builder.SetItems(items, (lsender, args) =>
                 {
 
 
 
-                    if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
+                    if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")))
                     {
                         this.userActionsListener.OnAttachPhotoCamera();
                     }
-                    else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
                     {
                         this.userActionsListener.OnAttachPhotoGallery();
                     }
-                    else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
+                    else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
                     {
                         _ChooseDialog.Dismiss();
                     }
@@ -563,12 +561,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.bill_related_feedback_empty_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.bill_related_feedback_invalid_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowEmptyEmaiError()
@@ -632,19 +630,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void ShowProgressDialog()
         {
-            //if (submitDialog != null && !submitDialog.IsShowing)
-            //{
-            //    submitDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -654,16 +642,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void HideProgressDialog()
         {
-            //if (submitDialog != null && submitDialog.IsShowing)
-            //{
-            //    submitDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -812,11 +793,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
             if (string.IsNullOrEmpty(message))
             {
-                message = GetString(Resource.String.app_launch_http_exception_error);
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

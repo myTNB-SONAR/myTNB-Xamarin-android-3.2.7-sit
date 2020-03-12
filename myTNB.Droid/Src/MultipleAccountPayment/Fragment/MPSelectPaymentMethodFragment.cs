@@ -10,19 +10,24 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Text;
 using myTNB_Android.Src.AddCard.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Maintenance.Activity;
+using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -38,10 +43,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private static string METHOD_CREDIT_CARD = "CC";
         private static string METHOD_FPX = "FPX";
-        private static string PARAM3 = "Param3=";
         private string param3 = "0";
         private string selectedPaymentMethod;
-        private MPCreditCard selectedCard;
+        private CreditCard selectedCard;
 
         FrameLayout baseView;
         EditText txtTotalAmount;
@@ -62,24 +66,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         View overlay;
 
         AccountData selectedAccount;
-        List<PaymentItems> selectedPaymentItems = new List<PaymentItems>();
+        private List<AccountChargeModel> accountChargeList;
+        List<PaymentItem> selectedPaymentItemList;
         string total;
         ListView listAddedCards;
         MPAddCardAdapter cardAdapter;
         List<MPCardDetails> cards = new List<MPCardDetails>();
-        List<MPCreditCard> registerdCards = new List<MPCreditCard>();
+        List<CreditCard> registerdCards = new List<CreditCard>();
 
         Button btnAddCard;
         Button btnFPXPayment;
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
-        private LoadingOverlay loadingOverlay;
         private Snackbar mErrorMessageSnackBar;
 
 
         private SummaryDashBordRequest summaryDashBoardRequest = null;
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
+
+        private bool isClicked = false;
 
         public bool IsActive()
         {
@@ -94,11 +100,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         }
 
+        public override void OnPause()
+        {
+            base.OnPause();
+            isClicked = true;
+        }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
             View rootView = inflater.Inflate(Resource.Layout.SelectPaymentMethodView, container, false);
-
+            selectedPaymentItemList = new List<PaymentItem>();
             try
             {
                 mPresenter = new MPSelectPaymentMethodPresenter(this);
@@ -116,22 +128,51 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     .Cancelable(false)
                     .Build();
 
-                ((PaymentActivity)Activity).SetToolBarTitle(TOOL_BAR_TITLE);
+                ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(Arguments.GetString(Constants.SELECTED_ACCOUNT));
-                List<MPAccount> accounts = JsonConvert.DeserializeObject<List<MPAccount>>(Arguments.GetString("PAYMENT_ITEMS"));
+                accountChargeList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(Arguments.GetString("ACCOUNT_CHARGES_LIST"));
+                List <MPAccount> accounts = JsonConvert.DeserializeObject<List<MPAccount>>(Arguments.GetString("PAYMENT_ITEMS"));
                 foreach (MPAccount item in accounts)
                 {
                     CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
-                    PaymentItems paymentItem = new PaymentItems
+                    AccountChargeModel chargeModel = accountChargeList.Find(accountCharge =>
                     {
-                        AccountNo = item.accountNumber,
-                        Amount = item.amount.ToString(),
-                        AccountOwnerName = customerBillingAccount.OwnerName
-                    };
-                    selectedPaymentItems.Add(paymentItem);
+                        return accountCharge.ContractAccount == item.accountNumber;
+                    });
+
+                    if (chargeModel != null)
+                    {
+                        if (chargeModel.MandatoryCharges.TotalAmount > 0f)
+                        {
+                            PaymentItemAccountPayment paymentItemAccountPayment = new PaymentItemAccountPayment();
+                            paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
+                            paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
+                            paymentItemAccountPayment.AccountAmount = item.amount.ToString();
+
+                            List<AccountPayment> accountPaymentList = new List<AccountPayment>();
+                            chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
+                            {
+                                AccountPayment accountPayment = new AccountPayment();
+                                accountPayment.PaymentType = charge.Key;
+                                accountPayment.PaymentAmount = charge.Amount.ToString();
+                                accountPaymentList.Add(accountPayment);
+                            });
+                            paymentItemAccountPayment.AccountPayments = accountPaymentList;
+                            selectedPaymentItemList.Add(paymentItemAccountPayment);
+                        }
+                        else
+                        {
+                            PaymentItem payItem = new PaymentItem();
+                            payItem.AccountOwnerName = customerBillingAccount.OwnerName;
+                            payItem.AccountNo = chargeModel.ContractAccount;
+                            payItem.AccountAmount = item.amount.ToString();
+                            selectedPaymentItemList.Add(payItem);
+                        }
+                    }
+
                 }
                 total = Arguments.GetString("TOTAL");
-                if (selectedPaymentItems.Count > 1)
+                if (selectedPaymentItemList.Count > 1)
                 {
                     param3 = "1";
                 }
@@ -170,6 +211,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(lblBack);
+                lblBack.Text = Utility.GetLocalizedCommonLabel("back");
                 lblBack.Click += delegate
                 {
                     enterCvvLayout.Visibility = ViewStates.Gone;
@@ -187,6 +229,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else
                     {
+                        HideErrorMessageSnakebar();
                         AddNewCard();
                     }
                 };
@@ -201,6 +244,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else
                     {
+                        HideErrorMessageSnakebar();
                         selectedPaymentMethod = METHOD_FPX;
                         selectedCard = null;
                         InitiatePaymentRequest();
@@ -219,6 +263,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
                 TextViewUtils.SetMuseoSans300Typeface(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
+
+                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards"); 
+                lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
+                lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM").ToUpper();
+                btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
+                btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
 
                 //if(selectedAccount != null){
 
@@ -243,8 +293,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public override void OnResume()
         {
-            ((PaymentActivity)Activity).SetToolBarTitle(TOOL_BAR_TITLE);
+            ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
             base.OnResume();
+
+            isClicked = false;
         }
 
         void OnItemClick(object sender, int position)
@@ -258,6 +310,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
                 else
                 {
+                    HideErrorMessageSnakebar();
                     selectedPaymentMethod = METHOD_CREDIT_CARD;
                     if (IsValidPayableAmount())
                     {
@@ -281,10 +334,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 selectedPaymentMethod = METHOD_CREDIT_CARD;
                 if (IsValidPayableAmount())
                 {
-                    Intent nextIntent = new Intent();
-                    nextIntent.PutExtra("registeredCards", JsonConvert.SerializeObject(registerdCards));
-                    nextIntent.SetClass(Activity, typeof(AddCardActivity));
-                    StartActivityForResult(nextIntent, ADD_CARD_REQUEST_CDOE);
+                    if (!isClicked)
+                    {
+                        isClicked = true;
+                        Intent nextIntent = new Intent();
+                        nextIntent.PutExtra("registeredCards", JsonConvert.SerializeObject(registerdCards));
+                        nextIntent.SetClass(Activity, typeof(AddCardActivity));
+                        StartActivityForResult(nextIntent, ADD_CARD_REQUEST_CDOE);
+                    }
                 }
             }
             catch (Exception e)
@@ -329,7 +386,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             //throw new NotImplementedException();
         }
 
-        public void EnterCVVNumber(MPCreditCard card)
+        public void EnterCVVNumber(CreditCard card)
         {
             try
             {
@@ -349,12 +406,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         if (card.CardType.Equals("AMEX") || card.CardType.Equals("A"))
                         {
-                            lblCvvInfo.Text = Activity.GetString(Resource.String.cvv_info_4_digit);
+                            lblCvvInfo.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "cvvFourDigitMessage");
                             edtNumber4.Visibility = ViewStates.Visible;
                         }
                         else
                         {
-                            lblCvvInfo.Text = Activity.GetString(Resource.String.cvv_info_3_digit);
+                            lblCvvInfo.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "cvvThreeDigitMessage");
                             edtNumber4.Visibility = ViewStates.Gone;
                         }
                     }
@@ -389,19 +446,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void ShowPaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && !this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -411,16 +458,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void HidePaymentRequestDialog()
         {
-            //if (this.mRequestingPaymentDialog != null && this.mRequestingPaymentDialog.IsShowing)
-            //{
-            //    this.mRequestingPaymentDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -435,7 +475,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 if (IsValidPayableAmount())
                 {
                     string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-                    string custName = selectedPaymentItems.Count > 1 ? UserEntity.GetActive().DisplayName : selectedPaymentItems[0].AccountOwnerName;
+                    string custName = selectedPaymentItemList.Count > 1 ? UserEntity.GetActive().DisplayName : selectedPaymentItemList[0].AccountOwnerName;
                     string accNum = selectedAccount.AccountNum;
                     double payableAmt = Double.Parse(txtTotalAmount.Text);
                     string payAm = txtTotalAmount.Text;
@@ -447,7 +487,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     /* Get user registered cards */
                     string registeredCardId = selectedCard == null ? "" : selectedCard.Id;
                     DeletePaymentHistory();
-                    this.userActionsListener.RequestPayment(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, total, selectedPaymentItems);
+                    //this.userActionsListener.RequestPayment(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, total, selectedPaymentItems);
+                    this.userActionsListener.InitializePaymentTransaction(custName, custPhone, platform, registeredCardId, paymentMode, total, selectedPaymentItemList);
                 }
                 else
                 {
@@ -489,31 +530,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
         }
 
-        public void InitiateSubmitPayment(MPInitiatePaymentResponse paymentResponse, MPCardDetails card)
+        public void InitiateSubmitPayment(PaymentTransactionIdResponse paymentResponse, MPCardDetails card)
         {
             try
             {
                 string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = paymentResponse.GetData();
+                string action = initiatePaymentResult.action;
+                string merchantId = initiatePaymentResult.payMerchantID;
+                string merchantTransId = initiatePaymentResult.payMerchant_transID;
+                string currencyCode = initiatePaymentResult.payCurrencyCode;
+                string payAm = initiatePaymentResult.payAmount;
 
-                string action = paymentResponse.requestPayBill.initiatePaymentResult.action;
-                string merchantId = paymentResponse.requestPayBill.initiatePaymentResult.payMerchantID;
-                string merchantTransId = paymentResponse.requestPayBill.initiatePaymentResult.payMerchant_transID;
-                string currencyCode = paymentResponse.requestPayBill.initiatePaymentResult.payCurrencyCode;
-                string payAm = paymentResponse.requestPayBill.initiatePaymentResult.payAmount;
-
-                string custEmail = paymentResponse.requestPayBill.initiatePaymentResult.payCustEmail;
-                string custName = paymentResponse.requestPayBill.initiatePaymentResult.payCustName;
-                string des = paymentResponse.requestPayBill.initiatePaymentResult.payProdDesc;
-                string returnURL = paymentResponse.requestPayBill.initiatePaymentResult.payReturnUrl;
-                string signature = paymentResponse.requestPayBill.initiatePaymentResult.paySign;
-                string mparam1 = paymentResponse.requestPayBill.initiatePaymentResult.payMParam;
-                string payMethod = paymentResponse.requestPayBill.initiatePaymentResult.payMethod;
-                string platform = paymentResponse.requestPayBill.initiatePaymentResult.platform;
+                string custEmail = initiatePaymentResult.payCustEmail;
+                string custName = initiatePaymentResult.payCustName;
+                string des = initiatePaymentResult.payProdDesc;
+                string returnURL = initiatePaymentResult.payReturnUrl;
+                string signature = initiatePaymentResult.paySign;
+                string mparam1 = initiatePaymentResult.payMParam;
+                string payMethod = initiatePaymentResult.payMethod;
+                string platform = initiatePaymentResult.platform;
                 string accNum = selectedAccount.AccountNum;
 
-                string transType = paymentResponse.requestPayBill.initiatePaymentResult.transactionType;
-                string tokenizedHashCodeCC = paymentResponse.requestPayBill.initiatePaymentResult.tokenizedHashCodeCC;
-                string custPhone = paymentResponse.requestPayBill.initiatePaymentResult.payCustPhoneNum;
+                string transType = initiatePaymentResult.transactionType;
+                string tokenizedHashCodeCC = initiatePaymentResult.tokenizedHashCodeCC;
+                string custPhone = initiatePaymentResult.payCustPhoneNum;
 
                 Bundle bundle = new Bundle();
                 bundle.PutString("apiKeyID", apiKeyID);
@@ -571,36 +612,36 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             //this.userActionsListener.SubmitPayment(apiKeyID, merchantId, accNum, payAm, custName, custEmail, custPhone, mparam1, des, cardNo, custName, cardExpM, cardExpY, cardCvv);
         }
 
-        public void SaveInitiatePaymentResponse(MPInitiatePaymentResponse response)
-        {
-            try
-            {
-                if (response != null)
-                {
-                    Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
-                    if (response.requestPayBill.IsError)
-                    {
-                        ShowErrorMessage(response.requestPayBill.Message);
-                    }
-                    else
-                    {
-                        if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
-                        {
-                            InitiateSubmitPayment(response, cardDetails);
-                        }
-                        else
-                        {
-                            InitiateFPXPayment(response);
-                        }
-                    }
+        //public void SaveInitiatePaymentResponse(MPInitiatePaymentResponse response)
+        //{
+        //    try
+        //    {
+        //        if (response != null)
+        //        {
+        //            Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
+        //            if (response.requestPayBill.IsError)
+        //            {
+        //                ShowErrorMessage(response.requestPayBill.Message);
+        //            }
+        //            else
+        //            {
+        //                if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
+        //                {
+        //                    InitiateSubmitPayment(response, cardDetails);
+        //                }
+        //                else
+        //                {
+        //                    InitiateFPXPayment(response);
+        //                }
+        //            }
 
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Utility.LoggingNonFatalError(e);
+        //    }
+        //}
 
         public void ShowErrorMessage(string message)
         {
@@ -610,13 +651,38 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
 
             mErrorMessageSnackBar = Snackbar.Make(baseView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+        }
+
+        public void ShowErrorMessageWithOK(string message)
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+
+            mErrorMessageSnackBar = Snackbar.Make(baseView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(6);
+
+            mErrorMessageSnackBar.Show();
+        }
+
+        private void HideErrorMessageSnakebar()
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
         }
 
         public void InitiateWebView(string response)
@@ -626,27 +692,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             ((PaymentActivity)Activity).nextFragment(this, bundle);
         }
 
-        public void InitiateFPXPayment(MPInitiatePaymentResponse response)
+        public void InitiateFPXPayment(PaymentTransactionIdResponse response)
         {
             try
             {
-                var uri = Android.Net.Uri.Parse(Constants.SERVER_URL.FPX_PAYMENT + response.requestPayBill.initiatePaymentResult.payMerchant_transID + "&" + PARAM3 + param3);
-                //var intent = new Intent(Intent.ActionView, uri);
-                //StartActivity(intent);
+                PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = response.GetData();
+                string parameter1 = "Param1=3";
+                string parameter2 = "Param2=" + initiatePaymentResult.payMerchant_transID;
+                string parameter3 = "Param3=" + param3;
+                string langProp = "lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                var uri = Android.Net.Uri.Parse(initiatePaymentResult.action +
+                    "?" + parameter1 + "&" + parameter2 + "&" + parameter3 + "&" + langProp);
 
                 Bundle bundle = new Bundle();
                 bundle.PutString("html_fpx", uri.ToString());
                 bundle.PutString("SummaryDashBoardRequest", JsonConvert.SerializeObject(summaryDashBoardRequest));
                 ((PaymentActivity)Activity).nextFragment(this, bundle);
-
-                //((PaymentActivity)Activity).SetResult(Result.Ok);
-                //((PaymentActivity)Activity).Finish();
-                //SelectAccountsActivity selectAccountsActivity = SelectAccountsActivity.selectAccountsActivity;
-                //selectAccountsActivity.Finish();
-                //DashboardActivity activity = DashboardActivity.dashboardActivity;
-                //activity.OnFinish();
-
-
             }
             catch (Exception e)
             {
@@ -678,7 +739,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         isValid = false;
                         //txtTotalAmount.Error = "For payments more than RM 5000, please use FPX payment mode.";
-                        ShowErrorMessage("For payments more than RM 5000, please use FPX payment mode.");
+                        ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
                     }
 
                 }
@@ -699,19 +760,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void ShowGetRegisteredCardDialog()
         {
-            //if (this.mGetRegisteredCardsDialog != null && !this.mGetRegisteredCardsDialog.IsShowing)
-            //{
-            //    this.mGetRegisteredCardsDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -721,16 +772,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void HideGetRegisteredCardDialog()
         {
-            //if (this.mGetRegisteredCardsDialog != null && this.mGetRegisteredCardsDialog.IsShowing)
-            //{
-            //    this.mGetRegisteredCardsDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
             }
             catch (Exception e)
             {
@@ -738,24 +782,24 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
         }
 
-        public void GetRegisterCardsResult(MPGetRegisteredCardsResponse response)
+        public void GetRegisterCardsResult(RegisteredCardsResponse response)
         {
             try
             {
                 if (response != null)
                 {
-                    if (response.Data.IsError)
+                    if (!response.IsSuccessResponse())
                     {
-                        ShowErrorMessage(response.Data.Message);
+                        ShowErrorMessageWithOK(Utility.GetLocalizedErrorLabel("paymentCCErrorMsg"));
                     }
                     else
                     {
-                        if (response.Data.creditCard != null)
+                        if (response.GetData() != null)
                         {
-                            if (response.Data.creditCard.Count() > 0)
+                            if (response.GetData().Count() > 0)
                             {
-                                List<MPCreditCard> cards = response.Data.creditCard;
-                                foreach (MPCreditCard card in cards)
+                                List<CreditCard> cards = response.GetData();
+                                foreach (CreditCard card in cards)
                                 {
                                     registerdCards.Add(card);
                                 }
@@ -898,7 +942,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             try
             {
                 List<string> accounts = new List<string>();
-                foreach (PaymentItems item in selectedPaymentItems)
+                foreach (PaymentItem item in selectedPaymentItemList)
                 {
                     if (item.AccountNo != null)
                     {
@@ -916,10 +960,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                 }
 
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = DeviceId(this.Activity),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
                 summaryDashBoardRequest = new SummaryDashBordRequest();
                 summaryDashBoardRequest.AccNum = accounts;
-                summaryDashBoardRequest.SspUserId = UserEntity.GetActive().UserID;
-                summaryDashBoardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                summaryDashBoardRequest.usrInf = currentUsrInf;
 
             }
             catch (Exception e)
@@ -928,6 +984,83 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
 
             //SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
+        }
+
+        private string DeviceId(Android.App.Activity mActivity)
+        {
+            var deviceUuid = "";
+            try
+            {
+                var androidID = Android.Provider.Settings.Secure.GetString(mActivity.ContentResolver, Android.Provider.Settings.Secure.AndroidId);
+                deviceUuid = DeviceIdUtils.GenerateDeviceIdentifier(mActivity, androidID);
+                return deviceUuid.ToString();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return deviceUuid.ToString();
+        }
+
+        public void SetInitiatePaymentResponse(PaymentTransactionIdResponse response)
+        {
+            try
+            {
+                if (response != null && response.Response != null)
+                {
+                    Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
+                    if (response.IsSuccessResponse())
+                    { 
+                        if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
+                        {
+                            InitiateSubmitPayment(response, cardDetails);
+                        }
+                        else
+                        {
+                            InitiateFPXPayment(response);
+                        }
+                    }
+                    else if (response.Response.ErrorCode == "7000")
+                    {
+                        string title = "";
+                        string message = "";
+                        if (!string.IsNullOrEmpty(response.Response.DisplayTitle))
+                        {
+                            title = response.Response.DisplayTitle;
+                        }
+                        if (!string.IsNullOrEmpty(response.Response.DisplayMessage))
+                        {
+                            message = response.Response.DisplayMessage;
+                        }
+                        Intent maintenanceScreen = new Intent(this.Activity, typeof(MaintenanceActivity));
+                        maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, title);
+                        maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, message);
+                        StartActivity(maintenanceScreen);
+                    }
+                    else
+                    {
+                        string txt = "";
+                        if (!string.IsNullOrEmpty(response.Response.DisplayMessage))
+                        {
+                            txt = response.Response.DisplayMessage;
+                        }
+                        else
+                        {
+                            txt = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+                        }
+                        ShowErrorMessage(response.Response.DisplayMessage);
+                    }
+
+                }
+                else
+                {
+                    ShowErrorMessage(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

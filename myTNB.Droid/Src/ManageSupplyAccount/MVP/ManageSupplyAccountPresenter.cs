@@ -1,9 +1,11 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageSupplyAccount.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -47,52 +49,35 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
         public async void OnRemoveAccount(AccountData accountData)
         {
-            cts = new CancellationTokenSource();
-
             if (mView.IsActive())
             {
                 this.mView.ShowRemoveProgress();
             }
 
-#if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IManageSupplyAccountApi>(httpClient);
-#else
-            var api = RestService.For<IManageSupplyAccountApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeSupplyAccountApi = await api.RemoveTNBAccountForUserFav(new Request.RemoveTNBAccountForUserFavRequest()
-                {
-                    UserID = user.UserID,
-                    AccountNumber = accountData.AccountNum,
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = UserEntity.GetActive().Email,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = Constants.APP_CONFIG.API_KEY_ID,
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                }, cts.Token);
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideRemoveProgress();
                 }
 
-                if (!removeSupplyAccountApi.Data.IsError)
+                if (removeAccountResponse.IsSuccessResponse())
                 {
                     bool isSelectedAcc = false;
-                    if (CustomerBillingAccount.GetSelected() != null &&
-                       CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
+                    if (CustomerBillingAccount.HasSelected())
                     {
-                        isSelectedAcc = true;
+                        if (CustomerBillingAccount.GetSelected() != null &&
+                            CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
+                        {
+                            isSelectedAcc = true;
+                        }
                     }
+
                     CustomerBillingAccount.Remove(accountData.AccountNum);
-                    if (isSelectedAcc && CustomerBillingAccount.Enumerate().ToList().Count() > 0)
+                    if (isSelectedAcc && CustomerBillingAccount.HasItems())
                     {
                         /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
                         //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
@@ -110,11 +95,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     REPaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
                     AccountDataEntity.RemoveAccountData(accountData.AccountNum);
                     SummaryDashBoardAccountEntity.RemoveAll();
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
                     this.mView.ShowSuccessRemovedAccount();
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(removeSupplyAccountApi.Data.Message);
+                    this.mView.ShowErrorMessageResponse(removeAccountResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

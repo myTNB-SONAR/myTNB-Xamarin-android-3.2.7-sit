@@ -22,7 +22,7 @@
             android:layout_marginTop="16dp"
             android:text="Location Type"
             android:textColor="@color/tunaGrey"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:maxLines="1"
             android:maxEms="10"
             android:ellipsize="end" />
