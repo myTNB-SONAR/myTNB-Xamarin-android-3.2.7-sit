@@ -63,7 +63,7 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="right"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
         </RelativeLayout>
     </FrameLayout>-->
 </RelativeLayout>

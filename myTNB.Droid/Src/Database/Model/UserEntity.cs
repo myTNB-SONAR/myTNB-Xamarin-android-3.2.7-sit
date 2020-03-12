@@ -40,6 +40,12 @@ namespace myTNB_Android.Src.Database.Model
         [Column("status")]
         public int Status { get; set; }
 
+        [Column("deviceId")]
+        public string DeviceId { get; set; }
+
+        [Column("selectedLanguage")]
+        public string SelectedLanguage { get; set; }
+
 
         public static int CreateTable()
         {
@@ -92,6 +98,12 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static int UpdateDeviceId(string deviceId)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET deviceId = ?", deviceId);
+        }
+
         public static IEnumerable<UserEntity> ListAllActive()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -129,15 +141,30 @@ namespace myTNB_Android.Src.Database.Model
 
         }
 
-
-
-        public static int RemoveActive()
+        public static int UpdateSelectedLanguage(string language)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
-            return db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
-            //}
+            return db.Execute("UPDATE UserEntity SET selectedLanguage = ?", language);
+        }
+
+        public static string GetSelectedLanguage()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<UserEntity> userEntityList = db.Query<UserEntity>("select selectedLanguage from UserEntity");
+            return userEntityList[0].SelectedLanguage;
+        }
+
+        public static void RemoveActive()
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 

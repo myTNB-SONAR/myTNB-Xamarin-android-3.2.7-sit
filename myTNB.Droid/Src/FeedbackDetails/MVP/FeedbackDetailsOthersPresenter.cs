@@ -31,6 +31,8 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
         {
             try
             {
+                this.mView.ShowProgressDialog();
+
                 List<AttachedImage> attachImageList = new List<AttachedImage>();
                 foreach (ImageResponse image in feedbackDetails.ImageList)
                 {
@@ -76,9 +78,12 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, feedbackDetails.FeedbackTypeName, feedbackDetails.FeedbackMessage);
 
                 this.mView.ShowImages(attachImageList);
+
+                this.mView.HideProgressDialog();
             }
             catch (Exception e)
             {
+                this.mView.HideProgressDialog();
                 Utility.LoggingNonFatalError(e);
             }
         }

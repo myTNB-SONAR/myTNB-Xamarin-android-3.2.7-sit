@@ -51,12 +51,28 @@ namespace myTNB_Android.Src.Rating.Adapter
                         vh.txtInputLayoutComments.Visibility = ViewStates.Gone;
                         vh.txtComments.Visibility = ViewStates.Gone;
 
-                        //vh.ratingBar.Rating = SelectedRating;
-                        if (SelectedRating != 0 && SelectedRating < 6)
+                        if (position == 0)
                         {
-                            vh.txtContentInfo.Text = question.InputOptionValueList[SelectedRating - 1].InputOptionValues;
-                            question.InputRating = "" + SelectedRating;
+                            if (SelectedRating != 0 && SelectedRating < 6)
+                            {
+                                vh.txtContentInfo.Text = question.InputOptionValueList[SelectedRating - 1].InputOptionValues;
+                                question.InputRating = SelectedRating.ToString();
+                                question.IsQuestionAnswered = true;
+                                vh.ratingBar.Rating = SelectedRating;
+                            }
+                            else
+                            {
+                                question.IsQuestionAnswered = false;
+                                vh.txtContentInfo.Text = "";
+                            }
                         }
+                        else
+                        {
+                            question.IsQuestionAnswered = false;
+                            vh.txtContentInfo.Text = "";
+                        }
+                        //vh.ratingBar.Rating = SelectedRating;
+
                         vh.ratingBar.RatingBarChange += (o, e) =>
                         {
                             vh.ratingBar.Rating = e.Rating;
@@ -101,7 +117,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                         vh.txtContentInfo.Visibility = ViewStates.Gone;
                         vh.txtInputLayoutComments.Visibility = ViewStates.Visible;
                         vh.txtComments.Visibility = ViewStates.Visible;
-
+                        vh.txtInputLayoutComments.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), "250");
                         vh.txtComments.TextChanged += delegate
                         {
                             string feedback = vh.txtComments.Text;
@@ -110,13 +126,13 @@ namespace myTNB_Android.Src.Rating.Adapter
                             if (char_count > 0)
                             {
                                 int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                                vh.txtInputLayoutComments.Error = char_left + " " + mContext.GetString(Resource.String.feedback_character_left);
+                                vh.txtInputLayoutComments.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);
                                 questions[position].IsQuestionAnswered = true;
                                 question.InputAnswer = feedback;
                             }
                             else
                             {
-                                vh.txtInputLayoutComments.Error = mContext.GetString(Resource.String.feedback_total_character_left);
+                                vh.txtInputLayoutComments.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), "250");
                                 questions[position].IsQuestionAnswered = false;
                             }
                             OnRatingUpdate(vh, position);
@@ -216,6 +232,9 @@ namespace myTNB_Android.Src.Rating.Adapter
 
                 txtComments.MovementMethod = new ScrollingMovementMethod();
                 txtComments.SetOnTouchListener(this);
+                txtInputLayoutComments.Hint = Utility.GetLocalizedCommonLabel("comments");
+                txtComments.Hint = "";
+                txtComments.AddTextChangedListener(new InputFilterFormField(txtComments, txtInputLayoutComments));
             }
 
             public bool OnTouch(View v, MotionEvent e)

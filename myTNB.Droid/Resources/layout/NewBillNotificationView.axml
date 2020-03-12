@@ -22,7 +22,7 @@
             android:paddingBottom="15dp"
             android:text="@string/notification_detail_new_bill_title"
             android:textColor="@color/powerBlue"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
         <TextView
             android:id="@+id/txtNotificationSubTitle"
             android:layout_width="match_parent"
@@ -31,49 +31,49 @@
             android:paddingBottom="15dp"
             android:text="@string/notification_detail_new_bill_sub_title"
             android:textColor="@color/tunaGrey"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtAccountNumberTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Account Number"
             android:textColor="@color/tunaGrey"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtAccountNumberContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Account Number Content"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtTotalOutstandingAmtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notification_detail_new_bill_total_amt_title"
             android:textColor="@color/tunaGrey"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtTotalOutstandingAmtContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/notification_detail_new_bill_total_amt_content"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtNotificationDetailsPaymentDueTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notification_detail_new_bill_payment_due_title"
             android:textColor="@color/tunaGrey"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtNotificationDetailsPaymentDueContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="@string/notification_detail_new_bill_payment_due_content"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtNotificationDetailsSubContent1"
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
             android:paddingBottom="15dp"
             android:text="@string/notification_detail_new_bill_subcontent_1"
             android:textColor="@color/tunaGrey"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtNotificationDetailsSubContent2"
             android:layout_width="match_parent"
@@ -90,14 +90,14 @@
             android:paddingTop="15dp"
             android:text="@string/notification_detail_new_bill_subcontent_2"
             android:textColor="@color/tunaGrey"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
         <TextView
             android:id="@+id/txtNotificationDetailsSubContent3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notification_detail_new_bill_subcontent_3"
             android:textColor="@color/powerBlue"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
         <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent">

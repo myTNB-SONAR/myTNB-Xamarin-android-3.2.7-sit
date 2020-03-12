@@ -1,7 +1,13 @@
-﻿using Android.Content;
+﻿using System.Collections.Generic;
+using Android.App;
+using Android.Content;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -21,7 +27,12 @@ namespace myTNB_Android.Src.Utils
         //    editor.Apply();
         //}
 
+        private UserSessions()
+        {
 
+        }
+
+        private static ISharedPreferences mPreferences;
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -69,6 +80,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("notificationEmail", null);
         }
 
+        public static void SaveNotificationType(ISharedPreferences prefs, string notifType)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("notificationType", notifType);
+            editor.Apply();
+        }
+
+        public static string GetNotificationType(ISharedPreferences prefs)
+        {
+            return prefs.GetString("notificationType", null);
+        }
+
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -84,6 +107,224 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("hasSkipped", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasUpdateSkipped(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean(Utility.GetAppUpdateId(), false);
+        }
+
+        public static void DoUpdateSkipped(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean(Utility.GetAppUpdateId(), true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMROnboardingShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMROnboardingShown", false);
+        }
+
+        public static void DoSMROnboardingShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMROnboardingShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasPayBillShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasPayBillShown", false);
+        }
+
+        public static void DoPayBillShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasPayBillShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasViewBillShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasViewBillShown", false);
+        }
+
+        public static void DoViewBillShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasViewBillShown", true);
+            editor.Apply();
+        }
+
+        public static void DoCleanUpdateReceiveCache(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasCleanUpdateReceiveCache", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasCleanUpdateReceiveCache(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasCleanUpdateReceiveCache", false);
+        }
+
+        public static System.Boolean HasRewardsShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasRewardsShown", false);
+        }
+
+        public static void DoRewardsShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasRewardsShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasRewardShown(ISharedPreferences prefs)
+        {
+            bool flag = prefs.GetBoolean("hasRewardShown", false);
+
+            if (UserSessions.HasRewardsShown(prefs) && !flag)
+            {
+                DoRewardShown(prefs);
+                flag = true;
+            }
+            return flag;
+        }
+
+        public static void DoRewardShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasRewardShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasRewardsDetailShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasRewardsDetailShown", false);
+        }
+
+        public static void DoRewardsDetailShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasRewardsDetailShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasWhatsNewShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasWhatsNewShown", false);
+        }
+
+        public static void DoWhatsNewShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasWhatsNewShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
+        {
+            bool flag = prefs.GetBoolean("hasWhatNewShown", false);
+
+            if (UserSessions.HasWhatsNewShown(prefs) && !flag)
+            {
+                DoWhatNewShown(prefs);
+                flag = true;
+            }
+            return flag;
+        }
+
+        public static void DoWhatNewShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasWhatNewShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasHomeTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasHomeTutorialShown", false);
+        }
+
+        public static void DoHomeTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasHomeTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingNMSMTutorialShown", false);
+        }
+
+        public static void DoItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingRETutorialShown", false);
+        }
+
+        public static void DoItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingRETutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingDetailTutorialShown", false);
+        }
+
+        public static void DoItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingDetailTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);
+        }
+
+        public static void DoSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRMeterHistoryTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRSubmitMeterTutorialShown", false);
+        }
+
+        public static void DoSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRSubmitMeterTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMRDashboardTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRDashboardTutorialShown", false);
+        }
+
+        public static void DoSMRDashboardTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRDashboardTutorialShown", true);
             editor.Apply();
         }
 
@@ -207,6 +448,173 @@ namespace myTNB_Android.Src.Utils
         public static string GetUserEmail(ISharedPreferences preferences)
         {
             return preferences.GetString("loginEmail", "");
+        }
+
+        public static void SetSelectAccountList(List<CustomerBillingAccount> accountList)
+        {
+            if (accountList.Count > 0)
+            {
+                ISharedPreferencesEditor editor = mPreferences.Edit();
+                string jsonAccountList = JsonConvert.SerializeObject(accountList);
+                editor.PutString("SELECT_ACCOUNT_LIST", jsonAccountList);
+                editor.Apply();
+            }
+        }
+
+        public static List<CustomerBillingAccount> GetSelectAccountList()
+        {
+            string accountList = mPreferences.GetString("SELECT_ACCOUNT_LIST", null);
+            List<CustomerBillingAccount> selectAccountList = new List<CustomerBillingAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetSMRAccountList()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetSMREligibilityAccountList()
+        {
+            string accountList = mPreferences.GetString("SMR_ELIGIBILITY_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetRealSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetRealSMREligibilityAccountList()
+        {
+            string accountList = mPreferences.GetString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = null;
+            if (accountList != null)
+            {
+                selectAccountList = new List<SMRAccount>();
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetSharedPreference(ISharedPreferences preferences)
+        {
+            mPreferences = preferences;
+        }
+
+        public static void RemoveSessionData()
+        {
+            SetSMRAccountList(new List<SMRAccount>());
+            SetSMREligibilityAccountList(new List<SMRAccount>());
+            SetRealSMREligibilityAccountList(new List<SMRAccount>());
+        }
+
+        public static void SetAccountActivityInfoList(List<SMRAccountActivityInfo> smrAccountActivityList)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(smrAccountActivityList);
+            editor.PutString("SMR_ACCOUNT_ACTIVITY_INFO_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccountActivityInfo> GetAccountActivityInfoList()
+        {
+            string accountInfoListString = mPreferences.GetString("SMR_ACCOUNT_ACTIVITY_INFO_LIST", null);
+            List<SMRAccountActivityInfo> selectAccountList = new List<SMRAccountActivityInfo>();
+            if (accountInfoListString != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccountActivityInfo>>(accountInfoListString);
+            }
+            return selectAccountList;
+        }
+
+        public static void SaveAppLanguage(string language)
+        {
+            ISharedPreferences sharedPreferences =  Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString(Constants.SHARED_PREF_LANGUAGE_KEY, language);
+            editor.Apply();
+        }
+
+        public static string GetAppLanguage()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY,null);
+        }
+
+        public static void SaveIsAppLanguageChanged(bool isChanged)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, isChanged);
+            editor.Apply();
+        }
+
+        public static bool GetIsAppLanguageChanged()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, false);
+        }
+
+        public static void SaveDeviceId(string deviceId)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString(Constants.SHARED_PREF_DEVICE_ID_KEY, deviceId);
+            editor.Apply();
+        }
+
+        public static string GetDeviceId()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_DEVICE_ID_KEY, null);
+        }
+
+        public static void SavedLanguagePrefResult(bool isSuccess)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutBoolean(Constants.SHARED_PREF_SAVED_LANG_PREF_RESULT_KEY, isSuccess);
+            editor.Apply();
+        }
+
+        public static bool IsSavedLanguagePrefResultSuccess()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetBoolean(Constants.SHARED_PREF_SAVED_LANG_PREF_RESULT_KEY, false);
         }
     }
 }

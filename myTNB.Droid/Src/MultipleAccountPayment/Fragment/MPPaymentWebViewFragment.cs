@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using Java.Net;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
@@ -24,8 +25,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
     public class MPPaymentWebViewFragment : Android.App.Fragment
     {
-        private string TOOL_BAR_TITLE = "Enter OTP";
-        private string TOOL_BAR_TITLE_FPX = "Online Banking";
         private string PYMT_IND = "tokenization";
         private string PYMT_CRITERIA_REGISTRATION = "registration";
         private string PYMT_CRITERIA_PAYMENT = "payment";
@@ -93,11 +92,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 paymentActivity = ((PaymentActivity)Activity);
                 if (Arguments.ContainsKey("html_fpx"))
                 {
-                    paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE_FPX);
+                    paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "onlineBanking"));
                 }
                 else
                 {
-                    paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE);
+                    paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "enterOTP"));
                 }
 
                 mWebView = rootView.FindViewById<WebView>(Resource.Id.web_view);
@@ -186,7 +185,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     + "&DESCRIPTION=" + URLEncoder.Encode(des)
                                     //+ "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
                                     + "&CARDCVC=" + URLEncoder.Encode(cardCvv) // -- CVV Enabled --
-                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL);
+                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
+                                    + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     }
                     else
                     {
@@ -215,7 +215,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         + "&CARDTYPE=" + URLEncoder.Encode(cardType)
                                         + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
                                         + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv)
+                                        + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                         }
                         else
                         {
@@ -239,7 +240,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                        + "&CARDTYPE=" + URLEncoder.Encode(cardType)
                                        + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
                                        + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv)
+                                       + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                         }
                     }
                     mWebView.PostUrl(action, EncodingUtils.GetBytes(data, "base64"));
@@ -257,11 +259,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             if (Arguments.ContainsKey("html_fpx"))
             {
-                paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE_FPX);
+                paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "onlineBanking"));
             }
             else
             {
-                paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE);
+                paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "enterOTP"));
             }
             base.OnResume();
         }
@@ -301,7 +303,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         isRedirected = true;
                         string merchantTransId = url.Substring(url.LastIndexOf("=") + 1);//GetQueryString(url, "transid");
                         Intent payment_activity = new Intent(mActivity, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                        payment_activity.PutExtra("merchantTransId", merchantTransId);
+                        payment_activity.PutExtra("SELECTED_ACCOUNT_NUMBER", "");
+                        payment_activity.PutExtra("DETAILED_INFO_NUMBER", merchantTransId);
+                        payment_activity.PutExtra("IS_OWNED_ACCOUNT", true);
+                        payment_activity.PutExtra("IS_SHOW_ALL_RECEIPT", true);
                         mActivity.StartActivity(payment_activity);
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
@@ -314,13 +319,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         ((PaymentActivity)this.mActivity).ShowToolBar();
 
                     }
-                    else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
+                    else if (url.ToLower().Contains("mytnbapp://payment/"))
                     {
                         isRedirected = true;
                         /* This call inject JavaScript into the page which just finished loading. */
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
-                        Intent DashboardIntent = new Intent(mActivity, typeof(DashboardActivity));
+                        Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);
                         //view.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
@@ -351,81 +358,110 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
             {
-                if (ConnectionUtils.HasInternetConnection(mActivity))
+                try
                 {
-                    base.OnPageStarted(view, url, favicon);
-                    progressBar.Visibility = ViewStates.Visible;
+                    if (ConnectionUtils.HasInternetConnection(mActivity))
+                    {
+                        base.OnPageStarted(view, url, favicon);
+                        progressBar.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        ShowErrorMessage(url);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    ShowErrorMessage(url);
+                    Utility.LoggingNonFatalError(e);
                 }
+
             }
 
             public override void OnPageFinished(WebView view, string url)
             {
+                try
+                {
+                    if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
+                    {
 
-                if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
-                {
+                        ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
+                        //((PaymentActivity)mActivity).SetToolBarTitle("Success");
+                        ((PaymentActivity)mActivity).HideToolBar();
+                        progressBar.Visibility = ViewStates.Gone;
+                    }
+                    else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
+                    {
+                        progressBar.Visibility = ViewStates.Gone;
+                        ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
+                        //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
+                        ((PaymentActivity)mActivity).HideToolBar();
 
-                    ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
-                    //((PaymentActivity)mActivity).SetToolBarTitle("Success");
-                    ((PaymentActivity)mActivity).HideToolBar();
-                    progressBar.Visibility = ViewStates.Gone;
+                    }
+                    else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
+                    {
+                        isRedirected = true;
+                        progressBar.Visibility = ViewStates.Gone;
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
+                        Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
+                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        mActivity.StartActivity(DashboardIntent);
+                    }
+                    else
+                    {
+                        progressBar.Visibility = ViewStates.Gone;
+                    }
                 }
-                else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
+                catch (Exception e)
                 {
-                    progressBar.Visibility = ViewStates.Gone;
-                    ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
-                    //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
-                    ((PaymentActivity)mActivity).HideToolBar();
-
-                }
-                else if (url.ToLower().Contains("mytnbapp://payment/"))
-                {
-                    progressBar.Visibility = ViewStates.Gone;
-                    Intent DashboardIntent = new Intent(mActivity, typeof(DashboardActivity));
-                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    mActivity.StartActivity(DashboardIntent);
-                }
-                else
-                {
-                    progressBar.Visibility = ViewStates.Gone;
+                    Utility.LoggingNonFatalError(e);
                 }
 
             }
 
+            public override bool OnRenderProcessGone(WebView view, RenderProcessGoneDetail detail)
+            {
+                return true;
+            }
+
             public override void OnReceivedError(WebView view, ClientError errorCode, string description, string failingUrl)
             {
-                String message = "Please check your internet connection.";
-                if (ConnectionUtils.HasInternetConnection(mActivity))
+                try
                 {
-                    switch (errorCode)
+                    String message = "Please check your internet connection.";
+                    if (ConnectionUtils.HasInternetConnection(mActivity))
                     {
-                        case ClientError.FileNotFound:
-                            message = "File Not Found."; break;
-                        case ClientError.Authentication:
-                            message = "Authetication Error."; break;
-                        case ClientError.FailedSslHandshake:
-                            message = "SSL Handshake Failed."; break;
-                        case ClientError.Unknown:
-                            message = "Unkown Error."; break;
+                        switch (errorCode)
+                        {
+                            case ClientError.FileNotFound:
+                                message = "File Not Found."; break;
+                            case ClientError.Authentication:
+                                message = "Authetication Error."; break;
+                            case ClientError.FailedSslHandshake:
+                                message = "SSL Handshake Failed."; break;
+                            case ClientError.Unknown:
+                                message = "Unkown Error."; break;
+                        }
+                        ShowErrorMessage(failingUrl);
                     }
-                    ShowErrorMessage(failingUrl);
-                }
-                else
-                {
-                    ShowErrorMessage(failingUrl);
-                }
+                    else
+                    {
+                        ShowErrorMessage(failingUrl);
+                    }
 
-                //Toast.makeText(PaymentWebViewActivity.this,message,Toast.LENGTH_LONG).show();
-                if (!ConnectionUtils.HasInternetConnection(mActivity))
-                {
-                    mWebView.StopLoading();
+                    //Toast.makeText(PaymentWebViewActivity.this,message,Toast.LENGTH_LONG).show();
+                    if (!ConnectionUtils.HasInternetConnection(mActivity))
+                    {
+                        mWebView.StopLoading();
+                    }
+                    else
+                    {
+                        mWebView.LoadUrl("");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    mWebView.LoadUrl("");
+                    Utility.LoggingNonFatalError(e);
                 }
             }
 
@@ -478,8 +514,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 mErrorMessageSnackBar.Dismiss();
             }
 
-            mErrorMessageSnackBar = Snackbar.Make(mainView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate
+            mErrorMessageSnackBar = Snackbar.Make(mainView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
             {
                 if (!failingUrl.ToLower().Contains("statusreceipt.aspx") || !failingUrl.ToLower().Contains("paystatusreceipt"))
                 {

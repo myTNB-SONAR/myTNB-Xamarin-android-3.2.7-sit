@@ -75,6 +75,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         SubmittedFeedbackDetails submittedFeedback;
 
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
@@ -188,6 +189,19 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             StartActivity(fullImageIntent);
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -202,6 +216,30 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

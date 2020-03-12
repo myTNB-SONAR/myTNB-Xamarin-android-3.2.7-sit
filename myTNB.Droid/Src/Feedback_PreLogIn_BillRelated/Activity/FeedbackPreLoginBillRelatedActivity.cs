@@ -1,4 +1,5 @@
 ﻿using AFollestad.MaterialDialogs;
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -19,12 +20,15 @@ using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Feedback_PreLogIn_BillRelated.Adapter;
 using myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP;
 using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -47,9 +51,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [BindView(Resource.Id.txtInputLayoutEmail)]
         TextInputLayout txtInputLayoutEmail;
 
-        [BindView(Resource.Id.txtInputLayoutMobileNo)]
-        TextInputLayout txtInputLayoutMobileNo;
-
         [BindView(Resource.Id.txtInputLayoutAccountNo)]
         TextInputLayout txtInputLayoutAccountNo;
 
@@ -61,9 +62,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
-
-        [BindView(Resource.Id.txtMobileNo)]
-        EditText txtMobileNo;
 
         [BindView(Resource.Id.txtAccountNo)]
         EditText txtAccountNo;
@@ -86,6 +84,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
 
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
+
         FeedbackPreLoginBillRelatedImageRecyclerAdapter adapter;
 
         GridLayoutManager layoutManager;
@@ -94,19 +95,26 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         FeedbackPreLoginBillRelatedPresenter mPresenter;
 
         MaterialDialog submitDialog;
-        LoadingOverlay loadingOverlay;
 
         [BindView(Resource.Id.rootView)]
         FrameLayout rootView;
+
+        private MobileNumberInputComponent mobileNumberInputComponent;
+        private const int COUNTRY_CODE_SELECT_REQUEST = 1;
 
         public override int ResourceId()
         {
             return Resource.Layout.FeedbackPreLogInBillRelatedView;
         }
 
-        public override bool ShowCustomToolbarTitle()
+        public override Boolean ShowCustomToolbarTitle()
         {
             return true;
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -114,6 +122,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             base.OnCreate(savedInstanceState);
             try
             {
+                Intent intent = Intent;
+                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
 
                 // Create your application here
                 submitDialog = new MaterialDialog.Builder(this)
@@ -123,9 +133,19 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     .Cancelable(false)
                     .Build();
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutAccountNo, txtInputLayoutFeedback);
-                TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFullName, txtEmail, txtMobileNo, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutAccountNo, txtInputLayoutFeedback);
+                TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFullName, txtEmail, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+
+                txtInputLayoutFullName.Hint = Utility.GetLocalizedCommonLabel("fullname");
+                txtInputLayoutEmail.Hint = Utility.GetLocalizedCommonLabel("email");
+                txtInputLayoutAccountNo.Hint = Utility.GetLocalizedCommonLabel("accountNo");
+                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackForm", "feedback");
+
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackForm", "attachPhotoTitle");
+                txtMaxCharacters.Text = Utility.GetLocalizedLabel("FeedbackForm", "attachPhotoTitle");
+                txtMaxImageContent.Text = Utility.GetLocalizedLabel("FeedbackForm", "maxFile");
+                btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
 
                 adapter = new FeedbackPreLoginBillRelatedImageRecyclerAdapter(true);
                 adapter.Insert(new Base.Models.AttachedImage()
@@ -164,30 +184,27 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
 
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, txtInputLayoutFullName));
-                txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));
                 txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
 
-
-
                 mPresenter = new FeedbackPreLoginBillRelatedPresenter(this);
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
+
                 this.userActionsListener.Start();
 
-                if (string.IsNullOrEmpty(txtMobileNo.Text))
-                {
-                    txtMobileNo.Append("+60");
-                }
-                txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
-
-
                 txtFullName.TextChanged += TxtFullName_TextChanged;
-                txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
                 txtEmail.TextChanged += TxtEmail_TextChanged;
                 txtAccountNo.TextChanged += TxtAccountNo_TextChanged;
                 txtFeedback.TextChanged += TxtFeedback_TextChanged;
                 txtFeedback.SetOnTouchListener(this);
-                txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                txtInputLayoutFeedback.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
 
                 //txtInputLayoutFullName.Error = null;
                 txtFullName.ClearFocus();
@@ -204,7 +221,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -235,11 +252,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                 if (char_count > 0)
                 {
                     int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                    txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                    txtInputLayoutFeedback.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);
                 }
                 else
                 {
-                    txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                    txtInputLayoutFeedback.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
                 }
             }
             catch (System.Exception e)
@@ -254,7 +271,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -272,7 +289,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -287,19 +304,35 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
-                string email = txtEmail.Text.Trim();
-                string account_no = txtAccountNo.Text.Trim();
-                string feedback = txtFeedback.Text;
-                this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+            //try
+            //{
+            //    string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
+            //    if (checkedPhoneNumber != txtMobileNo.Text)
+            //    {
+            //        txtMobileNo.Text = checkedPhoneNumber;
+            //    }
+
+            //    string fullname = txtFullName.Text.Trim();
+            //    string mobile_no = txtMobileNo.Text.Trim();
+            //    string email = txtEmail.Text.Trim();
+            //    string account_no = txtAccountNo.Text.Trim();
+            //    string feedback = txtFeedback.Text;
+            //    this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    Utility.LoggingNonFatalError(ex);
+            //}
+        }
+
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            string fullname = txtFullName.Text.Trim();
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            string email = txtEmail.Text.Trim();
+            string account_no = txtAccountNo.Text.Trim();
+            string feedback = txtFeedback.Text;
+            this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
         }
 
         [Preserve]
@@ -308,7 +341,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             try
             {
                 string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.Trim();
                 string account_no = txtAccountNo.Text.Trim();
                 string feedback = txtFeedback.Text;
@@ -325,26 +358,31 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         {
             try
             {
-                btnSubmit.Enabled = false;
-                Handler h = new Handler();
-                Action myAction = () =>
+                if (!this.GetIsClicked())
                 {
-                    btnSubmit.Enabled = true;
-                };
-                h.PostDelayed(myAction, 3000);
+                    this.SetIsClicked(true);
+                    btnSubmit.Enabled = false;
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        btnSubmit.Enabled = true;
+                    };
+                    h.PostDelayed(myAction, 3000);
 
-                string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
-                string email = txtEmail.Text.Trim();
-                string account_no = txtAccountNo.Text.Trim();
-                string feedback = txtFeedback.Text.Trim();
-                List<AttachedImage> attachedImages = adapter.GetAllImages();
+                    string fullname = txtFullName.Text.Trim();
+                    string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+                    string email = txtEmail.Text.Trim();
+                    string account_no = txtAccountNo.Text.Trim();
+                    string feedback = txtFeedback.Text.Trim();
+                    List<AttachedImage> attachedImages = adapter.GetAllImages();
 
 
-                this.userActionsListener.OnSubmit(this.DeviceId(), fullname, mobile_no, email, account_no, feedback, attachedImages);
+                    this.userActionsListener.OnSubmit(this.DeviceId(), fullname, mobile_no, email, account_no, feedback, attachedImages);
+                }
             }
             catch (System.Exception ex)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(ex);
             }
         }
@@ -384,30 +422,30 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         {
             try
             {
-                string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
-                               GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
-                               GetString(Resource.String.bill_related_feedback_selection_cancel)};
+                string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
+                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                                Utility.GetLocalizedCommonLabel("cancel")};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
+                    .SetTitle(Utility.GetLocalizedLabel("FeedbackForm", "selectOptions"));
                 builder.SetItems(items, (lsender, args) =>
-                   {
+                {
 
 
 
-                       if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
-                       {
-                           this.userActionsListener.OnAttachPhotoCamera();
-                       }
-                       else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
-                       {
-                           this.userActionsListener.OnAttachPhotoGallery();
-                       }
-                       else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
-                       {
-                           _ChooseDialog.Dismiss();
-                       }
-                   }
+                    if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")))
+                    {
+                        this.userActionsListener.OnAttachPhotoCamera();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
+                    {
+                        this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
+                    {
+                        _ChooseDialog.Dismiss();
+                    }
+                }
                 );
                 _ChooseDialog = builder.Show();
             }
@@ -420,10 +458,19 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-
-            this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
-
-
+            if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
+                    Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                    mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                }
+            }
+            else
+            {
+                this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
+            }
         }
 
 
@@ -438,23 +485,47 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Pre Login Submit Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowCamera()
         {
-            var intent = new Intent(MediaStore.ActionImageCapture);
-            Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
-            Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                            ApplicationContext.PackageName + ".provider", file);
-            intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
-            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
-            StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+            if (!this.GetIsClicked())
+            {
+                Permission cameraPermission = ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
+                if (cameraPermission == (int)Permission.Granted)
+                {
+                    this.SetIsClicked(true);
+                    var intent = new Intent(MediaStore.ActionImageCapture);
+                    Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
+                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                    ApplicationContext.PackageName + ".provider", file);
+                    intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
+                    intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                    StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+                }
+            }
         }
 
         public void ShowGallery()
         {
-            Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
-            galleryIntent.SetType("image/*");
-            StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
+                galleryIntent.SetType("image/*");
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
+            }
         }
 
         public void SetPresenter(FeedbackPreLoginBillRelatedContract.IUserActionsListener userActionListener)
@@ -561,42 +632,42 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void ShowEmptyFullnameError()
         {
-            txtInputLayoutFullName.Error = GetString(Resource.String.bill_related_feedback_empty_fullname_error);
+            txtInputLayoutFullName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
         }
 
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.bill_related_feedback_empty_mobile_error);
+            //txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.bill_related_feedback_invalid_mobile_error);
+            //txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowEmptyEmaiError()
         {
-            txtInputLayoutEmail.Error = GetString(Resource.String.bill_related_feedback_empty_email_error);
+            txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
         public void ShowInvalidEmailError()
         {
-            txtInputLayoutEmail.Error = GetString(Resource.String.bill_related_feedback_invalid_email_error);
+            txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
         public void ShowEmptyAccountNoError()
         {
-            txtInputLayoutAccountNo.Error = GetString(Resource.String.account_number_validation_error);
+            txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
         }
 
         public void ShowInvalidAccountNoError()
         {
-            txtInputLayoutAccountNo.Error = GetString(Resource.String.account_number_validation_error);
+            txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
         }
 
         public void ShowInValidAccountNumber()
         {
-            txtInputLayoutAccountNo.Error = GetString(Resource.String.account_number_validation_error);
+            txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
 
         }
 
@@ -605,14 +676,14 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback);
-            txtInputLayoutFeedback.Error = GetString(Resource.String.bill_related_feedback_empty_feedback_error);
+            txtInputLayoutFeedback.Error = Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");
         }
 
         public void ClearErrors()
         {
             txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutFullName.Error = null;
-            txtInputLayoutMobileNo.Error = null;
+            //txtInputLayoutMobileNo.Error = null;
             txtInputLayoutEmail.Error = null;
             txtInputLayoutAccountNo.Error = null;
             txtInputLayoutFeedback.Error = null;
@@ -625,21 +696,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void ShowProgressDialog()
         {
-            //if (submitDialog != null && !submitDialog.IsShowing)
-            //{
-            //    submitDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -647,18 +708,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void HideProgressDialog()
         {
-            //if (submitDialog != null && submitDialog.IsShowing)
-            //{
-            //    submitDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -713,23 +767,23 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         public void EnableSubmitButton()
         {
             string fullname = txtFullName.Text.Trim();
-            string mobile_no = txtMobileNo.Text.Trim();
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text.Trim();
             try
             {
-                if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(account_no))
+                if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(account_no) || TextUtils.IsEmpty(feedback))
                 {
+                    if (TextUtils.IsEmpty(feedback))
+                    {
+                        ShowEmptyFeedbackError();
+                    }
+
                     DisableSubmitButton();
                     return;
                 }
-                else if (TextUtils.IsEmpty(feedback))
-                {
-                    ShowEmptyFeedbackError();
-                    DisableSubmitButton();
-                    return;
-                }
+
                 else
                 {
                     ClearErrors();
@@ -761,7 +815,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             txtEmail.Text = "";
             txtFeedback.Text = "";
             txtFullName.Text = "";
-            txtMobileNo.Text = "";
+            //txtMobileNo.Text = "";
             adapter.ClearAll();
             adapter.Add(new AttachedImage()
             {
@@ -809,17 +863,18 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
             if (string.IsNullOrEmpty(message))
             {
-                message = GetString(Resource.String.app_launch_http_exception_error);
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -837,6 +892,25 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public void ReplaceAccountNum(string account_no)
+        {
+            try
+            {
+                txtAccountNo.Text = account_no;
+                txtAccountNo.SetSelection(account_no.Length);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
         }
     }
 }

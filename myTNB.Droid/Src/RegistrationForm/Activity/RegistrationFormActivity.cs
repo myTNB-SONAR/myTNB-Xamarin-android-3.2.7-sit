@@ -7,10 +7,14 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.RegisterValidation;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.MVP;
@@ -28,13 +32,16 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.RegisterForm")]
-    public class RegistrationFormActivity : BaseToolbarAppCompatActivity, RegisterFormContract.IView
+    public class RegistrationFormActivity : BaseActivityCustom, RegisterFormContract.IView
     {
         private RegisterFormPresenter mPresenter;
         private RegisterFormContract.IUserActionsListener userActionsListener;
 
         private AlertDialog mVerificationProgressDialog;
         private AlertDialog mRegistrationProgressDialog;
+        const string PAGE_ID = "Register";
+        private MobileNumberInputComponent mobileNumberInputComponent;
+        const int COUNTRY_CODE_SELECT_REQUEST = 1;
 
         Snackbar mRegistrationSnackBar;
 
@@ -46,9 +53,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         [BindView(Resource.Id.txtICNumber)]
         EditText txtICNumber;
-
-        [BindView(Resource.Id.txtMobileNumber)]
-        EditText txtMobileNumber;
 
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
@@ -77,16 +81,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [BindView(Resource.Id.textInputLayoutICNo)]
         TextInputLayout textInputLayoutICNo;
 
-        [BindView(Resource.Id.textInputLayoutMobileNo)]
-        TextInputLayout textInputLayoutMobileNo;
-
         [BindView(Resource.Id.textInputLayoutPassword)]
         TextInputLayout textInputLayoutPassword;
 
         [BindView(Resource.Id.textInputLayoutConfirmPassword)]
         TextInputLayout textInputLayoutConfirmPassword;
 
-
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
 
         [BindView(Resource.Id.btnRegister)]
         Button btnRegister;
@@ -117,7 +119,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtConfirmEmail,
                     txtConfirmPassword,
                     txtEmail,
-                    txtMobileNumber,
                     txtFullName,
                     txtICNumber,
                     txtPassword,
@@ -127,30 +128,24 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     textInputLayoutConfirmPassword,
                     textInputLayoutEmail,
                     textInputLayoutFullName,
-                    textInputLayoutMobileNo,
                     textInputLayoutICNo,
                     textInputLayoutPassword);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
-                //var inputFilter = new InputFilterPhoneNumber();
-                //txtMobileNumber.AddTextChangedListener(inputFilter);
-                //txtMobileNumber.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-                //{
-                //    if (e.HasFocus)
-                //    {
-                //        if (string.IsNullOrEmpty(txtMobileNumber.Text))
-                //        {
-                //            txtMobileNumber.Append("+60");
-                //        }
+                textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
+                textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumber");
+                textInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                textInputLayoutConfirmEmail.Hint = GetLabelByLanguage("confirmEmail");
+                textInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
+                textInputLayoutConfirmPassword.Hint = GetLabelCommonByLanguage("confirmPassword");
 
-                //    }
-
-                //};
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
+                StripUnderlinesFromLinks(txtTermsConditions);
+                btnRegister.Text = GetLabelByLanguage("ctaTitle");
 
                 txtFullName.TextChanged += TextChange;
                 txtICNumber.TextChanged += TextChange;
-                txtMobileNumber.TextChanged += TextChange;
                 txtEmail.TextChanged += TextChange;
                 txtConfirmEmail.TextChanged += TextChange;
                 txtPassword.TextChanged += TextChange;
@@ -158,17 +153,23 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
-                txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputLayoutMobileNo));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputLayoutEmail));
                 txtConfirmEmail.AddTextChangedListener(new InputFilterFormField(txtConfirmEmail, textInputLayoutConfirmEmail));
                 txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, textInputLayoutPassword));
                 txtConfirmPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmPassword, textInputLayoutConfirmPassword));
 
 
-                this.userActionsListener.Start();
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
 
-                txtMobileNumber.Append("+60");
-                txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
+                ClearFields();
+
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -186,6 +187,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             //#endif
         }
 
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            string fullname = txtFullName.Text.ToString().Trim();
+            string ic_no = txtICNumber.Text.ToString().Trim();
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            string email = txtEmail.Text.ToString().Trim();
+            string confirm_email = txtConfirmEmail.Text.ToString().Trim();
+            string password = txtPassword.Text;
+            string confirm_password = txtConfirmPassword.Text;
+            this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, email, confirm_email, password, confirm_password);
+        }
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
@@ -193,7 +205,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             {
                 string fullname = txtFullName.Text.ToString().Trim();
                 string ic_no = txtICNumber.Text.ToString().Trim();
-                string mobile_no = txtMobileNumber.Text.ToString().Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text.ToString().Trim();
                 string confirm_email = txtConfirmEmail.Text.ToString().Trim();
                 string password = txtPassword.Text;
@@ -202,15 +214,21 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 if (!string.IsNullOrEmpty(password))
                 {
-                    textInputLayoutPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
-                    textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                    if (!this.mPresenter.CheckPasswordIsValid(password))
+                    {
+                        textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+                    }
+                    else
+                    {
+                        ClearPasswordMinimumOf6CharactersError();
+                    }
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
+                    textInputLayoutPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
                     textInputLayoutPassword.Error = "";
-                    textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
                 }
@@ -218,6 +236,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 if (!string.IsNullOrEmpty(confirm_password))
                 {
                     textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
+                    textInputLayoutConfirmPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
@@ -241,18 +260,23 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             txtFullName.Text = "";
             txtICNumber.Text = "";
-            txtMobileNumber.Text = "";
+            mobileNumberInputComponent.ClearMobileNumber();
             txtEmail.Text = "";
             txtConfirmEmail.Text = "";
             txtPassword.Text = "";
             txtConfirmPassword.Text = "";
+            txtFullName.ClearFocus();
+            txtICNumber.ClearFocus();
+            txtEmail.ClearFocus();
+            txtConfirmEmail.ClearFocus();
+            txtPassword.ClearFocus();
+            txtConfirmPassword.ClearFocus();
         }
 
         public void ClearAllErrorFields()
         {
             textInputLayoutEmail.Error = null;
             textInputLayoutICNo.Error = null;
-            textInputLayoutMobileNo.Error = null;
             textInputLayoutEmail.Error = null;
             textInputLayoutConfirmEmail.Error = null;
             textInputLayoutPassword.Error = null;
@@ -277,7 +301,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowEmptyConfirmEmailError()
         {
-            textInputLayoutConfirmEmail.Error = GetString(Resource.String.registration_form_errors_empty_confirm_email);
+            textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
         public void ShowEmptyConfirmPasswordError()
@@ -303,7 +327,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowEmptyMobileNoError()
         {
-            textInputLayoutMobileNo.Error = GetString(Resource.String.registration_form_errors_empty_mobile_no);
+            //textInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowEmptyPasswordError()
@@ -313,18 +337,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
-            textInputLayoutPassword.Error = GetString(Resource.String.registration_form_errors_password_must_have_atleas8_chars);
-            textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
         }
 
         public void ShowInvalidMobileNoError()
         {
-            textInputLayoutMobileNo.Error = GetString(Resource.String.registration_form_errors_invalid_mobile_no);
+            //textInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidEmailError()
         {
-            textInputLayoutEmail.Error = GetString(Resource.String.registration_form_errors_invalid_email);
+            textInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
         public void ShowInvalidICNoError()
@@ -334,12 +357,12 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowNotEqualConfirmEmailError()
         {
-            textInputLayoutConfirmEmail.Error = GetString(Resource.String.registration_form_errors_not_equal_confirm_email);
+            textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedEmail");
         }
 
         public void ShowNotEqualConfirmPasswordError()
         {
-            textInputLayoutConfirmPassword.Error = GetString(Resource.String.registration_form_errors_not_equal_confirm_password);
+            textInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
         }
 
         public void ShowTermsAndConditions()
@@ -353,17 +376,22 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             try
             {
-                string fName = txtFullName.Text.ToString().Trim();
-                string ic_no = txtICNumber.Text.ToString().Trim();
-                string mobile_no = txtMobileNumber.Text.ToString().Trim();
-                string eml_str = txtEmail.Text.ToString().Trim();
-                string confirm_email = txtConfirmEmail.Text.ToString().Trim();
-                string password = txtPassword.Text;
-                string confirm_password = txtConfirmPassword.Text;
-                this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    string fName = txtFullName.Text.ToString().Trim();
+                    string ic_no = txtICNumber.Text.ToString().Trim();
+                    string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+                    string eml_str = txtEmail.Text.ToString().Trim();
+                    string confirm_email = txtConfirmEmail.Text.ToString().Trim();
+                    string password = txtPassword.Text;
+                    string confirm_password = txtConfirmPassword.Text;
+                    this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -372,12 +400,26 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [OnClick(Resource.Id.txtTermsConditions)]
         void OnTermsConditions(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.NavigateToTermsAndConditions();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToTermsAndConditions();
+            }
         }
 
 
-
-
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Register New User");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void ShowVerificationCodeProgressDialog()
         {
@@ -458,13 +500,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
 
             mRegistrationSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_failed_btn_close), delegate { mRegistrationSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mRegistrationSnackBar.Dismiss(); }
             );
             View v = mRegistrationSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
 
             mRegistrationSnackBar.Show();
+            this.SetIsClicked(false);
         }
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
@@ -474,14 +517,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
-                string mobile_no = txtMobileNumber.Text;
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text;
                 string confirm_email = txtConfirmEmail.Text;
                 string password = txtPassword.Text;
@@ -491,6 +534,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -502,14 +546,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
-                string mobile_no = txtMobileNumber.Text;
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text;
                 string confirm_email = txtConfirmEmail.Text;
                 string password = txtPassword.Text;
@@ -519,6 +563,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -530,14 +575,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
-                string mobile_no = txtMobileNumber.Text;
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 string email = txtEmail.Text;
                 string confirm_email = txtConfirmEmail.Text;
                 string password = txtPassword.Text;
@@ -547,6 +592,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -579,7 +625,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearInvalidMobileError()
         {
-            textInputLayoutMobileNo.Error = null;
+            //textInputLayoutMobileNo.Error = null;
         }
 
         public void ClearInvalidEmailError()
@@ -646,6 +692,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 }
                 mSnackBar.Show();
             }
+            this.SetIsClicked(false);
         }
 
         public bool IsGrantedSMSReceivePermission()
@@ -687,5 +734,97 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
         }
 
+        public void OnClickSpan(string textMessage)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToTermsAndConditions();
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StripUnderlinesFromLinks(TextView textView)
+        {
+            var spannable = new SpannableStringBuilder(textView.TextFormatted);
+            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            foreach (URLSpan span in spans)
+            {
+                var start = spannable.GetSpanStart(span);
+                var end = spannable.GetSpanEnd(span);
+                spannable.RemoveSpan(span);
+                var newSpan = new URLSpanNoUnderline(span.URL);
+                spannable.SetSpan(newSpan, start, end, 0);
+            }
+            textView.TextFormatted = spannable;
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            try
+            {
+                base.OnActivityResult(requestCode, resultCode, data);
+                if (resultCode == Result.Ok)
+                {
+                    if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+                    {
+                        string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
+                        Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                        mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

@@ -316,27 +316,33 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 {
                     if (!string.IsNullOrEmpty(amount))
                     {
-
-                        if (accType.Equals("2"))
+                        if(amount != "--")
                         {
-                            double amt = Convert.ToDouble(amount);
-                            amt = amt * -1;
-                            if (amt <= 0)
+                            if (accType.Equals("2"))
                             {
-                                amt = 0.00;
+                                double amt = Convert.ToDouble(amount);
+                                amt = amt * -1;
+                                if (amt <= 0)
+                                {
+                                    amt = 0.00;
+                                }
+                                else
+                                {
+                                    amt = Math.Abs(amt);
+                                }
+                                amountText.Text = " " + decimalFormat.Format(amt);
                             }
                             else
                             {
-                                amt = Math.Abs(amt);
+                                double amt = Convert.ToDouble(amount);
+                                amountText.Text = " " + decimalFormat.Format(amt);
                             }
-                            amountText.Text = " " + decimalFormat.Format(amt);
                         }
                         else
                         {
-                            double amt = Convert.ToDouble(amount);
-                            amountText.Text = " " + decimalFormat.Format(amt);
+                            rmCurrencyText.Text = "";
+                            amountText.Text = "--";
                         }
-
                     }
                     else
                     {
@@ -353,61 +359,68 @@ namespace myTNB_Android.Src.SummaryDashBoard
             {
                 try
                 {
-                    double amt = Convert.ToDouble(amount);
-                    if (summaryDashBoardDetails.AccType.Equals("2"))
+                    if(amount != "--")
                     {
-                        amt = amt * -1;
-                        if (amt <= 0)
-                        {
-                            amt = 0.00;
-                        }
-                        else
-                        {
-                            amt = Math.Abs(amt);
-                        }
-                    }
-
-
-                    dueDate.Text = "--";
-
-                    if (!string.IsNullOrEmpty(dueDateValue) && amt > 0)
-                    {
-                        Date d = null;
-                        try
-                        {
-                            d = dateParser.Parse(dueDateValue);
-                        }
-                        catch (ParseException e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                        string dt = dateFormatter.Format(d);
-
-                        //DateTime dt = Convert.ToDateTime(dueDateValue);
-                        //dueDate.Text = dt.ToString("dd MMM");
-
+                        double amt = Convert.ToDouble(amount);
                         if (summaryDashBoardDetails.AccType.Equals("2"))
                         {
-                            int incrementDays = int.Parse(summaryDashBoardDetails.IncrementREDueDateByDays == null ? "0" : summaryDashBoardDetails.IncrementREDueDateByDays);
-                            Calendar c = Calendar.Instance;
-                            c.Time = d;
-                            c.Add(CalendarField.Date, incrementDays);
-                            Date newDate = c.Time;
-                            if (amt == 0.00)
+                            amt = amt * -1;
+                            if (amt <= 0)
                             {
-                                dueDate.Text = "--";
+                                amt = 0.00;
                             }
                             else
                             {
-                                string dtnewDate = dateFormatter.Format(newDate);
-                                dueDate.Text = dtnewDate;
+                                amt = Math.Abs(amt);
                             }
                         }
-                        else
-                        {
-                            dueDate.Text = dt;
-                        }
 
+
+                        dueDate.Text = "--";
+
+                        if (!string.IsNullOrEmpty(dueDateValue) && amt > 0)
+                        {
+                            Date d = null;
+                            try
+                            {
+                                d = dateParser.Parse(dueDateValue);
+                            }
+                            catch (ParseException e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            string dt = dateFormatter.Format(d);
+
+                            //DateTime dt = Convert.ToDateTime(dueDateValue);
+                            //dueDate.Text = dt.ToString("dd MMM");
+
+                            if (summaryDashBoardDetails.AccType.Equals("2"))
+                            {
+                                int incrementDays = int.Parse(summaryDashBoardDetails.IncrementREDueDateByDays == null ? "0" : summaryDashBoardDetails.IncrementREDueDateByDays);
+                                Calendar c = Calendar.Instance;
+                                c.Time = d;
+                                c.Add(CalendarField.Date, incrementDays);
+                                Date newDate = c.Time;
+                                if (amt == 0.00)
+                                {
+                                    dueDate.Text = "--";
+                                }
+                                else
+                                {
+                                    string dtnewDate = dateFormatter.Format(newDate);
+                                    dueDate.Text = dtnewDate;
+                                }
+                            }
+                            else
+                            {
+                                dueDate.Text = dt;
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        dueDate.Text = "-";
                     }
 
                 }

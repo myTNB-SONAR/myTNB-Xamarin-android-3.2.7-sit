@@ -38,6 +38,8 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// <param name="message"></param>
             void ShowSuccess(string message);
 
+            void ShowCodeVerifiedSuccess();
+
 
             /// <summary>
             /// Show progress dialog in resetting password
@@ -130,6 +132,28 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// </summary>
             /// <param name="exception"></param>
             void ShowRetryOptionsCodeUnknownException(Exception exception);
+
+            /// <summary>
+            /// Show empty error on pin 1
+            /// </summary>
+            void ShowEmptyErrorPin_1();
+
+            /// <summary>
+            /// Show empty error on pin 2
+            /// </summary>
+            void ShowEmptyErrorPin_2();
+
+            /// <summary>
+            /// Show empty error on pin 3
+            /// </summary>
+            void ShowEmptyErrorPin_3();
+
+            /// <summary>
+            /// Show empty error on pin 4
+            /// </summary>
+            void ShowEmptyErrorPin_4();
+
+            void ShowEmptyErrorPin();
 
         }
 

@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Utils;
@@ -51,16 +52,18 @@ namespace myTNB_Android.Src.Rating.Fargment
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdContent, txtTransactionScheduleContent);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, txtFeedbackIdTitle, txtTransactionScheduleTitle, btnBackToFeedback);
 
-                btnBackToFeedback.Text = GetString(Resource.String.get_access_success_btn_dashboard);
-                txtTitleInfo.Text = GetString(Resource.String.rating_thank_you);
-                txtContentInfo.Text = GetString(Resource.String.rating_thank_you_message);
+                btnBackToFeedback.Text = Utility.GetLocalizedLabel("RatingResults", "backToHome");
+                txtTitleInfo.Text = Utility.GetLocalizedLabel("RatingResults", "thankyou");
+                txtContentInfo.Text = Utility.GetLocalizedLabel("RatingResults", "description");
 
                 ratingActivity.HideToolBar();
 
                 btnBackToFeedback.Click += delegate
                 {
                     //ratingActivity.Finish();
-                    Intent DashboardIntent = new Intent(ratingActivity, typeof(DashboardActivity));
+                    Intent DashboardIntent = new Intent(ratingActivity, typeof(DashboardHomeActivity));
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                     StartActivity(DashboardIntent);
                 };

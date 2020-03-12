@@ -29,7 +29,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:gravity="left|start"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textColor="@color/white" />
             <TextView
                 android:id="@+id/accountNumber"
@@ -41,7 +41,7 @@
                 android:ellipsize="end"
                 android:gravity="left|start"
                 android:alpha="0.6"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:textColor="@color/white" />
         </LinearLayout>
        <!--<View
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/malaysia_currency"
                     android:gravity="right|end"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:singleLine="true"
                     android:maxLines="1"
                     android:ellipsize="end"
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right|end"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:maxLines="1"
                     android:textColor="@color/white" />
             </LinearLayout>
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|end"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:singleLine="true"
                 android:maxLines="1"
                 android:alpha="0.6"

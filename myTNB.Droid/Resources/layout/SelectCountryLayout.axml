@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    android:id="@+id/rootView">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+        <LinearLayout
+            android:id="@+id/countryListContainer"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:background="@color/lightGrey">
+            <ListView
+                android:id="@+id/countryListView"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:scrollbarStyle="outsideOverlay"
+                android:fastScrollEnabled="true"
+                android:fastScrollAlwaysVisible="true"/>
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

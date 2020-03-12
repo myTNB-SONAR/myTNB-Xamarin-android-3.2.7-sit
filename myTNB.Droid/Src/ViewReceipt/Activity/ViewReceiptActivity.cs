@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(baseView, msg, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -244,9 +244,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         {
                             mErrorMessageSnackBar.Dismiss();
                         }
+                        
+                        string downloadLinkLocation = string.Format(Utility.GetLocalizedCommonLabel("pdfDownloadMessage"), path);
 
-                        mErrorMessageSnackBar = Snackbar.Make(baseView, "File has been downloaded to location :" + path, Snackbar.LengthIndefinite)
-                        .SetAction("Open", delegate
+                        mErrorMessageSnackBar = Snackbar.Make(baseView, downloadLinkLocation, Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("open"), delegate
                         {
                             Java.IO.File file = new Java.IO.File(path);
                             Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
@@ -362,8 +364,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 mErrorNoInternet.Dismiss();
             }
 
-            mErrorNoInternet = Snackbar.Make(mainView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate
+            mErrorNoInternet = Snackbar.Make(mainView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
             {
                 webView.LoadUrl(failingUrl);
                 mErrorNoInternet.Dismiss();
@@ -373,6 +375,19 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             tv.SetMaxLines(5);
 
             mErrorNoInternet.Show();
+        }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "View Payment Receipt");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

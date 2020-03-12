@@ -40,10 +40,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
             bool HasNetworkConnection();
             void ShowNotification();
-            void ShowNoInternetSnackbar();
+
             void SetGreetingImageAndText(eGreeting greeting, string text);
 
-            void ShowRefreshSummaryDashboard(bool flag);
+            void ShowRefreshSummaryDashboard(bool flag, string contentMsg, string buttonMsg);
 
         }
 

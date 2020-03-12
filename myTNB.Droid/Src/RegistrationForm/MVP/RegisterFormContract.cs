@@ -208,6 +208,9 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
 
             void ClearInvalidMobileError();
 
+            void ShowProgressDialog();
+            void HideProgressDialog();
+
         }
 
         public interface IUserActionsListener : IBasePresenter

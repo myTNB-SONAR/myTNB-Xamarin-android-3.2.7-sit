@@ -44,7 +44,7 @@
                     android:layout_marginTop="10.2dp"
                     android:text="@string/feedback_unsuccessful_txt_title"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
 
                 <View
                     android:id="@+id/view2"
@@ -64,7 +64,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/feedback_unsuccessful_txt_content"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout

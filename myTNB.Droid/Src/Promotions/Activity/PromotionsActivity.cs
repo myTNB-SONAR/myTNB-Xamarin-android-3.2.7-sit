@@ -105,24 +105,38 @@ namespace myTNB_Android.Src.Promotions.Activity
                     textCampaign.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
                     textPrizes.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
                     textPromotionInfo.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
-                    //if(model.Image != null)
-                    //{
-                    //    GetImageAsync(imgPromotion, mProgressBar, model);
-                    //}
 
-                    if (model.LandscapeImage.Contains("jpeg"))
+                    if (!string.IsNullOrEmpty(model.LandscapeImage))
                     {
-                        Picasso.With(imgPromotion.Context)
-                       .Load(new Java.IO.File(model.LandscapeImage))
-                       .Fit()
-                       .Into(imgPromotion);
-                        mProgressBar.Visibility = ViewStates.Gone;
+                        if (model.LandscapeImage.Contains("jpeg"))
+                        {
+                            Picasso.With(imgPromotion.Context)
+                           .Load(new Java.IO.File(model.LandscapeImage))
+                           .Error(Resource.Drawable.promotions_default_image)
+                           .Fit()
+                           .Into(imgPromotion);
+                            mProgressBar.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            GetImageAsync(imgPromotion, mProgressBar, model);
+                        }
                     }
                     else
                     {
-                        GetImageAsync(imgPromotion, mProgressBar, model);
+                        imgPromotion.SetImageResource(Resource.Drawable.promotions_default_image);
+                        mProgressBar.Visibility = ViewStates.Gone;
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                SetToolBarTitle(Utility.GetLocalizedLabel("Promotions", "title"));
             }
             catch (Exception e)
             {
@@ -147,11 +161,24 @@ namespace myTNB_Android.Src.Promotions.Activity
                         shareIntent.SetType("text/plain");
                         shareIntent.PutExtra(Intent.ExtraSubject, model.Title);
                         shareIntent.PutExtra(Intent.ExtraText, model.GeneralLinkUrl);
-                        StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+                        StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
                     }
                     return true;
             }
             return base.OnOptionsItemSelected(item);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Promotion Detailed Info");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public async Task GetImageAsync(ImageView icon, ProgressBar progressBar, PromotionsModelV2 item)
@@ -169,6 +196,10 @@ namespace myTNB_Android.Src.Promotions.Activity
                 if (imageBitmap != null)
                 {
                     icon.SetImageBitmap(imageBitmap);
+                }
+                else
+                {
+                    icon.SetImageResource(Resource.Drawable.promotions_default_image);
                 }
 
                 progressBar.Visibility = ViewStates.Gone;

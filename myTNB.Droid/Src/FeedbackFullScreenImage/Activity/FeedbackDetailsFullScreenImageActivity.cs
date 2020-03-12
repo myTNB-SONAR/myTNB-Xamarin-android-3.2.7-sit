@@ -86,6 +86,19 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details View Image");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public override void OnTrimMemory(TrimMemory level)
         {

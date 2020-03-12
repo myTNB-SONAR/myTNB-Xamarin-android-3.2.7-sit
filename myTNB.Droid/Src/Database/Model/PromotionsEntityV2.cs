@@ -226,27 +226,28 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
         }
 
-        internal static bool HasUnread()
+        internal static int Count()
         {
             try
             {
-                //using (var db = new SQLiteConnection(Constants.DB_PATH))
-                //{
                 var db = DBHelper.GetSQLiteConnection();
                 var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE Read = ? ", false);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
-                    return true;
+                    return existingRecord.Count;
                 }
-                //}
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
             }
+            return 0;
+        }
 
-            return false;
+        internal static bool HasUnread()
+        {
+            return Count() > 0;
         }
 
         public List<PromotionsEntityV2> GetAllValidPromotions()

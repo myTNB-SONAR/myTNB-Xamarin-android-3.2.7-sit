@@ -18,7 +18,6 @@ namespace myTNB_Android.Src.Promotions.MVP
     {
 
         private PromotionContract.IView mView;
-        private CancellationTokenSource cts;
 
         public PromotionPresenter(PromotionContract.IView mView)
         {
@@ -26,16 +25,23 @@ namespace myTNB_Android.Src.Promotions.MVP
             this.mView.SetPresenter(this);
         }
 
+        public Task OnRecheckPromotionStatus()
+        {
+            return Task.Delay(Constants.REWARDS_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
+                this.mView.OnGetPromotionTimestamp();
+            });
+        }
+
         public Task OnGetPromotionsTimeStamp()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    string json = getItemsService.GetPromotionsTimestampItem();
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+                    string json = getItemsService.GetPromotionsV2TimestampItem();
                     PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))
                     {
@@ -44,7 +50,6 @@ namespace myTNB_Android.Src.Promotions.MVP
                         wtManager.CreateTable();
                         wtManager.InsertListOfItems(responseModel.Data);
                         mView.ShowPromotionTimestamp(true);
-                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
                     }
                     else
                     {
@@ -53,49 +58,70 @@ namespace myTNB_Android.Src.Promotions.MVP
                 }
                 catch (Exception e)
                 {
-                    Log.Error("API Exception", e.StackTrace);
                     mView.ShowPromotionTimestamp(false);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnGetPromotions()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetPromotionsV2Item();
                     PromotionsV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
-                    if (responseModel.Status.Equals("Success"))
+                    if (responseModel != null && !string.IsNullOrEmpty(responseModel.Status))
                     {
-                        PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
-                        mView.ShowPromotion(true);
-                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
+                        if (responseModel.Status.Equals("Success"))
+                        {
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            wtManager.InsertListOfItems(responseModel.Data);
+                            mView.ShowPromotion(true);
+                        }
+                        else
+                        {
+                            PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                            wtManager2.DeleteTable();
+                            wtManager2.CreateTable();
+                            mView.ShowPromotion(true);
+                        }
                     }
                     else
                     {
+                        PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                        wtManager2.DeleteTable();
+                        wtManager.CreateTable();
                         mView.ShowPromotion(false);
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Error("API Exception", e.StackTrace);
-                    mView.ShowPromotion(true);
+                    PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
+                    wtManager.DeleteTable();
+                    wtManager.CreateTable();
+                    PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                    wtManager2.DeleteTable();
+                    wtManager2.CreateTable();
+                    mView.ShowPromotion(false);
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void Start()
@@ -113,9 +139,13 @@ namespace myTNB_Android.Src.Promotions.MVP
                 if (items != null && items.Count() > 0)
                 {
                     PromotionsParentEntityV2 entity = items[0];
-                    if (entity != null && !string.IsNullOrEmpty(entity.Timestamp))
+                    if (entity != null && entity.Timestamp != null)
                     {
                         mView.OnSavedTimeStamp(entity.Timestamp);
+                    }
+                    else
+                    {
+                        mView.OnSavedTimeStamp(null);
                     }
                 }
                 else
@@ -125,7 +155,6 @@ namespace myTNB_Android.Src.Promotions.MVP
             }
             catch (Exception e)
             {
-                Log.Error("DB Exception", e.StackTrace);
                 mView.OnSavedTimeStamp(null);
                 Utility.LoggingNonFatalError(e);
             }

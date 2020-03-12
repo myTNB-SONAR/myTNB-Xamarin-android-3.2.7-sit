@@ -9,7 +9,10 @@
 
   <color name="bg_gradientTopFill">#2a97fb</color>
   <color name="bg_gradientBottomFill">#7730d3</color>
+  <color name="bg_gradientNewBottomFill">#634add</color>
 
+
+  <color name="bg_gradientSplashBottomFill">#634add</color>
 
   <color name="loginBtnColor">#20bd4c</color>
   <color name="resendBtnColor">#20bd4c</color>
@@ -77,6 +80,47 @@
 	<color name="white_two">#D8D8D8</color>
 
     <color name="resend_progress">#C9EFD4</color>
+    
+    <color name="blue_shadow">#9CD0FF</color>
 	
-	
+	   <color name="grey_two">#D0D0D0</color>
+    
+    <color name="shimmer_color">#f1f6fb</color>
+
+    <color name="shimmer_color_second">#bed9f1</color>
+    
+    <color name="charcoalGrey">#424141</color>
+    
+    <color name="babyGrey">#545454</color>
+    
+    <color name="action_color">#614cde</color>
+
+    <color name="bar_color">#555be3</color>
+    
+    <color name="ssmr_header_background">#f9f8f8</color>
+
+    <color name="new_grey">#727171</color>
+    
+    <color name="all_cleared_amount">#8b8b8b</color>
+
+    <color name="dark_periwinkle">#575be4</color>
+
+    <color name="background_pale_grey">#f5f6f7</color>
+
+    <color name="opacity_white">#33FFFFFF</color>
+
+    <color name="sixty_opacity_white">#96FFFFFF</color>
+
+    <color name="light_green_blue">#6ae78d</color>
+
+    <color name="faq_default_top">#553ccf</color>
+
+    <color name="faq_default_bottom">#3a9bf4</color>
+
+    <color name="water_blue">#1b78ca</color>
+
+    <color name="reward_background">#f9f8f8</color>
+
+    <color name="lightOrange">#ff9e43</color>
+
 </resources>

@@ -1,8 +1,16 @@
 ﻿using Android.Util;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Requests;
+using myTNB_Android.Src.myTNBMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Parser;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -10,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 {
@@ -17,11 +27,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
     {
         private static readonly string TAG = "MPSelectAccountsPresenter";
         private MPSelectAccountsContract.IView mView;
+        public bool isFromBillDetails = false;
+        List<AccountChargeModel> accountChargeModelList;
 
         public MPSelectAccountsPresenter(MPSelectAccountsContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            accountChargeModelList = new List<AccountChargeModel>();
         }
 
         public void Start()
@@ -29,78 +42,81 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         }
 
-        public void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            GetMultiAccountDueAmountAsync(apiKeyID, accounts);
-        }
-
-        public async void GetMultiAccountDueAmountAsync(string apiKeyId, List<string> accounts)
+        public async void GetAccountsCharges(List<string> accountList, string preSelectedAccount)
         {
             try
             {
-                //if (mView.IsActive()) {
                 this.mView.ShowProgressDialog();
-                //}
-
-#if DEBUG || STUB
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var api = RestService.For<MPGetAccountsDueAmountApi>(httpClient);
-#else
-            var api = RestService.For<MPGetAccountsDueAmountApi>(Constants.SERVER_URL.END_POINT);
-#endif
-                //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-
-                List<MPAccount> storeAccounts = new List<MPAccount>();
-                bool getDetailsFromApi = false;
-                foreach (string account in accounts)
+                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
+                    accountList,
+                    true
+                    );
+                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
+                if (accountChargeseResponse.IsSuccessResponse())
                 {
-                    if (!SelectBillsEntity.IsSMDataUpdated(account))
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.GetData().MandatoryChargesPopUpDetails));
+                    accountChargeModelList.AddRange(BillingResponseParser.GetAccountCharges(accountChargeseResponse.GetData().AccountCharges));
+                    List<MPAccount> newAccountList = new List<MPAccount>();
+                    accountChargeseResponse.GetData().AccountCharges.ForEach(accountCharge =>
                     {
-                        SelectBillsEntity storedEntity = SelectBillsEntity.GetItemByAccountNo(account);
-                        if (storedEntity != null)
-                        {
-                            MPAccount storedSMData = JsonConvert.DeserializeObject<MPAccount>(storedEntity.JsonResponse);
-                            storeAccounts.Add(storedSMData);
-                        }
-                        else
-                        {
-                            getDetailsFromApi = true;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        getDetailsFromApi = true;
-                        break;
-                    }
-                }
+                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountCharge.ContractAccount);
+                        double dueAmount = accountCharge.AmountDue;
 
-                if (getDetailsFromApi)
-                {
-                    MPAccountDueResponse result = await api.GetMultiAccountDueAmount(new MPGetAccountDueAmountRequest(apiKeyId, accounts));
-                    //if (mView.IsActive())
-                    //{
-                    this.mView.HideProgressDialog();
-                    //}
-                    if (result.accountDueAmountResponse != null && !result.accountDueAmountResponse.IsError)
+                        bool isSelectedAccount = false;
+                        if (preSelectedAccount != null)
+                        {
+                            isSelectedAccount = preSelectedAccount.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false;
+                        }
+                        MPAccount mpAccount = new MPAccount()
+                        {
+                            accountLabel = customerBillingAccount.AccDesc,
+                            accountNumber = customerBillingAccount.AccNum,
+                            accountAddress = customerBillingAccount.AccountStAddress,
+                            isSelected = isSelectedAccount,
+                            isTooltipShow = false,
+                            OpenChargeTotal = 0.00,
+                            amount = dueAmount,
+                            orgAmount = dueAmount,
+                            minimumAmountDue = accountCharge.MandatoryCharges.TotalAmount
+                        };
+                        newAccountList.Add(mpAccount);
+                        /*** Save SM Usage History For the Day***/
+                        SelectBillsEntity smUsageModel = new SelectBillsEntity();
+                        smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                        smUsageModel.JsonResponse = JsonConvert.SerializeObject(mpAccount);
+                        smUsageModel.AccountNo = customerBillingAccount.AccNum;
+                        SelectBillsEntity.InsertItem(smUsageModel);
+                        /*****/
+                    });
+
+                    this.mView.SetAccountsDueAmountResult(newAccountList);
+
+                    if (preSelectedAccount != null)
                     {
-                        this.mView.GetAccountDueAmountResult(result);
-                    }
-                    else
-                    {
-                        this.mView.ShowError(result.accountDueAmountResponse.Message);
-                        this.mView.DisablePayButton();
+                        int foundIndex = accountChargeModelList.FindIndex(model =>
+                        {
+                            return model.ContractAccount == preSelectedAccount;
+                        });
+
+                        if (foundIndex != -1)
+                        {
+                            if (!isFromBillDetails) //Checks if coming from Bill Details, dont show if true.
+                            {
+                                MPAccount mpAccount = newAccountList.Find(account =>
+                                {
+                                    return account.accountNumber.Equals(preSelectedAccount);
+                                });
+                                this.mView.ShowHasMinimumAmoutToPayTooltip(mpAccount,accountChargeModelList[foundIndex]);
+                            }
+                        }
                     }
                 }
                 else
                 {
-                    //if (mView.IsActive())
-                    //{
-                    this.mView.HideProgressDialog();
-                    //}
-                    this.mView.GetAccountDueAmountResult(storeAccounts);
+                    this.mView.ShowError(accountChargeseResponse.Response.DisplayMessage);
+                    this.mView.DisablePayButton();
                 }
+                this.mView.HideProgressDialog();
             }
             catch (Exception e)
             {
@@ -110,9 +126,28 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowError("Something went wrong, Please try again.");
+                this.mView.ShowError(Utility.GetLocalizedErrorLabel("defaultErrorMessage"));
+                this.mView.DisablePayButton();
             }
+        }
 
+        public List<AccountChargeModel> GetSelectedAccountChargesModelList(List<MPAccount> mpAccountList)
+        {
+            List<AccountChargeModel> selectedList = new List<AccountChargeModel>();
+            mpAccountList.ForEach(account =>
+            {
+                AccountChargeModel foundChargeModel = accountChargeModelList.Find(model => { return model.ContractAccount == account.accountNumber; });
+                selectedList.Add(foundChargeModel);
+            });
+            return selectedList;
+        }
+
+        public AccountChargeModel GetAccountChargeModel(MPAccount account)
+        {
+            return accountChargeModelList.Find(model =>
+            {
+                return model.ContractAccount == account.accountNumber;
+            });
         }
     }
 }

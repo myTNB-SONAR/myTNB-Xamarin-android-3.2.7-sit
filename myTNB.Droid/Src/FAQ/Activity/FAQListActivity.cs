@@ -6,13 +6,15 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB.SitecoreCMS.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.FAQ.Adapter;
+using myTNB_Android.Src.FAQ.Model;
 using myTNB_Android.Src.FAQ.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -22,7 +24,7 @@ namespace myTNB_Android.Src.FAQ.Activity
     [Activity(Label = "@string/faq_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.FAQ")]
-    public class FAQListActivity : BaseToolbarAppCompatActivity, FAQContract.IView
+    public class FAQListActivity : BaseActivityCustom, FAQContract.IView
     {
 
         private FAQPresenter mPresenter;
@@ -35,8 +37,6 @@ namespace myTNB_Android.Src.FAQ.Activity
         [BindView(Resource.Id.progressBar)]
         public ProgressBar mProgressBar;
 
-        private LoadingOverlay loadingOverlay;
-
         [BindView(Resource.Id.faq_list_recycler_view)]
         public RecyclerView mFAQRecyclerView;
 
@@ -44,15 +44,13 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         private string FAQ_ID = null;
 
+        const string PAGE_ID = "FAQ";
+
         public void HideProgressBar()
         {
             try
             {
-                //mProgressBar.Visibility = ViewStates.Gone;
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -82,53 +80,143 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         public void ShowFAQ(bool success)
         {
-            RunOnUiThread(() =>
+            try
             {
-                HideProgressBar();
-                if (success)
+                RunOnUiThread(() =>
                 {
-                    FAQsEntity wtManager = new FAQsEntity();
-                    List<FAQsEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    try
                     {
-
-                        faqs.AddRange(items);
-                        adapter = new FAQListAdapter(this, faqs);
-                        mFAQRecyclerView.SetAdapter(adapter);
-                        adapter.NotifyDataSetChanged();
-
-                        if (!string.IsNullOrEmpty(FAQ_ID))
+                        HideProgressBar();
+                        if (success)
                         {
-                            int index = 0;
-                            foreach (FAQsEntity entity in items)
+                            FAQsEntity wtManager = new FAQsEntity();
+                            List<FAQsEntity> items = wtManager.GetAllItems();
+                            List<FAQsEntity> newList = new List<FAQsEntity>();
+                            if (items != null && items.Count > 0)
                             {
-                                if (entity.ID.Equals(FAQ_ID))
+                                items.ForEach(item =>
                                 {
-                                    break;
-                                }
-                                index++;
+                                    string quesiton = item.Question.Trim();
+                                    string answer = item.Answer.Trim();
+                                    if (!string.IsNullOrEmpty(quesiton) && !string.IsNullOrEmpty(answer))
+                                    {
+                                        newList.Add(new FAQsEntity()
+                                        {
+                                            ID = item.ID,
+                                            Question = quesiton,
+                                            Answer = answer
+                                        });
+                                    }
+                                });
                             }
-                            mFAQRecyclerView.GetLayoutManager().ScrollToPosition(index);
+
+                            if (newList != null && newList.Count > 0)
+                            {
+
+                                faqs.AddRange(newList);
+                                adapter = new FAQListAdapter(this, faqs);
+                                mFAQRecyclerView.SetAdapter(adapter);
+                                adapter.NotifyDataSetChanged();
+
+                                if (!string.IsNullOrEmpty(FAQ_ID))
+                                {
+                                    int index = 0;
+                                    foreach (FAQsEntity entity in newList)
+                                    {
+                                        if (entity.ID.Equals(FAQ_ID))
+                                        {
+                                            break;
+                                        }
+                                        index++;
+                                    }
+                                    mFAQRecyclerView.GetLayoutManager().ScrollToPosition(index);
+                                }
+                            }
+                            else
+                            {
+                                ReadFallBackFAQ();
+                            }
+
+                        }
+                        else
+                        {
+                            ReadFallBackFAQ();
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        private void ReadFallBackFAQ()
+        {
+            try
+            {
+                string FaQ = "";
+
+                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                {
+                    FaQ = FAQManager.Instance.GetFAQ(FAQManager.Language.MS);
                 }
                 else
                 {
-
+                    FaQ = FAQManager.Instance.GetFAQ();
                 }
-            });
+
+
+                FAQCacheModel FAQs = JsonConvert.DeserializeObject<FAQCacheModel>(FaQ);
+
+                if (FAQs != null && FAQs.Data != null && FAQs.Data.Count > 0)
+                {
+                    List<FAQsEntity> items = new List<FAQsEntity>();
+
+                    foreach(FAQCacheList item in FAQs.Data)
+                    {
+                        items.Add(new FAQsEntity()
+                        {
+                            Question = item.Title,
+                            Answer = item.Details
+                        });
+                    }
+
+                    faqs.AddRange(items);
+
+                    adapter = new FAQListAdapter(this, faqs);
+                    mFAQRecyclerView.SetAdapter(adapter);
+                    adapter.NotifyDataSetChanged();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "FAQs");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowProgressBar()
         {
-            //mProgressBar.Visibility = ViewStates.Visible;
             try
             {
-                if (loadingOverlay != null)
-                {
-                    loadingOverlay.Show();
-                }
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -147,15 +235,12 @@ namespace myTNB_Android.Src.FAQ.Activity
                 {
                     FAQ_ID = extras.GetString(Constants.FAQ_ID_PARAM);
                 }
-
+                ShowProgressBar();
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 mFAQRecyclerView.SetLayoutManager(layoutManager);
                 adapter = new FAQListAdapter(this, faqs);
                 mFAQRecyclerView.SetAdapter(adapter);
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
                 mProgressBar.Visibility = ViewStates.Gone;
-                ShowProgressBar();
                 this.userActionsListener.GetSavedFAQTimeStamp();
             }
             catch (Exception e)
@@ -196,6 +281,14 @@ namespace myTNB_Android.Src.FAQ.Activity
                                 ShowFAQ(true);
                             }
                         }
+                        else
+                        {
+                            this.userActionsListener.OnGetFAQs();
+                        }
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetFAQs();
                     }
 
                 }
@@ -206,6 +299,7 @@ namespace myTNB_Android.Src.FAQ.Activity
             }
             catch (Exception e)
             {
+                ShowFAQ(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -225,6 +319,11 @@ namespace myTNB_Android.Src.FAQ.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

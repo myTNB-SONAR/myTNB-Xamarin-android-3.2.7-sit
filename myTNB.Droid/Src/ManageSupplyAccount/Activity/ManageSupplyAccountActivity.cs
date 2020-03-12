@@ -13,7 +13,6 @@ using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -24,7 +23,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageSupplyAccount")]
-    public class ManageSupplyAccountActivity : BaseToolbarAppCompatActivity, ManageSupplyAccountContract.IView
+    public class ManageSupplyAccountActivity : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -56,7 +55,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         MaterialDialog progress;
 
-        private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "ManageAccount";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -96,6 +95,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 txtNickName.Text = accountData.AccountNickName;
 
+                txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
+                btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
+                btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
+
+                txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
+
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -109,7 +114,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [OnClick(Resource.Id.btnTextUpdateNickName)]
         void OnClickUpdateNickname(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnUpdateNickname();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUpdateNickname();
+            }
         }
         AlertDialog removeDialog;
         [OnClick(Resource.Id.btnRemoveAccount)]
@@ -124,14 +133,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 removeDialog = new AlertDialog.Builder(this)
 
-                    .SetTitle(Resource.String.manage_supply_account_remove_dialog_title)
-                    .SetMessage(GetString(Resource.String.manage_supply_account_remove_dialog_content_wildcard, accountData.AccountNickName, accountData.AccountNum))
-                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
+                    .SetMessage(GetFormattedText(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum)))
+                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
                     delegate
                     {
                         removeDialog.Dismiss();
                     })
-                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
                     delegate
                     {
                         this.userActionsListener.OnRemoveAccount(accountData);
@@ -169,6 +178,24 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Manage Electricity Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void ShowUpdateNickname()
         {
             Intent updateNickName = new Intent(this, typeof(UpdateNicknameActivity));
@@ -199,14 +226,17 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.accountData = accountData;
                 txtNickName.Text = accountData.AccountNickName;
 
-                Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_update_nickname_success), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.manage_supply_account_btn_close),
+                Snackbar updateSnackbar = Snackbar.Make(rootView, GetLabelByLanguage("nicknameUpdateSuccess"), Snackbar.LengthIndefinite)
+                .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
-
                  // EMPTY WILL CLOSE SNACKBAR
-             }
-                ).Show();
+               }
+               );
+            View v = updateSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)
@@ -217,19 +247,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         public void ShowRemoveProgress()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -239,16 +259,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         public void HideRemoveProgress()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -264,13 +277,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_cancelled_exception_btn_close), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
             );
+            View snackbarView = mCancelledExceptionSnackBar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -283,13 +299,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_api_exception_btn_close), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
             );
+            View snackbarView = mApiExcecptionSnackBar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -302,28 +321,35 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_unknown_exception_btn_close), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
 
             }
             );
+            View snackbarView = mUknownExceptionSnackBar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
             mUknownExceptionSnackBar.Show();
 
         }
 
         public void ShowErrorMessageResponse(string error)
         {
+            Snackbar errorMessageSnackbar =
             Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
-                        .SetAction(GetString(Resource.String.manage_supply_account_btn_close),
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
                          (view) =>
                          {
-
                              // EMPTY WILL CLOSE SNACKBAR
                          }
-                        ).Show();
+                        );//.Show();
+            View snackbarView = errorMessageSnackbar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
+            errorMessageSnackbar.Show();
         }
 
         public void ShowNickname(string nickname)
@@ -347,6 +373,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

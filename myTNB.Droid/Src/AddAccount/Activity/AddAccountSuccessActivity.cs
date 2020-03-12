@@ -73,11 +73,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button done = FindViewById<Button>(Resource.Id.btnGetStarted);
             done.Click += delegate
             {
-                GetStarted();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    GetStarted();
+                }
             };
 
             TextViewUtils.SetMuseoSans500Typeface(textAddAccountSuccess);
             TextViewUtils.SetMuseoSans500Typeface(done);
+
+            textAddAccountSuccess.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsg");
+            done.Text = Utility.GetLocalizedCommonLabel("done");
 
             appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
             appBarLayout.Visibility = ViewStates.Gone;
@@ -90,9 +97,27 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void GetStarted()
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account Success");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+           base.OnPause(); 
         }
 
         public override void OnTrimMemory(TrimMemory level)

@@ -4,6 +4,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             AccountListViewHolder vh = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountRow, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountItemLayout, parent, false);
                 vh = new AccountListViewHolder(convertView);
                 convertView.Tag = vh;
             }
@@ -54,7 +55,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 }
                 else
                 {
-                    vh.imageLeaf.Visibility = ViewStates.Invisible;
+                    vh.imageLeaf.Visibility = ViewStates.Gone;
                 }
 
                 if (item.IsSelected)
@@ -72,6 +73,18 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 Utility.LoggingNonFatalError(e);
             }
             return convertView;
+        }
+
+        private bool IsOwnedSMR(string accountNumber)
+        {
+            foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
+            {
+                if (smrAccount.accountNumber == accountNumber)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }
@@ -92,4 +105,5 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
         }
     }
+
 }

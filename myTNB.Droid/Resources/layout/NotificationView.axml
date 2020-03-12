@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
+    android:theme="@style/Theme.Notification"
     android:id="@+id/rootView">
     <LinearLayout
         android:orientation="vertical"
@@ -18,8 +19,8 @@
         <TextView
             android:id="@+id/txt_notification_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_height="16dp"
+            android:layout_marginBottom="16dp"
             android:drawableRight="@drawable/ic_spinner_dropdown"
             android:ellipsize="end"
             android:gravity="center"
@@ -28,46 +29,132 @@
             android:text="@string/notification_selection_title"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
+
+        <LinearLayout
+			android:id="@+id/notificationSelectAllHeader"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+            android:background="@color/white">
+
+			<LinearLayout
+				android:id="@+id/notificationSelectAll"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:paddingLeft="20dp"
+				android:paddingTop="24dp"
+				android:paddingRight="10dp"
+				android:paddingBottom="24dp"
+				android:visibility="visible">
+
+				<TextView
+					android:id="@+id/selectAllNotificationLabel"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+                    android:textColor="@color/tunagrey"
+                    android:textSize="14dp"
+					android:text="Select All" />
+
+				<CheckBox
+					android:id="@+id/selectAllCheckBox"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:checked="false"
+					android:text=""
+					android:button="@drawable/checkbox_selector"/>
+
+			</LinearLayout>
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/platinumGrey"/>
+		</LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_api_refresh"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
+                <ImageView
+                    android:id="@+id/refreshBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginTop="-35dp"
+                    android:foregroundGravity="center_horizontal|center"
+                    android:layout_gravity="bottom"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bg_smr" />
+                <ImageView
+                    android:layout_width="177dp"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="-105dp"
+                    android:foregroundGravity="center_horizontal|center"
+                    android:layout_gravity="center"
+                    android:id="@+id/refresh_image"
+                    android:src="@drawable/refresh_1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="#8b8b8b"
+                    android:id="@+id/refresh_content"
+                    android:text="Uh oh, looks like your bill/payment history have been unplugged. Refresh to stay plugged in!"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Refresh Now"
+                    android:id="@+id/btnRefresh"
+                    style="@style/Theme.RefreshButton" />
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
-                android:id="@+id/notification_listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:visibility="visible" />
-
-
+            <android.support.v7.widget.RecyclerView
+              android:id="@+id/notification_recyclerView"
+              android:scrollbars="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"/>
             <LinearLayout
                 android:id="@+id/emptyLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:background="@color/white"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="gone">
-
-
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_empty_notification"
+                    android:layout_marginTop="80dp"
+                    android:gravity="center"
+                    android:src="@drawable/empty_state_notification"
                     app:srcCompat="@drawable/ic_empty_notification" />
 
                 <TextView
                     android:id="@+id/txtNotificationsContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:layout_marginLeft="41dp"
                     android:layout_marginRight="41dp"
                     android:gravity="center"
                     android:text="@string/notification_activity_empty_txt_content"
-                    android:textSize="12sp" />
+                    android:textSize="16dp" />
             </LinearLayout>
         </FrameLayout>
 

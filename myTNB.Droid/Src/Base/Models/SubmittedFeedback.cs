@@ -20,6 +20,9 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("FeedbackCategoryId")]
         public string FeedbackCategoryId { get; set; }
 
+        [JsonProperty("FeedbackNameInListView")]
+        public string FeedbackNameInListView { get; set; }
+
         public static SubmittedFeedback Copy(SubmittedFeedbackEntity entity)
         {
             return new SubmittedFeedback()
@@ -28,7 +31,8 @@ namespace myTNB_Android.Src.Base.Models
                 DateCreated = entity.DateCreated,
                 FeedbackMessage = entity.FeedbackMessage,
                 FeedbackCategoryId = entity.FeedbackCategoryId,
-                FeedbackCategoryName = entity.FeedbackCategoryName
+                FeedbackCategoryName = entity.FeedbackCategoryName,
+                FeedbackNameInListView = entity.FeedbackNameInListView
             };
         }
     }

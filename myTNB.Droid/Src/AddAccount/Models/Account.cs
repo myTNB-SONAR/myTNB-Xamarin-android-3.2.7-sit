@@ -53,5 +53,8 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "smartMeterCode")]
         public string SmartMeterCode { get; set; }
 
+        [JsonProperty(PropertyName = "isTaggedSMR")]
+        public string IsTaggedSMR { get; set; }
+
     }
 }

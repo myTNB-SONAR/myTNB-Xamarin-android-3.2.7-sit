@@ -1,5 +1,8 @@
 ﻿using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Utils;
 using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,6 +53,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Target")]
         public string Target { get; set; }
 
+        [Column("ODNBatchSubcategory")]
+        public string ODNBatchSubcategory { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
@@ -87,7 +93,8 @@ namespace myTNB_Android.Src.Database.Model
                 BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
                 CreatedDate = userNotification.CreatedDate,
                 NotificationType = userNotification.NotificationType,
-                Target = userNotification.Target
+                Target = userNotification.Target,
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
             };
             int rows = db.InsertOrReplace(newRecord);
             //db.Close();
@@ -115,7 +122,8 @@ namespace myTNB_Android.Src.Database.Model
                 BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
                 CreatedDate = userNotification.CreatedDate,
                 NotificationType = userNotification.NotificationType,
-                Target = userNotification.Target
+                Target = userNotification.Target,
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
             };
 
             //db.InsertOrReplaceAsync(newRecord);
@@ -141,6 +149,17 @@ namespace myTNB_Android.Src.Database.Model
             //{
             var db = DBHelper.GetSQLiteConnection();
             db.Execute("UPDATE UserNotificationEntity set IsDeleted = ? WHERE Id = ?", isDeleted, notificationId);
+            //db.Close();
+            //}
+        }
+
+        public static void RemoveById(string notificationId)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("DELETE FROM UserNotificationEntity WHERE Id = ?", notificationId);
             //db.Close();
             //}
         }
@@ -187,13 +206,56 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static List<UserNotificationEntity> ListFilteredNotificationsByBCRMType(string accNum , string bcrmNotificationTypeId)
+        {
+            List<UserNotificationEntity> list = new List<UserNotificationEntity>();
+
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<UserNotificationEntity> filteredList = new List<UserNotificationEntity>();
+                list = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE AccountNum = ? AND IsDeleted = ? AND BCRMNotificationTypeId = ?", accNum, false, bcrmNotificationTypeId).ToList<UserNotificationEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return list;
+        }
+
         public static int Count()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-            int count = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            int count = 0;
+            
+            List<UserNotificationEntity> notificationList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false);
+            //Added checking on notification count.
+            notificationList.ForEach(item =>
+            {
+                if (item.NotificationType != "ODN")
+                {
+                    if (item.ODNBatchSubcategory == "ODNAsBATCH")
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        if (UserEntity.GetActive().Email.Equals(item.Email) &&
+                        MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum))
+                        {
+                            count++;
+                        }
+                    }
+                }
+                else
+                {
+                    count++;
+                }
+            });
             //db.Close();
             return count;
             //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
@@ -202,13 +264,20 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
-            //using (var db = DBHelper.GetSQLiteConnection())
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM UserNotificationEntity");
-            //db.Close();
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+                //using (var db = DBHelper.GetSQLiteConnection())
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UserNotificationEntity");
+                //db.Close();
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public static bool HasNotifications()
@@ -225,6 +294,5 @@ namespace myTNB_Android.Src.Database.Model
             //}
             return (Count() > 0);
         }
-
     }
 }

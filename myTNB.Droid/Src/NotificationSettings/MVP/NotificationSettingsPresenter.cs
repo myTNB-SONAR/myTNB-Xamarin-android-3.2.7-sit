@@ -1,6 +1,7 @@
 ﻿using Android.Text;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.NotificationSettings.Api;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SelectNotification.Models;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -16,7 +17,6 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
     {
 
         private NotificationSettingsContract.IView mView;
-        CancellationTokenSource cts;
 
         public NotificationSettingsPresenter(NotificationSettingsContract.IView mView)
         {
@@ -30,36 +30,20 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             {
                 return;
             }
-            cts = new CancellationTokenSource();
             bool isOpted = !item.IsOpted;
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IUserPreference>(httpClient);
-#else
-            var api = RestService.For<IUserPreference>(Constants.SERVER_URL.END_POINT);
-#endif
-            UserEntity userEntity = UserEntity.GetActive();
             try
             {
-                var channelApi = await api.SaveUserNotificationChannelPreference(new Requests.SaveUserNotificationChannelPreferenceRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Id = item.Id,
-                    Email = userEntity.Email,
-                    ChannelTypeId = item.MasterId,
-                    IsOpted = isOpted
-                }, cts.Token);
+                var channelApi = await ServiceApiImpl.Instance.SaveUserNotificationChannelPreference(new SaveUserNotificationChannelPreferenceRequest(item.Id, item.MasterId, isOpted.ToString()));
 
-                if (!channelApi.Data.IsError)
+                if (channelApi.IsSuccessResponse())
                 {
                     // TODO : SHOW UPDATE ISOPTED ITEM
 
                     item.IsOpted = isOpted;
                     if (TextUtils.IsEmpty(item.Id))
                     {
-                        item.Id = channelApi.Data.Data.Id;
-                        UserNotificationChannelEntity.UpdateIsOpted(channelApi.Data.Data.Id, item.Code, isOpted);
+                        item.Id = channelApi.GetData().Id;
+                        UserNotificationChannelEntity.UpdateIsOpted(channelApi.GetData().Id, item.Code, isOpted);
                     }
                     else
                     {
@@ -98,29 +82,13 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             {
                 return;
             }
-            cts = new CancellationTokenSource();
             bool isOpted = !item.IsOpted;
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IUserPreference>(httpClient);
-#else
-            var api = RestService.For<IUserPreference>(Constants.SERVER_URL.END_POINT);
-#endif
-            UserEntity userEntity = UserEntity.GetActive();
             try
             {
-                var typeApi = await api.SaveUserNotificationTypePreference(new Requests.SaveUserNotificationTypePreferenceRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Id = item.Id,
-                    Email = userEntity.Email,
-                    DeviceId = deviceId,
-                    NotificationTypeId = item.MasterId,
-                    IsOpted = isOpted
-                }, cts.Token);
+                var typeApi = await ServiceApiImpl.Instance.SaveUserNotificationTypePreference(new SaveUserNotificationTypePreferenceRequest(item.Id, item.MasterId, isOpted.ToString()));
 
-                if (!typeApi.Data.IsError)
+
+                if (typeApi.IsSuccessResponse())
                 {
                     // TODO : SHOW UPDATE ISOPTED ITEM
                     item.IsOpted = isOpted;
@@ -129,8 +97,8 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                     {
                         if (TextUtils.IsEmpty(item.Id))
                         {
-                            item.Id = typeApi.Data.Data.Id;
-                            UserNotificationTypesEntity.UpdateIsOpted(typeApi.Data.Data.Id, masterEntity.Code, isOpted);
+                            item.Id = typeApi.GetData().Id;
+                            UserNotificationTypesEntity.UpdateIsOpted(typeApi.GetData().Id, masterEntity.Code, isOpted);
                         }
                         else
                         {

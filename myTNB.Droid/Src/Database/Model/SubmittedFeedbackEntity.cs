@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("FeedbackCategoryId")]
         public string FeedbackCategoryId { get; set; }
 
+        [Column("FeedbackNameInListView")]
+        public string FeedbackNameInListView { get; set; }
+
         public static int CreateTable()
         {
             //var db = new SQLiteConnection(Constants.DB_PATH);
@@ -43,7 +47,8 @@ namespace myTNB_Android.Src.Database.Model
                 DateCreated = submittedFeedback.DateCreated,
                 FeedbackMessage = submittedFeedback.FeedbackMessage,
                 FeedbackCategoryName = submittedFeedback.FeedbackCategoryName,
-                FeedbackCategoryId = submittedFeedback.FeedbackCategoryId
+                FeedbackCategoryId = submittedFeedback.FeedbackCategoryId,
+                FeedbackNameInListView = submittedFeedback.FeedbackNameInListView
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -52,7 +57,7 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
-        public static int InsertOrReplace(string Id, string DateCreated, string FeedbackMessage, string FeedbackCategoryName, string FeedbackCategoryId)
+        public static int InsertOrReplace(string Id, string DateCreated, string FeedbackMessage, string FeedbackCategoryName, string FeedbackCategoryId, string FeedbackNameInListView)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
@@ -63,7 +68,8 @@ namespace myTNB_Android.Src.Database.Model
                 DateCreated = DateCreated,
                 FeedbackMessage = FeedbackMessage,
                 FeedbackCategoryName = FeedbackCategoryName,
-                FeedbackCategoryId = FeedbackCategoryId
+                FeedbackCategoryId = FeedbackCategoryId,
+                FeedbackNameInListView = FeedbackNameInListView
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -74,11 +80,18 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void Remove()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM SubmittedFeedbackEntity");
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SubmittedFeedbackEntity");
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
 

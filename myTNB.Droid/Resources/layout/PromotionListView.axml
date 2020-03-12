@@ -1,58 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootView">
-    <FrameLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:background="@color/greyBackground">
-        <LinearLayout
-            android:id="@+id/no_promotion_layout"
-            android:layout_height="wrap_content"
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:id="@+id/no_promotion_layout"
             android:visibility="gone"
-            android:orientation="vertical">
+            android:background="@color/white">
             <ImageView
                 android:id="@+id/no_promotion_img"
-                android:layout_height="120dp"
-                android:layout_width="120dp"
-                android:src="@drawable/ic_empty_promotions"
-                android:scaleType="fitXY" />
+                android:layout_height="96dp"
+                android:layout_width="101dp"
+                android:layout_marginTop="88dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_empty_promotions"/>
             <TextView
-                android:text="No promotions currently"
-                android:id="@+id/no_promotion_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:textColor="@color/tunaGrey" />
-            <TextView
-                android:text="Check back later!"
                 android:id="@+id/no_promotion_info"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:textColor="@color/tunaGrey" />
+                android:layout_width="match_parent"
+                android:textColor="#8b8b8b"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Looks like there’s no rewards at the moment. Stay tuned for some awesome deals coming your way!"
+                android:textSize="14dp"
+                android:lineSpacingExtra="3dp"/>
         </LinearLayout>
-      <android.support.v7.widget.RecyclerView
-           android:id="@+id/promotion_list_recycler_view"
-           android:scrollbars="vertical"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:background="@color/lightGrey"
-           android:layout_marginBottom="8dp" />
-      <ProgressBar
-          android:id="@+id/progressBar"
-          android:layout_width="48dp"
-          android:layout_height="48dp"
-          android:layout_gravity="center"
-          android:layout_marginRight="5dp" />
-    </FrameLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/promotionRefreshLayout"
+            android:visibility="gone"
+            android:background="@color/white">
+            <ImageView
+                android:id="@+id/refreshBg"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginTop="-35dp"
+                android:foregroundGravity="center_horizontal|center"
+                android:layout_gravity="bottom"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_smr" />
+            <ImageView
+                android:id="@+id/refreshImg"
+                android:layout_width="177dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="-105dp"
+                android:foregroundGravity="center_horizontal|center"
+                android:layout_gravity="center"
+                android:src="@drawable/refresh_1" />
+            <TextView
+                android:id="@+id/txtRefresh"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textColor="#8b8b8b"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="Uh oh, looks like this page is unplugged. Refresh to stay plugged in!"
+                android:textSize="16dp"
+                android:lineSpacingExtra="4dp"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Refresh Now"
+                android:id="@+id/btnRefresh"
+                style="@style/Theme.RefreshButton" />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/promotion_main_layout"
+        android:visibility="visible"
+        android:background="@color/greyBackground">
+          <android.support.v7.widget.RecyclerView
+               android:id="@+id/promotion_list_recycler_view"
+               android:scrollbars="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+                android:visibility="visible"
+               android:background="@color/lightGrey"
+               android:layout_marginBottom="8dp" />
+    </LinearLayout>
 </LinearLayout>

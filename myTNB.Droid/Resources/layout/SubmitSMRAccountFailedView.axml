@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:background="@null"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:elevation="0dp">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="8dp">
+        <Button
+            android:id="@+id/btnBackToHomeFailed"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Back to Home"
+            android:textAllCaps="false"
+            android:textSize="16dp"
+            style="@style/WhiteButton" />
+        <Button
+            android:id="@+id/btnTryAgainFailed"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Try Again"
+            android:textSize="16dp"
+            android:textAllCaps="false"
+            style="@style/WhiteButton1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/bottomLayout">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_gravity="center"
+            android:background="@drawable/white_background_rect">
+            <ImageView
+                android:layout_width="79.6dp"
+                android:layout_height="79.6dp"
+                android:src="@drawable/ic_display_unsuccessful"
+                android:layout_gravity="center|center_vertical"
+                android:padding="7.2dp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/blue"
+                android:text="Please Try Again"
+                android:id="@+id/txtTitleInfoError"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="10.2dp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="12dp"
+                android:id="@+id/txtMessageInfoError"
+                android:textColor="#49494a"
+                android:gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="It looks like we can't process your application at the moment."
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="10.2dp" />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/account_list_recycler_view"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@color/white" />
+    </LinearLayout>
+</RelativeLayout>

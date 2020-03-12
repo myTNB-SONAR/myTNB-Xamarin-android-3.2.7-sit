@@ -49,6 +49,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.btnPay)]
         Button btnPay;
 
+        [BindView(Resource.Id.notificationButtonContainer)]
+        FrameLayout notificationButtonContainer;
+
         NotificationDetailPayableViewableContract.IUserActionsListener userActionsListener;
         NotificationDetailPayableViewablePresenter mPresenter;
 
@@ -134,28 +137,26 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            try
-            {
-                retrievalDialog = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
-                .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
+            try {
+            retrievalDialog = new MaterialDialog.Builder(this)
+            .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
+            .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
+            .Cancelable(false)
+            .Progress(true, 0)
+            .Build();
 
-                TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle,
-                    btnViewDetails,
-                    btnPay);
+            TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle,
+                btnViewDetails,
+                btnPay);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent);
-                // Create your application here
+            TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent);
+            // Create your application here
 
-                txtNotificationTitle.Text = notificationDetails.Title;
+            txtNotificationTitle.Text = notificationDetails.Title;
                 txtNotificationContent.Text = notificationDetails.Message;
 
                 mPresenter = new NotificationDetailPayableViewablePresenter(this);
@@ -231,16 +232,34 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Detailed Info");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.userActionsListener.OnPayment(notificationDetails);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.OnPayment(notificationDetails);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -250,17 +269,22 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                if (notificationDetails.BCRMNotificationTypeId.Equals("97"))
+                if (!this.GetIsClicked())
                 {
-                    this.userActionsListener.OnViewPromotion(notificationDetails);
-                }
-                else
-                {
-                    this.userActionsListener.OnViewDetails(notificationDetails);
+                    this.SetIsClicked(true);
+                    if (notificationDetails.BCRMNotificationTypeId.Equals("97"))
+                    {
+                        this.userActionsListener.OnViewPromotion(notificationDetails);
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnViewDetails(notificationDetails);
+                    }
                 }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -288,7 +312,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
             else
             {
-                Intent dashbaord_activity = new Intent(this, typeof(DashboardActivity));
+                Intent dashbaord_activity = new Intent(this, typeof(DashboardHomeActivity));
                 dashbaord_activity.PutExtra(Constants.PROMOTION_NOTIFICATION_VIEW, true);
                 dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(dashbaord_activity);

@@ -8,28 +8,26 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Dashboard.Adapter;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SelectSupplyAccount.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 {
-    [Activity(Label = "@string/dashboard_select_supply_account_activity_title"
+    [Activity(Label = "Select Electricity Account"
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectSupplyAccountActivity : BaseToolbarAppCompatActivity, SelectSupplyAccountContract.IView
+    public class SelectSupplyAccountActivity : BaseActivityCustom, SelectSupplyAccountContract.IView
     {
 
         private SelectSupplyAccountContract.IUserActionsListener userActionsListener;
@@ -43,7 +41,10 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         SelectSupplyAccountAdapter accountListAdapter;
 
         MaterialDialog materialDialog;
-        private LoadingOverlay loadingOverlay;
+
+        const string PAGE_ID = "SelectElectricityAccounts";
+
+        private bool isFromQuickAction = false;
 
         public bool IsActive()
         {
@@ -79,8 +80,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_cancelled_exception_btn_close), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(listView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -98,8 +99,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_api_exception_btn_close), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(listView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -117,8 +118,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(listView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -133,6 +134,15 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
             try
             {
+                isFromQuickAction = false;
+
+                Bundle extras = Intent.Extras;
+
+                if (extras != null && extras.ContainsKey(Constants.CODE_KEY) && extras.GetInt(Constants.CODE_KEY) == Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE)
+                {
+                    isFromQuickAction = true;
+                }
+
                 mPresenter = new SelectSupplyAccountPresenter(this);
 
                 accountListAdapter = new SelectSupplyAccountAdapter(this, true);
@@ -140,13 +150,20 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
                 listView.ItemClick += OnItemClick;
 
-                Button done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-                done.Click += delegate
-                {
-                    StartActivity(typeof(LinkAccountActivity));
-                };
-                TextViewUtils.SetMuseoSans500Typeface(done);
                 this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Electricity Account");
             }
             catch (Exception e)
             {
@@ -160,7 +177,22 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             try
             {
                 CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
-                this.userActionsListener.OnSelectAccount(customerAccount);
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.SetSelected(customerAccount.AccNum);
+
+                if (isFromQuickAction)
+                {
+                    OnViewPDF(customerAccount);
+                    accountListAdapter.Clear();
+                    this.userActionsListener.Start();
+                }
+                else
+                {
+                    Intent result = new Intent();
+                    result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(customerAccount));
+                    SetResult(Result.Ok, result);
+                    Finish();
+                }
             }
             catch (Exception ex)
             {
@@ -178,7 +210,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             }
 
             mSnackBarError = Snackbar.Make(listView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mSnackBarError.Dismiss();
@@ -196,30 +228,19 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             Finish();
         }
 
+        public void ShowDashboardChartWithError()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.REFRESH_MODE, true);
+            SetResult(Result.FirstUser, result);
+            Finish();
+        }
+
         public void ShowProgressDialog()
         {
-            //if (materialDialog != null && materialDialog.IsShowing)
-            //{
-            //    materialDialog.Dismiss();
-            //}
-
-            //materialDialog = new MaterialDialog.Builder(this)
-            //    .Title(GetString(Resource.String.dashboard_select_supply_account_dialog_progress_title))
-            //    .Content(GetString(Resource.String.dashboard_select_supply_account_dialog_progress_content))
-            //    .Progress(true, 0)
-            //    .Cancelable(false)
-            //    .Build();
-
-            //materialDialog.Show();
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -229,16 +250,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         public void HideShowProgressDialog()
         {
-            //if (materialDialog != null && materialDialog.IsShowing)
-            //{
-            //    materialDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -335,6 +349,16 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             return ConnectionUtils.HasInternetConnection(this);
         }
 
+        private void OnViewPDF(CustomerBillingAccount selectedAccount)
+        {
+            AccountData selectedAccountData = AccountData.Copy(selectedAccount, true);
+
+            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+            StartActivity(viewBill);
+        }
+
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -351,6 +375,11 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

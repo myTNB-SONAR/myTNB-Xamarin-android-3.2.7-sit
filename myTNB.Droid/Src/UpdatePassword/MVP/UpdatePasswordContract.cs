@@ -92,6 +92,11 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
             /// <param name="newPassword">string</param>
             /// <param name="confirmNewPassword">string</param>
             void OnSave(string currentPassword, string newPassword, string confirmNewPassword);
+
+            /// <summary>
+            /// Checks if password is valid
+            /// </summary>
+            bool CheckPasswordIsValid(string password);
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using System.Collections.Generic;
+using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 {
@@ -26,7 +29,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Enter CVV number
             /// </summary>
-            void EnterCVVNumber(MPCreditCard card); // -- CVV enabled --
+            void EnterCVVNumber(CreditCard card); // -- CVV enabled --
 
             /// <summary>
             /// Show progress dialog for payment request
@@ -41,7 +44,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Save Initiate payment response to start payment flow with payment gateway
             /// </summary>
-            void SaveInitiatePaymentResponse(MPInitiatePaymentResponse response);
+            //void SaveInitiatePaymentResponse(MPInitiatePaymentResponse response);
 
             /// <summary>
             /// Initate payment request
@@ -51,7 +54,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Submit payment request
             /// </summary>
-            void InitiateSubmitPayment(MPInitiatePaymentResponse response, MPCardDetails card);
+            void InitiateSubmitPayment(PaymentTransactionIdResponse response, MPCardDetails card);
 
             /// <summary>
             /// Start web view for credit card payment
@@ -61,7 +64,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// launch external web view to start FPX payment
             /// </summary>
-            void InitiateFPXPayment(MPInitiatePaymentResponse response);
+            void InitiateFPXPayment(PaymentTransactionIdResponse response);
 
             /// <summary>
             /// Show progress dialog for get registered cards 
@@ -77,7 +80,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Show get registered card sucess with registered cards response
             /// </summary>
 
-            void GetRegisterCardsResult(MPGetRegisteredCardsResponse response);
+            void GetRegisterCardsResult(RegisteredCardsResponse response);
+
+            /// <summary>
+            /// NEW API RESPONSE
+            /// Save Initiate payment response to start payment flow with payment gateway
+            /// </summary>
+            void SetInitiatePaymentResponse(PaymentTransactionIdResponse response);
+
+            void ShowErrorMessageWithOK(string message);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -91,6 +102,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Get customer registered cards Api : GetRegisteredCards
             /// </summary>
             void GetRegisterdCards(string apiKeyID, string email);
+
+            /// <summary>
+            /// Service call for initializing payment, this api is called to initiate payment request Api : GetPaymentTransactionId
+            /// </summary>
+            void InitializePaymentTransaction(string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems);
         }
     }
 }

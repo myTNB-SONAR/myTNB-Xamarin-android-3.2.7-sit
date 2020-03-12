@@ -1,24 +1,30 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
+using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.PreLogin.Activity
 {
@@ -50,14 +56,35 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.txtPromotion)]
         TextView txtPromotion;
 
-        [BindView(Resource.Id.txtFindUs)]
-        TextView txtLocation;
+        [BindView(Resource.Id.cardview_find_us)]
+        CardView cardFindUs;
 
-        [BindView(Resource.Id.txtFeedback)]
-        TextView txtFeedback;
+        [BindView(Resource.Id.img_find_us)]
+        ImageView imgFindUs;
+
+        [BindView(Resource.Id.txtFindUs)]
+        TextView txtFindUs;
+
+        [BindView(Resource.Id.txtChangeLanguage)]
+        TextView txtChangeLanguage;
+
+        [BindView(Resource.Id.cardview_call_us)]
+        CardView cardCallUs;
+
+        [BindView(Resource.Id.img_call_us)]
+        ImageView imgCallUs;
 
         [BindView(Resource.Id.txtCallUs)]
         TextView txtCallUs;
+
+        [BindView(Resource.Id.cardview_feedback)]
+        CardView cardFeedback;
+
+        [BindView(Resource.Id.img_feedback)]
+        ImageView imgFeedback;
+
+        [BindView(Resource.Id.txtFeedback)]
+        TextView txtFeedback;
 
         [BindView(Resource.Id.progressBar)]
         ProgressBar progressBar;
@@ -65,6 +92,43 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.imgPromotion)]
         ImageView imgPromotion;
 
+        [BindView(Resource.Id.img_logo)]
+        ImageView img_logo;
+
+        [BindView(Resource.Id.img_display)]
+        ImageView img_display;
+
+        private void UpdateLabels()
+        {
+            txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin", "welcomeTitle");
+            txtManageAccount.Text = Utility.GetLocalizedLabel("Prelogin", "tagline");
+            btnRegister.Text = Utility.GetLocalizedLabel("Prelogin", "register");
+            btnLogin.Text = Utility.GetLocalizedLabel("Prelogin", "login");
+            txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
+            txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
+            txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
+            txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
+            }
+
+            DismissProgressDialog();
+        }
+
+        private void OnMaintenanceProceed()
+        {
+            DismissProgressDialog();
+            Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceTitle());
+            maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, MyTNBAccountManagement.GetInstance().GetMaintenanceContent());
+            StartActivity(maintenanceScreen);
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -72,25 +136,31 @@ namespace myTNB_Android.Src.PreLogin.Activity
             try
             {
                 mPresenter = new PreLoginPresenter(this);
-                TextViewUtils.SetMuseoSans500Typeface(txtWelcome);
-
-                TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtLikeToday, txtLocation, txtFeedback, txtCallUs, txtPromotion);
-
+                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs, txtChangeLanguage);
+                TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
+                UpdateLabels();
+
+                GenerateTopLayoutLayout();
+                GenerateFindUsCardLayout();
+                GenerateCallUsCardLayout();
+                GenerateFeedbackCardLayout();
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
-            /** Enable/Disable Sitecore **/
-            //if (MyTNBApplication.siteCoreUpdated)
-            //{
-            //    GetDataFromSiteCore();
-            //}
-            //else
-            //{
-            //    ShowPreLoginPromotion(true);
-            //}
+        }
+
+        public void SetStatusBarBackground(int resId)
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(resId);
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
+            }
         }
 
         public bool IsActive()
@@ -120,13 +190,43 @@ namespace myTNB_Android.Src.PreLogin.Activity
             StartActivity(typeof(RegistrationFormActivity));
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Pre Login");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
 
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.userActionsListener.NavigateToLogin();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToLogin();
+                }
             }
             catch (Exception ex)
             {
@@ -139,7 +239,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                this.userActionsListener.NavigateToRegister();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToRegister();
+                }
             }
             catch (Exception ex)
             {
@@ -147,12 +251,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
         }
 
-        [OnClick(Resource.Id.txtFindUs)]
+        [OnClick(Resource.Id.cardview_find_us)]
         void OnFindUs(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.userActionsListener.NavigateToFindUs();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToFindUs();
+                }
             }
             catch (Exception ex)
             {
@@ -160,12 +268,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
         }
 
-        [OnClick(Resource.Id.txtCallUs)]
+        [OnClick(Resource.Id.cardview_call_us)]
         void OnCallUs(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.userActionsListener.NavigateToCallUs();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToCallUs();
+                }
             }
             catch (Exception ex)
             {
@@ -175,17 +287,103 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
 
 
-        [OnClick(Resource.Id.txtFeedback)]
+        [OnClick(Resource.Id.cardview_feedback)]
         void OnFeedback(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.userActionsListener.NavigateToFeedback();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToFeedback();
+                }
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
+        }
+
+        [OnClick(Resource.Id.txtChangeLanguage)]
+        void OnChangeLanguage(object sender, EventArgs eventArgs)
+        {
+            string selectedLanguage = LanguageUtil.GetAppLanguage();
+            string tooltipLanguage;
+            if (selectedLanguage == "MS")
+            {
+                tooltipLanguage = "EN";
+            }
+            else
+            {
+                tooltipLanguage = "MS";
+            }
+            Utility.ShowChangeLanguageDialog(this, selectedLanguage, ()=>
+            {
+                ShowProgressDialog();
+                _ = RunUpdateLanguage(tooltipLanguage);
+            });
+        }
+
+        private Task RunUpdateLanguage(string language)
+        {
+            return Task.Run(() =>
+            {
+                LanguageUtil.SaveAppLanguage(language);
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                _ = CheckAppMasterDataDone();
+            });
+        }
+
+        private Task CheckAppMasterDataDone()
+        {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+                if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
+                {
+                    if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
+                    {
+                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                        _ = CheckAppMasterDataDone();
+                    }
+                    else if (MyTNBAccountManagement.GetInstance().GetIsAppMasterMaintenance())
+                    {
+                        try
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                OnMaintenanceProceed();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                MyTNBAccountManagement.GetInstance().ClearSitecoreItem();
+                                MyTNBAccountManagement.GetInstance().ClearAppCacheItem();
+                                SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                UpdateLabels();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                }
+                else
+                {
+                    _ = CheckAppMasterDataDone();
+                }
+            });
         }
 
         public void ShowPreLoginPromotion(bool success)
@@ -213,8 +411,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
                                     imgPromotion.SetImageBitmap(imageBitmap);
                                     imgPromotion.Click += delegate
                                     {
-                                        //Intent webIntent = new Intent(this, typeof(PromotionWebActivity));
-                                        //webIntent.PutExtra(Constants.PROMOTIONS_LINK, obj.GeneralLinkUrl);
+                                        //Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                                        //webIntent.PutExtra(Constants.IN_APP_LINK, obj.GeneralLinkUrl);
+                                        //webIntent.PutExtra(Constants.IN_APP_TITLE, "Promotions");
                                         //StartActivity(webIntent);
                                     };
                                 }
@@ -283,6 +482,158 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        private void GenerateTopLayoutLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentLogoImg = img_logo.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgWidth = GetDeviceHorizontalScaleInPixel(0.125f);
+
+                currentLogoImg.Height = imgWidth;
+                currentLogoImg.Width = imgWidth;
+
+                LinearLayout.LayoutParams currentDisplayLogoImg = img_display.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgDisplayWidth = GetDeviceHorizontalScaleInPixel(0.634f);
+
+                float heightRatio = 132f / 203f;
+                int imgDisplayHeight = (int)(imgDisplayWidth * (heightRatio));
+
+                currentDisplayLogoImg.Height = imgDisplayHeight;
+                currentDisplayLogoImg.Width = imgDisplayWidth;
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void GenerateFindUsCardLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentCard = cardFindUs.LayoutParameters as LinearLayout.LayoutParams;
+                ViewGroup.LayoutParams currentImg = imgFindUs.LayoutParameters;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f) - GetDeviceHorizontalScaleInPixel(0.076f)) / 3;
+                float heightRatio = 84f / 88f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
+                currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
+                currentCard.LeftMargin = (int)DPUtils.ConvertDPToPx(16f);
+                currentCard.RightMargin = GetDeviceHorizontalScaleInPixel(0.038f);
+                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
+
+                float imgHeightRatio = 28f / 88f;
+                int imgHeight = (int)(cardWidth * (imgHeightRatio));
+
+                currentImg.Height = imgHeight;
+                currentImg.Width = imgHeight;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void GenerateCallUsCardLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentCard = cardCallUs.LayoutParameters as LinearLayout.LayoutParams;
+                ViewGroup.LayoutParams currentImg = imgCallUs.LayoutParameters;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f) - GetDeviceHorizontalScaleInPixel(0.076f)) / 3;
+                float heightRatio = 84f / 88f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
+                currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
+                currentCard.RightMargin = GetDeviceHorizontalScaleInPixel(0.038f);
+                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
+
+                float imgHeightRatio = 28f / 88f;
+                int imgHeight = (int)(cardWidth * (imgHeightRatio));
+
+                currentImg.Height = imgHeight;
+                currentImg.Width = imgHeight;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void GenerateFeedbackCardLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentCard = cardFeedback.LayoutParameters as LinearLayout.LayoutParams;
+                ViewGroup.LayoutParams currentImg = imgFeedback.LayoutParameters;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f) - GetDeviceHorizontalScaleInPixel(0.076f)) / 3;
+                float heightRatio = 84f / 88f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
+                currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
+                currentCard.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
+
+                float imgHeightRatio = 28f / 88f;
+                int imgHeight = (int)(cardWidth * (imgHeightRatio));
+
+                currentImg.Height = imgHeight;
+                currentImg.Width = imgHeight;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        {
+            var deviceWidth = Resources.DisplayMetrics.WidthPixels;
+            return GetScaleInPixel(deviceWidth, percentageValue);
+        }
+
+        private int GetScaleInPixel(int basePixel, float percentageValue)
+        {
+            int scaledInPixel = (int)((float)basePixel * percentageValue);
+            return scaledInPixel;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void DismissProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

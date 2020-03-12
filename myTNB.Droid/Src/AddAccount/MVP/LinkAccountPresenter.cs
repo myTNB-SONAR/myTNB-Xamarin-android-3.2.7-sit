@@ -1,9 +1,13 @@
 ﻿using Android.Util;
-using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -32,46 +36,17 @@ namespace myTNB_Android.Src.AddAccount.MVP
             this.mView.ClearAdapter();
         }
 
-        public void GetAccounts(string apiID, string userID)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            GetCustomerAccounts(apiID, userID);
-        }
-
-        private async void GetCustomerAccounts(string apiID, string userId)
-        {
-            if (mView.IsActive())
-            {
-                this.mView.ShowGetAccountsProgressDialog();
-            }
-            var api = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-            try
-            {
-                UserEntity user = UserEntity.GetActive();
-                var result = await api.GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetAccountsProgressDialog();
-                }
-                this.mView.ShowAccountList(result.D.AccountListData);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
-        }
-
         public void OnConfirm(List<NewAccount> newList)
         {
-            int ctr = 0;
             foreach (NewAccount newAccount in newList)
             {
-                bool isSelected = ctr == 0 ? true : false;
-                CustomerBillingAccount.InsertOrReplace(newAccount, isSelected);
-                ctr++;
+                CustomerBillingAccount.InsertOrReplace(newAccount, false);
             }
-
+            if (CustomerBillingAccount.HasItems())
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.MakeFirstAsSelected();
+            }
             this.mView.ShowDashboard();
         }
 
@@ -85,64 +60,49 @@ namespace myTNB_Android.Src.AddAccount.MVP
         {
             try
             {
-                if (mView.IsActive())
-                {
-                    this.mView.ShowGetAccountsProgressDialog();
-                }
-                var api = RestService.For<GetCustomerAccountsForICNumApi>(Constants.SERVER_URL.END_POINT);
-                // TODO : UPDATE TO V5
-                var result = await api.GetCustomerAccountByIc(new GetBCRMAccountRequest(apiKeyID, currentAccountList, email, identificationNo));
+                this.mView.ShowGetAccountsProgressDialog();
 
-                if (result.Data.IsError)
+                var result = await ServiceApiImpl.Instance.CustomerAccountsForICNum(new CustomerAccountsForICNumRequest(currentAccountList, identificationNo));
+
+                if (!result.IsSuccessResponse())
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetAccountsProgressDialog();
-                    }
-                    if (result.Data.Status.Equals("failed"))
-                    {
-                        this.mView.ShowBCRMDownException(result.Data.Message);
-                    }
-                    else
-                    {
-                        Exception e = new Exception();
-                        this.mView.ShowRetryOptionsUnknownException(e);
-                    }
+                    this.mView.HideGetAccountsProgressDialog();
+                    this.mView.ShowServiceError(result.Response.DisplayTitle, result.Response.DisplayMessage);
                 }
                 else
                 {
-                    if (mView.IsActive())
+                    this.mView.HideGetAccountsProgressDialog();
+                    List<BCRMAccount> bCRMAccountList = new List<BCRMAccount>();
+                    foreach (CustomerAccountsForICNumResponse.ResponseData response in result.GetData())
                     {
-                        this.mView.HideGetAccountsProgressDialog();
+                        BCRMAccount bCRMAccount = new BCRMAccount();
+                        bCRMAccount.accNum = response.accNum;
+                        bCRMAccount.accountTypeId = response.accountTypeId;
+                        bCRMAccount.accountStAddress = response.accountStAddress;
+                        bCRMAccount.icNum = response.icNum;
+                        bCRMAccount.isOwned = response.isOwned;
+                        bCRMAccount.accountCategoryId = response.accountCategoryId;
+                        bCRMAccountList.Add(bCRMAccount);
                     }
-                    this.mView.ShowBCRMAccountList(result.Data.BCRMAccountList);
+                    this.mView.ShowBCRMAccountList(bCRMAccountList);
 
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
                 Utility.LoggingNonFatalError(unknownException);
             }
@@ -152,8 +112,20 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccount> accounts)
         {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            AddMultipleAccountsAsync(apiKeyId, sspUserId, email, accounts);
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                AddMultipleAccountsAsync(apiKeyId, sspUserId, email, accounts);
+            }
+            catch (Exception unknownException)
+            {
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
+                this.mView.ShowErrorMessage();
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
 
         private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccount> accounts)
@@ -165,26 +137,17 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
 
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var api = RestService.For<AddMultipleAccountsToUserApi>(httpClient);
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
 
-#else
-            var api = RestService.For<AddMultipleAccountsToUserApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
-
-
-
-                var result = await api.AddMultipleAccounts(new AddMultipleAccountRequest(apiKeyId, sspUserID, email, accounts));
-
-                if (result.response.IsError)
+                if (result.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountFail(result.response.Message);
+                    mView.ShowAddAccountSuccess(result.GetData());
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
                 }
                 else
                 {
@@ -192,7 +155,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountSuccess(result.response);
+                    mView.ShowAddAccountFail(result.Response.DisplayMessage);
                 }
 
             }
@@ -240,10 +203,22 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
 
                 UserEntity user = UserEntity.GetActive();
+                FirebaseTokenEntity token = FirebaseTokenEntity.GetLatest();
 
                 summaryDashBoardRequest.AccNum = account;
-                summaryDashBoardRequest.SspUserId = user.UserID;
-                summaryDashBoardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = user.Email,
+                    sspuid = user.UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = token.FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+                summaryDashBoardRequest.usrInf = currentUsrInf;
 
                 CallSummaryAPI(summaryDashBoardRequest);
             }

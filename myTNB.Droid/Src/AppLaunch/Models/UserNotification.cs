@@ -42,5 +42,8 @@ namespace myTNB_Android.Src.AppLaunch.Models
 
         [JsonProperty("Target")]
         public string Target { get; set; }
+
+        [JsonProperty("ODNBatchSubcategory")]
+        public string ODNBatchSubcategory { get; set; }
     }
 }

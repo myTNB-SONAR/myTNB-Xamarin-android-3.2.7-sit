@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.PreLogin.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
                     string json = getItemsService.GetPreLoginPromoItem();
                     PreLoginPromoResponseModel responseModel = JsonConvert.DeserializeObject<PreLoginPromoResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))

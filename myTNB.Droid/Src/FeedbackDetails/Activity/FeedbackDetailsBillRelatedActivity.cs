@@ -153,6 +153,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
             try
             {
+                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                {
+                    SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                }
+
                 // Create your application here
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
@@ -166,6 +171,24 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 recyclerView.SetAdapter(adapter);
                 adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
+                string feedbackIdTitle = Utility.GetLocalizedLabel("FeedbackDetails", "feedbackID");
+                txtInputLayoutFeedbackId.Hint = feedbackIdTitle;
+
+                string feedbackStatusTitle = Utility.GetLocalizedLabel("FeedbackDetails", "feedbackStatus");
+                txtInputLayoutStatus.Hint = feedbackStatusTitle;
+
+                string feedbackDateTimeTitle = Utility.GetLocalizedLabel("FeedbackDetails", "dateTimeTitle");
+                txtInputLayoutDateTime.Hint = feedbackDateTimeTitle;
+                txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
+                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackDetails", "feedback");
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackDetails", "photoTitle");
+
+                txtFeedbackId.AddTextChangedListener(new InputFilterFormField(txtFeedbackId, txtInputLayoutFeedbackId));
+                txtFeedbackStatus.AddTextChangedListener(new InputFilterFormField(txtFeedbackStatus, txtInputLayoutStatus));
+                txtFeedbackDateTime.AddTextChangedListener(new InputFilterFormField(txtFeedbackDateTime, txtInputLayoutDateTime));
+                txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));
+                txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
+
                 mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback);
                 this.userActionsListener.Start();
             }
@@ -176,12 +199,29 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private void Adapter_SelectClickEvent(object sender, int e)
         {
-            AttachedImage selectedImage = adapter.GetItemObject(e);
-            var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
-            fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
-            StartActivity(fullImageIntent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                AttachedImage selectedImage = adapter.GetItemObject(e);
+                var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
+                fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
+                StartActivity(fullImageIntent);
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -198,6 +238,30 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

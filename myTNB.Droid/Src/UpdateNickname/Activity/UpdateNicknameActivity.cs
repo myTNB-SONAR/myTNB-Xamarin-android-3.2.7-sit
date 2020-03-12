@@ -13,7 +13,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -24,7 +23,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.UpdateMobile")]
-    public class UpdateNicknameActivity : BaseToolbarAppCompatActivity, UpdateNicknameContract.IView
+    public class UpdateNicknameActivity : BaseActivityCustom, UpdateNicknameContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -44,7 +43,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         UpdateNicknamePresenter mPresenter;
 
         MaterialDialog progress;
-        private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "UpdateNickname";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -75,6 +74,9 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNickname);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountNickname);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
+
+                txtInputLayoutAccountNickname.Hint = GetLabelCommonByLanguage("acctNickname");
+                btnSave.Text = GetLabelCommonByLanguage("save");
 
                 txtAccountNickname.AddTextChangedListener(new InputFilterFormField(txtAccountNickname, txtInputLayoutAccountNickname));
 
@@ -133,17 +135,9 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         public void HideProgressDialog()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -178,24 +172,14 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         public void ShowSameNickNameError()
         {
-            txtInputLayoutAccountNickname.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+            txtInputLayoutAccountNickname.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
         }
 
         public void ShowProgressDialog()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -216,14 +200,17 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -236,14 +223,17 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -256,14 +246,17 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
         }
@@ -327,6 +320,24 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "Update Account Nickname");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

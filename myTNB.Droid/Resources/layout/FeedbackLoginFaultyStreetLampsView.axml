@@ -48,7 +48,7 @@
                     android:layout_marginTop="23dp"
                     android:text="@string/faulty_street_lamps_txt_title"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/txtFeedbackContent"
                     android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:layout_marginTop="23dp"
                     android:text="@string/faulty_street_lamps_txt_content"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                             android:layout_gravity="bottom"
                             android:visibility="gone"
                             android:text="@string/faulty_street_lamps_feedback_max_feedback_characters"
-                            android:textSize="9sp" />
+                            android:textSize="9dp" />
                     </FrameLayout>
                     <TextView
                         android:id="@+id/txtRelatedScreenshotTitle"
@@ -200,7 +200,7 @@
                         android:text="@string/faulty_street_lamps_screenshot_title"
                         android:textAllCaps="true"
                         android:layout_marginBottom="8dp"
-                        android:textSize="9sp" />
+                        android:textSize="9dp" />
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/faulty_street_lamps_feedback_max_image_hint"
-                        android:textSize="9sp" />
+                        android:textSize="9dp" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
