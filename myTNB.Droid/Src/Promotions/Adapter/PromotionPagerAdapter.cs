@@ -63,6 +63,9 @@ namespace myTNB_Android.Src.Promotions.Adapter
                 }
             }
 
+            btnSkip.Text = Utility.GetLocalizedCommonLabel("skip");
+            btnDetails.Text = Utility.GetLocalizedCommonLabel("details");
+
             btnClose.Click += delegate
             {
                 SkipPromotion(position);

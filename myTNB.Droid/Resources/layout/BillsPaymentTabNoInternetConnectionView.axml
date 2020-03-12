@@ -16,6 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:text="@string/bills_payment_no_internet_txt_content" />
 </LinearLayout>

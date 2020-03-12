@@ -18,7 +18,6 @@ using myTNB_Android.Src.RegisterValidation.MVP;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressButton;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -31,7 +30,7 @@ namespace myTNB_Android.Src.RegisterValidation
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.RegisterValidation")]
-    public class RegisterValidationActivity : BaseToolbarAppCompatActivity, RegistrationValidationContract.IView, ProgressGenerator.OnProgressListener
+    public class RegisterValidationActivity : BaseActivityCustom, RegistrationValidationContract.IView, ProgressGenerator.OnProgressListener
     {
 
         private RegistrationValidationPresenter mPresenter;
@@ -77,10 +76,13 @@ namespace myTNB_Android.Src.RegisterValidation
         [BindView(Resource.Id.txtInputLayoutNumber_4)]
         TextInputLayout txtInputLayoutNumber_4;
 
+        [BindView(Resource.Id.txtErrorPin)]
+        TextView txtErrorPin;
+
         //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
-        private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "VerifyPin";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -118,8 +120,13 @@ namespace myTNB_Android.Src.RegisterValidation
                 TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
+                TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
 
-                txtInfoTitle.Text = GetString(Resource.String.registration_validation_pin_info_wildcard, entity.MobileNo);
+                txtInfoTitle.Text = string.Format(GetLabelByLanguage("otpRegistration"), entity.MobileNo);
+                txtDidntReceive.Text = GetLabelByLanguage("smsNotReceived");
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
+                txtErrorPin.Text = Utility.GetLocalizedErrorLabel("invalid_pin");
+                txtErrorPin.Visibility = ViewStates.Gone;
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -129,9 +136,13 @@ namespace myTNB_Android.Src.RegisterValidation
                 //pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
 
                 Snackbar mPinSentInfo = Snackbar.Make(rootView,
-                    GetString(Resource.String.registration_validation_snackbar_sms_sent_msg),
+                    Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
+                    View v = mPinSentInfo.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
                 mPinSentInfo.Show();
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -212,6 +223,8 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             try
             {
+                ClearErrors();
+
                 string txt_1 = txtNumber_1.Text.Trim();
                 string txt_2 = txtNumber_2.Text.Trim();
                 string txt_3 = txtNumber_3.Text.Trim();
@@ -264,11 +277,7 @@ namespace myTNB_Android.Src.RegisterValidation
             base.OnResume();
             try
             {
-                //if (pinDisplayerSMSReceiver != null)
-                //{
-                //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
-                //}
-                this.userActionsListener.Start();
+                FirebaseAnalyticsUtils.SetScreenName(this, "SMS OTP Token Input (Registration)");
             }
             catch (Exception e)
             {
@@ -313,12 +322,11 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             try
             {
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
-                //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded) , null , null , null );
-                //btnResend.SetTextColor(Resources.GetColor(Resource.Color.white));
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(30)";
                 btnResend.Visibility = ViewStates.Gone;
+                OnCompleteResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 OnCompleteResend.Visibility = ViewStates.Visible;
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend);
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
                 btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                 progressGenerator.Progress = 0;
@@ -393,6 +401,7 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             Intent LinkAccountIntent = new Intent(this, typeof(LinkAccountActivity));
             LinkAccountIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            LinkAccountIntent.PutExtra("fromDashboard", true);
             StartActivity(LinkAccountIntent);
         }
 
@@ -407,6 +416,7 @@ namespace myTNB_Android.Src.RegisterValidation
             {
                 OnCompleteResend.Visibility = ViewStates.Gone;
                 btnResend.Visibility = ViewStates.Visible;
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
                 btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                 progressGenerator.Progress = 0;
@@ -440,7 +450,7 @@ namespace myTNB_Android.Src.RegisterValidation
             //}
             try
             {
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(" + Math.Abs(count - 30) + ")";
+                btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(" + Math.Abs(count - 30) + ")";
             }
             catch (Exception e)
             {
@@ -450,22 +460,31 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void ShowEmptyErrorPin_1()
         {
-            txtInputLayoutNumber_1.Error = GetString(Resource.String.registration_validation_empty_error_1);
+            txtInputLayoutNumber_1.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_2()
         {
-            txtInputLayoutNumber_2.Error = GetString(Resource.String.registration_validation_empty_error_2);
+            txtInputLayoutNumber_2.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_3()
         {
-            txtInputLayoutNumber_3.Error = GetString(Resource.String.registration_validation_empty_error_3);
+            txtInputLayoutNumber_3.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_4()
         {
-            txtInputLayoutNumber_4.Error = GetString(Resource.String.registration_validation_empty_error_4);
+            txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
+        }
+
+        public void ShowEmptyErrorPin()
+        {
+            txtInputLayoutNumber_1.Error = " ";
+            txtInputLayoutNumber_2.Error = " ";
+            txtInputLayoutNumber_3.Error = " ";
+            txtInputLayoutNumber_4.Error = " ";
+            txtErrorPin.Visibility = ViewStates.Visible;
         }
 
         public void ClearErrors()
@@ -474,6 +493,7 @@ namespace myTNB_Android.Src.RegisterValidation
             txtInputLayoutNumber_2.Error = null;
             txtInputLayoutNumber_3.Error = null;
             txtInputLayoutNumber_4.Error = null;
+            txtErrorPin.Visibility = ViewStates.Gone;
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -484,14 +504,17 @@ namespace myTNB_Android.Src.RegisterValidation
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_validation_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_cancelled_exception_btn_close), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -504,8 +527,8 @@ namespace myTNB_Android.Src.RegisterValidation
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_validation_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_api_exception_btn_close), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -524,8 +547,8 @@ namespace myTNB_Android.Src.RegisterValidation
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_validation_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_validation_unknown_exception_btn_close), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -548,7 +571,7 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -571,7 +594,7 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(resourceStringId), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -598,7 +621,7 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(Resource.String.runtime_permission_sms_received_rationale), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.registration_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
                 );
                 mSnackBar.Show();
             }
@@ -620,20 +643,9 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void ShowRegistrationProgress()
         {
-            //if (registrationDialog != null && !registrationDialog.IsShowing)
-            //{
-            //    registrationDialog.Show();
-            //}
-
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -643,16 +655,9 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void HideRegistrationProgress()
         {
-            //if (registrationDialog != null && registrationDialog.IsShowing)
-            //{
-            //    registrationDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -695,6 +700,11 @@ namespace myTNB_Android.Src.RegisterValidation
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

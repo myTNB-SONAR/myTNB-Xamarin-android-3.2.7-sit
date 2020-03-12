@@ -1,9 +1,10 @@
 ﻿using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -18,7 +19,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
     {
         private static string TAG = "AddAccountPresenter";
         private AddAccountContract.IView mView;
-        private CancellationTokenSource addAccountCts;
 
         public AddAccountPresenter(AddAccountContract.IView mView)
         {
@@ -94,25 +94,16 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         private async void AddAccountAsync(string apiKeyId, string userID, string email, string tnbBillAcctNo, string tnbAcctHolderIC, string tnbAcctContractNo, string type, string des, bool isOwner, string suppliedMotherName)
         {
-            addAccountCts = new CancellationTokenSource();
             mView.ShowAddingAccountProgressDialog();
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<AddAccountToCustomer>(httpClient);
-#else
-            var api = RestService.For<AddAccountToCustomer>(Constants.SERVER_URL.END_POINT);
-            
-#endif
 
             try
             {
                 UserEntity user = UserEntity.GetActive();
-                var result = await api.AddAccountToCustomer(new AddAccountToCustomerRequest(apiKeyId, user.UserID, user.Email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName), addAccountCts.Token);
+                var result = await ServiceApiImpl.Instance.AddAccountToCustomer(new AccountToCustomerRequest(tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, des, isOwner.ToString(), suppliedMotherName, Convert.ToInt32(type)));
 
-                if (result.response[0].isError)
+                if (result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
-                    mView.ShowAddAccountFail(result.response[0].message);
+                    mView.ShowAddAccountFail(result.Response.DisplayMessage);
                     if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
@@ -125,9 +116,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountSuccess(result.response[0].message);
+                    mView.ShowAddAccountSuccess(result.Response.DisplayMessage);
                 }
-
             }
             catch (System.OperationCanceledException cancelledException)
             {
@@ -206,42 +196,31 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         private async void ValidateAccountAsync(string apiKeyId, string accountNum, string accountType, string userIdentificationNum, string suppliedMotherName, bool isOwner, string accountLable)
         {
-            addAccountCts = new CancellationTokenSource();
             mView.ShowAddingAccountProgressDialog();
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<ValidateManualAccountLinkingApi>(httpClient);
-
-#else
-            var api = RestService.For<ValidateManualAccountLinkingApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-
-                var result = await api.ValidateManualAccount(new ValidateManualAccountRequest(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner));
+                var result = await ServiceApiImpl.Instance.ValidateManualAccount(new MyTNBService.Request.ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString()));
                 if (mView.IsActive())
                 {
                     mView.HideAddingAccountProgressDialog();
                 }
-                if (result.validation.IsError)
+                if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
-                    mView.ShowAddAccountFail(result.validation.Message);
+                    mView.ShowAddAccountFail(result.Response.DisplayMessage);
                 }
                 else
                 {
                     mView.ClearText();
                     NewAccount account = new NewAccount();
                     account.accountNumber = accountNum;
-                    account.accountAddress = result.validation.Data.accountStAddress;
+                    account.accountAddress = result.GetData().accountStAddress;
                     account.isOwner = isOwner;
                     account.type = accountType;
                     account.isRegistered = false;
                     account.accountLabel = accountLable;
                     account.icNum = userIdentificationNum;
-                    account.accountCategoryId = result.validation.Data.accountCategoryId;
+                    account.accountCategoryId = result.GetData().accountCategoryId;
                     mView.ShowValidateAccountSucess(account);
                 }
 

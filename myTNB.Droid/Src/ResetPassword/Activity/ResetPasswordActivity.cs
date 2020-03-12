@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -25,14 +26,17 @@ namespace myTNB_Android.Src.ResetPassword.Activity
               , Icon = "@drawable/ic_launcher"
        , ScreenOrientation = ScreenOrientation.Portrait
        , Theme = "@style/Theme.ResetPassword")]
-    public class ResetPasswordActivity : BaseToolbarAppCompatActivity, ResetPasswordContract.IView
+    public class ResetPasswordActivity : BaseActivityCustom, ResetPasswordContract.IView
     {
+        [BindView(Resource.Id.txtResetPasswordTitle)]
+        TextView txtResetPasswordTitle;
+
 
         [BindView(Resource.Id.txtNewPassword)]
-        TextView txtNewPassword;
+        EditText txtNewPassword;
 
         [BindView(Resource.Id.txtConfirmNewPassword)]
-        TextView txtConfirmNewPassword;
+        EditText txtConfirmNewPassword;
 
         [BindView(Resource.Id.txtTitleInfo)]
         TextView txtTitleInfo;
@@ -57,6 +61,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         private ResetPasswordContract.IUserActionsListener userActionsListener;
 
         string enteredPassword, enteredUserName;
+        const string PAGE_ID = "ResetPassword";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -65,13 +70,23 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             // Create your application here
             try
             {
+
+
+                this.DisableSubmitButton();
+
                 mPresenter = new ResetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
-                TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+                TextViewUtils.SetMuseoSans500Typeface(btnSubmit, txtResetPasswordTitle);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword, txtConfirmNewPassword);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword, txtInputLayoutConfirmNewPassword);
+
+                txtResetPasswordTitle.Text = GetLabelByLanguage("subTitle");
+                txtTitleInfo.Text = GetLabelByLanguage("details");
+                txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
+                txtInputLayoutConfirmNewPassword.Hint = GetLabelByLanguage("confirmNewPassword");
+                btnSubmit.Text = GetLabelCommonByLanguage("submit");
 
                 mProgressDialog = new AlertDialog.Builder(this)
                     .SetTitle(GetString(Resource.String.reset_password_alert_dialog_title))
@@ -90,8 +105,13 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                     enteredUserName = Intent.Extras.GetString(Constants.ENTERED_USERNAME, null);
                 }
 
-                txtNewPassword.TextChanged += TextChange;
-                txtConfirmNewPassword.TextChanged += TextChange;
+                txtNewPassword.TextChanged += TextNewChange;
+                txtNewPassword.AddTextChangedListener(new InputFilterFormField(txtNewPassword, txtInputLayoutNewPassword));
+                txtConfirmNewPassword.TextChanged += TextConfirmChange;
+                txtConfirmNewPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmNewPassword, txtInputLayoutConfirmNewPassword));
+
+                this.ClearErrorMessages();
+
             }
             catch (Exception e)
             {
@@ -99,35 +119,102 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
-        private void TextChange(object sender, TextChangedEventArgs e)
+        private void TextNewChange(object sender, TextChangedEventArgs e)
         {
             try
             {
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
 
+                this.DisableSubmitButton();
+                this.ClearErrorMessages();
+
+                // validation new password
                 if (!string.IsNullOrEmpty(newPassword))
                 {
-                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
-                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+                    txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+                    txtInputLayoutNewPassword.ErrorEnabled = true;
+                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                    if (!this.userActionsListener.CheckPasswordIsValid(newPassword))
+                    {
+                        this.ShowPasswordMinimumOf6CharactersError();
+                    }
+                    else
+                    {
+                        this.ClearErrorMessages();
+                    }
                 }
                 else
                 {
-                    txtInputLayoutNewPassword.Error = "";
-                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
                 }
 
-                if (!string.IsNullOrEmpty(confirmPassword))
+                // validation confirm password
+                if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+                    txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+                    txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
+                    txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
+                    if (!newPassword.Equals(confirmPassword))
+                    {
+                        this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
+                    }
+                    else
+                    {
+                        this.ClearErrorMessages();
+                        this.EnableSubmitButton();
+                    }
                 }
                 else
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void TextConfirmChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                string newPassword = txtNewPassword.Text;
+                string confirmPassword = txtConfirmNewPassword.Text;
+
+                this.DisableSubmitButton();
+                this.ClearErrorMessages();
+
+                // validation confirm password
+                if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
+                {
+                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+                    txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+                    txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
+                    if (!newPassword.Equals(confirmPassword))
+                    {
+                        this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
+                    }
+                    else
+                    {
+                        this.ClearErrorMessages();
+                        this.EnableSubmitButton();
+                    }
+                }
+                else
+                {
+                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+
                 }
             }
             catch (Exception ex)
@@ -146,6 +233,18 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void ShowEmptyNewPasswordError()
         {
@@ -159,12 +258,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowNotEqualConfirmNewPasswordToNewPasswordError()
         {
-            txtInputLayoutConfirmNewPassword.Error = GetString(Resource.String.reset_password_confirm_password_does_not_match_error);
+            txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
         }
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
-            txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+            txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
         }
 
@@ -172,10 +271,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             try
             {
-                if (mProgressDialog != null && !mProgressDialog.IsShowing)
-                {
-                    mProgressDialog.Show();
-                }
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -187,10 +283,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             try
             {
-                if (mProgressDialog != null && mProgressDialog.IsShowing)
-                {
-                    mProgressDialog.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -206,9 +299,10 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void ShowErrorMessage(string errorMessage)
@@ -219,19 +313,22 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void DisableSubmitButton()
         {
             btnSubmit.Enabled = false;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         public void EnableSubmitButton()
         {
             btnSubmit.Enabled = true;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -242,8 +339,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
@@ -251,6 +348,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -262,8 +360,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
@@ -273,6 +371,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -287,8 +386,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
@@ -298,6 +397,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -322,12 +422,17 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             try
             {
-                string newPassword = txtNewPassword.Text;
-                string confirmPassword = txtConfirmNewPassword.Text;
-                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    string newPassword = txtNewPassword.Text;
+                    string confirmPassword = txtConfirmNewPassword.Text;
+                    this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -336,6 +441,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             txtInputLayoutNewPassword.Error = "";
             txtInputLayoutConfirmNewPassword.Error = "";
+            txtInputLayoutNewPassword.ErrorEnabled = false;
+            txtInputLayoutConfirmNewPassword.ErrorEnabled = false;
         }
 
         public override void OnBackPressed()
@@ -347,7 +454,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                     // TODO : START ACTIVITY DASHBOARD
                     if (UserSessions.HasResetFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
-                        Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+                        Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         StartActivity(DashboardIntent);
                     }
@@ -417,5 +524,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

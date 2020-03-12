@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
+using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Activity;
@@ -43,6 +44,10 @@ namespace myTNB_Android.Src.Maintenance.Activity
 
         bool firstInitiated = false;
 
+        private string title = "";
+
+        private string message = "";
+
         public override int ResourceId()
         {
             return Resource.Layout.MaintenanceView;
@@ -57,17 +62,36 @@ namespace myTNB_Android.Src.Maintenance.Activity
         {
             base.OnCreate(savedInstanceState);
 
+            try
+            {
+                TextViewUtils.SetMuseoSans300Typeface(txtContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtHeading);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey(Constants.MAINTENANCE_TITLE_KEY) && Intent.Extras.ContainsKey(Constants.MAINTENANCE_MESSAGE_KEY))
             {
                 try
                 {
-                    string title = Intent.Extras.GetString(Constants.MAINTENANCE_TITLE_KEY);
-                    string message = Intent.Extras.GetString(Constants.MAINTENANCE_MESSAGE_KEY);
+                    title = Intent.Extras.GetString(Constants.MAINTENANCE_TITLE_KEY);
+                    message = Intent.Extras.GetString(Constants.MAINTENANCE_MESSAGE_KEY);
                     txtHeading.Text = title;
                     txtContent.Text = message;
-
-                    TextViewUtils.SetMuseoSans300Typeface(txtContent);
-                    TextViewUtils.SetMuseoSans500Typeface(txtHeading);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                try
+                {
+                    txtHeading.Text = "";
+                    txtContent.Text = "";
                 }
                 catch (Exception e)
                 {
@@ -77,19 +101,12 @@ namespace myTNB_Android.Src.Maintenance.Activity
 
             try
             {
-                if (ConnectionUtils.HasInternetConnection(this))
-                {
-                    mPresenter = new MaintenancePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                mPresenter = new MaintenancePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
-                    if (!hasBeenCalled)
-                    {
-                        userActionsListener.Start();
-                        hasBeenCalled = true;
-                    }
-                }
-                else
+                if (!hasBeenCalled)
                 {
-                    ShowNoInternetSnackbar();
+                    userActionsListener.Start();
+                    hasBeenCalled = true;
                 }
             }
             catch (Exception e)
@@ -105,10 +122,40 @@ namespace myTNB_Android.Src.Maintenance.Activity
 
         }
 
+        public void OnUpdateMaintenanceWord(string mTitle, string mMessage)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(mTitle))
+                {
+                    title = mTitle;
+                    txtHeading.Text = title;
+                }
+
+                if (!string.IsNullOrEmpty(mMessage))
+                {
+                    message = mMessage;
+                    txtContent.Text = message;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         protected override void OnResume()
         {
             base.OnResume();
             this.userActionsListener.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "App Under Maintenance");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool IsActive()
@@ -124,6 +171,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
         public void ShowLaunchViewActivity()
         {
             Intent LaunchViewIntent = new Intent(this, typeof(LaunchViewActivity));
+            LaunchViewActivity.MAKE_INITIAL_CALL = true;
+            LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(LaunchViewIntent);
         }
 
@@ -141,8 +190,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
                 }
                 else
                 {
-                    mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_http_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_http_exception_btn_retry), delegate
+                    mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
                         mApiExcecptionSnackBar.Dismiss();
@@ -150,6 +199,9 @@ namespace myTNB_Android.Src.Maintenance.Activity
                         this.userActionsListener.Start();
                     }
                     );
+                    View v = mApiExcecptionSnackBar.View;
+                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                    tv.SetMaxLines(5);
                     mApiExcecptionSnackBar.Show();
                 }
             }
@@ -173,8 +225,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
                 }
                 else
                 {
-                    mUnknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_unknown_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_unknown_exception_btn_retry), delegate
+                    mUnknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
                     {
 
                         mUnknownExceptionSnackBar.Dismiss();
@@ -182,6 +234,9 @@ namespace myTNB_Android.Src.Maintenance.Activity
                         this.userActionsListener.Start();
                     }
                     );
+                    View v = mUnknownExceptionSnackBar.View;
+                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                    tv.SetMaxLines(5);
                     mUnknownExceptionSnackBar.Show();
                 }
             }
@@ -200,12 +255,15 @@ namespace myTNB_Android.Src.Maintenance.Activity
             }
 
             mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mNoInternetSnackbar.Dismiss();
             }
             );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
         }
     }

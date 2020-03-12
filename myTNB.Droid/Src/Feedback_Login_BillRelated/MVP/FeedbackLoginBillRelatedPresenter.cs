@@ -10,6 +10,8 @@ using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -124,15 +126,6 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                 this.mView.ShowProgressDialog();
             }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var preloginFeedbackApi = RestService.For<IFeedbackApi>(httpClient);
-#else
-            var preloginFeedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
                 UserEntity userEntity = new UserEntity();
@@ -147,41 +140,25 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     ctr++;
                 }
 
-
-                var request = new FeedbackRequest()
+                SubmitFeedbackRequest submitFeedbackRequest = new SubmitFeedbackRequest("1","", accountNum, userEntity.DisplayName, userEntity.MobileNo, feedback,"","","");
+                foreach (AttachedImageRequest image in imageRequest)
                 {
+                    submitFeedbackRequest.SetFeedbackImage(image.ImageHex, image.FileName, image.FileSize.ToString());
+                }
 
-                    Images = imageRequest,
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    FeedbackCategoryId = "1",
-                    FeedbackTypeId = "",
-                    PhoneNum = userEntity.MobileNo,
-                    AccountNum = accountNum,
-                    Name = userEntity.DisplayName,
-                    Email = userEntity.Email,
-                    DeviceId = deviceId,
-                    FeedbackMessage = feedback,
-                    StateId = "",
-                    Location = "",
-                    PoleNum = ""
-
-                };
-
-
-
-                var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
+                var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitFeedback(submitFeedbackRequest);
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!preLoginFeedbackResponse.Data.IsError)
+                if (preLoginFeedbackResponse.Response != null && preLoginFeedbackResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     var newSubmittedFeedback = new SubmittedFeedback()
                     {
-                        FeedbackId = preLoginFeedbackResponse.Data.Data.FeedbackId,
+                        FeedbackId = preLoginFeedbackResponse.GetData().ServiceReqNo,
                         DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
                         FeedbackMessage = feedback,
                         FeedbackCategoryId = "1"
@@ -192,13 +169,11 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     this.mView.ClearInputFields();
                     CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
                     this.mView.ShowSelectedAccount(customerBillingAccount);
-                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId, attachedImages.Count);
+                    this.mView.ShowSuccess(preLoginFeedbackResponse.GetData().DateCreated, preLoginFeedbackResponse.GetData().ServiceReqNo, attachedImages.Count);
                 }
                 else
                 {
-                    //this.mView.ShowFail();
-
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Data.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }
@@ -241,7 +216,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
         {
             try
             {
-                // TODO: REPLACE WITH THE FIRST 
+                // TODO: REPLACE WITH THE FIRST
                 this.mView.DisableSubmitButton();
                 if (selectedCustomerBillingAccount != null)
                 {
@@ -304,7 +279,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             try
             {
                 this.mView.ClearErrors();
-                if (!TextUtils.IsEmpty(feedback) && !feedback.Equals(" "))
+                if (!TextUtils.IsEmpty(feedback.Trim()))
                 {
                     this.mView.EnableSubmitButton();
                 }
@@ -356,21 +331,10 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                 return;
             }
 
-            cts = new CancellationTokenSource();
-
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
             }
-
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var preloginFeedbackApi = RestService.For<IFeedbackApi>(httpClient);
-#else
-            var preloginFeedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-#endif
 
             try
             {
@@ -385,40 +349,25 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     ctr++;
                 }
 
-                var request = new FeedbackRequest()
+                SubmitFeedbackRequest submitFeedbackRequest = new SubmitFeedbackRequest("1", "", accountNum, userEntity.DisplayName, mobile_no, feedback, "", "", "");
+                foreach (AttachedImageRequest image in imageRequest)
                 {
+                    submitFeedbackRequest.SetFeedbackImage(image.ImageHex, image.FileName, image.FileSize.ToString());
+                }
 
-                    Images = imageRequest,
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    FeedbackCategoryId = "1",
-                    FeedbackTypeId = "",
-                    PhoneNum = mobile_no,
-                    AccountNum = accountNum,
-                    Name = userEntity.DisplayName,
-                    Email = userEntity.Email,
-                    DeviceId = deviceId,
-                    FeedbackMessage = feedback,
-                    StateId = "",
-                    Location = "",
-                    PoleNum = ""
-
-                };
-
-
-
-                var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
+                var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitFeedback(submitFeedbackRequest);
 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!preLoginFeedbackResponse.Data.IsError)
+                if (preLoginFeedbackResponse.Response != null && preLoginFeedbackResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     var newSubmittedFeedback = new SubmittedFeedback()
                     {
-                        FeedbackId = preLoginFeedbackResponse.Data.Data.FeedbackId,
+                        FeedbackId = preLoginFeedbackResponse.GetData().ServiceReqNo,
                         DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
                         FeedbackMessage = feedback,
                         FeedbackCategoryId = "1"
@@ -429,12 +378,11 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     this.mView.ClearInputFields();
                     CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
                     this.mView.ShowSelectedAccount(customerBillingAccount);
-                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId, attachedImages.Count);
+                    this.mView.ShowSuccess(preLoginFeedbackResponse.GetData().DateCreated, preLoginFeedbackResponse.GetData().ServiceReqNo, attachedImages.Count);
                 }
                 else
                 {
-                    //this.mView.ShowFail();
-                    this.mView.OnSubmitError(preLoginFeedbackResponse.Data.Message);
+                    this.mView.OnSubmitError(preLoginFeedbackResponse.Response.DisplayMessage);
                 }
 
             }
@@ -474,62 +422,21 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
         public void CheckRequiredFields(string mobile_no, string feedback)
         {
-            //if ( && !TextUtils.IsEmpty(feedback))
-
-
-            //{
             try
             {
                 this.mView.ClearErrors();
-
-                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
+                if (TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(feedback.Trim()))
                 {
-                    //this.mView.ShowEmptyFeedbackError();    
                     this.mView.DisableSubmitButton();
                     return;
                 }
-
-
-                if (TextUtils.IsEmpty(mobile_no))
-                {
-                    this.mView.ShowEmptyMobileNoError();
-                    this.mView.DisableSubmitButton();
-                    return;
-                }
-
-                if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
-                {
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
-
-
-                if (!Utility.IsValidMobileNumber(mobile_no))
-                {
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
-
-
                 this.mView.EnableSubmitButton();
             }
             catch (Exception e)
             {
+                this.mView.DisableSubmitButton();
                 Utility.LoggingNonFatalError(e);
             }
-            //}
-            //else
-            //{
-            //    this.mView.DisableSubmitButton();
-            //}
         }
     }
 }

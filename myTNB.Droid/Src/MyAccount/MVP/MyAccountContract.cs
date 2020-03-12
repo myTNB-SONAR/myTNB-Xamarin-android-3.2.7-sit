@@ -15,38 +15,6 @@ namespace myTNB_Android.Src.MyAccount.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
-            /// <summary>
-            /// Shows the update mobile screen
-            /// </summary>
-            void ShowUpdateMobileNo();
-
-            /// <summary>
-            /// Show mobile no update success
-            /// </summary>
-            /// <param name="newPhoneNo">string</param>
-            void ShowMobileUpdateSuccess(string newPhoneNo);
-
-            /// <summary>
-            /// Show password update success
-            /// </summary>
-            void ShowPasswordUpdateSuccess();
-
-            /// <summary>
-            /// Shows the update password screen
-            /// </summary>
-            void ShowUpdatePassword();
-
-            /// <summary>
-            /// Shows manage credit cards / debit cards screen
-            /// </summary>
-            void ShowManageCards(List<CreditCardData> cardsList);
-
-            /// <summary>
-            /// Show removed card success
-            /// </summary>
-            /// <param name="creditCard">CreditCardData</param>
-            /// <param name="numOfCards">integer</param>
-            void ShowRemovedCardSuccess(CreditCardData creditCard, int numOfCards);
 
             /// <summary>
             /// Show Account Data per list item row click 
@@ -65,11 +33,6 @@ namespace myTNB_Android.Src.MyAccount.MVP
             /// Shows add account screen
             /// </summary>
             void ShowAddAccount();
-
-            /// <summary>
-            /// Shows Logout Screen
-            /// </summary>
-            void ShowLogout();
 
             /// <summary>
             /// Shows an api exception with an option to retry
@@ -125,39 +88,6 @@ namespace myTNB_Android.Src.MyAccount.MVP
             /// </summary>
             void ShowEmptyAccount();
 
-            /// <summary>
-            /// Shows user data
-            /// </summary>
-            /// <param name="user">UserEntity</param>
-            /// <param name="numOfCards">integer</param>
-            void ShowUserData(UserEntity user, int numOfCards);
-
-            /// <summary>
-            /// Enable manage cards button
-            /// </summary>
-            void EnableManageCards();
-
-            /// <summary>
-            /// Disable manage cards button
-            /// </summary>
-            void DisableManageCards();
-
-            /// <summary>
-            /// Show logout error message from api response
-            /// </summary>
-            /// <param name="message">string</param>
-            void ShowLogoutErrorMessage(string message);
-
-            /// <summary>
-            /// Show logout progress dialog
-            /// </summary>
-            void ShowLogoutProgressDialog();
-
-            /// <summary>
-            /// Hides logout progress dialog
-            /// </summary>
-            void HideLogoutProgressDialog();
-
             ///<summary>
             ///Show account removed success
             ///</summary>
@@ -167,37 +97,9 @@ namespace myTNB_Android.Src.MyAccount.MVP
         public interface IUserActionsListener : IBasePresenter
         {
             /// <summary>
-            /// Action to navigate to manage mobile
-            /// </summary>
-            void OnUpdateMobileNo();
-
-            /// <summary>
-            /// Action to navigate to manage password
-            /// </summary>
-            void OnUpdatePassword();
-
-            /// <summary>
-            /// Action to navigate manage cards
-            /// </summary>
-            void OnManageCards();
-
-            /// <summary>
-            /// Action to manage account
-            /// </summary>
-            /// <param name="customerBillingAccount">CustomerBillingAccount</param>
-            /// <param name="position">integer</param>
-            void OnManageSupplyAccount(CustomerBillingAccount customerBillingAccount, int position);
-
-            /// <summary>
             /// Action to add accounts
             /// </summary>
             void OnAddAccount();
-
-            /// <summary>
-            /// Action to logout
-            /// </summary>
-            /// <param name="deviceId">string</param>
-            void OnLogout(string deviceId);
 
             /// <summary>
             /// The returned result from another activity

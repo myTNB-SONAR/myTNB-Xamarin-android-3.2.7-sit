@@ -2,19 +2,21 @@
 using Android.Content.PM;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.UpdateMobileNo.Api;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.UpdateMobileNo.Request;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -52,8 +54,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void OnVerifyToken(string num1, string num2, string num3, string num4, string newPhone, UserAuthenticationRequest request, bool fromAppLaunch, bool verfiyPhone)
         {
-
-            cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
                 this.mView.ShowEmptyErrorPin_1();
@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             if (TextUtils.IsEmpty(num4))
             {
-                this.mView.ShowEmptyErrorPin_4();
+                //this.mView.ShowEmptyErrorPin_4();
                 return;
             }
 
@@ -86,54 +86,41 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.ClearErrors();
 
             string oldPhoneNo = "";
+
             if (UserEntity.IsCurrentlyActive() && !verfiyPhone)
             {
                 UserEntity entity = UserEntity.GetActive();
                 oldPhoneNo = entity.MobileNo;
             }
 
-            string user_id = "";
-            string user_email = "";
             if (request != null)
             {
                 this.authenticationRequest = request;
-                user_id = request.ActiveUserName;
-                user_email = request.UserName;
             }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                user_id = entity.UserID;
-                user_email = entity.Email;
-            }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var verifyTokenApi = RestService.For<IUpdateMobileNoApi>(httpClient);
-#else
-            var verifyTokenApi = RestService.For<IUpdateMobileNoApi>(Constants.SERVER_URL.END_POINT);
-#endif
 
             try
             {
-                var verifyTokenResponse = await verifyTokenApi.UpdatePhoneNumberV2(new UpdateMobileNo.Request.UpdateMobileV2Request()
+                UpdateNewPhoneNumberRequest updateNewPhoneNumberRequest = new UpdateNewPhoneNumberRequest(oldPhoneNo, newPhone, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4));
+                if (this.authenticationRequest != null)
                 {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    UserId = user_id,
-                    Email = user_email,
-                    OldPhoneNumber = oldPhoneNo,
-                    NewPhoneNumber = newPhone,
-                    token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)
-                }, cts.Token);
+                    updateNewPhoneNumberRequest.SetUserName(this.authenticationRequest.UserName);
+                    if (!UserEntity.IsCurrentlyActive())
+                    {
+                        updateNewPhoneNumberRequest.SetSSPID(this.authenticationRequest.ActiveUserName);
+                    }
+                }
+
+                var verifyTokenResponse = await ServiceApiImpl.Instance.UpdatePhoneNumber(updateNewPhoneNumberRequest);
 
                 if (mView.IsActive())
                 {
                     this.mView.HideRegistrationProgress();
                 }
 
-                if (!verifyTokenResponse.Data.IsError)
+                if (verifyTokenResponse.IsSuccessResponse())
                 {
                     //this.mView.ShowDashboardMyAccount();
-                    /// call login service 
+                    /// call login service
                     if (UserEntity.IsCurrentlyActive())
                     {
                         UserEntity.UpdatePhoneNumber(newPhone);
@@ -154,7 +141,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 else
                 {
                     // TODO : ADD REGISTRATION ERROR
-                    this.mView.ShowError(verifyTokenResponse.Data.Message);
+                    this.mView.ShowError(verifyTokenResponse.Response.DisplayMessage);
+                    this.mView.ShowEmptyErrorPin();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -227,55 +215,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.DisableResendButton();
             this.mView.StartProgress();
 
-            cts = new CancellationTokenSource();
-
-            string ssp_userid = "";
-            string user_name = "";
-            string user_email = "";
-
-            if (this.authenticationRequest != null)
-            {
-                ssp_userid = authenticationRequest.ActiveUserName;
-                user_name = authenticationRequest.UserName;
-                user_email = authenticationRequest.UserName;
-            }
-            else if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                ssp_userid = entity.UserID;
-                user_name = entity.UserName;
-                user_email = entity.Email;
-            }
-
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(httpClient);
-#else
-            var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
             try
             {
-                var verificationResponse = await updateMobileApi.SendUpdatePhoneTokenSMS(new SendUpdatePhoneTokenSMSRequest()
+                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber);
+                if (this.authenticationRequest != null)
                 {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    ClientType = Constants.APP_CONFIG.API_KEY_ID,
-                    ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
-                    DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                    sspUserId = ssp_userid,
-                    username = user_name,
-                    userEmail = user_email,
-                    mobileNo = newPhoneNumber
+                    sendUpdatePhoneTokenSMSRequest.SetUserName(this.authenticationRequest.UserName);
                 }
-                , cts.Token);
+                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(sendUpdatePhoneTokenSMSRequest);
 
-                if (verificationResponse.Data.IsError)
+                if (!verificationResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowError(verificationResponse.Data.Message);
+                    this.mView.ShowError(verificationResponse.Response.DisplayMessage);
                 }
 
 
@@ -332,36 +283,24 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void CallLoginServce(UserAuthenticationRequest request, string newPhone)
         {
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
             if (mView.IsActive())
             {
                 this.mView.ShowRegistrationProgress();
             }
-#if DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IAuthenticateUser>(httpClient);
-
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-
-#else
-            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
 
             try
             {
-                var userResponse = await api.DoLogin(request, cts.Token);
+                UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(request.ClientType, request.Password);
+                userAuthenticateRequest.SetUserName(request.UserName);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
 
-                if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
+                if (!userResponse.IsSuccessResponse())
                 {
                     if (mView.IsActive())
                     {
                         this.mView.HideRegistrationProgress();
                     }
-                    this.mView.ShowRetryLoginUnknownException(userResponse.Data.Message);
+                    this.mView.ShowRetryLoginUnknownException(userResponse.Response.DisplayMessage);
                 }
                 else
                 {
@@ -377,35 +316,63 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     AccountDataEntity.RemoveAll();
                     SummaryDashBoardAccountEntity.RemoveAll();
                     SelectBillsEntity.RemoveAll();
-                    int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    UserSessions.RemoveSessionData();
+                    NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                    NewFAQParentManager.DeleteTable();
+                    NewFAQParentManager.CreateTable();
+                    SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                    SSMRMeterReadingScreensParentManager.DeleteTable();
+                    SSMRMeterReadingScreensParentManager.CreateTable();
+                    SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                    SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                    SSMRMeterReadingScreensOCROffParentManager.CreateTable();
+                    SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                    SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                    SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                    SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                    SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
+                    EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                    EnergySavingTipsParentManager.DeleteTable();
+                    EnergySavingTipsParentManager.CreateTable();
+
+                    try
+                    {
+                        RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                        mRewardParentEntity.DeleteTable();
+                        mRewardParentEntity.CreateTable();
+                        RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                        mRewardCategoryEntity.DeleteTable();
+                        mRewardCategoryEntity.CreateTable();
+                        RewardsEntity mRewardEntity = new RewardsEntity();
+                        mRewardEntity.DeleteTable();
+                        mRewardEntity.CreateTable();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
+                    int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                     if (Id > 0)
                     {
-
-
-#if STUB
-                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-#elif DEBUG
-                        var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
-#else
-                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-#endif
-
-                        var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId));
-                        if (!customerAccountsResponse.D.IsError && customerAccountsResponse.D.AccountListData.Count > 0)
+                        CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new MyTNBService.Request.BaseRequest());
+                        if (customerAccountListResponse.IsSuccessResponse())
                         {
-                            int ctr = 0;
-                            foreach (Account acc in customerAccountsResponse.D.AccountListData)
+                            if (customerAccountListResponse.GetData().Count > 0)
                             {
-                                bool isSelected = ctr == 0 ? true : false;
-                                int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
-                                ctr++;
-
+                                ProcessCustomerAccount(customerAccountListResponse.GetData());
+                            }
+                            else
+                            {
+                                AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
                             }
                         }
 
                         List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
-                        NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Constants.ZERO_INDEX_TITLE, true);
+                        NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
                         foreach (NotificationTypesEntity notificationType in notificationTypes)
                         {
                             if (notificationType.ShowInFilterList)
@@ -414,27 +381,57 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             }
                         }
 
-                        var userNotificationResponse = await notificationsApi.GetUserNotifications(new UserNotificationRequest()
+                        UserNotificationEntity.RemoveAll();
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
+                        UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                        if(response.IsSuccessResponse())
                         {
-                            ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                            Email = userResponse.Data.User.Email,
-                            DeviceId = this.mView.GetDeviceId()
+                            if (response.GetData() != null)
+                            {
+                                try
+                                {
+                                    UserNotificationEntity.RemoveAll();
+                                }
+                                catch (System.Exception ne)
+                                {
+                                    Utility.LoggingNonFatalError(ne);
+                                }
 
-                        }, cts.Token);
+                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                {
+                                    // tODO : SAVE ALL NOTIFICATIONs
+                                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                }
+
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                            }
+                            else
+                            {
+                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                            }
+                        }
+                        else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                        {
+                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                        }
+                        else
+                        {
+                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                        }
+
+                        //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                        }
 
                         if (mView.IsActive())
                         {
                             this.mView.HideRegistrationProgress();
                         }
 
-                        if (!userNotificationResponse.Data.IsError)
-                        {
-                            foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
-                            {
-                                // tODO : SAVE ALL NOTIFICATIONs
-                                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                            }
-                        }
                         if (UserEntity.IsCurrentlyActive())
                         {
                             UserEntity.UpdatePhoneNumber(newPhone);
@@ -487,75 +484,52 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public async void ShowDashboard()
         {
-            cts = new CancellationTokenSource();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
             if (mView.IsActive())
             {
                 this.mView.ShowRegistrationProgress();
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<INotificationApi>(httpClient);
-            //var weblinkApi = RestService.For<IWeblinksApi>(httpClient);
-            //var locationTypesApi = RestService.For<GetLocationTypseApi>(httpClient);
-            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-
             var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
 
-            var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
-
 #else
-            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-            //var weblinkApi = RestService.For<IWeblinksApi>(Constants.SERVER_URL.END_POINT);
-            //var locationTypesApi = RestService.For<GetLocationTypseApi>(Constants.SERVER_URL.END_POINT);
-            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
-
-            var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
             try
             {
                 if (UserEntity.IsCurrentlyActive())
                 {
-
                     UserEntity loggedUser = UserEntity.GetActive();
-                    var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                    if (response.IsSuccessResponse())
                     {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = loggedUser.Email,
-                        DeviceId = this.mView.GetDeviceId()
-
-                    }, cts.Token);
-
-                    if (!userNotificationResponse.Data.IsError)
-                    {
-                        foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                        if (response.GetData() != null && response.GetData().UserNotificationList != null &&
+                            response.GetData().UserNotificationList.Count > 0)
                         {
-                            // tODO : SAVE ALL NOTIFICATIONs
-                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                            foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                            {
+                                // tODO : SAVE ALL NOTIFICATIONs
+                                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                            }
                         }
-
-
                     }
 
-                    var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
-                    {
-                        ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        Email = loggedUser.Email,
-                        DeviceId = this.mView.GetDeviceId()
+                    var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
 
-                    }, cts.Token);
-
-                    if (!submittedFeedbackResponse.Data.IsError)
+                    if (submittedFeedbackResponse.IsSuccessResponse())
                     {
                         SubmittedFeedbackEntity.Remove();
-                        foreach (SubmittedFeedback sFeed in submittedFeedbackResponse.Data.Data)
+                        foreach (SubmittedFeedbackListResponse.ResponseData responseData in submittedFeedbackResponse.GetData())
                         {
-                            int newRecord = SubmittedFeedbackEntity.InsertOrReplace(sFeed);
-                            Console.WriteLine(string.Format("SubmitFeedback Id = {0}", newRecord));
+                            SubmittedFeedback sf = new SubmittedFeedback();
+                            sf.FeedbackId = responseData.ServiceReqNo;
+                            sf.FeedbackCategoryId = responseData.FeedbackCategoryId;
+                            sf.DateCreated = responseData.DateCreated;
+                            sf.FeedbackMessage = responseData.FeedbackMessage;
+                            sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
+                            sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
+                            SubmittedFeedbackEntity.InsertOrReplace(sf);
                         }
                     }
                     UserSessions.SavePhoneVerified(mSharedPref, true);
@@ -605,6 +579,134 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+        {
+            try
+            {
+                int ctr = 0;
+                if (AccountSortingEntity.HasItems(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV))
+                {
+                    List<CustomerBillingAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                    List<CustomerBillingAccount> fetchList = new List<CustomerBillingAccount>();
+
+                    List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
+                    List<int> newExisitingListArray = new List<int>();
+                    List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
+
+                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    {
+                        int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+
+                        var newRecord = new CustomerBillingAccount()
+                        {
+                            Type = acc.Type,
+                            AccNum = acc.AccountNumber,
+                            AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
+                            UserAccountId = acc.UserAccountID,
+                            ICNum = acc.IcNum,
+                            AmtCurrentChg = acc.AmCurrentChg,
+                            IsRegistered = acc.IsRegistered,
+                            IsPaid = acc.IsPaid,
+                            isOwned = acc.IsOwned,
+                            AccountTypeId = acc.AccountTypeId,
+                            AccountStAddress = acc.AccountStAddress,
+                            OwnerName = acc.OwnerName,
+                            AccountCategoryId = acc.AccountCategoryId,
+                            SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
+                            IsSelected = false
+                        };
+
+                        if (index != -1)
+                        {
+                            newExisitingListArray.Add(index);
+                        }
+                        else
+                        {
+                            newAccountList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExisitingListArray.Count > 0)
+                    {
+                        newExisitingListArray.Sort();
+
+                        foreach(int index in newExisitingListArray)
+                        {
+                            CustomerBillingAccount oldAcc = existingSortedList[index];
+
+                            CustomerAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+
+                            var newRecord = new CustomerBillingAccount()
+                            {
+                                Type = newAcc.Type,
+                                AccNum = newAcc.AccountNumber,
+                                AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
+                                UserAccountId = newAcc.UserAccountID,
+                                ICNum = newAcc.IcNum,
+                                AmtCurrentChg = newAcc.AmCurrentChg,
+                                IsRegistered = newAcc.IsRegistered,
+                                IsPaid = newAcc.IsPaid,
+                                isOwned = newAcc.IsOwned,
+                                AccountTypeId = newAcc.AccountTypeId,
+                                AccountStAddress = newAcc.AccountStAddress,
+                                OwnerName = newAcc.OwnerName,
+                                AccountCategoryId = newAcc.AccountCategoryId,
+                                SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
+                                IsSelected = false
+                            };
+
+                            newExistingList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExistingList.Count > 0)
+                    {
+                        newExistingList[0].IsSelected = true;
+                        foreach (CustomerBillingAccount acc in newExistingList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+
+                        string accountList = JsonConvert.SerializeObject(newExistingList);
+
+                        AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, accountList);
+                    }
+                    else
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                    }
+
+                    if (newAccountList.Count > 0)
+                    {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (CustomerBillingAccount acc in newAccountList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    {
+                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
+                    }
+                    if (CustomerBillingAccount.HasItems())
+                    {
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.MakeFirstAsSelected();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

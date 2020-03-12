@@ -37,7 +37,7 @@
                     android:padding="18dp"
                     android:text="@string/more_fragment_settings_title"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/txt_more_fragment_settings_my_account"
                     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_settings_my_account"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -69,7 +69,25 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_settings_notifications"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lightGrey" />
+                <TextView
+                    android:id="@+id/txt_more_fragment_settings_app_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="18dp"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:paddingStart="18dp"
+                    android:paddingTop="15dp"
+                    android:text="Set App Language"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="14dp" />
                 <TextView
                     android:id="@+id/txt_more_fragment_help_support_title"
                     android:layout_width="match_parent"
@@ -78,7 +96,7 @@
                     android:padding="18dp"
                     android:text="@string/more_fragment_help_support_title"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/txt_more_fragment_help_support_find_us"
                     android:layout_width="match_parent"
@@ -92,7 +110,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_help_support_find_us"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -110,7 +128,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_help_support_call_us"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -128,7 +146,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_help_support_call_us_1"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -148,7 +166,7 @@
                     android:visibility="gone"
                     android:text="@string/more_fragment_help_support_understand_bill"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -166,7 +184,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_help_support_faq"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -184,7 +202,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_help_support_TC"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -197,7 +215,7 @@
                     android:padding="18dp"
                     android:text="@string/more_fragment_share_title"
                     android:textColor="@color/powerBlue"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/txt_more_fragment_share_share_this_app"
                     android:layout_width="match_parent"
@@ -211,7 +229,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_share_share_this_app"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -229,7 +247,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/more_fragment_share_rate_this_app"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
             <TextView
                 android:id="@+id/txt_app_version"
@@ -243,7 +261,7 @@
                 android:paddingTop="8dp"
                 android:text="App Version *"
                 android:textColor="@color/tunaGrey"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
             <Button
                 android:id="@+id/btnLogout"
                 style="@style/Theme.LogoutButton"

@@ -9,5 +9,8 @@ namespace myTNB_Android.Src.AppLaunch.Models
 
         [JsonProperty("FeedbackCategoryName")]
         public string FeedbackCategoryName { get; set; }
+
+        [JsonProperty("FeedbackCategoryDesc")]
+        public string FeedbackCategoryDesc { get; set; }
     }
 }

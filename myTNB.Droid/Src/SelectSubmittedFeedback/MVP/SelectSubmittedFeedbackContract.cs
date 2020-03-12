@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             /// Show bill related feedback details 
             /// </summary>
             /// <param name="submittedFeedback">SubmittedFeedbackDetails</param>
-            void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedback);
+            void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback);
 
             /// <summary>
             /// Show faulty street lamps feedback details
@@ -59,19 +59,19 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             /// Shows a cancelled exception with an option to retry
             /// </summary>
             /// <param name="operationCanceledException">the returned exception</param>
-            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException);
+            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException, string message);
 
             /// <summary>
             /// Shows an api exception with an option to retry
             /// </summary>
             /// <param name="apiException">the returned exception</param>
-            void ShowRetryOptionsApiException(ApiException apiException);
+            void ShowRetryOptionsApiException(ApiException apiException, string message);
 
             /// <summary>
             /// Shows an unknown exception with an option to retry
             /// </summary>
             /// <param name="exception">the returned exception</param>
-            void ShowRetryOptionsUnknownException(Exception exception);
+            void ShowRetryOptionsUnknownException(Exception exception, string message);
 
             /// <summary>
             /// Shows an unknown exception with an option to retry

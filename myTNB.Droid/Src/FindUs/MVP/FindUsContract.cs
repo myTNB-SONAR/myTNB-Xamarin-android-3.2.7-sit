@@ -29,6 +29,11 @@ namespace myTNB_Android.Src.FindUs.MVP
             /// </summary>
             void ShowGetLocationsError(string message);
 
+            /// <summary>
+            /// Show zero location error
+            /// </summary>
+            void ShowZeroLocationFoundDialog();
+
         }
 
         public interface IUserActionsListener : IBasePresenter

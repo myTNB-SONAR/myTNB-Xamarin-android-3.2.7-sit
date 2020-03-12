@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/powerBlue"
                     android:text="@string/get_access_success_title_info"
                     android:id="@+id/txtTitleInfo"
@@ -54,7 +54,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:textColor="@color/tunaGrey"
                     android:text="@string/get_access_success_txt_account_name"
                     android:id="@+id/txtAccountName"
@@ -63,7 +63,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:textColor="@color/tunaGrey"
                     android:text="@string/get_access_success_txt_account_no"
                     android:id="@+id/txtAccountNum"
@@ -72,7 +72,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:textColor="@color/tunaGrey"
                     android:text="@string/get_access_success_txt_address"
                     android:id="@+id/txtAddress"

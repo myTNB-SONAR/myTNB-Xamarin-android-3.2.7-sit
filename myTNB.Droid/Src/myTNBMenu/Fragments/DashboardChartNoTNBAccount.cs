@@ -93,8 +93,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             var act = this.Activity as AppCompatActivity;
 
             var actionBar = act.SupportActionBar;
-            //actionBar.SetDisplayHomeAsUpEnabled(true);
-            //actionBar.SetDisplayShowHomeEnabled(true);
+            actionBar.Show();
         }
 
         [OnClick(Resource.Id.btnAddAccount)]
@@ -176,22 +175,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        DashboardActivity activity = null;
+        DashboardHomeActivity activity = null;
         public override void OnAttach(Context context)
         {
             base.OnAttach(context);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
-                activity = context as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
+                if (context is DashboardHomeActivity)
+                {
+                    activity = context as DashboardHomeActivity;
+                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
+                }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "No Account Inner Dashboard");
             }
             catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -202,14 +205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(activity);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
-                activity = activity as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
+                activity = activity as DashboardHomeActivity;
             }
             catch (ClassCastException e)
             {

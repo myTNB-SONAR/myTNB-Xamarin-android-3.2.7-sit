@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/powerBlue"
                     android:text="@string/logout_rate_txt_title_info"
                     android:id="@+id/txtTitleInfo"
@@ -56,7 +56,7 @@
             <!--<TextView
                     android:layout_height="wrap_content"
                     android:layout_width="256dp"
-                    android:textSize="14sp"
+                    android:textSize="14dp"
                     android:textColor="@color/tunaGrey"
                     android:text="@string/logout_rate_txt_rate"
                     android:id="@+id/txtContentInfo"

@@ -1,6 +1,7 @@
 ﻿using Android.Text;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Utils;
 using System;
@@ -10,11 +11,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 {
     class MPAddCardAdapter : BaseAdapter
     {
-        List<MPCreditCard> cardList;
+        List<CreditCard> cardList;
         Android.App.Activity activity;
         public event EventHandler<int> OnItemClick;
 
-        public MPAddCardAdapter(Android.App.Activity activity, List<MPCreditCard> cards)
+        public MPAddCardAdapter(Android.App.Activity activity, List<CreditCard> cards)
         {
             this.activity = activity;
             cardList = cards;
@@ -30,7 +31,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             return null;
         }
 
-        public MPCreditCard GetCardDetailsAt(int position)
+        public CreditCard GetCardDetailsAt(int position)
         {
             return cardList[position];
         }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rootView">
+        <TextView
+            android:id="@+id/txtMandatoryPaymentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/silverChalice"
+            android:textSize="12dp"
+            android:text="Mandatory Payments"
+            android:layout_alignParentLeft="true" />
+        <TextView
+            android:id="@+id/txtMandatoryPaymentRM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txtMandatoryPaymentTitle"
+            android:layout_toLeftOf="@+id/txtMandatoryPaymentContent"
+            android:text="RM "
+            android:textSize="12dp"
+            android:textColor="@color/silverChalice" />
+        <TextView
+            android:id="@+id/txtMandatoryPaymentContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/silverChalice"
+            android:textSize="12dp"
+            android:text="0.00"
+            android:layout_alignBaseline="@+id/txtMandatoryPaymentTitle"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+ </LinearLayout>

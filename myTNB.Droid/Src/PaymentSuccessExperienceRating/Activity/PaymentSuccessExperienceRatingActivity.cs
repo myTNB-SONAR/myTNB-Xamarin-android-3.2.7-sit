@@ -192,6 +192,19 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Post Payment Rating & Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowSubmitRatingSuccess(SubmitExperienceRatingResponse response)
         {
             try
@@ -200,7 +213,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
                            .Title(GetString(Resource.String.payment_success_experience_rating_thank_you))
                            .Content(GetString(Resource.String.payment_success_experience_rating_thank_you_message))
                            .Cancelable(false)
-                           .PositiveText("Ok")
+                           .PositiveText(Utility.GetLocalizedCommonLabel("ok"))
                            .OnPositive((dialog, which) => this.Finish()).Show();
             }
             catch (Exception ex)
@@ -217,7 +230,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
                           .Title(GetString(Resource.String.payment_success_experience_rating_sorry))
                           .Content(GetString(Resource.String.payment_success_experience_rating_sorry_message))
                           .Cancelable(false)
-                          .PositiveText("Ok")
+                          .PositiveText(Utility.GetLocalizedCommonLabel("ok"))
                           .OnPositive((dialog, which) => mSubmitRatingDialog.Dismiss()).Show();
             }
             catch (Exception ex)
@@ -244,7 +257,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);

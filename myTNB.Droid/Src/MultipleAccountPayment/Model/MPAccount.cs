@@ -32,8 +32,24 @@
 
         public double orgAmount { get; set; }
 
+        public double OpenChargeTotal { get; set; }
+
+        public string MandatoryChargesTitle { get; set; }
+
+        public string MandatoryChargesMessage { get; set; }
+
+        public string MandatoryChargesPriButtonText { get; set; }
+
+        public string MandatoryChargesSecButtonText { get; set; }
+
+        public bool isTooltipShow { get; set; }
+
+        public bool tooltipPopUp { get; set; }
+
         public bool isSelected { get; set; }
 
         public bool isValidAmount { get; set; }
+
+        public double minimumAmountDue { get; set; }
     }
 }

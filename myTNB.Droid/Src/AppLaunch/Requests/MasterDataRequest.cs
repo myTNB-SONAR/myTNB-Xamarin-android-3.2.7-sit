@@ -1,32 +1,38 @@
-﻿using Newtonsoft.Json;
+﻿using myTNB_Android.Src.Base.Models;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.AppLaunch.Models
 {
     public class MasterDataRequest
     {
-        [JsonProperty("ApiKeyID")]
-        public string ApiKeyID { get; set; }
+        [JsonProperty("usrInf")]
+        public UserInterface usrInf { get; set; }
 
-        [JsonProperty("SSPUserId")]
-        public string SSPUserId { get; set; }
+        [JsonProperty("deviceInf")]
+        public DeviceInterface deviceInf { get; set; }
 
-        [JsonProperty("Email")]
-        public string Email { get; set; }
+    
 
-        [JsonProperty("DeviceId")]
-        public string DeviceId { get; set; }
-
-        [JsonProperty("AppVersion")]
-        public string AppVersion { get; set; }
-
-        [JsonProperty("OsType")]
-        public string OsType { get; set; }
-
-        [JsonProperty("OsVersion")]
-        public string OsVersion { get; set; }
-
-        public MasterDataRequest()
+        public  class DeviceInterface
         {
+
+            [JsonProperty("DeviceId")]
+            public string DeviceId { get; set; }
+
+            [JsonProperty("AppVersion")]
+            public string AppVersion { get; set; }
+
+            [JsonProperty("OsType")]
+            public int OsType { get; set; }
+
+            [JsonProperty("OsVersion")]
+            public string OsVersion { get; set; }
+
+            [JsonProperty("DeviceDesc")]
+            public string DeviceDesc { get; set; }
+
+            [JsonProperty("VersionCode")]
+            public string VersionCode { get; set; }
 
         }
     }

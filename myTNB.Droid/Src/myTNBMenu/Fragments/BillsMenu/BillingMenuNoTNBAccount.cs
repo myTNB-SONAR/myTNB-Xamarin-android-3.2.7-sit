@@ -40,12 +40,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.txtOutstandingChargesContent)]
         TextView txtOutstandingChargesContent;
 
-        [BindView(Resource.Id.txtTotalPayableTitle)]
-        TextView txtTotalPayableTitle;
-
-        [BindView(Resource.Id.txtTotalPayableContent)]
-        TextView txtTotalPayableContent;
-
         [BindView(Resource.Id.txtTotalDueTitle)]
         TextView txtTotalDueTitle;
 
@@ -83,9 +77,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                 }
@@ -107,13 +101,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
               txtCurrentChargesContent,
               txtOutstandingChargesTitle,
               txtOutstandingChargesContent,
-              txtTotalPayableTitle,
               txtCurrency,
               btnPay,
               txtBillPaymentHistoryTitle);
             TextViewUtils.SetMuseoSans300Typeface(txtAccountNum,
                 txtAddress,
-                txtTotalPayableContent,
                 txtFooter, txtFooter1
                 );
 

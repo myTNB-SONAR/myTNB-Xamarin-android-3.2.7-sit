@@ -7,6 +7,7 @@ using Android.Util;
 using Android.Views;
 using myTNB_Android.Src.AddAccount.Fragment;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
 using System;
 using System.Runtime;
 using ZXing.Mobile;
@@ -94,6 +95,19 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account / Link Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override Boolean ShowCustomToolbarTitle()
         {
             return true;
@@ -101,7 +115,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override string ToolbarTitle()
         {
-            return GetString(Resource.String.add_electricity_account_title);
+            return Utility.GetLocalizedLabel("AddAccount","title");
         }
 
         public override void OnTrimMemory(TrimMemory level)

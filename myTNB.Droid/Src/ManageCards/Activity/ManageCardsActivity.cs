@@ -14,7 +14,6 @@ using myTNB_Android.Src.ManageCards.Adapter;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.ManageCards.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -26,7 +25,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
     [Activity(Label = "@string/manage_cards_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageCards")]
-    public class ManageCardsActivity : BaseToolbarAppCompatActivity, ManageCardsContract.IView
+    public class ManageCardsActivity : BaseActivityCustom, ManageCardsContract.IView
     {
 
         [BindView(Resource.Id.layout_cards)]
@@ -48,6 +47,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
         [BindView(Resource.Id.txtEmptyCard)]
         TextView txtEmptyCard;
 
+        [BindView(Resource.Id.imgEmptyCard)]
+        ImageView imgEmptyCard;
+
         ManageCardsAdapter mAdapter;
 
         LinearLayoutManager mLayoutManager;
@@ -57,7 +59,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         MaterialDialog progress;
 
-        private LoadingOverlay loadingOverlay;
+        private string PAGE_ID = "ManageCards";
 
         AlertDialog removeDialog;
 
@@ -97,6 +99,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
 
+                txtManageCardsTitle.Text = GetLabelByLanguage("details");
+                txtEmptyCard.Text = GetLabelByLanguage("noCards");
+
                 mPresenter = new ManageCardsPresenter(this);
                 this.userActionsListener.Start();
             }
@@ -118,14 +123,14 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 string lastDigit = creditCardData.LastDigits.Substring(creditCardData.LastDigits.Length - 4);
                 removeDialog = new AlertDialog.Builder(this)
 
-                    .SetTitle(Resource.String.manage_cards_remove_dialog_title)
-                    .SetMessage(GetString(Resource.String.manage_cards_remove_content_wildcard, lastDigit))
-                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    .SetTitle(GetLabelByLanguage("removeCardTitle"))
+                    .SetMessage(string.Format(GetLabelByLanguage("removeCardMessage"), lastDigit))
+                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
                     delegate
                     {
                         removeDialog.Dismiss();
                     })
-                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
                     delegate
                     {
                         this.userActionsListener.OnRemove(creditCardData, e);
@@ -154,6 +159,19 @@ namespace myTNB_Android.Src.ManageCards.Activity
         public void SetPresenter(ManageCardsContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Manage Cards");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowCards()
@@ -185,19 +203,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public void ShowProgressDialog()
         {
-            //if (progress != null && !progress.IsShowing)
-            //{
-            //    progress.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -207,16 +215,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public void HideProgressDialog()
         {
-            //if (progress != null && progress.IsShowing)
-            //{
-            //    progress.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -231,6 +232,13 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 cardsList.RemoveAt(position);
                 if (cardsList.Count == 0)
                 {
+                    LinearLayout.LayoutParams imgEmptyCardParams = imgEmptyCard.LayoutParameters as LinearLayout.LayoutParams;
+
+                    imgEmptyCardParams.Width = GetDeviceHorizontalScaleInPixel(0.3f);
+                    imgEmptyCardParams.Height = GetDeviceHorizontalScaleInPixel(0.3f);
+                    imgEmptyCardParams.TopMargin = GetDeviceHorizontalScaleInPixel(0.155f);
+                    imgEmptyCard.RequestLayout();
+
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
                     this.userActionsListener.OnRemoveStay(RemovedCard, position);
@@ -258,14 +266,17 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 mCancelledExceptionSnackBar.Dismiss();
             }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -278,14 +289,17 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 mApiExcecptionSnackBar.Dismiss();
             }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -298,28 +312,35 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
 
         }
 
         public void ShowErrorMessage(string message)
         {
-            Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                        .SetAction(GetString(Resource.String.manage_cards_btn_close),
+            Snackbar errorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                        .SetAction(GetLabelCommonByLanguage("close"),
                          (view) =>
                          {
 
                              // EMPTY WILL CLOSE SNACKBAR
                          }
-                        ).Show();
+                        );
+            View v = errorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            errorSnackbar.Show();
         }
 
         public void ShowSnackbarRemovedSuccess(CreditCardData RemovedCard, int position)
@@ -328,14 +349,18 @@ namespace myTNB_Android.Src.ManageCards.Activity
             creditCard.PutExtra(Constants.REMOVED_CREDIT_CARD, JsonConvert.SerializeObject(RemovedCard));
             SetResult(Result.Ok, creditCard);
             string lastDigits = RemovedCard.LastDigits.Substring(RemovedCard.LastDigits.Length - 4);
-            Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard, lastDigits), Snackbar.LengthIndefinite)
-                       .SetAction(GetString(Resource.String.manage_cards_btn_close),
+            Snackbar removeSnackbar = Snackbar.Make(rootView, string.Format(GetLabelByLanguage("cardRemoveSuccess"), lastDigits), Snackbar.LengthIndefinite)
+                       .SetAction(GetLabelCommonByLanguage("close"),
                         (view) =>
                         {
 
                             // EMPTY WILL CLOSE SNACKBAR
                         }
-                       ).Show();
+                       );
+            View v = removeSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            removeSnackbar.Show();
         }
 
 
@@ -356,5 +381,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }

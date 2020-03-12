@@ -2,13 +2,16 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Java.Lang;
 using myTNB.SitecoreCM.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Promotions.Activity;
 using myTNB_Android.Src.Promotions.Adapter;
 using myTNB_Android.Src.Promotions.MVP;
@@ -33,20 +36,27 @@ namespace myTNB_Android.Src.Promotions.Fragments
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
+        [BindView(Resource.Id.promotionRefreshLayout)]
+        LinearLayout promotionRefreshLayout;
+
         [BindView(Resource.Id.no_promotion_layout)]
         LinearLayout noPromotionLayout;
 
-        [BindView(Resource.Id.progressBar)]
-        public ProgressBar mProgressBar;
+        [BindView(Resource.Id.promotion_main_layout)]
+        LinearLayout promotionMainLayout;
 
         [BindView(Resource.Id.promotion_list_recycler_view)]
         public RecyclerView mPromotionRecyclerView;
 
-        [BindView(Resource.Id.no_promotion_title)]
-        public TextView textNoPromotion;
-
         [BindView(Resource.Id.no_promotion_info)]
         public TextView textNoPromotionInfo;
+
+        [BindView(Resource.Id.txtRefresh)]
+        public TextView txtRefresh;
+
+        [BindView(Resource.Id.btnRefresh)]
+        public Button btnRefresh;
+
 
         private string savedTimeStamp = "0000000";
 
@@ -75,20 +85,17 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 adapter = new PromotionListAdapter(Activity, promotions);
                 mPromotionRecyclerView.SetAdapter(adapter);
 
-                TextViewUtils.SetMuseoSans300Typeface(textNoPromotion, textNoPromotionInfo);
+                TextViewUtils.SetMuseoSans300Typeface(textNoPromotionInfo, txtRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
                 ShowProgressBar();
-                this.userActionsListener.GetSavedPromotionTimeStamp();
-                //ShowPromotion(true);
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
 
-                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                OnGetPromotionTimestamp();
+
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
@@ -99,76 +106,127 @@ namespace myTNB_Android.Src.Promotions.Fragments
             return Resource.Layout.PromotionListView;
         }
 
+        public void OnGetPromotionTimestamp()
+        {
+            try
+            {
+                this.userActionsListener.GetSavedPromotionTimeStamp();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowPromotion(bool success)
         {
-            Activity.RunOnUiThread(() =>
+            try
             {
-                try
+                Activity.RunOnUiThread(() =>
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    try
                     {
-                        loadingOverlay.Dismiss();
-                    }
-                    if (success)
-                    {
-                        noPromotionLayout.Visibility = ViewStates.Gone;
-                        mPromotionRecyclerView.Visibility = ViewStates.Visible;
-
-                        PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                        List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                        if (items != null)
+                        if (success)
                         {
-                            promotions = new List<PromotionsModelV2>();
-                            promotions.AddRange(items);
-                            adapter = new PromotionListAdapter(Activity, promotions);
-                            mPromotionRecyclerView.SetAdapter(adapter);
-                            adapter.ItemClick += OnItemClick;
-                            adapter.NotifyDataSetChanged();
+                            PromotionsEntityV2 wtManager = new PromotionsEntityV2();
+                            List<PromotionsEntityV2> items = wtManager.GetAllItems();
+                            if (items != null && items.Count > 0)
+                            {
+                                noPromotionLayout.Visibility = ViewStates.Gone;
+                                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                                promotionMainLayout.Visibility = ViewStates.Visible;
+                                promotions = new List<PromotionsModelV2>();
+                                promotions.AddRange(items);
+                                adapter = new PromotionListAdapter(Activity, promotions);
+                                mPromotionRecyclerView.SetAdapter(adapter);
+                                adapter.ItemClick += OnItemClick;
+                                adapter.NotifyDataSetChanged();
+                            }
+                            else
+                            {
+                                noPromotionLayout.Visibility = ViewStates.Visible;
+                                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                                promotionMainLayout.Visibility = ViewStates.Gone;
+                                textNoPromotionInfo.Text = Utility.GetLocalizedLabel("Promotions", "noPromotions");
+                            }
+
+                        }
+                        else
+                        {
+                            noPromotionLayout.Visibility = ViewStates.Gone;
+                            promotionRefreshLayout.Visibility = ViewStates.Visible;
+                            promotionMainLayout.Visibility = ViewStates.Gone;
+                            btnRefresh.Text = Utility.GetLocalizedCommonLabel("refreshNow");
+                            txtRefresh.Text = Utility.GetLocalizedCommonLabel("refreshDescription");
                         }
 
+                        HideProgressBar();
+
+                        try
+                        {
+                            if (PromotionsEntityV2.HasUnread())
+                            {
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadPromotions(true);
+                            }
+                            else
+                            {
+                                ((DashboardHomeActivity)this.Activity).HideUnreadPromotions(true);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+
                     }
-                    else
+                    catch (System.Exception ex)
                     {
-                        noPromotionLayout.Visibility = ViewStates.Visible;
-                        mPromotionRecyclerView.Visibility = ViewStates.Gone;
+                        Utility.LoggingNonFatalError(ex);
                     }
-                }
-                catch (Exception ex)
-                {
-                    Utility.LoggingNonFatalError(ex);
-                }
-            });
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void OnItemClick(object sender, int position)
         {
             try
             {
-                PromotionsModelV2 model = promotions[position];
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2()
+                if (!this.GetIsClicked())
                 {
-                    ID = model.ID,
-                    GeneralLinkUrl = model.GeneralLinkUrl,
-                    Text = model.Text,
-                    Title = model.Title,
-                    HeaderContent = model.HeaderContent,
-                    BodyContent = model.BodyContent,
-                    FooterContent = model.FooterContent,
-                    PortraitImage = model.PortraitImage.Replace(" ", "%20"),
-                    LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
-                    PromoStartDate = model.PromoStartDate,
-                    PromoEndDate = model.PromoEndDate,
-                    PublishedDate = model.PublishedDate,
-                    IsPromoExpired = model.IsPromoExpired,
-                    Read = true
-                };
-                wtManager.UpdateItem(wtManager);
-                Intent details_activity = new Intent(Activity, typeof(PromotionsActivity));
-                details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
-                //Activity.StartActivity(details_activity);
-                Activity.StartActivity(details_activity);
+                    this.SetIsClicked(true);
+                    PromotionsModelV2 model = promotions[position];
+                    PromotionsEntityV2 wtManager = new PromotionsEntityV2()
+                    {
+                        ID = model.ID,
+                        GeneralLinkUrl = model.GeneralLinkUrl,
+                        Text = model.Text,
+                        Title = model.Title,
+                        HeaderContent = model.HeaderContent,
+                        BodyContent = model.BodyContent,
+                        FooterContent = model.FooterContent,
+                        PortraitImage = model.PortraitImage.Replace(" ", "%20"),
+                        LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
+                        PromoStartDate = model.PromoStartDate,
+                        PromoEndDate = model.PromoEndDate,
+                        PublishedDate = model.PublishedDate,
+                        IsPromoExpired = model.IsPromoExpired,
+                        Read = true
+                    };
+                    wtManager.UpdateItem(wtManager);
+                    promotions[position].Read = true;
+                    adapter.NotifyDataSetChanged();
+                    Intent details_activity = new Intent(Activity, typeof(PromotionsActivity));
+                    details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
+                    //Activity.StartActivity(details_activity);
+                    Activity.StartActivity(details_activity);
+                }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
@@ -186,12 +244,35 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void ShowProgressBar()
         {
-            mProgressBar.Visibility = ViewStates.Gone;
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressBar()
         {
-            mProgressBar.Visibility = ViewStates.Gone;
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSavedTimeStamp(string mSavedTimeStamp)
@@ -204,10 +285,30 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 }
                 this.userActionsListener.OnGetPromotionsTimeStamp();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
+        }
+
+        public override void OnAttach(Context context)
+        {
+
+            try
+            {
+                if (context is DashboardHomeActivity)
+                {
+                    var activity = context as DashboardHomeActivity;
+                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
+                }
+            }
+            catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            base.OnAttach(context);
         }
 
         public void ShowPromotionTimestamp(bool success)
@@ -229,18 +330,60 @@ namespace myTNB_Android.Src.Promotions.Fragments
                             }
                             else
                             {
-                                ShowPromotion(true);
+                                PromotionsEntityV2 itemEntity = new PromotionsEntityV2();
+                                List<PromotionsEntityV2> subItems = itemEntity.GetAllItems();
+                                if (subItems != null && subItems.Count > 0)
+                                {
+                                    ShowPromotion(true);
+                                }
+                                else
+                                {
+                                    this.userActionsListener.OnGetPromotions();
+                                }
                             }
                         }
+                        else
+                        {
+                            this.userActionsListener.OnGetPromotions();
+                        }
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetPromotions();
                     }
 
                 }
                 else
                 {
-                    ShowPromotion(false);
+                    this.userActionsListener.OnGetPromotions();
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        // On Press Refresh button action
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            try
+            {
+                promotionRefreshLayout.Visibility = ViewStates.Gone;
+                noPromotionLayout.Visibility = ViewStates.Gone;
+                promotionMainLayout.Visibility = ViewStates.Visible;
+                promotions = new List<PromotionsModelV2>();
+                adapter = new PromotionListAdapter(Activity, promotions);
+                mPromotionRecyclerView.SetAdapter(adapter);
+                adapter.ItemClick += OnItemClick;
+                adapter.NotifyDataSetChanged();
+
+                this.userActionsListener.GetSavedPromotionTimeStamp();
+
+                ShowProgressBar();
+            }
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
@@ -251,24 +394,22 @@ namespace myTNB_Android.Src.Promotions.Fragments
             base.OnActivityResult(requestCode, resultCode, data);
         }
 
+        public override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public override void OnResume()
         {
             base.OnResume();
             try
             {
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2();
-                List<PromotionsEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
-                {
-                    promotions = new List<PromotionsModelV2>();
-                    promotions.AddRange(items);
-                    adapter = new PromotionListAdapter(Activity, promotions);
-                    mPromotionRecyclerView.SetAdapter(adapter);
-                    adapter.ItemClick += OnItemClick;
-                    adapter.NotifyDataSetChanged();
-                }
+                var act = this.Activity as AppCompatActivity;
+
+                var actionBar = act.SupportActionBar;
+                actionBar.Show();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }

@@ -1,5 +1,8 @@
 ﻿using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
@@ -63,14 +66,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Show due amount for all accounts from stored accounts
             /// </summary>
             void GetAccountDueAmountResult(List<MPAccount> accounts);
+
+            void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList);
+
+            void ShowHasMinimumAmoutToPayTooltip(MPAccount accounts, AccountChargeModel accountChargeModel);
         }
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Get due amount for all accounts
-            /// </summary>
-            void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts);
+            void GetAccountsCharges(List<string> accountList, string preSelectedAccount);
         }
     }
 }

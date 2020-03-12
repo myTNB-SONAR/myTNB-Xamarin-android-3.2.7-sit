@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
         [OnClick(Resource.Id.btnDashboard)]
         void OnDashboard(object sender, EventArgs eventArgs)
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }

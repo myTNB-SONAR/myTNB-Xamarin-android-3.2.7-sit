@@ -7,6 +7,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
 
@@ -33,6 +34,8 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
         {
             try
             {
+                this.mView.ShowProgressDialog();
+
                 List<AttachedImage> attachImageList = new List<AttachedImage>();
                 foreach (ImageResponse image in feedbackDetails.ImageList)
                 {
@@ -58,18 +61,37 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
 
 
                 }
-                Date d = null;
+
                 string dateTime = string.Empty;
-                try
+                if (!string.IsNullOrEmpty(feedbackDetails.DateCreated))
                 {
-                    d = simpleDateTimeParser.Parse(feedbackDetails.DateCreated);
-                    dateTime = simpleDateTimeFormat.Format(d);
+                    try
+                    {
+                        dateTime = feedbackDetails.DateCreated;
+                        DateTime dateTimeParse = DateTime.ParseExact(dateTime, "dd'/'MM'/'yyyy HH:mm:ss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                        {
+                            CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                            dateTime = dateTimeParse.ToString("dd MMM yyyy, h:mm tt", currCult);
+                        }
+                        else
+                        {
+                            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                            dateTime = dateTimeParse.ToString("dd MMM yyyy, h:mm tt", currCult);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        dateTime = "NA";
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
-                catch (Java.Text.ParseException e)
+                else
                 {
                     dateTime = "NA";
-                    Utility.LoggingNonFatalError(e);
                 }
+
                 string accountNum = feedbackDetails.AccountNum;
                 if (UserEntity.IsCurrentlyActive())
                 {
@@ -83,9 +105,11 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage);
                 this.mView.ShowImages(attachImageList);
 
+                this.mView.HideProgressDialog();
             }
             catch (Exception e)
             {
+                this.mView.HideProgressDialog();
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Preferences;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Utils;
@@ -40,7 +41,10 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
             TextViewUtils.SetMuseoSans500Typeface(btnBackToHome, txtTitleInfo);
-            // Create your application here
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("Logout","logoutTitle");
+            txtContentInfo.Text = Utility.GetLocalizedLabel("Logout", "message");
+            btnBackToHome.Text = Utility.GetLocalizedLabel("Logout", "loginAgain");
+
             mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             UserSessions.SavePhoneVerified(mSharedPref, false);
         }
@@ -48,19 +52,42 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
         [OnClick(Resource.Id.btnBackToHome)]
         void OnBackToHome(object sender, EventArgs eventArgs)
         {
-            Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-            PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(PreLoginIntent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(PreLoginIntent);
+            }
         }
 
         public override void OnBackPressed()
         {
             base.OnBackPressed();
+            LaunchViewActivity.MAKE_INITIAL_CALL = true;
             Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
             PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(PreLoginIntent);
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Log Out");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
 
         public override void OnTrimMemory(TrimMemory level)
         {

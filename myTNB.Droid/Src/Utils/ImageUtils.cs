@@ -1,4 +1,9 @@
 ﻿using Android.Graphics;
+using System;
+using Android.Util;
+using Java.IO;
+using System;
+using System.IO;
 using System.Net;
 
 namespace myTNB_Android.Src.Utils
@@ -10,15 +15,36 @@ namespace myTNB_Android.Src.Utils
         public static Bitmap GetImageBitmapFromUrl(string url)
         {
             Bitmap imageBitmap = null;
-            using (var webClient = new WebClient())
+            try
             {
-                var imageBytes = webClient.DownloadData(url);
-                if (imageBytes != null && imageBytes.Length > 0)
+                using (var webClient = new WebClient())
                 {
-                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return imageBitmap;
+        }
+
+        public static string GetBase64FromBitmap(Bitmap bitmap, int imageQuality)
+        {
+            string base64String = "";
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, imageQuality, stream);
+
+                var byteArray = stream.ToArray();
+                int length = byteArray.Length;
+                base64String = Convert.ToBase64String(byteArray);
+            }
+            return base64String;
         }
     }
 }

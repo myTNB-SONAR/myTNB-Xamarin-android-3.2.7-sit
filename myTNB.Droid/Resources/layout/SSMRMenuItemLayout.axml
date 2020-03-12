@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/btnMenu"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:text="When can I submit my reading?"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="19dp"
+        android:textColor="@color/tunaGrey"
+        android:textSize="14dp"
+        android:clickable="true"
+        android:lineSpacingExtra="6dp"/>
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:alpha="0.2"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="19dp"
+        android:background="@color/tunaGrey" />
+</LinearLayout>

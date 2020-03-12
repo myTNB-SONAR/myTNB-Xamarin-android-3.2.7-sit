@@ -1,11 +1,20 @@
-﻿using Android.Support.Design.Widget;
+﻿using AFollestad.MaterialDialogs;
+using Android.Content;
+using Android.Graphics;
+using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
+using Android.Text;
+using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Text;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -21,6 +30,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         private List<MPAccount> orgAccountList = new List<MPAccount>();
         public event EventHandler<int> CheckChanged;
         private SparseBooleanArray selectedItems;
+        private bool IsShowMoreEnable = true;
+        private static Action ShowMoreAction = null;
 
         private DecimalFormat payableFormatter = new DecimalFormat("###############0.00");
 
@@ -32,18 +43,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             this.selectedItems = new SparseBooleanArray();
         }
 
-        //public override int GetItemViewType(int position)
-        //{
-        //    return base.GetItemViewType(position);
-        //}
-
         public void AddAccounts(List<MPAccount> _accountList)
         {
             try
             {
                 accountList = accountList.Concat(_accountList).ToList();
-                //this.NotifyDataSetChanged();
-                this.NotifyItemRangeInserted(accountList.Count, _accountList.Count);
+                NotifyDataSetChanged();
             }
             catch (System.Exception e)
             {
@@ -55,17 +60,32 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            holder.IsRecyclable = false;
             SelectAccountListViewHolder vh = holder as SelectAccountListViewHolder;
             try
             {
-                TextViewUtils.SetMuseoSans300Typeface(vh.AccountLabel, vh.AccountNumber, vh.AccountAddress);
+                TextViewUtils.SetMuseoSans300Typeface(vh.AccountNumber, vh.AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(vh.AmountLabel);
                 TextViewUtils.SetMuseoSans300Typeface(vh.Amount);
+                TextViewUtils.SetMuseoSans500Typeface(vh.AccountLabel);
                 MPAccount item = accountList[position];
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
+                if (string.IsNullOrEmpty(item.accountAddress))
+                {
+                    vh.AccountAddress.Visibility = ViewStates.Gone;
+                }
                 vh.AccountLabel.Text = item.accountLabel;
-                vh.Amount.Text = payableFormatter.Format(item.amount);
+
+                if (item.amount <= 0f)
+                {
+                    vh.Amount.Text = "";
+                }
+                else
+                {
+                    vh.Amount.Text = payableFormatter.Format(item.amount);
+                }
+
                 if (item.amount < 1)
                 {
                     item.isValidAmount = false;
@@ -75,21 +95,46 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     item.isValidAmount = true;
                 }
                 vh.AmountLabel.Error = "";
+                vh.AmountLabel.ErrorEnabled = false;
                 vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                 vh.Amount.AfterTextChanged += (sender, args) =>
                 {
+                    try
+                    {
+                        item.amount = double.Parse(vh.Amount.Text);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
                     if (vh.Amount.HasFocus)
                     {
                         if (vh.SelectAccountView.Checked)
                         {
-                        //if (!string.IsNullOrEmpty(vh.Amount.Text))
-                        //{
-                            ValidateHolder(item, position, vh);
-                        //}
-                    }
+                            ValidateHolder(item, position, vh, false);
+                        }
                     }
                 };
                 vh.SelectAccountView.Checked = item.isSelected;
+                if (vh.SelectAccountView.Checked)
+                {
+                    ValidateHolder(item, position, vh, false);
+                }
+                if (position == (ItemCount-1) && IsShowMoreEnable)
+                {
+                    string htmlText = "<html><u>" + Utility.GetLocalizedLabel("SelectBills", "loadMore") + "</u></html>";
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        vh.ShowMore.TextFormatted = Html.FromHtml(htmlText, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        vh.ShowMore.TextFormatted = Html.FromHtml(htmlText);
+                    }
+                    TextViewUtils.SetMuseoSans300Typeface(vh.ShowMore);
+                    vh.ShowMore.Visibility = ViewStates.Visible;
+                }
             }
             catch (System.Exception e)
             {
@@ -97,7 +142,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             }
         }
 
-        public void ValidateHolder(MPAccount item, int position, SelectAccountListViewHolder vh)
+        public void ValidateHolder(MPAccount item, int position, SelectAccountListViewHolder vh, bool tooltipShow)
         {
             try
             {
@@ -106,46 +151,48 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     double newAmount = double.Parse(vh.Amount.Text);
                     if (newAmount < 1)
                     {
-                        vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
-                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
+                        vh.AmountLabel.ErrorEnabled = true;
+                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
+                        vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity,Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
                         item.isValidAmount = false;
                         item.isSelected = false;
+                        item.tooltipPopUp = false;
                         vh.SelectAccountView.Checked = false;
-                        CheckChanged(this, position);
+                        CheckChanged(this, -2);
                     }
-                    ///<summary>
-                    /// Uncomment this block of code to enable check for amount should be greater that Due Amount 
-                    /// </summary>
-                    /// 
-                    //else if (newAmount < item.orgAmount)
-                    //{
-                    //    vh.Amount.Text = item.orgAmount.ToString();
-                    //    vh.AmountLabel.Error = string.Format(mActicity.GetString(Resource.String.error_less_than_original_amount), item.amount.ToString());
-                    //    vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    //    vh.Amount.RequestFocus();
-                    //    item.isValidAmount = false;
-                    //    item.isSelected = false;
-                    //    vh.SelectAccountView.Checked = false;
-                    //}
                     else
                     {
                         vh.AmountLabel.Error = "";
+                        vh.AmountLabel.ErrorEnabled = false;
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                        vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tunaGrey)));
                         item.isValidAmount = true;
                         item.amount = newAmount;
-                        CheckChanged(this, position);
+                        item.tooltipPopUp = tooltipShow;
+                        int selectedPosition = GetSelectedAccounts().FindIndex(x => x.accountNumber == item.accountNumber);
+                        if (selectedPosition == -1)
+                        {
+                            CheckChanged(this, -2);
+                        }
+                        else
+                        {
+                            CheckChanged(this, selectedPosition);
+                        }
                     }
                 }
                 else
                 {
-                    vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                    vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
+                    vh.AmountLabel.ErrorEnabled = true;
                     vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     vh.Amount.RequestFocus();
                     item.isValidAmount = false;
                     item.isSelected = false;
+                    item.tooltipPopUp = false;
                     vh.SelectAccountView.Checked = false;
-                    CheckChanged(this, position);
+                    CheckChanged(this, -2);
                 }
             }
             catch (System.Exception e)
@@ -171,6 +218,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 {
                     bool isChecked = false;
                     item.isSelected = isChecked;
+                    item.tooltipPopUp = false;
                     sender.SelectAccountView.Checked = isChecked;
                     CheckChanged(this, -1);
                 }
@@ -179,8 +227,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     bool isChecked = sender.SelectAccountView.Checked;
                     item.isSelected = isChecked;
                     sender.SelectAccountView.Checked = isChecked;
-                    //CheckChanged(this, position);
-                    ValidateHolder(item, position, sender);
+                    ValidateHolder(item, position, sender, true);
                 }
             }
             catch (System.Exception e)
@@ -197,6 +244,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             public TextInputLayout AmountLabel { get; private set; }
             public EditText Amount { get; private set; }
             public CheckBox SelectAccountView { get; private set; }
+            public TextView ShowMore { get; private set; }
 
             public SelectAccountListViewHolder(View itemView, Action<SelectAccountListViewHolder, int> listener) : base(itemView)
             {
@@ -205,20 +253,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 AccountAddress = itemView.FindViewById<TextView>(Resource.Id.text_account_address);
                 AmountLabel = itemView.FindViewById<TextInputLayout>(Resource.Id.account_amount_layout);
                 Amount = itemView.FindViewById<EditText>(Resource.Id.account_amount_edittext);
+                ShowMore = itemView.FindViewById<TextView>(Resource.Id.show_more_btn);
 
                 SelectAccountView = itemView.FindViewById<CheckBox>(Resource.Id.select_account);
                 SelectAccountView.Click += (s, e) => listener((this), base.LayoutPosition);
+                ShowMore.Click += (s, e) => ShowMoreAction();
 
-                TextViewUtils.SetMuseoSans300Typeface(AccountLabel, AccountNumber, AccountAddress);
+                TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(AmountLabel);
-                TextViewUtils.SetMuseoSans300Typeface(Amount);
 
-                Amount.AddTextChangedListener(new RestrictTextChangeListener(Amount, AmountLabel, 2));
-
-                //Amount.SetFilters(new IInputFilter[] { new DecimalFilter(2) });
-
-                //Amount.SetFilters(new IInputFilter[] {new MoneyValueFilter(1,2)});
-
+                Amount.AddTextChangedListener(new RestrictAmountChangeListener(Amount, AmountLabel, 2));
             }
 
         }
@@ -233,7 +277,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             {
                 selectedItems.Put(pos, true);
             }
-            //NotifyDataSetChanged();
         }
 
         public List<MPAccount> GetSelectedAccounts()
@@ -280,5 +323,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             return flag;
         }
 
+        public void EnableShowMoreButton(bool isEnable)
+        {
+            IsShowMoreEnable = isEnable;
+        }
+
+        public void SetShowMoreAction(Action showMoreAction)
+        {
+            ShowMoreAction = showMoreAction;
+        }
     }
 }

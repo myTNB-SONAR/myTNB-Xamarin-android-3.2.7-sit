@@ -15,6 +15,10 @@ namespace myTNB_Android.Src.TermsAndConditions.MVP
             void ShowTermsAndCondition(bool success);
 
             void HideProgressBar();
+
+            void OnSavedTimeStamp(string savedTimeStamp);
+
+            void ShowTermsAndConditionTimestamp(bool success);
         }
 
 
@@ -26,6 +30,10 @@ namespace myTNB_Android.Src.TermsAndConditions.MVP
             /// </summary>
             /// <returns></returns>
             Task GetTermsAndConditionData();
+
+            void GetSavedTermsAndConditionTimeStamp();
+
+            Task OnGetTermsAndConditionTimeStamp();
         }
 
     }

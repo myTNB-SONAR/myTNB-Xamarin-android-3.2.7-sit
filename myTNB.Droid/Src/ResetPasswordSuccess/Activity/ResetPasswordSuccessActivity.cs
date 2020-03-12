@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
               , Icon = "@drawable/ic_launcher"
           , ScreenOrientation = ScreenOrientation.Portrait
           , Theme = "@style/Theme.ResetPasswordSuccess")]
-    public class ResetPasswordSuccessActivity : BaseAppCompatActivity, ResetPasswordSuccessContract.IView
+    public class ResetPasswordSuccessActivity : BaseActivityCustom, ResetPasswordSuccessContract.IView
     {
 
         private ResetPasswordSuccessContract.IUserActionsListener userActionsListener;
@@ -36,6 +36,8 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         [BindView(Resource.Id.btnClose)]
         ImageView btnClose;
 
+        const string PAGE_ID = "PasswordResetSuccess";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -47,6 +49,10 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
+
+                txtTitleInfo.Text = GetLabelByLanguage("title");
+                txtContentInfo.Text = GetLabelByLanguage("resetSuccessMessage");
+                btnLogin.Text = GetLabelCommonByLanguage("login");
             }
             catch (Exception e)
             {
@@ -63,6 +69,19 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         public override int ResourceId()
         {
             return Resource.Layout.ResetPasswordSuccessView;
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password Success");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetPresenter(ResetPasswordSuccessContract.IUserActionsListener userActionListener)
@@ -87,13 +106,21 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnLogin();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnLogin();
+            }
         }
 
         [OnClick(Resource.Id.btnClose)]
         void OnClose(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnClose();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnClose();
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -111,6 +138,16 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Shows no internet connection
             /// </summary>
             void ShowNoInternet();
-
+            
             /// <summary>
             /// Enable bill and payment tab
             /// </summary>
@@ -55,6 +55,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show payment
             /// </summary>
             void ShowPayment();
+
+            void ShowView();
+
+            void ShowRefreshView(string contentTxt, string btnTxt);
+
+            void ToggleFetch(bool yesno);
 
             /// <summary>
             /// Returns connectivity
@@ -74,6 +80,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
 
             void SetBillDetails(AccountData selectedAccount);
+
+            /// <summary>
+            /// Show progress dialog
+            /// </summary>
+            void ShowProgressDialog();
+
+            /// <summary>
+            /// Hide progress dialog
+            /// </summary>
+            void HideProgressDialog();
+
+            void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -106,6 +124,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void LoadBills(CustomerBillingAccount accountSelected);
 
             void RefreshData();
+
         }
     }
 }

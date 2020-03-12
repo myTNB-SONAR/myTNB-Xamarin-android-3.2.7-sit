@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -19,12 +20,14 @@ using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.Profile.Activity;
 using Refit;
 using System;
+using Android.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 {
-    public class MoreMenuFragment : BaseFragment, MoreFragmentContract.IView
+    public class MoreMenuFragment : BaseFragmentCustom, MoreFragmentContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -48,6 +51,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         [BindView(Resource.Id.txt_more_fragment_settings_my_account)]
         TextView txt_more_fragment_settings_my_account;
+
+        [BindView(Resource.Id.txt_more_fragment_settings_app_language)]
+        TextView txt_more_fragment_settings_app_language;
 
 
         [BindView(Resource.Id.txt_more_fragment_help_support_find_us)]
@@ -93,6 +99,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         private bool mobileNoUpdated = false;
 
+        const string PAGE_ID = "Profile";
+
         public override int ResourceId()
         {
             return Resource.Layout.MoreMenuView;
@@ -113,7 +121,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
 
             TextViewUtils.SetMuseoSans500Typeface(txt_more_fragment_help_support_title, txt_more_fragment_settings_title, txt_more_fragment_share_title);
-            TextViewUtils.SetMuseoSans300Typeface(txt_more_fragment_settings_notifications,
+            TextViewUtils.SetMuseoSans300Typeface(txt_more_fragment_settings_notifications, txt_more_fragment_settings_app_language,
                 txt_more_fragment_settings_my_account,
                 txt_more_fragment_help_support_find_us,
                 txt_more_fragment_help_support_call_us,
@@ -125,6 +133,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 txt_more_fragment_share_rate_this_app,
                 txt_app_version);
 
+            txt_more_fragment_settings_title.Text = GetLabelByLanguage("settings");
+            txt_more_fragment_settings_my_account.Text = GetLabelByLanguage("myAccount");
+            txt_more_fragment_settings_notifications.Text = GetLabelByLanguage("notifications");
+            txt_more_fragment_settings_app_language.Text = GetLabelByLanguage("setAppLanguage");
+            txt_more_fragment_help_support_title.Text = GetLabelByLanguage("helpAndSupport");
+            txt_more_fragment_help_support_find_us.Text = GetLabelByLanguage("findUs");
+            txt_more_fragment_help_support_call_us.Text = GetLabelByLanguage("callUsOutagesAndBreakdown");
+            txt_more_fragment_help_support_call_us_1.Text = GetLabelByLanguage("callUsBilling");
+            txt_more_fragment_help_support_faq.Text = GetLabelByLanguage("faq");
+            txt_more_fragment_help_support_TC.Text = GetLabelByLanguage("tnc");
+            txt_more_fragment_share_title.Text = GetLabelByLanguage("share");
+            txt_more_fragment_share_share_this_app.Text = GetLabelByLanguage("shareDescription");
+            txt_more_fragment_share_rate_this_app.Text = GetLabelByLanguage("rate");
+
             try
             {
                 Context context = Activity.ApplicationContext;
@@ -132,8 +154,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 var code = context.PackageManager.GetPackageInfo(context.PackageName, 0).VersionCode;
                 if (name != null)
                 {
-                    txt_app_version.Text = GetString(Resource.String.text_app_version) + " " + name;
+                    txt_app_version.Text = GetLabelByLanguage("appVersion") + " " + name;
                 }
+
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             }
             catch (System.Exception e)
             {
@@ -158,16 +183,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
+                    ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Profile");
             }
             catch (ClassCastException e)
             {
-
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             base.OnAttach(context);
         }
@@ -175,72 +207,126 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         [OnClick(Resource.Id.btnLogout)]
         void OnLogout(object sender, EventArgs eventArgs)
         {
-            if (Activity is DashboardActivity)
+            if (Activity is DashboardHomeActivity)
             {
-                var dashboard = Activity as DashboardActivity;
-                dashboard.Logout();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    var dashboard = Activity as DashboardHomeActivity;
+                    dashboard.Logout();
+                }
             }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_settings_notifications)]
         void OnNotificationClick(object sender, EventArgs e)
         {
-            Log.Debug(Tag, "On Click " + this.userActionsListener);
-            this.userActionsListener.OnNotification(this.DeviceId());
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnNotification(this.DeviceId());
+            }
         }
+
         [OnClick(Resource.Id.txt_more_fragment_settings_my_account)]
         void OnMyAccountClick(object sender, EventArgs e)
         {
-            this.userActionsListener.OnMyAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnMyAccount();
+            }
+        }
+
+        [OnClick(Resource.Id.txt_more_fragment_settings_app_language)]
+        void OnAppLanguageClick(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
+                StartActivityForResult(nextIntent, 1234908);
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_call_us)]
         void OnCallUs(object sender, EventArgs e)
         {
-            this.userActionsListener.OnCallUs();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnCallUs();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_call_us_1)]
         void OnCallUs1(object sender, EventArgs e)
         {
-            this.userActionsListener.OnCallUs1();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnCallUs1();
+            }
         }
 
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_understand_bill)]
         void OnUnderstandBill(object sender, EventArgs e)
         {
-            this.userActionsListener.OnUnderstandBill();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUnderstandBill();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_faq)]
         void OnFAQ(object sender, EventArgs e)
         {
-            this.userActionsListener.OnFAQ();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnFAQ();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_TC)]
         void OnTC(object sender, EventArgs e)
         {
-            this.userActionsListener.OnTermsAndConditions();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnTermsAndConditions();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_share_share_this_app)]
         void OnShareApp(object sender, EventArgs e)
         {
-            this.userActionsListener.OnShareApp();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnShareApp();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_find_us)]
         void OnFindUs(object sender, EventArgs e)
         {
-            this.userActionsListener.OnFindUs();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnFindUs();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_share_rate_this_app)]
         void OnRateApp(object sender, EventArgs e)
         {
-            this.userActionsListener.OnRateUs();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnRateUs();
+            }
         }
 
         public void ShowNotifications()
@@ -263,6 +349,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             return IsResumed;
         }
 
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+        }
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
@@ -274,7 +375,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     mCancelledExceptionSnackBar.Dismiss();
                 }
 
-                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.more_menu_cancelled_exception_btn_close), delegate
                 {
 
@@ -282,9 +383,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 }
                 );
                 mCancelledExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -299,7 +402,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     mApiExcecptionSnackBar.Dismiss();
                 }
 
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_api_exception_error), Snackbar.LengthIndefinite)
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.more_menu_api_exception_btn_close), delegate
                 {
 
@@ -308,9 +411,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 }
                 );
                 mApiExcecptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -326,7 +431,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
                 }
 
-                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_unknown_exception_error), Snackbar.LengthIndefinite)
+                mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.more_menu_unknown_exception_btn_close), delegate
                 {
 
@@ -335,9 +440,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 }
                 );
                 mUknownExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -455,7 +562,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             shareIntent.SetType("text/plain");
             shareIntent.PutExtra(Intent.ExtraSubject, entity.Title);
             shareIntent.PutExtra(Intent.ExtraText, entity.Url);
-            StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
+            StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
         }
 
         public void ShowRateUs(WeblinkEntity entity)
@@ -508,6 +615,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 StartActivity(intent);
                 //}
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            ((DashboardHomeActivity)Activity).ReloadProfileMenu();
         }
     }
 }

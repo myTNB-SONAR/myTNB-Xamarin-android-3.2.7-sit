@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
       //, MainLauncher = true
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationSettingsActivity : BaseToolbarAppCompatActivity, NotificationSettingsContract.IView
+    public class NotificationSettingsActivity : BaseActivityCustom, NotificationSettingsContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -53,6 +53,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
 
         MaterialDialog progressUpdateType, progressUpdateChannel;
+
+        const string PAGE_ID = "NotificationSettings";
 
         public bool IsActive()
         {
@@ -95,6 +97,9 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 Console.WriteLine("NotificationSettingsActivity OnCreate");
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle);
+
+                txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
+                txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
 
                 notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
@@ -167,7 +172,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         protected override void OnResume()
         {
             base.OnResume();
-
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Prefences");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -246,12 +258,15 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
         }
 
@@ -264,13 +279,16 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
         }
 
@@ -284,13 +302,16 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
         }
 
@@ -303,12 +324,15 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
             );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
         }
 
@@ -321,13 +345,16 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mApiExcecptionSnackBar.Dismiss();
 
             }
             );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
         }
 
@@ -341,13 +368,16 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
 
                 mUknownExceptionSnackBar.Dismiss();
 
             }
             );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
         }
 
@@ -368,6 +398,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

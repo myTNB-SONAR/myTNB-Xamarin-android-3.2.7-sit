@@ -11,7 +11,7 @@
 	
   <!-- See values-v21 for App.BaseTheme in Styles.xml this is for backward compatibility -->
   <style name="Theme.Launch" parent="@style/App.FullScreenTheme">
-		<item name="android:windowBackground">@drawable/launch_screen</item>
+	<item name="android:windowBackground">@drawable/launch_screen_base</item>
 <!--    <item name="android:windowBackground">@drawable/GradientBackground</item>
     <item name="android:windowNoTitle">true</item>
 

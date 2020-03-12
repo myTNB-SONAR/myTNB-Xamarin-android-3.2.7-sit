@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="214dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardUseCompatPadding="true"
+    android:layout_marginRight="8dp"
+    app:cardElevation="3dp"
+    android:id="@+id/card_view_click">
+  <LinearLayout 
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/rootView">
+    <ImageView
+        android:id="@+id/promotion_img"
+        android:layout_height="106dp"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/image_1"/>
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/powerBlue"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="TNB Energy Night Run"
+        android:textSize="12dp"
+        android:lineSpacingExtra="2dp"/>
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="#4a4a4a"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="18dp"
+        android:text="Join some excited 3,500 runners to raise awareness towards energy conservation."
+        android:textSize="12dp"
+        android:lineSpacingExtra="2dp"/>
+  </LinearLayout>
+</android.support.v7.widget.CardView>

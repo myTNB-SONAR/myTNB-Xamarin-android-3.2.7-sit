@@ -22,6 +22,8 @@ namespace myTNB_Android.Src.Base.Fragments
     {
         private AlertDialog rationaleDialog;
 
+        private bool isClicked = false;
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View inflateView = null;
@@ -47,8 +49,25 @@ namespace myTNB_Android.Src.Base.Fragments
         public override void OnResume()
         {
             base.OnResume();
+            this.isClicked = false;
             Ready();
 
+        }
+
+        public virtual void SetIsClicked(bool flag)
+        {
+            this.isClicked = flag;
+        }
+
+        public virtual bool GetIsClicked()
+        {
+            return this.isClicked;
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            this.isClicked = true;
         }
 
 
@@ -382,6 +401,24 @@ namespace myTNB_Android.Src.Base.Fragments
         protected virtual Android.App.Activity GetActivityObject()
         {
             return null;
+        }
+
+        public int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        {
+            var deviceWidth = Resources.DisplayMetrics.WidthPixels;
+            return GetScaleInPixel(deviceWidth, percentageValue);
+        }
+
+        public int GetDeviceVerticalScaleInPixel(float percentageValue)
+        {
+            var deviceHeight = Resources.DisplayMetrics.HeightPixels;
+            return GetScaleInPixel(deviceHeight,percentageValue);
+        }
+
+        public int GetScaleInPixel(int basePixel, float percentageValue)
+        {
+            int scaledInPixel = (int)((float)basePixel * percentageValue);
+            return scaledInPixel;
         }
     }
 }

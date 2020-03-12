@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="92dp"
+    android:layout_height="56dp"
+    android:layout_marginRight="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardBackgroundColor="@color/shimmer_color"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true"
+    android:id="@+id/card_view_click">
+</android.support.v7.widget.CardView>

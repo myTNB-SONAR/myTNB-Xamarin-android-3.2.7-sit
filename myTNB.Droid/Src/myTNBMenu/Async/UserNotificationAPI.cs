@@ -4,6 +4,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.MVP;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -15,18 +16,15 @@ namespace myTNB_Android.Src.myTNBMenu.Async
     {
         CancellationTokenSource cts = new CancellationTokenSource();
 #if DEBUG
-        //var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #else
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
-        private string deviceId = null;
-        private DashboardContract.IUserActionsListener listener = null;
+        private DashboardHomeContract.IUserActionsListener homeListener = null;
 
-        public UserNotificationAPI(string deviceId, DashboardContract.IUserActionsListener listener)
+        public UserNotificationAPI(DashboardHomeContract.IUserActionsListener listener)
         {
-            this.deviceId = deviceId;
-            this.listener = listener;
+            this.homeListener = listener;
         }
 
 
@@ -35,54 +33,144 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             try
             {
                 Console.WriteLine("000 UserNotificationAPI started");
-                UserEntity loggedUser = UserEntity.GetActive();
-
-                var userNotificationResponse = api.GetUserNotifications(new UserNotificationRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = loggedUser.Email,
-                    DeviceId = deviceId
-
-                }, cts.Token);
-
-                //userNotiWatch.Stop();
-                //Console.WriteLine($"Execution Time for user notification: {userNotiWatch.ElapsedMilliseconds} ms");
-
-                if (userNotificationResponse.Result != null && userNotificationResponse.Result.Data != null)
-                {
-                    if (!userNotificationResponse.Result.Data.IsError)
-                    {
-                        foreach (UserNotification userNotification in userNotificationResponse.Result.Data.Data)
-                        {
-                            // tODO : SAVE ALL NOTIFICATIONs
-                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                        }
-
-                    }
-                }
+                GetUserNotifications();
                 Console.WriteLine("000 UserNotificationAPI ended");
             }
             catch (ApiException apiException)
             {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             catch (System.Exception e)
             {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             return null;
+        }
+
+        private async void GetUserNotifications()
+        {
+            try
+            {
+                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
+                {
+                    try
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
+
+                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                        response.Data.ResponseData.UserNotificationList.Count > 0)
+                    {
+                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                        {
+                            // tODO : SAVE ALL NOTIFICATIONs
+                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            UserNotificationEntity.RemoveAll();
+                        }
+                        catch (System.Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
+                }
+            }
+            catch (ApiException apiException)
+            {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Newtonsoft.Json.JsonReaderException e)
+            {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
+            {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnPostExecute(Java.Lang.Object result)
         {
             base.OnPostExecute(result);
 
-
-            listener.OnNotificationCount();
+            if (homeListener != null)
+            {
+                homeListener.OnNotificationCount();
+            }
         }
 
     }

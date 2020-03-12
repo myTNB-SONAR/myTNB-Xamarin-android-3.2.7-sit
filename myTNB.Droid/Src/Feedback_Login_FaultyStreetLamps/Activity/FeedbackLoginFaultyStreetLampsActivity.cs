@@ -26,7 +26,6 @@ using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.SelectFeedbackState.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System;
 using System.Runtime;
 using System.Text;
@@ -103,16 +102,21 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         MaterialDialog submitDialog;
         FeedbackLoginFaultyStreetLampsRecyclerAdapter adapter;
         GridLayoutManager layoutManager;
-        LoadingOverlay loadingOverlay;
 
         FeedbackLoginFaultyStreetLampsContract.IUserActionsListener userActionsListener;
         FeedbackLoginFaultyStreetLampsPresenter mPresenter;
         FeedbackState currentFeedbackState;
 
 
+        public override Boolean ShowCustomToolbarTitle()
+        {
+            return true;
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Intent intent = Intent;
+            SetToolBarTitle(Intent.GetStringExtra("TITLE"));
             submitDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.feedback_submit_dialog_title)
                 .Content(Resource.String.feedback_submit_dialog_message)
@@ -258,17 +262,23 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             return Window.DecorView.RootView.IsShown;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.FeedbackLoginFaultyStreetLampsView;
         }
-
-        public override bool ShowCustomToolbarTitle()
-        {
-            return true;
-        }
-
-
 
         [OnAfterTextChanged(Resource.Id.txtLocation)]
         private void TxtLocation_AfterTextChanged(object sender, AfterTextChangedEventArgs e)
@@ -356,26 +366,26 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         private AlertDialog _ChooseDialog;
         private void Adapter_AddClickEvent(object sender, int e)
         {
-            string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
-                               GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
-                               GetString(Resource.String.bill_related_feedback_selection_cancel)};
+            string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
+                            Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                            Utility.GetLocalizedCommonLabel("cancel")};
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
+                .SetTitle(Utility.GetLocalizedLabel("FeedbackForm", "selectOptions"));
             builder.SetItems(items, (lsender, args) =>
             {
 
 
 
-                if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
+                if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")))
                 {
                     this.userActionsListener.OnAttachPhotoCamera();
                 }
-                else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
+                else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
                 {
                     this.userActionsListener.OnAttachPhotoGallery();
                 }
-                else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
+                else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
                 {
                     _ChooseDialog.Dismiss();
                 }
@@ -721,19 +731,9 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void ShowProgressDialog()
         {
-            //if (submitDialog != null && !submitDialog.IsShowing)
-            //{
-            //    submitDialog.Show();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -743,16 +743,9 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void HideProgressDialog()
         {
-            //if (submitDialog != null && submitDialog.IsShowing)
-            //{
-            //    submitDialog.Dismiss();
-            //}
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -867,20 +860,14 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             txtInputLayoutMobileNo.Visibility = ViewStates.Gone;
         }
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-
-        }
-
         public void ShowEmptyMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.faulty_street_lamps_feedback_empty_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ShowInvalidMobileNoError()
         {
-            txtInputLayoutMobileNo.Error = GetString(Resource.String.faulty_street_lamps_feedback_invalid_mobile_error);
+            txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
         }
 
         public void ClearMobileNoError()
@@ -900,7 +887,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
             if (string.IsNullOrEmpty(message))
             {
-                message = GetString(Resource.String.app_launch_http_exception_error);
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)

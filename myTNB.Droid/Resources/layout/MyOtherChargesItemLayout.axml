@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="horizontal" 
+    android:layout_width="match_parent" 
+    android:gravity="center"
+    android:background="@color/white"
+    android:layout_height="20dp">
+    <TextView
+        android:id="@+id/otherChargeItem"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:gravity="center|left"
+        android:text="Item1"
+        android:textColor="#424141"
+        android:textSize="14dp"/>
+    <TextView
+        android:id="@+id/otherChargeValue"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:gravity="center|right"
+        android:text="Value1"
+        android:textColor="#424141"
+        android:textSize="14dp"/>
+</LinearLayout>

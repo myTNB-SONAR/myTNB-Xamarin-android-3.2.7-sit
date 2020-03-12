@@ -4,15 +4,18 @@ using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Requests
 {
-    public class UsageHistoryRequest : BaseRequest
+    public class UsageHistoryRequest
     {
-        [JsonProperty("accNum")]
-        [AliasAs("accNum")]
-        public string AccountNum { get; set; }
+        [JsonProperty("contractAccount")]
+        public string AccountNumber { get; set; }
 
-        public UsageHistoryRequest(string apiKeyID) : base(apiKeyID)
-        {
+        [JsonProperty("isOwner")]
+        public string isOwner { get; set; }
 
-        }
+        [JsonProperty("accountType")]
+        public string accountType { get; set; }
+
+        [JsonProperty("usrInf")]
+        public UserInterface userInterface { get; set; }
     }
 }

@@ -63,9 +63,17 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtAllTransactionDetails = rootView.FindViewById<TextView>(Resource.Id.txtAllTransactionDetails);
             txtUsageHistory = rootView.FindViewById<TextView>(Resource.Id.txtUsageHistory);
 
-            txtTitle.Text = GetString(Resource.String.suppy_account_question_two);
-            txtOwnerRights.Text = GetString(Resource.String.account_info_owner);
-            txtNonOwnerRights.TextFormatted = (GetHtmlText(GetString(Resource.String.account_info_non_owner), new ImgSrcGetter(Activity)));
+            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByRightsMessage");
+            txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithICMessage");
+            txtNonOwnerRights.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("AddAccount", "addAsTenantWithoutICMessage"));
+            txtYes.Text = Utility.GetLocalizedLabel("Common","yes") + ".";
+            txtNo.Text = Utility.GetLocalizedLabel("Common","no") + ".";
+
+            txtOutstandingPayment.Text = Utility.GetLocalizedLabel("AddAccount", "outstandingPayment");
+            txtCurrentBill.Text = Utility.GetLocalizedLabel("AddAccount", "usageGraph");
+            txtBillHistory.Text = Utility.GetLocalizedLabel("AddAccount", "paymentHistory");
+            txtAllTransactionDetails.Text = Utility.GetLocalizedLabel("AddAccount", "currentBill");
+            txtUsageHistory.Text = Utility.GetLocalizedLabel("AddAccount", "pastBills");
 
             radio_non_owner.Click += delegate
             {
@@ -153,6 +161,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     output.Append("\n\t");
                 }
+            }
+        }
+
+        private ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
             }
         }
     }

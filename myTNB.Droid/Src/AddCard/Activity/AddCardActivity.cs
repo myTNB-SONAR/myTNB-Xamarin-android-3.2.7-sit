@@ -99,6 +99,12 @@ namespace myTNB_Android.Src.AddCard.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtCardNo, txtNameOfCard, txtCardExpDate, txtCVV);
                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutCardNo, textInputLayoutNameOfCard, textInputLayoutCardExpDate, textInputLayoutCVV);
 
+                SetToolBarTitle(Utility.GetLocalizedLabel("AddCard", "title"));
+                txtTitle.Text = Utility.GetLocalizedLabel("AddCard", "acceptedCardsMessage");
+                textInputLayoutCardNo.Hint = Utility.GetLocalizedLabel("AddCard", "cardNumber");
+                textInputLayoutNameOfCard.Hint = Utility.GetLocalizedLabel("AddCard", "nameOnCard");
+                textInputLayoutCardExpDate.Hint = Utility.GetLocalizedLabel("AddCard", "hintCardExpiry");
+                textInputLayoutCVV.Hint = Utility.GetLocalizedLabel("AddCard", "cvv");
 
                 txtCardNo.AddTextChangedListener(new InputFilterCreditCard(txtCardNo));
                 txtCardExpDate.SetFilters(new Android.Text.IInputFilter[] { new InputFilterExpDate(txtCardExpDate), new InputFilterLengthFilter(5) });
@@ -124,6 +130,8 @@ namespace myTNB_Android.Src.AddCard.Activity
                 TextViewUtils.SetMuseoSans300Typeface(saveCard);
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
+                saveCard.Text = Utility.GetLocalizedLabel("AddCard", "saveCardMessage");
+                btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
                 txtCardNo.TextChanged += CardTextChange;
 
                 txtNameOfCard.TextChanged += NameTextChange;
@@ -137,6 +145,19 @@ namespace myTNB_Android.Src.AddCard.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Credit Card");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -153,13 +174,13 @@ namespace myTNB_Android.Src.AddCard.Activity
                     DisableSaveButton();
                     if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15)
                     {
-                        textInputLayoutCardNo.Error = "Invalid Card No.";
+                        textInputLayoutCardNo.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardNumber");
                     }
                 }
                 else if (!LuhnVerification(cardNo))
                 {
                     DisableSaveButton();
-                    textInputLayoutCardNo.Error = "Invalid Card No.";
+                    textInputLayoutCardNo.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardNumber");
                 }
                 else
                 {
@@ -208,7 +229,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                     DisableSaveButton();
                     if (!String.IsNullOrEmpty(exp))
                     {
-                        textInputLayoutCardExpDate.Error = "Invalid Card Expiration Date";
+                        textInputLayoutCardExpDate.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardExpiry");
                     }
                 }
                 else
@@ -235,7 +256,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                     if (!String.IsNullOrEmpty(cvv))
                     {
-                        textInputLayoutCVV.Error = "Invalid CVV."; 
+                        textInputLayoutCVV.Error = Utility.GetLocalizedLabel("AddCard", "invalidCVV");
                     }
 
                 }
@@ -298,7 +319,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                     DisableSaveButton();
                     mDuplicateCardDialog = new MaterialDialog.Builder(this)
                             .Title("Info")
-                            .Content("Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?")
+                            .Content(Utility.GetLocalizedLabel("AddCard", "savedCardMessage"))
                             .Cancelable(false)
                             .PositiveText("Continue")
                             .OnPositive((dialog, which) =>
@@ -309,7 +330,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                                 SetResult(Result.Ok, finishIntent);
                                 Finish();
                             })
-                            .NeutralText("Cancel")
+                            .NeutralText(Utility.GetLocalizedCommonLabel("cancel"))
                             .OnNeutral((dialog, which) => mDuplicateCardDialog.Dismiss()).Show();
                 }
                 else
@@ -371,7 +392,7 @@ namespace myTNB_Android.Src.AddCard.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -403,8 +424,19 @@ namespace myTNB_Android.Src.AddCard.Activity
             intent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
             intent.PutExtra(CardIOActivity.ExtraKeepApplicationTheme, true);
             intent.PutExtra(CardIOActivity.ExtraCapturedCardImage, false);
+            string txt = Utility.GetLocalizedLabel("CardScanner", "scanInstructions");
+            intent.PutExtra(CardIOActivity.ExtraScanInstructions, txt);
             intent.PutExtra(CardIOActivity.ExtraScanResult, true);
             StartActivityForResult(intent, REQUEST_SCAN);
+
+            try
+            {
+                FirebaseAnalyticsUtils.LogClickEvent(this, "Credit Card Scan");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnActivityResult(int requestCode, Result result, Intent data)
@@ -426,10 +458,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                         }
                     }
 
-                }
-                else
-                {
-                    Toast.MakeText(this, "Unable to scan card! Please try again...", ToastLength.Long).Show();
                 }
             }
             catch (Exception ex)

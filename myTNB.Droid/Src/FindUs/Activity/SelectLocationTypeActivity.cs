@@ -90,14 +90,27 @@ namespace myTNB_Android.Src.FindUs.Activity
         }
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            selectedLocationType = locationTypeAdapter.GetItemObject(e.Position);
-            selectedLocationType.IsSelected = true;
-            Intent map_activity = new Intent(this, typeof(MapActivity));
-            map_activity.PutExtra("selectedLocationType", JsonConvert.SerializeObject(selectedLocationType));
-            SetResult(Result.Ok, map_activity);
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                selectedLocationType = locationTypeAdapter.GetItemObject(e.Position);
+                selectedLocationType.IsSelected = true;
+                Intent map_activity = new Intent(this, typeof(MapActivity));
+                map_activity.PutExtra("selectedLocationType", JsonConvert.SerializeObject(selectedLocationType));
+                SetResult(Result.Ok, map_activity);
+                Finish();
+            }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
 
         public override void OnTrimMemory(TrimMemory level)
         {
