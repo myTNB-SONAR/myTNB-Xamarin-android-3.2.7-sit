@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using myTNB.Model;
 using SQLite;
 
@@ -19,7 +20,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Create Table : {0}", e.Message);
+                Debug.WriteLine("Error in Create Table : {0}", e.Message);
             }
         }
         /// <summary>
@@ -34,13 +35,13 @@ namespace myTNB.SQLite.SQLiteDataManager
                 {
                     int newRecord = SQLiteHelper._db.InsertOrReplace(item);
 #if DEBUG
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                    Debug.WriteLine("Insert Record: {0}", newRecord);
 #endif
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Insert Item in Table : {0}", e.Message);
+                Debug.WriteLine("Error in Insert Item in Table : {0}", e.Message);
             }
         }
         /// <summary>
@@ -78,7 +79,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Get All Items : {0}", e.Message);
+                Debug.WriteLine("Error in Get All Items : {0}", e.Message);
             }
             return itemList;
         }
@@ -93,7 +94,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Delete Table : {0}", e.Message);
+                Debug.WriteLine("Error in Delete Table : {0}", e.Message);
             }
         }
         /// <summary>

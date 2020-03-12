@@ -1,116 +1,64 @@
 ﻿using System;
 using UIKit;
 using myTNB.Dashboard.SelectAccounts;
-using myTNB.Model;
-using System.Threading.Tasks;
 using CoreGraphics;
-using myTNB.Registration.CustomerAccounts;
-using myTNB.Extensions;
+using myTNB.Home.Dashboard.SelectAccounts;
+using System.Collections.Generic;
 
 namespace myTNB
 {
-    public partial class SelectAccountTableViewController : UIViewController
+    public partial class SelectAccountTableViewController : CustomUIViewController
     {
-        public SelectAccountTableViewController(IntPtr handle) : base(handle)
-        {
-        }
-        BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
+        public SelectAccountTableViewController(IntPtr handle) : base(handle) { }
+
+        public bool IsFromSSMR;
+        public bool IsFromUsage;
+        public bool IsFromHome;
+        public bool IsRoot;
+        public int CurrentSelectedIndex = -1;
+        public Action<int> OnSelect;
+
         public override void ViewDidLoad()
         {
+            PageName = SelectAccountConstants.PageName;
             base.ViewDidLoad();
             AddBackButton();
-            accountRecordsTableView.Frame = new CGRect(0
-                                                       , 0
-                                                       , View.Frame.Width
-                                                       , View.Frame.Height
-                                                            - (DeviceHelper.IsIphoneXUpResolution()
-                                                               ? 64 + 72 + 24
-                                                               : 64 + 72));
+            nfloat navBarHeigt = NavigationController == null ? 0 : NavigationController.NavigationBar.Frame.Height;
+            accountRecordsTableView.Frame = new CGRect(0, 0, View.Frame.Width
+                , View.Frame.Height - DeviceHelper.BottomSafeAreaInset
+                - DeviceHelper.TopSafeAreaInset
+                - navBarHeigt);
             accountRecordsTableView.Source = new SelectAccountsDataSource(this);
-            accountRecordsTableView.ReloadData();
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            AddCTAButton();
+            if (IsFromSSMR) { AddMissingAccountFooter(); }
+            accountRecordsTableView.ReloadData();
         }
 
-        internal void AddBackButton()
+        public override void ViewWillAppear(bool animated)
         {
-            Title = "Select Electricity Account";
+            base.ViewWillAppear(animated);
+            if (accountRecordsTableView != null && IsFromHome)
+            {
+                accountRecordsTableView.ReloadData();
+            }
+        }
+
+        private void AddBackButton()
+        {
+            Title = GetI18NValue(SelectAccountConstants.I18N_NavTitle);
             NavigationItem.HidesBackButton = true;
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                //DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                this.DismissViewController(true, null);
-            });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
-        }
-
-        void AddCTAButton()
-        {
-            UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48);
-            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.Font = myTNBFont.MuseoSans16();
-            btnAddAccount.Layer.CornerRadius = 5.0f;
-            btnAddAccount.BackgroundColor = myTNBColor.FreshGreen();
-            View.AddSubview(btnAddAccount);
-            btnAddAccount.TouchUpInside += (sender, e) =>
-            {
-                ActivityIndicator.Show();
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (NetworkUtility.isReachable)
-                        {
-                            Console.WriteLine("Add account button tapped");
-                            UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
-                            AccountsViewController viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
-                            viewController.isDashboardFlow = true;
-                            viewController._needsUpdate = true;
-                            var navController = new UINavigationController(viewController);
-                            PresentViewController(navController, true, null);
-                        }
-                        else
-                        {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
-                        }
-                        ActivityIndicator.Hide();
-                    });
-                });
-            };
-        }
-
-        /// <summary>
-        /// Loads the billing account details.
-        /// </summary>
-        public void LoadBillingAccountDetails()
-        {
-            if (DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
-            {
-                ExecuteGetBillAccountDetailsCall();
-            }
-            else
-            {
-                var cachedDetails = DataManager.DataManager.SharedInstance.GetCachedBillingAccountDetails(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-
-                if (cachedDetails != null)
-                {
-                    DataManager.DataManager.SharedInstance.BillingAccountDetails = cachedDetails;
-                    DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = false;
-                    this.DismissViewController(true, null);
-                }
+                if (IsRoot)
+                { NavigationController.PopViewController(true); }
                 else
-                {
-                    ExecuteGetBillAccountDetailsCall();
-                }
-            }
+                { DismissViewController(true, null); }
+            });
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void ExecuteGetBillAccountDetailsCall()
+        public void ShowBillScreen()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -118,58 +66,60 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
-                        GetBillingAccountDetails().ContinueWith(task =>
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
                         {
-                            InvokeOnMainThread(() =>
-                            {
-                                if (_billingAccountDetailsList != null && _billingAccountDetailsList.d != null
-                                    && _billingAccountDetailsList.d.data != null)
-                                {
-                                    DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
-                                    DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = false;
-                                    if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
-                                    {
-                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
-                                                                                                     DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-                                    }
-                                    this.DismissViewController(true, null);
-                                }
-                                else
-                                {
-                                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                                    DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                    var alert = UIAlertController.Create("Error in Response", "There is an error in the server, please try again.", UIAlertControllerStyle.Alert);
-                                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                    PresentViewController(alert, animated: true, completionHandler: null);
-                                }
-                                ActivityIndicator.Hide();
-                            });
-                        });
+                            viewController.IsFromHome = true;
+                            NavigationController.PushViewController(viewController, true);
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        DisplayNoDataAlert();
                     }
                 });
             });
         }
 
-        internal Task GetBillingAccountDetails()
+        #region SSMR Footer
+        private void AddMissingAccountFooter()
         {
-            return Task.Factory.StartNew(() =>
+            CustomUIView view = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(72)))
             {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
-            });
+                BackgroundColor = UIColor.White
+            };
+            CustomUIView viewInfo = new CustomUIView(new CGRect(BaseMargin
+                , GetScaledHeight(24), BaseMarginedWidth, GetScaledHeight(24)))
+            {
+                BackgroundColor = MyTNBColor.IceBlue
+            };
+            UIImageView imgView = new UIImageView(new CGRect(GetScaledWidth(4)
+                , GetScaledHeight(4), GetScaledWidth(16), GetScaledWidth(16)))
+            {
+                Image = UIImage.FromBundle(SelectAccountConstants.IMG_Info)
+            };
+            UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
+                , GetScaledHeight(4), view.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Text = GetI18NValue(SelectAccountConstants.I18N_AccountsMissing)
+            };
+            viewInfo.Layer.CornerRadius = GetScaledHeight(12);
+            viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
+            view.AddSubview(viewInfo);
+            view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                Model.PopupModel popUpContent = SSMRAccounts.GetPopupDetailsByType(SelectAccountConstants.Popup_NoSSMRCA);
+                DisplayCustomAlert(popUpContent.Title, popUpContent.Description
+                    , new Dictionary<string, Action> { { popUpContent.CTA, null } }
+                    , false);
+            }));
+            accountRecordsTableView.TableFooterView = view;
         }
+        #endregion
     }
 }

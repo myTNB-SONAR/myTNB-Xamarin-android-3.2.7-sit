@@ -19,37 +19,48 @@ namespace myTNB
             //nfloat cellHeight = 80;
             //Frame = new CGRect(0, 0, cellWidth, cellHeight);
 
-            lblName = new UILabel(new CGRect(18, 16, cellWidth - 126, 18));
-            lblName.TextColor = myTNBColor.TunaGrey();
-            lblName.Font = myTNBFont.MuseoSans14();
+            lblName = new UILabel(new CGRect(18, 16, cellWidth - 126, 18))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14
+            };
 
-            imgLeaf = new UIImageView(new CGRect(lblName.Frame.X + lblName.Frame.Width, 16, 24, 24));
-            imgLeaf.Image = UIImage.FromBundle("IC-RE-Leaf-Green");
-            imgLeaf.Hidden = true;
+            imgLeaf = new UIImageView(new CGRect(lblName.Frame.X + lblName.Frame.Width, 16, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-RE-Leaf-Green"),
+                Hidden = true
+            };
 
-            lblAccountNumber = new UILabel(new CGRect(18, 34, cellWidth - 36, 16));
-            lblAccountNumber.TextColor = myTNBColor.TunaGrey();
-            lblAccountNumber.Font = myTNBFont.MuseoSans12_300();
+            lblAccountNumber = new UILabel(new CGRect(18, 34, cellWidth - 36, 16))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12_300
+            };
 
             /*lblUsers = new UILabel(new CGRect(18, 50, cellWidth - 36, 12));
-            lblUsers.TextColor = myTNBColor.SilverChalice();
-            lblUsers.Font = myTNBFont.MuseoSans9();
+            lblUsers.TextColor = myTNBColor.SilverChalice;
+            lblUsers.Font = myTNBFont.MuseoSans9;
             lblUsers.Hidden = true;
             */
 
             viewCTA = new UIView(new CGRect(cellWidth - 78, 25, 60, 16));
-            lblCTA = new UILabel(new CGRect(0, 0, 60, 16));
-            lblCTA.TextColor = myTNBColor.PowerBlue();
-            lblCTA.Font = myTNBFont.MuseoSans12();
-            lblCTA.TextAlignment = UITextAlignment.Right;
+            lblCTA = new UILabel(new CGRect(0, 0, 60, 16))
+            {
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Right
+            };
 
             viewCTA.AddSubview(lblCTA);
 
-            viewLine = new UIView(new CGRect(0, Frame.Height - 1, cellWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewLine.Hidden = false;
+            viewLine = new UIView(new CGRect(0, Frame.Height - 1, cellWidth, 1))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey,
+                Hidden = false
+            };
 
             AddSubviews(new UIView[] { lblName, imgLeaf, lblAccountNumber, viewCTA, viewLine });
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="212">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="212">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,7 +10,7 @@
             <objects>
                 <navigationController id="212" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="214">
-                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -34,7 +34,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Card" id="716"/>
+                    <navigationItem key="navigationItem" id="716"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="503" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -45,7 +45,7 @@
             <objects>
                 <navigationController id="1965" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1967">
-                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -54,7 +54,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1968" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-248" y="705"/>
+            <point key="canvasLocation" x="-247" y="778"/>
         </scene>
         <!--Add Card-->
         <scene sceneID="1973">
@@ -69,121 +69,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Card" id="2057"/>
+                    <navigationItem key="navigationItem" id="2057"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1976" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="275" y="701"/>
+            <point key="canvasLocation" x="256" y="778"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="app_logo" width="44" height="44"/>
-        <image name="email_white" width="24" height="24"/>
-        <image name="Back-White" width="24" height="24"/>
-        <image name="Cancel-White" width="24" height="24"/>
-        <image name="Next-White" width="24" height="24"/>
-        <image name="Calculator" width="32" height="32"/>
-        <image name="Supply" width="32" height="32"/>
-        <image name="Feedback" width="32" height="32"/>
-        <image name="Loaded" width="24" height="24"/>
-        <image name="Loading" width="24" height="24"/>
-        <image name="Email" width="24" height="24"/>
-        <image name="Account-Number" width="24" height="24"/>
-        <image name="IC" width="24" height="24"/>
-        <image name="Label" width="24" height="24"/>
-        <image name="Mobile-White" width="24" height="24"/>
-        <image name="Mobile" width="24" height="24"/>
-        <image name="Name-White" width="24" height="24"/>
-        <image name="Name" width="24" height="24"/>
-        <image name="Billing" width="150" height="150"/>
-        <image name="Dashboard" width="150" height="150"/>
-        <image name="Payment" width="150" height="150"/>
-        <image name="App-Launch" width="320" height="568"/>
-        <image name="Logo" width="44" height="44"/>
-        <image name="Delete" width="24" height="24"/>
-        <image name="Check-Green" width="30" height="28"/>
-        <image name="X-Red" width="30" height="32"/>
-        <image name="Scan" width="24" height="24"/>
-        <image name="Circle-With-Check-Green" width="105" height="105"/>
-        <image name="Logo-Title" width="200" height="44"/>
-        <image name="Tagline" width="113.333336" height="30"/>
-        <image name="Notification" width="24" height="24"/>
-        <image name="Download" width="24" height="24"/>
-        <image name="Table-Tick" width="24" height="24"/>
-        <image name="Arrow-Left" width="16" height="16"/>
-        <image name="Arrow-Right" width="16" height="16"/>
-        <image name="Camera" width="24" height="24"/>
-        <image name="Card-Number" width="24" height="24"/>
-        <image name="Card-Expiry" width="24" height="24"/>
-        <image name="Card-CVV" width="24" height="24"/>
-        <image name="Dropdown" width="16" height="16"/>
-        <image name="Get-Access" width="150" height="150"/>
-        <image name="Empty-Dashboard" width="120" height="120"/>
-        <image name="Notification-Unread" width="16" height="16"/>
-        <image name="Notification-Delete" width="24" height="24"/>
-        <image name="Checkbox-Active" width="24" height="24"/>
-        <image name="Checkbox-Inactive" width="24" height="24"/>
-        <image name="IC-Action-Add-Card" width="24" height="24"/>
-        <image name="IC-Action-Checkbox-Active" width="24" height="24"/>
-        <image name="IC-Action-Checkbox-InActive" width="24" height="24"/>
-        <image name="IC-Action-Expand" width="24" height="24"/>
-        <image name="IC-Action-Tick" width="24" height="24"/>
-        <image name="IC-Action-Edit" width="24" height="24"/>
-        <image name="IC-Action-Delete" width="24" height="24"/>
-        <image name="IC-Payment-Card-Mastercard" width="24" height="24"/>
-        <image name="IC-Payment-Card-Visa" width="24" height="24"/>
-        <image name="IC-Payment-FPX" width="24" height="24"/>
-        <image name="Notification-New" width="24" height="24"/>
-        <image name="Call" width="24" height="24"/>
-        <image name="Logout-Logo" width="150" height="150"/>
-        <image name="IC-Action-Rating-Active" width="32" height="32"/>
-        <image name="IC-Action-Rating-Inactive" width="32" height="32"/>
-        <image name="IC-Field-Search" width="24" height="24"/>
-        <image name="IC-Button-Map-Center" width="24" height="24"/>
-        <image name="IC-Header-Share" width="24" height="24"/>
-        <image name="IC-Action-Dropdown" width="24" height="24"/>
-        <image name="Map-Kedai-Tenaga" width="32" height="32"/>
-        <image name="Map-Convenient-Store" width="32" height="32"/>
-        <image name="Find_Account_Number" width="284" height="121"/>
-        <image name="Promo-Ads" width="321" height="198"/>
-        <image name="Direction" width="24" height="24"/>
-        <image name="Notification-Empty" width="150" height="150"/>
-        <image name="Card-Empty" width="150" height="150"/>
-        <image name="IC-Feedback" width="24" height="24"/>
-        <image name="IC-FieldCoordinates" width="24" height="24"/>
-        <image name="IC-Action-Location" width="24" height="24"/>
-        <image name="IC-FieldFeedback" width="24" height="24"/>
-        <image name="Faulty-TNB-Lamp" width="320" height="121"/>
-        <image name="Locate-Blue" width="32" height="32"/>
-        <image name="Feedback-Blue" width="24" height="24"/>
-        <image name="IC-Field-Text" width="24" height="24"/>
-        <image name="Red-Cross" width="122" height="122"/>
-        <image name="Loading-Circle" width="44" height="44"/>
-        <image name="Notification-New-Bill" width="24" height="24"/>
-        <image name="Notification-Bill-Due" width="24" height="24"/>
-        <image name="Notification-Reconnection" width="24" height="24"/>
-        <image name="Notification-Disconnection" width="24" height="24"/>
-        <image name="Notification-Dunning" width="24" height="24"/>
-        <image name="Password-Old" width="24" height="24"/>
-        <image name="Password" width="24" height="24"/>
-        <image name="password_white" width="24" height="24"/>
-        <image name="IC-Action-Show-Password" width="24" height="24"/>
-        <image name="IC-Display-Prelogin" width="150" height="100"/>
-        <image name="Feedback-Bill" width="48" height="48"/>
-        <image name="Feedback-Header" width="320" height="126"/>
-        <image name="Feedback-Others" width="48" height="48"/>
-        <image name="Feedback-Streetlamp" width="48" height="48"/>
-        <image name="Feedback-Submitted" width="48" height="48"/>
-        <image name="Feedback-Submitted-Bill" width="24" height="24"/>
-        <image name="Feedback-Submitted-Others" width="24" height="24"/>
-        <image name="Feedback-Submitted-Streetlamp" width="24" height="24"/>
-        <image name="App-Launch-Gradient" width="320" height="568"/>
-        <image name="Tab-Feedback" width="25" height="25"/>
-        <image name="Tab-Promotions" width="25" height="25"/>
-        <image name="Tab-Dashboard" width="25" height="25"/>
-        <image name="Tab-More" width="25" height="25"/>
-        <image name="Tab-Bill" width="25" height="25"/>
-        <image name="Payment-Checkbox-Active" width="24" height="24"/>
-        <image name="Payment-Checkbox-Inactive" width="24" height="24"/>
-    </resources>
 </document>

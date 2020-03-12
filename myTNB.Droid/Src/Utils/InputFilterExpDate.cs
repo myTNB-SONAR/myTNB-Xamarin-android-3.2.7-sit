@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Text;
 using Android.Widget;
 using Java.Lang;
-using Android.Text;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -68,12 +59,18 @@ namespace myTNB_Android.Src.Utils
                             return empty;
                         }
                         int edtLength = _editText.Text.ToString().Length;
-                        if (edtLength >= dstart) {
+                        if (edtLength >= dstart)
+                        {
                             dstart = edtLength - dstart;
-                        } else {
-                            if (dstart > 0) {
-                                dstart = dstart - 1;    
-                            } else if (dstart < 0) {
+                        }
+                        else
+                        {
+                            if (dstart > 0)
+                            {
+                                dstart = dstart - 1;
+                            }
+                            else if (dstart < 0)
+                            {
                                 dstart = 0;
                             }
 

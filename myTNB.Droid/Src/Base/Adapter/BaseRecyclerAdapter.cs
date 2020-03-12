@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Support.V7.Widget;
 using Android.Views;
-using Android.Widget;
-using Android.Support.V7.Widget;
 using CheeseBind;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Base.Adapter
 {
@@ -89,7 +80,7 @@ namespace myTNB_Android.Src.Base.Adapter
 
         }
 
-        public void Update(int position , T item)
+        public void Update(int position, T item)
         {
             itemList[position] = item;
             if (notify)
@@ -108,7 +99,7 @@ namespace myTNB_Android.Src.Base.Adapter
 
             public BaseRecyclerViewHolder(View itemView) : base(itemView)
             {
-                Cheeseknife.Bind(this , itemView);
+                Cheeseknife.Bind(this, itemView);
             }
         }
     }

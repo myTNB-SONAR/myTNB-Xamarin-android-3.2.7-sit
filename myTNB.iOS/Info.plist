@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.7</string>
-	<key>CFBundleVersion</key>
-	<string>1.1.7.5</string>
+	<string>2.2.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -28,11 +26,12 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<string>Assets/Assets.xcassets/AppIcon.appiconset</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Fonts/MuseoSans_500.otf</string>
 		<string>Fonts/MuseoSans-300.otf</string>
+		<string>Fonts/MuseoSans-300Italic.otf</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.</string>
@@ -55,6 +54,8 @@
 			<array>
 				<string>mytnbapp</string>
 				<string>fb1820273008266041</string>
+				<string>mytnbappsit.page.link</string>
+				<string>mytnbapp.page.link</string>
 			</array>
 			<key>CFBundleURLName</key>
 			<string>com.mytnb.mytnb</string>
@@ -93,5 +94,15 @@ to find Kedai Tenaga nearby.</string>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+	</array>
+	<key>CFBundleDisplayName</key>
+	<string>myTNB</string>
+	<key>CFBundleVersion</key>
+	<string>7</string>
 </dict>
 </plist>

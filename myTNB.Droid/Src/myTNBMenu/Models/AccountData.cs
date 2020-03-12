@@ -1,46 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
-using myTNB_Android.Src.AddAccount.Models;
+﻿using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Database.Model;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
     public class AccountData
     {
-           //"accNum": "240000876706",
-           // "accName": "CHONG MING LUEN",
-           // "accICNo": null,
-           // "accICNoNew": "830311045007",
-           // "accComNo": null,
-           // "amDeposit": 0,
-           // "amCurrentChg": -746.12,
-           // "amOutstandingChg": 0,
-           // "amPayableChg": -746.12,
-           // "amLastPay": 0,
-           // "dateBill": "04/08/2017",
-           // "datePymtDue": "03/09/2017",
-           // "dateLastPay": "N/A",
-           // "sttSupply": "Active",
-           // "addStreet": "JLN MACAP UMBOO, KG BARU MACAP, 76100, MACHAP",
-           // "addArea": null,
-           // "addTown": null,
-           // "addState": null,
-           // "stnName": "PC Jasin",
-           // "stnAddStreet": null,
-           // "stnAddArea": null,
-           // "stnAddTown": null,
-           // "stnAddState": null,
-           // "amCustBal": -746.12,
+        //"accNum": "240000876706",
+        // "accName": "CHONG MING LUEN",
+        // "accICNo": null,
+        // "accICNoNew": "830311045007",
+        // "accComNo": null,
+        // "amDeposit": 0,
+        // "amCurrentChg": -746.12,
+        // "amOutstandingChg": 0,
+        // "amPayableChg": -746.12,
+        // "amLastPay": 0,
+        // "dateBill": "04/08/2017",
+        // "datePymtDue": "03/09/2017",
+        // "dateLastPay": "N/A",
+        // "sttSupply": "Active",
+        // "addStreet": "JLN MACAP UMBOO, KG BARU MACAP, 76100, MACHAP",
+        // "addArea": null,
+        // "addTown": null,
+        // "addState": null,
+        // "stnName": "PC Jasin",
+        // "stnAddStreet": null,
+        // "stnAddArea": null,
+        // "stnAddTown": null,
+        // "stnAddState": null,
+        // "amCustBal": -746.12,
         [JsonProperty("AccountNum")]
         public string AccountNum { get; set; }
 
@@ -128,7 +117,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("smartMeterCode")]
         public string SmartMeterCode { get; set; }
 
-        internal static AccountData Copy(AccountDetails accountDetails , bool isSelected)
+        internal static AccountData Copy(AccountDetails accountDetails, bool isSelected)
         {
             return new AccountData()
             {

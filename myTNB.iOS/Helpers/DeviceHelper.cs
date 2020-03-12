@@ -1,4 +1,6 @@
-﻿using UIKit;
+﻿using System;
+using System.Diagnostics;
+using UIKit;
 
 namespace myTNB
 {
@@ -35,9 +37,9 @@ namespace myTNB
             return size;
         }
 
-        public static bool IsIphoneXr()
+        public static string GetImageSize()
         {
-            return false; //UIScreen.MainScreen.NativeBounds.Height == 1792;
+            return GetImageSize(0);
         }
 
         /// <summary>
@@ -49,9 +51,16 @@ namespace myTNB
             // xsmax    =   2688
             // x & xs   =   2436
             // xr       =   1792
-            return UIScreen.MainScreen.NativeBounds.Height >= 2436 
+            return UIScreen.MainScreen.NativeBounds.Height >= 2436
                 || UIScreen.MainScreen.NativeBounds.Height == 1792;
         }
+
+        public static bool IsIphoneXOrXs()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height == 2436
+                && UIScreen.MainScreen.NativeBounds.Width == 1125;
+        }
+
         /// <summary>
         /// Checks if device is iPhone X
         /// </summary>
@@ -67,6 +76,20 @@ namespace myTNB
         public static bool IsIphone6UpResolution()
         {
             return UIScreen.MainScreen.NativeBounds.Height >= 1334;
+        }
+
+        public static bool IsIphone678PlusResolution()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height > 1334 && !IsIphoneXUpResolution();
+        }
+
+        /// <summary>
+        /// Checks if device is iPhone 6, 7 or 8
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsIphone678()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height == 1334;
         }
 
         /// <summary>
@@ -157,12 +180,120 @@ namespace myTNB
             return height * (screenHeight / baseScreenHeight) * adj;
         }
         /// <summary>
+        /// Gets the scaled height using y-axis.
+        /// </summary>
+        /// <returns>The scaled height using y-axis.</returns>
+        /// <param name="y">The y coordinate.</param>
+        public static float GetScaledHeightWithY(float y)
+        {
+            float adj = IsIphoneXUpResolution() ? 1.3f : 1;
+            float screenHeight = (float)UIScreen.MainScreen.Bounds.Height;
+            return y * (screenHeight / baseScreenHeight) * adj;
+        }
+        /// <summary>
+        /// Gets the X value to center obj using obj width.
+        /// </summary>
+        /// <returns>The X value.</returns>
+        /// <param name="objWidth">Object width.</param>
+        public static float GetCenterXWithObjWidth(float objWidth, UIView parentView = null)
+        {
+            float screenWidth = (float)((parentView != null) ? parentView.Frame.Width : (float)UIScreen.MainScreen.Bounds.Width);
+            return screenWidth / 2 - (objWidth / 2);
+        }
+        /// <summary>
+        /// Gets the Y value to center obj using obj height.
+        /// </summary>
+        /// <returns>The Y value.</returns>
+        /// <param name="objHeight">Object height.</param>
+        public static float GetCenterYWithObjHeight(float objHeight, UIView parentView = null)
+        {
+            float screenHeight = (float)((parentView != null) ? parentView.Frame.Height : (float)UIScreen.MainScreen.Bounds.Height);
+            return screenHeight / 2 - (objHeight / 2);
+        }
+        /// <summary>
         /// Gets the OS Version.
         /// </summary>
         /// <returns>The OSV ersion.</returns>
         public static string GetOSVersion()
         {
             return UIDevice.CurrentDevice.SystemVersion;
+        }
+        /// <summary>
+        /// Gets the Device Status Bar Height
+        /// </summary>
+        /// <returns></returns>
+        public static nfloat GetStatusBarHeight()
+        {
+            return UIApplication.SharedApplication.StatusBarFrame.Size.Height;
+        }
+
+        public static bool IsNotched
+        {
+            get
+            {
+                try
+                {
+                    if (IsIOS10AndBelow) { return false; }
+
+                    return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom > 0;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("IsNotched Error: " + e.Message);
+                    return IsIphoneXUpResolution();
+                }
+            }
+        }
+
+        public static nfloat TopSafeAreaInset
+        {
+            get
+            {
+                try
+                {
+                    if (IsIOS10AndBelow) { return 0; }
+
+                    return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("TopSafeAreaInset Error: " + e.Message);
+                    return 0;
+                }
+            }
+        }
+
+        public static nfloat BottomSafeAreaInset
+        {
+            get
+            {
+                try
+                {
+                    if (IsIOS10AndBelow) { return 0; }
+                    return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("BottomSafeAreaInset Error: " + e.Message);
+                    return 0;
+                }
+            }
+        }
+
+        public static bool IsIOS10AndBelow
+        {
+            get
+            {
+                try
+                {
+                    return !UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("IsIOS10 Exception: " + e.Message);
+                }
+                return false;
+            }
         }
     }
 }

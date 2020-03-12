@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using CoreFoundation;
 using Firebase.CloudMessaging;
 using Firebase.Core;
 using Firebase.InstanceID;
 using Foundation;
-using myTNB.Dashboard;
 using myTNB.Model;
 using myTNB.PushNotification;
 using UIKit;
@@ -14,7 +15,7 @@ namespace myTNB
 {
     public static class PushNotificationHelper
     {
-        static UserNotificationResponseModel _userNotifications = new UserNotificationResponseModel();
+        private static UserNotificationResponseModel _userNotifications = new UserNotificationResponseModel();
         /// <summary>
         /// Registers the device.
         /// </summary>
@@ -23,10 +24,10 @@ namespace myTNB
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
             InstanceId.Notifications.ObserveTokenRefresh((sender, e) =>
             {
-                var token = InstanceId.SharedInstance.Token;
-                Console.WriteLine("FCM Token: " + token);
+                string token = InstanceId.SharedInstance.Token;
+                Debug.WriteLine("FCM Token: " + token);
                 DataManager.DataManager.SharedInstance.FCMToken = token;
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetString(token, "FCMToken");
                 sharedPreference.Synchronize();
                 ConnectToFCM();
@@ -53,62 +54,52 @@ namespace myTNB
                 {
                     DataManager.DataManager.SharedInstance.IsFromPushNotification = false;
                     DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
-
-                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                    var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                    var navController = new UINavigationController(viewController);
-
-                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
-
-                    if (topVc != null)
+                    if (PushNotificationCache.IsODN || PushNotificationCache.IsValidEmail)
                     {
-                        if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
-                        {
-                            var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
+                        UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                        PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
 
-                            if (tabBar != null)
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
+
+                        if (topVc != null)
+                        {
+                            if (topVc.NavigationController != null)
                             {
-                                if (tabBar.SelectedViewController is DashboardNavigationController selVc)
-                                {
-                                    if (selVc != null && selVc.ViewControllers.Length > 0)
-                                    {
-                                        var vc = selVc.ViewControllers[0];
-
-                                        if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
-                                        {
-                                            vc.PresentViewController(navController, true, null);
-                                        }
-                                    }
-                                }
+                                topVc.NavigationController.PushViewController(viewController, true);
                             }
-                        }
-                        else
-                        {
-                            topVc.PresentViewController(navController, true, null);
+                            else
+                            {
+                                viewController.IsModal = true;
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                topVc.PresentViewController(navController, true, null);
+                            }
                         }
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-            }
+            catch (MonoTouchException m) { Debug.WriteLine("Error: " + m.Message); }
+            catch (Exception e) {  Debug.WriteLine("Error: " + e.Message); }
         }
+
         /// <summary>
         /// Gets the notifications.
         /// </summary>
         /// <returns>The notif.</returns>
-        public static async Task<bool> GetNotifications()
+        public static async Task<bool> GetNotifications(bool needsBadgeUpdate = true)
         {
             bool res = false;
             await GetUserNotifications();
-            res = _userNotifications?.d?.didSucceed == true;
 
-            if (_userNotifications != null && _userNotifications?.d != null
-                && _userNotifications?.d?.didSucceed == true && _userNotifications?.d?.status?.ToLower() == "success")
+            DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
+
+            if (_userNotifications != null && _userNotifications?.d != null && _userNotifications.d.IsSuccess
+                && _userNotifications.d.data != null && _userNotifications.d.data.UserNotificationList != null)
             {
-                DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data;
+                res = true;
+                DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data.UserNotificationList;
+                FilterNotifications();
                 DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
             }
             else
@@ -124,11 +115,83 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.HasNewNotification = false;
             }
-            int unreadCount = GetNotificationCount();
-            UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount;
-
+            if (needsBadgeUpdate)
+            {
+                UpdateApplicationBadge();
+            }
             return res;
         }
+
+        public static void FilterNotifications()
+        {
+            if (DataManager.DataManager.SharedInstance.UserNotificationResponse != null
+                && DataManager.DataManager.SharedInstance.UserNotificationResponse.d != null
+                && DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data != null
+                && DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data.UserNotificationList != null)
+            {
+                List<UserNotificationDataModel> nList = DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data.UserNotificationList;
+                List<UserNotificationDataModel> removeList = new List<UserNotificationDataModel>();
+                List<UpdateNotificationModel> deleteList = new List<UpdateNotificationModel>();
+                foreach (UserNotificationDataModel item in nList)
+                {
+                    if (item.BCRMNotificationType == Enums.BCRMNotificationEnum.BillDue
+                        || item.BCRMNotificationType == Enums.BCRMNotificationEnum.Dunning)
+                    {
+                        DueAmountDataModel due = AmountDueCache.GetDues(item.AccountNum);
+                        if (due != null && due.amountDue <= 0)
+                        {
+                            UpdateNotificationModel mdl = new UpdateNotificationModel()
+                            {
+                                IsRead = true,
+                                NotificationId = item.Id,
+                                NotificationType = item.NotificationType
+                            };
+                            deleteList.Add(mdl);
+                            removeList.Add(item);
+                        }
+                    }
+                }
+                foreach (UserNotificationDataModel item in removeList)
+                {
+                    nList.Remove(item);
+                }
+                DataManager.DataManager.SharedInstance.UserNotificationResponse.d.data.UserNotificationList = nList;
+                try
+                {
+                    DispatchQueue.MainQueue.DispatchAsync(() =>
+                    {
+                        NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
+                    });
+                    if (deleteList.Count > 0)
+                    {
+                        new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+                        {
+                            DeleteUserNotification(deleteList);
+                        })).Start();
+                    }
+                }
+                catch (MonoTouchException m) { Debug.WriteLine("Error in FilterNotifications: " + m.Message); }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in FilterNotifications: " + e.Message);
+                }
+            }
+        }
+
+        private static Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    serviceManager.usrInf,
+                    updatedNotifications = deleteNotificationList,
+                };
+                DeleteNotificationResponseModel response = serviceManager.OnExecuteAPIV6<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
+            });
+        }
+
         /// <summary>
         /// Gets the notification count.
         /// </summary>
@@ -136,38 +199,37 @@ namespace myTNB
         public static int GetNotificationCount()
         {
             if (DataManager.DataManager.SharedInstance.UserNotifications != null
-               && DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
+                && DataManager.DataManager.SharedInstance.UserNotifications?.Count > 0)
             {
                 try
                 {
-                    int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsRead.ToLower().Equals("false")).Count;
-                    if (count < 0)
-                    {
-                        count = 0;
-                    }
-                    return count;
+                    int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsValidNotification && !x.IsReadNotification).Count;
+                    return count < 0 ? 0 : count;
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                     return 0;
                 }
             }
             return 0;
         }
 
-        static Task GetUserNotifications()
+        private static Task GetUserNotifications()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID
+                    serviceManager.usrInf
                 };
-                _userNotifications = serviceManager.GetUserNotifications("GetUserNotifications", requestParameter);
+
+                _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotifications, requestParameter);
+
+                //UserNotificationManager.SetData();
+                //_userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
             });
         }
         /// <summary>
@@ -181,13 +243,16 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID
+                    serviceManager.usrInf
                 };
-                var response = serviceManager.GetNotificationTypes("GetAppNotificationTypes", requestParameter);
+                NotificationTypeResponseModel response = serviceManager.OnExecuteAPI<NotificationTypeResponseModel>
+                    (PushNotificationConstants.Service_GetAppNotificationTypes, requestParameter);
                 DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
-                NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                allNotificationItem.Title = "All notifications";
-                allNotificationItem.Id = "all";
+                NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel
+                {
+                    Title = LanguageUtility.GetCommonI18NValue(Constants.Common_AllNotifications),
+                    Id = "all"
+                };
                 if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                 {
                     DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
@@ -199,7 +264,7 @@ namespace myTNB
         /// </summary>
         public static void GetUserNotificationPreferences()
         {
-            Task[] taskList = new Task[]{
+            Task[] taskList = {
                 GetUserNotificationTypes(),
                 GetUserNotificationChannels()
             };
@@ -213,26 +278,47 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID
+                    serviceManager.usrInf
                 };
-                DataManager.DataManager.SharedInstance.NotificationTypeResponse = serviceManager.GetNotificationTypes("GetUserNotificationTypePreferences", requestParameter);
+                DataManager.DataManager.SharedInstance.NotificationTypeResponse =
+                serviceManager.OnExecuteAPIV6<NotificationTypeResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotificationTypePreferences, requestParameter);
             });
         }
 
-        static Task GetUserNotificationChannels()
+        private static Task GetUserNotificationChannels()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                    serviceManager.usrInf
                 };
-                DataManager.DataManager.SharedInstance.NotificationChannelResponse = serviceManager.GetNotificationChannels("GetUserNotificationChannelPreferences", requestParameter);
+                DataManager.DataManager.SharedInstance.NotificationChannelResponse =
+                serviceManager.OnExecuteAPIV6<NotificationChannelResponseModel>
+                    (PushNotificationConstants.Service_GetUserNotificationChannelPreferences, requestParameter);
             });
+        }
+
+        public static string GetNotificationImage()
+        {
+            if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
+            {
+                int index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.IsValidNotification && !x.IsReadNotification);
+                DataManager.DataManager.SharedInstance.HasNewNotification = index > -1;
+            }
+            else
+            {
+                DataManager.DataManager.SharedInstance.HasNewNotification = false;
+            }
+            return DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification";
+        }
+
+        public static void UpdateApplicationBadge()
+        {
+            int unreadCount = GetNotificationCount();
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using myTNB.Enum;
+using System.Diagnostics;
+using System.Net;
 using RestSharp;
 
 namespace myTNB
@@ -8,34 +9,51 @@ namespace myTNB
     {
         const string CONTENT_TYPE = "Content-Type";
         const string APPLICATION_JSON = "application/json";
-        const int TIMEOUT = 60000;
 
-        int DOMAINTYPE = TNBGlobal.IsProduction ? 1 : 0; // Set to 1 for Prod
-        bool _isPayment = false;
-        string _paymentURL = string.Empty;
+        const int MaxRetryCount = 2;
+        private int Timeout = 60000;
+        private int RetryTimeout = 2000;
+        private int _retryCount = 1;
 
-        string[] _domain = new string[]{
-            "https://mobiletestingws.tnb.com.my",
-            "https://mytnbapp.tnb.com.my"
-        };
-        string[] _endpointDevURL = new string[]{
-            "/v4/my_billingssp.asmx/",
-            "/v5/my_billingssp.asmx/"
-        };
-        string[] _endpointProdURL = new string[]{
-            "/v4/my_BillingSSP.asmx/",
-            "/v5/my_BillingSSP.asmx/"
-        };
+        private bool _isPayment;
+        private string _paymentURL = string.Empty;
 
-        string GetURLEndpoint(APIVersion version)
+        private readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
+            { "DEV", "http://10.215.128.191:88"}//"http://10.215.128.191:89"
+            , { "SIT", "https://mobiletestingws.tnb.com.my" }
+            , { "PROD", "https://mytnbapp.tnb.com.my"}
+        };
+
+        private readonly Dictionary<string, string> EndPointDictionaryDev = new Dictionary<string, string>
+        {
+            {"V4", "/v5/my_billingssp.asmx/"}
+            , {"V5", "/v5/my_billingssp.asmx/"}
+            , {"V6", "/v6/mytnbappws.asmx/"}
+        };
+
+        private readonly Dictionary<string, string> EndPointDictionaryProd = new Dictionary<string, string>
+        {
+            {"V4", "/v5/my_billingssp.asmx/"}
+            , {"V5", "/v5/my_billingssp.asmx/"}
+            , {"V6", "/v6/mytnbappws.asmx/"}
+        };
+
+        private Dictionary<string, int> TimeOutDictionary = new Dictionary<string, int> {
+            { "GetAppLaunchMasterData", 3000},
+            { "GetPaymentReceipt", 30000}
+        };
+
+        private string GetURLEndpoint(APIVersion version)
+        {
+            string ver = version.ToString();
             if (TNBGlobal.IsProduction)
             {
-                return version == APIVersion.V4 ? _endpointProdURL[0] : _endpointProdURL[1];
+                return EndPointDictionaryProd.ContainsKey(ver) ? EndPointDictionaryProd[ver] : string.Empty;
             }
             else
             {
-                return version == APIVersion.V4 ? _endpointDevURL[0] : _endpointDevURL[1];
+                return EndPointDictionaryDev.ContainsKey(ver) ? EndPointDictionaryDev[ver] : string.Empty;
             }
         }
 
@@ -46,27 +64,55 @@ namespace myTNB
         /// <param name="suffix">The name of the API.</param>
         /// <param name="requestParams">Request parameters.</param>
         /// <param name="version">Version of API to be used.</param>
-        public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version)
+        public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env, bool isRetry = false)
         {
-            string domain = _domain[DOMAINTYPE];
+            //SIT Test
+            //env = APIEnvironment.SIT;
+            string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 
-            var client = new RestClient(url);
-            client.Timeout = TIMEOUT;
+            _retryCount += isRetry ? 1 : 0;
 
-            var request = new RestRequest();
-            request.Method = Method.POST;
-            request.Timeout = TIMEOUT;
+            if (!string.IsNullOrEmpty(suffix) && !string.IsNullOrWhiteSpace(suffix)
+                && TimeOutDictionary != null && TimeOutDictionary.Count > 0 && TimeOutDictionary.ContainsKey(suffix))
+            {
+                Timeout = TimeOutDictionary[suffix];
+            }
+
+            var client = new RestClient(url)
+            {
+                Timeout = isRetry ? RetryTimeout : Timeout
+            };
+
+            var request = new RestRequest
+            {
+                Method = Method.POST,
+                Timeout = isRetry ? RetryTimeout : Timeout
+            };
+
             request.AddHeader(CONTENT_TYPE, APPLICATION_JSON);
             request.AddJsonBody(requestParams);
+            Debug.WriteLine("Service ------> " + suffix);
 
             RestResponse response = (RestResponse)client.Execute(request);
+
+            WebException responseException = (WebException)response.ErrorException;
+            if (responseException != null
+                && responseException.Status == WebExceptionStatus.Timeout
+                && suffix == "GetAppLaunchMasterData")
+            {
+                isRetry = true;
+                if (isRetry && _retryCount <= MaxRetryCount)
+                {
+                    response = ExecuteWebservice(suffix, requestParams, version, env, isRetry);
+                }
+            }
             return response;
         }
 
-        public string GetFormattedURL(string suffix, Dictionary<string, string> requestParams, APIVersion version)
+        public string GetFormattedURL(string suffix, Dictionary<string, string> requestParams, APIVersion version, APIEnvironment env)
         {
-            return GetURL(suffix, requestParams, version);
+            return GetURL(suffix, requestParams, version, env);
         }
 
         /// <summary>
@@ -76,14 +122,14 @@ namespace myTNB
         /// <param name="requestParams">Request parameters.</param>
         /// <param name="isPayment">If set to <c>true</c> is payment.</param>
         /// <param name="paymentURL">Payment URL.</param>
-        public string GetFormattedURL(Dictionary<string, string> requestParams, bool isPayment, string paymentURL)
+        public string GetFormattedURL(Dictionary<string, string> requestParams, bool isPayment, string paymentURL, APIEnvironment env)
         {
             _isPayment = isPayment;
             _paymentURL = paymentURL;
-            return GetURL(string.Empty, requestParams, 0);
+            return GetURL(string.Empty, requestParams, 0, env);
         }
 
-        internal string GetURL(string suffix, Dictionary<string, string> requestParams, APIVersion version)
+        internal string GetURL(string suffix, Dictionary<string, string> requestParams, APIVersion version, APIEnvironment env)
         {
             string url = string.Empty;
             if (_isPayment)
@@ -92,7 +138,7 @@ namespace myTNB
             }
             else
             {
-                string domain = _domain[DOMAINTYPE];
+                string domain = GetDomain(env);
                 url = domain + GetURLEndpoint(version) + suffix + "?";
             }
 
@@ -111,6 +157,12 @@ namespace myTNB
                 index++;
             }
             return url;
+        }
+
+        public string GetDomain(APIEnvironment environment)
+        {
+            string env = environment.ToString();
+            return DomainDictionary.ContainsKey(env) ? DomainDictionary[env] : string.Empty;
         }
     }
 }

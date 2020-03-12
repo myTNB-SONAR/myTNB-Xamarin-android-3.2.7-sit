@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB_Android.Src.Base.MVP;
 using Refit;
+using System;
 
 namespace myTNB_Android.Src.ResetPassword.MVP
 {
@@ -121,7 +111,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             /// <param name="oldPassword">string</param>
             /// <param name="username">string</param>
             /// <param name="deviceId">string</param>
-            void Submit(string apiKeyId, string newPassword, string confirmNewPassword , string oldPassword , string username , string deviceId);
+            void Submit(string apiKeyId, string newPassword, string confirmNewPassword, string oldPassword, string username, string deviceId);
         }
     }
 }

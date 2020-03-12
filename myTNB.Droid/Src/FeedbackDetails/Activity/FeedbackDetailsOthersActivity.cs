@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.FeedbackDetails.MVP;
-using myTNB_Android.Src.Base.Models;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FeedbackDetails.Adapter;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
-using Android.Preferences;
+using myTNB_Android.Src.FeedbackDetails.MVP;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackDetails.Activity
@@ -29,9 +25,9 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
     [Activity(Label = "@string/feedback_others_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Others")]
-    public class FeedbackDetailsOthersActivity : BaseToolbarAppCompatActivity , FeedbackDetailsContract.Others.IView
+    public class FeedbackDetailsOthersActivity : BaseToolbarAppCompatActivity, FeedbackDetailsContract.Others.IView
     {
-       
+
 
         [BindView(Resource.Id.txtInputLayoutFeedbackId)]
         TextInputLayout txtInputLayoutFeedbackId;
@@ -101,16 +97,17 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowImages(List<AttachedImage> list)
         {
-            try {
-            adapter.AddAll(list);
-            if (list.Count <= 0)
+            try
             {
-                txtRelatedScreenshotTitle.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                txtRelatedScreenshotTitle.Visibility = ViewStates.Visible;
-            }
+                adapter.AddAll(list);
+                if (list.Count <= 0)
+                {
+                    txtRelatedScreenshotTitle.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    txtRelatedScreenshotTitle.Visibility = ViewStates.Visible;
+                }
             }
             catch (Exception e)
             {
@@ -120,32 +117,33 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string feedbackType, string feedback)
         {
-            try {
-            txtFeedbackId.Text = feedbackId;
-            if (feedbackCode.Equals("CL01"))
+            try
             {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
-            }
-            else if (feedbackCode.Equals("CL02"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.inProgressColor)));
-            }
-            else if (feedbackCode.Equals("CL03"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
-            }
-            else if (feedbackCode.Equals("CL04"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
-            }
-            else if (feedbackCode.Equals("CL06"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
-            }
-            txtFeedbackStatus.Text = feedbackStatus;
-            txtFeedbackDateTime.Text = dateTime;
-            txtFeedbackType.Text = feedbackType;
-            txtFeedback.Text = feedback;
+                txtFeedbackId.Text = feedbackId;
+                if (feedbackCode.Equals("CL01"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
+                }
+                else if (feedbackCode.Equals("CL02"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.inProgressColor)));
+                }
+                else if (feedbackCode.Equals("CL03"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
+                }
+                else if (feedbackCode.Equals("CL04"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
+                }
+                else if (feedbackCode.Equals("CL06"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
+                }
+                txtFeedbackStatus.Text = feedbackStatus;
+                txtFeedbackDateTime.Text = dateTime;
+                txtFeedbackType.Text = feedbackType;
+                txtFeedback.Text = feedback;
             }
             catch (Exception e)
             {
@@ -157,23 +155,24 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
-            submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
+            try
+            {
+                string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
+                submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutDateTime , txtInputLayoutFeedbackId, txtInputLayoutFeedbackType, txtInputLayoutFeedback , txtInputLayoutStatus);
-            TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId , txtFeedbackDateTime,  txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle , txtFeedbackStatus);
-    
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutDateTime, txtInputLayoutFeedbackId, txtInputLayoutFeedbackType, txtInputLayoutFeedback, txtInputLayoutStatus);
+                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle, txtFeedbackStatus);
 
-            adapter = new FeedbackImageRecyclerAdapter(true);
-            layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
-            recyclerView.SetLayoutManager(layoutManager);
-            recyclerView.SetAdapter(adapter);
 
-            adapter.SelectClickEvent += Adapter_SelectClickEvent;
+                adapter = new FeedbackImageRecyclerAdapter(true);
+                layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.SetAdapter(adapter);
 
-            mPresenter = new FeedbackDetailsOthersPresenter(this , submittedFeedback);
-            this.userActionsListener.Start();
+                adapter.SelectClickEvent += Adapter_SelectClickEvent;
+
+                mPresenter = new FeedbackDetailsOthersPresenter(this, submittedFeedback);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {

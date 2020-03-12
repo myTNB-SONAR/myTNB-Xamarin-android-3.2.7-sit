@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB_Android.Src.Login.Models
 {
     public class User
     {
-        [JsonProperty(PropertyName="__type")]
+        [JsonProperty(PropertyName = "__type")]
         [AliasAs("__type")]
         public string __type { get; set; }
 
@@ -57,7 +46,7 @@ namespace myTNB_Android.Src.Login.Models
         [AliasAs("isPhoneVerified")]
         public bool isPhoneVerified { get; set; }
 
-        
+
         public User(string __type, string userId, string displayName, string userName, string email, string dateCreated, string lastLoginDate)
         {
             this.__type = __type ?? "";
@@ -67,12 +56,12 @@ namespace myTNB_Android.Src.Login.Models
             Email = email ?? "";
             DateCreated = dateCreated ?? "";
             LastLoginDate = lastLoginDate ?? "";
-    
+
         }
 
         public override string ToString()
         {
-            return __type + " " + UserId + " " + DisplayName + " " + UserName + " " + Email + " " + DateCreated + " " + LastLoginDate ;
+            return __type + " " + UserId + " " + DisplayName + " " + UserName + " " + Email + " " + DateCreated + " " + LastLoginDate;
         }
     }
 }

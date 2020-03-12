@@ -11,7 +11,6 @@ namespace myTNB
             var imgView = new UIImageView(new CGRect(35, 16, 24, 24));
             imgView.Image = UIImage.FromBundle("IC-Payment-FPX");
             AddSubview(imgView);
-            var backgroundView = new UIView();
         }
     }
 }

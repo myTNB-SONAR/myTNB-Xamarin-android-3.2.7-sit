@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Util;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.MakePayment.Api;
 using myTNB_Android.Src.MakePayment.Models;
 using myTNB_Android.Src.MakePayment.Requests;
 using myTNB_Android.Src.Utils;
 using Refit;
+using System;
+using System.Net;
 using System.Net.Http;
 
 namespace myTNB_Android.Src.MakePayment.MVP
@@ -46,8 +36,9 @@ namespace myTNB_Android.Src.MakePayment.MVP
 
         public async void InitiatePaymentRequestAsync(string apiKeyID, string custName, string accNum, string payAm, string custEmail, string custPhone, string sspUserID, string platform, string paymentMode, string registeredCardId)
         {
-            if (mView.IsActive()) {
-            this.mView.ShowPaymentRequestDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowPaymentRequestDialog();
             }
 
             var api = RestService.For<RequestPaymentApi>(Constants.SERVER_URL.END_POINT);
@@ -100,30 +91,33 @@ namespace myTNB_Android.Src.MakePayment.MVP
                 }
                 Utility.LoggingNonFatalError(e);
             }
-           
+
         }
 
-        public void SubmitPayment(string apiKeyID, string merchantId, string accNum, string payAm, string custName, string custEmail, string custPhone, string mParam1, string des, string cardNo, string cardName, string expM, string expY, string cvv){
+        public void SubmitPayment(string apiKeyID, string merchantId, string accNum, string payAm, string custName, string custEmail, string custPhone, string mParam1, string des, string cardNo, string cardName, string expM, string expY, string cvv)
+        {
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            InitiateSubmitPaymentAsync(apiKeyID, merchantId, accNum,  payAm, custName, custEmail, custPhone, mParam1, des, cardNo, cardName, expM, expY, cvv);
+            InitiateSubmitPaymentAsync(apiKeyID, merchantId, accNum, payAm, custName, custEmail, custPhone, mParam1, des, cardNo, cardName, expM, expY, cvv);
         }
 
-        public async void InitiateSubmitPaymentAsync(string apiKeyID, string merchantId, string accNum, string payAm, string custName, string custEmail, string custPhone, string mParam1, string des, string cardNo, string cardName, string expM, string expY, string cvv){
-            try {
-            if (mView.IsActive())
+        public async void InitiateSubmitPaymentAsync(string apiKeyID, string merchantId, string accNum, string payAm, string custName, string custEmail, string custPhone, string mParam1, string des, string cardNo, string cardName, string expM, string expY, string cvv)
+        {
+            try
             {
-                this.mView.ShowPaymentRequestDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.ShowPaymentRequestDialog();
+                }
+                var api = RestService.For<SubmitPaymentApi>(Constants.SERVER_URL.END_POINT);
+                // TODO : UPDATE TO V5
+                var result = await api.SubmitPayment(new SubmitPaymentRequestPG(apiKeyID, merchantId, accNum, payAm, custName, custEmail, custPhone, mParam1, des, cardNo, cardName, expM, expY, cvv));
+                Log.Debug(TAG, "Submit Payment : " + result.ToString());
+                if (mView.IsActive())
+                {
+                    this.mView.HidePaymentRequestDialog();
+                }
+                this.mView.InitiateWebView(result.ToString());
             }
-            var api = RestService.For<SubmitPaymentApi>(Constants.SERVER_URL.END_POINT);
-            // TODO : UPDATE TO V5
-            var result = await api.SubmitPayment(new SubmitPaymentRequestPG(apiKeyID, merchantId, accNum, payAm, custName, custEmail, custPhone, mParam1, des, cardNo, cardName, expM, expY, cvv));
-            Log.Debug(TAG, "Submit Payment : " + result.ToString());
-            if (mView.IsActive())
-            {
-                this.mView.HidePaymentRequestDialog();
-            }
-            this.mView.InitiateWebView(result.ToString());
-        }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -159,7 +153,8 @@ namespace myTNB_Android.Src.MakePayment.MVP
                 }
                 this.mView.GetRegisterCardsResult(result);
 
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.Debug(TAG, e.StackTrace);
                 if (mView.IsActive())
@@ -169,7 +164,7 @@ namespace myTNB_Android.Src.MakePayment.MVP
                 this.mView.ShowErrorMessage("Unable to fetch card information");
                 Utility.LoggingNonFatalError(e);
             }
-            
+
         }
     }
 }

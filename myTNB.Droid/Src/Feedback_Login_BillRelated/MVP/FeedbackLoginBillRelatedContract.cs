@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Base.Request;
-using System.Threading.Tasks;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 {
@@ -56,7 +49,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             /// <param name="date">string</param>
             /// <param name="feedbackId">string</param>
             /// <param name="imageCount">integer</param>
-            void ShowSuccess(string date, string feedbackId , int imageCount);
+            void ShowSuccess(string date, string feedbackId, int imageCount);
 
             /// <summary>
             /// Shows the unsuccessful screen of saving feedback
@@ -214,7 +207,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             /// <param name="accountNum">string</param>
             /// <param name="feedback">string</param>
             /// <param name="attachedImages">List<paramref name="attachedImages"/></param>
-            void OnSubmit(string deviceId, string accountNum , string feedback , List<AttachedImage> attachedImages);
+            void OnSubmit(string deviceId, string accountNum, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
             /// Action to submit feedback with mobile
@@ -224,7 +217,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             /// <param name="accountNum">string</param>
             /// <param name="feedback">string</param>
             /// <param name="attachedImages">List<paramref name="attachedImages"/></param>
-            void OnSubmit(string deviceId , string mobile_no , string accountNum, string feedback, List<AttachedImage> attachedImages);
+            void OnSubmit(string deviceId, string mobile_no, string accountNum, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
             /// Action to check empty feedback
@@ -237,7 +230,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             /// </summary>
             /// <param name="mobile_no">string</param>
             /// <param name="feedback">string</param>
-            void CheckRequiredFields(string mobile_no , string feedback);
+            void CheckRequiredFields(string mobile_no, string feedback);
         }
     }
 }

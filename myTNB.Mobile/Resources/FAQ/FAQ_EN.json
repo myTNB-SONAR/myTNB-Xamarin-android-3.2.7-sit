@@ -1,0 +1,338 @@
+﻿[
+  {
+    "Image": "",
+    "Question": "Why do I have to verify my phone number upon registration?",
+    "Answer": "<p><span>Phone number verification is a security feature for us to verify that you are the account holder using the app and conducting transactions.</span></p>",
+    "ID": "{829B9C19-B7B9-42BF-BC76-E10D9F2CD70B}"
+  },
+  {
+    "Image": "",
+    "Question": "I have multiple electricity accounts. How do I view all my accounts?",
+    "Answer": "<p><span>Once you have added all the accounts you would like to add, you can view all your linked accounts in the &lsquo;Home&rsquo; page. The &lsquo;Home&rsquo; page is a new feature that lets you see a concise preview of all your linked accounts added to your myTNB app.</span></p>",
+    "ID": "{022ED270-EFAC-4F95-8B9F-9AF37AA1A5D3}"
+  },
+  {
+    "Image": "",
+    "Question": "I don’t see one of my accounts listed on the ‘Home’ page. What should I do?",
+    "Answer": "<p><span>If one of your accounts is missing on the &lsquo;Home&rsquo; page, add the missing account by tapping on &ldquo;+ Add&rdquo; and go through the flow to add an account. The newly added account will be displayed on the list in the &lsquo;Home&rsquo; page and usage details will automatically be reflected in the &lsquo;Usage&rsquo; page and the &lsquo;Bills&rsquo; tab.</span></p>",
+    "ID": "{5459907F-7A0D-4ADC-A2CC-8134A520B63C}"
+  },
+  {
+    "Image": "",
+    "Question": "I have registered more than 3 TNB accounts on my myTNB App but I am unable to view all my accounts on the ‘Home’ page. What should I do?",
+    "Answer": "<p><span>On the &lsquo;Home&rsquo; page, select &lsquo;More Accounts&rsquo; to view all of your accounts. To search for a particular account, click on the search icon on the top right of the &lsquo;My Accounts&rsquo; section to search for the account using the account nickname or number. </span></p>",
+    "ID": "{0DB06875-A6A5-4503-B2BB-759F6B58FC48}"
+  },
+  {
+    "Image": "",
+    "Question": "I’m a landlord and would like my tenants to manage their electricity bills with ease. Can they access the account information via the myTNB App?",
+    "Answer": "<p><span>Yes, they can! Your tenants are welcome to download and use the myTNB mobile app. They will need the TNB account number to register the account and access their electricity bills with ease.</span></p>",
+    "ID": "{0E80824B-D1D0-48D0-B369-2CE8222F0927}"
+  },
+  {
+    "Image": "",
+    "Question": "I am a tenant. How can I view my account details and bills?",
+    "Answer": "<p><span>As a tenant, you can view your account details and your latest electricity bill in the &lsquo;Home&rsquo; page and &lsquo;Bills&rsquo; page respectively.</span></p>",
+    "ID": "{573D76A8-0F8F-4006-A242-273D0665B6FD}"
+  },
+  {
+    "Image": "",
+    "Question": "How do I add my Renewable Energy (RE) account?",
+    "Answer": "<p><span>You can add your RE account through the \"Add An Electricity Account\" function. Tap the &lsquo;+ Add&rsquo; button under the &lsquo;My Accounts&rsquo; section in the &lsquo;Home&rsquo; page. Alternatively, you can manage your accounts in the &lsquo;Profile&rsquo; tab. RE accounts can be identified using the round green leaf icon.</span></p>",
+    "ID": "{5665A9BB-175F-429B-A14B-1486A931C68D}"
+  },
+  {
+    "Image": "",
+    "Question": "Why do I sometimes have to update the app upon launching it?",
+    "Answer": "<p><span>We are always improving the app to get you the best experience possible when using our service. We would like you to always be informed when a new version of the app is available with the latest updates.</span></p>",
+    "ID": "{B054E88B-FADB-4103-A97F-4D1CF31C5555}"
+  },
+  {
+    "Image": "",
+    "Question": "How can I change the display language on the new myTNB app?",
+    "Answer": "<p><span>Language setting is only applicable for the latest version of myTNB app. You can set your preferred language under the &lsquo;Settings&rsquo; section in the &lsquo;Profile&rsquo; page. Only English and Bahasa Malaysia language is available at the moment.</span></p>",
+    "ID": "{DDB42C70-2BAE-46C8-8CDF-4FD15374858A}"
+  },
+  {
+    "Image": "",
+    "Question": "I am resetting my password. What are the password requirements?",
+    "Answer": "<p><span>We require a minimum of 8 characters, and recommend a mixture of uppercase and lowercase letters, and a mixture of letters and numbers. </span></p>",
+    "ID": "{D221A3D7-FC63-449F-BE8F-FE4E7AA0E342}"
+  },
+  {
+    "Image": "",
+    "Question": "How does the ‘Home’ page work?",
+    "Answer": "<p><span>The &lsquo;Home&rsquo; page displays primary information (such as your account nickname, account number and the balance due and/or your earnings). To see full account usage and details, please tap into each account. In the &lsquo;Home&rsquo; page, you can also pay bills, contact TNB easily and get answers to your questions quickly. </span></p>",
+    "ID": "{B3222351-A1EF-4178-97EA-327D8F463CFB}"
+  },
+  {
+    "Image": "",
+    "Question": "How often is my account information updated in the app?",
+    "Answer": "<p><span>Your account information is updated daily in the app.</span></p>",
+    "ID": "{558BF151-21B6-41A6-95C4-996B890A5807}"
+  },
+  {
+    "Image": "",
+    "Question": "Why is the information on my ‘Home’ page unavailable?",
+    "Answer": "<p><span>The &lsquo;Home&rsquo; page information may be unavailable due to several reasons, including: </span></p>\n<ul style=\"list-style-type: disc;\">\n    <li><span>The internet connection is down;</span></li>\n    <li><span>The myTNB app has not been updated; and/or</span></li>\n    <li><span>There is a planned server downtime. In the latest version of the myTNB app, you will see an in-app notice during the downtime period.</span></li>\n</ul>",
+    "ID": "{ABDDFC27-ADAF-4D69-9EF6-D33E1F86E43C}"
+  },
+  {
+    "Image": "",
+    "Question": "What information can I find in my ‘Usage’ page?",
+    "Answer": "<p><span>The &lsquo;Usage&rsquo; page provides information on your electricity usage (RM/kWh view), tariff block charges and the total amount due for your current bill.</span></p>\n<p><span>For customers with a Renewable Energy account, the &lsquo;Usage&rsquo; page provides information on your earnings amount.</span></p>",
+    "ID": "{2802D553-C811-4783-BE52-C1DECDE482B4}"
+  },
+  {
+    "Image": "",
+    "Question": "I am unable to view the amounts due for my accounts/the ‘Home’ page for my account/the graph on the ‘Usage’ page/ my bills. What should I do?",
+    "Answer": "<p><span>In the latest version of the myTNB app, tap on the &lsquo;Refresh Now&rsquo; button. If this button does not appear, kindly update to the latest version of the app.</span></p>",
+    "ID": "{B0517580-60F4-45C5-8FE6-277F61216F68}"
+  },
+  {
+    "Image": "",
+    "Question": "I am a new Smart Meter user and was previously using the myTNB App. Will the app look different after my Smart Meter installation?",
+    "Answer": "<p><span>Yes! In the latest version of the app, you will see the &lsquo;Smart Meter Usage&rsquo; page where you can toggle between &lsquo;Ringgit&rsquo; and &lsquo;kWh&rsquo; view. This view will be automatically enabled in the app when your Smart Meter account has been activated.</span></p>\n<p><span>&nbsp;</span></p>\n<p><span>In the &lsquo;Ringgit&rsquo; view, you can see your bill amount so far and how much your bill may reach for the bill period.</span></p>\n<p><span>&nbsp;</span></p>\n<p><span>In the &lsquo;kWh&rsquo; view, you can see how much electricity you have used this bill period, and whether or not you have been more or less energy efficient since your last bill.</span></p>",
+    "ID": "{413D347F-45F5-467F-A564-6C79C551750A}"
+  },
+  {
+    "Image": "",
+    "Question": "I am renting a place with a Smart Meter. Am I able to view my energy usage history on the app?",
+    "Answer": "<p><span>Yes. In the &lsquo;Usage&rsquo; page, you can toggle between &lsquo;kWh&rsquo; and &lsquo;RM&rsquo; view to understand your energy usage history and the bill amounts in the graph bar.</span></p>",
+    "ID": "{45DA5AC6-A038-428D-94EB-AB7186677358}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I see my past energy usage in the app?",
+    "Answer": "<p><span>Yes, you will be able to view your usage history for the past 6 months if you are the owner of the account.</span></p>",
+    "ID": "{31D28F14-3D30-4441-8BA6-DFF91A6AEB84}"
+  },
+  {
+    "Image": "",
+    "Question": "How do I switch between Ringgit (RM) and usage (kWh) view?",
+    "Answer": "<p><span>You can tap on the &lsquo;RM&rsquo; or &lsquo;kWh&rsquo; button below the graph to toggle between both views. </span></p>",
+    "ID": "{1A6328D5-75BE-4AC4-8190-E157916D77CF}"
+  },
+  {
+    "Image": "",
+    "Question": "In the ‘Usage’ page, how far back can I see my daily energy usage in the bar graph?",
+    "Answer": "<p><span>In the graph view of the &lsquo;Usage&rsquo; page, you can see your daily energy usage for the past 30 days.</span></p>",
+    "ID": "{911C8833-B650-4EF1-ACF8-874B321DAD89}"
+  },
+  {
+    "Image": "",
+    "Question": "How can I view the last 30 days of energy usage?",
+    "Answer": "<p><span>In the &lsquo;Day&rsquo; view, swipe left or right to view the last 30 days of energy usage.</span></p>",
+    "ID": "{BA0EBAD3-6AE7-40B3-8177-5488329BEAF1}"
+  },
+  {
+    "Image": "",
+    "Question": "I am a new Smart Meter user. Why am I not able to see the Smart Meter Usage view?",
+    "Answer": "<p><span>After your Smart Meter has been installed, it will take a few days until you can view the Smart Meter Usage view, which will be updated automatically in the myTNB app. If it does not appear, try logging in and out of your account after installation.</span></p>",
+    "ID": "{34D384C6-3962-4AF9-B991-307DE70416CC}"
+  },
+  {
+    "Image": "",
+    "Question": "Why am I not able to see certain features on the Smart Meter Usage?",
+    "Answer": "<p><span>If the Smart Meter Usage does not appear, tap on the &lsquo;Refresh Now&rsquo; button in the latest version of the myTNB app. If this button does not appear, kindly update to the latest version of the app.</span></p>",
+    "ID": "{EA6708CE-2EA4-424C-BAF3-0451288C0A6F}"
+  },
+  {
+    "Image": "",
+    "Question": "What is Self Meter Reading?",
+    "Answer": "<p><span>Self Meter Reading is a service provided by TNB where you can easily read and submit your own meter readings. </span></p>",
+    "ID": "{0602D664-C937-41CB-8850-F78C53A00FB0}"
+  },
+  {
+    "Image": "",
+    "Question": "How does Self Meter Reading work?",
+    "Answer": "<p><span>For 3 consecutive months, you can read, record and submit your&nbsp;meter readings via the&nbsp;myTNB&nbsp;App or&nbsp;myTNB&nbsp;Portal. You will be&nbsp;notified on when you should read your meter readings via push-notifications on the&nbsp;myTNB&nbsp;App and/or SMS. On the&nbsp;4th month, TNB will conduct the reading to calibrate and ensure&nbsp;everything is in order.</span></p>\n<p><span>The cycle repeats itself&nbsp;as long as&nbsp;you haven't stopped the Self&nbsp;Meter Reading service. For more information refer to </span><span><a href=\"https://www.mytnb.com.my/residential/get-electricity/self-meter-reading/\"><span>https://www.mytnb.com.my/residential/get-electricity/self-meter-reading</span></a></span><span></span></p>",
+    "ID": "{EDFFAB69-B97C-4CE2-84ED-DADE1103A9D0}"
+  },
+  {
+    "Image": "",
+    "Question": "Why should I apply for Self Meter Reading?",
+    "Answer": "<p><span>This service is convenient for customers whose meters are inside their compounds but are not available when the Meter Readers come by. It is also beneficial for those who frequently receive estimated electricity bills.</span></p>",
+    "ID": "{4EE0FD29-B3BE-4835-B61D-9B0CEA049E62}"
+  },
+  {
+    "Image": "",
+    "Question": "Who is eligible for the Self Meter Reading services?",
+    "Answer": "<ul style=\"list-style-type: disc;\">\n    <li><span>This service is only applicable for Residential Customers that have received estimated bills for 4 consecutive months. To find out if you are eligible, simply apply for Self Meter Reading on the myTNB app and we&rsquo;ll show you the accounts that are eligible for this service.&nbsp;</span></li>\n    <li><span>Only account owners or tenants acting as owners are eligible for this service</span></li>\n    <li><span>This service is recommended for individuals who have easily accessible meters (i.e. meter location is not out of reach)</span></li>\n</ul>",
+    "ID": "{A724C70E-CABB-45A5-ABA7-95F32DF528B7}"
+  },
+  {
+    "Image": "",
+    "Question": "How can I apply for Self Meter Reading?",
+    "Answer": "<p><span>You can start this service&nbsp;via the myTNB App or Portal.</span></p>",
+    "ID": "{B02C3478-E4FB-43AF-855B-2DD754DDF5A4}"
+  },
+  {
+    "Image": "",
+    "Question": "How will I be notified if my Self Meter Reading application is successful?",
+    "Answer": "Once your Self Meter Reading application is successful, you will receive a notification. In the meantime, you can check the status of your application via the myTNB Portal.",
+    "ID": "{66B2B131-EDA2-4E45-9BCC-76DC11AC5C69}"
+  },
+  {
+    "Image": "",
+    "Question": "When can I submit my reading?",
+    "Answer": "<p><span>You will be able to submit your reading within 2 days of your reading period (please refer to your bill to get the date). You will&nbsp;be notified via notifications through the&nbsp;myTNB&nbsp;App and/or SMS on&nbsp;when to submit your readings.</span></p>",
+    "ID": "{9044E294-42A8-4CAA-B773-91A14A4ABD8B}"
+  },
+  {
+    "Image": "",
+    "Question": "I’m unable to submit my meter readings via the myTNB App. Why?",
+    "Answer": "<p><span>If you are unable to submit your meter readings via the myTNB app and see a &lsquo;Please Try Again&rsquo; screen, this may be due to the following reasons: </span></p>\n<p><span>&nbsp;</span></p>\n<ul style=\"list-style-type: disc;\">\n    <li><span>Internet Connection<br />\n    </span>Your internet connection is not stable to submit the reading. Please try submitting your reading again.</li>\n</ul>\n<ul>\n    <li><span>Invalid Meter Reading<br />\n    </span>The meter reading recorded may not be valid. Please ensure that you record the correct amount as displayed on your meter. If you are using a 3 Phase meter, please make sure that you record the correct amount for each value (i.e. kWh, kW and kVARh).</li>\n</ul>\n<ul>\n    <li><span>myTNB App is Temporarily Down<br />\n    </span>The app is temporarily down. In the latest version of the&nbsp;myTNB&nbsp;app, tap on the &lsquo;Refresh Now&rsquo; button. If this button&nbsp;does not&nbsp;appear, kindly update to the latest version of the app.</li>\n</ul>",
+    "ID": "{B3F08463-F6C0-4D7F-9A92-48B6331F260E}"
+  },
+  {
+    "Image": "",
+    "Question": "What happens if I miss a reading?",
+    "Answer": "<p><span>You will receive an estimated bill for the billing period that you&nbsp;missed. If you do not submit your meter readings for 3 consecutive&nbsp;months, your Self Meter&nbsp;Reading service will be&nbsp;automatically stopped.</span></p>",
+    "ID": "{5E7ED0FD-87FB-40A6-AFEC-41E35C9202E7}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I terminate my Self Meter Reading service?",
+    "Answer": "<p><span>Yes, you can terminate the Self Meter Reading service via the myTNB App and myTNB Portal. You can find the termination button at the bottom of your reading history screen.</span></p>",
+    "ID": "{5BB9965D-3726-40AF-B7E2-9867BA05E2DC}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I enable the Self Meter Reading services again if I have previously terminated my services?",
+    "Answer": "<p><span>Yes, you may enable the Self Meter Reading services again for eligible accounts and apply as a new Self Meter Reading user.</span></p>",
+    "ID": "{B8EBBADE-0918-43B7-8093-BB2B19614033}"
+  },
+  {
+    "Image": "",
+    "Question": "In the ‘Submit Meter Reading’ page, I have to enter the 3 reading values (i.e. kWh, kVARh and kW). Why?",
+    "Answer": "<p><span>You will be required to enter 3 reading values (i.e. kWh,&nbsp;kW and kVARh) if you are using a 3 Phase meter.&nbsp;In order for&nbsp;you to record each&nbsp;respective value, you will need to wait for the screen on your meter&nbsp;to display the respective amounts and the units. By default, the screen will scroll&nbsp;the kWh reading, the&nbsp;kW&nbsp;reading, the kVARh reading and a blank&nbsp;screen at 10 second intervals. You do not need to push any buttons.&nbsp;Wait until the screen displays the reading and record the reading.</span></p>",
+    "ID": "{FC49D467-DD51-4DC9-98FD-837B86F1BAED}"
+  },
+  {
+    "Image": "",
+    "Question": "Where do I find my electricity bills?",
+    "Answer": "<p><span>You can check your bill by tapping on &lsquo;View My Bill(s)&rsquo; in the Quick Actions section on the Home page. The latest bill will be displayed in PDF form. Alternatively, go to the &lsquo;Bills&rsquo; page to view your bill and payment history.</span></p>\n\n<p> <span>Only account owners can view the PDF bills for the last 6 months. For tenants and non-owners, you can only view the PDF bill for the current bill period.</span></p>",
+    "ID": "{4436935B-B3AB-4AFB-B38B-0E4F91F6B88A}"
+  },
+  {
+    "Image": "",
+    "Question": "My bill seems very high. Why?",
+    "Answer": "<p><span>Any changes on your electricity bill may be due to the following reasons:</span></p>\n<p><span>&nbsp;</span></p>\n<ul style=\"list-style-type: disc;\">\n    <li><span>Change in consumption pattern<br />\n    </span>For example, a change in the weather may result in more or less electricity&nbsp;consumption with&nbsp;the usage of motorised electrical appliances such as air conditioners, refrigerators, heating appliances, washing machines, water dispensers and others.</li>\n</ul>\n<ul>\n    <li><span>Inaccuracy of the old meter<br />\n    </span>The old meter may work inefficiently due to aged components or tampering.&nbsp;An accuracy test will be done on the old meter&nbsp;before replacing with the Smart Meter to confirm its accuracy.</li>\n</ul>\n<p><span>&nbsp;</span></p>\n<p><span>To have your meter tested please contact our Careline at 1-300-88-5454.</span></p>",
+    "ID": "{62A9200E-366C-4452-ABD3-F266AEE1A62A}"
+  },
+  {
+    "Image": "",
+    "Question": "How do I pay my bills through the app?",
+    "Answer": "<p><span>Paying bills through the myTNB mobile app is quick and easy. Simply look for the &lsquo;Pay My Bill&rsquo; or &lsquo;Pay&rsquo; button in the Home or Usage page and make a payment either with your credit/debit card or through Online Banking via FPX (bank transfer).</span></p>",
+    "ID": "{85FD13B1-E1A2-404C-AE74-53F2190AE546}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I make multiple bill payments?",
+    "Answer": "<p><span>Yes, you may make multiple bill payments at one-go. Just select which account you would like to make payment for once you tap on the &lsquo;Pay&rsquo; button, insert in the amount to pay, and proceed as usual. Separate receipts for each account also will be generated and accessible in the account&rsquo;s payment history.</span></p>",
+    "ID": "{4BAC790D-74C3-462A-A1F2-0AE3263C3ADD}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I store my credit card info in the app?",
+    "Answer": "<p><span>Yes, there is an option for you to save your credit card info for future use when paying with your credit card for the first time. </span></p>",
+    "ID": "{A157BF8D-8819-4433-A0F7-4E11CD0BACA2}"
+  },
+  {
+    "Image": "",
+    "Question": "I would like to pay for my family’s electricity bills through the app. How do I do this?",
+    "Answer": "<p><span>You can add your family members&rsquo; TNB accounts and manage them through the app by tapping on the &lsquo;+ Add&rsquo; button in the &lsquo;Home&rsquo; page. Keep in mind that you will need the TNB account number to register the account and view the electricity bills.</span></p>",
+    "ID": "{154664BC-03EE-4DCA-BEAB-3BE982B324AC}"
+  },
+  {
+    "Image": "",
+    "Question": "I can’t pay my bills through the app. What are the alternative payment channels?",
+    "Answer": "<p><span>This may happen due to any planned system upgrades. Kindly try again at a later time. Alternatively, you can find other payment methods below:&nbsp;</span></p>\n<ul style=\"list-style-type: disc;\">\n    <li><span>myTNB Portal</span></li>\n    <li><span>Pusat Khidmat Pelanggan</span></li>\n    <li><span>JomPay</span></li>\n    <li><span>One Stop Center</span></li>\n    <li><span>Autopay</span></li>\n    <li><span>Direct Debit</span></li>\n    <li><span>Automated Teller Machine (ATM)</span></li>\n    <li><span>Cash Deposit Machine</span></li>\n    <li><span>Over the Counter</span></li>\n    <li><span>Websites/Internet Payment</span></li>\n    <li><span>Phone Banking</span></li>\n    <li><span>Cheque Via Post</span></li>\n    <li><span>Payquick Kiosks</span></li>\n</ul>",
+    "ID": "{980C3CAA-BDD3-4478-86E0-3179C1E16466}"
+  },
+  {
+    "Image": "",
+    "Question": "I have paid for my TNB bills. Why is the payment not reflected in the app?",
+    "Answer": "<p><span>If you have received a successful payment receipt from your bank after paying for your TNB bill, rest assured your payment has been received by TNB. The payment will be reflected in the app within 1-3 days.</span></p>",
+    "ID": "{005900CA-1C73-461A-B4CD-0EFDE6BCD37A}"
+  },
+  {
+    "Image": "",
+    "Question": "Where can I view my receipt after making a payment in the app?",
+    "Answer": "You can find your receipt in the &lsquo;Bills&rsquo; tab. Under the &ldquo;My History&rdquo; section, tap on the relevant payment to view your PDF receipt. Alternatively, you will also be sent a confirmation receipt via the email address registered under your myTNB account.",
+    "ID": "{AB932F01-CD00-4BB5-B205-CF95140B805E}"
+  },
+  {
+    "Image": "",
+    "Question": "Where can I view all notifications in the app?",
+    "Answer": "<p><span>On the &lsquo;Home&rsquo; page, tap on the bell icon on the top right corner to view all your notifications.</span></p>",
+    "ID": "{B6511EF5-06C9-4AED-A1FB-0AED581B2FF1}"
+  },
+  {
+    "Image": "",
+    "Question": "I have given feedback via the app. Can I view my feedback status in the app?",
+    "Answer": "<p>Yes, you can do so by tapping &ldquo;Submit Feedback&rdquo; on the &lsquo;Home&rsquo; page, then tapping on &lsquo;View Submitted Feedback&rsquo;.</p>",
+    "ID": "{F0442AA2-0E21-49BB-8076-C26F55059E14}"
+  },
+  {
+    "Image": "",
+    "Question": "How will I be informed when there are any app maintenance updates, announcements and/or promotions?",
+    "Answer": "<p><span>You will get push notifications for any general app maintenance updates or other types of on-demand announcements and promotions.</span></p>",
+    "ID": "{C2034B29-4639-4A62-9297-7D3B9FADA267}"
+  },
+  {
+    "Image": "",
+    "Question": "I am unable to receive notifications from the myTNB mobile app but I have enabled and selected preferences. What should I do?",
+    "Answer": "<p><span>If you are unable to receive push notifications, please ensure you have allowed the app to send you notifications in your phone setting. And if you are unable to view your notifications within the app, tap on the &lsquo;Refresh Now&rsquo; button in the &lsquo;Notifications&rsquo; page. If this button does not appear in your &lsquo;Notifications&rsquo; page, kindly update to the latest version of the app.</span></p>",
+    "ID": "{4D7F7609-E37E-48D8-8388-B886F4F1505D}"
+  },
+  {
+    "Image": "",
+    "Question": "What’s the difference between myTNB app and myTNB portal?",
+    "Answer": "<p><span>The myTNB app is a lightweight version the&nbsp;myTNB portal to make payments,&nbsp;log feedback and more.</span></p>",
+    "ID": "{7079E781-D854-4EC0-9E48-7A16C0D70D6B}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I login to the myTNB app using the password and email I used for the myTNB portal?",
+    "Answer": "<p><span>Yes, both the&nbsp;myTNB app and the&nbsp;myTNB portal uses the same login information (email &amp; password).</span></p>",
+    "ID": "{8E9B332B-C07B-45B1-8EA2-034C0F6AE8AD}"
+  },
+  {
+    "Image": "",
+    "Question": "I have added my account on the myTNB Portal but I cannot see my account on the myTNB app. How do I resolve this?",
+    "Answer": "<p><span>If your account has been added on the myTNB Portal while you are logged in on your myTNB mobile app, simply logout of the mobile app and login again to retry.</span></p>",
+    "ID": "{0219906D-C9F3-44F1-A2F8-F689274AA733}"
+  },
+  {
+    "Image": "",
+    "Question": "I have an existing myTNB account, can I use the same account?",
+    "Answer": "<p><span>Yes, you certainly can! The&nbsp;myTNB mobile app and the&nbsp;myTNB Portal use the same set of credentials (user ID and password).</span></p>",
+    "ID": "{AB9CEFDE-B93B-49F4-84B7-F549E36541E6}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I see multiple accounts on the myTNB app and the portal?",
+    "Answer": "<p><span>Yes, both the&nbsp;myTNB app and the&nbsp;myTNB portal share the same login information. The account and billing information is real time.</span></p>",
+    "ID": "{72EBE533-49D4-4868-83EC-E3C643F47F46}"
+  },
+  {
+    "Image": "",
+    "Question": "Where can I find my bill account number?",
+    "Answer": "<p>Your 12&ndash;digit account number can be found on the top left-hand corner of your monthly paper bill. Alternatively, you can find it by clicking on the &lsquo;Profile&rsquo; tab in the navigation bar. You will be able to view it under the myTNB Account section. If you are a customer with multiple linked accounts in your myTNB app, your 12&ndash;digit account number is also displayed in the &lsquo;Home&rsquo; page under your account nickname.</p>",
+    "ID": "{F5068CC3-F57A-4DB2-9ED7-5F6DE4AFD20A}"
+  },
+  {
+    "Image": "",
+    "Question": "Is my personal data safe?",
+    "Answer": "<p><span>Absolutely. Your privacy is of utmost importance to us; therefore, we employ the latest internet security technology to ensure the safety and confidentiality of your data.</span></p>",
+    "ID": "{7D05851F-77DF-4432-B5AE-CAF37CAF2FE0}"
+  },
+  {
+    "Image": "",
+    "Question": "How can I contact TNB?",
+    "Answer": "<p>Getting in touch has never been easier. Call us on <a href=\"tel:15454\">15454</a> for Outages &amp; Breakdowns and <a href=\"tel:1-300-88-5454\"></a><1-300-88-5454></1-300-88-5454> for Billing &amp; General enquiries about your account. You can also drop us an email at tnbcareline@tnb.com.my or message us on Facebook at <a href=\"http://www.facebook.com/TNBCareline\">http://www.facebook.com/TNBCareline </a> Alternatively, tap on &lsquo;Submit Feedback&rsquo; on the &ldquo;Home&rdquo; page in the app to send an enquiry to our team.</p>",
+    "ID": "{4881694F-61E8-4C9C-AC0C-F79005B3AC97}"
+  }
+]

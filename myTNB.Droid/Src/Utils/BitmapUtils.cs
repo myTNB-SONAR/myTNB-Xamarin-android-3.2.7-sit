@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Graphics;
-using Java.IO;
-
+﻿using Android.Graphics;
 using Android.Media;
+using System;
 
 namespace myTNB_Android.Src.Utils
 {
     public static class BitmapUtils
     {
 
-        public static Bitmap CorrectOrientation(this Bitmap bitmap, String filePath) 
+        public static Bitmap CorrectOrientation(this Bitmap bitmap, String filePath)
         {
             ExifInterface ei = new ExifInterface(filePath);
             int orientation = ei.GetAttributeInt(ExifInterface.TagOrientation, (int)Android.Media.Orientation.Normal);
@@ -102,7 +90,7 @@ namespace myTNB_Android.Src.Utils
 
 
 
-        public static Bitmap Rotate(Bitmap bitmap , float degrees)
+        public static Bitmap Rotate(Bitmap bitmap, float degrees)
         {
             Matrix matrix = new Matrix();
             matrix.PostRotate(degrees);

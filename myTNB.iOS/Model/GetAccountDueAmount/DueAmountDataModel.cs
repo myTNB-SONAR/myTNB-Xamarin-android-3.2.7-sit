@@ -1,5 +1,5 @@
-﻿using myTNB.DataManager;
-using myTNB.SQLite.SQLiteDataManager;
+﻿using System.Collections.Generic;
+using myTNB.DataManager;
 using SQLite;
 
 namespace myTNB.Model
@@ -37,7 +37,7 @@ namespace myTNB.Model
             }
         }
 
-#region Account fields
+        #region Account fields
         public double IncrementREDueDateByDays
         {
             get;
@@ -56,12 +56,29 @@ namespace myTNB.Model
             }
         }
 
-        public bool IsReAccount
+        public bool IsReAccount { set; get; }
+        public bool IsNormalAccount { set; get; }
+        public bool IsSSMR { set; get; }
+        public bool IsOwnedAccount { set; get; }
+        public bool IsPayEnabled { set; get; }
+
+        public List<ItemisedBilling> ItemizedBillings { set; get; }
+        public double OpenChargesTotal { set; get; }
+        public bool IsItemisedBilling
         {
-            get;
-            set;
+            get
+            {
+                return OpenChargesTotal > 0;
+            }
         }
-#endregion
+
+        public string WhyThisAmountLink { set; get; }
+        public string WhyThisAmountTitle { set; get; }
+        public string WhyThisAmountMessage { set; get; }
+        public string WhyThisAmountPriButtonText { set; get; }
+        public string WhyThisAmountSecButtonText { set; get; }
+
+        #endregion
 
         /// <summary>
         /// Updates the values.
@@ -69,42 +86,27 @@ namespace myTNB.Model
         /// <param name="model">Model.</param>
         public void UpdateValues(DueAmountDataModel model)
         {
-            // update all except nickname and account num (key)
-            amountDue = model.amountDue;
-            billDueDate = model.billDueDate;
-            IncrementREDueDateByDays = model.IncrementREDueDateByDays;
+            if (model != null)
+            {
+                // update all except nickname and account num (key)
+                amountDue = model.amountDue;
+                billDueDate = model.billDueDate;
+                IncrementREDueDateByDays = model.IncrementREDueDateByDays;
+            }
         }
 
         /// <summary>
-        /// Converts to an entity.
+        /// Updates the SSMR Flag
         /// </summary>
-        /// <returns>The entity.</returns>
-        public DueEntity ToEntity()
+        /// <param name="model"></param>
+        public void UpdateIsSSMRValue(SMRAccountStatusModel model)
         {
-            var entity = new DueEntity();
-            entity.accNickName = accNickName;
-            entity.accNum = accNum;
-            entity.amountDue = amountDue;
-            entity.billDueDate = billDueDate;
-            entity.IncrementREDueDateByDays = IncrementREDueDateByDays;
-            entity.IsReAccount = IsReAccount;
+            if (model != null)
+            {
+                var flag = string.Compare(model.IsTaggedSMR.ToLower(), "true") == 0;
+                IsSSMR = flag;
 
-            return entity;
+            }
         }
-
-        /// <summary>
-        /// Updates from an entity.
-        /// </summary>
-        /// <param name="entity">Entity.</param>
-        public void UpdateFromEntity(DueEntity entity)
-        {
-            accNickName = entity.accNickName;
-            accNum = entity.accNum;
-            amountDue = entity.amountDue;
-            billDueDate = entity.billDueDate;
-            IncrementREDueDateByDays = entity.IncrementREDueDateByDays;
-            IsReAccount = entity.IsReAccount;
-        }
-
     }
 }

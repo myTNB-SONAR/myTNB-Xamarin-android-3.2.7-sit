@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
     public class SMUsageHistoryData
     {
-        
+
         [JsonProperty(PropertyName = "IsCO2Disabled")]
         [AliasAs("IsCO2Disabled")]
         public bool IsCO2Disabled { get; set; }
@@ -190,5 +180,5 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         }
     }
 
-    
+
 }

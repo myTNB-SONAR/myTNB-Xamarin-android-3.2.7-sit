@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.Database.Model;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.Notifications.Activity;
-using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
-using Android.Support.Design.Widget;
-using Android.Support.V7.App;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using Java.Lang;
+using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
+using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.Utils;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartNoTNBAccount : BaseFragment , DashboardChartNoTNBAccountContract.IView
+    public class DashboardChartNoTNBAccount : BaseFragment, DashboardChartNoTNBAccountContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -103,8 +97,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //actionBar.SetDisplayShowHomeEnabled(true);
         }
 
-        [OnClick(Resource.Id.btnAddAccount)]    
-        void OnAddAccount(object sender , EventArgs args)
+        [OnClick(Resource.Id.btnAddAccount)]
+        void OnAddAccount(object sender, EventArgs args)
         {
             this.userActionsListener.OnAddAccount();
         }
@@ -135,8 +129,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowNotification()
         {
             Intent intent = GetIntentObject(typeof(NotificationActivity));
-            if (intent != null && IsAdded) {
-                StartActivity(intent);    
+            if (intent != null && IsAdded)
+            {
+                StartActivity(intent);
             }
 
         }
@@ -159,19 +154,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
-            try {
-            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            try
             {
-                mNoInternetSnackbar.Dismiss();
-            }
+                if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+                {
+                    mNoInternetSnackbar.Dismiss();
+                }
 
-            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate {
+                mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                {
 
-                mNoInternetSnackbar.Dismiss();
-            }
-            );
-            mNoInternetSnackbar.Show();
+                    mNoInternetSnackbar.Dismiss();
+                }
+                );
+                mNoInternetSnackbar.Show();
             }
             catch (System.Exception e)
             {

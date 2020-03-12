@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Utils;
-using Android.Support.V7.Widget;
-using Square.Picasso;
 using CheeseBind;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Android.Support.V4.Graphics.Drawable;
+using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Utils;
+using Square.Picasso;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Adapter
 {

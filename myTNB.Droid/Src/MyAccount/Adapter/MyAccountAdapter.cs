@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
+using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MyAccount.Adapter
 {
@@ -33,7 +26,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
         public MyAccountAdapter(Context context, List<CustomerBillingAccount> itemList, bool notify) : base(context, itemList, notify)
         {
         }
-    
+
 
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -82,7 +75,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
 
             public MyAccountViewHolder(View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountName , txtAccountNum);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountName, txtAccountNum);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountManage);
             }
         }

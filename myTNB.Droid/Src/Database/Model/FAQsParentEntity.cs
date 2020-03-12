@@ -1,11 +1,9 @@
-﻿using SQLite;
-using System.Collections.Generic;
-using myTNB.SitecoreCMS.Model;
-using System;
-using myTNB_Android.Src.Utils;
-using myTNB.SitecoreCM.Models;
-using myTNB.SitecoreCMS.Models;
+﻿using myTNB.SitecoreCMS.Models;
 using myTNB_Android.Src.Database;
+using myTNB_Android.Src.Utils;
+using SQLite;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -16,8 +14,8 @@ namespace myTNB.SQLite.SQLiteDataManager
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("FAQsParentEntity");
-                db.CreateTable<FAQsParentEntity>();
+            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("FAQsParentEntity");
+            db.CreateTable<FAQsParentEntity>();
             //}
         }
 
@@ -28,8 +26,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    int newRecord = db.InsertOrReplace(item);
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                int newRecord = db.InsertOrReplace(item);
+                Console.WriteLine("Insert Record: {0}", newRecord);
                 //}
             }
             catch (Exception e)
@@ -40,7 +38,8 @@ namespace myTNB.SQLite.SQLiteDataManager
 
         public void InsertListOfItems(List<FAQsParentModel> itemList)
         {
-            if(itemList != null){
+            if (itemList != null)
+            {
                 foreach (FAQsParentModel obj in itemList)
                 {
                     FAQsParentEntity item = new FAQsParentEntity();
@@ -59,15 +58,18 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    itemList = db.Query<FAQsParentEntity>("select * from FAQsParentEntity");
+                itemList = db.Query<FAQsParentEntity>("select * from FAQsParentEntity");
                 //}
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
             return itemList;
         }
 
-        public void DeleteTable(){
+        public void DeleteTable()
+        {
             try
             {
                 using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -77,7 +79,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Delete Table : {0}",e.Message);
+                Console.WriteLine("Error in Delete Table : {0}", e.Message);
             }
         }
 
@@ -88,8 +90,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    int newRecord = db.Update(item);
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                int newRecord = db.Update(item);
+                Console.WriteLine("Insert Record: {0}", newRecord);
                 //}
             }
             catch (Exception e)

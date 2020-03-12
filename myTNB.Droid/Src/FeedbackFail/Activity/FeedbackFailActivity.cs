@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackFail.Activity
@@ -46,8 +41,8 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtContentInfo );
-            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , btnBackToDashboard , btnTryAgain);
+            TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
+            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnBackToDashboard, btnTryAgain);
 
             if (!UserEntity.IsCurrentlyActive())
             {
@@ -65,7 +60,7 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
         [OnClick(Resource.Id.btnBackToDashboard)]
         void BackToDashboard(object sender, EventArgs eventArgs)
         {
-            var dashboardIntent = new Intent(this , typeof(DashboardActivity));
+            var dashboardIntent = new Intent(this, typeof(DashboardActivity));
             dashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(dashboardIntent);
         }

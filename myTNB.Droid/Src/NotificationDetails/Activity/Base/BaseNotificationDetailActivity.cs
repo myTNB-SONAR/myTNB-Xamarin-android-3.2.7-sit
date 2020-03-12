@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.NotificationDetails.MVP;
-using Refit;
-using AFollestad.MaterialDialogs;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
 using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity.Base
@@ -41,13 +34,16 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            try {
-            Bundle extras = Intent.Extras;
-                if (extras != null) {
+            try
+            {
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
                     //notificationDetails = JsonConvert.DeserializeObject<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
                     //userNotificationData = JsonConvert.DeserializeObject<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
 
-                    if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM)) {
+                    if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
+                    {
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
                     }
 
@@ -56,22 +52,22 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
                     }
 
-                    position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);        
+                    position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
                 }
-            
-
-            base.OnCreate(savedInstanceState);
-
-            mProgressDialog = new MaterialDialog.Builder(this)
-            .Title(GetString(Resource.String.notification_detail_remove_progress_title))
-            .Content(GetString(Resource.String.notification_detail_remove_progress_content))
-            .Cancelable(false)
-            .Progress(true, 0)
-            .Build();
 
 
+                base.OnCreate(savedInstanceState);
 
-            this.mPresenter = new NotificationDetailPresenter(this);
+                mProgressDialog = new MaterialDialog.Builder(this)
+                .Title(GetString(Resource.String.notification_detail_remove_progress_title))
+                .Content(GetString(Resource.String.notification_detail_remove_progress_content))
+                .Cancelable(false)
+                .Progress(true, 0)
+                .Build();
+
+
+
+                this.mPresenter = new NotificationDetailPresenter(this);
             }
             catch (Exception e)
             {
@@ -119,7 +115,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
                         .SetTitle(Resource.String.notification_detail_remove_notification_dialog_title)
                         .SetMessage(GetString(Resource.String.notification_detail_remove_notification_dialog_content))
                         .SetNegativeButton(Resource.String.notification_detail_remove_notification_negative_btn,
-                        delegate {
+                        delegate
+                        {
                             removeDialog.Dismiss();
                         })
                         .SetPositiveButton(Resource.String.notification_detail_remove_notification_positive_btn,
@@ -129,7 +126,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
                         })
                         .Show()
                         ;
-                    
+
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -141,14 +138,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             //{
             //    mProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -162,11 +160,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -205,7 +204,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(GetRootView(), GetString(Resource.String.notification_detail_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_detail_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
@@ -224,7 +224,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(GetRootView(), GetString(Resource.String.notification_detail_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_detail_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -243,7 +244,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(GetRootView(), GetString(Resource.String.notification_detail_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_detail_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_detail_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 

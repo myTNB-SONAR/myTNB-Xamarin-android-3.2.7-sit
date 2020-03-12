@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.ManageSupplyAccount.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using System.Threading;
-using System.Net.Http;
 using Refit;
-using myTNB_Android.Src.ManageSupplyAccount.Api;
-using myTNB_Android.Src.Database.Model;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 {
@@ -25,7 +19,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
         private ManageSupplyAccountContract.IView mView;
         CancellationTokenSource cts;
         AccountData accountData;
-        public ManageSupplyAccountPresenter(ManageSupplyAccountContract.IView mView , AccountData accountData)
+        public ManageSupplyAccountPresenter(ManageSupplyAccountContract.IView mView, AccountData accountData)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -34,15 +28,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
-            if (requestCode == Constants.UPDATE_NICKNAME_REQUEST)
+            try
             {
-                if (resultCode == Result.Ok)
+                if (requestCode == Constants.UPDATE_NICKNAME_REQUEST)
                 {
-                    AccountData accountData = JsonConvert.DeserializeObject<AccountData>(data.Extras.GetString(Constants.SELECTED_ACCOUNT));
-                    this.mView.ShowUpdateSuccessNickname(accountData);
+                    if (resultCode == Result.Ok)
+                    {
+                        AccountData accountData = JsonConvert.DeserializeObject<AccountData>(data.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        this.mView.ShowUpdateSuccessNickname(accountData);
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -54,8 +49,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
         {
             cts = new CancellationTokenSource();
 
-            if(mView.IsActive()) {
-            this.mView.ShowRemoveProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowRemoveProgress();
             }
 
 #if DEBUG || STUB
@@ -65,7 +61,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             var api = RestService.For<IManageSupplyAccountApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
-            UserEntity user = UserEntity.GetActive(); 
+            UserEntity user = UserEntity.GetActive();
             try
             {
                 var removeSupplyAccountApi = await api.RemoveTNBAccountForUserFav(new Request.RemoveTNBAccountForUserFavRequest()
@@ -80,7 +76,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
                     DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
                     DeviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {
@@ -90,12 +86,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 if (!removeSupplyAccountApi.Data.IsError)
                 {
                     bool isSelectedAcc = false;
-                    if(CustomerBillingAccount.GetSelected() != null && 
-                       CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum)){
+                    if (CustomerBillingAccount.GetSelected() != null &&
+                       CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
+                    {
                         isSelectedAcc = true;
                     }
                     CustomerBillingAccount.Remove(accountData.AccountNum);
-                    if (isSelectedAcc && CustomerBillingAccount.Enumerate().ToList().Count() > 0) {
+                    if (isSelectedAcc && CustomerBillingAccount.Enumerate().ToList().Count() > 0)
+                    {
                         /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
                         //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
                         //if (customerBillingAccount != null) {
@@ -160,11 +158,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
         public void Start()
         {
             //
-            if (accountData != null && !string.IsNullOrEmpty(accountData?.AccountNum)) {
+            if (accountData != null && !string.IsNullOrEmpty(accountData?.AccountNum))
+            {
                 CustomerBillingAccount customerBillingAccount = new CustomerBillingAccount();
                 customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData?.AccountNum);
-                if (customerBillingAccount != null) {
-                    this.mView.ShowNickname(customerBillingAccount?.AccDesc);        
+                if (customerBillingAccount != null)
+                {
+                    this.mView.ShowNickname(customerBillingAccount?.AccDesc);
                 }
             }
 

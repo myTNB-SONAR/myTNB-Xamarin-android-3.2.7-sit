@@ -10,6 +10,21 @@
         Reconnection,
         Promotion,
         News,
-        Maintenance
+        Maintenance,
+        SSMR,
+        PaymentFail,
+        PaymentSuccess
+    }
+
+    public enum SSMRNotificationEnum
+    {
+        None = 0,
+        RegistrationCompleted,
+        RegistrationCancelled,
+        TerminationCompleted,
+        TerminationCancelled,
+        OpenMeterReadingPeriod,
+        NoSubmissionReminder,
+        MissedSubmission
     }
 }

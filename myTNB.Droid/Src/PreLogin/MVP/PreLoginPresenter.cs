@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading.Tasks;
-using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.SiteCore;
-using myTNB.SitecoreCMS.Model;
-using Newtonsoft.Json;
+﻿using Android.App;
 using Android.Util;
-using myTNB_Android.Src.Database.Model;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.PreLogin.MVP
 {

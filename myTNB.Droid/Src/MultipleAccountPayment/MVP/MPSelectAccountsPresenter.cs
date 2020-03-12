@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Utils;
-using System.Net;
-using Android.Util;
-using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.MultipleAccountPayment.Api;
-using myTNB_Android.Src.MultipleAccountPayment.Requests;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
+﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Api;
+using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Requests;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 {
@@ -35,7 +26,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         public void Start()
         {
-            
+
         }
 
         public void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts)
@@ -48,18 +39,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
         {
             try
             {
-            //if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
-            //}
+                //if (mView.IsActive()) {
+                this.mView.ShowProgressDialog();
+                //}
 
 #if DEBUG || STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<MPGetAccountsDueAmountApi>(httpClient);
+                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+                var api = RestService.For<MPGetAccountsDueAmountApi>(httpClient);
 #else
             var api = RestService.For<MPGetAccountsDueAmountApi>(Constants.SERVER_URL.END_POINT);
 #endif
-            //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-           
+                //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
+
                 List<MPAccount> storeAccounts = new List<MPAccount>();
                 bool getDetailsFromApi = false;
                 foreach (string account in accounts)
@@ -90,7 +81,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                     MPAccountDueResponse result = await api.GetMultiAccountDueAmount(new MPGetAccountDueAmountRequest(apiKeyId, accounts));
                     //if (mView.IsActive())
                     //{
-                        this.mView.HideProgressDialog();
+                    this.mView.HideProgressDialog();
                     //}
                     if (result.accountDueAmountResponse != null && !result.accountDueAmountResponse.IsError)
                     {
@@ -106,7 +97,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 {
                     //if (mView.IsActive())
                     //{
-                        this.mView.HideProgressDialog();
+                    this.mView.HideProgressDialog();
                     //}
                     this.mView.GetAccountDueAmountResult(storeAccounts);
                 }

@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Support.V4.App;
-using Android.Graphics.Drawables;
+﻿using Android.Content;
 using Android.Graphics;
-using myTNB_Android.Src.Promotions.Adapter;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Support.V4.App;
 using Android.Support.V4.View;
+using Android.Views;
+using Me.Relex;
 using myTNB.SitecoreCM.Models;
-using Newtonsoft.Json;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Promotions.Activity;
-using Me.Relex;
+using myTNB_Android.Src.Promotions.Adapter;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Promotions.Fragments
 {
@@ -43,7 +38,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
             Dialog.SetCanceledOnTouchOutside(false);
             Dialog.Window.SetLayout(WindowManagerLayoutParams.MatchParent, WindowManagerLayoutParams.WrapContent);
             Dialog.Window.Attributes.Gravity = GravityFlags.Center;
-            
+
             View rootView = inflater.Inflate(Resource.Layout.promotion_dialog, container, false);
 
             try
@@ -67,7 +62,9 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 pager.SetOnPageChangeListener(this);
                 indicator.SetViewPager(pager);
                 UpdatePromotionAsSeen(0);
-            } catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Utility.LoggingNonFatalError(ex);
             }
             return rootView;
@@ -75,34 +72,35 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         void OnDetailsClick(object sender, int position)
         {
-            try {
-            if (promotions.Count > 0)
+            try
             {
-                PromotionsModelV2 model = promotions[position];
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2()
+                if (promotions.Count > 0)
                 {
-                    ID = model.ID,
-                    GeneralLinkUrl = model.GeneralLinkUrl,
-                    Text = model.Text,
-                    Title = model.Title,
-                    HeaderContent = model.HeaderContent,
-                    BodyContent = model.BodyContent,
-                    FooterContent = model.FooterContent,
-                    PortraitImage = model.PortraitImage.Replace(" ", "%20"),
-                    LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
-                    PromoStartDate = model.PromoStartDate,
-                    PromoEndDate = model.PromoEndDate,
-                    PublishedDate = model.PublishedDate,
-                    IsPromoExpired = model.IsPromoExpired,
-                    Read = true
-                };
-                wtManager.UpdateItem(wtManager);
-                UpdatePromotionAsSeen(position);
-                Intent details_activity = new Intent(mContext, typeof(PromotionsActivity));
-                details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
-                //Activity.StartActivity(details_activity);
-                mContext.StartActivity(details_activity);
-            }
+                    PromotionsModelV2 model = promotions[position];
+                    PromotionsEntityV2 wtManager = new PromotionsEntityV2()
+                    {
+                        ID = model.ID,
+                        GeneralLinkUrl = model.GeneralLinkUrl,
+                        Text = model.Text,
+                        Title = model.Title,
+                        HeaderContent = model.HeaderContent,
+                        BodyContent = model.BodyContent,
+                        FooterContent = model.FooterContent,
+                        PortraitImage = model.PortraitImage.Replace(" ", "%20"),
+                        LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
+                        PromoStartDate = model.PromoStartDate,
+                        PromoEndDate = model.PromoEndDate,
+                        PublishedDate = model.PublishedDate,
+                        IsPromoExpired = model.IsPromoExpired,
+                        Read = true
+                    };
+                    wtManager.UpdateItem(wtManager);
+                    UpdatePromotionAsSeen(position);
+                    Intent details_activity = new Intent(mContext, typeof(PromotionsActivity));
+                    details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
+                    //Activity.StartActivity(details_activity);
+                    mContext.StartActivity(details_activity);
+                }
             }
             catch (Exception ex)
             {
@@ -128,22 +126,24 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void OnPageScrollStateChanged(int state)
         {
-            
+
         }
 
         public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
         {
-            
+
         }
 
         public void OnPageSelected(int position)
         {
-            try {
-            //Update all records as Shown
-            if (promotions.Count > 0) {
-                UpdatePromotionAsSeen(position);
-                promotions[position].PromoShown = true;
-            }
+            try
+            {
+                //Update all records as Shown
+                if (promotions.Count > 0)
+                {
+                    UpdatePromotionAsSeen(position);
+                    promotions[position].PromoShown = true;
+                }
             }
             catch (Exception ex)
             {
@@ -153,27 +153,28 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void UpdatePromotionAsSeen(int position)
         {
-            try {
-            PromotionsModelV2 model = promotions[position];
-            PromotionsEntityV2 entity = new PromotionsEntityV2()
+            try
             {
-                ID = model.ID,
-                GeneralLinkUrl = model.GeneralLinkUrl,
-                Text = model.Text,
-                Title = model.Title,
-                HeaderContent = model.HeaderContent,
-                BodyContent = model.BodyContent,
-                FooterContent = model.FooterContent,
-                PortraitImage = model.PortraitImage.Replace(" ", "%20"),
-                LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
-                PromoStartDate = model.PromoStartDate,
-                PromoEndDate = model.PromoEndDate,
-                PublishedDate = model.PublishedDate,
-                IsPromoExpired = model.IsPromoExpired,
-                Read = model.Read
-            };
-            PromotionsEntityV2 wtManger = new PromotionsEntityV2();
-            wtManger.UpdateItemAsShown(entity);
+                PromotionsModelV2 model = promotions[position];
+                PromotionsEntityV2 entity = new PromotionsEntityV2()
+                {
+                    ID = model.ID,
+                    GeneralLinkUrl = model.GeneralLinkUrl,
+                    Text = model.Text,
+                    Title = model.Title,
+                    HeaderContent = model.HeaderContent,
+                    BodyContent = model.BodyContent,
+                    FooterContent = model.FooterContent,
+                    PortraitImage = model.PortraitImage.Replace(" ", "%20"),
+                    LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
+                    PromoStartDate = model.PromoStartDate,
+                    PromoEndDate = model.PromoEndDate,
+                    PublishedDate = model.PublishedDate,
+                    IsPromoExpired = model.IsPromoExpired,
+                    Read = model.Read
+                };
+                PromotionsEntityV2 wtManger = new PromotionsEntityV2();
+                wtManger.UpdateItemAsShown(entity);
             }
             catch (Exception ex)
             {

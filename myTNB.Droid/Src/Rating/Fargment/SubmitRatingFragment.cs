@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Rating.Activity;
+using myTNB_Android.Src.Rating.Adapter;
+using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Rating.MVP;
 using myTNB_Android.Src.Rating.Response;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using Android.Support.V7.Widget;
-using CheeseBind;
-using myTNB_Android.Src.Rating.Adapter;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.Rating.Model;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Rating.Request;
-using myTNB_Android.Src.Rating.Activity;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Rating.Fargment
 {
@@ -60,47 +53,49 @@ namespace myTNB_Android.Src.Rating.Fargment
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View mainView = inflater.Inflate(Resource.Layout.SubmitRatingView, container, false);
-            try {
-            mPresenter = new SubmitRatingPresenter(this);
-            ratingActivity = ((RatingActivity)Activity);
-
-            if (Arguments.ContainsKey(Constants.QUESTION_ID_CATEGORY))
+            try
             {
-                questionCatId = Arguments.GetString(Constants.QUESTION_ID_CATEGORY);
-            }
-            if (Arguments.ContainsKey(Constants.DEVICE_ID_PARAM))
-            {
-                deviceID = Arguments.GetString(Constants.DEVICE_ID_PARAM);
-            }
-            if (Arguments.ContainsKey(Constants.MERCHANT_TRANS_ID))
-            {
-                merchantTransId = Arguments.GetString(Constants.MERCHANT_TRANS_ID);
-            }
-            if (Arguments.ContainsKey(Constants.SELECTED_RATING))
-            {
-                selectedRating = Arguments.GetInt(Constants.SELECTED_RATING);
-            }
+                mPresenter = new SubmitRatingPresenter(this);
+                ratingActivity = ((RatingActivity)Activity);
 
-            recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
-            rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
-            btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
-
-            layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
-            adapter = new RateUsQuestionsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
-            recyclerView.SetLayoutManager(layoutManager);
-            recyclerView.SetAdapter(adapter);
-            adapter.RatingUpdate += OnRatingUpdate;
-
-           
-
-            this.userActionsListener.GetQuestions(questionCatId);
-
-            btnSubmit.Click += delegate {
-                if (adapter.GetInputAnswers().Count > 0)
+                if (Arguments.ContainsKey(Constants.QUESTION_ID_CATEGORY))
                 {
-                    this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
+                    questionCatId = Arguments.GetString(Constants.QUESTION_ID_CATEGORY);
                 }
-            };
+                if (Arguments.ContainsKey(Constants.DEVICE_ID_PARAM))
+                {
+                    deviceID = Arguments.GetString(Constants.DEVICE_ID_PARAM);
+                }
+                if (Arguments.ContainsKey(Constants.MERCHANT_TRANS_ID))
+                {
+                    merchantTransId = Arguments.GetString(Constants.MERCHANT_TRANS_ID);
+                }
+                if (Arguments.ContainsKey(Constants.SELECTED_RATING))
+                {
+                    selectedRating = Arguments.GetInt(Constants.SELECTED_RATING);
+                }
+
+                recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
+                rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
+                btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
+
+                layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
+                adapter = new RateUsQuestionsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.SetAdapter(adapter);
+                adapter.RatingUpdate += OnRatingUpdate;
+
+
+
+                this.userActionsListener.GetQuestions(questionCatId);
+
+                btnSubmit.Click += delegate
+                {
+                    if (adapter.GetInputAnswers().Count > 0)
+                    {
+                        this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
+                    }
+                };
             }
             catch (Exception e)
             {
@@ -116,18 +111,19 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         void OnRatingUpdate(object sender, int position)
         {
-            try {
-            if(adapter != null)
+            try
             {
-                if (adapter.IsAllQuestionAnswered())
+                if (adapter != null)
                 {
-                    EnableSubmitButton();
+                    if (adapter.IsAllQuestionAnswered())
+                    {
+                        EnableSubmitButton();
+                    }
+                    else
+                    {
+                        DisableSubmitButton();
+                    }
                 }
-                else
-                {
-                    DisableSubmitButton();
-                }
-            }
             }
             catch (Exception e)
             {
@@ -174,21 +170,22 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowGetQuestionSuccess(GetRateUsQuestionsResponse response)
         {
-            try {
-            if(response != null)
+            try
             {
-                if(response.feedbackQuestionStatus.rateUsQuestionList.Count > 0)
+                if (response != null)
                 {
-                    foreach(RateUsQuestion que in response.feedbackQuestionStatus.rateUsQuestionList)
+                    if (response.feedbackQuestionStatus.rateUsQuestionList.Count > 0)
                     {
-                        if (que.IsActive)
+                        foreach (RateUsQuestion que in response.feedbackQuestionStatus.rateUsQuestionList)
                         {
-                            activeQuestionList.Add(que);
+                            if (que.IsActive)
+                            {
+                                activeQuestionList.Add(que);
+                            }
                         }
+                        adapter.NotifyDataSetChanged();
                     }
-                    adapter.NotifyDataSetChanged();
                 }
-            }
             }
             catch (Exception e)
             {
@@ -198,14 +195,15 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowProgressDialog()
         {
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -215,7 +213,7 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowRetryOptionsUnknownException(Exception exception)
         {
-            
+
         }
 
         public void ShowSumitRateUsSuccess()

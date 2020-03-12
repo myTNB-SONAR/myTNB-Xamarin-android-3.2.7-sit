@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
+using Android.OS;
+using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.GetAccessSuccess.Activity
@@ -52,9 +45,10 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , txtAccountName, btnDashboard);
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountName , txtAddress);
+            try
+            {
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, txtAccountName, btnDashboard);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountName, txtAddress);
 
                 Bundle extras = Intent.Extras;
 
@@ -66,9 +60,9 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                 }
-            txtAccountName.Text = selectedAccount.AccountName;
-            txtAccountNum.Text = selectedAccount.AccountNum;
-            txtAddress.Text = selectedAccount.AddStreet;
+                txtAccountName.Text = selectedAccount.AccountName;
+                txtAccountNum.Text = selectedAccount.AccountNum;
+                txtAddress.Text = selectedAccount.AddStreet;
             }
             catch (Exception e)
             {
@@ -77,9 +71,9 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
         }
 
         [OnClick(Resource.Id.btnDashboard)]
-        void OnDashboard(object sender , EventArgs eventArgs)
+        void OnDashboard(object sender, EventArgs eventArgs)
         {
-            Intent DashboardIntent = new Intent(this , typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }

@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content.PM;
 using myTNB_Android.Src.Base.MVP;
 using Refit;
-using Android.Content.PM;
+using System;
 
 namespace myTNB_Android.Src.RegisterValidation.MVP
 {
-    public class RegistrationValidationContract 
+    public class RegistrationValidationContract
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
@@ -118,7 +108,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             /// </summary>
             /// <returns>bool</returns>
             bool IsGrantedSMSReceivePermission();
-            
+
             /// <summary>
             /// Returns if valid to show sms permission
             /// </summary>
@@ -176,7 +166,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             /// <param name="num3">string</param>
             /// <param name="num4">string</param>
             /// <param name="deviceId">string</param>
-            void OnRegister(string num1 , string num2 , string num3, string num4 , string deviceId);
+            void OnRegister(string num1, string num2, string num3, string num4, string deviceId);
 
             /// <summary>
             /// Action to complete

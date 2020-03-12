@@ -2,107 +2,110 @@
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using CoreGraphics;
-using System.Threading.Tasks;
-using myTNB.Model;
 using myTNB.Home.More.MyAccount;
-using myTNB.DataManager;
 using myTNB.Registration.CustomerAccounts;
-using myTNB.Extensions;
-using myTNB.SQLite.SQLiteDataManager;
+using myTNB.MyAccount;
 
 namespace myTNB
 {
-    public partial class MyAccountViewController : UIViewController
+    public partial class MyAccountViewController : CustomUIViewController
     {
-        public MyAccountViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public MyAccountViewController(IntPtr handle) : base(handle) { }
 
-        UIView _viewNotificationMsg;
-        UILabel _lblNotificationDetails;
+        private UIView _viewNotificationMsg;
+        private UILabel _lblNotificationDetails;
 
         public override void ViewDidLoad()
         {
+            PageName = MyAccountConstants.Pagename_MyAccount;
             base.ViewDidLoad();
             SetNavigationBar();
-            myAccountTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
+            myAccountTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
+                ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
             myAccountTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            ActivityIndicator.Show();
-            if (DataManager.DataManager.SharedInstance.IsAccountDeleted)
-            {
-                Task[] taskList = new Task[] { ServiceCall.GetCustomerBillingAccountList() };
-                Task.WaitAll(taskList);
-            }
+            //ActivityIndicator.Show();
             myAccountTableView.Source = new MyAccountDataSource(this);
             myAccountTableView.ReloadData();
             SetFooterView();
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsMobileNumberUpdated)
             {
-                _lblNotificationDetails.Text = "Your mobile number has been updated successfully.";
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_MobileNumberVerified);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = false;
             }
             if (DataManager.DataManager.SharedInstance.IsAccountDeleted)
             {
-                _lblNotificationDetails.Text = "Your electricity supply account has been removed from myTNB account.";
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_AccountDeleteSuccess);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsAccountDeleted = false;
             }
             if (DataManager.DataManager.SharedInstance.IsPasswordUpdated)
             {
-                _lblNotificationDetails.Text = "Your password has been updated successfully.";
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_PasswordUpdateSuccess);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
-            ActivityIndicator.Hide();
+            // ActivityIndicator.Hide();
         }
 
-        internal void SetFooterView()
+        private void SetFooterView()
         {
-            UIButton btnLogout = new UIButton(UIButtonType.Custom);
-            btnLogout.Frame = new CGRect(18, 16, View.Frame.Width - 36, 48);
+            /*
+            UIButton btnLogout = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 16, View.Frame.Width - 36, 48),
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Font = MyTNBFont.MuseoSans16
+            };
+
             btnLogout.Layer.CornerRadius = 4;
-            btnLogout.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnLogout.BackgroundColor = myTNBColor.FreshGreen();
+            btnLogout.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnLogout.Layer.BorderWidth = 1;
-            btnLogout.SetTitle("Logout".Translate(), UIControlState.Normal);
-            btnLogout.Font = myTNBFont.MuseoSans16();
+            btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
             btnLogout.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLogout.TouchUpInside += (sender, e) =>
             {
-                var alert = UIAlertController.Create("Logout".Translate(), "LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
+                UIAlertController alert = UIAlertController.Create(GetI18NValue(MyAccountConstants.I18N_Logout)
+                    , GetI18NValue(MyAccountConstants.I18N_LogoutMessage), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Ok), UIAlertActionStyle.Default, (obj) =>
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
                         storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }));
-                alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null));
+                alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(alert, animated: true, completionHandler: null);
             };
 
-            UIView viewLogout = new UIView();
-            viewLogout.BackgroundColor = myTNBColor.SectionGrey();
+            UIView viewLogout = new UIView
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
             viewLogout.AddSubview(btnLogout);
+            */
+            //UIView viewFooter = new UIView();
+            UIButton btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48),
+                Font = MyTNBFont.MuseoSans16,
+                BackgroundColor = UIColor.White
+            };
 
-            UIView viewFooter = new UIView();
-            UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48);
             btnAddAccount.Layer.CornerRadius = 4;
-            btnAddAccount.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnAddAccount.BackgroundColor = UIColor.White;
+            btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnAddAccount.Layer.BorderWidth = 1;
-            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.Font = myTNBFont.MuseoSans16();
-            btnAddAccount.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
+            btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             btnAddAccount.TouchUpInside += (sender, e) =>
             {
                 ActivityIndicator.Show();
@@ -116,58 +119,66 @@ namespace myTNB
                             AccountsViewController viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
                             viewController.isDashboardFlow = true;
                             viewController._needsUpdate = true;
-                            var navController = new UINavigationController(viewController);
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                         else
                         {
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });
                 });
             };
+            UIView viewFooter = new UIView(new CGRect(0, 0, ViewWidth, 80)) { BackgroundColor = UIColor.White };
+
             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
-                viewLogout.Frame = new CGRect(0, 80, View.Frame.Width, 88);
+                //viewLogout.Frame = new CGRect(0, 80, View.Frame.Width, 88);
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 168);
-                viewFooter.AddSubviews(new UIView[] { btnAddAccount, viewLogout });
+                viewFooter.AddSubviews(new UIView[] { btnAddAccount });//, viewLogout });
             }
             else
             {
                 viewFooter = new UIView(new CGRect(0, 0, myAccountTableView.Frame.Width, 150));
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 230);
-                UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16));
-                lblTitle.TextColor = myTNBColor.TunaGrey();
-                lblTitle.Font = myTNBFont.MuseoSans12_500();
-                lblTitle.Text = "No Electricity Account";
-                lblTitle.TextAlignment = UITextAlignment.Center;
+                UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16))
+                {
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans12_500,
+                    Text = GetI18NValue(MyAccountConstants.I18N_NoAccounts),
+                    TextAlignment = UITextAlignment.Center
+                };
 
-                UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36));
-                lblDetails.TextColor = myTNBColor.TunaGrey();
-                lblDetails.Font = myTNBFont.MuseoSans9_300();
-                lblDetails.Text = "Add your existing TNB Electricity Supply Account\r\nto view usage and transaction details.";
-                lblDetails.Lines = 0;
-                lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
-                lblDetails.TextAlignment = UITextAlignment.Center;
+                UILabel lblDetails = new UILabel(new CGRect(18, 32, myAccountTableView.Frame.Width - 36, 36))
+                {
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans9_300,
+                    Text = GetI18NValue(MyAccountConstants.I18N_AddAccountMessage),
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    TextAlignment = UITextAlignment.Center
+                };
 
-                btnAddAccount.Frame = new CGRect(90, 76, myAccountTableView.Frame.Width - 180, 48);
-                btnAddAccount.SetTitle("AddAcct".Translate(), UIControlState.Normal);
-                viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
-                viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount, viewLogout });
+                btnAddAccount.Frame = new CGRect(18, 76, myAccountTableView.Frame.Width - 36, 48);
+                btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
+                //viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
+                viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount });//, viewLogout });
             }
+            viewFooter.AddSubview(btnAddAccount);
             myAccountTableView.TableFooterView = viewFooter;
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("My Account");
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetTitle(GetI18NValue(MyAccountConstants.I18N_Title));
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
@@ -177,19 +188,17 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
-        }
-
         internal void UpdateMobileNumber()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
-            UpdateMobileNumberViewController viewController =
-                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
-            var navController = new UINavigationController(viewController);
+            UpdateMobileNoViewController viewController = new UpdateMobileNoViewController()
+            {
+                WillHideBackButton = true,
+                IsFromLogin = true
+            };
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
             PresentViewController(navController, true, null);
         }
 
@@ -198,7 +207,10 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("UpdatePassword", null);
             UpdatePasswordViewController viewController =
                 storyBoard.InstantiateViewController("UpdatePasswordViewController") as UpdatePasswordViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
             PresentViewController(navController, true, null);
         }
 
@@ -214,12 +226,15 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("ManageCards", null);
                         ManageCardViewController viewController =
                             storyBoard.InstantiateViewController("ManageCardViewController") as ManageCardViewController;
-                        var navController = new UINavigationController(viewController);
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
                         PresentViewController(navController, true, null);
                     }
                     else
                     {
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        DisplayNoDataAlert();
                     }
                     ActivityIndicator.Hide();
                 });
@@ -234,27 +249,34 @@ namespace myTNB
                 storyBoard.InstantiateViewController("ManageAccountsViewController") as ManageAccountsViewController;
             //viewController.AccountRecordIndex = accountRecordIndex;
             DataManager.DataManager.SharedInstance.AccountRecordIndex = accountRecordIndex;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
             PresentViewController(navController, true, null);
             ActivityIndicator.Hide();
         }
 
-        internal void InitializeNotificationMessage()
+        private void InitializeNotificationMessage()
         {
             if (_viewNotificationMsg == null)
             {
-                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = myTNBColor.SunGlow();
+                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64))
+                {
+                    BackgroundColor = MyTNBColor.SunGlow,
+                    Hidden = true
+                };
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
-                _viewNotificationMsg.Hidden = true;
 
-                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
-                _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = myTNBFont.MuseoSans12();
-                _lblNotificationDetails.TextColor = myTNBColor.TunaGrey();
-                _lblNotificationDetails.Text = "- - -";
-                _lblNotificationDetails.Lines = 0;
-                _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;
+                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Text = TNBGlobal.EMPTY_ADDRESS,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap
+                };
 
                 _viewNotificationMsg.AddSubview(_lblNotificationDetails);
 
@@ -263,11 +285,11 @@ namespace myTNB
             }
         }
 
-        internal void ShowNotificationMessage()
+        private void ShowNotificationMessage()
         {
             _viewNotificationMsg.Hidden = false;
             _viewNotificationMsg.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            UIView.Animate(1, 3, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _viewNotificationMsg.Alpha = 0.0f;
             }, () =>

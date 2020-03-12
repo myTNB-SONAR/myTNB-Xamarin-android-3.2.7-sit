@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.SelectNotification.Models;
-using System.Net;
-using myTNB_Android.Src.Utils;
+﻿using Android.Text;
 using myTNB_Android.Src.Database.Model;
-using Refit;
-using System.Net.Http;
 using myTNB_Android.Src.NotificationSettings.Api;
+using myTNB_Android.Src.SelectNotification.Models;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
-using Android.Text;
 
 namespace myTNB_Android.Src.NotificationSettings.MVP
 {
@@ -33,7 +24,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             this.mView.SetPresenter(this);
         }
 
-        public async void OnChannelItemClick(NotificationChannelUserPreference item , int position )
+        public async void OnChannelItemClick(NotificationChannelUserPreference item, int position)
         {
             if (item.PreferenceMode == "M")
             {
@@ -74,11 +65,11 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                     {
                         UserNotificationChannelEntity.UpdateIsOpted(item.Code, isOpted);
                     }
-                    this.mView.ShowSuccessUpdatedNotificationChannel(item , position);
+                    this.mView.ShowSuccessUpdatedNotificationChannel(item, position);
                 }
                 else
                 {
-                    this.mView.ShowRetryOptionsApiException(null , item , position);
+                    this.mView.ShowRetryOptionsApiException(null, item, position);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -127,7 +118,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                     DeviceId = deviceId,
                     NotificationTypeId = item.MasterId,
                     IsOpted = isOpted
-                } , cts.Token);
+                }, cts.Token);
 
                 if (!typeApi.Data.IsError)
                 {
@@ -145,9 +136,9 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                         {
                             UserNotificationTypesEntity.UpdateIsOpted(masterEntity.Code, isOpted);
                         }
-                        
+
                     }
-                    
+
                     this.mView.ShowSuccessUpdatedNotificationType(item, position);
                 }
                 else
@@ -180,33 +171,34 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
         public void Start()
         {
             // LOAD TYPES / CHANNELS NOTIFICATIONS LIST
-            try {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            List<UserNotificationChannelEntity> channelsList = UserNotificationChannelEntity.ListAllActive();
-            List<UserNotificationTypesEntity> typesList = UserNotificationTypesEntity.ListAllActive();
-
-            List<NotificationChannelUserPreference> channelUserPrefList = new List<NotificationChannelUserPreference>();
-            List<NotificationTypeUserPreference> typeUserPrefList = new List<NotificationTypeUserPreference>();
-
-
-            foreach (UserNotificationChannelEntity channel in channelsList)
+            try
             {
-                if (channel.ShowInPreference)
-                {
-                    channelUserPrefList.Add(NotificationChannelUserPreference.Get(channel));
-                }
-            }
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                List<UserNotificationChannelEntity> channelsList = UserNotificationChannelEntity.ListAllActive();
+                List<UserNotificationTypesEntity> typesList = UserNotificationTypesEntity.ListAllActive();
 
-            foreach (UserNotificationTypesEntity type in typesList)
-            {
-                if (type.ShowInPreference)
-                {
-                    typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
-                }
-            }
+                List<NotificationChannelUserPreference> channelUserPrefList = new List<NotificationChannelUserPreference>();
+                List<NotificationTypeUserPreference> typeUserPrefList = new List<NotificationTypeUserPreference>();
 
-            this.mView.ShowNotificationTypesList(typeUserPrefList);
-            this.mView.ShowNotificationChannelList(channelUserPrefList);
+
+                foreach (UserNotificationChannelEntity channel in channelsList)
+                {
+                    if (channel.ShowInPreference)
+                    {
+                        channelUserPrefList.Add(NotificationChannelUserPreference.Get(channel));
+                    }
+                }
+
+                foreach (UserNotificationTypesEntity type in typesList)
+                {
+                    if (type.ShowInPreference)
+                    {
+                        typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                    }
+                }
+
+                this.mView.ShowNotificationTypesList(typeUserPrefList);
+                this.mView.ShowNotificationChannelList(channelUserPrefList);
             }
             catch (Exception ex)
             {

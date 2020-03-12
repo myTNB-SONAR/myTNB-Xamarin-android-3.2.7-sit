@@ -1,41 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Login.MVP;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Android.Content.PM;
-using Refit;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Android.Preferences;
-using myTNB_Android.Src.ResetPassword.Activity;
-using myTNB_Android.Src.RegistrationForm.Activity;
-using System.IO;
-using Android.Text;
-using myTNB_Android.Src.UpdateMobileNo.Activity;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.Login.MVP;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.RegistrationForm.Activity;
+using myTNB_Android.Src.ResetPassword.Activity;
+using myTNB_Android.Src.UpdateMobileNo.Activity;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
+using Refit;
+using System;
+using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.Login.Activity
 {
-    [Activity( NoHistory = true
+    [Activity(NoHistory = true
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Login")]
-    public class LoginActivity : BaseToolbarAppCompatActivity , LoginContract.IView
+    public class LoginActivity : BaseToolbarAppCompatActivity, LoginContract.IView
     {
         public readonly static string TAG = typeof(LoginActivity).Name;
         private LoginPresenter mPresenter;
@@ -87,45 +82,50 @@ namespace myTNB_Android.Src.Login.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            // Create your application here
-            mPresenter = new LoginPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
-            mProgressDialog = new AlertDialog.Builder(this)
-                .SetTitle(GetString(Resource.String.login_alert_dialog_title))
-                .SetMessage(GetString(Resource.String.login_alert_dialog_message))
-                .SetNegativeButton(GetString(Resource.String.login_alert_dialog_negative_button), delegate {
-                        
-                    if (userActionsListener != null)
+            try
+            {
+                // Create your application here
+                mPresenter = new LoginPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                mProgressDialog = new AlertDialog.Builder(this)
+                    .SetTitle(GetString(Resource.String.login_alert_dialog_title))
+                    .SetMessage(GetString(Resource.String.login_alert_dialog_message))
+                    .SetNegativeButton(GetString(Resource.String.login_alert_dialog_negative_button), delegate
                     {
-                        userActionsListener.CancelLogin();
-                    }
-                })
-                .SetCancelable(false)
-                .Create();
 
-            TextViewUtils.SetMuseoSans500Typeface(txtWelcomeBack);
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountLogin  , txtEmail , txtPassword , txtNoAccount , txtForgotPassword );
-            TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount);
-            TextViewUtils.SetMuseoSans500Typeface(btnLogin);
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail , txtInputLayoutPassword);
-            TextViewUtils.SetMuseoSans500Typeface(chkRemeberMe);
+                        if (userActionsListener != null)
+                        {
+                            userActionsListener.CancelLogin();
+                        }
+                    })
+                    .SetCancelable(false)
+                    .Create();
 
-            txtPassword.TextChanged += TextChange;
-            txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, txtInputLayoutPassword));
-            txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
+                TextViewUtils.SetMuseoSans500Typeface(txtWelcomeBack);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountLogin, txtEmail, txtPassword, txtNoAccount, txtForgotPassword);
+                TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount);
+                TextViewUtils.SetMuseoSans500Typeface(btnLogin);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
+                TextViewUtils.SetMuseoSans500Typeface(chkRemeberMe);
 
-            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
-            string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
-            txtEmail.Append(savedEmail);
+                txtPassword.TextChanged += TextChange;
+                txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, txtInputLayoutPassword));
+                txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
+
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
+                string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
+                txtEmail.Append(savedEmail);
 
 
 
-                if (Android.OS.Build.Manufacturer.ToLower() == "samsung") {
+                if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
+                {
                     txtEmail.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
                     txtPassword.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
                 }
 
-        } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -139,18 +139,19 @@ namespace myTNB_Android.Src.Login.Activity
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
-            string password = txtPassword.Text;
-            if (!string.IsNullOrEmpty(password))
+            try
             {
-                
-                txtInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
-                txtInputLayoutPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
-            }
-            else
-            {
-                txtInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                string password = txtPassword.Text;
+                if (!string.IsNullOrEmpty(password))
+                {
+
+                    txtInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+                }
+                else
+                {
+                    txtInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -174,12 +175,15 @@ namespace myTNB_Android.Src.Login.Activity
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -190,15 +194,18 @@ namespace myTNB_Android.Src.Login.Activity
             //{
             //    mProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -246,9 +253,9 @@ namespace myTNB_Android.Src.Login.Activity
             }
 
 
-           
+
         }
-    
+
 
         public void ShowDashboard()
         {
@@ -274,10 +281,11 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs e)
         {
-            try {
+            try
+            {
                 string em_str = txtEmail.Text.ToString().Trim();
                 string pass_str = txtPassword.Text;
-            this.userActionsListener.LoginAsync(em_str , pass_str , this.DeviceId(), chkRemeberMe.Checked);
+                this.userActionsListener.LoginAsync(em_str, pass_str, this.DeviceId(), chkRemeberMe.Checked);
             }
             catch (Exception ex)
             {
@@ -286,13 +294,13 @@ namespace myTNB_Android.Src.Login.Activity
         }
 
         [OnClick(Resource.Id.txtForgotPassword)]
-        void OnForgetPassword(object sender , EventArgs eventArgs)
+        void OnForgetPassword(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.NavigateToForgetPassword();
         }
 
         [OnClick(Resource.Id.txtRegisterAccount)]
-        void OnRegisterAccount(object sender , EventArgs eventArgs)
+        void OnRegisterAccount(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.NavigateToRegistrationForm();
         }
@@ -304,8 +312,8 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void EnableLoginButton()
         {
-            RunOnUiThread( () => btnLogin.Enabled = true );
-            
+            RunOnUiThread(() => btnLogin.Enabled = true);
+
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -317,7 +325,8 @@ namespace myTNB_Android.Src.Login.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 string email = txtEmail.Text;
@@ -338,7 +347,8 @@ namespace myTNB_Android.Src.Login.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 string email = txtEmail.Text;
@@ -359,7 +369,8 @@ namespace myTNB_Android.Src.Login.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 string email = txtEmail.Text;
@@ -381,11 +392,11 @@ namespace myTNB_Android.Src.Login.Activity
             return "";
         }
 
-        public void ShowResetPassword(string u_name , string enteredPass)
+        public void ShowResetPassword(string u_name, string enteredPass)
         {
             Intent intent = new Intent(this, typeof(ResetPasswordActivity));
             intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            intent.PutExtra(Constants.ENTERED_USERNAME , u_name);
+            intent.PutExtra(Constants.ENTERED_USERNAME, u_name);
             intent.PutExtra(Constants.ENTERED_PASSWORD, enteredPass);
             StartActivity(intent);
         }
@@ -397,15 +408,18 @@ namespace myTNB_Android.Src.Login.Activity
 
         public string GetCustomerAccountsStub()
         {
-            
+
             var stringContent = string.Empty;
-            try {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.GetCustomerBillingAccountListResponse);
-            using (StreamReader sr = new StreamReader(inputStream))
+            try
             {
-                stringContent = sr.ReadToEnd();
+                var inputStream = Resources.OpenRawResource(Resource.Raw.GetCustomerBillingAccountListResponse);
+                using (StreamReader sr = new StreamReader(inputStream))
+                {
+                    stringContent = sr.ReadToEnd();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return stringContent;
@@ -413,15 +427,18 @@ namespace myTNB_Android.Src.Login.Activity
 
         public string GetLoginResponseStubV4()
         {
-            
+
             var stringContent = string.Empty;
-            try {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV4);
-            using (StreamReader sr = new StreamReader(inputStream))
+            try
             {
-                stringContent = sr.ReadToEnd();
+                var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV4);
+                using (StreamReader sr = new StreamReader(inputStream))
+                {
+                    stringContent = sr.ReadToEnd();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return stringContent;
@@ -429,15 +446,18 @@ namespace myTNB_Android.Src.Login.Activity
 
         public string GetLoginResponseStubV5()
         {
-            
+
             var stringContent = string.Empty;
-            try {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV5);
-            using (StreamReader sr = new StreamReader(inputStream))
+            try
             {
-                stringContent = sr.ReadToEnd();
+                var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV5);
+                using (StreamReader sr = new StreamReader(inputStream))
+                {
+                    stringContent = sr.ReadToEnd();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return stringContent;
@@ -454,7 +474,9 @@ namespace myTNB_Android.Src.Login.Activity
                 {
                     stringContent = sr.ReadToEnd();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return stringContent;

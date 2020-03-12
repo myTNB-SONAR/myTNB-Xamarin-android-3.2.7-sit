@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Refit;
-using myTNB_Android.Src.AppLaunch.Models;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -74,7 +64,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             /// <returns>bool</returns>
             bool IsByDayEmpty();
-            
+
             /// <summary>
             /// Used for chart pagination in day
             /// Returns the current index of the array

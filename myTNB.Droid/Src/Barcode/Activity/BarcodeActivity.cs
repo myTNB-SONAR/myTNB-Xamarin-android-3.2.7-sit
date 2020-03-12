@@ -1,33 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using ZXing.Mobile;
 using CheeseBind;
-using System.Threading.Tasks;
-using Android.Util;
 using myTNB_Android.Src.Barcode.MVP;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Threading.Tasks;
+using ZXing.Mobile;
 
 namespace myTNB_Android.Src.Barcode.Activity
 {
     [Activity(Label = "@string/barcode_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.BarCode")]
-    public class BarcodeActivity : BaseToolbarAppCompatActivity , BarcodeContract.IView
+    public class BarcodeActivity : BaseToolbarAppCompatActivity, BarcodeContract.IView
     {
         readonly static string TAG = typeof(BarcodeActivity).Name;
         ZXingScannerFragment scanFragment;
@@ -62,7 +56,6 @@ namespace myTNB_Android.Src.Barcode.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your application here
             mPresenter = new BarcodePresenter(this);
             barCodeView.Click += delegate
             {
@@ -103,7 +96,7 @@ namespace myTNB_Android.Src.Barcode.Activity
 
             }
 
-           
+
         }
 
 
@@ -113,12 +106,12 @@ namespace myTNB_Android.Src.Barcode.Activity
         }
 
         protected override void OnPause()
-        { 
+        {
             if (scanFragment != null)
             {
                 scanFragment?.StopScanning();
             }
-            
+
 
             base.OnPause();
         }
@@ -149,7 +142,8 @@ namespace myTNB_Android.Src.Barcode.Activity
                     ZXing.BarcodeFormat.UPC_E,
                     ZXing.BarcodeFormat.UPC_EAN_EXTENSION
                 },
-                CameraResolutionSelector = availableResolutions => {
+                CameraResolutionSelector = availableResolutions =>
+                {
 
                     foreach (var ar in availableResolutions)
                     {
@@ -163,24 +157,21 @@ namespace myTNB_Android.Src.Barcode.Activity
             scanFragment.CustomOverlayView = barCodeView;
 
             scanFragment.AutoFocus();
-            Log.Debug(TAG , "Starting Scan...");
-            scanFragment.StartScanning(result => {
-                Log.Debug(TAG, string.Format("Scanning result {0}" , result));
-                // Null result means scanning was cancelled
+            Log.Debug(TAG, "Starting Scan...");
+            scanFragment.StartScanning(result =>
+            {
+                Log.Debug(TAG, string.Format("Scanning result {0}", result));
                 if (result == null || string.IsNullOrEmpty(result.Text))
                 {
-                    //Toast.MakeText(this, "Scanning Cancelled", ToastLength.Long).Show();
                     return;
                 }
 
-                // Otherwise, proceed with result
                 string scannedText = result.Text;
-                if(!string.IsNullOrEmpty(scannedText) && scannedText.Length > 12)
+                if (!string.IsNullOrEmpty(scannedText) && scannedText.Length > 12)
                 {
                     scannedText = scannedText.Substring(0, 12);
                 }
                 this.userActionsListener.OnResult(scannedText);
-                //RunOnUiThread(() => Toast.MakeText(this, "Scanned: " + result.Text, ToastLength.Short).Show());
             }, opts);
             StartAutoFocus();
 
@@ -210,10 +201,11 @@ namespace myTNB_Android.Src.Barcode.Activity
 
             scanFragment.SetErrorMessage(GetString(Resource.String.barcode_form_invalid_barcode));
             mSnackbarMessage = Snackbar.Make(rootView, GetString(Resource.String.barcode_form_invalid_barcode), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.barcode_form_btn_snackbar_close), delegate {
+            .SetAction(GetString(Resource.String.barcode_form_btn_snackbar_close), delegate
+            {
 
                 mSnackbarMessage.Dismiss();
-                
+
             }
             );
             mSnackbarMessage.Show();
@@ -224,8 +216,8 @@ namespace myTNB_Android.Src.Barcode.Activity
             // PROCEED TO PREVIOUS ACTIVITY AND SEND THE RESULT
             scanFragment.SetSuccess();
             Intent resultIntent = new Intent();
-            resultIntent.PutExtra(Constants.BARCODE_RESULT , result);
-            SetResult(Android.App.Result.Ok , resultIntent);
+            resultIntent.PutExtra(Constants.BARCODE_RESULT, result);
+            SetResult(Android.App.Result.Ok, resultIntent);
             Finish();
         }
 
@@ -241,7 +233,7 @@ namespace myTNB_Android.Src.Barcode.Activity
 
         public void HideInvalidBarCodeError()
         {
-           
+
         }
 
         public override void OnTrimMemory(TrimMemory level)

@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.MakePayment.Models;
+﻿using myTNB_Android.Src.ManageCards.Api;
 using myTNB_Android.Src.ManageCards.Models;
-using Refit;
-using myTNB_Android.Src.ManageCards.Api;
-using System.Net;
 using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 
@@ -55,7 +44,7 @@ namespace myTNB_Android.Src.ManageCards.MVP
                 {
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                     RegisteredCardId = Data.Id
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {
@@ -64,7 +53,7 @@ namespace myTNB_Android.Src.ManageCards.MVP
 
                 if (!removeCardsResponse.Data.IsError)
                 {
-                    this.mView.ShowRemoveSuccess(Data , position);
+                    this.mView.ShowRemoveSuccess(Data, position);
                 }
                 else
                 {
@@ -103,7 +92,7 @@ namespace myTNB_Android.Src.ManageCards.MVP
 
         }
 
-        public void OnRemoveStay(CreditCardData RemovedCard , int position)
+        public void OnRemoveStay(CreditCardData RemovedCard, int position)
         {
             this.mView.ShowSnackbarRemovedSuccess(RemovedCard, position);
         }

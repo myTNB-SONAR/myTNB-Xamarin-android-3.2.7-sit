@@ -1,5 +1,4 @@
-﻿using System;
-using myTNB.Enums;
+﻿using myTNB.Enums;
 using Newtonsoft.Json;
 
 namespace myTNB.Model
@@ -20,7 +19,7 @@ namespace myTNB.Model
                 if (!string.IsNullOrEmpty(IsDown))
                 {
                     bool parsed = default(bool);
-                    if(bool.TryParse(IsDown, out parsed))
+                    if (bool.TryParse(IsDown, out parsed))
                     {
                         res = !parsed;
                     }
@@ -36,7 +35,7 @@ namespace myTNB.Model
             {
                 SystemEnum sysType = default(SystemEnum);
 
-                if(!string.IsNullOrWhiteSpace(System))
+                if (!string.IsNullOrWhiteSpace(System))
                 {
                     var sysStr = System.ToUpper();
 

@@ -1,10 +1,9 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Java.Lang;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using System;
 using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
 
 namespace myTNB_Android.Src.AppLaunch.Async
@@ -25,15 +24,14 @@ namespace myTNB_Android.Src.AppLaunch.Async
         {
 
             Console.WriteLine("========= 0000 MasterApiDBOperation started");
-            if (masterDataResponse != null && masterDataResponse.Data != null) {
-                if (!masterDataResponse.Data.IsError) {
+            if (masterDataResponse != null && masterDataResponse.Data != null)
+            {
+                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                {
                     foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
                     {
                         int newRecord = WeblinkEntity.InsertOrReplace(web);
-                        //Log.Debug(TAG, "New Weblink Record " + newRecord);
                     }
-
-                    //Log.Debug(TAG, "Weblink Records " + WeblinkEntity.Count());
 
                     FeedbackCategoryEntity.RemoveActive();
                     foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorys)
@@ -65,24 +63,18 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     foreach (NotificationChannels notificationChannel in masterDataResponse.Data.MasterData.NotificationTypeChannels)
                     {
                         int newRecord = NotificationChannelEntity.InsertOrReplace(notificationChannel);
-                        //Log.Debug(TAG, "New Channel Record " + newRecord);
                     }
 
                     foreach (NotificationTypes notificationTypes in masterDataResponse.Data.MasterData.NotificationTypes)
                     {
                         int newRecord = NotificationTypesEntity.InsertOrReplace(notificationTypes);
-                        //Log.Debug(TAG, "New Type Record " + newRecord);
                     }
 
                     LocationTypesEntity.InsertFristRecord();
                     foreach (LocationType loc in masterDataResponse.Data.MasterData.LocationTypes)
                     {
                         int newRecord = LocationTypesEntity.InsertOrReplace(loc);
-                        //Log.Debug(TAG, "Location Types Record " + newRecord);
                     }
-
-
-                    //Log.Debug(TAG, "Location Records " + LocationTypesEntity.Count());
 
                     DownTimeEntity.RemoveActive();
                     foreach (DownTime cat in masterDataResponse.Data.MasterData.Downtimes)
@@ -91,21 +83,22 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     }
 
                     int appCurrentVersion = DeviceIdUtils.GetAppVersionCode();
-                    if (UserEntity.IsCurrentlyActive()) {
+                    if (UserEntity.IsCurrentlyActive())
+                    {
                         int prevAppVersionCode = UserSessions.GetPrevAppVersionCode(preferences);
-                        if (prevAppVersionCode > 0) {
-                            if (prevAppVersionCode < appCurrentVersion) {
+                        if (prevAppVersionCode > 0)
+                        {
+                            if (prevAppVersionCode < appCurrentVersion)
+                            {
                                 SMUsageHistoryEntity.RemoveAll();
                             }
-                        }else{
+                        }
+                        else
+                        {
                             SMUsageHistoryEntity.RemoveAll();
                         }
                     }
                     UserSessions.SetAppVersionCode(preferences, appCurrentVersion);
-
-
-
-                    //Log.Debug(TAG, "DownTime Records " + DownTimeEntity.Count());
                 }
             }
 

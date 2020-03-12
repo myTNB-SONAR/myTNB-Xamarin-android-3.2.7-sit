@@ -1,5 +1,4 @@
-﻿using myTNB.SitecoreCM.Models;
-using myTNB.SitecoreCMS.Models;
+﻿using myTNB.SitecoreCMS.Models;
 using System.Collections.Generic;
 
 namespace myTNB.SitecoreCMS.Model

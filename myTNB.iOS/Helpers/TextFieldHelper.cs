@@ -31,10 +31,10 @@ namespace myTNB
         /// </summary>
         /// <param name="textField">Text field.</param>
         /// <param name="imageName">Image name.</param>
-		public void CreateTextFieldLeftView(UITextField textField, String imageName)
+		public void CreateTextFieldLeftView(UITextField textField, string imageName)
         {
             var leftView = new UIImageView(UIImage.FromBundle(imageName));
-            leftView.Frame = new CGRect(leftView.Frame.X, leftView.Frame.Y, leftView.Frame.Width + 10, leftView.Frame.Height);
+            leftView.Frame = new CGRect(leftView.Frame.X, leftView.Frame.Y, leftView.Frame.Width + ScaleUtility.GetScaledWidth(6F), leftView.Frame.Height);
             leftView.ContentMode = UIViewContentMode.Left;
             textField.LeftView = leftView;
             textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
@@ -44,7 +44,7 @@ namespace myTNB
         /// </summary>
         /// <param name="textField">Text field.</param>
         /// <param name="imageName">Image name.</param>
-        public void CreateTextFieldRightView(UITextField textField, String imageName)
+        public void CreateTextFieldRightView(UITextField textField, string imageName)
         {
             var rightView = new UIImageView(UIImage.FromBundle(imageName));
             rightView.Frame = new CGRect(rightView.Frame.X, rightView.Frame.Y, rightView.Frame.Width + 15, rightView.Frame.Height);
@@ -113,12 +113,12 @@ namespace myTNB
         /// Sets the keyboard.
         /// </summary>
         /// <param name="textField">Text field.</param>
-        public void SetKeyboard(UITextField textField)
+        public void SetKeyboard(UITextField textField, UIReturnKeyType returnKeyType = UIReturnKeyType.Done)
         {
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
             textField.SpellCheckingType = UITextSpellCheckingType.No;
-            textField.ReturnKeyType = UIReturnKeyType.Done;
+            textField.ReturnKeyType = returnKeyType;
         }
 
         /// <summary>
@@ -130,6 +130,39 @@ namespace myTNB
         {
             if (string.IsNullOrEmpty(mobileNo))
                 return string.Empty;
+
+            string formattedMobileNo = string.Empty;
+            string prefix = TNBGlobal.MobileNoPrefix;
+
+            if (mobileNo.StartsWith("+60", StringComparison.InvariantCulture))
+            {
+                formattedMobileNo = mobileNo;
+            }
+            else if (mobileNo.StartsWith("+0", StringComparison.InvariantCulture))
+            {
+                formattedMobileNo = prefix + mobileNo.Substring(2);
+            }
+            else if (mobileNo.StartsWith("+1", StringComparison.InvariantCulture) || mobileNo.StartsWith("0", StringComparison.InvariantCulture))
+            {
+                formattedMobileNo = prefix + mobileNo.Substring(1);
+            }
+            else if (mobileNo.StartsWith("60", StringComparison.InvariantCulture) && Array.Exists(TNBGlobal.MobileNumberLimits, s => s == mobileNo.Substring(2).Length))
+            {
+                formattedMobileNo = prefix + mobileNo.Substring(2);
+            }
+            else
+            {
+                formattedMobileNo = prefix + mobileNo;
+            }
+            return formattedMobileNo;
+        }
+
+        public string RemoveCountryCode(string mobileNo)
+        {
+            if (string.IsNullOrEmpty(mobileNo))
+            {
+                return string.Empty;
+            }
 
             string formattedMobileNo = string.Empty;
             string prefix = TNBGlobal.MobileNoPrefix;

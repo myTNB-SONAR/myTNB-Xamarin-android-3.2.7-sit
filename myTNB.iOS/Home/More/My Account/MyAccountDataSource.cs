@@ -4,15 +4,18 @@ using System.Drawing;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
+using myTNB.MyAccount;
 using UIKit;
-using myTNB.Extensions;
 
 namespace myTNB.Home.More.MyAccount
 {
     public class MyAccountDataSource : UITableViewSource
     {
-        RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        MyAccountViewController _controller;
+        private readonly RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
+        private readonly MyAccountViewController _controller;
+        private readonly List<string> SectionTitle;
+        private readonly List<string> DetailContent;
+
         public MyAccountDataSource(MyAccountViewController controller)
         {
             _controller = controller;
@@ -27,56 +30,55 @@ namespace myTNB.Home.More.MyAccount
                 _registeredCards.d = new RegisteredCardsModel();
                 _registeredCards.d.data = new List<RegisteredCardsDataModel>();
             }
+            SectionTitle = new List<string>{
+                /*GetI18NValue(MyAccountConstants.I18N_DetailSectionTitle)
+                ,*/ GetI18NValue(MyAccountConstants.I18N_AccountSectionTitle)
+            };
+            DetailContent = new List<string>{
+                GetCommonI18NValue(Constants.Common_Name).ToUpper(),
+                GetCommonI18NValue(Constants.Common_IDNumber).ToUpper(),
+                GetCommonI18NValue(Constants.Common_Email).ToUpper(),
+                GetCommonI18NValue(Constants.Common_MobileNo).ToUpper(),
+                GetCommonI18NValue(Constants.Common_Password).ToUpper(),
+                GetCommonI18NValue(Constants.Common_Cards).ToUpper()
+            };
         }
-
-        List<string> SectionTitle = new List<string>
-        {
-            "myTNB Account",
-            "TNB Electricity Supply Account"
-        };
-
-        List<string> DetailContent = new List<string>
-        {
-            "NAME",
-            "IC / ROC / PASSPORT NO.",
-            "EMAIL",
-            "MOBILE NO.",
-            "PASSWORD",
-            "Credit / Debit Cards"
-        };
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return SectionTitle.Count;
+            return 1;//SectionTitle.Count;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            if (section == 0)
+            return DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                    ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count : 0;
+            /*if (section == 0)
             {
                 return 6;
             }
             else if (section == 1)
             {
                 return DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
-                                  ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count
-                                      : 0;
+                    ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count : 0;
             }
             else
             {
                 return 0;
-            }
+            }*/
         }
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            view.BackgroundColor = MyTNBColor.SectionGrey;
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
-            lblSectionTitle.Text = SectionTitle[(int)section];
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
+            UILabel lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18))
+            {
+                Text = SectionTitle[(int)section],
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue
+            };
             view.Add(lblSectionTitle);
 
             return view;
@@ -84,19 +86,18 @@ namespace myTNB.Home.More.MyAccount
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            if (indexPath.Section == 0)
+           /* if (indexPath.Section == 0)
             {
-                var cell = tableView.DequeueReusableCell("AccountDetailsViewCell", indexPath) as AccountDetailsViewCell;
+                AccountDetailsViewCell cell = tableView.DequeueReusableCell("AccountDetailsViewCell", indexPath) as AccountDetailsViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 64);
 
-                var detailCount = DetailContent?.Count ?? 0;
+                int detailCount = DetailContent?.Count ?? 0;
                 cell.lblTitle.Text = indexPath.Row < detailCount ? DetailContent[indexPath.Row] : string.Empty;
                 cell.viewCTA.Hidden = true;
-                cell.lblDetail.TextColor = myTNBColor.SilverChalice();
+                cell.lblDetail.TextColor = MyTNBColor.SilverChalice;
 
-                var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0 
-                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                          : new SQLite.SQLiteDataManager.UserEntity();
+                SQLite.SQLiteDataManager.UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0] : new SQLite.SQLiteDataManager.UserEntity();
                 if (indexPath.Row == 0)
                 {
                     cell.lblDetail.Text = userInfo?.displayName;
@@ -107,7 +108,7 @@ namespace myTNB.Home.More.MyAccount
                     if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                     {
                         string lastDigit = icNo.Substring(icNo.Length - 4);
-                        icNo = "ICNoMask".Translate() + lastDigit;
+                        icNo = "•••••• •• " + lastDigit;
                     }
                     string maskedICNo = icNo;
                     cell.lblDetail.Text = maskedICNo;
@@ -119,57 +120,55 @@ namespace myTNB.Home.More.MyAccount
                 else if (indexPath.Row == 3)
                 {
                     cell.lblDetail.Text = userInfo?.mobileNo;
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Update";
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
+                    cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                     cell.viewCTA.Hidden = false;
-                    cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
+                    cell.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
                 }
                 else if (indexPath.Row == 4)
                 {
                     cell.lblDetail.Text = "••••••••••••••";
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Update";
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
+                    cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                     cell.viewCTA.Hidden = false;
-                    cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
                         _controller.UpdatePassword();
                     }));
                 }
                 else if (indexPath.Row == 5)
                 {
-                    var cardCount = _registeredCards?.d?.data?.Count ?? 0;
+                    int cardCount = _registeredCards?.d?.data?.Count ?? 0;
                     cell.lblDetail.Text = cardCount.ToString();
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Manage";
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
+                    cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Manage);
                     UITapGestureRecognizer manageCards = new UITapGestureRecognizer(() =>
                     {
                         _controller.ManageRegisteredCards();
                     });
                     if (cardCount > 0)
                     {
-                        cell.viewCTA.AddGestureRecognizer(manageCards);
+                        cell.AddGestureRecognizer(manageCards);
                     }
                     else
                     {
-                        cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
+                        cell.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
                     }
                     cell.lblCTA.TextColor = cardCount > 0
-                        ? myTNBColor.PowerBlue() : myTNBColor.SilverChalice();
+                        ? MyTNBColor.PowerBlue : MyTNBColor.SilverChalice;
                     cell.viewCTA.Hidden = false;
                 }
                 cell.viewLine.Hidden = !(indexPath.Row < detailCount - 1);
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
             else if (indexPath.Section == 1)
-            {
-                var cell = tableView.DequeueReusableCell("SupplyAccountViewCell", indexPath) as SupplyAccountViewCell;
+            {*/
+                SupplyAccountViewCell cell = tableView.DequeueReusableCell("SupplyAccountViewCell", indexPath) as SupplyAccountViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 80);
                 cell.lblName.Text = GetAccountModel(indexPath.Row).accDesc;
                 cell.lblAccountNumber.Text = GetAccountModel(indexPath.Row).accNum;
                 //cell.lblUsers.Text = "2 Users";
-                cell.lblCTA.Text = "Manage";
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Manage);
 
                 nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
                 CGSize newLabelSize = GetLabelSize(cell.lblName, cellWidth - 110, 18);
@@ -181,13 +180,13 @@ namespace myTNB.Home.More.MyAccount
                     cell.imgLeaf.Hidden = !GetAccountModel(indexPath.Row).accountCategoryId.Equals("2");
                 }
 
-                cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     _controller.ManageSupplyAccount(indexPath.Row);
                 }));
                 return cell;
-            }
-            return new UITableViewCell();
+           /* }
+            return new UITableViewCell();*/
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
@@ -209,20 +208,30 @@ namespace myTNB.Home.More.MyAccount
             return 50f;
         }
 
-        CustomerAccountRecordModel GetAccountModel(int index)
+        private CustomerAccountRecordModel GetAccountModel(int index)
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-               && index < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count )
+               && index < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count)
             {
                 return DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
             }
             return new CustomerAccountRecordModel();
         }
 
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        private CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+        }
+
+        private string GetI18NValue(string key)
+        {
+            return _controller.GetI18NValue(key);
+        }
+
+        private string GetCommonI18NValue(string key)
+        {
+            return _controller.GetCommonI18NValue(key);
         }
     }
 }

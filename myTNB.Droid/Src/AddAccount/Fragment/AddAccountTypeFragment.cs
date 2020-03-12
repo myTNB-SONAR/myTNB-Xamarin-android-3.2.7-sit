@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
+﻿using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.Text;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Utils;
+using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
@@ -36,15 +27,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
             View rootView = inflater.Inflate(Resource.Layout.AddAccountTypeView, container, false);
             radio_non_owner = rootView.FindViewById<LinearLayout>(Resource.Id.btnNonOwner);
             radio_owner = rootView.FindViewById<LinearLayout>(Resource.Id.btnOwner);
@@ -73,17 +59,19 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             TextViewUtils.SetMuseoSans300Typeface(txtOwnerRights, txtNonOwnerRights);
             return rootView;
         }
-          
-        
+
+
         private string GetHtmlText(String text)
         {
             if (((int)Build.VERSION.SdkInt) >= 24)
             {
-                return text; // Html.FromHtml(text, FromHtmlOptions.ModeLegacy).ToString();
-            }else {
-                return text; // Html.FromHtml(text).ToString();
+                return text;
+            }
+            else
+            {
+                return text;
             }
 
         }
-}
+    }
 }

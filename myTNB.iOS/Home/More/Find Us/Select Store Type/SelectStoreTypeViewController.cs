@@ -1,8 +1,6 @@
-using Foundation;
 using System;
 using UIKit;
 using myTNB.Home.More.FindUs.SelectStoreType;
-using System.Collections.Generic;
 
 namespace myTNB
 {
@@ -30,7 +28,7 @@ namespace myTNB
         internal void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DataManager.DataManager.SharedInstance.IsSameStoreType = true;

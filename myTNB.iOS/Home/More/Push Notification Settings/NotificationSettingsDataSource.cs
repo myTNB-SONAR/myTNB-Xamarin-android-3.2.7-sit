@@ -10,9 +10,10 @@ namespace myTNB.Home.More.PushNotificationSettings
     public class NotificationSettingsDataSource : UITableViewSource
     {
 
-        NotificationSettingsViewController _controller;
-        List<string> _keys = new List<string>();
-        List<NotificationPreferenceModel> _preferenceItems = new List<NotificationPreferenceModel>();
+        private NotificationSettingsViewController _controller;
+        private List<string> _keys = new List<string>();
+        private List<NotificationPreferenceModel> _preferenceItems = new List<NotificationPreferenceModel>();
+
         public NotificationSettingsDataSource(NotificationSettingsViewController controller, List<string> keys, List<NotificationPreferenceModel> preferenceItems)
         {
             _controller = controller;
@@ -50,14 +51,14 @@ namespace myTNB.Home.More.PushNotificationSettings
             cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, cell.Frame.Width, 66);
             UILabel lblTitle = new UILabel(new CGRect(18, 16, cell.Frame.Width - 36, 40))
             {
-                TextColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans16(),
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans16,
                 Text = _keys[(int)section],
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };
             cell.AddSubview(lblTitle);
-            cell.BackgroundColor = myTNBColor.SectionGrey();
+            cell.BackgroundColor = MyTNBColor.SectionGrey;
             return cell;
         }
 

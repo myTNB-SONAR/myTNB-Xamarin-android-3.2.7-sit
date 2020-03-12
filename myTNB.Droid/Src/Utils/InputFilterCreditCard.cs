@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
+﻿using Android.Text;
 using Android.Widget;
-using Android.Text;
 using Java.Lang;
 
 namespace myTNB_Android.Src.Utils
 {
-    
+
     public class InputFilterCreditCard : Java.Lang.Object, ITextWatcher
     {
         private readonly EditText _editText;

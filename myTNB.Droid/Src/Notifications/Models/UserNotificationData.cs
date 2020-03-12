@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using myTNB_Android.Src.Database.Model;
 using Newtonsoft.Json;
-using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Notifications.Models
 {
@@ -67,7 +56,7 @@ namespace myTNB_Android.Src.Notifications.Models
         [JsonProperty("Code")]
         public string Code { get; set; }
 
-        public static UserNotificationData Get(UserNotificationEntity userNotification , string Code)
+        public static UserNotificationData Get(UserNotificationEntity userNotification, string Code)
         {
             return new UserNotificationData()
             {

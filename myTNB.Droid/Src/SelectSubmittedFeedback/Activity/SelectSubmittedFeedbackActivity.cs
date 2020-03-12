@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.FeedbackDetails.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
-using myTNB_Android.Src.Base.Models;
-using Refit;
-using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.FeedbackDetails.Activity;
-using Newtonsoft.Json;
-using Android.Preferences;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
@@ -30,7 +25,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
     [Activity(Label = "@string/select_submitted_feedback_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.SelectFeedbackStateStyle")]
-    public class SelectSubmittedFeedbackActivity : BaseToolbarAppCompatActivity , SelectSubmittedFeedbackContract.IView
+    public class SelectSubmittedFeedbackActivity : BaseToolbarAppCompatActivity, SelectSubmittedFeedbackContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -58,22 +53,23 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
-            progressDialog = new MaterialDialog.Builder(this)
-                .Title(Resource.String.select_submitted_feedback_dialog_title)
-                .Content(Resource.String.select_submitted_feedback_dialog_content)
-                .Cancelable(false)
-                .Progress(true , 0)
-                .Build();
+            try
+            {
+                progressDialog = new MaterialDialog.Builder(this)
+                    .Title(Resource.String.select_submitted_feedback_dialog_title)
+                    .Content(Resource.String.select_submitted_feedback_dialog_content)
+                    .Cancelable(false)
+                    .Progress(true, 0)
+                    .Build();
 
-            //adapter = new SelectSubmittedFeedbackAdapter(this, true);
-            //listView.Adapter = adapter;
-            //listView.EmptyView = layoutEmptyFeedback;
+                //adapter = new SelectSubmittedFeedbackAdapter(this, true);
+                //listView.Adapter = adapter;
+                //listView.EmptyView = layoutEmptyFeedback;
 
-            TextViewUtils.SetMuseoSans300Typeface(txtEmptyFeedback);
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyFeedback);
 
-            mPresenter = new SelectSubmittedFeedbackPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
-            this.userActionsListener.Start();
+                mPresenter = new SelectSubmittedFeedbackPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -86,9 +82,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         [OnItemClick(Resource.Id.listView)]
         void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            try {
-            SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
-            this.userActionsListener.OnSelect(feedback);
+            try
+            {
+                SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
+                this.userActionsListener.OnSelect(feedback);
             }
             catch (Exception ex)
             {
@@ -121,10 +118,13 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         public void ShowList(List<SubmittedFeedback> list)
         {
             //adapter.AddAll(list);
-            if (list != null && list.Count > 0) {
+            if (list != null && list.Count > 0)
+            {
                 adapter = new SelectSubmittedFeedbackAdapter(this, list, true);
                 listView.Adapter = adapter;
-            } else {
+            }
+            else
+            {
                 listView.EmptyView = layoutEmptyFeedback;
             }
             //listView.Adapter = adapter;
@@ -137,14 +137,15 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             //{
             //    progressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -158,11 +159,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             //{
             //    progressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -180,7 +182,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnStartShowLoading(this.DeviceId());
@@ -199,7 +202,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 this.userActionsListener.OnStartShowLoading(this.DeviceId());
@@ -218,7 +222,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnStartShowLoading(this.DeviceId());
@@ -235,14 +240,15 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ClearList()
         {
-            if (adapter != null) {
-                adapter.Clear();    
+            if (adapter != null)
+            {
+                adapter.Clear();
             }
         }
 
         public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedback)
         {
-            var billIntent = new Intent(this , typeof(FeedbackDetailsBillRelatedActivity));
+            var billIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
             StartActivity(billIntent);
         }
 
@@ -268,7 +274,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
 
             bcrmExceptionSnackBar = Snackbar.Make(rootView, exception, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_cards_btn_ok), delegate {
+            .SetAction(GetString(Resource.String.manage_cards_btn_ok), delegate
+            {
 
                 bcrmExceptionSnackBar.Dismiss();
             }
