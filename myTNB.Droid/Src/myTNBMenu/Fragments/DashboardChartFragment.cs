@@ -33,6 +33,7 @@ using MikePhil.Charting.Jobs;
 using MikePhil.Charting.Listener;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
@@ -53,6 +54,7 @@ using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
@@ -1282,6 +1284,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public override void UpdateDrawState(TextPaint ds)
             {
                 base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+        class DPCClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
                 ds.UnderlineText = false;
             }
         }
@@ -4993,6 +5018,102 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        private void OnProcessDPCIndicationMessage(string message)
+        {
+            // USAGE_TODO: need to add process for the hyperlink
+            if (!string.IsNullOrEmpty(message) && (message.Contains("faq") || message.Contains("whatsnew") || message.Contains("http")))
+            {
+                SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
+                var clickableSpan = new DPCClickSpan()
+                {
+                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
+                    typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                };
+                clickableSpan.Click += v =>
+                {
+                    if (message.Contains("faq"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = message.LastIndexOf("=") + 1;
+                        int lastIndex = message.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < message.Length)
+                        {
+                            string faqid = message.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(faqid))
+                            {
+                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                Activity.StartActivity(faqIntent);
+                            }
+                        }
+                    }
+                    else if (message.Contains("whatsnew"))
+                    {
+                        int startIndex = message.LastIndexOf("=") + 1;
+                        int lastIndex = message.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < message.Length)
+                        {
+                            string whatsnewid = message.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(whatsnewid))
+                            {
+                                if (!whatsnewid.Contains("{"))
+                                {
+                                    whatsnewid = "{" + whatsnewid;
+                                }
+
+                                if (!whatsnewid.Contains("}"))
+                                {
+                                    whatsnewid = whatsnewid + "}";
+                                }
+
+                                WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                if (item != null)
+                                {
+                                    if (!item.Read)
+                                    {
+                                        this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                    }
+
+                                    Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
+                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                    StartActivity(activity);
+                                }
+                            }
+                        }
+                    }
+                    else if (message.Contains("http"))
+                    {
+                        List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
+                        if (extractedUrls.Count > 0)
+                        {
+                            if (!extractedUrls[0].Contains("http"))
+                            {
+                                extractedUrls[0] = "http://" + extractedUrls[0];
+                            }
+
+                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
+                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                            StartActivity(webIntent);
+                        }
+                    }
+                };
+                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                int startFAQLink = s.GetSpanStart(urlSpans[0]);
+                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+                s.RemoveSpan(urlSpans[0]);
+                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                txtTariffBlockLegendDisclaimer.TextFormatted = s;
+                txtTariffBlockLegendDisclaimer.MovementMethod = new LinkMovementMethod();
+            }
+        }
+
         private void OnGenerateTariffLegendValue(int index, bool isShow)
         {
             try
@@ -5026,7 +5147,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? ""
                                         : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -5037,6 +5158,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    OnProcessDPCIndicationMessage(message);
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5058,7 +5181,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill." : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? ""
+                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5068,6 +5192,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    OnProcessDPCIndicationMessage(message);
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5095,7 +5221,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedHistoryData.ByMonth.Months[index].Month + " " + selectedHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill." : selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? ""
+                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
@@ -5105,6 +5232,131 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
+
+                                if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                }
+
+                                OnProcessDPCIndicationMessage(message);
+
+                                isDPCBarClicked = true;
+                                isChangeVirtualHeightNeed = true;
+                                SetVirtualHeightParams(6f);
+                            }
+                            else
+                            {
+                                if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                }
+
+                                if (isDPCBarClicked)
+                                {
+                                    isDPCBarClicked = false;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                            }
+                        }
+                    }
+                    else if (ChartType == ChartType.Month && ChartDataType == ChartDataType.RM && index != -1)
+                    {
+                        if (isSMAccount)
+                        {
+                            if (GetIsMDMSDown())
+                            {
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                {
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage) ? ""
+                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+
+                                    OnProcessDPCIndicationMessage(message);
+
+                                    isDPCBarClicked = true;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                                else
+                                {
+                                    if (isDPCBarClicked)
+                                    {
+                                        isDPCBarClicked = false;
+                                        isChangeVirtualHeightNeed = true;
+                                        SetVirtualHeightParams(6f);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                {
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage) ? ""
+                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+
+                                    OnProcessDPCIndicationMessage(message);
+
+                                    isDPCBarClicked = true;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                                else
+                                {
+                                    if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                    {
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                    }
+
+                                    if (isDPCBarClicked)
+                                    {
+                                        isDPCBarClicked = false;
+                                        isChangeVirtualHeightNeed = true;
+                                        SetVirtualHeightParams(6f);
+                                    }
+                                }
+                            }
+                        }
+                        else if (!isREAccount)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            {
+                                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage) ? ""
+                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                }
+
+                                OnProcessDPCIndicationMessage(message);
 
                                 if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
@@ -5337,7 +5589,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " "+ selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? ""
                                         : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -5348,6 +5600,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    OnProcessDPCIndicationMessage(message);
                                 }
                             }
                             else
@@ -5357,7 +5611,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? ""
                                         : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -5368,6 +5622,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    OnProcessDPCIndicationMessage(message);
                                 }
                             }
                         }
@@ -5378,7 +5634,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedHistoryData.ByMonth.Months[index].Month + " " + selectedHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? ""
                                     : selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -5389,6 +5645,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
+
+                                OnProcessDPCIndicationMessage(message);
                             }
                         }
                     }
