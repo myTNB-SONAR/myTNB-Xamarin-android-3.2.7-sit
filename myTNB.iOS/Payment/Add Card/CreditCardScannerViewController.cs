@@ -1,21 +1,20 @@
 ﻿using System;
 using Card.IO;
 using CoreGraphics;
+using myTNB.Payment.AddCard;
 using UIKit;
 
-namespace myTNB.Payment.AddCard
+namespace myTNB.Payment
 {
-    public partial class CreditCardScannerViewController : UIViewController
+    public partial class CreditCardScannerViewController : CustomUIViewController
     {
-        public CreditCardScannerViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public CreditCardScannerViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = AddCardConstants.Pagename_CardScanner;
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            NavigationItem.HidesBackButton = true;
             SetNavigationItems();
             SetSubviews();
         }
@@ -26,37 +25,43 @@ namespace myTNB.Payment.AddCard
             // Release any cached data, images, etc that aren't in use.
         }
 
-        internal void SetNavigationItems()
+        private void SetNavigationItems()
         {
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+            NavigationItem.HidesBackButton = true;
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.NavigationController.PopViewController(true);
+                NavigationController.PopViewController(true);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
+            Title = GetI18NValue(AddCardConstants.I18N_Title);
         }
 
-        internal void SetSubviews()
+        private void SetSubviews()
         {
-            UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 60));
-            lblDescription.Font = myTNBFont.MuseoSans16_300();
-            lblDescription.TextColor = myTNBColor.TunaGrey();
-            lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Lines = 0;
-            lblDescription.Text = "Scan the front of your credit / debit card to retrieve card details.";
-            lblDescription.TextAlignment = UITextAlignment.Left;
+            UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 60))
+            {
+                Font = MyTNBFont.MuseoSans16_300,
+                TextColor = MyTNBColor.TunaGrey(),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                Text = GetI18NValue(AddCardConstants.I18N_ScanMessage),
+                TextAlignment = UITextAlignment.Left
+            };
             View.AddSubview(lblDescription);
 
-            CardIOView cardIOView = new CardIOView();
-            cardIOView.Frame = new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 130);
-            cardIOView.HideCardIOLogo = true;
-            cardIOView.Delegate = new CardIODelegate(this);
+            CardIOView cardIOView = new CardIOView
+            {
+                Frame = new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 130),
+                HideCardIOLogo = true,
+                Delegate = new CardIODelegate(this),
+                ScanInstructions = GetI18NValue(AddCardConstants.I18N_ScanInstructions)
+            };
             View.AddSubview(cardIOView);
-
         }
 
-        class CardIODelegate : CardIOViewDelegate
+        private class CardIODelegate : CardIOViewDelegate
         {
-            UIViewController _controller;
+            private UIViewController _controller;
             public CardIODelegate(UIViewController controller)
             {
                 _controller = controller;
@@ -72,7 +77,6 @@ namespace myTNB.Payment.AddCard
                     DataManager.DataManager.SharedInstance.CreditCardInfo.CardType = cardInfo.CardType.ToString();
                     _controller?.NavigationController?.PopViewController(true);
                 }
-
             }
         }
     }

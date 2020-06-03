@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using UIKit;
 
 namespace myTNB
@@ -14,7 +14,7 @@ namespace myTNB
         /// <param name="scrollView">Scroll view.</param>
         public override void DraggingStarted(UIScrollView scrollView)
         {
-            Console.WriteLine("DraggingStarted");
+            Debug.WriteLine("DraggingStarted");
         }
     }
 }

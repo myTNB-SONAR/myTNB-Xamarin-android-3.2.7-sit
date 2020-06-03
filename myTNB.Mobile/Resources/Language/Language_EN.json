@@ -153,7 +153,10 @@
     "receiptErrorMsg": "We can’t seem to fetch your receipt right now. Check back later!",
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
     "usedRewardTitle": "Reward already used.",
-    "usedRewardMsg": "But that's okay, we have more for you to check out!"
+    "usedRewardMsg": "But that's okay, we have more for you to check out!",
+    "paymentCCErrorTitle": "Sorry, we're unable to retrieve your card information right now.",
+    "paymentCCErrorMsg": "Sorry, we're unable to retrieve your card information right now. You may still pay by adding another card or by using online banking via FPX.",
+    "profileCCErrorMsg": "If you're here to manage your cards, we're unable to perform this action right now. Please try again later."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",

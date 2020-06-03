@@ -6,13 +6,13 @@ using CoreGraphics;
 using myTNB.Home.More.FindUs.LocationDetails;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Home.Components;
-using CoreLocation;
 using System.Collections.Generic;
 using System.Diagnostics;
+using myTNB.FindUs;
 
 namespace myTNB
 {
-    public partial class LocationDetailsViewController : UIViewController
+    public partial class LocationDetailsViewController : CustomUIViewController
     {
         public LocationDetailsViewController(IntPtr handle) : base(handle)
         {
@@ -21,11 +21,12 @@ namespace myTNB
         public string NavigationTitle = string.Empty;
         public AnnotationModel Annotation;
 
-        ActivityIndicatorComponent _activityIndicator;
-        UIImageView _imgLocation;
+        private ActivityIndicatorComponent _activityIndicator;
+        private UIImageView _imgLocation;
 
         public override void ViewDidLoad()
         {
+            PageName = FindUsConstants.Pagename_LocationDetails;
             base.ViewDidLoad();
             ActivityIndicator.Show();
             SetNavigationBar();
@@ -52,7 +53,7 @@ namespace myTNB
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle(NavigationTitle);
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
@@ -63,7 +64,7 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        void SetTableHeader()
+        private void SetTableHeader()
         {
             UIView viewHeader = new UIView(new CGRect(0, 0, View.Frame.Width, 180));
             _imgLocation = new UIImageView(new CGRect(0, 0, View.Frame.Width, 180));
@@ -73,7 +74,7 @@ namespace myTNB
             locationDetailsTableView.TableHeaderView = viewHeader;
         }
 
-        void AddLocationImage()
+        private void AddLocationImage()
         {
             string imgPath = string.Empty;
             if ((bool)Annotation?.is7E)
@@ -144,12 +145,12 @@ namespace myTNB
             }
         }
 
-        void SetTableView()
+        private void SetTableView()
         {
             SetTableHeader();
             locationDetailsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             locationDetailsTableView.Frame = new CGRect(0, 64, View.Frame.Width, View.Frame.Height - 64);
-            locationDetailsTableView.Source = new LocationDetailsDataSource(this, Annotation);
+            locationDetailsTableView.Source = new LocationDetailsDataSource(this, Annotation, GetI18NValue);
             locationDetailsTableView.ReloadData();
         }
 
@@ -163,56 +164,55 @@ namespace myTNB
                     UIApplication.SharedApplication.OpenUrl(url);
                 }
             }
+            catch (MonoTouchException m) { Debug.WriteLine("Error in CallNumber: " + m.Message); }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
         internal void OpenDirections(AnnotationModel annotation)
         {
             Dictionary<string, string> schemaDictionary = new Dictionary<string, string>();
-            string appleMapsSchema = string.Format("maps://?saddr=&daddr={0},{1}&directionsmode=driving"
-                                                   , annotation.Coordinate.Latitude
-                                                   , annotation.Coordinate.Longitude);
-            string googleMapsSchema = string.Format("comgooglemaps://?saddr=&daddr={0},{1}&directionsmode=driving"
-                                                   , annotation.Coordinate.Latitude
-                                                   , annotation.Coordinate.Longitude);
-            string wazeSchema = string.Format("waze://?ll={0},{1}&navigate=yes"
-                                                   , annotation.Coordinate.Latitude
-                                                   , annotation.Coordinate.Longitude);
-            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("maps://")))
+            string appleMapsSchema = string.Format(FindUsConstants.Schema_Apple
+                , annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
+            string googleMapsSchema = string.Format(FindUsConstants.Schema_Google
+                , annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
+            string wazeSchema = string.Format(FindUsConstants.Schema_Waze
+                , annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
+            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl(FindUsConstants.URL_Apple)))
             {
                 schemaDictionary.Add("Maps", appleMapsSchema);
             }
-            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("comgooglemaps://")))
+            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl(FindUsConstants.URL_Google)))
             {
                 schemaDictionary.Add("Google Maps", googleMapsSchema);
             }
-            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("waze://")))
+            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl(FindUsConstants.URL_Waze)))
             {
                 schemaDictionary.Add("Waze", wazeSchema);
             }
             if (schemaDictionary.Count > 0)
             {
-                var mapAlert = UIAlertController.Create("Map Selection", "Select navigation application.", UIAlertControllerStyle.ActionSheet);
-                foreach (var schema in schemaDictionary)
+                UIAlertController mapAlert = UIAlertController.Create(GetI18NValue(FindUsConstants.I18N_MapSelection)
+                    , GetI18NValue(FindUsConstants.I18N_SelectApplication), UIAlertControllerStyle.ActionSheet);
+                foreach (KeyValuePair<string, string> schema in schemaDictionary)
                 {
-                    var action = UIAlertAction.Create("Open in " + schema.Key, UIAlertActionStyle.Default, (obj) =>
+                    UIAlertAction action = UIAlertAction.Create(string.Format("{0} {1}", GetI18NValue(FindUsConstants.I18N_OpenIn), schema.Key)
+                        , UIAlertActionStyle.Default, (obj) =>
                     {
                         UIApplication.SharedApplication.OpenUrl(new NSUrl(schema.Value));
                     });
                     mapAlert.AddAction(action);
                 }
-                var cancelAction = UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null);
+                UIAlertAction cancelAction = UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null);
                 mapAlert.AddAction(cancelAction);
+                mapAlert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(mapAlert, animated: true, completionHandler: null);
             }
             else
             {
-                var alert = UIAlertController.Create("Warning", "No supported map application is installed.", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
+                DisplayGenericAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle), GetI18NValue(FindUsConstants.I18N_NoSupportedApp));
             }
         }
     }

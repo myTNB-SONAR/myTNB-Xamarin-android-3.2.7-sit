@@ -1,5 +1,4 @@
 using CoreGraphics;
-using Foundation;
 using myTNB.Customs;
 using myTNB.Enums;
 using myTNB.Model;
@@ -11,29 +10,25 @@ namespace myTNB
 {
     public partial class FeedbackInputCell : UITableViewCell
     {
-        UILabel lblNumber;
-        public UILabel lblQuestion;
-        UIView ratingView;
-        UIView commentView;
         public FeedbackTextView feedbackTextView;
         public UITextField txtFieldComments;
-        UIView parentView;
-        UIView viewRating;
-        UILabel lblRateTitle;
-        UILabel lblFeedbackSubTitle;
-        UIImageView iconFeedback;
-        UIView viewLine;
+        public UILabel lblQuestion;
 
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        nfloat textWidth;
-        List<QuestionInputOption> choices;
-        FeedbackQuestionModel questionCache;
+        private UIView ratingView, commentView, parentView, viewRating
+            , viewLine;
 
-        int verticalMargin = 16;
-        int horizontalMargin = 18;
-        float starsViewWidth = 184;
-        float TXTVIEW_DEFAULT_MARGIN = 24f;
-        float COMMENT_VIEW_HEIGHT = 64f;
+        private UILabel lblRateTitle, lblFeedbackSubTitle, lblNumber;
+        private UIImageView iconFeedback;
+
+        private nfloat textWidth;
+        private List<QuestionInputOption> choices;
+        private FeedbackQuestionModel questionCache;
+
+        private int verticalMargin = 16;
+        private int horizontalMargin = 18;
+        private float starsViewWidth = 184;
+        private float TXTVIEW_DEFAULT_MARGIN = 24f;
+        private float COMMENT_VIEW_HEIGHT = 64f;
 
         public QuestionTypeEnum QuestionType;
         public int Rating;
@@ -50,28 +45,30 @@ namespace myTNB
 
         private void Initialize()
         {
-            var parentViewWidth = ContentView.Bounds.Width - horizontalMargin * 2;
-            parentView = new UIView(new CGRect(horizontalMargin, verticalMargin,
-                                               parentViewWidth, ContentView.Bounds.Height - verticalMargin * 2));
-            parentView.UserInteractionEnabled = false;
-            SelectionStyle = UITableViewCellSelectionStyle.None;
+            nfloat parentViewWidth = ContentView.Bounds.Width - horizontalMargin * 2;
+            parentView = new UIView(new CGRect(horizontalMargin, verticalMargin
+                , parentViewWidth, ContentView.Bounds.Height - verticalMargin * 2))
+            {
+                UserInteractionEnabled = false
+            };
 
             lblNumber = new UILabel
             {
                 Frame = new CGRect(0, 0, 20, 18),
-                Font = myTNBFont.MuseoSans18_500(),
-                TextColor = myTNBColor.PowerBlue(),
+                Font = MyTNBFont.MuseoSans18_500,
+                TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Left,
                 Lines = 0
             };
             parentView.AddSubview(lblNumber);
+            SelectionStyle = UITableViewCellSelectionStyle.None;
 
             textWidth = parentViewWidth - lblNumber.Frame.Width - 5 - horizontalMargin;
             lblQuestion = new UILabel
             {
                 Frame = new CGRect(lblNumber.Frame.GetMaxX() + 5, 0, textWidth, 60),
-                Font = myTNBFont.MuseoSans18_500(),
-                TextColor = myTNBColor.PowerBlue(),
+                Font = MyTNBFont.MuseoSans18_500,
+                TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Left,
                 Lines = 0,
             };
@@ -95,7 +92,7 @@ namespace myTNB
                 ViewHelper.AdjustFrameWidth(viewLine, adjWidth);
                 ViewHelper.AdjustFrameWidth(ratingView, adjWidth);
                 ViewHelper.AdjustFrameWidth(lblRateTitle, adjWidth);
-                var adjX = (ratingView.Frame.Width / 2) - (starsViewWidth / 2);
+                nfloat adjX = (ratingView.Frame.Width / 2) - (starsViewWidth / 2);
                 ViewHelper.AdjustFrameSetX(viewRating, adjX);
             }
 
@@ -127,8 +124,6 @@ namespace myTNB
                     }
                     break;
             }
-
-
         }
 
         /// <summary>
@@ -142,10 +137,12 @@ namespace myTNB
             // stars parent
             viewRating = new UIView(new CGRect((ratingView.Frame.Width / 2) - (starsViewWidth / 2), verticalMargin, starsViewWidth, 32));
 
-            lblRateTitle = new UILabel(new CGRect(0, viewRating.Frame.GetMaxY() + verticalMargin, ratingView.Frame.Width, 16));
-            lblRateTitle.Font = myTNBFont.MuseoSans14_300();
-            lblRateTitle.TextColor = myTNBColor.TunaGrey();
-            lblRateTitle.TextAlignment = UITextAlignment.Center;
+            lblRateTitle = new UILabel(new CGRect(0, viewRating.Frame.GetMaxY() + verticalMargin, ratingView.Frame.Width, 16))
+            {
+                Font = MyTNBFont.MuseoSans14_300,
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = UITextAlignment.Center
+            };
 
             ratingView.AddSubviews(new UIView[] { lblRateTitle, viewRating });
             ContentView.AddSubview(ratingView);
@@ -164,15 +161,19 @@ namespace myTNB
 
             for (int index = 0; index < count; index++)
             {
-                viewStar = new UIView(new CGRect(xLocation, 0, 32, 32));
-                viewStar.Tag = index;
-                imgStar = new UIImageView(new CGRect(0, 0, 32, 32));
-                imgStar.Image = UIImage.FromBundle("IC-Action-Rating-Active");
+                viewStar = new UIView(new CGRect(xLocation, 0, 32, 32))
+                {
+                    Tag = index
+                };
+                imgStar = new UIImageView(new CGRect(0, 0, 32, 32))
+                {
+                    Image = UIImage.FromBundle("IC-Action-Rating-Active")
+                };
                 viewStar.AddSubview(imgStar);
 
-                var tapGesture = new UITapGestureRecognizer((sender) =>
+                UITapGestureRecognizer tapGesture = new UITapGestureRecognizer((sender) =>
                 {
-                    var view = sender.View as UIView;
+                    UIView view = sender.View as UIView;
 
                     if (view != null)
                     {
@@ -182,13 +183,11 @@ namespace myTNB
                 });
 
                 tapGesture.NumberOfTapsRequired = 1;
-                //tapGesture.CancelsTouchesInView = false;
                 viewStar.AddGestureRecognizer(tapGesture);
                 viewStar.UserInteractionEnabled = true;
                 containerView.AddSubview(viewStar);
                 xLocation += 32 + 6;
             }
-
         }
 
         /// <summary>
@@ -218,14 +217,8 @@ namespace myTNB
                 imgView = viewRating.Subviews[i].Subviews[0] as UIImageView;
                 if (imgView != null)
                 {
-                    if (i <= index)
-                    {
-                        imgView.Image = UIImage.FromBundle("IC-Action-Rating-Active");
-                    }
-                    else
-                    {
-                        imgView.Image = UIImage.FromBundle("IC-Action-Rating-Inactive");
-                    }
+                    imgView.Image = UIImage.FromBundle(i <= index
+                        ? "IC-Action-Rating-Active" : "IC-Action-Rating-Inactive");
                 }
             }
         }
@@ -243,9 +236,9 @@ namespace myTNB
             {
                 Frame = new CGRect(24, 0, textWidth, 36),
                 Editable = true,
-                Font = myTNBFont.MuseoSans16_300(),
+                Font = MyTNBFont.MuseoSans16_300,
                 TextAlignment = UITextAlignment.Left,
-                TextColor = myTNBColor.TunaGrey(),
+                TextColor = MyTNBColor.TunaGrey(),
                 BackgroundColor = UIColor.Clear,
                 EnablesReturnKeyAutomatically = true,
                 TranslatesAutoresizingMaskIntoConstraints = true,
@@ -259,43 +252,16 @@ namespace myTNB
 
             lblFeedbackSubTitle = new UILabel(new CGRect(0, feedbackTextView.Frame.GetMaxY() + 3, textWidth, 16))
             {
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans9_300()
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9_300
             };
 
-            feedbackTextView.SetPlaceholder("Comments");
+            feedbackTextView.SetPlaceholder(LanguageUtility.GetCommonI18NValue(Constants.Common_Comments));
             feedbackTextView.CreateDoneButton();
 
-#if false
-            txtFieldComments.AttributedPlaceholder = new Foundation.NSAttributedString(
-                "Comments"
-                , font: myTNBFont.MuseoSans16()
-                , foregroundColor: myTNBColor.SilverChalice()
-            );
-            txtFieldComments.TextColor = myTNBColor.SilverChalice();
-            _textFieldHelper.CreateTextFieldLeftView(txtFieldComments, "IC-Field-Text");
-            _textFieldHelper.SetKeyboard(txtFieldComments);
-            txtFieldComments.KeyboardType = UIKeyboardType.Default;
-            txtFieldComments.ShouldReturn = (sender) =>
-            {
-                sender.ResignFirstResponder();
-                return false;
-            };
-            txtFieldComments.EditingChanged += (sender, e) => 
-            {
-                if (questionCache != null)
-                {
-                    questionCache.Answer = txtFieldComments.Text;
-                }
-            };
-            txtFieldComments.UserInteractionEnabled = true;
-#endif
-
             viewLine = new UIView(new CGRect(0, feedbackTextView.Frame.GetMaxY() + 1, textWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.SilverChalice();
-
+            viewLine.BackgroundColor = MyTNBColor.SilverChalice;
             commentView.AddSubviews(new UIView[] { feedbackTextView, lblFeedbackSubTitle, iconFeedback, viewLine });
-
             ContentView.AddSubview(commentView);
             SetTextViewEvents(feedbackTextView, viewLine);
             HandleFeedbackTextViewChange();
@@ -316,9 +282,10 @@ namespace myTNB
                 {
                     HandleFeedbackTextViewChange();
 
-                    var frame = new CGRect();
+                    CGRect frame = new CGRect();
                     frame = feedbackTextView.Frame;
-                    frame.Height = feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT ? feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
+                    frame.Height = feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT
+                        ? feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
                     feedbackTextView.Frame = frame;
 
                     ViewHelper.AdjustFrameSetHeight(commentView, COMMENT_VIEW_HEIGHT + feedbackTextView.Frame.Height);
@@ -345,7 +312,6 @@ namespace myTNB
                         questionCache.Answer = feedbackTextView.Text;
                     }
                 }
-
             };
             textView.ShouldEndEditing = (sender) =>
             {
@@ -357,17 +323,16 @@ namespace myTNB
             {
                 if (txtView == feedbackTextView)
                 {
-                    var newLength = textView.Text.Length + replacementString.Length - range.Length;
+                    nint newLength = textView.Text.Length + replacementString.Length - range.Length;
                     return newLength <= TNBGlobal.FeedbackMaxCharCount;
                 }
                 return true;
             };
             textView.ShouldBeginEditing = (sender) =>
             {
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 return true;
             };
-
         }
 
         /// <summary>
@@ -376,10 +341,8 @@ namespace myTNB
         private void HandleFeedbackTextViewChange()
         {
             int charCount = TNBGlobal.FeedbackMaxCharCount - feedbackTextView.Text.Length;
-            string text = string.Format("{0} character{1} left", charCount, charCount != 1 ? "s" : string.Empty);
-            lblFeedbackSubTitle.Text = text;
+            lblFeedbackSubTitle.Text = string.Format(LanguageUtility.GetCommonI18NValue(charCount > 1
+                ? Constants.Common_CharactersLeft : Constants.Common_CharacterLeft), charCount);
         }
-
     }
-
 }

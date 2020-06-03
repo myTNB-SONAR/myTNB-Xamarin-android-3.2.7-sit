@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
@@ -11,18 +13,27 @@ namespace myTNB.SitecoreCMS.Service
 {
     public class FAQsService
     {
-        internal List<FAQsModel> GetFAQsService(string OS, string imageSize, string websiteUrl = null, string language = "en")
+        private string _os, _imgSize, _websiteURL, _language;
+        internal FAQsService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        {
+            _os = os;
+            _imgSize = imageSize;
+            _websiteURL = websiteUrl;
+            _language = language;
+        }
+
+        internal List<FAQsModel> GetFAQsItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateFAQsChildren(item, OS, imageSize, websiteUrl, language);
+            var list = GenerateFAQsChildren(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        public async Task<IEnumerable<FAQsModel>> GenerateFAQsChildren(ScItemsResponse itemsResponse, string OS, string imageSize, string websiteUrl = null, string language = "en")
+        public async Task<IEnumerable<FAQsModel>> GenerateFAQsChildren(ScItemsResponse itemsResponse)
         {
             List<FAQsModel> list = new List<FAQsModel>();
 
@@ -35,7 +46,7 @@ namespace myTNB.SitecoreCMS.Service
 
                 FAQsModel listlItem = new FAQsModel
                 {
-                    Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, OS, imageSize, websiteUrl, language),
+                    Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, _os, _imgSize, _websiteURL, _language),
                     Question = item.GetValueFromField(Constants.Sitecore.Fields.FAQs.Question),
                     Answer = item.GetValueFromField(Constants.Sitecore.Fields.FAQs.Answer),
                     ID = item.Id,
@@ -45,32 +56,40 @@ namespace myTNB.SitecoreCMS.Service
             }
             return list;
         }
-        internal FAQsParentModel GetTimestamp(string websiteUrl = null, string language = "en")
+
+        internal FAQsParentModel GetTimestamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateTimestamp(item, websiteUrl, language);
+            var list = GenerateTimestamp(item);
             var itemList = list.Result;
             return itemList;
         }
 
-        async Task<FAQsParentModel> GenerateTimestamp(ScItemsResponse itemsResponse, string websiteUrl = null, string language = "en")
+        private async Task<FAQsParentModel> GenerateTimestamp(ScItemsResponse itemsResponse)
         {
-            FAQsParentModel listlItem = new FAQsParentModel();
-
-            for (int i = 0; i < itemsResponse.ResultCount; i++)
+            try
             {
-                ISitecoreItem item = itemsResponse[i];
-
-                if (item == null)
-                    continue;
-
-                listlItem.Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField);
-                listlItem.ID = item.Id;
+                for (int i = 0; i < itemsResponse.ResultCount; i++)
+                {
+                    ISitecoreItem item = itemsResponse[i];
+                    if (item == null)
+                    {
+                        continue;
+                    }
+                    return new FAQsParentModel
+                    {
+                        Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField),
+                        ID = item.Id
+                    };
+                }
             }
-
-            return listlItem;
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in HelpService/GenerateTimestamp: " + e.Message);
+            }
+            return new FAQsParentModel();
         }
     }
 }

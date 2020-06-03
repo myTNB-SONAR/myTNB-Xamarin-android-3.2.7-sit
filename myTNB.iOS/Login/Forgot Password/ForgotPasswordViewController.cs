@@ -5,34 +5,30 @@ using System.Threading.Tasks;
 using Foundation;
 using CoreGraphics;
 using myTNB.DataManager;
-using myTNB.Extensions;
+using myTNB.Login.ForgotPassword;
 
 namespace myTNB
 {
-    public partial class ForgotPasswordViewController : UIViewController
+    public partial class ForgotPasswordViewController : CustomUIViewController
     {
-        UILabel lblEmailTitle;
-        UITextField txtFieldEmail;
-        UILabel lblEmailError;
-        UIView viewLineEmail;
+        public ForgotPasswordViewController(IntPtr handle) : base(handle) { }
 
-        public ForgotPasswordViewController(IntPtr handle) : base(handle)
-        {
-        }
+        private UILabel lblEmailTitle, lblEmailError;
+        private UITextField txtFieldEmail;
+        private UIView viewLineEmail;
 
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        BaseResponseModel _resetCodeList = new BaseResponseModel();
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private BaseResponseModelV2 _resetCodeList = new BaseResponseModelV2();
 
-        const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string TOKEN_PATTERN = @"^[0-9]{4,4}$";
-        string _email = string.Empty;
-        string _token = string.Empty;
+        private const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+        private string _email = string.Empty;
 
         public override void ViewDidLoad()
         {
+            PageName = ForgotPasswordConstants.Pagename_ForgotPassword;
             base.ViewDidLoad();
-            this.Title = "Reset Password";
-            this.NavigationItem.HidesBackButton = true;
+            Title = GetI18NValue(ForgotPasswordConstants.I18N_Title);
+            NavigationItem.HidesBackButton = true;
 
             InitializedSubViews();
             AddBackButton();
@@ -40,20 +36,20 @@ namespace myTNB
             SetViews();
         }
 
-        internal void InitializedSubViews()
+        private void InitializedSubViews()
         {
             lblTitle.Frame = new CGRect(18, 19, View.Frame.Width - 36, 18);
-            lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.Font = myTNBFont.MuseoSans16_500();
-            lblTitle.Text = "Please enter your email.";
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
+            lblTitle.Font = MyTNBFont.MuseoSans16_500;
+            lblTitle.Text = GetI18NValue(ForgotPasswordConstants.I18N_SubTitle);
 
             lblDescription.Frame = new CGRect(18, 40, View.Frame.Width - 36, 36);
-            lblDescription.TextColor = myTNBColor.TunaGrey();
-            lblDescription.Font = myTNBFont.MuseoSans14_300();
+            lblDescription.TextColor = MyTNBColor.TunaGrey();
+            lblDescription.Font = MyTNBFont.MuseoSans14_300;
             lblDescription.TextAlignment = UITextAlignment.Left;
             lblDescription.Lines = 0;
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Text = "A 4-digit verification code will be sent to this email address.";
+            lblDescription.Text = GetI18NValue(ForgotPasswordConstants.I18N_Details);
 
             btnSubmit.Layer.CornerRadius = 5f;
 
@@ -62,30 +58,30 @@ namespace myTNB
             viewEmail.BackgroundColor = UIColor.Clear;
 
             lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12));
-            lblEmailTitle.Font = myTNBFont.MuseoSans9_300();
-            lblEmailTitle.TextColor = myTNBColor.SilverChalice();
-            lblEmailTitle.Text = "EMAIL";
+            lblEmailTitle.Font = MyTNBFont.MuseoSans9_300;
+            lblEmailTitle.TextColor = MyTNBColor.SilverChalice;
+            lblEmailTitle.Text = GetCommonI18NValue(Constants.Common_Email).ToUpper();
             lblEmailTitle.TextAlignment = UITextAlignment.Left;
 
             lblEmailError = new UILabel(new CGRect(0, 37, viewEmail.Frame.Width, 14));
-            lblEmailError.Font = myTNBFont.MuseoSans9_300();
-            lblEmailError.TextColor = myTNBColor.Tomato();
-            lblEmailError.Text = "Invalid email address";
+            lblEmailError.Font = MyTNBFont.MuseoSans9_300;
+            lblEmailError.TextColor = MyTNBColor.Tomato;
+            lblEmailError.Text = GetErrorI18NValue(Constants.Error_InvalidEmailAddress);
             lblEmailError.TextAlignment = UITextAlignment.Left;
 
             txtFieldEmail = new UITextField(new CGRect(0, 12, viewEmail.Frame.Width, 24));
             txtFieldEmail.AttributedPlaceholder = new NSAttributedString(
-                "Email"
-                , font: myTNBFont.MuseoSans16_300()
-                , foregroundColor: myTNBColor.SilverChalice()
+                GetCommonI18NValue(Constants.Common_Email).ToUpper()
+                , font: MyTNBFont.MuseoSans16_300
+                , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
             );
-            txtFieldEmail.TextColor = myTNBColor.TunaGrey();
+            txtFieldEmail.TextColor = MyTNBColor.TunaGrey();
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
             txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
 
             viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
-            viewLineEmail.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineEmail.BackgroundColor = MyTNBColor.PlatinumGrey;
 
             viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, txtFieldEmail, viewLineEmail });
 
@@ -93,17 +89,19 @@ namespace myTNB
             #endregion
         }
 
-        internal void SetViews()
+        private void SetViews()
         {
             _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, "Email");
             lblEmailTitle.Hidden = true;
             lblEmailError.Hidden = true;
             btnSubmit.Enabled = false;
-            btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
-            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
+            btnSubmit.SetTitle(GetCommonI18NValue(Constants.Common_Submit), UIControlState.Normal);
+            btnSubmit.BackgroundColor = MyTNBColor.PlatinumGrey;
+            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
-        internal void SetEvents()
+        private void SetEvents()
         {
             btnSubmit.TouchUpInside += (sender, e) =>
             {
@@ -119,8 +117,7 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            DisplayNoDataAlert();
                             ActivityIndicator.Hide();
                         }
                     });
@@ -130,7 +127,7 @@ namespace myTNB
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
         }
 
-        internal void SetKeyboard(UITextField textField)
+        private void SetKeyboard(UITextField textField)
         {
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
@@ -138,7 +135,7 @@ namespace myTNB
             textField.ReturnKeyType = UIReturnKeyType.Done;
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
+        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
@@ -148,7 +145,7 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 textFieldTitle.Hidden = textField.Text.Length == 0;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
             };
             textField.ShouldEndEditing = (sender) =>
@@ -156,8 +153,8 @@ namespace myTNB
                 textFieldTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 textFieldError.Hidden = isValid || textField.Text.Length == 0;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid || textField.Text.Length == 0 ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 SetSubmitButtonEnable();
                 return true;
             };
@@ -177,16 +174,16 @@ namespace myTNB
             };
         }
 
-        internal void SetSubmitButtonEnable()
+        private void SetSubmitButtonEnable()
         {
             bool isValid = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN);
             btnSubmit.Enabled = isValid;
-            btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 OnShowLogin();
@@ -194,7 +191,7 @@ namespace myTNB
             this.NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void OnShowLogin()
+        private void OnShowLogin()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Login", null);
             LoginViewController viewController =
@@ -202,7 +199,7 @@ namespace myTNB
             this.DismissViewController(true, null);
         }
 
-        internal void ExecuteSendResetPasswordCodeCall()
+        private void ExecuteSendResetPasswordCodeCall()
         {
             SendResetPasswordCode().ContinueWith(task =>
             {
@@ -218,46 +215,38 @@ namespace myTNB
                     }
                     else
                     {
-                        string errorMsg = "Error in sending reset code.";
-                        if (_resetCodeList != null && _resetCodeList.d != null
-                           && !string.IsNullOrEmpty(_resetCodeList.d.message)
-                           && !string.IsNullOrWhiteSpace(_resetCodeList.d.message))
-                        {
-                            errorMsg = _resetCodeList.d.message;
-                        }
-                        DisplayAlertMessage("Error", errorMsg);
+                        DisplayServiceError(_resetCodeList?.d?.DisplayMessage);
                     }
                     ActivityIndicator.Hide();
                 });
             });
         }
 
-        internal Task SendResetPasswordCode()
+        private Task SendResetPasswordCode()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                    ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    username = _email,
-                    userEmail = _email
+                    usrInf = new
+                    {
+                        eid = _email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    serviceManager.deviceInf
                 };
-                _resetCodeList = serviceManager.BaseServiceCall("SendResetPasswordCode", requestParameter);
+                _resetCodeList = serviceManager.BaseServiceCallV6(ForgotPasswordConstants.Service_SendResetPasswordCode, requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
     }
 }

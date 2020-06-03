@@ -11,15 +11,17 @@ namespace myTNB
         public ServicesViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat cellHeight = Frame.Height;
+            //nfloat cellHeight = Frame.Height;
 
-            lblTitle = new UILabel(new CGRect(18, 16, cellWidth - 36, 14));
-            lblTitle.TextColor = myTNBColor.SilverChalice();
-            lblTitle.Font = myTNBFont.MuseoSans9();
+            lblTitle = new UILabel(new CGRect(18, 16, cellWidth - 36, 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9
+            };
 
             //lblValue = new UILabel(new CGRect(18, 30, cellWidth - 36, 200));
             //lblValue.TextColor = myTNBColor.TunaGrey();
-            //lblValue.Font = myTNBFont.MuseoSans12();
+            //lblValue.Font = myTNBFont.MuseoSans12;
             //lblValue.Lines = 12;
             //lblValue.LineBreakMode = UILineBreakMode.WordWrap;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Plugin.Connectivity;
 
@@ -17,7 +18,7 @@ namespace myTNB
 		public static bool IsNetworkAvailable()
         {
             bool isAvailable = CrossConnectivity.Current.IsConnected;
-            Console.WriteLine("[DEBUG] Network Availablity: " + isAvailable);
+            Debug.WriteLine("[DEBUG] Network Availablity: " + isAvailable);
             return isAvailable;
         }
         /// <summary>
@@ -28,7 +29,7 @@ namespace myTNB
         {
             return Task.Factory.StartNew(() =>
             {
-                isReachable = Reachability.IsHostReachable("http://google.com");
+                isReachable = Reachability.IsHostReachable("https://www.google.com");
             });
         }
     }

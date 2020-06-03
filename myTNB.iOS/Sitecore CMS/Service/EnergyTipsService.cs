@@ -1,50 +1,108 @@
-﻿using Sitecore.MobileSDK.API.Items;
-using Sitecore.MobileSDK.API.Request.Parameters;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Extensions;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using Sitecore.MobileSDK.API.Items;
+using Sitecore.MobileSDK.API.Request.Parameters;
 
-namespace myTNB.SitecoreCMS.Services
+namespace myTNB.SitecoreCMS.Service
 {
-    internal class EnergyTipsService
+    public class EnergyTipsService
     {
-        internal List<EnergyTipsModel> GetEnergyTips(string OS, string imageSize, string websiteUrl = null, string language = "en")
+        private string _os, _imgSize, _websiteURL, _language;
+        internal EnergyTipsService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        {
+            _os = os;
+            _imgSize = imageSize;
+            _websiteURL = websiteUrl;
+            _language = language;
+        }
+
+        internal List<TipsModel> GetItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
-
-            var req = sitecoreService.GetItemById(Constants.Sitecore.ItemID.EnergyTips, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.EnergyTips
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateEnergyTipsChildren(item, OS, imageSize, websiteUrl, language);
+            var list = ParseToChildrenItems(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        private async Task<IEnumerable<EnergyTipsModel>> GenerateEnergyTipsChildren(ScItemsResponse itemsResponse, string OS, string imageSize, string websiteUrl = null, string language = "en")
+        internal EnergyTipsTimeStamp GetTimeStamp()
         {
-            List<EnergyTipsModel> list = new List<EnergyTipsModel>();
+            SitecoreService sitecoreService = new SitecoreService();
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.EnergyTips
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+            var item = req.Result;
+            var list = ParseToTimestamp(item);
+            var itemList = list.Result;
+            return itemList;
+        }
 
-            for (int i = 0; i < itemsResponse.ResultCount; i++)
+        private async Task<IEnumerable<TipsModel>> ParseToChildrenItems(ScItemsResponse itemsResponse)
+        {
+            List<TipsModel> list = new List<TipsModel>();
+            try
             {
-                ISitecoreItem item = itemsResponse[i];
-
-                if (item == null)
-                    continue;
-
-                EnergyTipsModel listlItem = new EnergyTipsModel
+                for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
-                    Text = item.GetValueFromField(Constants.Sitecore.Fields.Shared.Text),
-                    SubText = item.GetValueFromField(Constants.Sitecore.Fields.Shared.SubText),
-                    Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, OS, imageSize, websiteUrl, language),
-                    CategoryTitle = item.GetFieldValueFromDropLink(Constants.Sitecore.Fields.EnergyTips.Category, Constants.Sitecore.Fields.Shared.Title, websiteUrl, language),
-                    ID = item.Id,
-                };
+                    ISitecoreItem item = itemsResponse[i];
+                    if (item == null)
+                    {
+                        continue;
+                    }
 
-                list.Add(listlItem);
+                    list.Add(new TipsModel
+                    {
+                        Title = item.GetValueFromField(Constants.Sitecore.Fields.EnergyTips.Title),
+                        Description = item.GetValueFromField(Constants.Sitecore.Fields.EnergyTips.Description),
+                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.EnergyTips.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20"),
+                        ID = item.Id
+                    });
+                }
             }
-
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in EnergyTipsService/GetChildren: " + e.Message);
+            }
             return list;
+        }
+
+        private int GetIntFromStringValue(string val)
+        {
+            int parsedValue;
+            Int32.TryParse(val, out parsedValue);
+            return parsedValue;
+        }
+
+        private async Task<EnergyTipsTimeStamp> ParseToTimestamp(ScItemsResponse itemsResponse)
+        {
+            try
+            {
+                for (int i = 0; i < itemsResponse.ResultCount; i++)
+                {
+                    ISitecoreItem item = itemsResponse[i];
+                    if (item == null)
+                    {
+                        continue;
+                    }
+                    return new EnergyTipsTimeStamp
+                    {
+                        Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField),
+                        ID = item.Id
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in EnergyTipsService/GenerateTimestamp: " + e.Message);
+            }
+            return new EnergyTipsTimeStamp();
         }
     }
 }

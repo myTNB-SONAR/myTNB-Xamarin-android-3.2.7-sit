@@ -4,91 +4,54 @@ using myTNB.Model;
 using UIKit;
 using CoreGraphics;
 using Foundation;
-using System.Drawing;
-using myTNB.Extensions;
 
 namespace myTNB.Registration
 {
-    public partial class RegistrationViewController : UIViewController
+    public partial class RegistrationViewController : CustomUIViewController
     {
-        UITextField txtFieldName;
-        UITextField txtFieldICNo;
-        UITextField txtFieldMobileNo;
-        UITextField txtFieldEmail;
-        UITextField txtFieldConfirmEmail;
-        UITextField txtFieldPassword;
-        UITextField txtFieldConfirmPassword;
-        UITextView txtViewDetails;
-        UIButton btnRegister;
-        UIView btnRegisterContainer;
+        private UITextField txtFieldName, txtFieldICNo, txtFieldEmail
+            , txtFieldConfirmEmail, txtFieldPassword, txtFieldConfirmPassword;
+        private UITextView txtViewDetails;
+        private CustomUIButtonV2 btnRegister;
+        private UIView viewLineName, viewLineICNo, viewLineEmail
+            , viewLineConfirmEmail, viewLinePassword, viewLineConfirmPassword
+            , viewShowConfirmPassword, viewShowPassword, btnRegisterContainer;
+        private UILabel lblNameTitle, lblICNoTitle, lblEmailTitle
+            , lblConfirmEmailTitle, lblPasswordTitle, lblConfirmPasswordTitle
+            , lblNameError, lblICNoError, lblEmailError
+            , lblConfirmEmailError, lblPasswordError, lblConfirmPasswordError
+            , lblNameHint, lblEmailHint
+            , lblConfirmEmailHint, lblPasswordHint, lblICNoHint, lblConfirmPasswordHint;
+        private UIScrollView ScrollView;
+        private CGRect scrollViewFrame;
+        private MobileNumberComponent _mobileNumberComponent;
 
-        UIView viewLineName;
-        UIView viewLineICNo;
-        UIView viewLineMobileNo;
-        UIView viewLineEmail;
-        UIView viewLineConfirmEmail;
-        UIView viewLinePassword;
-        UIView viewLineConfirmPassword;
+        public RegistrationViewController(IntPtr handle) : base(handle) { }
 
-        UILabel lblNameTitle;
-        UILabel lblICNoTitle;
-        UILabel lblMobileNoTitle;
-        UILabel lblEmailTitle;
-        UILabel lblConfirmEmailTitle;
-        UILabel lblPasswordTitle;
-        UILabel lblConfirmPasswordTitle;
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private RegistrationTokenSMSResponseModel _smsToken = new RegistrationTokenSMSResponseModel();
 
-        UILabel lblNameError;
-        UILabel lblICNoError;
-        UILabel lblMobileNoError;
-        UILabel lblEmailError;
-        UILabel lblConfirmEmailError;
-        UILabel lblPasswordError;
-        UILabel lblConfirmPasswordError;
-
-        UILabel lblNameHint;
-        UILabel lblICNoHint;
-        UILabel lblMobileNoHint;
-        UILabel lblEmailHint;
-        UILabel lblConfirmEmailHint;
-        UILabel lblPasswordHint;
-        UILabel lblConfirmPasswordHint;
-
-        UIView viewShowConfirmPassword;
-        UIView viewShowPassword;
-        UIScrollView ScrollView;
-        CGRect scrollViewFrame;
-        public RegistrationViewController(IntPtr handle) : base(handle)
-        {
-        }
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        RegistrationTokenSMSResponseModel _smsToken = new RegistrationTokenSMSResponseModel();
-
-        string _eMail = string.Empty;
-        string _token = string.Empty;
-        string _password = string.Empty;
-        string _fullName = string.Empty;
-        string _icNo = string.Empty;
-        string _mobileNo = string.Empty;
+        private string _eMail = string.Empty, _password = string.Empty
+            , _fullName = string.Empty, _icNo = string.Empty, _mobileNo = string.Empty;
 
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string PASSWORD_PATTERN = @"^.{8,}$"; //@"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
-        const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
-        const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
-        const string TOKEN_PATTERN = @"^[0-9]{4,4}$";
+        private string PASSWORD_PATTERN = TNBGlobal.PasswordPattern;
 
         public override void ViewDidLoad()
         {
+            PageName = RegisterConstants.Pagename_Register;
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            this.NavigationItem.HidesBackButton = true;
+            NotifCenterUtility.AddObserver((NSString)"OnCountrySelected", OnCountrySelected);
+            NavigationItem.HidesBackButton = true;
+            Title = GetI18NValue(RegisterConstants.I18N_Title);
             InitializedSubviews();
             AddBackButton();
             SetVisibility();
             SetEvents();
             SetViews();
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -103,467 +66,265 @@ namespace myTNB.Registration
             // Release any cached data, images, etc that aren't in use.
         }
 
-        internal void InitializedSubviews()
+        private void OnCountrySelected(NSNotification obj)
         {
+            NSDictionary userInfo = obj.UserInfo;
+            CountryModel countryInfo = new CountryModel
+            {
+                CountryCode = userInfo.ValueForKey(new NSString("CountryCode")).ToString(),
+                CountryName = userInfo.ValueForKey(new NSString("CountryName")).ToString(),
+                CountryISDCode = userInfo.ValueForKey(new NSString("CountryISDCode")).ToString()
+            };
+            if (_mobileNumberComponent != null)
+            {
+                _mobileNumberComponent.CountryShortCode = countryInfo.CountryCode;
+                _mobileNumberComponent.CountryCode = countryInfo.CountryISDCode;
+                _mobileNumberComponent.ClearField();
+                OnDone();
+            }
+        }
 
+        private void InitializedSubviews()
+        {
             //Scrollview
-            ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
-            ScrollView.BackgroundColor = UIColor.Clear;
+            ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
             View.AddSubview(ScrollView);
 
             //FullName 
-            UIView viewFullName = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 51)));
-            viewFullName.BackgroundColor = UIColor.Clear;
-
-            lblNameTitle = new UILabel
+            UIView viewFullName = new UIView(new CGRect(18, 16, View.Frame.Width - 36, 51))
             {
-                Frame = new CGRect(0, 0, viewFullName.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "FULL NAME"
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.Clear
             };
-            viewFullName.AddSubview(lblNameTitle);
 
-            lblNameError = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewFullName.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Invalid full name"
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            viewFullName.AddSubview(lblNameError);
+            lblNameTitle = GetTitleLabel(GetCommonI18NValue(Constants.Common_Fullname));
+            lblNameError = GetErrorLabel(GetErrorI18NValue(Constants.Error_InvalidFullname));
+            txtFieldName = GetUITextField(GetCommonI18NValue(Constants.Common_Fullname));
+            viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewFullName.Frame.Width, 1));
 
-            txtFieldName = new UITextField
-            {
-                Frame = new CGRect(0, 12, viewFullName.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Full Name"
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
-            };
-            viewFullName.AddSubview(txtFieldName);
-
-            viewLineName = new UIView((new CGRect(0, 36, viewFullName.Frame.Width, 1)));
-            viewLineName.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewFullName.AddSubview(viewLineName);
+            viewFullName.AddSubviews(new UIView[] { lblNameTitle, lblNameError
+                , txtFieldName, viewLineName });
 
             //IC Number
-            UIView viewICNumber = new UIView((new CGRect(18, 83, View.Frame.Width - 36, 51)));
-            viewICNumber.BackgroundColor = UIColor.Clear;
-
-            lblICNoTitle = new UILabel
+            UIView viewICNumber = new UIView((new CGRect(18, 83, View.Frame.Width - 36, 51)))
             {
-                Frame = new CGRect(0, 0, viewICNumber.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "IC, ROC or PASSPORT NO."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.Clear
             };
-            viewICNumber.AddSubview(lblICNoTitle);
 
-            lblICNoError = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Invalid IC, ROC or Passport No."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            viewICNumber.AddSubview(lblICNoError);
-
-            /*lblICNoHint = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "IC, ROC or Passport No.",
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.TunaGrey(),
-                    strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            lblICNoHint.Hidden = true;
-            viewICNumber.AddSubview(lblICNoHint);*/
+            lblICNoTitle = GetTitleLabel(GetCommonI18NValue(Constants.Common_IDNumber));
+            lblICNoError = GetErrorLabel(GetErrorI18NValue(Constants.Error_InvalidIDNumber));
 
             txtFieldICNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "IC, ROC or Passport No."
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_IDNumber)
+                    , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
-            viewICNumber.AddSubview(txtFieldICNo);
-
-            viewLineICNo = new UIView((new CGRect(0, 36, viewICNumber.Frame.Width, 1)));
-            viewLineICNo.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewICNumber.AddSubview(viewLineICNo);
+            viewLineICNo = GenericLine.GetLine(new CGRect(0, 36, viewICNumber.Frame.Width, 1));
+            viewICNumber.AddSubviews(new UIView[] { lblICNoTitle, lblICNoError, txtFieldICNo, viewLineICNo });
 
             //Mobile Number
-            UIView viewMobileNumber = new UIView((new CGRect(18, 150, View.Frame.Width - 36, 51)));
-            viewMobileNumber.BackgroundColor = UIColor.Clear;
-
-            lblMobileNoTitle = new UILabel
+            UIView viewMobileNumber = new UIView((new CGRect(0, 150, View.Frame.Width, GetScaledHeight(51))))
             {
-                Frame = new CGRect(0, 0, viewMobileNumber.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "MOBILE NO."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            viewMobileNumber.AddSubview(lblMobileNoTitle);
-
-            lblMobileNoError = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Invalid mobile no."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            viewMobileNumber.AddSubview(lblMobileNoError);
-
-            lblMobileNoHint = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Please include the country code of your phone number.",
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.TunaGrey(),
-                    strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            lblMobileNoHint.Hidden = true;
-            viewMobileNumber.AddSubview(lblMobileNoHint);
-
-            txtFieldMobileNo = new UITextField
-            {
-                Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Mobile No."
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
-            };
-            viewMobileNumber.AddSubview(txtFieldMobileNo);
-
-            viewLineMobileNo = new UIView((new CGRect(0, 36, viewMobileNumber.Frame.Width, 1)));
-            viewLineMobileNo.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewMobileNumber.AddSubview(viewLineMobileNo);
-
-            //Eeeend
-            UIView viewEmail = new UIView((new CGRect(18, 217, View.Frame.Width - 36, 51)));
-            viewEmail.BackgroundColor = UIColor.Clear;
-
-            lblEmailTitle = new UILabel
-            {
-                Frame = new CGRect(0, 0, viewEmail.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "EMAIL"
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            viewEmail.AddSubview(lblEmailTitle);
-
-            lblEmailError = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewEmail.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Invalid email address."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.Clear
             };
 
-            viewEmail.AddSubview(lblEmailError);
-
-            txtFieldEmail = new UITextField
+            _mobileNumberComponent = new MobileNumberComponent(viewMobileNumber, 0, false)
             {
-                Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Email"
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
+                OnDone = OnDone,
+                CountryCode = CountryCode,
+                OnSelect = OnSelect
             };
-            viewEmail.AddSubview(txtFieldEmail);
+            UIView viewMobileNoComponent = _mobileNumberComponent.GetUI();
+            viewMobileNumber.AddSubview(viewMobileNoComponent);
+            //Email
+            UIView viewEmail = new UIView((new CGRect(18, 217, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
-            viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
-            viewLineEmail.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewEmail.AddSubview(viewLineEmail);
+            lblEmailTitle = GetTitleLabel(GetCommonI18NValue(Constants.Common_Email));
+            lblEmailError = GetErrorLabel(GetErrorI18NValue(Constants.Error_InvalidEmailAddress));
+            txtFieldEmail = GetUITextField(GetCommonI18NValue(Constants.Common_Email));
+            viewLineEmail = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
+            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError
+                , txtFieldEmail, viewLineEmail });
 
             //Confirm Email
-            UIView viewConfirmEmail = new UIView((new CGRect(18, 284, View.Frame.Width - 36, 51)));
-            viewConfirmEmail.BackgroundColor = UIColor.Clear;
-
-            lblConfirmEmailTitle = new UILabel
+            UIView viewConfirmEmail = new UIView((new CGRect(18, 284, View.Frame.Width - 36, 51)))
             {
-                Frame = new CGRect(0, 0, viewConfirmEmail.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "CONFIRM EMAIL"
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.Clear
             };
-            viewConfirmEmail.AddSubview(lblConfirmEmailTitle);
 
-            lblConfirmEmailError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14));
-            lblConfirmEmailError.Font = myTNBFont.MuseoSans9();
-            lblConfirmEmailError.TextAlignment = UITextAlignment.Left;
-            lblConfirmEmailError.TextColor = myTNBColor.Tomato();
-            viewConfirmEmail.AddSubview(lblConfirmEmailError);
+            lblConfirmEmailTitle = GetTitleLabel(GetI18NValue(RegisterConstants.I18N_ConfirmEmail));
+            lblConfirmEmailError = GetErrorLabel(GetErrorI18NValue(Constants.Error_InvalidEmailAddress));
 
-            txtFieldConfirmEmail = new UITextField
-            {
-                Frame = new CGRect(0, 12, viewConfirmEmail.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Confirm Email"
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
-            };
-            viewConfirmEmail.AddSubview(txtFieldConfirmEmail);
-
-            viewLineConfirmEmail = new UIView((new CGRect(0, 36, viewConfirmEmail.Frame.Width, 1)));
-            viewLineConfirmEmail.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewConfirmEmail.AddSubview(viewLineConfirmEmail);
+            txtFieldConfirmEmail = GetUITextField(GetI18NValue(RegisterConstants.I18N_ConfirmEmail));
+            viewLineConfirmEmail = GenericLine.GetLine(new CGRect(0, 36, viewConfirmEmail.Frame.Width, 1));
+            viewConfirmEmail.AddSubviews(new UIView[] { lblConfirmEmailTitle
+                , lblConfirmEmailError, txtFieldConfirmEmail, viewLineConfirmEmail });
 
             //Password
-            UIView viewPassword = new UIView((new CGRect(18, 351, View.Frame.Width - 36, 51)));
-            viewPassword.BackgroundColor = UIColor.Clear;
-
-            lblPasswordTitle = new UILabel
+            UIView viewPassword = new UIView((new CGRect(18, 351, View.Frame.Width - 36, 51)))
             {
-                Frame = new CGRect(0, 0, viewPassword.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "PASSWORD"
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.Clear
             };
-            viewPassword.AddSubview(lblPasswordTitle);
 
-            lblPasswordError = new UILabel
-            {
-                Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Password must have at least 8 alphanumeric characters."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
-            };
-            viewPassword.AddSubview(lblPasswordError);
+            lblPasswordTitle = GetTitleLabel(GetCommonI18NValue(Constants.Common_Password));
+            lblPasswordError = GetErrorLabel(GetHintI18NValue(Constants.Hint_Password));
 
             lblPasswordHint = new UILabel
             {
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "Password must have at least 8 alphanumeric characters."
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
+                AttributedText = AttributedStringUtility.GetAttributedString(GetHintI18NValue(Constants.Hint_Password)
+                    , AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left
             };
             lblPasswordHint.Hidden = true;
-            viewPassword.AddSubview(lblPasswordHint);
 
             txtFieldPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Password"
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_Password)
+                    , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldPassword.SecureTextEntry = true;
-            viewPassword.AddSubview(txtFieldPassword);
 
-            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24));
-            viewShowPassword.Hidden = true;
-            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
+            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24))
+            {
+                Hidden = true
+            };
+            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
+            };
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (txtFieldPassword.SecureTextEntry)
-                {
-                    txtFieldPassword.SecureTextEntry = false;
-                    imgShowPassword.Image = UIImage.FromBundle("IC-Action-Hide-Password");
-                }
-                else
-                {
-                    txtFieldPassword.SecureTextEntry = true;
-                    imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
-                }
+                txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
+                imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
-            viewPassword.AddSubview(viewShowPassword);
-
-            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
-            viewLinePassword.BackgroundColor = myTNBColor.PlatinumGrey();
-            viewPassword.AddSubview(viewLinePassword);
+            viewLinePassword = GenericLine.GetLine(new CGRect(0, 36, viewPassword.Frame.Width, 1));
+            viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, lblPasswordError
+                , lblPasswordHint, txtFieldPassword, viewShowPassword, viewLinePassword });
 
             //Confirm Password
-            UIView viewConfirmPassword = new UIView((new CGRect(18, 418, View.Frame.Width - 36, 51)));
-            viewConfirmPassword.BackgroundColor = UIColor.Clear;
-
-            lblConfirmPasswordTitle = new UILabel
+            UIView viewConfirmPassword = new UIView((new CGRect(18, 418, View.Frame.Width - 36, 51)))
             {
-                Frame = new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "CONFIRM PASSWORD"
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.Clear
             };
-            viewConfirmPassword.AddSubview(lblConfirmPasswordTitle);
 
-            lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14));
-            lblConfirmPasswordError.Font = myTNBFont.MuseoSans9();
-            lblConfirmPasswordError.TextAlignment = UITextAlignment.Left;
-            lblConfirmPasswordError.TextColor = myTNBColor.Tomato();
+            lblConfirmPasswordTitle = GetTitleLabel(GetCommonI18NValue(Constants.Common_ConfirmPassword));
 
-            viewConfirmPassword.AddSubview(lblConfirmPasswordError);
+            lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14))
+            {
+                Font = MyTNBFont.MuseoSans10_300,
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.Tomato
+            };
 
             txtFieldConfirmPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Confirm Password"
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                ),
-                TextColor = myTNBColor.TunaGrey()
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_ConfirmPassword)
+                    , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldConfirmPassword.SecureTextEntry = true;
-            viewConfirmPassword.AddSubview(txtFieldConfirmPassword);
 
-            viewShowConfirmPassword = new UIView(new CGRect(viewConfirmPassword.Frame.Width - 30, 12, 24, 24));
-            viewShowConfirmPassword.Hidden = true;
-            UIImageView imgShowConfirmPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
+            viewShowConfirmPassword = new UIView(new CGRect(viewConfirmPassword.Frame.Width - 30, 12, 24, 24))
+            {
+                Hidden = true
+            };
+            UIImageView imgShowConfirmPassword = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
+            };
             viewShowConfirmPassword.AddSubview(imgShowConfirmPassword);
             viewConfirmPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (txtFieldConfirmPassword.SecureTextEntry)
-                {
-                    txtFieldConfirmPassword.SecureTextEntry = false;
-                    imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Hide-Password");
-                }
-                else
-                {
-                    txtFieldConfirmPassword.SecureTextEntry = true;
-                    imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
-                }
+                txtFieldConfirmPassword.SecureTextEntry = !txtFieldConfirmPassword.SecureTextEntry;
+                imgShowConfirmPassword.Image = UIImage.FromBundle(txtFieldConfirmPassword.SecureTextEntry
+                    ? Constants.IMG_ShowPassword : Constants.IMG_HidePassword);
             }));
-            viewConfirmPassword.AddSubview(viewShowConfirmPassword);
-
-            viewLineConfirmPassword = new UIView((new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1)));
-            viewLineConfirmPassword.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineConfirmPassword = GenericLine.GetLine(new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1));
             viewConfirmPassword.AddSubview(viewLineConfirmPassword);
+            viewConfirmPassword.AddSubviews(new UIView[] { lblConfirmPasswordTitle
+                , lblConfirmPasswordError, txtFieldConfirmPassword, viewShowConfirmPassword });
 
             //Set keyboard types
             txtFieldICNo.KeyboardType = UIKeyboardType.Default;
-            txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
             txtFieldConfirmEmail.KeyboardType = UIKeyboardType.EmailAddress;
 
             //Terms Details
-            txtViewDetails = new UITextView(new CGRect(18, 485, View.Frame.Width - 36, 51));
-            var attributedString = new NSMutableAttributedString("By registering, you are agreeing to the TNB Terms and Conditions, User Agreement and Privacy policy.");
-            var firstAttributes = new UIStringAttributes
-            {
-                ForegroundColor = myTNBColor.TunaGrey(),
-                Font = myTNBFont.MuseoSans12()
-            };
-            var secondAttributes = new UIStringAttributes
-            {
-                ForegroundColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans12()
-            };
-            attributedString.SetAttributes(firstAttributes.Dictionary, new NSRange(0, 39));
-            attributedString.SetAttributes(secondAttributes.Dictionary, new NSRange(40, 60));
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(RegisterConstants.I18N_TNC)
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+            NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
-            txtViewDetails.AttributedText = attributedString;
-            txtViewDetails.Editable = false;
-            txtViewDetails.Selectable = false;
-            txtViewDetails.ScrollEnabled = false;
-
-            UITapGestureRecognizer tap = new UITapGestureRecognizer(() =>
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.PowerBlue,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
+            };
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.TunaGrey()
+            }, new NSRange(0, htmlBody.Length));
+            txtViewDetails = new UITextView
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                WeakLinkTextAttributes = linkAttributes.Dictionary,
+                TextAlignment = UITextAlignment.Left
+            };
+            txtViewDetails.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                 TermsAndConditionViewController viewController =
                     storyBoard.InstantiateViewController("TermsAndConditionViewController") as TermsAndConditionViewController;
-                viewController.isPresentedVC = false;
-                NavigationController.PushViewController(viewController, true);
-            });
-            txtViewDetails.AddGestureRecognizer(tap);
+                if (viewController != null)
+                {
+                    viewController.isPresentedVC = true;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
+            }));
 
-            btnRegisterContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145)), View.Frame.Width, DeviceHelper.GetScaledHeight(100)));
-            btnRegisterContainer.BackgroundColor = UIColor.White;
+            //Resize
+            CGSize size = txtViewDetails.SizeThatFits(new CGSize(36, GetScaledHeight(160)));
+            txtViewDetails.Frame = new CGRect(18, 485, View.Frame.Width - 36, size.Height);
+
+            btnRegisterContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
+                , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
+            {
+                BackgroundColor = UIColor.White
+            };
             View.AddSubview(btnRegisterContainer);
 
             //Register button
-            btnRegister = new UIButton(UIButtonType.Custom);
-            btnRegister.Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), btnRegisterContainer.Frame.Width - 36, 48);
-            btnRegister.SetTitle("Register", UIControlState.Normal);
-            btnRegister.Font = myTNBFont.MuseoSans16();
+            btnRegister = new CustomUIButtonV2
+            {
+                Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), btnRegisterContainer.Frame.Width - 36, 48),
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Font = MyTNBFont.MuseoSans16
+            };
+            btnRegister.SetTitle(GetI18NValue(RegisterConstants.I18N_CTATitle), UIControlState.Normal);
             btnRegister.Layer.CornerRadius = 5.0f;
-            btnRegister.BackgroundColor = myTNBColor.FreshGreen();
             btnRegisterContainer.AddSubview(btnRegister);
 
             //Scrollview content size
-            var addtlHeight = DeviceHelper.IsIphone5() ? 120 : 20;
+            int addtlHeight = DeviceHelper.IsIphone5() ? 120 : 50;
             ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, UIScreen.MainScreen.Bounds.Height + addtlHeight).Size;
 
             //ScrollView main subviews
@@ -573,7 +334,39 @@ namespace myTNB.Registration
             scrollViewFrame = ScrollView.Frame;
         }
 
-        void OnKeyboardNotification(NSNotification notification)
+        private void OnDone()
+        {
+            _mobileNo = _mobileNumberComponent.FullMobileNumber;
+            SetRegisterButtonEnable();
+        }
+
+        private string CountryCode
+        {
+            get
+            {
+                string defaultCountry = TNBGlobal.APP_COUNTRY;
+                CountryModel countryInfo = CountryManager.Instance.GetCountryInfo(defaultCountry);
+                return countryInfo != null ? countryInfo.CountryISDCode : string.Empty;
+            }
+        }
+
+        private Action OnSelect
+        {
+            get
+            {
+                return () =>
+                {
+                    SelectCountryViewController viewController = new SelectCountryViewController();
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    NavigationController.PushViewController(viewController, true);
+                };
+            }
+        }
+
+        private void OnKeyboardNotification(NSNotification notification)
         {
             if (!IsViewLoaded)
                 return;
@@ -599,25 +392,23 @@ namespace myTNB.Registration
             UIView.CommitAnimations();
         }
 
-        internal void SetViews()
+        private void SetViews()
         {
             _textFieldHelper.CreateTextFieldLeftView(txtFieldName, "Name");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldICNo, "IC");
-            _textFieldHelper.CreateTextFieldLeftView(txtFieldMobileNo, "Mobile");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, "Email");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldConfirmEmail, "Email");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "Password");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldConfirmPassword, "Password");
 
             btnRegister.Enabled = false;
-            btnRegister.BackgroundColor = myTNBColor.SilverChalice();
+            btnRegister.BackgroundColor = MyTNBColor.SilverChalice;
         }
 
-        internal void SetVisibility()
+        private void SetVisibility()
         {
             lblNameTitle.Hidden = String.IsNullOrEmpty(txtFieldName.Text);
             lblICNoTitle.Hidden = String.IsNullOrEmpty(txtFieldICNo.Text);
-            lblMobileNoTitle.Hidden = String.IsNullOrEmpty(txtFieldMobileNo.Text);
             lblEmailTitle.Hidden = String.IsNullOrEmpty(txtFieldEmail.Text);
             lblConfirmEmailTitle.Hidden = String.IsNullOrEmpty(txtFieldConfirmEmail.Text);
             lblPasswordTitle.Hidden = String.IsNullOrEmpty(txtFieldPassword.Text);
@@ -625,33 +416,32 @@ namespace myTNB.Registration
 
             lblNameError.Hidden = true;
             lblICNoError.Hidden = true;
-            lblMobileNoError.Hidden = true;
             lblEmailError.Hidden = true;
             lblConfirmEmailError.Hidden = true;
             lblPasswordError.Hidden = true;
             lblConfirmPasswordError.Hidden = true;
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.DismissViewController(true, null);
+                DismissViewController(true, null);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void SetEvents()
+        private void SetEvents()
         {
-            btnRegister.TouchUpInside += (sender, e) =>
+            btnRegister.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 ActivityIndicator.Show();
                 _eMail = txtFieldEmail.Text;
                 _password = txtFieldPassword.Text;
                 _fullName = txtFieldName.Text?.Trim();
                 _icNo = txtFieldICNo.Text;
-                _mobileNo = _textFieldHelper.TrimAllSpaces(txtFieldMobileNo.Text);
+                _mobileNo = _mobileNumberComponent.FullMobileNumber;
 
                 DataManager.DataManager.SharedInstance.User.Email = _eMail;
                 DataManager.DataManager.SharedInstance.User.Password = _password;
@@ -669,33 +459,29 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            DisplayNoDataAlert();
                             ActivityIndicator.Hide();
                         }
                     });
                 });
-
-            };
+            }));
 
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError
-                               , viewLineName, lblNameHint, TNBGlobal.CustomerNamePattern);
+                , viewLineName, lblNameHint, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
-                               , viewLineICNo, lblICNoHint, IC_NO_PATTERN);
-            SetTextFieldEvents(txtFieldMobileNo, lblMobileNoTitle, lblMobileNoError
-                               , viewLineMobileNo, lblMobileNoHint, MOBILE_NO_PATTERN);
+                , viewLineICNo, lblICNoHint, TNBGlobal.IC_NO_PATTERN);
             SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError
-                               , viewLineEmail, lblEmailHint, EMAIL_PATTERN);
+                , viewLineEmail, lblEmailHint, EMAIL_PATTERN);
             SetTextFieldEvents(txtFieldConfirmEmail, lblConfirmEmailTitle, lblConfirmEmailError
-                               , viewLineConfirmEmail, lblConfirmEmailHint, EMAIL_PATTERN);
+                , viewLineConfirmEmail, lblConfirmEmailHint, EMAIL_PATTERN);
             SetTextFieldEvents(txtFieldPassword, lblPasswordTitle, lblPasswordError
-                               , viewLinePassword, lblPasswordHint, PASSWORD_PATTERN);
+                , viewLinePassword, lblPasswordHint, PASSWORD_PATTERN);
             SetTextFieldEvents(txtFieldConfirmPassword, lblConfirmPasswordTitle, lblConfirmPasswordError
-                               , viewLineConfirmPassword, lblConfirmPasswordHint, PASSWORD_PATTERN);
+                , viewLineConfirmPassword, lblConfirmPasswordHint, PASSWORD_PATTERN);
             _textFieldHelper.CreateDoneButton(txtFieldICNo);
-            CreateDoneButton(txtFieldMobileNo);
         }
 
-        void DisplayEyeIcon(UITextField textField)
+        private void DisplayEyeIcon(UITextField textField)
         {
             if (textField == txtFieldPassword)
             {
@@ -707,9 +493,8 @@ namespace myTNB.Registration
             }
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle
-                                         , UILabel lblError, UIView viewLine
-                                         , UILabel lblHint, string pattern)
+        private void SetTextFieldEvents(UITextField textField, UILabel lblTitle
+            , UILabel lblError, UIView viewLine, UILabel lblHint, string pattern)
         {
             if (lblHint == null)
             {
@@ -718,23 +503,16 @@ namespace myTNB.Registration
             _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
             {
-                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 DisplayEyeIcon(textField);
                 SetRegisterButtonEnable();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                if (textField == txtFieldMobileNo)
-                {
-                    if (textField.Text.Length == 0)
-                    {
-                        textField.Text += TNBGlobal.MobileNoPrefix;
-                    }
-                }
-                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 DisplayEyeIcon(textField);
                 textField.LeftViewMode = UITextFieldViewMode.Never;
             };
@@ -746,27 +524,17 @@ namespace myTNB.Registration
                 if (textField == txtFieldConfirmEmail)
                 {
                     bool isMatch = txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
-                    string err = isValid ? "Your email and confirmation email do not match."
-                        : "Invalid email address.";
-                    lblError.Text = err;
+                    lblError.Text = isValid ? GetErrorI18NValue(Constants.Error_MismatchedEmail)
+                        : GetErrorI18NValue(Constants.Error_InvalidEmailAddress);
                     isValid = isValid && isMatch;
                 }
                 //Handling for Confirm Password
                 else if (textField == txtFieldConfirmPassword)
                 {
                     bool isMatch = txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-                    string err = isValid ? "Your password and confirmation password do not match."
-                        : "Password must have at least 8 alphanumeric characters.";
-                    lblError.Text = err;
+                    lblError.Text = isValid ? GetErrorI18NValue(Constants.Error_MismatchedPassword)
+                        : GetHintI18NValue(Constants.Hint_Password);
                     isValid = isValid && isMatch;
-                }
-                else if (textField == txtFieldMobileNo)
-                {
-                    if (textField.Text.Length < 4)
-                    {
-                        textField.Text = string.Empty;
-                    }
-                    isValid = isValid && _textFieldHelper.ValidateMobileNumberLength(textField.Text);
                 }
                 else if (textField == txtFieldName)
                 {
@@ -775,46 +543,22 @@ namespace myTNB.Registration
                 DisplayEyeIcon(textField);
                 lblError.Hidden = isValid;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
 
                 return true;
             };
             textField.ShouldReturn = (sender) =>
             {
-                if (textField == txtFieldMobileNo)
-                {
-                    if (textField.Text.Length < 4)
-                    {
-                        textField.Text = string.Empty;
-                    }
-                }
                 sender.ResignFirstResponder();
                 return false;
             };
             textField.ShouldChangeCharacters += (txtField, range, replacementString) =>
             {
-                if (textField == txtFieldMobileNo)
+                if (textField == txtFieldName)
                 {
-                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
-                    if (!isCharValid)
-                    {
-                        return false;
-                    }
-
-                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
-                    {
-                        string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
-                        var count = content.Length + replacementString.Length - range.Length;
-                        return count <= TNBGlobal.MobileNumberMaxCharCount;
-                    }
-                    return false;
-                }
-                else if (textField == txtFieldName)
-                {
-                    bool isCharValid = !string.IsNullOrEmpty(replacementString)
-                                              ? _textFieldHelper.ValidateTextField(replacementString, pattern)
-                                              : true;
+                    bool isCharValid = string.IsNullOrEmpty(replacementString)
+                        || _textFieldHelper.ValidateTextField(replacementString, pattern);
                     if (!isCharValid)
                     {
                         return false;
@@ -829,65 +573,78 @@ namespace myTNB.Registration
             };
         }
 
-        internal void SetRegisterButtonEnable()
+        private void SetRegisterButtonEnable()
         {
             bool isValidName = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.CustomerNamePattern)
                 && !string.IsNullOrWhiteSpace(txtFieldName.Text);
-            bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, IC_NO_PATTERN);
-            bool isValidMobileNo = _textFieldHelper.ValidateTextField(txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
-                && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobileNo.Text);
+            bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN);
+            bool isValidMobileNo = _mobileNumberComponent.MobileNumber.IsValid();
             bool isValidEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
                 && _textFieldHelper.ValidateTextField(txtFieldConfirmEmail.Text, EMAIL_PATTERN)
                 && txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
             bool isValidPassword = _textFieldHelper.ValidateTextField(txtFieldPassword.Text, PASSWORD_PATTERN)
                 && _textFieldHelper.ValidateTextField(txtFieldConfirmPassword.Text, PASSWORD_PATTERN)
                 && txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-            bool isValid = isValidName
-                && isValidICNo
-                && isValidMobileNo
-                && isValidEmail
-                && isValidPassword;
+            bool isValid = isValidName && isValidICNo && isValidMobileNo
+                && isValidEmail && isValidPassword;
             btnRegister.Enabled = isValid;
-            btnRegister.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnRegister.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        internal void ExecuteSendRegistrationTokenSMSCall()
+        private void ExecuteSendRegistrationTokenSMSCall()
         {
             SendRegistrationTokenSMS().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_smsToken != null && _smsToken.d != null)
+                    if (_smsToken != null && _smsToken.d != null && _smsToken.d.IsSuccess)
                     {
-                        if (_smsToken.d.isError.Equals("false") && _smsToken.d.status.Equals("success"))
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+                        VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
+                        if (viewController != null)
                         {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                            VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
-                            this.NavigationController.PushViewController(viewController, true);
-                            ActivityIndicator.Hide();
-                        }
-                        else
-                        {
-                            DisplayAlertView("Registration Token Failed", _smsToken.d.message);
+                            viewController.Email = _eMail;
+                            NavigationController.PushViewController(viewController, true);
                         }
                     }
                     else
                     {
-                        DisplayAlertView("Registration Token Failed", "Error in response.");
+                        DisplayServiceError(_smsToken?.d?.DisplayMessage ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });
             });
         }
 
-        internal Task SendRegistrationTokenSMS()
+        private Task SendRegistrationTokenSMS()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                   ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    usrInf = new
+                    {
+                        eid = DataManager.DataManager.SharedInstance.User.Email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = fcmToken,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    deviceInf = new
+                    {
+                        DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                        AppVersion = AppVersionHelper.GetAppShortVersion(),
+                        OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                        OsVersion = DeviceHelper.GetOSVersion(),
+                        DeviceDesc = TNBGlobal.APP_LANGUAGE
+                    },
                     ipAddress = TNBGlobal.API_KEY_ID,
                     clientType = TNBGlobal.API_KEY_ID,
                     activeUserName = TNBGlobal.API_KEY_ID,
@@ -898,37 +655,41 @@ namespace myTNB.Registration
                     userEmail = _eMail,
                     mobileNo = _mobileNo
                 };
-                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS_V2", requestParameter);
+                _smsToken = serviceManager.OnExecuteAPIV6<RegistrationTokenSMSResponseModel>(
+                    RegisterConstants.Service_SendRegistrationTokenSMS, requestParameter);
             });
         }
 
-        internal void DisplayAlertView(string title, string message)
+        private UILabel GetTitleLabel(string key)
         {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
-        }
-
-        void CreateDoneButton(UITextField textField)
-        {
-            UIToolbar toolbar = new UIToolbar(new RectangleF(0.0f, 0.0f, 50.0f, 44.0f));
-            var doneButton = new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate
+            return new UILabel
             {
-                if (textField == txtFieldMobileNo)
-                {
-                    if (textField.Text.Length < 4)
-                    {
-                        textField.Text = string.Empty;
-                    }
-                }
-                textField.ResignFirstResponder();
-            });
-
-            toolbar.Items = new UIBarButtonItem[] {
-                new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
-                doneButton
+                Frame = new CGRect(0, 0, View.Frame.Width - 36, 12),
+                AttributedText = AttributedStringUtility.GetAttributedString(key
+                    , AttributedStringUtility.AttributedStringType.Title),
+                TextAlignment = UITextAlignment.Left
             };
-            textField.InputAccessoryView = toolbar;
+        }
+
+        private UILabel GetErrorLabel(string key)
+        {
+            return new UILabel
+            {
+                Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
+                AttributedText = AttributedStringUtility.GetAttributedString(key
+                    , AttributedStringUtility.AttributedStringType.Error),
+                TextAlignment = UITextAlignment.Left
+            };
+        }
+        private UITextField GetUITextField(string key)
+        {
+            return new UITextField
+            {
+                Frame = new CGRect(0, 12, View.Frame.Width - 36, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(key
+                        , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
+            };
         }
     }
 }

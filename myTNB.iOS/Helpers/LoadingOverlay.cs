@@ -11,55 +11,27 @@ namespace myTNB
         public LoadingOverlay(CGRect frame) : base(frame)
         {
             // configurable bits
-            BackgroundColor = UIColor.Black;
-            Alpha = 0.75f;
+            BackgroundColor = UIColor.Clear;
             AutoresizingMask = UIViewAutoresizing.All;
 
-            nfloat labelHeight = 22;
-            nfloat labelWidth = Frame.Width - 20;
+            UIView container = new UIView(this.Bounds)
+            {
+                BackgroundColor = MyTNBColor.Black75
+            };
+            AddSubview(container);
 
-            // derive the center x and y
-            nfloat centerX = Frame.Width / 2;
-            nfloat centerY = Frame.Height / 2;
-            
             this.Tag = TNBGlobal.Tags.LoadingOverlay;
-#if true
-            nfloat animationWidth = 48;
+
+            nfloat animationWidth = ScaleUtility.GetScaledWidth(48F);
+            nfloat animationHeight = ScaleUtility.GetScaledHeight(48F);
+
             LOTAnimationView animation = LOTAnimationView.AnimationNamed("TNB_Logo");
-            animation.Frame = new CGRect(centerX - animationWidth / 2, centerY - animationWidth / 2, 
-                                         animationWidth, animationWidth);
+            animation.Frame = new CGRect(ScaleUtility.GetXLocationToCenterObject(animationWidth, container), ScaleUtility.GetYLocationToCenterObject(animationHeight, container),
+                                         animationWidth, animationHeight);
             animation.ContentMode = UIViewContentMode.ScaleAspectFit;
-            animation.LoopAnimation = true;             animation.Play();
-            AddSubview(animation);
-#else
-            // create the activity spinner, center it horizontall and put it 5 points above center x
-            UIActivityIndicatorView activitySpinner = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.WhiteLarge);
-            activitySpinner.Frame = new CGRect(
-                centerX - (activitySpinner.Frame.Width / 2),
-                centerY - activitySpinner.Frame.Height - 20,
-                activitySpinner.Frame.Width,
-                activitySpinner.Frame.Height);
-            activitySpinner.AutoresizingMask = UIViewAutoresizing.All;
-            activitySpinner.Color = UIColor.White;
-            AddSubview(activitySpinner);
-            activitySpinner.StartAnimating();
-
-            // create and configure the "Loading Data" label
-            UILabel loadingLabel = new UILabel(new CGRect(
-                centerX - (labelWidth / 2),
-                centerY + 5,
-                labelWidth,
-                labelHeight
-                ));
-            loadingLabel.BackgroundColor = UIColor.Clear;
-            loadingLabel.TextColor = UIColor.White;
-            loadingLabel.Text = Texts.InfoLoading;
-            loadingLabel.Font = myTNBFont.MuseoSans14_300();
-            loadingLabel.TextAlignment = UITextAlignment.Center;
-            loadingLabel.AutoresizingMask = UIViewAutoresizing.All;
-            AddSubview(loadingLabel);
-#endif
-
+            animation.LoopAnimation = true;
+            animation.Play();
+            container.AddSubview(animation);
         }
 
         /// <summary>

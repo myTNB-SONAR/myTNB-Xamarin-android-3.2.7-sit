@@ -8,32 +8,51 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Drawing;
-using myTNB.Extensions;
+using System.Diagnostics;
+using myTNB.Home.Dashboard.ViewBill;
 
 namespace myTNB
 {
-    public partial class ViewBillViewController : UIViewController
+    public partial class ViewBillViewController : CustomUIViewController
     {
-        public ViewBillViewController(IntPtr handle) : base(handle)
-        {
-        }
-        UIWebView _webViewBill;
-        BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
-        string _url = string.Empty;
-        string _pdfFilePath = string.Empty;
-        string _titleSuffix = "Bill";
-        string _formattedDate = string.Empty;
+        public ViewBillViewController(IntPtr handle) : base(handle) { }
 
-        public int selectedIndex = -1;
+        private UIWebView _webViewBill;
+        private BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
+        private string _url, _pdfFilePath, _titleSuffix, _formattedDate;
+
+        public bool IsFromUsage { set; private get; }
+        public bool IsFromHome { set; private get; }
+        public bool IsFromBillSelection { set; private get; }
+        public bool IsFromHomeForSingleAcct { set; private get; }
+        public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
+        public string BillingNumber { set; private get; } = string.Empty;
         public Action OnDone;
 
         public override void ViewDidLoad()
         {
+            PageName = ViewBillConstants.Pagename_ViewBill;
             base.ViewDidLoad();
             NavigationItem.HidesBackButton = true;
 
-            _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
-                                      ? "Advice" : "Bill";
+            if (DataManager.DataManager.SharedInstance != null
+                && DataManager.DataManager.SharedInstance.SelectedAccount != null)
+            {
+                _titleSuffix = GetI18NValue(DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount
+                    ? ViewBillConstants.I18N_TitleAdvice : ViewBillConstants.I18N_TitleBill);
+            }
+
+            if (IsFromBillSelection)
+            {
+                _titleSuffix = GetI18NValue(SelectedAccount.accountCategoryId.Equals("2")
+                    ? ViewBillConstants.I18N_TitleAdvice : ViewBillConstants.I18N_TitleBill);
+            }
+            else
+            {
+                _titleSuffix = GetI18NValue(DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
+                    ? ViewBillConstants.I18N_TitleAdvice : ViewBillConstants.I18N_TitleBill);
+            }
+
             SetNavigationItems();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -45,22 +64,28 @@ namespace myTNB
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        DisplayNoDataAlert();
                     }
                 });
             });
 
         }
 
-        internal void SetNavigationItems()
+        private void SetNavigationItems()
         {
             NavigationItem.Title = _titleSuffix;
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 OnDone?.Invoke();
-                DismissViewController(true, null);
+
+                if (IsFromHome && !IsFromHomeForSingleAcct)
+                {
+                    NavigationController?.PopViewController(true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                }
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
@@ -70,7 +95,7 @@ namespace myTNB
                 {
                     if (File.Exists(_pdfFilePath))
                     {
-                        var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                        UIDocumentInteractionController viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
                         UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                         viewer.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
                     }
@@ -79,20 +104,23 @@ namespace myTNB
                         try
                         {
                             ActivityIndicator.Show();
-                            var webClient = new WebClient();
+                            WebClient webClient = new WebClient();
                             webClient.DownloadDataCompleted += (s, args) =>
                             {
-                                var data = args?.Result;
-                                if (data != null)
+                                if (args != null)
                                 {
-                                    File.WriteAllBytes(_pdfFilePath, data);
-                                    InvokeOnMainThread(() =>
+                                    byte[] data = args.Result;
+                                    if (data != null)
                                     {
-                                        ActivityIndicator.Hide();
-                                        var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
-                                        UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
-                                        viewer?.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
-                                    });
+                                        File.WriteAllBytes(_pdfFilePath, data);
+                                        InvokeOnMainThread(() =>
+                                        {
+                                            ActivityIndicator.Hide();
+                                            UIDocumentInteractionController viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                                            UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                                            viewer?.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
+                                        });
+                                    }
                                 }
                             };
                             if (!string.IsNullOrEmpty(_url))
@@ -107,7 +135,7 @@ namespace myTNB
                         }
                         catch (Exception err)
                         {
-                            Console.WriteLine("Error: " + err.Message);
+                            Debug.WriteLine("Error: " + err.Message);
                         }
                     }
                 }
@@ -135,84 +163,140 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                if (_billHistory != null && _billHistory?.d != null && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
-                {
-                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    {"apiKeyID", TNBGlobal.API_KEY_ID},
-                    {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum},
-                    {"billingNo", selectedIndex > -1 && selectedIndex < _billHistory.d.data.Count
-                    ? _billHistory.d.data[selectedIndex].BillingNo
-                    : _billHistory.d.data[0].BillingNo}
+                Dictionary<string, string> requestParams = new Dictionary<string, string>{
+                        {"apiKeyID", TNBGlobal.API_KEY_ID},
+                        {"lang", TNBGlobal.APP_LANGUAGE}
                     };
-                    _url = serviceManager.GetPDFServiceURL(selectedIndex > -1 ? "GetBillPDFByBillNo" : "GetBillPDF", requestParams);
+                if (IsFromUsage || IsFromHome)
+                {
+                    requestParams.Add("contractAccount", IsFromBillSelection ? SelectedAccount.accNum : DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                    _url = serviceManager.GetPDFServiceURL("GetBillPDF", requestParams);
+                }
+                else
+                {
+                    requestParams.Add("billingNo", BillingNumber);
+                    _url = serviceManager.GetPDFServiceURL("GetBillPDFByBillNo", requestParams);
                 }
             });
         }
 
         internal void GetFilePath()
         {
-            string billingNo = string.Empty;
-            string pdfFileName = string.Empty;
-            string documentsPath = string.Empty;
-            billingNo = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
-                    ? _billHistory?.d?.data[selectedIndex]?.BillingNo
-                    : _billHistory?.d?.data[0]?.BillingNo;
-            pdfFileName = DataManager.DataManager.SharedInstance.SelectedAccount.accNum + '_' + billingNo + _formattedDate + ".pdf";
-            documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string billingNo;
+            if (IsFromHome || IsFromUsage)
+            {
+                billingNo = _billHistory.d.data[0].BillingNo;
+            }
+            else
+            {
+                billingNo = BillingNumber;
+            }
+            string pdfFileName = string.Format("{0}_{1}{2}.pdf", IsFromBillSelection ? SelectedAccount.accNum : DataManager.DataManager.SharedInstance.SelectedAccount.accNum, billingNo, _formattedDate);
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
 
         private async Task ExecuteGetBillHistoryCall()
         {
+            ActivityIndicator.Show();
             await GetBillHistory().ContinueWith(task =>
             {
                 InvokeOnMainThread(async () =>
                 {
-                    SetNavigationTitle();
-                    GetFilePath();
-                    await GetUrlString().ContinueWith(getURLTask =>
+                    if (_billHistory != null &&
+                        _billHistory.d != null &&
+                        _billHistory.d.IsSuccess &&
+                        _billHistory.d.data != null &&
+                        _billHistory.d.data?.Count > 0)
                     {
-                        InvokeOnMainThread(SetSubviews);
-                    });
+                        SetNavigationTitle();
+                        GetFilePath();
+                        await GetUrlString().ContinueWith(getURLTask =>
+                        {
+                            InvokeOnMainThread(SetSubviews);
+                        });
+                    }
+                    else
+                    {
+                        string title = _billHistory != null && _billHistory.d != null
+                            && _billHistory.d.DisplayTitle.IsValid()
+                                ? _billHistory.d.DisplayTitle
+                                : GetErrorI18NValue(Constants.Error_DefaultErrorTitle);
+                        string errMsg = _billHistory != null && _billHistory.d != null
+                            && _billHistory.d.DisplayMessage.IsValid()
+                                ? _billHistory.d.DisplayMessage
+                                : GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
+                        DisplayGenericAlert(title, errMsg, (obj) =>
+                        {
+                            if (IsFromHome && !IsFromHomeForSingleAcct)
+                            {
+                                NavigationController.PopViewController(true);
+                            }
+                            else
+                            {
+                                DismissViewController(true, null);
+                            }
+                        });
+                    }
                 });
             });
+            ActivityIndicator.Hide();
         }
 
-        internal Task GetBillHistory()
+        private Task GetBillHistory()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                var emailAddress = string.Empty;
+                string emailAddress = string.Empty;
                 if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
-                    emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+                    emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email ?? string.Empty;
                 }
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
-                    isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
-                    email = emailAddress
+                    serviceManager.usrInf,
+                    contractAccount = IsFromBillSelection ? SelectedAccount.accNum : DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                    isOwnedAccount = IsFromBillSelection ? SelectedAccount.isOwned : DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
                 };
-                _billHistory = serviceManager.GetBillHistory("GetBillHistory", requestParameter);
+                _billHistory = serviceManager.OnExecuteAPIV6<BillHistoryResponseModel>(ViewBillConstants.Service_GetBillHistory, requestParameter);
             });
         }
 
-        internal void SetNavigationTitle()
+        private void SetNavigationTitle()
         {
-            string billDate = string.Empty;
             string formattedDate = string.Empty;
-            if (_billHistory != null && _billHistory?.d != null
-                && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
+            if (_billHistory != null &&
+                _billHistory.d != null &&
+                _billHistory.d.IsSuccess &&
+                _billHistory.d.data != null &&
+                _billHistory.d.data.Count > 0)
             {
-                billDate = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
-                    ? _billHistory?.d?.data[selectedIndex]?.DtBill
-                    : _billHistory?.d?.data[0]?.DtBill;
+                string billDate = string.Empty;
+                if (IsFromHome || IsFromUsage)
+                {
+                    billDate = _billHistory.d.data[0].DtBill;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(BillingNumber) && !string.IsNullOrWhiteSpace(BillingNumber))
+                    {
+                        int indx = GetSelectedIndex(BillingNumber);
+                        if (indx > -1 && indx < _billHistory.d.data.Count)
+                        {
+                            billDate = _billHistory.d?.data[indx].DtBill;
+                        }
+                    }
+                }
                 formattedDate = DateHelper.GetFormattedDate(billDate, "MMM yyyy");
                 _formattedDate = DateHelper.GetFormattedDate(billDate, "MMMyyyy");
             }
             NavigationItem.Title = string.Format("{0} {1}", formattedDate, _titleSuffix);
+        }
+
+        private int GetSelectedIndex(string billNo)
+        {
+            return _billHistory.d.data.FindIndex(x => x.BillingNo.Equals(billNo));
         }
     }
 }

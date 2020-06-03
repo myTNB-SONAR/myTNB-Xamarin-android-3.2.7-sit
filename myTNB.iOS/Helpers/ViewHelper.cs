@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -52,6 +53,18 @@ namespace myTNB
         }
 
         /// <summary>
+        /// Sets the frame's width
+        /// </summary>
+        /// <param name="adjView"></param>
+        /// <param name="adjWidth"></param>
+        public static void AdjustFrameSetWidth(UIView adjView, nfloat adjWidth)
+        {
+            var temp = adjView.Frame;
+            temp.Width = adjWidth;
+            adjView.Frame = temp;
+        }
+
+        /// <summary>
         /// Adjusts the height of the frame.
         /// </summary>
         /// <param name="adjView">Adj view.</param>
@@ -95,12 +108,12 @@ namespace myTNB
         /// <param name="willAnimateDismiss">If set to <c>true</c> will animate dismiss.</param>
         /// <param name="willPopToRootOnSelect">If set to <c>true</c> will pop to root on select.</param>
         /// <param name="dismissCompletionHandler">Dismiss completion handler.</param>
-        public static HomeTabBarController DismissControllersAndSelectTab(UIViewController baseVc, int tabIndexToSelect, bool willAnimateDismiss,
-                                                          bool willPopToRootOnSelect = false, Action dismissCompletionHandler = null)
+        public static HomeTabBarController DismissControllersAndSelectTab(UIViewController baseVc
+            , int tabIndexToSelect, bool willAnimateDismiss
+            , bool willPopToRootOnSelect = false, Action dismissCompletionHandler = null)
         {
             try
             {
-#if true
                 var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                 var topVc = AppDelegate.GetTopViewController(baseRootVc);
 
@@ -156,22 +169,10 @@ namespace myTNB
 
                     return tabBar;
                 }
-#else
-                var presentedVc = baseVc?.View?.Window?.RootViewController?.PresentedViewController;
-                if (presentedVc is HomeTabBarController)
-                {
-                    var tabBar = presentedVc as HomeTabBarController;
-                    if (tabIndexToSelect < tabBar.ViewControllers?.Length)
-                    {
-                        tabBar.SelectedIndex = tabIndexToSelect;
-                    }
-                    tabBar.DismissViewController(willAnimateDismiss, dismissCompletionHandler);
-                }
-#endif
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in DismissControllersAndSelectTab: " + ex.Message);
+                Debug.WriteLine("Error in DismissControllersAndSelectTab: " + ex.Message);
             }
 
             return null;
@@ -204,7 +205,8 @@ namespace myTNB
                 FAQViewController viewController =
                     storyBoard.InstantiateViewController("FAQViewController") as FAQViewController;
                 viewController.faqId = faqId;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 topVc.PresentViewController(navController, true, null);
             }
         }

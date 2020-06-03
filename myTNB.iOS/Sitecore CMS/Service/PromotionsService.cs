@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
@@ -9,20 +10,29 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 
 namespace myTNB.SitecoreCMS.Service
 {
-    public class PromotionsService
+    internal class PromotionsService
     {
-        internal List<PromotionsModel> GetPromotionsService(string OS, string imageSize, string websiteUrl = null, string language = "en")
+        private string _os, _imgSize, _websiteURL, _language;
+        internal PromotionsService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        {
+            _os = os;
+            _imgSize = imageSize;
+            _websiteURL = websiteUrl;
+            _language = language;
+        }
+
+        internal List<PromotionsModel> GetPromotionsService()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
-            var list = GeneratePromotionChildren(item, OS, imageSize, websiteUrl, language);
+            var list = GeneratePromotionChildren(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        public async Task<IEnumerable<PromotionsModel>> GeneratePromotionChildren(ScItemsResponse itemsResponse, string OS, string imageSize, string websiteUrl = null, string language = "en")
+        public async Task<IEnumerable<PromotionsModel>> GeneratePromotionChildren(ScItemsResponse itemsResponse)
         {
             List<PromotionsModel> list = new List<PromotionsModel>();
 
@@ -35,37 +45,41 @@ namespace myTNB.SitecoreCMS.Service
 
                 PromotionsModel listlItem = new PromotionsModel
                 {
-                    Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, OS, imageSize, websiteUrl, language),
-                    Title = item.GetValueFromField(Constants.Sitecore.Fields.Shared.Title),
-                    Text = item.GetValueFromField(Constants.Sitecore.Fields.Shared.Text),
-                    SubText = item.GetValueFromField(Constants.Sitecore.Fields.Shared.SubText),
-                    CampaignPeriod = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.CampaignPeriod),
-                    //Prizes = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.Prizes),
-                    //HowToWin = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.HowToWin),
-                    FooterNote = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.FooterNote),
+                    GeneralLinkUrl = item.GetItemIdFromLinkField(Constants.Sitecore.Fields.Promotions.GeneralLink),
+                    HeaderContent = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.HeaderContent),
+                    SubText = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.SubText),
+                    Text = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.Text),
+                    Title = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.Title),
+                    BodyContent = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.BodyContent),
+                    FooterContent = item.GetValueFromField(Constants.Sitecore.Fields.Promotions.FooterContent),
+                    PortraitImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Promotions.PortraitImage, _websiteURL, false),
+                    LandscapeImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.Promotions.LandscapeImage, _websiteURL, false),
+                    PromoStartDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Promotions.PromoStartDate),
+                    PromoEndDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Promotions.PromoEndDate),
                     PublishedDate = item.GetDateValueFromField(Constants.Sitecore.Fields.Promotions.PublishedDate),
-                    //GeneralLinkText = item.GetTextFromLinkField(Constants.Sitecore.Fields.Shared.GeneralLink),
-                    GeneralLinkUrl = item.GetItemIdFromLinkField(Constants.Sitecore.Fields.Shared.GeneralLink),
+                    IsPromoExpired = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.Promotions.isPromoExpired),
+                    ShowAtAppLaunch = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.Promotions.ShowAtAppLaunch),
                     ID = item.Id,
                 };
+                Debug.WriteLine("debug: insert success");
 
                 list.Add(listlItem);
             }
 
             return list;
         }
-        internal PromotionParentModel GetTimestamp(string websiteUrl = null, string language = "en")
+        internal PromotionParentModel GetTimestamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
-            var list = GenerateTimestamp(item, websiteUrl, language);
+            var list = GenerateTimestamp(item);
             var itemList = list.Result;
             return itemList;
         }
 
-        private async Task<PromotionParentModel> GenerateTimestamp(ScItemsResponse itemsResponse, string websiteUrl = null, string language = "en")
+        private async Task<PromotionParentModel> GenerateTimestamp(ScItemsResponse itemsResponse)
         {
             PromotionParentModel listlItem = new PromotionParentModel();
 

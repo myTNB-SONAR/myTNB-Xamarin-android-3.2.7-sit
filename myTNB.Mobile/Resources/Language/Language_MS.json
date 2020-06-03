@@ -153,7 +153,10 @@
     "receiptErrorMsg": "Resit anda tidak dapat dipaparkan buat masa ini. Semak semula sebentar lagi!",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "usedRewardTitle": "Ganjaran telah digunakan.",
-    "usedRewardMsg": "Tidak mengapa, kami mempunyai lebih banyak ganjaran untuk anda meneroka!"
+    "usedRewardMsg": "Tidak mengapa, kami mempunyai lebih banyak ganjaran untuk anda meneroka!",
+    "paymentCCErrorTitle": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang.",
+    "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
+    "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
