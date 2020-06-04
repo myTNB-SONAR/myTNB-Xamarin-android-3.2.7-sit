@@ -151,11 +151,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
 
-        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", new Locale(LanguageUtil.GetAppLanguage()));
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
-        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy", new Locale(LanguageUtil.GetAppLanguage()));
-        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy", new Locale(LanguageUtil.GetAppLanguage()));
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
+        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
 
         IMenuItem billFilterMenuItem;
 
@@ -1052,6 +1052,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnResume()
         {
             base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
+            ShowBackButton(false);
+
+            try
+            {
+                ((DashboardHomeActivity)this.Activity).RemoveHeaderDropDown();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             Handler h = new Handler();
             Action myAction = () =>
             {
@@ -1069,6 +1085,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
             };
             h.PostDelayed(myAction, 50);
+        }
+
+        public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
         public override void OnPause()

@@ -45,6 +45,7 @@ using Android.Preferences;
 using myTNB_Android.Src.RearrangeAccount.MVP;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.MyTNBService.Response;
+using Android.Support.V4.Content;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -455,11 +456,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 SetRefreshLayoutParams();
 
-                ((DashboardHomeActivity)Activity).EnableDropDown(false);
-                ((DashboardHomeActivity)Activity).HideAccountName();
-                ((DashboardHomeActivity)Activity).ShowBackButton(false);
-                ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.dashboard_activity_title);
-
                 try
                 {
                     newFAQListRecycleView.Focusable = false;
@@ -487,15 +483,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 ShowSearchAction(false);
-                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCDownTime = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXDownTime = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
-                if (bcrmDownTime != null && bcrmDownTime.IsDown)
-                {
-
-                }
 
                 OnStartLoadAccount();
             }
@@ -971,7 +960,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchEditText.RequestFocus();
                 try
                 {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.M)
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.M)
                     {
                         searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
                     }
@@ -1029,11 +1018,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
-                searchText.SetTextColor(Resources.GetColor(Resource.Color.white));
-                searchText.SetHintTextColor(Resources.GetColor(Resource.Color.sixty_opacity_white));
+                searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
                 searchText.SetTextSize(ComplexUnitType.Dip, 12f);
                 TextViewUtils.SetMuseoSans500Typeface(searchText);
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
                 }
@@ -1061,7 +1050,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
                 }
@@ -1164,6 +1153,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
                     ShowRearrangeAccountSuccessful();
                 }
+
+                ((DashboardHomeActivity)Activity).EnableDropDown(false);
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).RemoveHeaderDropDown();
             }
             catch (System.Exception e)
             {
@@ -1570,6 +1563,56 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void ShowFAQFromHide()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        if (newFAQTitle.Visibility == ViewStates.Gone)
+                        {
+                            if (CheckNewFaqList() > 0)
+                            {
+                                if (mListener != null)
+                                {
+                                    newFAQListRecycleView.RemoveOnScrollListener(mListener);
+                                    mListener = null;
+                                }
+
+                                if (indicatorContainer != null && indicatorContainer.ChildCount > 0)
+                                {
+                                    indicatorContainer.RemoveAllViews();
+                                }
+
+                                newFAQListRecycleView.SetAdapter(null);
+
+                                newFAQAdapter = null;
+                                currentNewFAQList.Clear();
+
+                            }
+
+                            SetupNewFAQShimmerEffect();
+                            this.presenter.OnGetFAQs();
+                        }
+                        else
+                        {
+                            this.presenter.UpdateNewFAQCompleteState();
+                        }
+                    }
+                    catch (System.Exception exp)
+                    {
+                        Utility.LoggingNonFatalError(exp);
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         public void ShowAccountDetails(string accountNumber)
         {
             if (accountNumber != null)
@@ -1957,6 +2000,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.RestoreCurrentAccountState();
                 }
+
                 this.presenter.ReadNewFAQFromCache();
             }
         }

@@ -120,7 +120,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     SetToolBarTitle(GetLabelByLanguage("updateMobileNumberTitle"));
                 }
 
-                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 infoLabelContainer.Click += delegate
@@ -247,6 +247,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mErrorSnackbar.Show();
+            this.SetIsClicked(false);
         }
 
         public void ShowInvalidMobileNoError()
@@ -285,7 +286,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         private Snackbar mApiExcecptionSnackBar;
@@ -307,7 +308,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
@@ -330,7 +331,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         public void ShowSuccess(string newPhoneNo)
@@ -457,6 +458,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
         }
     }
 }

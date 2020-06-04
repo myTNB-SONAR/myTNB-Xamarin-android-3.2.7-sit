@@ -20,9 +20,6 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
         CancellationTokenSource cts;
         SubmittedFeedbackDetails feedbackDetails;
 
-        SimpleDateFormat simpleDateTimeParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd MMM yyyy h:mm a");
-
         public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView, SubmittedFeedbackDetails feedbackDetails)
         {
             this.mView = mView;

@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
                 }
-                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
                 TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
 

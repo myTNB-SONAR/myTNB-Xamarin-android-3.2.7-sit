@@ -5,19 +5,12 @@ namespace myTNB_Android.Src.FAQ.Model
 {
     public class FAQCacheModel
     {
-        [JsonProperty("title")]
-        public string Title { get; set; }
+        public string Image { get; set; }
 
-        [JsonProperty("data")]
-        public List<FAQCacheList> Data { get; set; }
-    }
+        public string Question { get; set; }
 
-    public class FAQCacheList
-    {
-        [JsonProperty("title")]
-        public string Title { get; set; }
+        public string Answer { get; set; }
 
-        [JsonProperty("details")]
-        public string Details { get; set; }
+        public string ID { get; set; }
     }
 }

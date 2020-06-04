@@ -399,11 +399,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowBillMenu(AccountData selectedAccount)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
-            ShowBackButton(false);
             txtAccountName.Visibility = ViewStates.Gone;
-            currentFragment = new ItemisedBillingMenuFragment();
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
             FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, ItemisedBillingMenuFragment.NewInstance(selectedAccount))
+                .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
         }
 
@@ -670,8 +674,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowFeedbackMenu()
         {
             ShowBackButton(false);
-            FeedbackMenuFragment fragment = new FeedbackMenuFragment();
-            currentFragment = fragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new FeedbackMenuFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                      .CommitAllowingStateLoss();
@@ -679,33 +687,40 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowWhatsNewMenu()
         {
-            ShowBackButton(false);
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
-            WhatsNewMenuFragment fragment = new WhatsNewMenuFragment();
-            currentFragment = fragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new WhatsNewMenuFragment();
             FragmentManager.BeginTransaction()
-                        .Replace(Resource.Id.content_layout, fragment)
+                        .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
 
         }
 
         public void ShowRewardsMenu()
         {
-            ShowBackButton(false);
-            SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
-            RewardMenuFragment fragment = new RewardMenuFragment();
-            currentFragment = fragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new RewardMenuFragment();
             FragmentManager.BeginTransaction()
-                        .Replace(Resource.Id.content_layout, fragment)
+                        .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
 
         }
 
         public void ShowMoreMenu()
         {
-            ShowBackButton(false);
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
-            currentFragment = profileMenuFragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
             if (mobileNoUpdated)
             {
                 Bundle extras = new Bundle();
@@ -713,8 +728,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 profileMenuFragment.Arguments = extras;
                 mobileNoUpdated = false;
             }
+            currentFragment = profileMenuFragment;
             FragmentManager.BeginTransaction()
-                     .Replace(Resource.Id.content_layout, profileMenuFragment)
+                     .Replace(Resource.Id.content_layout, currentFragment)
                      .CommitAllowingStateLoss();
         }
 
@@ -904,7 +920,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                            txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
                             {
@@ -996,7 +1012,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                        txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
                         {
@@ -1073,7 +1089,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                        txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
                         {
@@ -1142,7 +1158,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.SetTextColor(Resources.GetColor(Resource.Color.white));
+                            txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
                             {
@@ -1210,10 +1226,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowHomeDashBoard()
         {
             DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
-            HomeMenuFragment homeFragment = new HomeMenuFragment();
-            currentFragment = homeFragment;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = new HomeMenuFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, homeFragment)
+                           .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
         }
 
@@ -1370,25 +1390,33 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg)
         {
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new DashboardChartFragment();
+            txtAccountName.Visibility = ViewStates.Gone;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = DashboardChartFragment.NewInstance(response, selectedAccount, errorCode, errorMsg);
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount, errorCode, errorMsg),
+                           .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         public void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount)
         {
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new DashboardChartFragment();
+            txtAccountName.Visibility = ViewStates.Gone;
+            if (currentFragment != null)
+            {
+                FragmentManager.PopBackStack();
+                currentFragment = null;
+            }
+            currentFragment = DashboardChartFragment.NewInstance(response, selectedAccount);
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount),
+                           .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         // Show Bottom Navigation Bar in Fragment

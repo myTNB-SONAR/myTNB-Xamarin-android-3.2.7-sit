@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -887,7 +888,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SpannableString s = new SpannableString(tooltipMessage.TextFormatted);
                 var clickableSpan = new ClickSpan()
                 {
-                    textColor = Resources.GetColor(Resource.Color.powerBlue),
+                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
                     typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
                 };
                 clickableSpan.Click += v =>

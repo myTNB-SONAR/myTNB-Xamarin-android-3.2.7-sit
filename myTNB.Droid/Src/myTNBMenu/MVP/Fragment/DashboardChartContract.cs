@@ -219,6 +219,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnByZoom();
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
+
+            List<string> ExtractUrls(string text);
+
+            void UpdateWhatsNewRead(string itemID, bool flag);
         }
     }
 }

@@ -108,12 +108,6 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AFollestad.MaterialDialogs.Core, Version=0.9.4.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AFollestad.MaterialDialogs.Core.0.9.4.4\lib\MonoAndroid71\AFollestad.MaterialDialogs.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AndroidSegmentedControl.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AndroidSegmentedControl.Droid.Binding.1.0.2\lib\MonoAndroid\AndroidSegmentedControl.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Bolts.AppLinks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bolts.1.4.0.1\lib\MonoAndroid403\Bolts.AppLinks.dll</HintPath>
     </Reference>
@@ -128,9 +122,6 @@
     </Reference>
     <Reference Include="Cheeseknife, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MisterJimson.Cheeseknife.1.1.0\lib\MonoAndroid10\Cheeseknife.dll</HintPath>
-    </Reference>
-    <Reference Include="CircleIndicator, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Karamunting.Android.Ongakuer.CircleIndicator.1.2.2\lib\monoandroid71\CircleIndicator.dll</HintPath>
     </Reference>
     <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
@@ -319,9 +310,6 @@
     <Reference Include="XamiTextSharpLGPL.Droid, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\XamiTextSharpLGPL.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="ZhangHai.Android.MaterialProgressBar, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZhangHai.Android.MaterialProgressBar.1.4.1\lib\MonoAndroid71\ZhangHai.Android.MaterialProgressBar.dll</HintPath>
-    </Reference>
     <Reference Include="ZXing.Net.Mobile.Core, Version=2.2.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.Mobile.2.2.9\lib\MonoAndroid403\ZXing.Net.Mobile.Core.dll</HintPath>
     </Reference>
@@ -414,6 +402,15 @@
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Location">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\lib\MonoAndroid80\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="ZhangHai.Android.MaterialProgressBar">
+      <HintPath>..\packages\ZhangHai.Android.MaterialProgressBar.1.4.2\lib\MonoAndroid80\ZhangHai.Android.MaterialProgressBar.dll</HintPath>
+    </Reference>
+    <Reference Include="AFollestad.MaterialDialogs.Core">
+      <HintPath>..\packages\AFollestad.MaterialDialogs.Core.0.9.6\lib\MonoAndroid81\AFollestad.MaterialDialogs.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AndroidSegmentedControl.Droid">
+      <HintPath>..\packages\AndroidSegmentedControl.Droid.Binding.1.0.8\lib\MonoAndroid\AndroidSegmentedControl.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -546,7 +543,6 @@
     <Compile Include="Src\Database\Model\UserNotificationTypesEntity.cs" />
     <Compile Include="Src\Database\Model\WalkthroughScreensEntity.cs" />
     <Compile Include="Src\Database\Model\WeblinkEntity.cs" />
-    <Compile Include="Src\FAQ\Activity\FAQActivity.cs" />
     <Compile Include="Src\FAQ\Activity\FAQListActivity.cs" />
     <Compile Include="Src\FAQ\Adapter\FAQListAdapter.cs" />
     <Compile Include="Src\FAQ\MVP\FAQContract.cs" />
@@ -640,17 +636,6 @@
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
-    <Compile Include="Src\MakePayment\Api\SubmitPaymentApi.cs" />
-    <Compile Include="Src\MakePayment\Models\CreditCard.cs" />
-    <Compile Include="Src\MakePayment\Models\GetRegisteredCardsRequest.cs" />
-    <Compile Include="Src\MakePayment\Models\GetRegisteredCardsResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\HtmlResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\SubmitPaymentRequest.cs" />
-    <Compile Include="Src\MakePayment\Models\SubmitPaymentResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\SubmitPaymentResult.cs" />
-    <Compile Include="Src\MakePayment\MVP\SelectPaymentMethodContract.cs" />
-    <Compile Include="Src\MakePayment\MVP\SelectPaymentMethodPresenter.cs" />
-    <Compile Include="Src\MakePayment\Requests\SubmitPaymentRequestPG.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
@@ -692,10 +677,6 @@
     <Compile Include="Src\MyAccount\Adapter\MyAccountAdapter.cs" />
     <Compile Include="Src\MyAccount\MVP\MyAccountContract.cs" />
     <Compile Include="Src\MyAccount\MVP\MyAccountPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\BillsListAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\ItemizedBillingDetailsAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\PaymentListAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\BillsMenu\REPaymentListAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Api\IAmountDueApi.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsDayFormatter.cs" />
@@ -765,12 +746,6 @@
     <Compile Include="Src\Notifications\Models\UserNotificationData.cs" />
     <Compile Include="Src\Notifications\MVP\NotificationContract.cs" />
     <Compile Include="Src\Notifications\MVP\NotificationPresenter.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Activity\PaymentSuccessExperienceRatingActivity.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Api\SubmitExperienceRatingApi.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingContract.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
-    <Compile Include="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
@@ -927,10 +902,6 @@
     <Compile Include="Src\RegisterValidation\MVP\RegistrationValidationPresenter.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingOverlayViewOverride.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingSurfaceView.cs" />
-    <Compile Include="Src\Utils\Custom\Charts\DayAxisValueFormatter.cs" />
-    <Compile Include="Src\Utils\Custom\Charts\MyAxisValueFormatter.cs" />
-    <Compile Include="Src\Utils\Custom\Charts\XYMarkerView.cs" />
-    <Compile Include="Src\Utils\Custom\MarkerTextView\TitleView.cs" />
     <Compile Include="Src\Utils\DayZoomOutPinchUtil.cs" />
     <Compile Include="Src\Utils\DeviceIdUtils.cs" />
     <Compile Include="Src\Utils\DPUtils.cs" />
@@ -953,8 +924,6 @@
     <Compile Include="Src\Utils\UserSessions.cs" />
     <Compile Include="Src\Utils\Utility.cs" />
     <Compile Include="Src\ViewBill\Activity\ViewBillActivity.cs" />
-    <Compile Include="Src\ViewReceipt\Activity\ViewReceiptActivity.cs" />
-    <Compile Include="Src\ViewReceipt\Activity\ViewReceiptMultiAccountActivity.cs" />
     <Compile Include="Src\ViewReceipt\Activity\ViewReceiptMultiAccountNewDesignActivty.cs" />
     <Compile Include="Src\ViewReceipt\Api\GetMultiReceiptByTransIdApi.cs" />
     <Compile Include="Src\ViewReceipt\Api\GetReceiptApi.cs" />
@@ -963,25 +932,11 @@
     <Compile Include="Src\ViewReceipt\Model\GetReceiptResponse.cs" />
     <Compile Include="Src\ViewReceipt\Model\MultiReceiptDetails.cs" />
     <Compile Include="Src\ViewReceipt\Model\ReceiptDetails.cs" />
-    <Compile Include="Src\ViewReceipt\MVP\ViewReceiptContract.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountContract.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountNewDesignContract.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountNewDesignPresenter.cs" />
     <Compile Include="Src\ViewReceipt\MVP\ViewReceiptMultiAccountPresenter.cs" />
-    <Compile Include="Src\ViewReceipt\MVP\ViewReceiptPresenter.cs" />
     <Compile Include="Src\Utils\Custom\Scanner\ZXingScannerFragment.cs" />
-    <Compile Include="Src\MakePayment\Activity\MakePaymentActivity.cs" />
-    <Compile Include="Src\MakePayment\Adapter\AddCardAdapter.cs" />
-    <Compile Include="Src\MakePayment\Fragment\PaymentSuccessFragment.cs" />
-    <Compile Include="Src\MakePayment\Fragment\PaymentWebViewFragment.cs" />
-    <Compile Include="Src\MakePayment\Fragment\SelectPaymentMethodFragment.cs" />
-    <Compile Include="Src\MakePayment\Models\CardDetails.cs" />
-    <Compile Include="Src\MakePayment\Models\InitiatePaymentResponse.cs" />
-    <Compile Include="Src\MakePayment\Models\InitiatePaymentResult.cs" />
-    <Compile Include="Src\MakePayment\Api\RequestPaymentApi.cs" />
-    <Compile Include="Src\MakePayment\Requests\InitiatePaymentRequestV3.cs" />
-    <Compile Include="Src\MakePayment\Models\InitiatePaymentRequest.cs" />
-    <Compile Include="Src\WebLink\Activity\WeblinkActivity.cs" />
     <AndroidResource Include="Resources\drawable\resend_inactive_with_border_progress.xml" />
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
     <AndroidResource Include="Resources\drawable\launch_screen.xml" />
@@ -1080,7 +1035,6 @@
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
-    <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
     <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
     <AndroidResource Include="Resources\drawable\round_circle.xml" />
     <AndroidResource Include="Resources\menu\DashboardNewBottonMenu.xml" />
@@ -1110,7 +1064,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled.png" />
-    <AndroidResource Include="Resources\drawable\custom_card_view.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\check_status.png" />
     <AndroidResource Include="Resources\drawable-hdpi\feedback.png" />
     <AndroidResource Include="Resources\drawable-hdpi\submit_meter.png" />
@@ -1160,7 +1113,6 @@
     <Compile Include="Src\Base\Models\UserInterface.cs" />
     <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
     <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
-    <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Service\HomeMenuServiceImpl.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
     <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
@@ -1196,29 +1148,6 @@
     <Compile Include="Src\myTNBMenu\Api\ISMRAccountActivityInfoApi.cs" />
     <Compile Include="Src\SitecoreCMS\Model\ApplySSMRWalkthroughModel.cs" />
     <Compile Include="Src\SitecoreCMS\Service\ApplySSMRWalkthroughService.cs" />
-    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingActivity.cs" />
-    <AndroidResource Include="Resources\layout\OnboardingSSMRView.axml" />
-    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRPresenter.cs" />
-    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRContract.cs" />
-    <Compile Include="Src\SSMR\SMRApplication\Adapter\OnBoardingSMRAdapter.cs" />
-    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingDataModel.cs" />
-    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRFragment.cs" />
-    <AndroidResource Include="Resources\layout\OnBoardingSMRFragmentLayout.axml" />
-    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_1.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_2.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_3.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_1.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_2.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_3.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_1.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_2.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_3.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_1.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_2.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_3.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_1.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_2.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_3.png" />
     <AndroidResource Include="Resources\drawable\onboarding_circle_active.axml" />
     <AndroidResource Include="Resources\drawable\onboarding_circle_inactive.axml" />
     <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRActivity.cs" />
@@ -1318,7 +1247,6 @@
     <AndroidResource Include="Resources\drawable\meter_capture_holder_active.xml" />
     <AndroidResource Include="Resources\drawable\meter_capture_holder_selected.xml" />
     <AndroidResource Include="Resources\drawable\meter_capture_holder_inactive.xml" />
-    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
     <AndroidResource Include="Resources\drawable\overlay_crop_image.xml" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_no.png" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
@@ -1745,36 +1673,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\rectangle_rounded_button_bg.xml">
       <SubType>
       </SubType>
@@ -1782,12 +1680,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\dashboard_chart_bg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_fluid_background.png">
       <SubType>
       </SubType>
       <Generator>
@@ -1805,12 +1697,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-mdpi\eye.png">
       <SubType>
       </SubType>
@@ -1818,12 +1704,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-mdpi\rectangle.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_fluid_background.png">
       <SubType>
       </SubType>
       <Generator>
@@ -1841,12 +1721,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_fluid_background.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\eye.png">
       <SubType>
       </SubType>
@@ -1854,12 +1728,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\rectangle.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_fluid_background.png">
       <SubType>
       </SubType>
       <Generator>
@@ -2042,12 +1910,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_extended_bg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\TariffBlockLegendItem.axml">
       <SubType>
       </SubType>
@@ -2062,12 +1924,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\anim\layout_animation_fall_down.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\CustomDashboardGradientAccountSelector.xml">
       <SubType>
       </SubType>
       <Generator>
@@ -2230,10 +2086,6 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterReadingModel.cs" />
     <Compile Include="Src\Database\Model\OnboardingSSMRParentEntity.cs" />
     <AndroidResource Include="Resources\layout\SelectSMRAccountInfoLayout.axml" />
-    <AndroidResource Include="Resources\drawable\dashboard_chart_nm_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\NewHorizontalGradientBackground.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -2317,30 +2169,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\trend.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_sm_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_sm_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -2537,30 +2365,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\smr_meter_dashboard.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_smr_extended_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -2779,7 +2583,6 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetIsSmrApplyAllowedApi.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\GetIsSmrApplyAllowedRequest.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetIsSmrApplyAllowedResponse.cs" />
-    <Compile Include="Src\Base\MyTNBAppWalkthroughData.cs" />
     <AndroidResource Include="Resources\values\DashboardHomeStyle.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -3413,54 +3216,6 @@
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughContract.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughAdapter.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughFragment.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_smr_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_extended_smr_fluid_background.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\dashboard_chart_smr_extended_extended_bg.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
     <Compile Include="Src\NewAppTutorial\MVP\NewAppTutorialDialogFragment.cs" />
     <AndroidResource Include="Resources\drawable\white_circle.xml">
@@ -3535,10 +3290,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_filled.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\usage_bottom_sheet_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -4587,6 +4338,17 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_payment_success_banner.png" />
     <Compile Include="Src\MyTNBService\Response\AddAccountsResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\AddAccountsRequest.cs" />
+    <Compile Include="Src\MultipleAccountPayment\Model\CardDetails.cs" />
+    <Compile Include="Src\MultipleAccountPayment\Model\CreditCard.cs" />
+    <AndroidResource Include="Resources\menu\DashboardToolbarMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\usage_bottom_view.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\LocaleUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4650,9 +4412,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SelectSupplyAccountView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ViewBillView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BillsRowView.axml">
@@ -4748,9 +4507,6 @@
     <AndroidResource Include="Resources\layout\AddAccountsSuccess.axml" />
     <AndroidResource Include="Resources\layout\WhereIsMyAccountView.axml" />
     <AndroidResource Include="Resources\layout\SelectAccountTypeView.axml" />
-    <AndroidResource Include="Resources\layout\WeblinkWebView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\FIndUsView.axml" />
     <AndroidResource Include="Resources\layout\GoogleMapView.axml" />
     <AndroidResource Include="Resources\layout\LocationDetailsView.axml" />
@@ -4819,9 +4575,6 @@
     <AndroidResource Include="Resources\layout\FeedbackDetailImageRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\PaymentSuccessExperienceRatingView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ForgotPasswordEnterCodeView.axml" />
     <AndroidResource Include="Resources\layout\FeedbackDetailsFullscreenImageView.axml">
       <SubType>Designer</SubType>
@@ -4835,9 +4588,6 @@
     <AndroidResource Include="Resources\layout\PhoneListItemView.axml" />
     <AndroidResource Include="Resources\layout\ServiceListItemView.axml" />
     <AndroidResource Include="Resources\layout\ViewBillPDFView.axml" />
-    <AndroidResource Include="Resources\layout\FAQView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountRow.axml" />
     <AndroidResource Include="Resources\layout\FeedbackSelectAccountView.axml" />
     <AndroidResource Include="Resources\layout\FAQListItemView.axml" />
@@ -5192,9 +4942,6 @@
     <AndroidResource Include="Resources\values\PreLoginStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\CUSTOMER_CHARTER_resize.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\blue_out_line.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -5202,12 +4949,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\promotion.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\toggle_widget_background.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\toggle_widget_textcolor.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Delete.png" />
@@ -5341,11 +5082,6 @@
     <AndroidResource Include="Resources\values\Dimen.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\DashboardToolbarMenu.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\menu\RegisterValidationMenu.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -5362,9 +5098,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_loaded.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\white_button_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\white_selector_pressable.xml" />
@@ -5734,9 +5467,6 @@
     <AndroidResource Include="Resources\values\GetAccessSuccessStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\GetAccessSuccessWhiteBackground.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_delete.png" />
   </ItemGroup>
   <ItemGroup>
@@ -5861,18 +5591,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\card_no.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_active_tab_button_shape.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_tab_button_selector.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_tab_button_text_selector.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\custom_inactive_tab_button_shape.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_loaded.png" />
@@ -6567,9 +6285,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_progress_loader.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\white_rounded_button_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_display_prelogin.png" />

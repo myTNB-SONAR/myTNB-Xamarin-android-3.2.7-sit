@@ -180,6 +180,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 [AliasAs("DPCIndicatorTariffMessage")]
                 public string DPCIndicatorTariffMessage { get; set; }
 
+                [JsonProperty(PropertyName = "DPCIndicatorRMMessage")]
+                [AliasAs("DPCIndicatorRMMessage")]
+                public string DPCIndicatorRMMessage { get; set; }
+
                 [JsonProperty(PropertyName = "tariffBlocks")]
                 [AliasAs("tariffBlocks")]
                 public List<TariffBlock> TariffBlocksList { get; set; }

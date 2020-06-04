@@ -33,6 +33,8 @@ namespace myTNB_Android.Src.Base.Activity
 
         private Snackbar mErrorMessageSnackBar;
 
+        private string HeaderTitle = "";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -63,6 +65,7 @@ namespace myTNB_Android.Src.Base.Activity
 
                     if (extra.ContainsKey(Constants.IN_APP_TITLE))
                     {
+                        HeaderTitle = extra.GetString(Constants.IN_APP_TITLE);
                         SetToolBarTitle(extra.GetString(Constants.IN_APP_TITLE));
                     }
                 }
@@ -73,7 +76,7 @@ namespace myTNB_Android.Src.Base.Activity
                 }
 
                 //webView.SetWebChromeClient(new WebChromeClient());
-                webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar, webLink));
+                webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar, webLink, HeaderTitle));
 
                 webView.LoadUrl(webLink);
             }
@@ -114,13 +117,14 @@ namespace myTNB_Android.Src.Base.Activity
         public class MyTNBWebViewClient : WebViewClient
         {
 
-            public Android.App.Activity mActivity;
+            public BaseWebviewActivity mActivity;
             public ProgressBar progressBar;
             private bool isRedirected = false;
             private string webLink;
             private string baseUrl;
+            private string HeaderTitle;
 
-            public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, string mWebLink)
+            public MyTNBWebViewClient(BaseWebviewActivity mActivity, ProgressBar progress, string mWebLink, string mHeaderTitle)
             {
                 this.mActivity = mActivity;
                 this.progressBar = progress;
@@ -134,6 +138,8 @@ namespace myTNB_Android.Src.Base.Activity
                 {
                     this.baseUrl = mWebLink;
                 }
+
+                HeaderTitle = mHeaderTitle;
             }
 
             public override bool ShouldOverrideUrlLoading(WebView view, string url)
@@ -172,6 +178,10 @@ namespace myTNB_Android.Src.Base.Activity
             public override void OnPageFinished(WebView view, string url)
             {
                 progressBar.Visibility = ViewStates.Gone;
+                /*if (string.IsNullOrEmpty(HeaderTitle))
+                {
+                    mActivity.SetToolBarTitle(view.Title);
+                }*/
             }
 
             public override bool OnRenderProcessGone(WebView view, RenderProcessGoneDetail detail)

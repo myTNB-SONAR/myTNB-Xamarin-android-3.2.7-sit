@@ -96,7 +96,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         UserSessions.SaveDeviceId(this.mView.GetDeviceId());
                     }
                     LoadAppMasterData();
-                    GetSSMRWalkThrough();
                     GetCountryList();
                 }
             }
@@ -864,36 +863,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnUpdateApp()
         {
             this.mView.OnAppUpdateClick();
-        }
-
-        public Task GetSSMRWalkThrough()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-
-                    ApplySSMRTimeStampResponseModel timestampModel = getItemsService.GetApplySSMRWalkthroughTimestampItem();
-                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
-                    {
-                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.APPLY_SSMR_WALKTHROUGH, timestampModel.Data[0].Timestamp))
-                        {
-                            ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
-
-                            if (responseModel.Status.Equals("Success"))
-                            {
-                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.APPLY_SSMR_WALKTHROUGH, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
         }
 
         public void GetCountryList()

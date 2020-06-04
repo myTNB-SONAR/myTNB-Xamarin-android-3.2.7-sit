@@ -147,7 +147,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 billFilterMessage.Text = GetLabelByLanguage("description");
             }
 
-            SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
 

@@ -182,6 +182,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Show();
                 ShowBackButton(false);
+
+                ((DashboardHomeActivity)this.Activity).RemoveHeaderDropDown();
+                ((DashboardHomeActivity)this.Activity).HideAccountName();
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
             }
             catch (System.Exception e)
             {
@@ -447,11 +451,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         {
                             if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew();
                             }
                         }
                         catch (System.Exception ex)
@@ -607,11 +611,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         {
                             if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew();
                             }
                         }
                         catch (System.Exception ex)
@@ -669,11 +673,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                         {
                             if (WhatsNewEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadWhatsNew();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadWhatsNew();
                             }
                         }
                         catch (System.Exception ex)
