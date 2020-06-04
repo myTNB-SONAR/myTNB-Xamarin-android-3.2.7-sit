@@ -749,8 +749,6 @@
     <ImageAsset Include="Assets\Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%403x.png" />
@@ -1819,6 +1817,8 @@
     <ImageAsset Include="Assets\Rewards.xcassets\Reward_Default-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets\Rewards.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%402x.png" />
     <ImageAsset Include="Assets\Rewards.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
