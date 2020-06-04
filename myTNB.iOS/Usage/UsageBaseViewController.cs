@@ -52,6 +52,8 @@ namespace myTNB
         private nfloat _smrCardYPos, _smrCardHeight;
         private MonthItemModel _lastSelectedMonthItem = new MonthItemModel();
 
+        private static List<string> RedirectTypeList = new List<string> { "faq=", "whatsnew=", "http" };
+
         public override void ViewDidLoad()
         {
             PageName = UsageConstants.PageName;
@@ -600,9 +602,24 @@ namespace myTNB
         #region DPC Methods
         private void SetDPCNoteOnBarTap(MonthItemModel item)
         {
-            if (item.DPCIndicator && _rMkWhEnum == RMkWhEnum.kWh || (_rMkWhEnum == RMkWhEnum.RM && _tariffIsVisible && item.DPCIndicator))
+            if (item.DPCIndicator && _rMkWhEnum == RMkWhEnum.kWh || (_rMkWhEnum == RMkWhEnum.RM && item.DPCIndicator))
             {
-                var msg = _tariffIsVisible ? item.DPCIndicatorTariffMessage : item.DPCIndicatorUsageMessage;
+                var msg = "";
+                if (_tariffIsVisible)
+                {
+                    msg = item.DPCIndicatorTariffMessage;
+                }
+                else
+                {
+                    if (_rMkWhEnum == RMkWhEnum.kWh)
+                    {
+                        msg = item.DPCIndicatorUsageMessage;
+                    }
+                    else
+                    {
+                        msg = item.DPCIndicatorRMMessage;
+                    }
+                }
                 SetDPCNote(msg);
             }
             else
@@ -614,7 +631,22 @@ namespace myTNB
 
         private void SetCPCNoteForShowHideTariff()
         {
-            var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+            var msg = "";
+            if (_tariffIsVisible)
+            {
+                msg = _lastSelectedMonthItem.DPCIndicatorTariffMessage;
+            }
+            else
+            {
+                if (_rMkWhEnum == RMkWhEnum.kWh)
+                {
+                    msg = _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                }
+                else
+                {
+                    msg = _lastSelectedMonthItem.DPCIndicatorRMMessage;
+                }
+            }
             SetDPCNote(msg);
             SetContentView();
         }
@@ -625,7 +657,22 @@ namespace myTNB
             {
                 if (_lastSelectedIsDPC)
                 {
-                    var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                    var msg = "";
+                    if (_tariffIsVisible)
+                    {
+                        msg = _lastSelectedMonthItem.DPCIndicatorTariffMessage;
+                    }
+                    else
+                    {
+                        if (_rMkWhEnum == RMkWhEnum.kWh)
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                        }
+                        else
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorRMMessage;
+                        }
+                    }
                     SetDPCNote(msg);
                 }
             }
@@ -652,7 +699,22 @@ namespace myTNB
             {
                 if (_lastSelectedIsDPC)
                 {
-                    var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                    var msg = "";
+                    if (_tariffIsVisible)
+                    {
+                        msg = _lastSelectedMonthItem.DPCIndicatorTariffMessage;
+                    }
+                    else
+                    {
+                        if (_rMkWhEnum == RMkWhEnum.kWh)
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                        }
+                        else
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorRMMessage;
+                        }
+                    }
                     SetDPCNote(msg);
                 }
             }
@@ -679,15 +741,85 @@ namespace myTNB
                 }
             }, new NSRange(0, htmlBody.Length));
 
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.SunGlow,
+                Font = TNBFont.MuseoSans_10_500,
+                UnderlineColor = UIColor.Clear,
+                UnderlineStyle = NSUnderlineStyle.None
+            };
+
             UITextView dpcNote = new UITextView(new CGRect(GetScaledWidth(24f), 0, _viewDPCNote.Frame.Width - (GetScaledWidth(24f) * 2), GetScaledHeight(60F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
                 ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
-                UserInteractionEnabled = false,
+                WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextContainerInset = UIEdgeInsets.Zero,
                 Tag = 1001
+            };
+            Action<NSUrl> action = new Action<NSUrl>((url) =>
+            {
+                if (url != null)
+                {
+                    string absURL = url.AbsoluteString;
+                    int whileCount = 0;
+                    bool isContained = false;
+                    while (!isContained && whileCount < RedirectTypeList.Count)
+                    {
+                        isContained = absURL.Contains(RedirectTypeList[whileCount]);
+                        if (isContained) { break; }
+                        whileCount++;
+                    }
+
+                    if (isContained)
+                    {
+                        if (RedirectTypeList[whileCount] == RedirectTypeList[0])
+                        {
+                            string key = absURL.Split(RedirectTypeList[0])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            ViewHelper.GoToFAQScreenWithId(key);
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[1])
+                        {
+                            string key = absURL.Split(RedirectTypeList[1])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            key = key.Replace("{", "").Replace("}", "");
+
+                            WhatsNewServices.OpenWhatsNewDetails(key, this);
+                        }
+                        else
+                        {
+                            BrowserViewController viewController = new BrowserViewController();
+                            if (viewController != null)
+                            {
+                                viewController.NavigationTitle = "";
+                                viewController.URL = url.AbsoluteString;
+                                viewController.IsDelegateNeeded = false;
+                                UINavigationController navController = new UINavigationController(viewController)
+                                {
+                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                };
+                                PresentViewController(navController, true, null);
+                            }
+                        }
+                    }
+                }
+            });
+            dpcNote.Delegate = new TextViewDelegate(action)
+            {
+                InteractWithURL = false
             };
             CGSize cGSize = dpcNote.SizeThatFits(new CGSize(dpcNote.Frame.Width, GetScaledHeight(500F)));
             ViewHelper.AdjustFrameSetHeight(dpcNote, cGSize.Height);
@@ -1364,15 +1496,7 @@ namespace myTNB
                 if (_tariffIsVisible)
                 {
                     _tariffIsVisible = !_tariffIsVisible;
-                    if (_rMkWhEnum == RMkWhEnum.RM)
-                    {
-                        RemoveDPCNote();
-                        SetContentView();
-                    }
-                    else
-                    {
-                        SetCPCNoteForShowHideTariff();
-                    }
+                    SetCPCNoteForShowHideTariff();
                 }
                 else
                 {
