@@ -1,5 +1,6 @@
 ﻿{
   "Common": {
+	"eppToolTipTitle": "What about Easy Payment Plan (EPP)?",
     "account": "Account",
     "emailAddress": "Email Address",
     "mobileNumber": "Mobile Number",
@@ -624,8 +625,8 @@
   "FindUs": {
     "title": "Find Us",
     "searchPlaceholder": "Search via street name or area",
-    "zeroLocations": "0 Locations",
-    "noKTFound": "No Kedai Tenaga Found",
+    "zeroLocations": "Kedai Tenaga Closure During MCO",
+    "noKTFound": "Dear customers, Kedai Tenaga is currently closed during MCO until further notice.",
     "no711Found": "No 7-Eleven Found",
     "show": "Show"
   },
