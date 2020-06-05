@@ -136,11 +136,11 @@ namespace myTNB
             //Created by Syahmi ICS 05052020
             nfloat yPos;
 
-            if (dueData.ShowEppToolTip.Equals(true))
+            if (dueData != null && dueData.ShowEppToolTip.Equals(true))
             {
                 yPos = GetScaledHeight(96f);
             }
-            else if (dueData.ShowEppToolTip.Equals(false))
+            else if (dueData != null && dueData.ShowEppToolTip.Equals(false))
             {
                 yPos = GetScaledHeight(72f);
             }
@@ -243,7 +243,8 @@ namespace myTNB
                 _lblAmount.TextColor = MyTNBColor.LightOrange;
             }
             AdjustLabels(amount, isPendingPayment);
-        }
+        }
+
         private void AdjustLabels(double amount, bool isPendingPayment = false)
         {
             if (_containerView != null)
@@ -333,7 +334,7 @@ namespace myTNB
         public void CreateTooltipsView()
         {
             dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
-            if (dueData.ShowEppToolTip.Equals(true))
+            if (dueData != null && dueData.ShowEppToolTip.Equals(true))
             {
                 _containerEppView = new UIView(new CGRect(0, (GetYLocationFromFrame(_lblDate.Frame, 8)), _width, GetScaledHeight(24)))
                 {

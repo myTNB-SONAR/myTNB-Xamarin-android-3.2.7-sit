@@ -1845,7 +1845,7 @@ namespace myTNB
 
                 //Created by Syahmi ICS 05052020
                 DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
-                if (dueData.ShowEppToolTip.Equals(true))
+                if (dueData != null && dueData.ShowEppToolTip.Equals(true))
                 {
                     componentHeight = GetScaledHeight(160F);
                 }
@@ -1982,10 +1982,15 @@ namespace myTNB
         {
             if (_footerViewComponent != null)
             {
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                if (dueData != null && dueData.ShowEppToolTip.Equals(true))
+                {
+                    SetFooterView();
+                }
+
                 _footerViewComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     if (dueData != null)
                     {
                         _footerViewComponent.IsPayEnable = dueData.IsPayEnabled;
