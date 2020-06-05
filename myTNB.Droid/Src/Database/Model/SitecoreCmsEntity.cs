@@ -22,7 +22,8 @@ namespace myTNB_Android.Src.Database.Model
             LANGUAGE_URL,
             LANGUAGE_EN,
             LANGUAGE_MS,
-            COUNTRY
+            COUNTRY,
+            EPP_TOOLTIP
         }
 
         public static void CreateTable()

@@ -9,6 +9,7 @@ using myTNB_Android.Src.Utils;
 using Android.Text.Style;
 using Android.Text.Method;
 using Android.Support.V7.Widget;
+using Android.Graphics;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -37,6 +38,7 @@ namespace myTNB_Android.Src.Utils
         private ClickableSpan clickableSpan;
         private Context mContext;
         private GravityFlags mGravityFlag;
+        private Bitmap imageResourceBitmap;
 
         private MyTNBAppToolTipBuilder()
         {
@@ -156,6 +158,12 @@ namespace myTNB_Android.Src.Utils
         public void DismissDialog()
         {
             this.dialog.Dismiss();
+        }
+
+          public MyTNBAppToolTipBuilder SetHeaderImageBitmap(Bitmap imageResource)
+        {
+            this.imageResourceBitmap = imageResource;
+            return this;
         }
 
         public MyTNBAppToolTipBuilder Build()
@@ -319,7 +327,14 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
 
-                tooltipImageHeader.SetImageResource(this.imageResource);
+                 if (this.imageResourceBitmap != null)
+                {
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                }
+                else
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
 
                 tooltipPrimaryCTA.Click += delegate
                 {
@@ -344,6 +359,11 @@ namespace myTNB_Android.Src.Utils
                 else
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                   if (this.clickableSpan != null)
+                {
+                    tooltipMessage.TextFormatted = Utility.GetFormattedURLString(this.clickableSpan, tooltipMessage.TextFormatted);
+                    tooltipMessage.MovementMethod = new LinkMovementMethod();
                 }
                 tooltipPrimaryCTA.Text = this.ctaLabel;
                 tooltipSecondaryCTA.Text = this.secondaryCTALabel;

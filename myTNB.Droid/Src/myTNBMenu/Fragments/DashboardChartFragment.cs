@@ -485,6 +485,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.dashboard_top_view)]
         LinearLayout dashboard_top_view;
 
+        [BindView(Resource.Id.infoLabelContainerEPP)]
+        LinearLayout infoLabelEPP;
+
+        [BindView(Resource.Id.infoLabelEPP)]
+        TextView lblinfoLabelEPP;
+
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -599,6 +606,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool isGoToBillingDetail = false;
 
         private bool mIsPendingPayment = false;
+
+                private string dialogTitle, dialogMessage, dialogBtnLabel, dialogBtnLabel2;
+        private string Title = "Easy Payment Plan";
 
 
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
@@ -1311,6 +1321,93 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+ 
+        public void ShowBillPDF()
+        {
+            Intent viewBill = new Intent(this.activity, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+            StartActivity(viewBill);
+        }
+
+
+ 
+        class EPPClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
+            }
+        }
+
+  
+        private void showEPPTooltip()
+
+
+        {
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
+            // USAGE_TODO: need to add process for the hyperlink
+       
+                //SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
+            var clickableSpanEPP = new EPPClickSpan()
+            {
+              textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
+              typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                };
+            clickableSpanEPP.Click += v =>
+                {
+                 
+                    if (modelList[0].PopUpBody != null)
+                    {
+                        List<string> extractedUrls = this.mPresenter.ExtractUrls(modelList[0].PopUpBody);
+                        if (extractedUrls.Count > 0)
+                        {
+                            if (!extractedUrls[0].Contains("http"))
+                            {
+                                extractedUrls[0] = "http://" + extractedUrls[0];
+                            }
+
+                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
+                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                            StartActivity(webIntent);
+                        }
+                    }
+                };
+    
+            
+
+
+
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+           .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+           .SetTitle(modelList[0].PopUpTitle)
+            .SetClickableSpan(clickableSpanEPP)
+           .SetMessage(modelList[0].PopUpBody)
+           .SetCTALabel(dialogBtnLabel)
+           .SetCTAaction(() => { this.SetIsClicked(false); })
+           .SetSecondaryCTALabel(dialogBtnLabel2)
+           .SetSecondaryCTAaction(() => ShowBillPDF())
+           .Build();
+            eppTooltip.Show();
+
+        }
+
         [OnClick(Resource.Id.smStatisticTooltip)]
         void OnSMStatisticTooltipClick(object sender, EventArgs eventArgs)
         {
@@ -1422,6 +1519,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     this.SetIsClicked(true);
                     StartSSMRMeterHistoryPage();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.infoLabelContainerEPP)]
+        void OnEPPClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    showEPPTooltip();
+
                 }
             }
             catch (System.Exception e)
@@ -6555,6 +6670,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                     else
                                     {
+                                         if (accountDueAmount.ShowEppToolTip == true)
+                                        {
+                                            ShowEpp();
+                                        }
+                                        else
+                                        {
+                                            HideEpp();
+                                        }
                                         EnablePayButton();
                                     }
 
@@ -6881,6 +7004,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             btnPay.Enabled = true;
             btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+        }
+
+          public void ShowEpp()
+        {
+            lblinfoLabelEPP.Text = Utility.GetLocalizedCommonLabel("eppToolTipTitle");
+            infoLabelEPP.Visibility = ViewStates.Visible; 
+            //btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+        }
+
+        public void HideEpp()
+        {
+            infoLabelEPP.Visibility = ViewStates.Gone;
+            //btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
         }
 
         public void DisablePayButton()

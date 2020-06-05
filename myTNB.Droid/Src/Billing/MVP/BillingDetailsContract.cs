@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.Billing.MVP
             void GetBillHistory(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList();
             void ShowBillDetails(AccountData selectedAccount, bool isCheckPendingNeeded);
+            List<string> ExtractUrls(string text);
         }
     }
 }
