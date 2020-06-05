@@ -12,6 +12,8 @@ using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -238,6 +240,20 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
+         private void EnableEppTooltip(bool isTooltipShown)
+        {
+            if (isTooltipShown == true)
+            {
+                infoLabelDetailEPP.Text = Utility.GetLocalizedCommonLabel("eppToolTipTitle");
+                infoLabelContainerDetailEPP.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                infoLabelContainerDetailEPP.Visibility = ViewStates.Gone;
+            }
+            
+        }
+
         private void EnablePayBillButtons()
         {
             bool isPaymentButtonEnable = Utility.IsEnablePayment();
@@ -331,7 +347,10 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void PopulateCharges()
         {
-            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)
+
+            EnableEppTooltip(selectedAccountChargeModel.ShowEppToolTip);
+
+            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f && selectedAccountChargeModel.ShowEppToolTip == false )
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
@@ -439,6 +458,12 @@ namespace myTNB_Android.Src.Billing.MVP
             ShowAccountHasMinCharge();
         }
 
+        [OnClick(Resource.Id.infoLabelContainerDetailEPP)]
+        void OnTapEPPTooltip(object sender, EventArgs eventArgs)
+        {
+            ShowEPPDetailsTooltip();
+        }
+
         [OnClick(Resource.Id.btnBillingDetailefresh)]
         void OnTapBillingDetailRefresh(object sender, EventArgs eventArgs)
         {
@@ -479,6 +504,84 @@ namespace myTNB_Android.Src.Billing.MVP
                 .SetMessage(mandatoryTooltipModel.Description)
                 .SetCTALabel(mandatoryTooltipModel.CTA)
                 .Build().Show();
+            }
+        }
+
+
+        public void ShowEPPDetailsTooltip()
+        {
+ 
+
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
+
+
+
+            var clickableSpan = new ClickSpan() {
+                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.sunGlow)),
+                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+            };
+            clickableSpan.Click += v =>
+            {
+
+                if (modelList[0].PopUpBody != null)
+                {
+                    List<string> extractedUrls = this.billingDetailsPresenter.ExtractUrls(modelList[0].PopUpBody);
+                    if (extractedUrls.Count > 0)
+                    {
+                        if (!extractedUrls[0].Contains("http"))
+                        {
+                            extractedUrls[0] = "http://" + extractedUrls[0];
+                        }
+
+                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                        StartActivity(webIntent);
+                    }
+                }
+            };
+
+
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+               .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+               .SetTitle(modelList[0].PopUpTitle)
+               .SetClickableSpan(clickableSpan)
+               .SetMessage(modelList[0].PopUpBody)
+               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+               .SetCTAaction(() => { this.SetIsClicked(false); })
+               
+               .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+               .SetSecondaryCTAaction(() => ShowBillPDF())
+               .Build();
+               eppTooltip.Show();
+
+
+
+
+        
+            
+        }
+
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
             }
         }
 

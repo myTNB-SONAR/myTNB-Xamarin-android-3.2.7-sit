@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.MyTNBService.Model
 		public bool IsCleared { get; set; }
 		public bool IsPaidExtra { get; set; }
 		public bool IsNeedPay { get; set; }
+		public bool ShowEppToolTip { get; set; }
 		public MandatoryChargeModel MandatoryCharges { get; set; }
 	}
 

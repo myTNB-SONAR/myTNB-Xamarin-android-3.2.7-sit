@@ -41,5 +41,8 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 
         [JsonProperty("WhyThisAmountSecButtonText")]
         public string WhyThisAmountSecButtonText { get; set; }
+
+        [JsonProperty("ShowEppToolTip")]
+        public bool ShowEppToolTip { get; set; }
     }
 }

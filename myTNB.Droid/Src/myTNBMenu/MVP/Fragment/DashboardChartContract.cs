@@ -223,6 +223,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             List<string> ExtractUrls(string text);
 
             void UpdateWhatsNewRead(string itemID, bool flag);
+
+            Task OnGetEPPTooltipContent();
+
+         
         }
     }
 }
