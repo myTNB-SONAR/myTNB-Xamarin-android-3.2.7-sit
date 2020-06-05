@@ -438,7 +438,8 @@ namespace myTNB
                                             amountDue = model.amountDue,
                                             billDueDate = model.billDueDate,
                                             IncrementREDueDateByDays = model.IncrementREDueDateByDays,
-                                            IsPayEnabled = dueAmountResponse.d.IsPayEnabled
+                                            IsPayEnabled = dueAmountResponse.d.IsPayEnabled,
+                                            ShowEppToolTip = model.ShowEppToolTip //Created by Syahmi ICS 05052020
                                         };
                                         AmountDueCache.SaveDues(item);
                                         if (isREAccount)
