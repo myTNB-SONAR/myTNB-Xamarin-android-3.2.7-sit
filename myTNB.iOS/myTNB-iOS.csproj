@@ -2771,6 +2771,9 @@
       <DependentUpon>BrowserViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorCell.cs" />
+    <Compile Include="Sitecore CMS\Model\EppTooltip\EppInfoTooltipModel.cs" />
+    <Compile Include="Sitecore CMS\Service\EppInfoTooltipService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\EppInfoTooltipEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

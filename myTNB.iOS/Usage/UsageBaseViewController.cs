@@ -52,6 +52,9 @@ namespace myTNB
         private nfloat _smrCardYPos, _smrCardHeight;
         private MonthItemModel _lastSelectedMonthItem = new MonthItemModel();
 
+        //Code Start Here
+        private List<EppTooltipModelEntity> _eppToolTipList;
+
         private static List<string> RedirectTypeList = new List<string> { "faq=", "whatsnew=", "http" };
 
         public override void ViewDidLoad()
@@ -1836,8 +1839,21 @@ namespace myTNB
                 {
                     _viewFooter.RemoveFromSuperview();
                 }
-                nfloat componentHeight = GetScaledHeight(136F);
+                //nfloat componentHeight = GetScaledHeight(136F);
                 nfloat indicatorHeight = GetScaledHeight(33F);
+                nfloat componentHeight;
+
+                //Created by Syahmi ICS 05052020
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
+                if (dueData != null && dueData.ShowEppToolTip.Equals(true))
+                {
+                    componentHeight = GetScaledHeight(160F);
+                }
+                else
+                {
+                    componentHeight = GetScaledHeight(136F);
+                }
+
                 nfloat footerHeight = indicatorHeight + componentHeight;
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
                 _footerYPos = footerYPos + GetScaledHeight(33F);
@@ -1857,6 +1873,21 @@ namespace myTNB
                     GetI18NValue = GetI18NValue
                 };
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
+                //Created by Syahmi ICS 05052020
+                if ((_footerViewComponent._eppToolTipsView != null))
+                {
+                    _footerViewComponent._eppToolTipsView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        EppInfoTooltipEntity wsEppManager = new EppInfoTooltipEntity();
+                        _eppToolTipList = wsEppManager.GetAllItems();
+
+                        DisplayCustomAlert(
+                        _eppToolTipList[0].PopUpTitle,
+                        _eppToolTipList[0].PopUpBody,
+                        new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null }, { GetCommonI18NValue("viewBill"), () => OnCurrentBillButtonTap() } },
+                        UIImage.LoadFromData(NSData.FromArray(_eppToolTipList[0].ImageByteArray)));
+                    }));
+                }
                 if (_footerViewComponent._btnViewBill != null)
                 {
                     _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
@@ -1868,7 +1899,7 @@ namespace myTNB
                 {
                     _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
                     {
-                        DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
+                        dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
                         OnPayButtonTap(dueData != null ? dueData.amountDue : 0);
                     };
                 }
@@ -1951,15 +1982,25 @@ namespace myTNB
         {
             if (_footerViewComponent != null)
             {
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                if (dueData != null && dueData.ShowEppToolTip.Equals(true))
+                {
+                    SetFooterView();
+                }
+
                 _footerViewComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     if (dueData != null)
                     {
                         _footerViewComponent.IsPayEnable = dueData.IsPayEnabled;
                         _footerViewComponent.SetAmount(dueData.amountDue, isPendingPayment);
                         _footerViewComponent.SetDate(dueData.billDueDate);
+                        //Created by Syahmi ICS 05052020
+                        if (dueData.ShowEppToolTip.Equals(true))
+                        {
+                            _footerViewComponent.IsShowEppToolTip = dueData.ShowEppToolTip;
+                        }
                     }
                 }
             }

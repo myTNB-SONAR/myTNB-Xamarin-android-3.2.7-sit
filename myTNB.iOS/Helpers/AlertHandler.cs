@@ -8,7 +8,7 @@ namespace myTNB
 {
     public static class AlertHandler
     {
-        public static List<string> RedirectTypeList = new List<string> { "faqid=", "inAppBrowser=", "externalBrowser=" };
+        public static List<string> RedirectTypeList = new List<string> { "faqid=", "inAppBrowser=", "externalBrowser=", "http" };
 
         /// <summary>
         /// Displays the no data alert.
@@ -208,7 +208,11 @@ namespace myTNB
                 {
                     RedirectAlert(url, viewParent);
                 });
-                txtViewDetails.Delegate = new TextViewDelegate(action);
+                txtViewDetails.Delegate = new TextViewDelegate(action)
+                {
+                    InteractWithURL = false //Created by Syahmi ICS 05052020
+
+                };
             }
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(viewParent);
@@ -262,11 +266,37 @@ namespace myTNB
                             }
                         }
                     }
-                    else
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[2])
                     {
                         string urlString = absURL.Split(RedirectTypeList[2])[1];
                         UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
                     }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[3]) //Created by Syahmi ICS 05052020
+                    {
+                        string urlString = absURL;
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            BrowserViewController viewController = new BrowserViewController();
+                            if (viewController != null)
+                            {
+                                viewController.NavigationTitle = "";
+                                viewController.URL = urlString;
+                                viewController.IsDelegateNeeded = false;
+                                UINavigationController navController = new UINavigationController(viewController)
+                                {
+                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                };
+                                topVc.PresentViewController(navController, true, null);
+                            }
+                        }
+                    }
+                }
+                else 
+                {
+                    string urlString = absURL.Split(RedirectTypeList[2])[1];
+                    UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
                 }
             }
         }

@@ -99,6 +99,15 @@
                     public const string Image = "Image";
                 }
 
+                //Created by Syahmi ICS 05052020
+                public struct EppInfoTooltip
+                {
+                    public const string Title = "Tool Tip Title";
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+                }
+
                 public struct BillDetailsTooltip
                 {
                     public const string Title = "Title";
@@ -207,6 +216,9 @@
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
+
+                //Created by Syahmi ICS 05052020
+                public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
             }
         }
     }
