@@ -4349,6 +4349,11 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Utils\LocaleUtils.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\EPPTooltipModel.cs" />
+    <Compile Include="Src\myTNBMenu\Models\EPPTooltipResponse.cs" />
+    <Compile Include="Src\Database\Model\EPPToolTipEntity.cs" />
+    <Compile Include="Src\Database\Model\EPPToolTipParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\EppToolTipService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

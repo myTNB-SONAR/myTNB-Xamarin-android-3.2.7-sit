@@ -46,6 +46,7 @@ namespace myTNB_Android.Src.MyTNBService.Parser
                 accountChargeModel.DueDate = accountCharge.DueDate;
                 accountChargeModel.BillDate = accountCharge.BillDate;
                 accountChargeModel.IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays;
+                accountChargeModel.ShowEppToolTip = accountCharge.ShowEppToolTip;
                 accountChargeModel.MandatoryCharges = mandatoryChargeModel;
                 EvaluateAmountDue(accountChargeModel);
                 accountChargeModelList.Add(accountChargeModel);

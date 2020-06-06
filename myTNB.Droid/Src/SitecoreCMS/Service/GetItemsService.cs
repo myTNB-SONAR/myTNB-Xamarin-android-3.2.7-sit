@@ -600,7 +600,7 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-                public EppToolTipResponseModel GetEppToolTipItem()
+        public EppToolTipResponseModel GetEppToolTipItem()
         {
             EppToolTipResponseModel respModel = new EppToolTipResponseModel();
             try

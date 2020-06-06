@@ -1712,7 +1712,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:paddingLeft="4dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 
                 android:background="@drawable/rectangle_rounded_corner_light_blue_bg"

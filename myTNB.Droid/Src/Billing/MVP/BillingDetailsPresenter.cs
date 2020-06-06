@@ -19,6 +19,7 @@ using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.Base;
 using System.Net;
 using myTNB_Android.Src.Base.Models;
+using Java.Util.Regex;
 
 namespace myTNB_Android.Src.Billing.MVP
 {

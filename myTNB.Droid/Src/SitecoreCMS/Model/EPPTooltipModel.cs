@@ -23,9 +23,8 @@ namespace myTNB.SitecoreCMS.Model
 
         public string Title { set; get; }
         public string PopUpTitle { set; get; }
-
         public string PopUpBody { set; get; }
-        // public Bitmap ImageBitmap { set; get; }
+        public string ImageBase64 { set; get; }
         public string Image { set; get; }
         public string ID { get; set; }
     }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -19,15 +19,19 @@ using Android.Widget;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
@@ -110,6 +114,12 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.btnBillingDetailefresh)]
         Button btnBillingDetailefresh;
+
+        [BindView(Resource.Id.infoLabelContainerDetailEPP)]
+        LinearLayout infoLabelContainerDetailEPP;
+
+        [BindView(Resource.Id.infoLabelDetailEPP)]
+        TextView infoLabelDetailEPP;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -196,6 +206,9 @@ namespace myTNB_Android.Src.Billing.MVP
             btnPayBill.Text = GetLabelByLanguage("pay");
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
+
+            OnGetEPPTooltipContentDetail();
+
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
                 selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
@@ -517,7 +530,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
 
             var clickableSpan = new ClickSpan() {
-                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.sunGlow)),
+                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.blue)),
                 typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
             };
             clickableSpan.Click += v =>
@@ -712,6 +725,40 @@ namespace myTNB_Android.Src.Billing.MVP
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .Build().Show();
             this.SetIsClicked(false);
+        }
+
+        public Task OnGetEPPTooltipContentDetail()
+
+        {
+
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+
+                    EppToolTipTimeStampResponseModel timestampModel = getItemsService.GetEppToolTipTimeStampItem();
+                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
+                    {
+                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, timestampModel.Data[0].Timestamp))
+                        {
+                            EppToolTipResponseModel responseModel = getItemsService.GetEppToolTipItem();
+
+                            if (responseModel.Status.Equals("Success"))
+                            {
+                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                            }
+                        }
+
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
     }
 }

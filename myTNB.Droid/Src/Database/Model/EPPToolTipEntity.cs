@@ -26,6 +26,11 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Image")]
         public string Image { set; get; }
 
+        [Column("ImageBase64")]
+        public string ImageBase64 { set; get; }
+
+
+
 
 
 
@@ -68,7 +73,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.Title = obj.Title;
                     item.PopUpTitle = obj.PopUpTitle;
                     item.PopUpBody = obj.PopUpBody;
-
+                    item.ImageBase64 = obj.ImageBase64;
                     InsertItem(item);
                 }
             }

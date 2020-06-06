@@ -1366,7 +1366,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
             var clickableSpanEPP = new EPPClickSpan()
             {
-              textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
+              textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.blue)),
               typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
                 };
             clickableSpanEPP.Click += v =>
@@ -1399,9 +1399,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
            .SetTitle(modelList[0].PopUpTitle)
             .SetClickableSpan(clickableSpanEPP)
            .SetMessage(modelList[0].PopUpBody)
-           .SetCTALabel(dialogBtnLabel)
+           .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
            .SetCTAaction(() => { this.SetIsClicked(false); })
-           .SetSecondaryCTALabel(dialogBtnLabel2)
+           .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
            .SetSecondaryCTAaction(() => ShowBillPDF())
            .Build();
             eppTooltip.Show();
@@ -6796,6 +6796,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                     else
                                     {
+                                        if (accountDueAmount.ShowEppToolTip == true)
+                                        {
+                                            ShowEpp();
+                                        }
+                                        else
+                                        {
+                                            HideEpp();
+                                        }
                                         EnablePayButton();
                                     }
 

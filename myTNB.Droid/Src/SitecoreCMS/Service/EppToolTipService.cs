@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Android.Graphics;
+using Android.Util;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Utils;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 
@@ -62,14 +66,20 @@ namespace myTNB.SitecoreCMS.Services
                         continue;
                     }
 
+                    Bitmap imageCache = null;
+                    String stringCache = null;
+
+                    stringCache = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.EppToolTip.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20");
+                    imageCache = ImageUtils.GetImageBitmapFromUrl(stringCache);
+
                     list.Add(new EppToolTipModel
                     {   ID = item.Id,
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.EppToolTip.Title),
                         PopUpTitle = item.GetValueFromField(Constants.Sitecore.Fields.EppToolTip.PopUpTitle),
                         PopUpBody = item.GetValueFromField(Constants.Sitecore.Fields.EppToolTip.PopUpBody),
-                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.EppToolTip.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20"),
-                       
-                    });
+                        Image = stringCache,
+                        ImageBase64 = BitmapToBase64(imageCache)
+                });
                 }
             }
             catch (Exception e)
@@ -77,6 +87,25 @@ namespace myTNB.SitecoreCMS.Services
                 Debug.WriteLine("Exception in EppToolTipService/ParseToChildrenItems: " + e.Message);
             }
             return list;
+        }
+
+        public string BitmapToBase64(Bitmap bitmap)
+        {
+            string B64Output = "";
+            try
+            {
+                MemoryStream byteArrayOutputStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.ToArray();
+                B64Output = Base64.EncodeToString(byteArray, Base64Flags.Default);
+            }
+            catch (Exception e)
+            {
+                B64Output = "";
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return B64Output;
         }
 
         private async Task<EppToolTipTimeStamp> ParseToTimestamp(ScItemsResponse itemsResponse)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -18,6 +19,7 @@ namespace myTNB_Android.Src.Billing.MVP
             void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
             void OnUpdatePendingPayment(bool mIsPendingPayament);
             void ShowViewBillError(string title, string message);
+            Task OnGetEPPTooltipContentDetail();
         }
 
         public interface IPresenter
@@ -26,6 +28,8 @@ namespace myTNB_Android.Src.Billing.MVP
             List<NewAppModel> OnGeneraNewAppTutorialList();
             void ShowBillDetails(AccountData selectedAccount, bool isCheckPendingNeeded);
             List<string> ExtractUrls(string text);
+           
+
         }
     }
 }
