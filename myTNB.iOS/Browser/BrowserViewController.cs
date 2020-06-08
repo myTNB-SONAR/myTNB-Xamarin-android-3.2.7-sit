@@ -41,7 +41,7 @@ namespace myTNB
             _webView = new WKWebView(new CGRect(0, 0, ViewWidth, ViewHeight), new WKWebViewConfiguration());
             if (IsDelegateNeeded)
             {
-                _webView.NavigationDelegate = new WebViewDelegate(View);
+                _webView.NavigationDelegate = new WebWKNavigationDelegate(View);
             }
             _webView.LoadRequest(new NSUrlRequest(new NSUrl(URL)));
             View.AddSubview(_webView);

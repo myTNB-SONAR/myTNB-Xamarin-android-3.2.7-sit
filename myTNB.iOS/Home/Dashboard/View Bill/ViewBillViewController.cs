@@ -148,7 +148,7 @@ namespace myTNB
         {
             _webViewBill = new WKWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height), new WKWebViewConfiguration())
             {
-                NavigationDelegate = new WebViewDelegate(View)
+                NavigationDelegate = new WebWKNavigationDelegate(View)
             };
             if (!string.IsNullOrEmpty(_url))
             {

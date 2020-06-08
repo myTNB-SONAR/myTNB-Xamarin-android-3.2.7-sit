@@ -76,7 +76,7 @@ namespace myTNB
 
                 _webView = new WKWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height), configuration);
                 _webView.BackgroundColor = UIColor.White;
-                _webView.NavigationDelegate = new WebViewDelegate(View, this);
+                _webView.NavigationDelegate = new WebWKNavigationDelegate(View, this);
                 _webView.UIDelegate = new WebWKUIDelegate(View, this);
 
                 try

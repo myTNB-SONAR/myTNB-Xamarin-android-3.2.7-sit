@@ -1,25 +1,24 @@
 using System;
 using System.Text.RegularExpressions;
-using CoreGraphics;
 using Foundation;
 using UIKit;
 using WebKit;
 
 namespace myTNB
 {
-    public class WebViewDelegate : WKNavigationDelegate
+    public class WebWKNavigationDelegate : WKNavigationDelegate
     {
         LoadingOverlay loadingOverlay;
         UIView View;
-        public WebViewDelegate(UIView view) => View = view;
+        public WebWKNavigationDelegate(UIView view) => View = view;
         UIViewController Controller;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:myTNB.WebViewDelegate"/> class.
+        /// Initializes a new instance of the <see cref="T:myTNB.WebWKNavigationDelegate"/> class.
         /// </summary>
         /// <param name="view">View.</param>
         /// <param name="controller">Controller.</param>
-        public WebViewDelegate(UIView view, UIViewController controller)
+        public WebWKNavigationDelegate(UIView view, UIViewController controller)
         {
             View = view;
             Controller = controller;
