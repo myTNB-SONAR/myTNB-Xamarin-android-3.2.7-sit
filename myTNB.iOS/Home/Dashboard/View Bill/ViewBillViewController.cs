@@ -11,13 +11,15 @@ using System.Drawing;
 using System.Diagnostics;
 using myTNB.Home.Dashboard.ViewBill;
 
+using WebKit;
+
 namespace myTNB
 {
     public partial class ViewBillViewController : CustomUIViewController
     {
         public ViewBillViewController(IntPtr handle) : base(handle) { }
 
-        private UIWebView _webViewBill;
+        private WKWebView _webViewBill;
         private BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
         private string _url, _pdfFilePath, _titleSuffix, _formattedDate;
 
@@ -145,15 +147,15 @@ namespace myTNB
 
         internal void SetSubviews()
         {
-            _webViewBill = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            _webViewBill = new WKWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height), new WKWebViewConfiguration())
             {
-                Delegate = new WebViewDelegate(View)
+                NavigationDelegate = new WebViewDelegate(View)
             };
             if (!string.IsNullOrEmpty(_url))
             {
                 _webViewBill.LoadRequest(new NSUrlRequest(new NSUrl(_url)));
                 _webViewBill.ScrollView.Delegate = new ScrollViewDelegate(_webViewBill.ScrollView);
-                _webViewBill.ScalesPageToFit = true;
+                _webViewBill.ScalesLargeContentImage = true;
             }
             View.AddSubview(_webViewBill);
         }

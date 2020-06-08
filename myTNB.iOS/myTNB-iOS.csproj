@@ -83,7 +83,7 @@
     <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;MASTER;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Distribution: Tenaga Nasional Berhad (7M28WAFSL6)</CodesignKey>
+    <CodesignKey>Apple Development: Muhammad Syahmi Shafawi (FKJDD6F5DZ)</CodesignKey>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -93,6 +93,7 @@
     <MtouchVerbosity>2</MtouchVerbosity>
     <OnDemandResourcesInitialInstallTags></OnDemandResourcesInitialInstallTags>
     <OnDemandResourcesPrefetchOrder></OnDemandResourcesPrefetchOrder>
+    <CodesignProvision>TNB_ACN_Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|iPhoneSimulator' ">
     <Optimize>true</Optimize>
@@ -2774,6 +2775,7 @@
     <Compile Include="Sitecore CMS\Model\EppTooltip\EppInfoTooltipModel.cs" />
     <Compile Include="Sitecore CMS\Service\EppInfoTooltipService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\EppInfoTooltipEntity.cs" />
+    <Compile Include="Helpers\WebViewWKUIDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
