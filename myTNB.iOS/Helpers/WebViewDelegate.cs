@@ -3,10 +3,11 @@ using System.Text.RegularExpressions;
 using CoreGraphics;
 using Foundation;
 using UIKit;
+using WebKit;
 
 namespace myTNB
 {
-    public class WebViewDelegate : UIWebViewDelegate
+    public class WebViewDelegate : WKNavigationDelegate
     {
         LoadingOverlay loadingOverlay;
         UIView View;
@@ -24,10 +25,9 @@ namespace myTNB
             Controller = controller;
         }
 
-        public override bool ShouldStartLoad(UIWebView webView
-                                             , NSUrlRequest request
-                                             , UIWebViewNavigationType navigationType)
+        public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
         {
+            var request = navigationAction.Request.Url;
             if (request != null)
             {
                 if (request.ToString().IsValid())
@@ -36,7 +36,7 @@ namespace myTNB
                     {
                         string rateString = default(string);
                         string transId = default(string);
-                        var url = request.Url;
+                        var url = navigationAction.Request.Url;
                         var paramsStr = url?.Host;
 
                         var parameters = paramsStr?.Split('&');
@@ -140,14 +140,18 @@ namespace myTNB
                         }
                     }
                 }
+                webView.EvaluateJavaScript("return ValidateForm(document.frmPayment);", completionHandler: null);
+                decisionHandler(WKNavigationActionPolicy.Allow);
+            }
+            else
+            {
+                decisionHandler(WKNavigationActionPolicy.Cancel);
             }
 
-            return true;
         }
 
-        public override void LoadStarted(UIWebView webView)
+        public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
         {
-
             if (loadingOverlay == null)
             {
                 loadingOverlay = new LoadingOverlay(View.Bounds);
@@ -165,11 +169,13 @@ namespace myTNB
                 }
                 View.AddSubview(loadingOverlay);
             }
+
         }
 
-        public override void LoadingFinished(UIWebView webView)
+
+        public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
         {
-            var webUrl = webView?.Request?.Url ?? default(NSUrl);
+            var webUrl = webView?.Url ?? default(NSUrl);
 
             if (webUrl != null)
             {
@@ -190,4 +196,5 @@ namespace myTNB
             loadingOverlay?.Hide();
         }
     }
+        
 }
