@@ -76,7 +76,6 @@
   <string name="login_validation_email_empty_error">Email field is required.</string>
   <string name="login_validation_password_empty_error">Password field is required.</string>
   <string name="login_validation_email_invalid_error">Invalid email format.</string>
-  <string name="login_validation_password_empty_error">Password field is required.</string>
   <string name="login_validation_email_password_invalid_error">Invalid email or password.</string>
   <string name="login_validation_snackbar_btn_close">Close</string>
 
@@ -158,8 +157,6 @@
   <!-- End of Verification Alert Dialog-->
 
   <!-- Registration Alert Dialog-->
-  <string name="registration_alert_dialog_title">Registering User</string>
-  <string name="registration_alert_dialog_message">Registering User...</string>
   <string name="registration_cancelled_exception_error">Something went wrong, Please try again.</string>
   <string name="registration_api_exception_error">Something went wrong, Please try again.</string>
   <string name="registration_unknown_exception_error">Something went wrong, Please try again.</string>
@@ -192,8 +189,6 @@
   <!-- End of Forget Password-->
 
   <!-- Forget Password messages-->
-  <string name="forget_password_empty_email_error">Email field is required.</string>
-  <string name="forget_password_invalid_email_error">Invalid email format.</string>
   <string name="forget_password_empty_code_error">Verification code is empty.</string>
   <string name="forget_password_btn_close">Close</string>
   <!-- End of Forget Password messages-->

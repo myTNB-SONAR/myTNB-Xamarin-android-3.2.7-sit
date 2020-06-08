@@ -599,5 +599,43 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public EppToolTipResponseModel GetEppToolTipItem()
+        {
+            EppToolTipResponseModel respModel = new EppToolTipResponseModel();
+            try
+            {
+                EppToolTipService service = new EppToolTipService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<EppToolTipResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+       
+        public EppToolTipTimeStampResponseModel GetEppToolTipTimeStampItem()
+        {
+            EppToolTipTimeStampResponseModel respModel = new EppToolTipTimeStampResponseModel();
+            try
+            {
+                EppToolTipService service = new EppToolTipService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<EppToolTipTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
     }
 }

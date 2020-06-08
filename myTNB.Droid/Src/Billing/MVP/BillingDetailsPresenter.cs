@@ -19,6 +19,7 @@ using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.Base;
 using System.Net;
 using myTNB_Android.Src.Base.Models;
+using Java.Util.Regex;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -256,6 +257,37 @@ namespace myTNB_Android.Src.Billing.MVP
             });
 
             return newList;
+        }
+
+        public List<string> ExtractUrls(string text)
+        {
+            List<string> containedUrls = new List<string>();
+            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            Pattern pattern = Pattern.Compile(urlRegex);
+            Matcher urlMatcher = pattern.Matcher(text);
+
+            try
+            {
+                while (urlMatcher.Find())
+                {
+                    string urlStr = urlMatcher.Group();
+                    if (urlStr.StartsWith("(") && urlStr.EndsWith(")"))
+                    {
+                        urlStr = urlStr.Substring(1, urlStr.Length - 1);
+                    }
+
+                    if (!containedUrls.Contains(urlStr))
+                    {
+                        containedUrls.Add(urlStr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return containedUrls;
         }
     }
 }

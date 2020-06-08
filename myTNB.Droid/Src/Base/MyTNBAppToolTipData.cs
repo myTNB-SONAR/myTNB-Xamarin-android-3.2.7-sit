@@ -12,6 +12,9 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.myTNBMenu.Models.SMRActivityInfoResponse;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
+using myTNB_Android.Src.myTNBMenu.Models;
+using Android.Graphics;
+using Android.Util;
 
 namespace myTNB_Android.Src.Base
 {
@@ -21,6 +24,7 @@ namespace myTNB_Android.Src.Base
         static SMRActivityInfo sMRActivityInfo;
         private List<SMREligibiltyPopUpDetails> mSMREligibilityPopupDetailList = new List<SMREligibiltyPopUpDetails>();
         private List<BillMandatoryChargesTooltipModel> mBillMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
+        private List<EppToolTipModel> mEppToolTipModelList = new List<EppToolTipModel>();
         private static MyTNBAppToolTipData Instance;
 
         private MyTNBAppToolTipData(){}
@@ -229,6 +233,49 @@ namespace myTNB_Android.Src.Base
                 tooltipModelDataList.Add(tooltipModel);
             }
             return tooltipModelDataList;
+        }
+
+        public static  List<EPPTooltipResponse> GetEppToolTipData()
+        {
+            List<EPPTooltipResponse> tooltipModelDataList = new List<EPPTooltipResponse>();
+            EPPTooltipResponse tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
+            //syahmi modified
+            if (jsonData != null && jsonData!="null")
+            {
+                List<EPPToolTipEntity> EPPTooltipDataList = JsonConvert.DeserializeObject<List<EPPToolTipEntity>>(jsonData);
+                
+                EPPTooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new EPPTooltipResponse();
+                    tooltipModel.Title = data.Title;
+                    tooltipModel.PopUpTitle = data.PopUpTitle;
+                    tooltipModel.PopUpBody = data.PopUpBody;
+                    tooltipModel.ImageBitmap = Base64ToBitmap(data.ImageBase64);
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+    
+
+    
+            return tooltipModelDataList;
+        }
+
+        public static Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
         }
 
         public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData()

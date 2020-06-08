@@ -13,6 +13,7 @@
                 public const string PreLoginPromo = "{3C1FD061-FBD7-4987-AF31-72519F3DD6A1}";
                 public const string Locations = "{1F49F2D1-DF07-4AF0-8553-6204D23D552D}";
                 public const string FullRTEPages = "{E57E72BF-12E7-44CF-8287-A0D931EBE237}";
+                public const string EppToolTip = "{8379FC18-1594-41FD-934A-EB45EDD17541}";
             }
 
             public struct Fields
@@ -162,6 +163,14 @@
                 {
                     public const string LanguageFile = "Language File";
                 }
+
+                public struct EppToolTip
+                {
+                    public const string Title = "Tool Tip Title";
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+                }
             }
 
             public struct ItemID
@@ -173,6 +182,7 @@
                 public const string PreLoginPromo = "{8F33E504-01AC-45BC-97A2-D46795F9AEBC}";
                 public const string FullRTEPages = "{41C06271-8712-4E29-BFC4-50FC9CA24132}";
                 public const string FAQs = "{28587E38-0753-4B6B-8EA8-024022033846}";
+                public const string EPPTips = "{9CC7DD33-7853-427F-BF0C-4CEB0E16F925}";
             }
 
             public struct ItemPath
@@ -206,6 +216,7 @@
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
+                public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
             }
         }
     }

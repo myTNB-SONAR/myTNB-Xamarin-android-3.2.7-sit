@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -12,20 +12,26 @@ using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
@@ -108,6 +114,12 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.btnBillingDetailefresh)]
         Button btnBillingDetailefresh;
+
+        [BindView(Resource.Id.infoLabelContainerDetailEPP)]
+        LinearLayout infoLabelContainerDetailEPP;
+
+        [BindView(Resource.Id.infoLabelDetailEPP)]
+        TextView infoLabelDetailEPP;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -194,6 +206,9 @@ namespace myTNB_Android.Src.Billing.MVP
             btnPayBill.Text = GetLabelByLanguage("pay");
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
+
+            OnGetEPPTooltipContentDetail();
+
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
                 selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
@@ -236,6 +251,20 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Invisible;
                 this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
             }
+        }
+
+         private void EnableEppTooltip(bool isTooltipShown)
+        {
+            if (isTooltipShown == true)
+            {
+                infoLabelDetailEPP.Text = Utility.GetLocalizedCommonLabel("eppToolTipTitle");
+                infoLabelContainerDetailEPP.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                infoLabelContainerDetailEPP.Visibility = ViewStates.Gone;
+            }
+            
         }
 
         private void EnablePayBillButtons()
@@ -331,7 +360,10 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void PopulateCharges()
         {
-            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)
+
+            EnableEppTooltip(selectedAccountChargeModel.ShowEppToolTip);
+
+            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f && selectedAccountChargeModel.ShowEppToolTip == false )
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
@@ -439,6 +471,12 @@ namespace myTNB_Android.Src.Billing.MVP
             ShowAccountHasMinCharge();
         }
 
+        [OnClick(Resource.Id.infoLabelContainerDetailEPP)]
+        void OnTapEPPTooltip(object sender, EventArgs eventArgs)
+        {
+            ShowEPPDetailsTooltip();
+        }
+
         [OnClick(Resource.Id.btnBillingDetailefresh)]
         void OnTapBillingDetailRefresh(object sender, EventArgs eventArgs)
         {
@@ -479,6 +517,84 @@ namespace myTNB_Android.Src.Billing.MVP
                 .SetMessage(mandatoryTooltipModel.Description)
                 .SetCTALabel(mandatoryTooltipModel.CTA)
                 .Build().Show();
+            }
+        }
+
+
+        public void ShowEPPDetailsTooltip()
+        {
+ 
+
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
+
+
+
+            var clickableSpan = new ClickSpan() {
+                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
+                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+            };
+            clickableSpan.Click += v =>
+            {
+
+                if (modelList[0].PopUpBody != null)
+                {
+                    List<string> extractedUrls = this.billingDetailsPresenter.ExtractUrls(modelList[0].PopUpBody);
+                    if (extractedUrls.Count > 0)
+                    {
+                        if (!extractedUrls[0].Contains("http"))
+                        {
+                            extractedUrls[0] = "http://" + extractedUrls[0];
+                        }
+
+                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                        StartActivity(webIntent);
+                    }
+                }
+            };
+
+
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+               .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+               .SetTitle(modelList[0].PopUpTitle)
+               .SetClickableSpan(clickableSpan)
+               .SetMessage(modelList[0].PopUpBody)
+               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+               .SetCTAaction(() => { this.SetIsClicked(false); })
+               
+               .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+               .SetSecondaryCTAaction(() => ShowBillPDF())
+               .Build();
+               eppTooltip.Show();
+
+
+
+
+        
+            
+        }
+
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
             }
         }
 
@@ -609,6 +725,40 @@ namespace myTNB_Android.Src.Billing.MVP
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .Build().Show();
             this.SetIsClicked(false);
+        }
+
+        public Task OnGetEPPTooltipContentDetail()
+
+        {
+
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+
+                    EppToolTipTimeStampResponseModel timestampModel = getItemsService.GetEppToolTipTimeStampItem();
+                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
+                    {
+                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, timestampModel.Data[0].Timestamp))
+                        {
+                            EppToolTipResponseModel responseModel = getItemsService.GetEppToolTipItem();
+
+                            if (responseModel.Status.Equals("Success"))
+                            {
+                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                            }
+                        }
+
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
     }
 }
