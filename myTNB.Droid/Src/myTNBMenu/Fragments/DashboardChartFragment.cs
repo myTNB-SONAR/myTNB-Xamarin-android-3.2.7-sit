@@ -1366,7 +1366,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
             var clickableSpanEPP = new EPPClickSpan()
             {
-              textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.blue)),
+              textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)),
               typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
                 };
             clickableSpanEPP.Click += v =>

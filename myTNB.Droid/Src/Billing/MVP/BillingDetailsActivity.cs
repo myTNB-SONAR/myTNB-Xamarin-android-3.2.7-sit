@@ -530,7 +530,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
 
             var clickableSpan = new ClickSpan() {
-                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.blue)),
+                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
                 typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
             };
             clickableSpan.Click += v =>
