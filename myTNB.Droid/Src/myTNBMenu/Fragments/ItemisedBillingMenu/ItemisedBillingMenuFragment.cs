@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -156,6 +157,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
         SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
+
+        private DecimalFormat mDecimalFormat = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         IMenuItem billFilterMenuItem;
 
@@ -534,6 +537,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         itemisedBillingGroupComponent.SetBackground();
                     }
 
+                    System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+
                     for (int j = 0; j < model.BillingHistoryDataList.Count; j++)
                     {
                         AccountBillPayHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
@@ -544,7 +549,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                             content.SetDateHistoryType(data.DateAndHistoryType);
                             content.SetPaidVia(data.PaidVia);
-                            content.SetAmount("RM " + Convert.ToDecimal(data.Amount).ToString("#,##0.00"), data.IsPaymentPending);
+                            content.SetAmount("RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult)), data.IsPaymentPending);
                             if (data.DetailedInfoNumber != "" && !data.IsPaymentPending)
                             {
                                 content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
@@ -567,7 +572,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                                 content.SetDateHistoryType(data.DateAndHistoryType);
                                 content.SetPaidVia(data.PaidVia);
-                                content.SetAmount("RM " + Convert.ToDecimal(data.Amount).ToString("#,##0.00"), data.IsPaymentPending);
+                                content.SetAmount("RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult)), data.IsPaymentPending);
                                 if (data.DetailedInfoNumber != "" && !data.IsPaymentPending)
                                 {
                                     content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
@@ -779,7 +784,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             AccountChargeModel accountChargeModel = accountChargesModelList[0];
             int imageResource = Resource.Drawable.bill_no_outstanding_banner;
 
-            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("#,##0.00");
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
             if (accountChargeModel.IsCleared)
             {
@@ -819,7 +825,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
                     itemisedBillingInfoDate.Visibility = ViewStates.Gone;
                 }
-                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
+                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00", currCult);
             }
             else if (accountChargeModel.IsNeedPay)
             {
@@ -843,7 +849,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
                 }
-                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
+                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00", currCult);
             }
             EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);

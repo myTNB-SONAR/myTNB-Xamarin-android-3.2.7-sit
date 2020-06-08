@@ -50,7 +50,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             {
                 this.mView.ShowPaymentRequestDialog();
                 PaymentTransactionIdRequest paymentTransactionIdRequest = new PaymentTransactionIdRequest(custName, custPhone, platform, registeredCardId,paymentMode, totalAmount, paymentItems);
-                var dump = JsonConvert.SerializeObject(paymentTransactionIdRequest);
                 PaymentTransactionIdResponse response = await ServiceApiImpl.Instance.GetPaymentTransactionId(paymentTransactionIdRequest);
                 this.mView.SetInitiatePaymentResponse(response);
                 this.mView.HidePaymentRequestDialog();

@@ -19,6 +19,7 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
@@ -102,7 +103,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 {
                     try
                     {
-                        item.amount = double.Parse(vh.Amount.Text);
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                        item.amount = double.Parse(vh.Amount.Text, currCult);
                     }
                     catch (Exception e)
                     {
@@ -149,7 +151,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             {
                 if (!string.IsNullOrEmpty(vh.Amount.Text))
                 {
-                    double newAmount = double.Parse(vh.Amount.Text);
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    double newAmount = double.Parse(vh.Amount.Text, currCult);
                     if (newAmount < 1)
                     {
                         vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");

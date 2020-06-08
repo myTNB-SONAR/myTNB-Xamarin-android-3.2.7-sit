@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using myTNB_Android.Src.Utils.Custom;
+using System.Globalization;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -141,6 +142,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         return accountCharge.ContractAccount == item.accountNumber;
                     });
 
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                     if (chargeModel != null)
                     {
                         if (chargeModel.MandatoryCharges.TotalAmount > 0f)
@@ -148,14 +150,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             PaymentItemAccountPayment paymentItemAccountPayment = new PaymentItemAccountPayment();
                             paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
                             paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
-                            paymentItemAccountPayment.AccountAmount = item.amount.ToString();
+                            paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
 
                             List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                             chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
                             {
                                 AccountPayment accountPayment = new AccountPayment();
                                 accountPayment.PaymentType = charge.Key;
-                                accountPayment.PaymentAmount = charge.Amount.ToString();
+                                accountPayment.PaymentAmount = charge.Amount.ToString(currCult);
                                 accountPaymentList.Add(accountPayment);
                             });
                             paymentItemAccountPayment.AccountPayments = accountPaymentList;
@@ -166,7 +168,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             PaymentItem payItem = new PaymentItem();
                             payItem.AccountOwnerName = customerBillingAccount.OwnerName;
                             payItem.AccountNo = chargeModel.ContractAccount;
-                            payItem.AccountAmount = item.amount.ToString();
+                            payItem.AccountAmount = item.amount.ToString(currCult);
                             selectedPaymentItemList.Add(payItem);
                         }
                     }
@@ -277,7 +279,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 //}
                 if (total != null)
                 {
-                    txtTotalAmount.Text = decimalFormat.Format(double.Parse(total)).Replace(",", "");
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    txtTotalAmount.Text = decimalFormat.Format(double.Parse(total, currCult)).Replace(",", "");
                     txtTotalAmount.Enabled = false;
                     txtTotalAmount.ShowSoftInputOnFocus = false;
                 }
@@ -475,10 +478,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 if (IsValidPayableAmount())
                 {
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                     string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                     string custName = selectedPaymentItemList.Count > 1 ? UserEntity.GetActive().DisplayName : selectedPaymentItemList[0].AccountOwnerName;
                     string accNum = selectedAccount.AccountNum;
-                    double payableAmt = Double.Parse(txtTotalAmount.Text);
+                    double payableAmt = double.Parse(txtTotalAmount.Text, currCult);
                     string payAm = txtTotalAmount.Text;
                     string custEmail = UserEntity.GetActive().Email;
                     string custPhone = string.IsNullOrEmpty(UserEntity.GetActive().MobileNo) ? "" : UserEntity.GetActive().MobileNo;
@@ -729,7 +733,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
                 else
                 {
-                    double payableAmt = Double.Parse(txtTotalAmount.Text);
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    double payableAmt = double.Parse(txtTotalAmount.Text, currCult);
                     if (payableAmt < 1)
                     {
                         isValid = false;

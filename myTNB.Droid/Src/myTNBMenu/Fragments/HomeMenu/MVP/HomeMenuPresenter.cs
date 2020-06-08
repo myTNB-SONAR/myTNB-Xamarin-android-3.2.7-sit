@@ -36,6 +36,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
 using Android.OS;
+using System.Globalization;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2523,15 +2524,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(userNotification.AccountNum);
                                     if (selected.billingDetails != null)
                                     {
+                                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                                         SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
                                         double amtDue = 0.00;
                                         if (cached.AccType == "2")
                                         {
-                                            amtDue = double.Parse(cached.AmountDue) * -1;
+                                            amtDue = double.Parse(cached.AmountDue, currCult) * -1;
                                         }
                                         else
                                         {
-                                            amtDue = double.Parse(cached.AmountDue);
+                                            amtDue = double.Parse(cached.AmountDue, currCult);
                                         }
 
                                         if (amtDue <= 0.00)
@@ -2739,14 +2741,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
                     for (int i = 0; i < summaryDetails.Count; i++)
                     {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                         double amtDue = 0.00;
                         if (summaryDetails[i].AccType == "2")
                         {
-                            amtDue = double.Parse(summaryDetails[i].AmountDue) * -1;
+                            amtDue = double.Parse(summaryDetails[i].AmountDue, currCult) * -1;
                         }
                         else
                         {
-                            amtDue = double.Parse(summaryDetails[i].AmountDue);
+                            amtDue = double.Parse(summaryDetails[i].AmountDue, currCult);
                         }
 
                         if (amtDue <= 0.00)

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -377,7 +378,8 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountMinChargeLabelContainer.Visibility = ViewStates.Gone;
             }
 
-            accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00");
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
                 accountChargeLabel.Text = GetLabelByLanguage("paidExtra");
@@ -388,8 +390,8 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountChargeLabel.Text = GetLabelByLanguage("outstandingCharges");// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
-            accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00");
-            accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00");
+            accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);
+            accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
@@ -406,7 +408,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountDate.Visibility = ViewStates.Gone;
 
                 accountPayAmountLabel.Text = GetLabelByLanguage("paidExtra");
-                accountPayAmountValue.Text = (Math.Abs(selectedAccountChargeModel.AmountDue)).ToString("#,##0.00");
+                accountPayAmountValue.Text = (Math.Abs(selectedAccountChargeModel.AmountDue)).ToString("#,##0.00", currCult);
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
             }
