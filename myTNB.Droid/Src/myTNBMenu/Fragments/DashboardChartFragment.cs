@@ -5157,6 +5157,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             string faqid = message.Substring(startIndex, lengthOfId);
                             if (!string.IsNullOrEmpty(faqid))
                             {
+                                this.SetIsClicked(true);
                                 Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
                                 faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
                                 Activity.StartActivity(faqIntent);
@@ -5194,6 +5195,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         this.mPresenter.UpdateWhatsNewRead(item.ID, true);
                                     }
 
+                                    this.SetIsClicked(true);
                                     Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
                                     activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
                                     activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
@@ -5212,6 +5214,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 extractedUrls[0] = "http://" + extractedUrls[0];
                             }
 
+                            this.SetIsClicked(true);
                             Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
                             webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
                             webIntent.PutExtra(Constants.IN_APP_TITLE, "");
