@@ -104,5 +104,7 @@ to find Kedai Tenaga nearby.</string>
 	<string>myTNB</string>
 	<key>CFBundleVersion</key>
 	<string>2</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>
