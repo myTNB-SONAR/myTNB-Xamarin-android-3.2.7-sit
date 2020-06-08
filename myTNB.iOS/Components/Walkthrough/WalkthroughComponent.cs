@@ -292,7 +292,7 @@ namespace myTNB
                 _toggleBar.SetTitleTextAttributes(new UITextAttributes
                 {
                     Font = TNBFont.MuseoSans_12_300,
-                    TextColor = MyTNBColor.WaterBlue
+                    TextColor = UIColor.White
                 }, UIControlState.Selected);
                 _toggleBar.Layer.CornerRadius = toggleHeight / 2;
                 _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
