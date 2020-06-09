@@ -209,7 +209,7 @@ namespace myTNB_Android.Src.FAQ.Activity
                 txtFaq20Title);
             // 15 , 18
 
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
             {
                 txtFaq13Content.TextFormatted = Html.FromHtml(GetString(Resource.String.faq_13_content), FromHtmlOptions.ModeLegacy);
                 txtFaq16Content.TextFormatted = Html.FromHtml(GetString(Resource.String.faq_16_content), FromHtmlOptions.ModeLegacy);

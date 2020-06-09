@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
-                    txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content), Html.FromHtmlModeLegacy);
+                    txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {

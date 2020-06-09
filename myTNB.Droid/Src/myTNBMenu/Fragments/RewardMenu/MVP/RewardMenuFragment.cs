@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         private void SettingMargin(ViewGroup.MarginLayoutParams layoutParams, int start, int end)
         {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.JellyBeanMr1)
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBeanMr1)
             {
                 layoutParams.MarginStart = start;
                 layoutParams.MarginEnd = end;

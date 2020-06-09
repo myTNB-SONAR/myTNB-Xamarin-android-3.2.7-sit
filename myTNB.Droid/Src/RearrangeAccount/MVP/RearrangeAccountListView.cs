@@ -112,7 +112,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
         void HandleItemLongClick(object sender, ItemLongClickEventArgs e)
         {
             Vibrator vibrator = (Vibrator)mContext.GetSystemService(Context.VibratorService);
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
             {
                 vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
