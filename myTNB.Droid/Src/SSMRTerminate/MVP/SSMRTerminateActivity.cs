@@ -190,7 +190,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             btnDisconnectionSubmit.Text = GetLabelCommonByLanguage("submit");
             txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
 
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
                 txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribe"), FromHtmlOptions.ModeLegacy);
             }
@@ -263,7 +263,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 disconnectionTtile.Text = GetLabelByLanguage("applyingFor");
                 terminationReasonTitle.Visibility = ViewStates.Gone;
                 reasonDetailContainer.Visibility = ViewStates.Gone;
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribe"), FromHtmlOptions.ModeLegacy);
                 }
@@ -282,7 +282,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 contactDetailTtile.Visibility = ViewStates.Gone;
                 contactDetailContainer.Visibility = ViewStates.Gone;
                 this.mPresenter.InitiateTerminationReasonsList();
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"), FromHtmlOptions.ModeLegacy);
                 }

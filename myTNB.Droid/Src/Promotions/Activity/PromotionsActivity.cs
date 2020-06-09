@@ -89,7 +89,7 @@ namespace myTNB_Android.Src.Promotions.Activity
                 {
                     textPromotionTitle.Text = model.Title;
                     textPromotionDes.Text = model.SubText;
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         textCampaign.TextFormatted = Html.FromHtml(model.HeaderContent, FromHtmlOptions.ModeLegacy);
                         textPrizes.TextFormatted = Html.FromHtml(model.BodyContent, FromHtmlOptions.ModeLegacy);

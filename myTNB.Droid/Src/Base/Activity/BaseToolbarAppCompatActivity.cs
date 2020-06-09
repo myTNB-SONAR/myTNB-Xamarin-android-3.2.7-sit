@@ -158,7 +158,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         public virtual void SetStatusBarGradientBackground()
         {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
                 Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
@@ -169,7 +169,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         public virtual void SetStatusBarBackground(int resId)
         {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
                 Drawable drawable = Resources.GetDrawable(resId);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);

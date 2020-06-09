@@ -1068,138 +1068,106 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
-                //if (isBCRMDown)
-                //{
-                //    ShowAmountDueNotAvailable();
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                dashboardAccountName.Visibility = ViewStates.Gone;
+                dashboardAccountName.Text = selectedAccount.AccountNickName;
+                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                bool enableDropDown = accountList.Count > 0 ? true : false;
+                if (enableDropDown)
+                {
+                    Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
+                    Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
+                    transparentDropDown.Alpha = 0;
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                }
+                else
+                {
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
 
-                //    HideSSMRDashboardView();
-                //    energyTipsView.Visibility = ViewStates.Gone;
-                //    dashboardAccountName.Visibility = ViewStates.Gone;
+                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
+                LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
+                tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
 
-                //    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                //    {
-                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                //    }
-                //    else
-                //    {
-                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                //    }
+                energyTipsView.Visibility = ViewStates.Gone;
+                energyTipsShimmerView.Visibility = ViewStates.Gone;
 
-                //    this.userActionsListener?.Start();
+                LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
+                energyTipsList.NestedScrollingEnabled = true;
 
-                //    //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                //    //    bcrmEntity.DowntimeTextMessage,
-                //    //    Snackbar.LengthLong);
-                //    //View v = downtimeSnackBar.View;
-                //    //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                //    //tv.SetMaxLines(5);
-                //    //downtimeSnackBar.Show();
+                LinearSnapHelper snapHelper = new LinearSnapHelper();
+                snapHelper.AttachToRecyclerView(energyTipsList);
 
+                LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
+                energyTipsShimmerList.NestedScrollingEnabled = true;
 
-                //}
-                //else
-                //{
-                    ((DashboardHomeActivity)Activity).HideAccountName();
-                    dashboardAccountName.Visibility = ViewStates.Gone;
-                    dashboardAccountName.Text = selectedAccount.AccountNickName;
-                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                    bool enableDropDown = accountList.Count > 0 ? true : false;
-                    if (enableDropDown)
+                LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
+                snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
+
+                DisablePayButton();
+                DisableViewBillButton();
+
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                if (isUsageLoadedNeeded)
+                {
+                    rmKwhSelection.Enabled = false;
+                    tarifToggle.Enabled = false;
+                    btnToggleDay.Enabled = false;
+                    btnToggleMonth.Enabled = false;
+                    txtRange.Visibility = ViewStates.Gone;
+                    StartRangeShimmer();
+                    mChart.Visibility = ViewStates.Gone;
+                    StartGraphShimmer();
+                }
+                else
+                {
+                    rmKwhSelection.Enabled = true;
+                    rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
+                    tarifToggle.Enabled = true;
+                    btnToggleDay.Enabled = true;
+                    btnToggleMonth.Enabled = true;
+                }
+
+                re_img.Visibility = ViewStates.Gone;
+                rePayableLayout.Visibility = ViewStates.Gone;
+                totalPayableLayout.Visibility = ViewStates.Gone;
+                noPayableLayout.Visibility = ViewStates.Gone;
+
+                StartAmountDueShimmer();
+
+                StartSMStatisticShimmer();
+
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
+                if (selectedAccount != null)
+                {
+                    if (!selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
-                        Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
-                        transparentDropDown.Alpha = 0;
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
-                    }
-                    else
-                    {
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    }
-
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-                    LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
-                    tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
-
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    energyTipsShimmerView.Visibility = ViewStates.Gone;
-
-                    LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
-                    energyTipsList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapHelper = new LinearSnapHelper();
-                    snapHelper.AttachToRecyclerView(energyTipsList);
-
-                    LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
-                    energyTipsShimmerList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
-                    snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
-
-                    DisablePayButton();
-                    DisableViewBillButton();
-
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    if (isUsageLoadedNeeded)
-                    {
-                        rmKwhSelection.Enabled = false;
-                        tarifToggle.Enabled = false;
-                        btnToggleDay.Enabled = false;
-                        btnToggleMonth.Enabled = false;
-                        txtRange.Visibility = ViewStates.Gone;
-                        StartRangeShimmer();
-                        mChart.Visibility = ViewStates.Gone;
-                        StartGraphShimmer();
-                    }
-                    else
-                    {
-                        rmKwhSelection.Enabled = true;
-                        rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
-                        imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
-                        tarifToggle.Enabled = true;
-                        btnToggleDay.Enabled = true;
-                        btnToggleMonth.Enabled = true;
-                    }
-
-                    re_img.Visibility = ViewStates.Gone;
-                    rePayableLayout.Visibility = ViewStates.Gone;
-                    totalPayableLayout.Visibility = ViewStates.Gone;
-                    noPayableLayout.Visibility = ViewStates.Gone;
-
-                    StartAmountDueShimmer();
-
-                    StartSMStatisticShimmer();
-
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
-                    if (selectedAccount != null)
-                    {
-                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        bool isGetEnergyTipsDisabled = false;
+                        if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
                         {
-                            bool isGetEnergyTipsDisabled = false;
-                            if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
-                            {
-                                isGetEnergyTipsDisabled = true;
-                            }
+                            isGetEnergyTipsDisabled = true;
+                        }
 
-                            if (!isGetEnergyTipsDisabled)
-                            {
-                                OnGetEnergyTipsItems();
-                            }
+                        if (!isGetEnergyTipsDisabled)
+                        {
+                            OnGetEnergyTipsItems();
                         }
                     }
+                }
 
-                    this.userActionsListener?.Start();
+                this.userActionsListener?.Start();
 
-                    if (!string.IsNullOrEmpty(errorMSG))
+                if (!string.IsNullOrEmpty(errorMSG))
                     {
                         ShowUnableToFecthSmartMeterData(errorMSG);
                     }
-                //}
 
                 txtNewRefreshMessage.Click += delegate
                 {
@@ -1455,7 +1423,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (textMessage != "")
                 {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
                     }
@@ -7151,7 +7119,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Utility.GetLocalizedLabel("Usage", "missedReadTitle");
                     string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Utility.GetLocalizedLabel("Usage", "disconnectionMsg");
                     string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Utility.GetLocalizedCommonLabel("gotIt");
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
                     }
@@ -7237,7 +7205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
                                 {
-                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
                                         ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
                                     }
@@ -8235,7 +8203,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 mChart.Invalidate();
 
                                 Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                                 {
                                     vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
@@ -8286,7 +8254,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             CurrentParentIndex = index;
                             Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 
@@ -8882,7 +8850,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
 
-                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, Html.FromHtmlModeLegacy);
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, FromHtmlOptions.ModeLegacy);
                                     }
                                     else
                                     {
@@ -9480,7 +9448,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             currentFragment.SetDayViewMonthText(dayViewMonthList[tempDayViewIndex]);
 
                             Vibrator vibrator = (Vibrator)currentActivity.GetSystemService(Context.VibratorService);
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 

@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                   .SetCancelable(false)
                   .Create();
 
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
                 }
@@ -216,7 +216,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                   .SetCancelable(false)
                   .Create();
 
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
                 }

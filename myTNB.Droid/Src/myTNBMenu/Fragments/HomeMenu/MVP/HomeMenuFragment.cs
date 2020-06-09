@@ -1004,7 +1004,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
-                if (Android.OS.Build.VERSION.SdkInt < Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.N)
                 {
                     LinearLayout.LayoutParams searchParam = (LinearLayout.LayoutParams)searchEditText.LayoutParameters;
                     searchParam.LeftMargin = -(int)DPUtils.ConvertDPToPx(32f);
@@ -1763,7 +1763,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 string refreshMaintenanceMsg = string.IsNullOrEmpty(contentMsg) ? Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage") : contentMsg;
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg, FromHtmlOptions.ModeLegacy);
                 }
@@ -1788,7 +1788,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
                 btnRefresh.Text = refreshBtnTxt;
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg, FromHtmlOptions.ModeLegacy);
                 }
@@ -1978,7 +1978,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     searchEditText.SetQuery(HomeMenuUtils.GetQueryWord(), false);
                     try
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.M)
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
                         {
                             searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
                         }

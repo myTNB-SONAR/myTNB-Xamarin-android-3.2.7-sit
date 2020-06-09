@@ -200,7 +200,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 FragmentManager manager = this.FragmentManager;
                 if (manager.BackStackEntryCount > 0)
                 {
-                    manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, FragmentManager.PopBackStackInclusive);
+                    manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, Android.App.PopBackStackFlags.Inclusive);
                 }
             }
             catch (Exception e)

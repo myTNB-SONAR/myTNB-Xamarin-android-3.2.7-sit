@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 if (position == (ItemCount-1) && IsShowMoreEnable)
                 {
                     string htmlText = "<html><u>" + Utility.GetLocalizedLabel("SelectBills", "loadMore") + "</u></html>";
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         vh.ShowMore.TextFormatted = Html.FromHtml(htmlText, FromHtmlOptions.ModeLegacy);
                     }

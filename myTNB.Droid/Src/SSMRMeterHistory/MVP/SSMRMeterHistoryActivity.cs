@@ -876,7 +876,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 };
 
                 tooltipTitle.Text = SMRPopUpUtils.GetTitle();
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage(), FromHtmlOptions.ModeLegacy);
                 }
