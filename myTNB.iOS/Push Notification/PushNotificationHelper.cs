@@ -24,16 +24,24 @@ namespace myTNB
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
             InstanceId.Notifications.ObserveTokenRefresh((sender, e) =>
             {
-                string token = InstanceId.SharedInstance.Token;
-                Debug.WriteLine("FCM Token: " + token);
-                DataManager.DataManager.SharedInstance.FCMToken = token;
-                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                sharedPreference.SetString(token, "FCMToken");
-                sharedPreference.Synchronize();
-                ConnectToFCM();
+                InstanceId.SharedInstance.GetInstanceId((result, error) =>
+                {
+                    if (error == null)
+                    {
+                        string token = result.Token;
+                        Debug.WriteLine("FCM Token: " + token);
+                        DataManager.DataManager.SharedInstance.FCMToken = token;
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        sharedPreference.SetString(token, "FCMToken");
+                        sharedPreference.Synchronize();
+                        ConnectToFCM();
+                    }
+                    else
+                    {
+                        Debug.WriteLine("FCM Token error: " + error);
+                    }
+                });
             });
-
-            App.Configure();
         }
         /// <summary>
         /// Connects to FIREBASE CLOUD MESSAGING.
