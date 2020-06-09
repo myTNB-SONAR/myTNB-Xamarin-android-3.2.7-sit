@@ -192,9 +192,9 @@ namespace myTNB
         //Dictionary
         public static Dictionary<string, string> DynamicLinkDomain = new Dictionary<string, string>
         {
-            { "DEV", "mytnbappsit.page.link"}
-            , { "SIT", "mytnbappsit.page.link" }
-            , { "PROD", "mytnbapp.page.link"}
+            { "DEV", "https://mytnbappsit.page.link"}
+            , { "SIT", "https://mytnbappsit.page.link" }
+            , { "PROD", "https://mytnbapp.page.link"}
         };
     }
 }

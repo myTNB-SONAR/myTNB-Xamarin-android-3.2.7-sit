@@ -266,11 +266,6 @@ namespace myTNB
                             }
                         }
                     }
-                    else if (RedirectTypeList[whileCount] == RedirectTypeList[2])
-                    {
-                        string urlString = absURL.Split(RedirectTypeList[2])[1];
-                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
-                    }
                     else if (RedirectTypeList[whileCount] == RedirectTypeList[3]) //Created by Syahmi ICS 05052020
                     {
                         string urlString = absURL;
@@ -292,11 +287,11 @@ namespace myTNB
                             }
                         }
                     }
-                }
-                else 
-                {
-                    string urlString = absURL.Split(RedirectTypeList[2])[1];
-                    UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                    else
+                    {
+                        string urlString = absURL.Split(RedirectTypeList[2])[1];
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                    }
                 }
             }
         }
