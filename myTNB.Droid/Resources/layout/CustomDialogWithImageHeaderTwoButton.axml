@@ -21,16 +21,12 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center"
           android:id="@+id/rootView">
-        <RelativeLayout
-            android:layout_width="284dp"
-            android:layout_height="wrap_content">
-             <ImageView
+        <ImageView
             android:id="@+id/imgToolTipHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/img_tooltip_reward_confirm"/>
-        </RelativeLayout>
         <TextView
             android:id="@+id/txtToolTipTitle"
             android:layout_height="wrap_content"
