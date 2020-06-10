@@ -154,7 +154,11 @@ namespace myTNB
             {
                 _webViewBill.LoadRequest(new NSUrlRequest(new NSUrl(_url)));
                 _webViewBill.ScrollView.Delegate = new ScrollViewDelegate(_webViewBill.ScrollView);
-                _webViewBill.ScalesLargeContentImage = true;
+                if(UIDevice.CurrentDevice.CheckSystemVersion(13,0))// check iOS version
+                {
+                    _webViewBill.ScalesLargeContentImage = true;
+
+                }
             }
             View.AddSubview(_webViewBill);
         }
