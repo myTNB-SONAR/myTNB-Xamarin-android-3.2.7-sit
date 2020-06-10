@@ -50,6 +50,7 @@ using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -514,8 +515,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         IAxisValueFormatter XLabelsFormatter;
         private string errorMSG = null;
 
-        private MaterialDialog mWhyThisAmtCardDialog;
-
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
@@ -607,14 +606,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool mIsPendingPayment = false;
 
-                private string dialogTitle, dialogMessage, dialogBtnLabel, dialogBtnLabel2;
-        private string Title = "Easy Payment Plan";
-
-
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         ScaleGestureDetector mScaleDetector;
+
+        public static List<string> RedirectTypeList = new List<string> {
+            "inAppBrowser=",
+            "externalBrowser=",
+            "tel=",
+            "whatsnew=",
+            "faq=",
+            "reward=",
+            "http",
+            "tel:",
+            "whatsnewid=",
+            "faqid=",
+            "rewardid="
+        };
 
         public override int ResourceId()
         {
@@ -1068,138 +1077,106 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
-                //if (isBCRMDown)
-                //{
-                //    ShowAmountDueNotAvailable();
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                dashboardAccountName.Visibility = ViewStates.Gone;
+                dashboardAccountName.Text = selectedAccount.AccountNickName;
+                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                bool enableDropDown = accountList.Count > 0 ? true : false;
+                if (enableDropDown)
+                {
+                    Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
+                    Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
+                    transparentDropDown.Alpha = 0;
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                }
+                else
+                {
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
 
-                //    HideSSMRDashboardView();
-                //    energyTipsView.Visibility = ViewStates.Gone;
-                //    dashboardAccountName.Visibility = ViewStates.Gone;
+                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
+                LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
+                tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
 
-                //    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                //    {
-                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                //    }
-                //    else
-                //    {
-                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                //    }
+                energyTipsView.Visibility = ViewStates.Gone;
+                energyTipsShimmerView.Visibility = ViewStates.Gone;
 
-                //    this.userActionsListener?.Start();
+                LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
+                energyTipsList.NestedScrollingEnabled = true;
 
-                //    //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                //    //    bcrmEntity.DowntimeTextMessage,
-                //    //    Snackbar.LengthLong);
-                //    //View v = downtimeSnackBar.View;
-                //    //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                //    //tv.SetMaxLines(5);
-                //    //downtimeSnackBar.Show();
+                LinearSnapHelper snapHelper = new LinearSnapHelper();
+                snapHelper.AttachToRecyclerView(energyTipsList);
 
+                LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
+                energyTipsShimmerList.NestedScrollingEnabled = true;
 
-                //}
-                //else
-                //{
-                    ((DashboardHomeActivity)Activity).HideAccountName();
-                    dashboardAccountName.Visibility = ViewStates.Gone;
-                    dashboardAccountName.Text = selectedAccount.AccountNickName;
-                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                    bool enableDropDown = accountList.Count > 0 ? true : false;
-                    if (enableDropDown)
+                LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
+                snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
+
+                DisablePayButton();
+                DisableViewBillButton();
+
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                if (isUsageLoadedNeeded)
+                {
+                    rmKwhSelection.Enabled = false;
+                    tarifToggle.Enabled = false;
+                    btnToggleDay.Enabled = false;
+                    btnToggleMonth.Enabled = false;
+                    txtRange.Visibility = ViewStates.Gone;
+                    StartRangeShimmer();
+                    mChart.Visibility = ViewStates.Gone;
+                    StartGraphShimmer();
+                }
+                else
+                {
+                    rmKwhSelection.Enabled = true;
+                    rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
+                    tarifToggle.Enabled = true;
+                    btnToggleDay.Enabled = true;
+                    btnToggleMonth.Enabled = true;
+                }
+
+                re_img.Visibility = ViewStates.Gone;
+                rePayableLayout.Visibility = ViewStates.Gone;
+                totalPayableLayout.Visibility = ViewStates.Gone;
+                noPayableLayout.Visibility = ViewStates.Gone;
+
+                StartAmountDueShimmer();
+
+                StartSMStatisticShimmer();
+
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
+                if (selectedAccount != null)
+                {
+                    if (!selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
-                        Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
-                        transparentDropDown.Alpha = 0;
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
-                    }
-                    else
-                    {
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    }
-
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-                    LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
-                    tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
-
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    energyTipsShimmerView.Visibility = ViewStates.Gone;
-
-                    LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
-                    energyTipsList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapHelper = new LinearSnapHelper();
-                    snapHelper.AttachToRecyclerView(energyTipsList);
-
-                    LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
-                    energyTipsShimmerList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
-                    snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
-
-                    DisablePayButton();
-                    DisableViewBillButton();
-
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    if (isUsageLoadedNeeded)
-                    {
-                        rmKwhSelection.Enabled = false;
-                        tarifToggle.Enabled = false;
-                        btnToggleDay.Enabled = false;
-                        btnToggleMonth.Enabled = false;
-                        txtRange.Visibility = ViewStates.Gone;
-                        StartRangeShimmer();
-                        mChart.Visibility = ViewStates.Gone;
-                        StartGraphShimmer();
-                    }
-                    else
-                    {
-                        rmKwhSelection.Enabled = true;
-                        rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
-                        imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
-                        tarifToggle.Enabled = true;
-                        btnToggleDay.Enabled = true;
-                        btnToggleMonth.Enabled = true;
-                    }
-
-                    re_img.Visibility = ViewStates.Gone;
-                    rePayableLayout.Visibility = ViewStates.Gone;
-                    totalPayableLayout.Visibility = ViewStates.Gone;
-                    noPayableLayout.Visibility = ViewStates.Gone;
-
-                    StartAmountDueShimmer();
-
-                    StartSMStatisticShimmer();
-
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
-                    if (selectedAccount != null)
-                    {
-                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        bool isGetEnergyTipsDisabled = false;
+                        if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
                         {
-                            bool isGetEnergyTipsDisabled = false;
-                            if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
-                            {
-                                isGetEnergyTipsDisabled = true;
-                            }
+                            isGetEnergyTipsDisabled = true;
+                        }
 
-                            if (!isGetEnergyTipsDisabled)
-                            {
-                                OnGetEnergyTipsItems();
-                            }
+                        if (!isGetEnergyTipsDisabled)
+                        {
+                            OnGetEnergyTipsItems();
                         }
                     }
+                }
 
-                    this.userActionsListener?.Start();
+                this.userActionsListener?.Start();
 
-                    if (!string.IsNullOrEmpty(errorMSG))
+                if (!string.IsNullOrEmpty(errorMSG))
                     {
                         ShowUnableToFecthSmartMeterData(errorMSG);
                     }
-                //}
 
                 txtNewRefreshMessage.Click += delegate
                 {
@@ -1329,83 +1306,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
         }
-
-
- 
-        class EPPClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public Color textColor { get; set; }
-            public Typeface typeFace { get; set; }
-
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.Color = textColor;
-                ds.SetTypeface(typeFace);
-                ds.UnderlineText = false;
-            }
-        }
-
   
         private void showEPPTooltip()
-
-
         {
             List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
-            // USAGE_TODO: need to add process for the hyperlink
-       
-                //SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
-            var clickableSpanEPP = new EPPClickSpan()
+
+            if (modelList != null && modelList.Count > 0)
             {
-              textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)),
-              typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                };
-            clickableSpanEPP.Click += v =>
-                {
-                 
-                    if (modelList[0].PopUpBody != null)
-                    {
-                        List<string> extractedUrls = this.mPresenter.ExtractUrls(modelList[0].PopUpBody);
-                        if (extractedUrls.Count > 0)
-                        {
-                            if (!extractedUrls[0].Contains("http"))
-                            {
-                                extractedUrls[0] = "http://" + extractedUrls[0];
-                            }
-
-                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
-                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                            StartActivity(webIntent);
-                        }
-                    }
-                };
-    
-            
-
-
-
-            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-           .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-           .SetTitle(modelList[0].PopUpTitle)
-            .SetClickableSpan(clickableSpanEPP)
-           .SetMessage(modelList[0].PopUpBody)
-           .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-           .SetCTAaction(() => { this.SetIsClicked(false); })
-           .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
-           .SetSecondaryCTAaction(() => ShowBillPDF())
-           .Build();
-            eppTooltip.Show();
-
+                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                    .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                    .SetTitle(modelList[0].PopUpTitle)
+                    .SetMessage(modelList[0].PopUpBody)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+                    .SetSecondaryCTAaction(() => ShowBillPDF())
+                    .Build();
+                eppTooltip.Show();
+            }
         }
 
         [OnClick(Resource.Id.smStatisticTooltip)]
@@ -1436,73 +1354,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
-                MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
-                        .CustomView(Resource.Layout.WhatIsThisDialogView, false)
-                        .Cancelable(false)
+                if (textMessage != "" && btnLabel != "")
+                {
+                    MyTNBAppToolTipBuilder whatIsThisTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_STRETCHABLE)
+                        .SetMessage(textMessage)
+                        .SetCTALabel(btnLabel)
                         .Build();
-
-                View view = materialDialog.View;
-                TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
-                TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
-                if (btnLabel != "")
-                {
-                    dialogBtnLabel.Text = btnLabel;
+                    whatIsThisTooltip.Show();
                 }
-                dialogBtnLabel.Click += delegate
-                {
-                    materialDialog.Dismiss();
-                };
-
-                if (textMessage != "")
-                {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                    {
-                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
-                    }
-                    else
-                    {
-                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
-                    }
-                }
-
-                if (dialogDetailsText != null)
-                {
-                    TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
-                }
-                if (dialogBtnLabel != null)
-                {
-                    TextViewUtils.SetMuseoSans500Typeface(dialogBtnLabel);
-                }
-                SpannableString s = new SpannableString(dialogDetailsText.TextFormatted);
-                var clickableSpan = new ClickSpan();
-                clickableSpan.Click += v =>
-                {
-                    if (textMessage != null && textMessage.Contains("faq"))
-                    {
-                        //Lauch FAQ
-                        int startIndex = textMessage.LastIndexOf("=") + 1;
-                        int lastIndex = textMessage.LastIndexOf("}");
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < textMessage.Length)
-                        {
-                            string faqid = textMessage.Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(faqid))
-                            {
-                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                Activity.StartActivity(faqIntent);
-                            }
-                        }
-                    }
-                };
-                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
-                dialogDetailsText.TextFormatted = s;
-                dialogDetailsText.MovementMethod = new LinkMovementMethod();
-                materialDialog.Show();
             }
             catch (System.Exception e)
             {
@@ -5135,100 +4994,227 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void OnProcessDPCIndicationMessage(string message)
         {
-            // USAGE_TODO: need to add process for the hyperlink
-            if (!string.IsNullOrEmpty(message) && (message.Contains("faq") || message.Contains("whatsnew") || message.Contains("http")))
+            if (!string.IsNullOrEmpty(message))
             {
-                SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
-                var clickableSpan = new DPCClickSpan()
+                int whileCount = 0;
+                bool isContained = false;
+                for (int i = 0; i < RedirectTypeList.Count; i++)
                 {
-                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
-                    typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                };
-                clickableSpan.Click += v =>
-                {
-                    if (message.Contains("faq"))
+                    if (message.Contains(RedirectTypeList[i]))
                     {
-                        //Lauch FAQ
-                        int startIndex = message.LastIndexOf("=") + 1;
-                        int lastIndex = message.LastIndexOf("}");
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < message.Length)
+                        whileCount = i;
+                        isContained = true;
+                        break;
+                    }
+                }
+
+                if (isContained)
+                {
+                    SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
+                    var clickableSpan = new DPCClickSpan()
+                    {
+                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
+                        typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                    };
+                    clickableSpan.Click += v =>
+                    {
+                        if (RedirectTypeList[whileCount] == RedirectTypeList[0]
+                            || RedirectTypeList[whileCount] == RedirectTypeList[1]
+                            || RedirectTypeList[whileCount] == RedirectTypeList[6])
                         {
-                            string faqid = message.Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(faqid))
+                            List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
+                            if (extractedUrls.Count > 0)
                             {
-                                this.SetIsClicked(true);
-                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                Activity.StartActivity(faqIntent);
+                                if (!extractedUrls[0].Contains("http"))
+                                {
+                                    extractedUrls[0] = "http://" + extractedUrls[0];
+                                }
+
+                                if (RedirectTypeList[whileCount] == RedirectTypeList[0] || RedirectTypeList[whileCount] == RedirectTypeList[6])
+                                {
+                                    Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
+                                    webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                    webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                    this.Activity.StartActivity(webIntent);
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(Intent.ActionView);
+                                    intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
+                                    this.Activity.StartActivity(intent);
+                                }
                             }
                         }
-                    }
-                    else if (message.Contains("whatsnew"))
-                    {
-                        int startIndex = message.LastIndexOf("=") + 1;
-                        int lastIndex = message.LastIndexOf("}");
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < message.Length)
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[2])
                         {
-                            string whatsnewid = message.Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(whatsnewid))
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("\">") - 1;
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
                             {
-                                if (!whatsnewid.Contains("{"))
+                                string phonenum = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(phonenum))
                                 {
-                                    whatsnewid = "{" + whatsnewid;
-                                }
-
-                                if (!whatsnewid.Contains("}"))
-                                {
-                                    whatsnewid = whatsnewid + "}";
-                                }
-
-                                WhatsNewEntity wtManager = new WhatsNewEntity();
-
-                                WhatsNewEntity item = wtManager.GetItem(whatsnewid);
-
-                                if (item != null)
-                                {
-                                    if (!item.Read)
+                                    if (!phonenum.Contains("tel:"))
                                     {
-                                        this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                        phonenum = "tel:" + phonenum;
                                     }
 
-                                    this.SetIsClicked(true);
-                                    Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
-                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
-                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
-                                    StartActivity(activity);
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    this.Activity.StartActivity(callIntent);
                                 }
                             }
                         }
-                    }
-                    else if (message.Contains("http"))
-                    {
-                        List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
-                        if (extractedUrls.Count > 0)
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[3]
+                                    || RedirectTypeList[whileCount] == RedirectTypeList[8])
                         {
-                            if (!extractedUrls[0].Contains("http"))
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
                             {
-                                extractedUrls[0] = "http://" + extractedUrls[0];
+                                lastIndex = message.LastIndexOf("\">") - 1;
                             }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string whatsnewid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(whatsnewid))
+                                {
+                                    if (!whatsnewid.Contains("{"))
+                                    {
+                                        whatsnewid = "{" + whatsnewid;
+                                    }
 
-                            this.SetIsClicked(true);
-                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
-                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                            StartActivity(webIntent);
+                                    if (!whatsnewid.Contains("}"))
+                                    {
+                                        whatsnewid = whatsnewid + "}";
+                                    }
+
+                                    WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                    WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                        this.Activity.StartActivity(activity);
+                                    }
+                                }
+                            }
                         }
-                    }
-                };
-                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
-                txtTariffBlockLegendDisclaimer.TextFormatted = s;
-                txtTariffBlockLegendDisclaimer.MovementMethod = new LinkMovementMethod();
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[4]
+                                    || RedirectTypeList[whileCount] == RedirectTypeList[9])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string faqid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(faqid))
+                                {
+                                    if (!faqid.Contains("{"))
+                                    {
+                                        faqid = "{" + faqid;
+                                    }
+
+                                    if (!faqid.Contains("}"))
+                                    {
+                                        faqid = faqid + "}";
+                                    }
+
+                                    Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    this.Activity.StartActivity(faqIntent);
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[5]
+                                    || RedirectTypeList[whileCount] == RedirectTypeList[10])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string rewardid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(rewardid))
+                                {
+                                    if (!rewardid.Contains("{"))
+                                    {
+                                        rewardid = "{" + rewardid;
+                                    }
+
+                                    if (!rewardid.Contains("}"))
+                                    {
+                                        rewardid = rewardid + "}";
+                                    }
+
+                                    RewardsEntity wtManager = new RewardsEntity();
+
+                                    RewardsEntity item = wtManager.GetItem(rewardid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            this.mPresenter.UpdateRewardRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
+                                        activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+                                        activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                        this.Activity.StartActivity(activity);
+                                    }
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[7])
+                        {
+                            int startIndex = message.LastIndexOf("\"tel") + 1;
+                            int lastIndex = message.LastIndexOf("\">") - 1;
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string phonenum = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(phonenum))
+                                {
+                                    if (!phonenum.Contains("tel:"))
+                                    {
+                                        phonenum = "tel:" + phonenum;
+                                    }
+
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    this.Activity.StartActivity(callIntent);
+                                }
+                            }
+                        }
+                    };
+                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                    int startFAQLink = s.GetSpanStart(urlSpans[0]);
+                    int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+                    s.RemoveSpan(urlSpans[0]);
+                    s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                    txtTariffBlockLegendDisclaimer.TextFormatted = s;
+                    txtTariffBlockLegendDisclaimer.MovementMethod = new LinkMovementMethod();
+                }
             }
         }
 
@@ -7151,7 +7137,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Utility.GetLocalizedLabel("Usage", "missedReadTitle");
                     string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Utility.GetLocalizedLabel("Usage", "disconnectionMsg");
                     string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Utility.GetLocalizedCommonLabel("gotIt");
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
                     }
@@ -7237,7 +7223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
                                 {
-                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
                                         ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
                                     }
@@ -8235,7 +8221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 mChart.Invalidate();
 
                                 Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                                 {
                                     vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
@@ -8286,7 +8272,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             CurrentParentIndex = index;
                             Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 
@@ -8882,7 +8868,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
 
-                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, Html.FromHtmlModeLegacy);
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, FromHtmlOptions.ModeLegacy);
                                     }
                                     else
                                     {
@@ -9480,7 +9466,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             currentFragment.SetDayViewMonthText(dayViewMonthList[tempDayViewIndex]);
 
                             Vibrator vibrator = (Vibrator)currentActivity.GetSystemService(Context.VibratorService);
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 

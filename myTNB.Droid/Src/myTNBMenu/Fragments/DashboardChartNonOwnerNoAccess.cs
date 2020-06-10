@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                         if (bcrmEntity.IsDown)
                         {
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
                                 txtContent.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                             }

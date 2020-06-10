@@ -154,7 +154,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public void SetStatusBarBackground(int resId)
         {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
             {
                 Drawable drawable = Resources.GetDrawable(resId);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);

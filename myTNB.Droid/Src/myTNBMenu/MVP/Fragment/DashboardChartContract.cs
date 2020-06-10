@@ -226,7 +226,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             Task OnGetEPPTooltipContent();
 
-         
+            void UpdateRewardRead(string itemID, bool flag);
+
+
         }
     }
 }

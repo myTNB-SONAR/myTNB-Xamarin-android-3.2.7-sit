@@ -1,4 +1,4 @@
-﻿{
+{
   "Common": {
 	"eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
     "account": "Akaun",
@@ -227,7 +227,7 @@
     "terminateFor": "Saya ingin hentikan untuk:",
     "contactDetails": "Maklumat saya:",
     "terminateTitle": "Mengapakah anda ingin hentikan perkhidmatan ini?",
-    "tncUnsubscribe": "Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    "tncUnsubscribe": "Nota: Pendaftaran semula bagi perkhidmatan Self Meter Reading tiada buat sementara waktu.<br><br>Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
     "tncSubscribe": "Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
     "editContactInfo": "Dengan mengedit, anda akan mengemas kini profil myTNB dan maklumat akaun elektrik anda.",
     "selectReason": "Pilih Sebab",
@@ -270,7 +270,7 @@
     "subTitle": "Saya ingin baca meter sendiri untuk:",
     "disableSSMRCTA": "Hentikan Self Meter Reading",
     "enableSSMRCTA": "Aktifkan Self Meter Reading",
-    "enableSSMRDescription": "Akaun elektrik ini belum diaktifkan untuk bacaan meter sendiri, tekan butang di bawah untuk memulakan!",
+    "enableSSMRDescription": "Harap maaf, perkhidmatan Self Meter Reading untuk akaun ini tidak dapat diaktifkan buat sementara waktu.",
     "noEligibleAccount": "Maaf, akaun anda tidak layak untuk memulakan perkhidmatan Self Meter Reading",
     "selectAccountNavTitle": "Pilih Akaun Elektrik",
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
