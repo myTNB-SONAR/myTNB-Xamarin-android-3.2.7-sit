@@ -8,7 +8,19 @@ namespace myTNB
 {
     public static class AlertHandler
     {
-        public static List<string> RedirectTypeList = new List<string> { "faqid=", "inAppBrowser=", "externalBrowser=", "http" };
+        public static List<string> RedirectTypeList = new List<string> {
+            "inAppBrowser=",
+            "externalBrowser=",
+            "tel=",
+            "whatsnew=",
+            "faq=",
+            "reward=",
+            "http",
+            "tel:",
+            "whatsnewid=",
+            "faqid=",
+            "rewardid="
+        };
 
         /// <summary>
         /// Displays the no data alert.
@@ -225,30 +237,21 @@ namespace myTNB
             {
                 int whileCount = 0;
                 bool isContained = false;
-                while (!isContained && whileCount < RedirectTypeList.Count)
+                for (int i = 0; i < RedirectTypeList.Count; i++)
                 {
-                    isContained = absURL.Contains(RedirectTypeList[whileCount]);
-                    if (isContained) { break; }
-                    whileCount++;
+                    if (absURL.Contains(RedirectTypeList[i]))
+                    {
+                        whileCount = i;
+                        isContained = true;
+                        break;
+                    }
                 }
 
                 if (isContained)
                 {
                     if (RedirectTypeList[whileCount] == RedirectTypeList[0])
                     {
-                        string key = absURL.Split(RedirectTypeList[0])[1];
-                        key = key.Replace("%7B", "{").Replace("%7D", "}");
-                        int index = key.IndexOf("}");
-                        if (index > -1 && index < key.Length - 1)
-                        {
-                            key = key.Remove(index + 1);
-                        }
-                        ViewHelper.GoToFAQScreenWithId(key);
-                        viewParent.RemoveFromSuperview();
-                    }
-                    else if (RedirectTypeList[whileCount] == RedirectTypeList[1])
-                    {
-                        string urlString = absURL.Split(RedirectTypeList[1])[1];
+                        string urlString = absURL.Split(RedirectTypeList[0])[1];
                         UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                         UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
                         if (topVc != null)
@@ -266,7 +269,78 @@ namespace myTNB
                             }
                         }
                     }
-                    else if (RedirectTypeList[whileCount] == RedirectTypeList[3]) //Created by Syahmi ICS 05052020
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[1])
+                    {
+                        string urlString = absURL.Split(RedirectTypeList[1])[1];
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[2])
+                    {
+                        string urlString = absURL.Split(RedirectTypeList[2])[1];
+                        if (!urlString.Contains("tel:"))
+                        {
+                            urlString = "tel:" + urlString;
+                        }
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(new Uri(urlString).AbsoluteUri));
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[3])
+                    {
+                        string key = absURL.Split(RedirectTypeList[3])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if(topVc != null)
+                        {
+                            WhatsNewServices.OpenWhatsNewDetails(key, topVc);
+                        }
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[4])
+                    {
+                        string key = absURL.Split(RedirectTypeList[4])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        if (!key.Contains("{"))
+                        {
+                            key = "{" + key;
+                        }
+                        if(!key.Contains("}"))
+                        {
+                            key = key + "}";
+                        }
+                        ViewHelper.GoToFAQScreenWithId(key);
+                        viewParent.RemoveFromSuperview();
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[5])
+                    {
+                        string key = absURL.Split(RedirectTypeList[5])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
+                            {
+                                RewardsServices.OpenRewardDetails(key, topVc);
+                            }
+                        }
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[6]) //Created by Syahmi ICS 05052020
                     {
                         string urlString = absURL;
                         UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
@@ -287,10 +361,71 @@ namespace myTNB
                             }
                         }
                     }
-                    else
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[7])
                     {
-                        string urlString = absURL.Split(RedirectTypeList[2])[1];
-                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                        string urlString = absURL;
+                        if (!urlString.Contains("tel:"))
+                        {
+                            urlString = "tel:" + urlString;
+                        }
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(new Uri(urlString).AbsoluteUri));
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[8])
+                    {
+                        string key = absURL.Split(RedirectTypeList[8])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            WhatsNewServices.OpenWhatsNewDetails(key, topVc);
+                        }
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[9])
+                    {
+                        string key = absURL.Split(RedirectTypeList[9])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        if (!key.Contains("{"))
+                        {
+                            key = "{" + key;
+                        }
+                        if (!key.Contains("}"))
+                        {
+                            key = key + "}";
+                        }
+                        ViewHelper.GoToFAQScreenWithId(key);
+                        viewParent.RemoveFromSuperview();
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[10])
+                    {
+                        string key = absURL.Split(RedirectTypeList[10])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            if (!(topVc is RewardDetailsViewController) && !(topVc is AppLaunchViewController))
+                            {
+                                RewardsServices.OpenRewardDetails(key, topVc);
+                            }
+                        }
                     }
                 }
             }
