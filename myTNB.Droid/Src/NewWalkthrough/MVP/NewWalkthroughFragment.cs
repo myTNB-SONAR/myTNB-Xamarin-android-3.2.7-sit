@@ -277,7 +277,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             if (btnToggleEN.Selected != true)
             {
-                Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
+                Utility.ShowChangeLanguageDialog(this.Activity, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     _ = RunUpdateLanguage("EN");
@@ -363,7 +363,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             if (btnToggleMS.Selected != true)
             {
-                Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
+                Utility.ShowChangeLanguageDialog(this.Activity, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
                     _ = RunUpdateLanguage("MS");
