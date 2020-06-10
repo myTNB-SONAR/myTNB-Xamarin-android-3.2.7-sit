@@ -44,7 +44,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private AccountData selectedAccount;
         private SMRAccount selectedEligibleAccount;
         private string selectedAccountNickName;
-        private MaterialDialog SSMRMenuDialog;
         private bool IsFromUsage = false;
         private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
@@ -437,85 +436,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_ssmr_more:
-                    OnClickSMRMenuMore();
                     break;
             }
             return base.OnOptionsItemSelected(item);
-        }
-
-        private void OnClickSMRMenuMore()
-        {
-            try
-            {
-                SSMRMenuDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.SSMRMenuListLayout, false)
-                    .Cancelable(false)
-                    .CanceledOnTouchOutside(false)
-                    .Build();
-
-                View dialogView = SSMRMenuDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-                WindowManagerLayoutParams wlp = SSMRMenuDialog.Window.Attributes;
-                wlp.Gravity = GravityFlags.Top;
-                wlp.Width = ViewGroup.LayoutParams.MatchParent;
-                wlp.Height = ViewGroup.LayoutParams.WrapContent;
-                SSMRMenuDialog.Window.Attributes = wlp;
-
-                ImageView btnSMRMenuClose = SSMRMenuDialog.FindViewById<ImageView>(Resource.Id.btnSMRMenuClose);
-                RecyclerView mSMRMenuRecyclerView = SSMRMenuDialog.FindViewById<RecyclerView>(Resource.Id.smrMenuList);
-                mSMRMenuRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
-                if (smrResponse.Response.Data.MeterReadingMenu.Count > 0)
-                {
-                    ssmrMeterHistoryMenuList.Clear();
-                    ssmrMeterHistoryMenuList.AddRange(smrResponse.Response.Data.MeterReadingMenu);
-                    meterHistoryMenuAdapter = new SSMRMeterHistoryMenuAdapter(smrResponse.Response.Data.MeterReadingMenu);
-                    mSMRMenuRecyclerView.SetAdapter(meterHistoryMenuAdapter);
-                    meterHistoryMenuAdapter.ClickChanged += OnClickChanged;
-                }
-
-                btnSMRMenuClose.Click += delegate
-                {
-                    SSMRMenuDialog.Dismiss();
-                };
-
-                SSMRMenuDialog.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        void OnClickChanged(object sender, int position)
-        {
-            try
-            {
-                if (position != -1)
-                {
-                    SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
-                    if (selectedMenu.MenuId == "1004")
-                    {
-                        ShowProgressDialog();
-                        Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
-                        SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                        StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
-                        HideProgressDialog();
-                        SSMRMenuDialog.Dismiss();
-                    }
-                    else
-                    {
-                        SSMRMenuDialog.Dismiss();
-                    }
-                }
-                else
-                {
-                    SSMRMenuDialog.Dismiss();
-                }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowProgressDialog()
@@ -848,77 +771,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
-                MaterialDialog materialDialog = new MaterialDialog.Builder(this)
-                        .CustomView(Resource.Layout.CustomToolTipWithHeaderLayout, false)
-                        .Cancelable(false)
-                        .CanceledOnTouchOutside(false)
-                        .Build();
-
-                View dialogView = materialDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-                WindowManagerLayoutParams wlp = materialDialog.Window.Attributes;
-                wlp.Gravity = GravityFlags.Center;
-                wlp.Width = ViewGroup.LayoutParams.MatchParent;
-                wlp.Height = ViewGroup.LayoutParams.WrapContent;
-                materialDialog.Window.Attributes = wlp;
-
-                TextView tooltipTitle = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
-                TextView tooltipMessage = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
-                TextView tooltipCTA = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
-
-                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
-
-                tooltipCTA.Text = Utility.GetLocalizedCommonLabel("gotIt");
-                tooltipCTA.Click += delegate
-                {
-                    materialDialog.Dismiss();
-                };
-
-                tooltipTitle.Text = SMRPopUpUtils.GetTitle();
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                {
-                    tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage(), FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage());
-                }
-
-                SpannableString s = new SpannableString(tooltipMessage.TextFormatted);
-                var clickableSpan = new ClickSpan()
-                {
-                    textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                };
-                clickableSpan.Click += v =>
-                {
-                    if (SMRPopUpUtils.GetMessage() != null && SMRPopUpUtils.GetMessage().Contains("tel:"))
-                    {
-                        //Lauch FAQ
-                        int startIndex = SMRPopUpUtils.GetMessage().LastIndexOf("\"tel") + 1;
-                        int lastIndex = SMRPopUpUtils.GetMessage().LastIndexOf("\">") - 1;
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < SMRPopUpUtils.GetMessage().Length)
-                        {
-                            string phone = SMRPopUpUtils.GetMessage().Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(phone))
-                            {
-                                var uri = Android.Net.Uri.Parse(phone);
-                                var intent = new Intent(Intent.ActionDial, uri);
-                                StartActivity(intent);
-                            }
-                        }
-                    }
-                };
-                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
-                tooltipMessage.TextFormatted = s;
-                tooltipMessage.MovementMethod = new LinkMovementMethod();
-                materialDialog.Show();
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(SMRPopUpUtils.GetTitle())
+                .SetMessage(SMRPopUpUtils.GetMessage())
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .Build().Show();
             }
             catch (System.Exception e)
             {

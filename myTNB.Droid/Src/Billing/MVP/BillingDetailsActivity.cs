@@ -448,7 +448,6 @@ namespace myTNB_Android.Src.Billing.MVP
                 UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                     .SetAdapter(adapter)
-                    .SetContext(this)
                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                     .SetCTAaction(()=> { this.SetIsClicked(false);})
                     .Build()
@@ -529,52 +528,21 @@ namespace myTNB_Android.Src.Billing.MVP
 
             List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
 
-
-
-            var clickableSpan = new ClickSpan() {
-                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-            };
-            clickableSpan.Click += v =>
+            if (modelList != null && modelList.Count > 0)
             {
+                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                   .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                   .SetTitle(modelList[0].PopUpTitle)
+                   .SetMessage(modelList[0].PopUpBody)
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
 
-                if (modelList[0].PopUpBody != null)
-                {
-                    List<string> extractedUrls = this.billingDetailsPresenter.ExtractUrls(modelList[0].PopUpBody);
-                    if (extractedUrls.Count > 0)
-                    {
-                        if (!extractedUrls[0].Contains("http"))
-                        {
-                            extractedUrls[0] = "http://" + extractedUrls[0];
-                        }
+                   .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+                   .SetSecondaryCTAaction(() => ShowBillPDF())
+                   .Build();
 
-                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                        StartActivity(webIntent);
-                    }
-                }
-            };
-
-
-            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-               .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-               .SetTitle(modelList[0].PopUpTitle)
-               .SetClickableSpan(clickableSpan)
-               .SetMessage(modelList[0].PopUpBody)
-               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-               .SetCTAaction(() => { this.SetIsClicked(false); })
-               
-               .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
-               .SetSecondaryCTAaction(() => ShowBillPDF())
-               .Build();
-               eppTooltip.Show();
-
-
-
-
-        
-            
+                eppTooltip.Show();
+            }            
         }
 
         class ClickSpan : ClickableSpan
