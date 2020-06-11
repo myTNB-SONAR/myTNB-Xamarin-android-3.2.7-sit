@@ -6,7 +6,7 @@ using myTNB.SitecoreCMS.Model;
 
 namespace myTNB_Android.Src.Database.Model
 {
-    [Table("WhatsNewParentEntity")]
+    [Table("WhatsNewParentEntityV2")]
     public class WhatsNewParentEntity
     {
         [Unique, Column("ID")]
@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewParentEntity");
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewParentEntityV2");
                 db.CreateTable<WhatsNewParentEntity>();
             }
             catch (Exception e)
@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                itemList = db.Query<WhatsNewParentEntity>("select * from WhatsNewParentEntity");
+                itemList = db.Query<WhatsNewParentEntity>("select * from WhatsNewParentEntityV2");
             }
             catch (Exception e)
             {

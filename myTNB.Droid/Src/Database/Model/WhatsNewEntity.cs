@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace myTNB_Android.Src.Database.Model
 {
-    [Table("WhatsNewEntity")]
+    [Table("WhatsNewEntityV2")]
     public class WhatsNewEntity
     {
         [Unique, Column("ID")]
@@ -49,13 +49,43 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CTA")]
         public string CTA { set; get; }
 
+        [Column("Image_DetailsView")]
+        public string Image_DetailsView { set; get; }
+
+        [Column("Image_DetailsViewB64")]
+        public string Image_DetailsViewB64 { set; get; }
+
+        [Column("Styles_DetailsView")]
+        public string Styles_DetailsView { set; get; }
+
+        [Column("Description_Images")]
+        public string Description_Images { set; get; }
+
+        [Column("PortraitImage_PopUp")]
+        public string PortraitImage_PopUp { set; get; }
+
+        [Column("ShowEveryCountDays_PopUp")]
+        public int ShowEveryCountDays_PopUp { set; get; }
+
+        [Column("ShowForTotalCountDays_PopUp")]
+        public int ShowForTotalCountDays_PopUp { set; get; }
+
+        [Column("ShowDayDate")]
+        public string ShowDayDate { set; get; }
+
+        [Column("ShowDayDateTotal")]
+        public int ShowDayDateTotal { set; get; }
+
+        [Column("ShowAtAppLaunchPopUp")]
+        public bool ShowAtAppLaunchPopUp { set; get; }
+
         public void CreateTable()
         {
 
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewEntity");
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewEntityV2");
                 db.CreateTable<WhatsNewEntity>();
             }
             catch (Exception e)
@@ -97,9 +127,26 @@ namespace myTNB_Android.Src.Database.Model
                     item.EndDate = obj.EndDate;
                     item.PublishDate = obj.PublishDate;
                     item.CTA = obj.CTA;
+                    item.Image_DetailsView = obj.Image_DetailsView;
+                    item.Image_DetailsViewB64 = string.IsNullOrEmpty(obj.Image_DetailsViewB64) ? "" : obj.Image_DetailsViewB64;
+                    item.Styles_DetailsView = obj.Styles_DetailsView;
+                    item.Description_Images = obj.Description_Images;
+                    item.PortraitImage_PopUp = obj.PortraitImage_PopUp;
+                    item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
+                    item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
+                    item.ShowDayDate = GetCurrentDate();
+                    item.ShowDayDateTotal = 0;
+                    item.Description_Images = obj.Description_Images;
                     InsertItem(item);
                 }
             }
+        }
+
+        private string GetCurrentDate()
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            return currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
         }
 
         public List<WhatsNewEntity> GetAllItems()
@@ -108,7 +155,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                itemList = db.Query<WhatsNewEntity>("select * from WhatsNewEntity");
+                itemList = db.Query<WhatsNewEntity>("select * from WhatsNewEntityV2");
                 if (itemList == null)
                 {
                     itemList = new List<WhatsNewEntity>();
@@ -139,7 +186,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntity WHERE Read = ? ", false);
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV2 WHERE Read = ? ", false);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -194,7 +241,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntity");
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV2");
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -242,7 +289,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntity WHERE CategoryID = ?", categoryId);
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV2 WHERE CategoryID = ?", categoryId);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -290,7 +337,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Delete from WhatsNewEntity WHERE ID = ?", itemID);
+                db.Execute("Delete from WhatsNewEntityV2 WHERE ID = ?", itemID);
             }
             catch (Exception e)
             {
@@ -303,7 +350,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Delete from WhatsNewEntity WHERE CategoryID = ?", categoryId);
+                db.Execute("Delete from WhatsNewEntityV2 WHERE CategoryID = ?", categoryId);
             }
             catch (Exception e)
             {
@@ -317,7 +364,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 List<WhatsNewEntity> itemList = new List<WhatsNewEntity>();
-                itemList = db.Query<WhatsNewEntity>("Select * FROM WhatsNewEntity WHERE ID = ?", itemID);
+                itemList = db.Query<WhatsNewEntity>("Select * FROM WhatsNewEntityV2 WHERE ID = ?", itemID);
                 if (itemList != null && itemList.Count > 0)
                 {
                     itemList = itemList.FindAll(x =>
@@ -363,7 +410,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntity SET Read = ? WHERE ID = ?", flag, itemID);
+                db.Execute("UPDATE WhatsNewEntityV2 SET Read = ? WHERE ID = ?", flag, itemID);
 
                 UpdateReadDateTimeItem(itemID, formattedDate);
             }
@@ -378,7 +425,33 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntity SET ImageB64 = ? WHERE ID = ?", imageB64, itemID);
+                db.Execute("UPDATE WhatsNewEntityV2 SET ImageB64 = ? WHERE ID = ?", imageB64, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateCacheDetailImage(string itemID, string imageB64)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE WhatsNewEntityV2 SET Image_DetailsViewB64 = ? WHERE ID = ?", imageB64, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateCacheDescriptionImages(string itemID, string imageJson)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE WhatsNewEntityV2 SET Description_Images = ? WHERE ID = ?", imageJson, itemID);
             }
             catch (Exception e)
             {
@@ -391,7 +464,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntity SET ReadDateTime = ? WHERE ID = ?", datetime, itemID);
+                db.Execute("UPDATE WhatsNewEntityV2 SET ReadDateTime = ? WHERE ID = ?", datetime, itemID);
             }
             catch (Exception e)
             {
