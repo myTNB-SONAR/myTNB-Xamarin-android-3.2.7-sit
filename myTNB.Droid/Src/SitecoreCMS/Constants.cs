@@ -158,6 +158,10 @@
                     public const string CTA = "CTA";
                     public const string Image_DetailsView = "Image_DetailsView";
                     public const string Styles_DetailsView = "Styles_DetailsView";
+                    public const string PortraitImage_PopUp = "PortraitImage_PopUp";
+                    public const string ShowEveryCountDays_PopUp = "ShowEveryCountDays_PopUp";
+                    public const string ShowForTotalCountDays_PopUp = "ShowForTotalCountDays_PopUp";
+                    public const string ShowAtAppLaunchPopUp = "ShowAtAppLaunchPopUp";
                     public const string WhatsNewCategory = "WhatsNewCategory";
                 }
 
