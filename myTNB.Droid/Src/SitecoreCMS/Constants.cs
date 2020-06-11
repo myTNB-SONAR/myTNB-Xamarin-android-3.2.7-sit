@@ -145,6 +145,23 @@
                     public const string RewardCategory = "RewardCategory";
                 }
 
+#if DEBUG || STUB || DEVELOP || SIT
+                public struct WhatsNew
+                {
+                    public const string Title = "Title";
+                    public const string TitleOnListing = "TitleOnListing";
+                    public const string DisplayName = "DisplayName";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                    public const string StartDate = "StartDate";
+                    public const string PublishDate = "PublishDate";
+                    public const string EndDate = "EndDate";
+                    public const string CTA = "CTA";
+                    public const string Image_DetailsView = "Image_DetailsView";
+                    public const string Styles_DetailsView = "Styles_DetailsView";
+                    public const string WhatsNewCategory = "WhatsNewCategory";
+                }
+#else
                 public struct WhatsNew
                 {
                     public const string Title = "Title";
@@ -158,6 +175,7 @@
                     public const string CTA = "CTA";
                     public const string WhatsNewCategory = "WhatsNewCategory";
                 }
+#endif
 
                 public struct Language
                 {
@@ -215,7 +233,11 @@
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
+#if DEBUG || STUB || DEVELOP || SIT
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
+#else
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
+#endif
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
             }
         }

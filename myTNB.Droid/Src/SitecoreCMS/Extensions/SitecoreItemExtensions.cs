@@ -120,6 +120,33 @@ namespace myTNB.SitecoreCMS.Extensions
             }
         }
 
+        public static string GetImageUrlFromExtractedUrl(this ISitecoreItem item, string imgSize, string websiteUrl = null, bool hasSize = true)
+        {
+            string mediafieldName = hasSize ? GetImageFieldName(imgSize) : imgSize;
+            XElement xmlElement = GetXElement(item, mediafieldName);
+
+            if (xmlElement == null)
+                return String.Empty;
+
+            try
+            {
+                XAttribute attribute = xmlElement.Attributes().FirstOrDefault(attr => attr.Name == "mediaid");
+
+                string mediaId = attribute.Value;
+
+                Guid id = Guid.Parse(mediaId);
+
+                if (string.IsNullOrWhiteSpace(websiteUrl))
+                    return String.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
+
+                return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
         public static string GetImageFieldName(string imgSize)
         {
             switch (imgSize)

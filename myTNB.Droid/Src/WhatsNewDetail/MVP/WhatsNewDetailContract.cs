@@ -25,6 +25,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
             List<string> ExtractUrls(string text);
 
+            List<WhatsNewDetailImageModel> ExtractImage(string text);
+
         }
     }
 }

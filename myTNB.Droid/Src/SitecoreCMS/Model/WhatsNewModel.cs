@@ -24,6 +24,25 @@ namespace myTNB.SitecoreCMS.Model
 
 	public class WhatsNewModel
     {
+#if DEBUG || STUB || DEVELOP || SIT
+		public string CategoryID { set; get; }
+		public string CategoryName { set; get; }
+		public string ID { set; get; }
+		public string Title { set; get; }
+		public string TitleOnListing { set; get; }
+		public string Description { set; get; }
+		public string Image { set; get; }
+		public string ImageB64 { set; get; }
+		public Bitmap ImageBitmap { set; get; }
+		public string StartDate { set; get; }
+		public string EndDate { set; get; }
+		public string PublishDate { set; get; }
+		public string CTA { set; get; }
+		public string Image_DetailsView { set; get; }
+		public string Styles_DetailsView { set; get; }
+		public bool Read { set; get; }
+		public string ReadDateTime { set; get; }
+#else
 		public string CategoryID { set; get; }
 		public string CategoryName { set; get; }
 		public string ID { set; get; }
@@ -39,7 +58,14 @@ namespace myTNB.SitecoreCMS.Model
         public string CTA { set; get; }
 		public bool Read { set; get; }
 		public string ReadDateTime { set; get; }
-    }
+#endif
+	}
+
+	public class WhatsNewDetailImageModel
+    {
+		public string ExtractedImageTag { set; get; }
+		public string ExtractedImageUrl { set; get; }
+	}
 
 	public class WhatsNewTimeStamp
     {

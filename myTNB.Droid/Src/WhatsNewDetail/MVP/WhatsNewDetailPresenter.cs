@@ -180,6 +180,24 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
             return convertedBitmap;
         }
 
+        public List<WhatsNewDetailImageModel> ExtractImage(string text)
+        {
+            List<WhatsNewDetailImageModel> containedImage = new List<WhatsNewDetailImageModel>();
+            string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+            string urlRegexFull = @"<img*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+            System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(text, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+            System.Text.RegularExpressions.MatchCollection matchesImgSrcFull = System.Text.RegularExpressions.Regex.Matches(text, urlRegexFull, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+            foreach (System.Text.RegularExpressions.Match m in matchesImgSrc)
+            {
+                string href = m.Groups[1].Value;
+                WhatsNewDetailImageModel temp = new WhatsNewDetailImageModel()
+                {
+
+                };
+            }
+            return containedImage;
+        }
+
         public List<string> ExtractUrls(string text)
         {
             List<string> containedUrls = new List<string>();

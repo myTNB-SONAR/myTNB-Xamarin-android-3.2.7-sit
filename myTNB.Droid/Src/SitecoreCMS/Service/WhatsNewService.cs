@@ -109,7 +109,28 @@ namespace myTNB.SitecoreCMS.Services
 					{
 						continue;
 					}
-					list.Add(new WhatsNewModel
+
+					WhatsNewModel newItem = new WhatsNewModel();
+
+#if DEBUG || STUB || DEVELOP || SIT
+					newItem = new WhatsNewModel
+					{
+						CategoryName = whatsNewCategory.CategoryName,
+						CategoryID = whatsNewCategory.ID,
+						TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.TitleOnListing),
+						StartDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
+						EndDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate),
+						PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate),
+						Title = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Title),
+						Description = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Description),
+						Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
+						CTA = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.CTA),
+						Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
+						Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
+						ID = item.Id
+					};
+#else
+					newItem = new WhatsNewModel
 					{
 						CategoryName = whatsNewCategory.CategoryName,
 						CategoryID = whatsNewCategory.ID,
@@ -122,7 +143,24 @@ namespace myTNB.SitecoreCMS.Services
 						Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
 						CTA = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.CTA),
 						ID = item.Id
-					});
+					};
+#endif
+					if (newItem.Description.Contains("<img"))
+                    {
+						List<string> containedImage = new List<string>();
+						string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+						System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(newItem.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+						foreach (System.Text.RegularExpressions.Match m in matchesImgSrc)
+						{
+							string href = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false);
+							WhatsNewDetailImageModel temp = new WhatsNewDetailImageModel()
+							{
+
+							};
+						}
+					}
+
+					list.Add(newItem);
 				}
 			}
 			catch (Exception e)

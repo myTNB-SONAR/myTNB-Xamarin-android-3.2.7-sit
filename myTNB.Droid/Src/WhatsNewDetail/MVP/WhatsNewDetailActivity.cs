@@ -290,6 +290,11 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 					txtTitle.Text = item.Title;
                     txtDescription.TextFormatted = GetFormattedText(item.Description);
 
+					if (item.Description != null && (item.Description.Contains("<img")))
+                    {
+						this.presenter.ExtractImage(item.Description);
+					}
+
 					if (item.Description != null && (item.Description.Contains("http") || item.Description.Contains("www.")))
 					{
 						SpannableString s = new SpannableString(txtDescription.TextFormatted);
