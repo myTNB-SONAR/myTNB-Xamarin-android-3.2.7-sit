@@ -4354,6 +4354,11 @@
     <Compile Include="Src\Database\Model\EPPToolTipEntity.cs" />
     <Compile Include="Src\Database\Model\EPPToolTipParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\EppToolTipService.cs" />
+    <Compile Include="Src\Base\Activity\BasePDFViewerActivity.cs" />
+    <AndroidResource Include="Resources\layout\BasePDFViewerLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
