@@ -2780,6 +2780,7 @@
     <Compile Include="Sitecore CMS\Service\EppInfoTooltipService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\EppInfoTooltipEntity.cs" />
     <Compile Include="Helpers\WebWKUIDelegate.cs" />
+    <Compile Include="Session Cache\WhatsNewDetailCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

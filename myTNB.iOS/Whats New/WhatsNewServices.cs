@@ -180,6 +180,52 @@ namespace myTNB
             }
         }
 
+        public static void OpenWhatsNewDetailsInDetails(string whatsNewId, UIViewController topView)
+        {
+            if (WhatsNewCache.WhatsNewIsAvailable)
+            {
+                if (whatsNewId.IsValid())
+                {
+                    var whatsNew = WhatsNewEntity.GetItem(whatsNewId);
+                    if (whatsNew != null)
+                    {
+                        if (!WhatsNewHasExpired(whatsNew))
+                        {
+                            WhatsNewCache.RefreshWhatsNew = true;
+                            WhatsNewDetailsViewController whatsNewDetailView = new WhatsNewDetailsViewController();
+                            whatsNewDetailView.WhatsNewModel = whatsNew;
+                            UINavigationController navController = new UINavigationController(whatsNewDetailView)
+                            {
+                                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                            };
+                            topView.PresentViewController(navController, true, null);
+
+                            var entityModel = whatsNew.ToEntity();
+                            entityModel.IsRead = true;
+                            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                            whatsNewEntity.UpdateItem(entityModel);
+                        }
+                        else
+                        {
+                            ShowWhatsNewExpired(topView);
+                        }
+                    }
+                    else
+                    {
+                        ShowWhatsNewExpired(topView);
+                    }
+                }
+                else
+                {
+                    ShowWhatsNewExpired(topView);
+                }
+            }
+            else
+            {
+                ShowWhatsNewUnavailable();
+            }
+        }
+
         public static void ShowWhatsNewExpired(UIViewController topView)
         {
             if (topView != null)

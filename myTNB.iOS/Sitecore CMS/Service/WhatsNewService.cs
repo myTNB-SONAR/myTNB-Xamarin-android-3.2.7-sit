@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
@@ -114,7 +116,7 @@ namespace myTNB.SitecoreCMS.Service
         private async Task<IEnumerable<WhatsNewModel>> GenerateWhatsNewChildren(ScItemsResponse itemsResponse)
         {
             List<WhatsNewModel> list = new List<WhatsNewModel>();
-            await Task.Run(() =>
+            await Task.Run(async() =>
             {
                 try
                 {
@@ -134,8 +136,71 @@ namespace myTNB.SitecoreCMS.Service
                             Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
                             StartDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
                             EndDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate),
-                            PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate)
+                            PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate),
+                            Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
+                            Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
+                            PortraitImage_PopUp = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp),
                         };
+
+                        try
+                        {
+                            listlItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : 0;
+                        }
+                        catch (Exception ex)
+                        {
+                            listlItem.ShowEveryCountDays_PopUp = 0;
+                        }
+                        try
+                        {
+                            listlItem.ShowForTotalCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowForTotalCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowForTotalCountDays_PopUp)) : 0;
+                        }
+                        catch (Exception ex)
+                        {
+                            listlItem.ShowForTotalCountDays_PopUp = 0;
+                        }
+                        try
+                        {
+                            listlItem.ShowAtAppLaunchPopUp = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE" ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            listlItem.ShowAtAppLaunchPopUp = false;
+                        }
+
+                        if (listlItem.Description.Contains("<img"))
+                        {
+                            string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+                            System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(listlItem.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                            foreach (System.Text.RegularExpressions.Match m in matchesImgSrc)
+                            {
+                                string href = m.Groups[1].Value;
+                                if (!href.Contains("http"))
+                                {
+                                    href = item.GetImageUrlFromExtractedUrl(m.Groups[1].Value, _websiteURL);
+                                }
+
+                                try
+                                {
+                                    var client = new HttpClient();
+                                    var data = await client.GetAsync(href);
+                                    if (data.IsSuccessStatusCode)
+                                    {
+                                        string mediaType = data.Content.Headers.ContentType.MediaType;
+                                        var byteArray = await data.Content.ReadAsByteArrayAsync();
+                                        listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, "data:" + mediaType + ";base64," + System.Convert.ToBase64String(byteArray));
+                                    }
+                                    else
+                                    {
+                                        listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, href);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine("Exception in WhatsNewService/GenerateWhatsNewChildren: " + e.Message);
+                                    listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, href);
+                                }
+                            }
+                        }
 
                         list.Add(listlItem);
                     }

@@ -113,6 +113,8 @@ namespace myTNB
         {
             nfloat imgHeight = GetScaledHeight(180F);
 
+            bool isImageDetailAvailable = true;
+
             UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
             {
                 BackgroundColor = UIColor.Clear,
@@ -123,9 +125,65 @@ namespace myTNB
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
 
-            if (WhatsNewModel.Image.IsValid())
+
+            if (WhatsNewModel.Description.Contains("<img"))
             {
-                NSData imgData = WhatsNewCache.GetImage(WhatsNewModel.ID);
+                string urlHeightWidthRegex = "(<img\\b|(?!^)\\G)[^>]*?\\b(src|width|height)=([\"']?)([^\"]*)\\3";
+                System.Text.RegularExpressions.MatchCollection matcheImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlHeightWidthRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                bool foundWidth = false;
+                bool foundHeight = false;
+                nfloat textImgWidth = 0;
+                nfloat textImgHeight = 0;
+                for (int index = 0; index < matcheImgSrc.Count; index++)
+                {
+                    if (matcheImgSrc[index].Groups[2].Value == "width")
+                    {
+                        if (foundHeight)
+                        {
+                            textImgWidth = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                            nfloat deviceWidth = UIScreen.MainScreen.Bounds.Width - (BaseMarginWidth16 * 2);
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
+
+                            nfloat calImgRatio = deviceWidth / textImgWidth;
+                            nfloat deviceHeight = textImgHeight * calImgRatio;
+
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("height=\"" + textImgHeight + "\"", "height=\"" + deviceHeight.ToString() + "\"");
+
+                            foundHeight = false;
+                        }
+                        else
+                        {
+                            foundWidth = true;
+                            textImgWidth = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                        }
+                    }
+                    else if (matcheImgSrc[index].Groups[2].Value == "height")
+                    {
+                        if (foundWidth)
+                        {
+                            textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                            nfloat deviceWidth = UIScreen.MainScreen.Bounds.Width;
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
+
+                            nfloat calImgRatio = deviceWidth / textImgWidth;
+                            nfloat deviceHeight = textImgHeight * calImgRatio;
+
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("height=\"" + textImgHeight + "\"", "height=\"" + deviceHeight.ToString() + "\"");
+
+                            foundWidth = false;
+                        }
+                        else
+                        {
+                            foundHeight = true;
+                            textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                        }
+                    }
+                }
+            }
+
+            if (WhatsNewModel.Image_DetailsView.IsValid())
+            {
+                NSData imgData = WhatsNewDetailCache.GetImage(WhatsNewModel.ID);
                 if (imgData != null)
                 {
                     imageView.Image = UIImage.FromBundle(WhatsNewConstants.Img_WhatsNewDefaultBanner);
@@ -161,7 +219,7 @@ namespace myTNB
 
                         viewShimmerContent.AddSubview(viewImage);
                         imgLoadingView.AddSubview(viewShimmerParent);
-                        NSUrl url = new NSUrl(WhatsNewModel.Image);
+                        NSUrl url = new NSUrl(WhatsNewModel.Image_DetailsView);
                         NSUrlSession session = NSUrlSession
                             .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
                         NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
@@ -175,6 +233,7 @@ namespace myTNB
                                     {
                                         imageView.Image = image;
                                     }
+                                    WhatsNewDetailCache.SaveImage(WhatsNewModel.ID, data);
                                     imgLoadingView.RemoveFromSuperview();
                                 });
                             }
@@ -209,10 +268,7 @@ namespace myTNB
             }
             else
             {
-                InvokeOnMainThread(() =>
-                {
-                    imageView.Image = UIImage.FromBundle(WhatsNewConstants.Img_WhatsNewDefaultBanner);
-                });
+                isImageDetailAvailable = false;
             }
 
             nfloat viewWidth = ViewWidth - (BaseMarginWidth16 * 2);
@@ -221,9 +277,15 @@ namespace myTNB
             CGSize titleTextViewSize = titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(titleTextView, titleTextViewSize.Height);
             ViewHelper.AdjustFrameSetX(titleTextView, GetScaledWidth(16F));
-            ViewHelper.AdjustFrameSetY(titleTextView, GetYLocationFromFrame(imageView.Frame, 20F));
+            if (isImageDetailAvailable)
+            {
+                ViewHelper.AdjustFrameSetY(titleTextView, GetYLocationFromFrame(imageView.Frame, 20F));
+            }
+            else
+            {
+                ViewHelper.AdjustFrameSetY(titleTextView, GetScaledHeight(16F));
+            }
             ViewHelper.AdjustFrameSetWidth(titleTextView, viewWidth);
-
             UITextView descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
             CGSize descTextViewSize = descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(descTextView, descTextViewSize.Height);
@@ -231,8 +293,11 @@ namespace myTNB
             ViewHelper.AdjustFrameSetY(descTextView, GetYLocationFromFrame(titleTextView.Frame, 20F));
             ViewHelper.AdjustFrameSetWidth(descTextView, viewWidth);
 
-            _scrollView.AddSubview(imageContainer);
-            _scrollView.AddSubview(imageView);
+            if (isImageDetailAvailable)
+            {
+                _scrollView.AddSubview(imageContainer);
+                _scrollView.AddSubview(imageView);
+            }
             _scrollView.AddSubview(titleTextView);
             _scrollView.AddSubview(descTextView);
             UpdateScrollViewContentSize(descTextView);
@@ -285,17 +350,161 @@ namespace myTNB
             {
                 if (url != null)
                 {
-                    BrowserViewController viewController = new BrowserViewController();
-                    if (viewController != null)
+                    string absURL = url.AbsoluteString;
+                    int whileCount = 0;
+                    bool isContained = false;
+                    for (int i = 0; i < AlertHandler.RedirectTypeList.Count; i++)
                     {
-                        viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);
-                        viewController.URL = url.AbsoluteString;
-                        viewController.IsDelegateNeeded = false;
-                        UINavigationController navController = new UINavigationController(viewController)
+                        if (absURL.Contains(AlertHandler.RedirectTypeList[i]))
                         {
-                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                        };
-                        PresentViewController(navController, true, null);
+                            whileCount = i;
+                            isContained = true;
+                            break;
+                        }
+                    }
+
+                    if (isContained)
+                    {
+                        if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[0])
+                        {
+                            string urlString = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
+                            BrowserViewController viewController = new BrowserViewController();
+                            if (viewController != null)
+                            {
+                                viewController.URL = urlString;
+                                viewController.IsDelegateNeeded = false;
+                                UINavigationController navController = new UINavigationController(viewController)
+                                {
+                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                };
+                                PresentViewController(navController, true, null);
+                            }
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
+                        {
+                            string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
+                            UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[2])
+                        {
+                            string urlString = absURL.Split(AlertHandler.RedirectTypeList[2])[1];
+                            if (!urlString.Contains("tel:"))
+                            {
+                                urlString = "tel:" + urlString;
+                            }
+                            UIApplication.SharedApplication.OpenUrl(new NSUrl(new Uri(urlString).AbsoluteUri));
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[3])
+                        {
+                            string key = absURL.Split(AlertHandler.RedirectTypeList[3])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            key = key.Replace("{", "").Replace("}", "");
+                            WhatsNewServices.OpenWhatsNewDetailsInDetails(key, this);
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[4])
+                        {
+                            string key = absURL.Split(AlertHandler.RedirectTypeList[4])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            if (!key.Contains("{"))
+                            {
+                                key = "{" + key;
+                            }
+                            if (!key.Contains("}"))
+                            {
+                                key = key + "}";
+                            }
+                            ViewHelper.GoToFAQScreenWithId(key);
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[5])
+                        {
+                            string key = absURL.Split(AlertHandler.RedirectTypeList[5])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            key = key.Replace("{", "").Replace("}", "");
+                            RewardsServices.OpenRewardDetails(key, this);
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[6])
+                        {
+                            string urlString = absURL;
+                            BrowserViewController viewController = new BrowserViewController();
+                            if (viewController != null)
+                            {
+                                viewController.NavigationTitle = "";
+                                viewController.URL = urlString;
+                                viewController.IsDelegateNeeded = false;
+                                UINavigationController navController = new UINavigationController(viewController)
+                                {
+                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                };
+                                PresentViewController(navController, true, null);
+                            }
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[7])
+                        {
+                            string urlString = absURL;
+                            if (!urlString.Contains("tel:"))
+                            {
+                                urlString = "tel:" + urlString;
+                            }
+                            UIApplication.SharedApplication.OpenUrl(new NSUrl(new Uri(urlString).AbsoluteUri));
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[8])
+                        {
+                            string key = absURL.Split(AlertHandler.RedirectTypeList[8])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            key = key.Replace("{", "").Replace("}", "");
+                            WhatsNewServices.OpenWhatsNewDetailsInDetails(key, this);
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[9])
+                        {
+                            string key = absURL.Split(AlertHandler.RedirectTypeList[9])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            if (!key.Contains("{"))
+                            {
+                                key = "{" + key;
+                            }
+                            if (!key.Contains("}"))
+                            {
+                                key = key + "}";
+                            }
+                            ViewHelper.GoToFAQScreenWithId(key);
+                        }
+                        else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[10])
+                        {
+                            string key = absURL.Split(AlertHandler.RedirectTypeList[10])[1];
+                            key = key.Replace("%7B", "{").Replace("%7D", "}");
+                            int index = key.IndexOf("}");
+                            if (index > -1 && index < key.Length - 1)
+                            {
+                                key = key.Remove(index + 1);
+                            }
+                            key = key.Replace("{", "").Replace("}", "");
+                            RewardsServices.OpenRewardDetails(key, this);
+                        }
                     }
                 }
             });

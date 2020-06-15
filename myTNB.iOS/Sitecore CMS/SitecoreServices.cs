@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -38,6 +39,7 @@ namespace myTNB.SitecoreCMS
             {
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
+                WhatsNewDetailCache.ClearImages();
                 RewardsCache.ClearImages();
                 ClearTimeStamps();
             }
@@ -739,6 +741,8 @@ namespace myTNB.SitecoreCMS
                                             whatsNew.CategoryID = category.ID;
                                             whatsNew.CategoryName = category.CategoryName;
                                             whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
+                                            whatsNew.ShowDayDate = GetCurrentDate();
+                                            whatsNew.ShowDayDateTotal = 0;
                                             whatsNewData.Add(whatsNew);
                                         }
                                     }
@@ -759,6 +763,13 @@ namespace myTNB.SitecoreCMS
                 }
                 Debug.WriteLine("LoadWhatsNew Done");
             });
+        }
+
+        private string GetCurrentDate()
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            return currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
         }
 
         public Task LoadNeedHelpTimeStamp()

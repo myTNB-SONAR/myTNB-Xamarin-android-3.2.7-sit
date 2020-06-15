@@ -91,6 +91,13 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.EndDate = obj.EndDate;
                     item.PublishDate = obj.PublishDate;
                     item.IsRead = obj.IsRead;
+                    item.Image_DetailsView = obj.Image_DetailsView;
+                    item.Styles_DetailsView = obj.Styles_DetailsView;
+                    item.PortraitImage_PopUp = obj.PortraitImage_PopUp;
+                    item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
+                    item.ShowForTotalCountDays_PopUp = obj.ShowForTotalCountDays_PopUp;
+                    item.ShowDayDate = obj.ShowDayDate;
+                    item.ShowDayDateTotal = obj.ShowDayDateTotal;
                     InsertItem(item);
                 }
             }
@@ -137,8 +144,15 @@ namespace myTNB.SQLite.SQLiteDataManager
                     StartDate = item.StartDate,
                     EndDate = item.EndDate,
                     PublishDate = item.PublishDate,
-                    IsRead = item.IsRead
-                };
+                    IsRead = item.IsRead,
+                    Image_DetailsView = item.Image_DetailsView,
+                    Styles_DetailsView = item.Styles_DetailsView,
+                    PortraitImage_PopUp = item.PortraitImage_PopUp,
+                    ShowEveryCountDays_PopUp = item.ShowEveryCountDays_PopUp,
+                    ShowForTotalCountDays_PopUp = item.ShowForTotalCountDays_PopUp,
+                    ShowDayDate = item.ShowDayDate,
+                    ShowDayDateTotal = item.ShowDayDateTotal,
+            };
                 itemList.Add(rewardModel);
             }
             return itemList;
@@ -220,7 +234,14 @@ namespace myTNB.SQLite.SQLiteDataManager
                     StartDate = reward.StartDate,
                     EndDate = reward.EndDate,
                     PublishDate = reward.PublishDate,
-                    IsRead = reward.IsRead
+                    IsRead = reward.IsRead,
+                    Image_DetailsView = reward.Image_DetailsView,
+                    Styles_DetailsView = reward.Styles_DetailsView,
+                    PortraitImage_PopUp = reward.PortraitImage_PopUp,
+                    ShowEveryCountDays_PopUp = reward.ShowEveryCountDays_PopUp,
+                    ShowForTotalCountDays_PopUp = reward.ShowForTotalCountDays_PopUp,
+                    ShowDayDate = reward.ShowDayDate,
+                    ShowDayDateTotal = reward.ShowDayDateTotal,
                 };
                 UpdateItem(item);
             }
