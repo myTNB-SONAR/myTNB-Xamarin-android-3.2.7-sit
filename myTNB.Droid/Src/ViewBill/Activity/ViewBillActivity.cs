@@ -54,7 +54,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
         private IMenuItem downloadOption;
         private string pdfURL = "http://drive.google.com/viewerng/viewer?embedded=true&url=";
         private string getPDFUrl = "";
-        private string filePath = null;
         private bool downloadClicked = false;
         private bool isLoadedDocument = false;
 
@@ -72,6 +71,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         ViewBillContract.IUserActionsListener userActionsListener;
         ViewBillPresenter mPresenter;
+
+        MemoryStream PdfStream = new MemoryStream();
 
         public override int ResourceId()
         {
@@ -191,37 +192,15 @@ namespace myTNB_Android.Src.ViewBill.Activity
                         downloadClicked = false;
                         RunOnUiThread(() =>
                         {
-                            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
-                            {
-                                this.userActionsListener.LoadingBillsHistory(selectedAccount);
-                            }
-                            else
-                            {
-                                RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                            }
+                            this.userActionsListener.LoadingBillsHistory(selectedAccount);
                         });
                     }
                     else
                     {
-
-#if STUB
-            if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
-            {
-                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill;
-                pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill, "utf-8");
-                //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum+"&billingNo="+selectedBill.NrBill, "utf-8"));
-            }
-            else
-            {
-                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum;
-                pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum, "utf-8");
-                //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
-            }
-#else
                         if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
                         {
                             getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                            pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill +"&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
+                            pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
                             //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum+"&billingNo="+selectedBill.NrBill, "utf-8"));
                         }
                         else
@@ -230,22 +209,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
                             pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
                             //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
                         }
-#endif
-                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-                        //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=https://mobiletestingws.tnb.com.my/v4/my_billingssp.asmx/GetBillPDF?apiKeyID=9515F2FA-C267-42C9-8087-FABA77CB84DF&accNum=" + selectedAccount.AccountNum);
 
-                        //webView.LoadUrl(pdfURL);
                         downloadClicked = true;
                         RunOnUiThread(() =>
                         {
-                            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
-                            {
-                                GetPDF();
-                            }
-                            else
-                            {
-                                RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                            }
+                            GetPDF();
                         });
                     }
                 }
@@ -259,83 +227,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-        }
-
-
-        public class MyTNBWebViewClient : WebViewClient
-        {
-
-            public Android.App.Activity mActivity;
-            public ProgressBar progressBar;
-            private bool isRedirected = false;
-            private IMenuItem download;
-
-            public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, IMenuItem menuItem)
-            {
-                this.mActivity = mActivity;
-                this.progressBar = progress;
-                this.download = menuItem;
-            }
-
-            public override bool ShouldOverrideUrlLoading(WebView view, string url)
-            {
-                try
-                {
-                    if (ConnectionUtils.HasInternetConnection(mActivity))
-                    {
-                        view.LoadUrl(url);
-                    }
-                    else
-                    {
-                        ShowErrorMessageNoInternet(url);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-                return true;
-            }
-
-            public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
-            {
-                try
-                {
-                    if (ConnectionUtils.HasInternetConnection(mActivity))
-                    {
-                        base.OnPageStarted(view, url, favicon);
-                        progressBar.Visibility = ViewStates.Visible;
-                        if (this.download != null)
-                        {
-                            this.download.SetVisible(false);
-                        }
-                    }
-                    else
-                    {
-                        ShowErrorMessageNoInternet(url);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }
-
-            public override void OnPageFinished(WebView view, string url)
-            {
-                try
-                {
-                    progressBar.Visibility = ViewStates.Gone;
-                    if (this.download != null)
-                    {
-                        this.download.SetVisible(true);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -355,11 +246,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                         if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
                         {
                             downloadClicked = true;
-                            if (!string.IsNullOrEmpty(filePath))
-                            {
-                                OpenPDF(filePath);
-                            }
-
+                            OnSavePDF();
                         }
                         else
                         {
@@ -388,30 +275,28 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     Utility.LoggingNonFatalError(e);
                 }
 
+                PdfStream = new MemoryStream();
+
                 await Task.Run(() =>
                 {
-                    filePath = OnDownloadPDF();
+                    PdfStream = OnDownloadPDFToStream();
                 }, cts.Token);
 
-                //mProgressBar.Visibility = ViewStates.Gone;
-                if (!string.IsNullOrEmpty(filePath))
+                if (PdfStream != null)
                 {
                     try
                     {
-                        Java.IO.File file = new Java.IO.File(filePath);
-                        //Patch done by Jeeva on 26-12-2018.As per the App Code Scanning Report...
-                        using (Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open))
+                        using (StreamReader sr = new StreamReader(PdfStream))
                         {
-                            pdfViewer.LoadDocument(PdfStream);
+                            pdfViewer.LoadDocument(sr.BaseStream);
+                            sr.Close();
                             isLoadedDocument = true;
                         }
-                        //Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open);//Assets.Open(path);
-                        //pdfViewer.LoadDocument(PdfStream);
-                        //Patch done by Jeeva on 26-12-2018.As per the App Code Scanning Report...
+
                     }
                     catch (Exception e)
                     {
-                        Log.Debug("ViewBillActivity", e.Message);
+                        Log.Debug("BasePDFViewerActivity", e.Message);
                     }
                 }
 
@@ -432,41 +317,56 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         }
 
-        public string OnDownloadPDF()
+        public void OnSavePDF()
         {
-            string path = null;
-            //if (downloadClicked)
-            //{
-
             try
             {
-                if (!String.IsNullOrEmpty(getPDFUrl) && !String.IsNullOrEmpty(selectedAccount?.AccountNum))
+                if (PdfStream != null && !String.IsNullOrEmpty(selectedAccount?.AccountNum))
                 {
-                    using (WebClient client = new WebClient())
+                    var directory = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory, "pdf").ToString();
+                    if (!Directory.Exists(directory))
                     {
-                        var directory = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory, "pdf").ToString();
-                        if (!Directory.Exists(directory))
-                        {
-                            Directory.CreateDirectory(directory);
-                        }
-
-                        string filename = selectedAccount?.AccountNum + ".pdf";
-                        if (!string.IsNullOrEmpty(selectedBill?.NrBill))
-                        {
-                            filename = selectedAccount?.AccountNum + "_" + selectedBill?.NrBill + ".pdf";
-                        }
-                        path = System.IO.Path.Combine(directory, filename);
-
-                        if (!string.IsNullOrEmpty(path))
-                        {
-                            if (File.Exists(path))
-                            {
-                                File.Delete(path);
-                            }
-                            client.DownloadFile(getPDFUrl, path);
-                        }
-
+                        Directory.CreateDirectory(directory);
                     }
+
+                    string filename = selectedAccount?.AccountNum + ".pdf";
+                    if (!string.IsNullOrEmpty(selectedBill?.NrBill))
+                    {
+                        filename = selectedAccount?.AccountNum + "_" + selectedBill?.NrBill + ".pdf";
+                    }
+                    var path = System.IO.Path.Combine(directory, filename);
+
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+
+                        try
+                        {
+                            Java.IO.File file = new Java.IO.File(path);
+
+                            Java.IO.FileOutputStream outs = new Java.IO.FileOutputStream(file);
+                            outs.Write(PdfStream.GetBuffer());
+
+                            outs.Flush();
+                            outs.Close();
+
+                            OpenPDF(path);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Debug("ViewBillActivity", e.StackTrace);
+                            downloadClicked = false;
+                            mProgressBar.Visibility = ViewStates.Gone;
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                }
+                else
+                {
+                    downloadClicked = false;
                 }
             }
             catch (Exception e)
@@ -476,8 +376,28 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 mProgressBar.Visibility = ViewStates.Gone;
                 Utility.LoggingNonFatalError(e);
             }
-            // }
-            return path;
+        }
+
+        public MemoryStream OnDownloadPDFToStream()
+        {
+            MemoryStream stream = new MemoryStream();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(getPDFUrl))
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                        var pdfByte = client.DownloadData(getPDFUrl);
+                        stream.Write(pdfByte, 0, pdfByte.Length);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return stream;
         }
 
         public void OpenPDF(string path)
@@ -565,7 +485,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                                 {
                                     RunOnUiThread(() =>
                                     {
-                                        GetPDF();
+                                        OnSavePDF();
                                     });
                                 }
                                 else
@@ -580,7 +500,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                             {
                                 RunOnUiThread(() =>
                                 {
-                                    GetPDF();
+                                    OnSavePDF();
                                 });
                             }
                         }
@@ -690,14 +610,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 downloadClicked = true;
                 RunOnUiThread(() =>
                 {
-                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
-                    {
-                        GetPDF();
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    }
+                    GetPDF();
                 });
             }
             catch (Exception e)
