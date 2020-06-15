@@ -509,21 +509,20 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 				if (!string.IsNullOrEmpty(url))
 				{
-					if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0])
+					if (!this.GetIsClicked())
+					{
+						this.SetIsClicked(true);
+						if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0])
 							|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1])
 							|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[6]))
-                    {
-						if (!this.GetIsClicked())
 						{
-							this.SetIsClicked(true);
-
 							string uri = url;
 							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0]))
 							{
 								uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[0])[1];
-                            }
+							}
 							else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1]))
-                            {
+							{
 								uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[1])[1];
 							}
 
@@ -533,26 +532,32 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 							}
 
 							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1]))
-                            {
+							{
 								Intent intent = new Intent(Intent.ActionView);
 								intent.SetData(Android.Net.Uri.Parse(uri));
 								this.StartActivity(intent);
 							}
 							else
-                            {
-								Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-								webIntent.PutExtra(Constants.IN_APP_LINK, uri);
-								webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-								StartActivity(webIntent);
+							{
+								if (uri.Contains(".pdf") && !uri.Contains("docs.google"))
+								{
+									Intent webIntent = new Intent(this, typeof(BasePDFViewerActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
+								else
+								{
+									Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
 							}
 						}
-					}
-					else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2])
-								|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[7]))
-					{
-						if (!this.GetIsClicked())
-                        {
-							this.SetIsClicked(true);
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[7]))
+						{
 							string phonenum = url;
 							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2]))
 							{
@@ -570,17 +575,13 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 								this.StartActivity(callIntent);
 							}
 							else
-                            {
+							{
 								this.SetIsClicked(false);
 							}
 						}
-					}
-					else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3])
-								|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[8]))
-					{
-						if (!this.GetIsClicked())
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[8]))
 						{
-							this.SetIsClicked(true);
 							string whatsnewid = url;
 							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3]))
 							{
@@ -619,19 +620,19 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 									activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
 									this.StartActivity(activity);
 								}
+								else
+								{
+									this.SetIsClicked(false);
+								}
 							}
 							else
 							{
 								this.SetIsClicked(false);
 							}
 						}
-					}
-					else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4])
-								|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[9]))
-					{
-						if (!this.GetIsClicked())
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[9]))
 						{
-							this.SetIsClicked(true);
 							string faqid = url;
 							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4]))
 							{
@@ -663,13 +664,9 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 								this.SetIsClicked(false);
 							}
 						}
-					}
-					else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5])
-								|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[10]))
-					{
-						if (!this.GetIsClicked())
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[10]))
 						{
-							this.SetIsClicked(true);
 							string rewardid = url;
 							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5]))
 							{
@@ -707,6 +704,10 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 									activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
 									activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
 									this.StartActivity(activity);
+								}
+								else
+								{
+									this.SetIsClicked(false);
 								}
 							}
 							else
