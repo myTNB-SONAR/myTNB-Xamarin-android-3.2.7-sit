@@ -611,20 +611,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         ScaleGestureDetector mScaleDetector;
 
-        public static List<string> RedirectTypeList = new List<string> {
-            "inAppBrowser=",
-            "externalBrowser=",
-            "tel=",
-            "whatsnew=",
-            "faq=",
-            "reward=",
-            "http",
-            "tel:",
-            "whatsnewid=",
-            "faqid=",
-            "rewardid="
-        };
-
         public override int ResourceId()
         {
             return Resource.Layout.DashboardNewChartView;
@@ -4998,9 +4984,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 int whileCount = 0;
                 bool isContained = false;
-                for (int i = 0; i < RedirectTypeList.Count; i++)
+                for (int i = 0; i < MyTNBAppToolTipBuilder.RedirectTypeList.Count; i++)
                 {
-                    if (message.Contains(RedirectTypeList[i]))
+                    if (message.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[i]))
                     {
                         whileCount = i;
                         isContained = true;
@@ -5018,191 +5004,258 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     };
                     clickableSpan.Click += v =>
                     {
-                        if (RedirectTypeList[whileCount] == RedirectTypeList[0]
-                            || RedirectTypeList[whileCount] == RedirectTypeList[1]
-                            || RedirectTypeList[whileCount] == RedirectTypeList[6])
+                        if (!this.GetIsClicked())
                         {
-                            List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
-                            if (extractedUrls.Count > 0)
+                            this.SetIsClicked(true);
+                            if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
+                                || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[1]
+                                || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
                             {
-                                if (!extractedUrls[0].Contains("http"))
+                                List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
+                                if (extractedUrls.Count > 0)
                                 {
-                                    extractedUrls[0] = "http://" + extractedUrls[0];
-                                }
+                                    if (!extractedUrls[0].Contains("http"))
+                                    {
+                                        extractedUrls[0] = "http://" + extractedUrls[0];
+                                    }
 
-                                if (RedirectTypeList[whileCount] == RedirectTypeList[0] || RedirectTypeList[whileCount] == RedirectTypeList[6])
-                                {
-                                    Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
-                                    webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                                    webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                                    this.Activity.StartActivity(webIntent);
+                                    if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
+                                            || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
+                                    {
+                                        if (extractedUrls[0].Contains(".pdf") && !extractedUrls[0].Contains("docs.google"))
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BasePDFViewerActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
+                                        else
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Intent intent = new Intent(Intent.ActionView);
+                                        intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
+                                        this.Activity.StartActivity(intent);
+                                    }
                                 }
                                 else
                                 {
-                                    Intent intent = new Intent(Intent.ActionView);
-                                    intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
-                                    this.Activity.StartActivity(intent);
+                                    this.SetIsClicked(false);
                                 }
                             }
-                        }
-                        else if (RedirectTypeList[whileCount] == RedirectTypeList[2])
-                        {
-                            int startIndex = message.LastIndexOf("=") + 1;
-                            int lastIndex = message.LastIndexOf("\">") - 1;
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < message.Length)
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[2])
                             {
-                                string phonenum = message.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(phonenum))
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("\">") - 1;
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
                                 {
-                                    if (!phonenum.Contains("tel:"))
+                                    string phonenum = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(phonenum))
                                     {
-                                        phonenum = "tel:" + phonenum;
-                                    }
-
-                                    var call = Android.Net.Uri.Parse(phonenum);
-                                    var callIntent = new Intent(Intent.ActionView, call);
-                                    this.Activity.StartActivity(callIntent);
-                                }
-                            }
-                        }
-                        else if (RedirectTypeList[whileCount] == RedirectTypeList[3]
-                                    || RedirectTypeList[whileCount] == RedirectTypeList[8])
-                        {
-                            int startIndex = message.LastIndexOf("=") + 1;
-                            int lastIndex = message.LastIndexOf("}");
-                            if (lastIndex < 0)
-                            {
-                                lastIndex = message.LastIndexOf("\">") - 1;
-                            }
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < message.Length)
-                            {
-                                string whatsnewid = message.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(whatsnewid))
-                                {
-                                    if (!whatsnewid.Contains("{"))
-                                    {
-                                        whatsnewid = "{" + whatsnewid;
-                                    }
-
-                                    if (!whatsnewid.Contains("}"))
-                                    {
-                                        whatsnewid = whatsnewid + "}";
-                                    }
-
-                                    WhatsNewEntity wtManager = new WhatsNewEntity();
-
-                                    WhatsNewEntity item = wtManager.GetItem(whatsnewid);
-
-                                    if (item != null)
-                                    {
-                                        if (!item.Read)
+                                        if (!phonenum.Contains("tel:"))
                                         {
-                                            this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                            phonenum = "tel:" + phonenum;
                                         }
 
-                                        Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
-                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
-                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
-                                        this.Activity.StartActivity(activity);
+                                        var call = Android.Net.Uri.Parse(phonenum);
+                                        var callIntent = new Intent(Intent.ActionView, call);
+                                        this.Activity.StartActivity(callIntent);
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
                                     }
                                 }
-                            }
-                        }
-                        else if (RedirectTypeList[whileCount] == RedirectTypeList[4]
-                                    || RedirectTypeList[whileCount] == RedirectTypeList[9])
-                        {
-                            int startIndex = message.LastIndexOf("=") + 1;
-                            int lastIndex = message.LastIndexOf("}");
-                            if (lastIndex < 0)
-                            {
-                                lastIndex = message.LastIndexOf("\">") - 1;
-                            }
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < message.Length)
-                            {
-                                string faqid = message.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(faqid))
+                                else
                                 {
-                                    if (!faqid.Contains("{"))
-                                    {
-                                        faqid = "{" + faqid;
-                                    }
-
-                                    if (!faqid.Contains("}"))
-                                    {
-                                        faqid = faqid + "}";
-                                    }
-
-                                    Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                    this.Activity.StartActivity(faqIntent);
+                                    this.SetIsClicked(false);
                                 }
                             }
-                        }
-                        else if (RedirectTypeList[whileCount] == RedirectTypeList[5]
-                                    || RedirectTypeList[whileCount] == RedirectTypeList[10])
-                        {
-                            int startIndex = message.LastIndexOf("=") + 1;
-                            int lastIndex = message.LastIndexOf("}");
-                            if (lastIndex < 0)
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[3]
+                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[8])
                             {
-                                lastIndex = message.LastIndexOf("\">") - 1;
-                            }
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < message.Length)
-                            {
-                                string rewardid = message.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(rewardid))
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("}");
+                                if (lastIndex < 0)
                                 {
-                                    if (!rewardid.Contains("{"))
+                                    lastIndex = message.LastIndexOf("\">") - 1;
+                                }
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string whatsnewid = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(whatsnewid))
                                     {
-                                        rewardid = "{" + rewardid;
-                                    }
-
-                                    if (!rewardid.Contains("}"))
-                                    {
-                                        rewardid = rewardid + "}";
-                                    }
-
-                                    RewardsEntity wtManager = new RewardsEntity();
-
-                                    RewardsEntity item = wtManager.GetItem(rewardid);
-
-                                    if (item != null)
-                                    {
-                                        if (!item.Read)
+                                        if (!whatsnewid.Contains("{"))
                                         {
-                                            this.mPresenter.UpdateRewardRead(item.ID, true);
+                                            whatsnewid = "{" + whatsnewid;
                                         }
 
-                                        Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
-                                        activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
-                                        activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
-                                        this.Activity.StartActivity(activity);
+                                        if (!whatsnewid.Contains("}"))
+                                        {
+                                            whatsnewid = whatsnewid + "}";
+                                        }
+
+                                        WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                        WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                        if (item != null)
+                                        {
+                                            if (!item.Read)
+                                            {
+                                                this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                            }
+
+                                            Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
+                                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                            this.Activity.StartActivity(activity);
+                                        }
+                                        else
+                                        {
+                                            this.SetIsClicked(false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
                                     }
                                 }
-                            }
-                        }
-                        else if (RedirectTypeList[whileCount] == RedirectTypeList[7])
-                        {
-                            int startIndex = message.LastIndexOf("\"tel") + 1;
-                            int lastIndex = message.LastIndexOf("\">") - 1;
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < message.Length)
-                            {
-                                string phonenum = message.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(phonenum))
+                                else
                                 {
-                                    if (!phonenum.Contains("tel:"))
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[4]
+                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[9])
+                            {
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("}");
+                                if (lastIndex < 0)
+                                {
+                                    lastIndex = message.LastIndexOf("\">") - 1;
+                                }
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string faqid = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(faqid))
                                     {
-                                        phonenum = "tel:" + phonenum;
-                                    }
+                                        if (!faqid.Contains("{"))
+                                        {
+                                            faqid = "{" + faqid;
+                                        }
 
-                                    var call = Android.Net.Uri.Parse(phonenum);
-                                    var callIntent = new Intent(Intent.ActionView, call);
-                                    this.Activity.StartActivity(callIntent);
+                                        if (!faqid.Contains("}"))
+                                        {
+                                            faqid = faqid + "}";
+                                        }
+
+                                        Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                        this.Activity.StartActivity(faqIntent);
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[5]
+                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[10])
+                            {
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("}");
+                                if (lastIndex < 0)
+                                {
+                                    lastIndex = message.LastIndexOf("\">") - 1;
+                                }
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string rewardid = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(rewardid))
+                                    {
+                                        if (!rewardid.Contains("{"))
+                                        {
+                                            rewardid = "{" + rewardid;
+                                        }
+
+                                        if (!rewardid.Contains("}"))
+                                        {
+                                            rewardid = rewardid + "}";
+                                        }
+
+                                        RewardsEntity wtManager = new RewardsEntity();
+
+                                        RewardsEntity item = wtManager.GetItem(rewardid);
+
+                                        if (item != null)
+                                        {
+                                            if (!item.Read)
+                                            {
+                                                this.mPresenter.UpdateRewardRead(item.ID, true);
+                                            }
+
+                                            Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
+                                            activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+                                            activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                            this.Activity.StartActivity(activity);
+                                        }
+                                        else
+                                        {
+                                            this.SetIsClicked(false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[7])
+                            {
+                                int startIndex = message.LastIndexOf("\"tel") + 1;
+                                int lastIndex = message.LastIndexOf("\">") - 1;
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string phonenum = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(phonenum))
+                                    {
+                                        if (!phonenum.Contains("tel:"))
+                                        {
+                                            phonenum = "tel:" + phonenum;
+                                        }
+
+                                        var call = Android.Net.Uri.Parse(phonenum);
+                                        var callIntent = new Intent(Intent.ActionView, call);
+                                        this.Activity.StartActivity(callIntent);
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
                                 }
                             }
                         }
