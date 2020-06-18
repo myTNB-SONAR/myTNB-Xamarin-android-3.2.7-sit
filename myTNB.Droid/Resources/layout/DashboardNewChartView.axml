@@ -1721,7 +1721,7 @@
                     android:id="@+id/infoLabelEPP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:textSize="11dp"
                     android:textColor="#1c79ca"
                     android:drawablePadding="8dp"
                     android:text="What about Easy Payment Plan (EPP)?"
