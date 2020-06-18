@@ -5300,12 +5300,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (GetIsMDMSDown())
                             {
-                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage.Trim()))
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? ""
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5334,12 +5334,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage.Trim()))
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? ""
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5374,12 +5374,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else if (!isREAccount)
                         {
-                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator
+                                && !string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage.Trim()))
                             {
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? ""
-                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                message = selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
@@ -5423,12 +5423,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (GetIsMDMSDown())
                             {
-                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage.Trim()))
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage) ? ""
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5457,12 +5457,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage.Trim()))
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage) ? ""
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5497,12 +5497,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else if (!isREAccount)
                         {
-                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator
+                                && !string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage.Trim()))
                             {
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage) ? ""
-                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+                                message = selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
@@ -5741,13 +5741,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (GetIsMDMSDown())
                             {
-                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage.Trim()))
                                 {
                                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? ""
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5763,13 +5763,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage.Trim()))
                                 {
                                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? ""
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5786,13 +5786,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else if (!isREAccount)
                         {
-                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator
+                                && !string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage.Trim()))
                             {
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? ""
-                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+                                message = selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
