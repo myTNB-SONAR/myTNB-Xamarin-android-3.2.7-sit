@@ -75,6 +75,12 @@ namespace myTNB_Android.Src.Base.Activity
                     return;
                 }
 
+                if (webLink.Contains(".jpeg") || webLink.Contains(".jpg") || webLink.Contains(".png"))
+                {
+                    webView.Settings.BuiltInZoomControls = true;
+                    webView.Settings.SetSupportZoom(true);
+                }
+
                 //webView.SetWebChromeClient(new WebChromeClient());
                 webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar, webLink, HeaderTitle));
 
