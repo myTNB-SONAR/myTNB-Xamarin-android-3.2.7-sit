@@ -129,27 +129,34 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
         private async Task GetImageAsync(WhatsNewModel item, int position, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
         {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            Bitmap imageBitmap = null;
-            await Task.Run(() =>
+            try
             {
-                imageBitmap = GetImageBitmapFromUrl(item.PortraitImage_PopUp);
-            }, cts.Token);
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Bitmap imageBitmap = null;
+                await Task.Run(() =>
+                {
+                    imageBitmap = GetImageBitmapFromUrl(item.PortraitImage_PopUp);
+                }, cts.Token);
 
-            if (imageBitmap != null)
-            {
-                item.PortraitImage_PopUpBitmap = imageBitmap;
-                item.PortraitImage_PopUpB64 = BitmapToBase64(imageBitmap);
-                this.whatsnew[position].PortraitImage_PopUpBitmap = item.PortraitImage_PopUpBitmap;
-                this.whatsnew[position].PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64;
-                WhatsNewEntity wtManager = new WhatsNewEntity();
-                wtManager.UpdateCachePopupImage(item.ID, item.PortraitImage_PopUpB64);
-                SetWhatsNewDialogImage(imageBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                if (imageBitmap != null)
+                {
+                    item.PortraitImage_PopUpBitmap = imageBitmap;
+                    item.PortraitImage_PopUpB64 = BitmapToBase64(imageBitmap);
+                    this.whatsnew[position].PortraitImage_PopUpBitmap = item.PortraitImage_PopUpBitmap;
+                    this.whatsnew[position].PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64;
+                    WhatsNewEntity wtManager = new WhatsNewEntity();
+                    wtManager.UpdateCachePopupImage(item.ID, item.PortraitImage_PopUpB64);
+                    SetWhatsNewDialogImage(imageBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                }
+                else
+                {
+                    // WhatsNew TODO: set default img
+                    // SetWhatsNewDialogImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                }
             }
-            else
+            catch (Exception e)
             {
-                // WhatsNew TODO: set default img
-                // SetWhatsNewDialogImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
