@@ -148,7 +148,7 @@ namespace myTNB.SitecoreCMS.Services
 					}
 					try
 					{
-						newItem.ShowAtAppLaunchPopUp = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE" ? true : false;
+						newItem.ShowAtAppLaunchPopUp = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE") ? true : false;
 					}
 					catch (Exception ex)
 					{

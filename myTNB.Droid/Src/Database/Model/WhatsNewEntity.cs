@@ -140,6 +140,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.PortraitImage_PopUp = obj.PortraitImage_PopUp;
                     item.PortraitImage_PopUpB64 = string.IsNullOrEmpty(obj.PortraitImage_PopUpB64) ? "" : obj.PortraitImage_PopUpB64;
                     item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
+                    item.ShowForTotalCountDays_PopUp = obj.ShowForTotalCountDays_PopUp;
                     item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
