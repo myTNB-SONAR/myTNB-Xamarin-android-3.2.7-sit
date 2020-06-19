@@ -126,7 +126,7 @@ namespace myTNB.SitecoreCMS.Services
 						CTA = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.CTA),
 						Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
 						Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
-						PortraitImage_PopUp = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp),
+						PortraitImage_PopUp = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp, _websiteURL, false),
 						ID = item.Id
 					};
 
