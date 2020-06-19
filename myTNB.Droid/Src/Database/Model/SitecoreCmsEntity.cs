@@ -117,6 +117,21 @@ namespace myTNB_Android.Src.Database.Model
             return true;
         }
 
+        public static void DeleteSitecoreRecord(SITE_CORE_ID itemId)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SitecoreCmsEntity where itemId = ?", itemId.ToString());
+
+                
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine("Error in Delete Items : {0}", e.Message);
+            }
+        }
+
         public static List<SitecoreCmsEntity> GetAllItems()
         {
             List<SitecoreCmsEntity> itemList = new List<SitecoreCmsEntity>();
