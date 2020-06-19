@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
             Bitmap imageBitmap = null;
             await Task.Run(() =>
             {
-                imageBitmap = GetImageBitmapFromUrl(item.Image_DetailsView);
+                imageBitmap = GetImageBitmapFromUrl(item.PortraitImage_PopUp);
             }, cts.Token);
 
             if (imageBitmap != null)
