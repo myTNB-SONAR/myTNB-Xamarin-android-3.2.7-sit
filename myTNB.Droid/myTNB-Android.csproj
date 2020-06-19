@@ -4359,6 +4359,16 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewPagerItemLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WhatsNewDialogLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\WhatsNewDialog\WhatsNewDialogFragment.cs" />
+    <Compile Include="Src\WhatsNewDialog\WhatsNewDialogPagerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4734,6 +4744,7 @@
     <Folder Include="Src\WhatsNewDetail\" />
     <Folder Include="Src\WhatsNewDetail\MVP\" />
     <Folder Include="Src\AddAccount\Api\" />
+    <Folder Include="Src\WhatsNewDialog\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

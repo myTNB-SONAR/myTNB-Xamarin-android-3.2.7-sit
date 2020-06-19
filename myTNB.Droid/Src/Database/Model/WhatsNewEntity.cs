@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace myTNB_Android.Src.Database.Model
 {
-    [Table("WhatsNewEntityV2")]
+    [Table("WhatsNewEntityV3")]
     public class WhatsNewEntity
     {
         [Unique, Column("ID")]
@@ -64,17 +64,23 @@ namespace myTNB_Android.Src.Database.Model
         [Column("PortraitImage_PopUp")]
         public string PortraitImage_PopUp { set; get; }
 
+        [Column("PortraitImage_PopUpB64")]
+        public string PortraitImage_PopUpB64 { set; get; }
+
         [Column("ShowEveryCountDays_PopUp")]
         public int ShowEveryCountDays_PopUp { set; get; }
 
         [Column("ShowForTotalCountDays_PopUp")]
         public int ShowForTotalCountDays_PopUp { set; get; }
 
-        [Column("ShowDayDate")]
-        public string ShowDayDate { set; get; }
+        [Column("ShowDateForDay")]
+        public string ShowDateForDay { set; get; }
 
-        [Column("ShowDayDateTotal")]
-        public int ShowDayDateTotal { set; get; }
+        [Column("ShowCountForDay")]
+        public int ShowCountForDay { set; get; }
+
+        [Column("SkipShowOnAppLaunch")]
+        public bool SkipShowOnAppLaunch { set; get; }
 
         [Column("ShowAtAppLaunchPopUp")]
         public bool ShowAtAppLaunchPopUp { set; get; }
@@ -85,7 +91,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewEntityV2");
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewEntityV3");
                 db.CreateTable<WhatsNewEntity>();
             }
             catch (Exception e)
@@ -132,21 +138,16 @@ namespace myTNB_Android.Src.Database.Model
                     item.Styles_DetailsView = obj.Styles_DetailsView;
                     item.Description_Images = obj.Description_Images;
                     item.PortraitImage_PopUp = obj.PortraitImage_PopUp;
+                    item.PortraitImage_PopUpB64 = string.IsNullOrEmpty(obj.PortraitImage_PopUpB64) ? "" : obj.PortraitImage_PopUpB64;
                     item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
                     item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
-                    item.ShowDayDate = GetCurrentDate();
-                    item.ShowDayDateTotal = 0;
+                    item.ShowDateForDay = obj.ShowDateForDay;
+                    item.ShowCountForDay = obj.ShowCountForDay;
+                    item.SkipShowOnAppLaunch = obj.SkipShowOnAppLaunch;
                     item.Description_Images = obj.Description_Images;
                     InsertItem(item);
                 }
             }
-        }
-
-        private string GetCurrentDate()
-        {
-            DateTime currentDate = DateTime.UtcNow;
-            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-            return currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
         }
 
         public List<WhatsNewEntity> GetAllItems()
@@ -155,7 +156,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                itemList = db.Query<WhatsNewEntity>("select * from WhatsNewEntityV2");
+                itemList = db.Query<WhatsNewEntity>("select * from WhatsNewEntityV3");
                 if (itemList == null)
                 {
                     itemList = new List<WhatsNewEntity>();
@@ -186,7 +187,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV2 WHERE Read = ? ", false);
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV3 WHERE Read = ? ", false);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -236,12 +237,97 @@ namespace myTNB_Android.Src.Database.Model
             return Count() > 0;
         }
 
+        public List<WhatsNewEntity> GetActivePopupItems()
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV3");
+
+                if (existingRecord != null && existingRecord.Count > 0)
+                {
+                    List<WhatsNewEntity> matchList = existingRecord.FindAll(x =>
+                    {
+                        int startResult = -1;
+                        int endResult = 1;
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(x.StartDate) && !string.IsNullOrEmpty(x.EndDate))
+                            {
+                                DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime stopDateTime = DateTime.ParseExact(x.EndDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime nowDateTime = DateTime.Now;
+                                startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                            }
+                        }
+                        catch (Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
+                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0 && x.ShowForTotalCountDays_PopUp > 0);
+                    });
+
+                    if (matchList != null && matchList.Count > 0)
+                    {
+                        List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
+                        {
+                            int startResult = -1;
+                            int endResult = 1;
+                            bool isAlreadyExceedQuota = false;
+                            try
+                            {
+                                if (!string.IsNullOrEmpty(x.StartDate))
+                                {
+                                    DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    DateTime stopDateTime = startDateTime.AddDays(x.ShowForTotalCountDays_PopUp);
+                                    DateTime nowDateTime = DateTime.Now;
+                                    startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                    endResult = DateTime.Compare(nowDateTime, stopDateTime);
+
+                                    DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                    if (showDateTime.Date == nowDateTime.Date && x.ShowCountForDay >= x.ShowEveryCountDays_PopUp)
+                                    {
+                                        isAlreadyExceedQuota = true;
+                                    }
+                                }
+                            }
+                            catch (Exception ne)
+                            {
+                                Utility.LoggingNonFatalError(ne);
+                            }
+                            return (startResult >= 0 && endResult <= 0 && !isAlreadyExceedQuota);
+                        });
+
+                        if (matchItemList != null && matchItemList.Count > 0)
+                        {
+                            return matchItemList;
+                        }
+
+                        return new List<WhatsNewEntity>();
+                    }
+
+                    return new List<WhatsNewEntity>();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+            return new List<WhatsNewEntity>();
+        }
+
         public List<WhatsNewEntity> GetActiveItems()
         {
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV2");
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV3");
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -289,7 +375,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV2 WHERE CategoryID = ?", categoryId);
+                var existingRecord = db.Query<WhatsNewEntity>("SELECT * FROM WhatsNewEntityV3 WHERE CategoryID = ?", categoryId);
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {
@@ -337,7 +423,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Delete from WhatsNewEntityV2 WHERE ID = ?", itemID);
+                db.Execute("Delete from WhatsNewEntityV3 WHERE ID = ?", itemID);
             }
             catch (Exception e)
             {
@@ -350,7 +436,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Delete from WhatsNewEntityV2 WHERE CategoryID = ?", categoryId);
+                db.Execute("Delete from WhatsNewEntityV3 WHERE CategoryID = ?", categoryId);
             }
             catch (Exception e)
             {
@@ -364,7 +450,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 List<WhatsNewEntity> itemList = new List<WhatsNewEntity>();
-                itemList = db.Query<WhatsNewEntity>("Select * FROM WhatsNewEntityV2 WHERE ID = ?", itemID);
+                itemList = db.Query<WhatsNewEntity>("Select * FROM WhatsNewEntityV3 WHERE ID = ?", itemID);
                 if (itemList != null && itemList.Count > 0)
                 {
                     itemList = itemList.FindAll(x =>
@@ -410,7 +496,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntityV2 SET Read = ? WHERE ID = ?", flag, itemID);
+                db.Execute("UPDATE WhatsNewEntityV3 SET Read = ? WHERE ID = ?", flag, itemID);
 
                 UpdateReadDateTimeItem(itemID, formattedDate);
             }
@@ -425,7 +511,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntityV2 SET ImageB64 = ? WHERE ID = ?", imageB64, itemID);
+                db.Execute("UPDATE WhatsNewEntityV3 SET ImageB64 = ? WHERE ID = ?", imageB64, itemID);
             }
             catch (Exception e)
             {
@@ -438,7 +524,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntityV2 SET Image_DetailsViewB64 = ? WHERE ID = ?", imageB64, itemID);
+                db.Execute("UPDATE WhatsNewEntityV3 SET Image_DetailsViewB64 = ? WHERE ID = ?", imageB64, itemID);
             }
             catch (Exception e)
             {
@@ -451,7 +537,20 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntityV2 SET Description_Images = ? WHERE ID = ?", imageJson, itemID);
+                db.Execute("UPDATE WhatsNewEntityV3 SET Description_Images = ? WHERE ID = ?", imageJson, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateCachePopupImage(string itemID, string imageB64)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE WhatsNewEntityV3 SET PortraitImage_PopUpB64 = ? WHERE ID = ?", imageB64, itemID);
             }
             catch (Exception e)
             {
@@ -464,7 +563,33 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE WhatsNewEntityV2 SET ReadDateTime = ? WHERE ID = ?", datetime, itemID);
+                db.Execute("UPDATE WhatsNewEntityV3 SET ReadDateTime = ? WHERE ID = ?", datetime, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateDialogCounterItem(string itemID, string datetime, int count)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE WhatsNewEntityV3 SET ShowDateForDay = ?, ShowCountForDay = ? WHERE ID = ?", datetime, count, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateDialogSkipItem(string itemID, bool flag)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE WhatsNewEntityV3 SET SkipShowOnAppLaunch = ? WHERE ID = ?", flag, itemID);
             }
             catch (Exception e)
             {

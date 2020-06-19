@@ -44,11 +44,14 @@ namespace myTNB.SitecoreCMS.Model
 		public string Description_Images { set; get; }
 		public List<WhatsNewDetailImageDBModel> Description_Images_List { set; get; }
 		public string PortraitImage_PopUp { set; get; }
+		public Bitmap PortraitImage_PopUpBitmap { set; get; }
+		public string PortraitImage_PopUpB64 { set; get; }
 		public int ShowEveryCountDays_PopUp { set; get; }
 		public int ShowForTotalCountDays_PopUp { set; get; }
 		public bool ShowAtAppLaunchPopUp { set; get; }
-		public string ShowDayDate { set; get; }
-		public string ShowDayDateTotal { set; get; }
+		public string ShowDateForDay { set; get; }
+		public int ShowCountForDay { set; get; }
+		public bool SkipShowOnAppLaunch { set; get; }
 		public bool Read { set; get; }
 		public string ReadDateTime { set; get; }
 	}

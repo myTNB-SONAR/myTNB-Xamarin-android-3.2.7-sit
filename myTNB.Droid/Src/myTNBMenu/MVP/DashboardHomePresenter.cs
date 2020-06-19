@@ -89,6 +89,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         internal int trackBottomNavigationMenu = Resource.Id.menu_dashboard;
 
+        private static bool isWhatsNewDialogShowNeed = false;
+
         public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
 			this.mView = mView;
@@ -476,7 +478,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-		public void Start()
+        public bool GetIsWhatsNewDialogShowNeed()
+        {
+            return isWhatsNewDialogShowNeed;
+        }
+
+        public void SetIsWhatsNewDialogShowNeed(bool flag)
+        {
+            isWhatsNewDialogShowNeed = flag;
+        }
+
+        public void Start()
 		{
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
@@ -489,6 +501,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     RewardsMenuUtils.OnSetRewardLoading(true);
                     new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 }
+                isWhatsNewDialogShowNeed = true;
                 LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
 
