@@ -2985,6 +2985,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public bool GetHomeTutorialCallState()
+        {
+            try
+            {
+                return UserSessions.HasHomeTutorialShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return false;
+        }
+
         public bool OnGetIsRootTooltipShown()
         {
             try

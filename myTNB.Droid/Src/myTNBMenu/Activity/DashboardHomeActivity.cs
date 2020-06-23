@@ -110,6 +110,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static bool isFirstInitiate = false;
 
+        private static bool isWhatNewDialogOnHold = false;
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown && !IsFinishing;
@@ -1238,6 +1240,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
+
+            if (isWhatNewDialogOnHold)
+            {
+                isWhatNewDialogOnHold = false;
+                OnCheckWhatsNewTab();
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -1870,55 +1878,64 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                     }
                 }
-                else if (this.mPresenter.GetIsWhatsNewDialogShowNeed())
+                else if (this.mPresenter.GetIsWhatsNewDialogShowNeed() && currentFragment.GetType() == typeof(HomeMenuFragment))
                 {
-                    this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
-                    WhatsNewEntity wtManager = new WhatsNewEntity();
-                    List<WhatsNewEntity> items = wtManager.GetActivePopupItems();
-                    if (items != null && items.Count > 0)
+                    HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    bool flag = fragment.GetHomeTutorialCallState();
+
+                    if (flag)
                     {
-                        List<WhatsNewModel> list = new List<WhatsNewModel>();
-                        for(int index = 0; index < items.Count; index++)
+                        this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
+                        WhatsNewEntity wtManager = new WhatsNewEntity();
+                        List<WhatsNewEntity> items = wtManager.GetActivePopupItems();
+                        if (items != null && items.Count > 0)
                         {
-                            string id = items[index].ID;
-                            string recordDate = items[index].ShowDateForDay;
-                            int count = items[index].ShowCountForDay;
-
-                            DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                            if (showDateTime.Date == DateTime.Now.Date)
+                            List<WhatsNewModel> list = new List<WhatsNewModel>();
+                            for (int index = 0; index < items.Count; index++)
                             {
-                                count = count + 1;
+                                string id = items[index].ID;
+                                string recordDate = items[index].ShowDateForDay;
+                                int count = items[index].ShowCountForDay;
+
+                                DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                if (showDateTime.Date == DateTime.Now.Date)
+                                {
+                                    count = count + 1;
+                                }
+                                else
+                                {
+                                    recordDate = GetCurrentDate();
+                                    count = 1;
+                                }
+
+                                wtManager.UpdateDialogCounterItem(id, recordDate, count);
                             }
-                            else
+
+                            foreach (WhatsNewEntity item in items)
                             {
-                                recordDate = GetCurrentDate();
-                                count = 1;
+                                list.Add(new WhatsNewModel()
+                                {
+                                    ID = item.ID,
+                                    PortraitImage_PopUp = item.PortraitImage_PopUp,
+                                    PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
+                                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
+                                });
                             }
-
-                            wtManager.UpdateDialogCounterItem(id, recordDate, count);
+                            IsRootTutorialShown = true;
+                            WhatsNewDialogFragment dialogFragmnet = new WhatsNewDialogFragment(this);
+                            dialogFragmnet.Cancelable = false;
+                            Bundle extras = new Bundle();
+                            extras.PutString("whatsnew", JsonConvert.SerializeObject(list));
+                            dialogFragmnet.Arguments = extras;
+                            dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
                         }
-
-                        foreach (WhatsNewEntity item in items)
-                        {
-                            list.Add(new WhatsNewModel()
-                            {
-                                ID = item.ID,
-                                PortraitImage_PopUp = item.PortraitImage_PopUp,
-                                PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
-                                SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
-                            });
-                        }
-                        IsRootTutorialShown = true;
-                        WhatsNewDialogFragment dialogFragmnet = new WhatsNewDialogFragment(this);
-                        dialogFragmnet.Cancelable = false;
-                        Bundle extras = new Bundle();
-                        extras.PutString("whatsnew", JsonConvert.SerializeObject(list));
-                        dialogFragmnet.Arguments = extras;
-                        dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
                     }
-
+                    else
+                    {
+                        isWhatNewDialogOnHold = true;
+                    }
                 }
             }
             catch (Exception e)

@@ -42,16 +42,6 @@
                     android:src="@drawable/shimmer_rectangle"/>
                 </com.facebook.shimmer.ShimmerFrameLayout>
             </LinearLayout>
-            <ImageButton
-                android:id="@+id/btnWhatsNewClose"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="right|top"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginRight="@dimen/_8sdp"
-                android:src="@drawable/ic_promo_close"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter" />
         </FrameLayout>
         <LinearLayout
             android:id="@+id/layout_btn_holder"
@@ -62,19 +52,7 @@
             android:background="#D8D8D8"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btnWhatsNewSkip"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:textSize="14dp"
-                android:textColor="@color/powerBlue"
-                android:background="@color/white"
-                android:text="@string/btn_skip"
-                android:textAllCaps="false"
-                android:gravity="center"
-                android:layout_marginRight="0.5dp"
-                android:layout_weight="0.5" />
-            <Button
-                android:id="@+id/btnWhatsNewDetails"
+                android:id="@+id/btnWhatsNewGotIt"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:textSize="14dp"
@@ -84,7 +62,7 @@
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="@string/btn_details"
-                android:layout_weight="0.5" />
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

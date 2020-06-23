@@ -39,14 +39,12 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
-            Button btnSkip = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewSkip);
-            Button btnDetails = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewDetails);
-            ImageButton btnClose = (ImageButton)rootView.FindViewById(Resource.Id.btnWhatsNewClose);
+            Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
             ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
             LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
             ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
 
-            TextViewUtils.SetMuseoSans300Typeface(btnSkip, btnDetails);
+            TextViewUtils.SetMuseoSans500Typeface(btnGotIt);
 
             WhatsNewModel model = whatsnew[position];
 
@@ -83,20 +81,14 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 // WhatsNew TODO: set default img
             }
 
-            btnSkip.Text = Utility.GetLocalizedCommonLabel("skip");
-            btnDetails.Text = Utility.GetLocalizedCommonLabel("details");
+            btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
 
-            btnClose.Click += delegate
+            btnGotIt.Click += delegate
             {
                 OnCloseClick(position);
             };
-            btnSkip.Click += delegate
-            {
-                SkipWhatsNew(position);
-            };
 
-
-            btnDetails.Click += delegate
+            imgWhatsNew.Click += delegate
             {
                 OnDetailsClick(position);
                 this.whatsnew.RemoveAt(position);
