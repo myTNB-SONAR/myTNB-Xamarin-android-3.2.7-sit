@@ -35,8 +35,16 @@ namespace myTNB
 
         public override UIView GetViewForItem(iCarousel carousel, nint index, UIView view)
         {
-            double buttonHeight = ScaleUtility.GetScaledHeight(44);
-            double itemHeight = UIScreen.MainScreen.Bounds.Height - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.202F)) - buttonHeight;
+            double buttonHeight = ScaleUtility.GetScaledHeight(52F);
+            double itemHeight = UIScreen.MainScreen.Bounds.Height - buttonHeight;
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(68F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+            }
+            else
+            {
+                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+            }
             float marginPercentage = 0.056F;
             double margin = UIScreen.MainScreen.Bounds.Width * marginPercentage;
             double carWidth = UIScreen.MainScreen.Bounds.Width - (margin * 2);
@@ -141,9 +149,15 @@ namespace myTNB
             mainView.AddGestureRecognizer(tapDetail);
             view.AddSubview(mainView);
 
+            UIView doNotShowView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+            {
+                BackgroundColor = UIColor.Clear,
+                UserInteractionEnabled = true
+            };
+
             UIButton btnGotIt = new UIButton(UIButtonType.Custom);
             btnGotIt.Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
-            btnGotIt.SetAttributedTitle(LabelHelper.CreateAttributedString(LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), MyTNBFont.MuseoSans14_500, MyTNBColor.PowerBlue), UIControlState.Normal);
+            btnGotIt.SetAttributedTitle(LabelHelper.CreateAttributedString(LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), MyTNBFont.MuseoSans16_500, MyTNBColor.PowerBlue), UIControlState.Normal);
             btnGotIt.BackgroundColor = UIColor.White;
             btnGotIt.TouchDown += OnTapExit;
             view.AddSubview(btnGotIt);

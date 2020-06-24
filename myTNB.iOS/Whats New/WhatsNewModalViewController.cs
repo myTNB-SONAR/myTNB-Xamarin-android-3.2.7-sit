@@ -38,9 +38,17 @@ namespace myTNB
             base.ViewDidLoad();
 
             NavigationController.NavigationBar.Hidden = true;
-            View.BackgroundColor = MyTNBColor.TunaGrey(0.6f);
+            View.BackgroundColor = MyTNBColor.Black75;
 
-            double carHeight = View.Bounds.Height - (ScaleUtility.GetScaledHeight(18F) + (View.Bounds.Height * 0.202F));
+            double carHeight = View.Bounds.Height;
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                carHeight = carHeight - (ScaleUtility.GetScaledHeight(68F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+            }
+            else
+            {
+                carHeight = carHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+            }
             var locY = (View.Bounds.Height / 2) - (carHeight / 2);
             whatsNewCarousel = new iCarousel(new CGRect(0, locY, View.Bounds.Width, carHeight))
             {
