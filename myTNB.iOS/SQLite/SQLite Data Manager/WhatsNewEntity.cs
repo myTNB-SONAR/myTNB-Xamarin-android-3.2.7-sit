@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using myTNB.SitecoreCMS.Model;
 using SQLite;
 
@@ -96,8 +97,9 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.PortraitImage_PopUp = obj.PortraitImage_PopUp;
                     item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
                     item.ShowForTotalCountDays_PopUp = obj.ShowForTotalCountDays_PopUp;
-                    item.ShowDayDate = obj.ShowDayDate;
-                    item.ShowDayDateTotal = obj.ShowDayDateTotal;
+                    item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
+                    item.ShowDateForDay = obj.ShowDateForDay;
+                    item.ShowCountForDay = obj.ShowCountForDay;
                     InsertItem(item);
                 }
             }
@@ -150,12 +152,124 @@ namespace myTNB.SQLite.SQLiteDataManager
                     PortraitImage_PopUp = item.PortraitImage_PopUp,
                     ShowEveryCountDays_PopUp = item.ShowEveryCountDays_PopUp,
                     ShowForTotalCountDays_PopUp = item.ShowForTotalCountDays_PopUp,
-                    ShowDayDate = item.ShowDayDate,
-                    ShowDayDateTotal = item.ShowDayDateTotal,
-            };
+                    ShowAtAppLaunchPopUp = item.ShowAtAppLaunchPopUp,
+                    ShowDateForDay = item.ShowDateForDay,
+                    ShowCountForDay = item.ShowCountForDay,
+                };
                 itemList.Add(rewardModel);
             }
             return itemList;
+        }
+
+
+        public List<WhatsNewModel> GetActivePopupItems()
+        {
+            try
+            {
+                List<WhatsNewEntity> entityItems = GetAllEntityItems();
+                if (entityItems != null && entityItems.Count > 0)
+                {
+                    List<WhatsNewEntity> matchList = entityItems.FindAll(x =>
+                    {
+                        int startResult = -1;
+                        int endResult = 1;
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(x.StartDate) && !string.IsNullOrEmpty(x.EndDate))
+                            {
+                                DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime stopDateTime = DateTime.ParseExact(x.EndDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                DateTime nowDateTime = DateTime.Now;
+                                startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                            }
+
+                            x.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(x.ID);
+                            x.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(x.ID);
+                            x.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(x.ID);
+                        }
+                        catch (Exception ne)
+                        {
+                            Console.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
+                        }
+                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0 && x.ShowForTotalCountDays_PopUp > 0);
+                    });
+                    if (matchList != null && matchList.Count > 0)
+                    {
+                        List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
+                        {
+                            int startResult = -1;
+                            int endResult = 1;
+                            bool isAlreadyExceedQuota = false;
+                            try
+                            {
+                                if (!string.IsNullOrEmpty(x.StartDate))
+                                {
+                                    DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    DateTime stopDateTime = startDateTime.AddDays(x.ShowForTotalCountDays_PopUp);
+                                    DateTime nowDateTime = DateTime.Now;
+                                    startResult = DateTime.Compare(nowDateTime, startDateTime);
+                                    endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                                    DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    if (showDateTime.Date == nowDateTime.Date && x.ShowCountForDay >= x.ShowEveryCountDays_PopUp)
+                                    {
+                                        isAlreadyExceedQuota = true;
+                                    }
+                                }
+                            }
+                            catch (Exception ne)
+                            {
+                                Console.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
+                            }
+                            return (startResult >= 0 && endResult <= 0 && !isAlreadyExceedQuota);
+                        });
+                        if (matchItemList != null && matchItemList.Count > 0)
+                        {
+                            List<WhatsNewModel> itemList = new List<WhatsNewModel>();
+                            WhatsNewModel rewardModel;
+                            foreach (var item in matchItemList)
+                            {
+                                rewardModel = new WhatsNewModel
+                                {
+                                    CategoryID = item.CategoryID,
+                                    CategoryName = item.CategoryName,
+                                    ID = item.ID,
+                                    Title = item.Title,
+                                    TitleOnListing = item.TitleOnListing,
+                                    Description = item.Description,
+                                    Image = item.Image,
+                                    StartDate = item.StartDate,
+                                    EndDate = item.EndDate,
+                                    PublishDate = item.PublishDate,
+                                    IsRead = item.IsRead,
+                                    Image_DetailsView = item.Image_DetailsView,
+                                    Styles_DetailsView = item.Styles_DetailsView,
+                                    PortraitImage_PopUp = item.PortraitImage_PopUp,
+                                    ShowEveryCountDays_PopUp = item.ShowEveryCountDays_PopUp,
+                                    ShowForTotalCountDays_PopUp = item.ShowForTotalCountDays_PopUp,
+                                    ShowAtAppLaunchPopUp = item.ShowAtAppLaunchPopUp,
+                                    ShowDateForDay = item.ShowDateForDay,
+                                    ShowCountForDay = item.ShowCountForDay,
+                                };
+                                itemList.Add(rewardModel);
+                            }
+
+                            return itemList;
+                        }
+                        return new List<WhatsNewModel>();
+                    }
+                    return new List<WhatsNewModel>();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+            return new List<WhatsNewModel>();
         }
 
         /// <summary>
@@ -240,8 +354,9 @@ namespace myTNB.SQLite.SQLiteDataManager
                     PortraitImage_PopUp = reward.PortraitImage_PopUp,
                     ShowEveryCountDays_PopUp = reward.ShowEveryCountDays_PopUp,
                     ShowForTotalCountDays_PopUp = reward.ShowForTotalCountDays_PopUp,
-                    ShowDayDate = reward.ShowDayDate,
-                    ShowDayDateTotal = reward.ShowDayDateTotal,
+                    ShowAtAppLaunchPopUp = reward.ShowAtAppLaunchPopUp,
+                    ShowDateForDay = reward.ShowDateForDay,
+                    ShowCountForDay = reward.ShowCountForDay,
                 };
                 UpdateItem(item);
             }

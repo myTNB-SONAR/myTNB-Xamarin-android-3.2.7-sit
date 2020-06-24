@@ -38,8 +38,9 @@ namespace myTNB.SitecoreCMS.Model
         public int ShowEveryCountDays_PopUp { set; get; }
         public int ShowForTotalCountDays_PopUp { set; get; }
         public bool ShowAtAppLaunchPopUp { set; get; }
-        public string ShowDayDate { set; get; }
-        public int ShowDayDateTotal { set; get; }
+        public string ShowDateForDay { set; get; }
+        public int ShowCountForDay { set; get; }
+        public bool SkipShowOnAppLaunch { set; get; }
         public bool IsRead { set; get; }
 
         public WhatsNewEntity ToEntity()
@@ -61,8 +62,10 @@ namespace myTNB.SitecoreCMS.Model
                 PortraitImage_PopUp = PortraitImage_PopUp,
                 ShowEveryCountDays_PopUp = ShowEveryCountDays_PopUp,
                 ShowForTotalCountDays_PopUp = ShowForTotalCountDays_PopUp,
-                ShowDayDate = ShowDayDate,
-                ShowDayDateTotal = ShowDayDateTotal,
+                ShowAtAppLaunchPopUp = ShowAtAppLaunchPopUp,
+                ShowDateForDay = ShowDateForDay,
+                ShowCountForDay = ShowCountForDay,
+                SkipShowOnAppLaunch = SkipShowOnAppLaunch,
                 IsRead = IsRead
             };
 

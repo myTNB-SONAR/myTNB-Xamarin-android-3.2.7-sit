@@ -25,6 +25,9 @@ namespace myTNB
         //Preference Key
         public static string Pref_WhatsNewTutorialOverlay = "WhatsNewTutorialOverlayV2.1.0";
         public static string Pref_WhatsNewReadFlags = "WhatsNewReadFlags";
+        public static string Pref_WhatsNewSkipModelFlags = "WhatsNewSkipModelFlags";
+        public static string Pref_WhatsNewModelShowDate = "WhatsNewModelShowDate";
+        public static string Pref_WhatsNewModelShowCount = "WhatsNewModelShowCount";
 
         //I18N Keys
         public static string I18N_Title = "title";

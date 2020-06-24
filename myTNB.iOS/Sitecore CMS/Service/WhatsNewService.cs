@@ -139,7 +139,7 @@ namespace myTNB.SitecoreCMS.Service
                             PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate),
                             Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
                             Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
-                            PortraitImage_PopUp = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp),
+                            PortraitImage_PopUp = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp, _websiteURL, false),
                         };
 
                         try
@@ -160,7 +160,7 @@ namespace myTNB.SitecoreCMS.Service
                         }
                         try
                         {
-                            listlItem.ShowAtAppLaunchPopUp = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE" ? true : false;
+                            listlItem.ShowAtAppLaunchPopUp = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE") ? true : false;
                         }
                         catch (Exception ex)
                         {

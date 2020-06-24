@@ -40,6 +40,7 @@ namespace myTNB.SitecoreCMS
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
                 WhatsNewDetailCache.ClearImages();
+                WhatsNewPopupCache.ClearImages();
                 RewardsCache.ClearImages();
                 ClearTimeStamps();
             }
@@ -741,8 +742,9 @@ namespace myTNB.SitecoreCMS
                                             whatsNew.CategoryID = category.ID;
                                             whatsNew.CategoryName = category.CategoryName;
                                             whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
-                                            whatsNew.ShowDayDate = GetCurrentDate();
-                                            whatsNew.ShowDayDateTotal = 0;
+                                            whatsNew.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(whatsNew.ID);
+                                            whatsNew.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(whatsNew.ID);
+                                            whatsNew.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(whatsNew.ID);
                                             whatsNewData.Add(whatsNew);
                                         }
                                     }
@@ -763,13 +765,6 @@ namespace myTNB.SitecoreCMS
                 }
                 Debug.WriteLine("LoadWhatsNew Done");
             });
-        }
-
-        private string GetCurrentDate()
-        {
-            DateTime currentDate = DateTime.UtcNow;
-            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-            return currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
         }
 
         public Task LoadNeedHelpTimeStamp()
