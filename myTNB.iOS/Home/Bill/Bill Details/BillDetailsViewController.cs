@@ -732,7 +732,7 @@ namespace myTNB
                     , GetScaledHeight(4), view.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
                 {
                     TextAlignment = UITextAlignment.Left,
-                    Font = TNBFont.MuseoSans_12_500,
+                    Font = TNBFont.MuseoSans_11_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetCommonI18NValue("eppToolTipTitle")
 
