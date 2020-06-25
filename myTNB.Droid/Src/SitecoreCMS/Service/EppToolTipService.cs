@@ -69,7 +69,7 @@ namespace myTNB.SitecoreCMS.Services
                     Bitmap imageCache = null;
                     String stringCache = null;
 
-                    stringCache = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.EppToolTip.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20");
+                    stringCache = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.EppToolTip.Image, _websiteURL, false);
                     imageCache = ImageUtils.GetImageBitmapFromUrl(stringCache);
 
                     list.Add(new EppToolTipModel
