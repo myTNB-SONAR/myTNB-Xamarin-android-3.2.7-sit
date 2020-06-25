@@ -6715,6 +6715,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                          if (accountDueAmount.ShowEppToolTip == true)
                                         {
                                             ShowEpp();
+                                            isChangeVirtualHeightNeed = true;
+                                            SetVirtualHeightParams(6f);
                                         }
                                         else
                                         {
@@ -6841,6 +6843,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         if (accountDueAmount.ShowEppToolTip == true)
                                         {
                                             ShowEpp();
+                                            isChangeVirtualHeightNeed = true;
+                                            SetVirtualHeightParams(6f);
                                         }
                                         else
                                         {

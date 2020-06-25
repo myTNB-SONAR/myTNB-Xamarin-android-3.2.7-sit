@@ -23,6 +23,8 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
         private Context mContext;
         private DashboardHomeActivity mActivity;
+        private LinearLayout container;
+        private LinearLayout mainContainer;
         private ViewPager pager;
         private WhatsNewDialogPagerAdapter adapter;
         private List<WhatsNewModel> whatsnew = new List<WhatsNewModel>();
@@ -40,6 +42,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
+            Dialog.Window.SetDimAmount(0.75f);
             Dialog.SetCancelable(false);
             Dialog.SetCanceledOnTouchOutside(false);
             Dialog.Window.SetLayout(WindowManagerLayoutParams.MatchParent, WindowManagerLayoutParams.WrapContent);
@@ -49,9 +52,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
             try
             {
-
+                container = (LinearLayout)rootView.FindViewById(Resource.Id.subContainer);
+                mainContainer = (LinearLayout)rootView.FindViewById(Resource.Id.mainContainer);
                 pager = (ViewPager)rootView.FindViewById(Resource.Id.whatsNewPager);
                 indicator = (LinearLayout)rootView.FindViewById(Resource.Id.indicatorContainer);
+                indicator.Visibility = ViewStates.Gone;
 
                 whatsnew = JsonConvert.DeserializeObject<List<WhatsNewModel>>(Arguments.GetString("whatsnew"));
 
@@ -63,12 +68,33 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 adapter.NotifyDataSetChanged();
 
                 pager.SetClipToPadding(false);
-                pager.SetPadding(50, 0, 50, 0);
-                pager.PageMargin = 50;
+                int topPadding = GetDeviceVerticalScaleInPixel(0.058f);
+                int leftRightPadding = GetDeviceHorizontalScaleInPixel(0.096f);
+
+                if (Resources.DisplayMetrics.HeightPixels >= 1920)
+                {
+                    topPadding = GetDeviceVerticalScaleInPixel(0.138f);
+                    leftRightPadding = GetDeviceHorizontalScaleInPixel(0.036f);
+                }
+                else if (Resources.DisplayMetrics.HeightPixels >= 1080)
+                {
+                    leftRightPadding = GetDeviceHorizontalScaleInPixel(0.006f);
+                }
+
+                pager.SetPadding(leftRightPadding, topPadding, leftRightPadding, 0);
+                pager.PageMargin = leftRightPadding;
+
+                int maxHeight = GetDeviceVerticalScaleInPixel(1f);
+                pager.LayoutParameters.Height = maxHeight;
+                container.RequestLayout();
+                pager.RequestLayout();
+                mainContainer.RequestLayout();
+                indicator.RequestLayout();
+
                 pager.SetOnPageChangeListener(this);
 
 
-                if (adapter != null && adapter.Count > 1)
+                /*if (adapter != null && adapter.Count > 1)
                 {
                     indicator.Visibility = ViewStates.Visible;
                     for (int i = 0; i < adapter.Count; i++)
@@ -93,13 +119,31 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 else
                 {
                     indicator.Visibility = ViewStates.Gone;
-                }
+                }*/
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
             return rootView;
+        }
+
+        public int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        {
+            var deviceWidth = Resources.DisplayMetrics.WidthPixels;
+            return GetScaleInPixel(deviceWidth, percentageValue);
+        }
+
+        public int GetDeviceVerticalScaleInPixel(float percentageValue)
+        {
+            var deviceHeight = Resources.DisplayMetrics.HeightPixels;
+            return GetScaleInPixel(deviceHeight, percentageValue);
+        }
+
+        public int GetScaleInPixel(int basePixel, float percentageValue)
+        {
+            int scaledInPixel = (int)((float)basePixel * percentageValue);
+            return scaledInPixel;
         }
 
         void OnDetailsClick(object sender, int position)
@@ -152,7 +196,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
         void OnRefreshIndicator(object sender, int position)
         {
-            if (adapter != null && adapter.Count > 1)
+            /*if (adapter != null && adapter.Count > 1)
             {
                 for (int i = 0; i < adapter.Count; i++)
                 {
@@ -170,7 +214,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
             else
             {
                 indicator.Visibility = ViewStates.Gone;
-            }
+            }*/
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -192,7 +236,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         {
             try
             {
-                if (adapter != null && adapter.Count > 1)
+                /*if (adapter != null && adapter.Count > 1)
                 {
                     for (int i = 0; i < adapter.Count; i++)
                     {
@@ -206,7 +250,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                             selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
                         }
                     }
-                }
+                }*/
             }
             catch (Exception ex)
             {

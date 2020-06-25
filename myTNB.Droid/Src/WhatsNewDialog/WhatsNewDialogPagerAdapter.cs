@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Graphics;
 using Android.Support.V4.View;
+using Android.Support.V7.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -39,10 +40,23 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
+            FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
             Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
             ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
             LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
             ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
+
+            int maxHeight = GetDeviceVerticalScaleInPixel(0.732f);
+
+            if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
+            {
+                maxHeight = GetDeviceVerticalScaleInPixel(0.632f);
+            }
+
+            whatsNewDialogCardView.LayoutParameters.Height = maxHeight;
+            whatsNewDialogCardView.RequestLayout();
+            btnGotIt.RequestLayout();
+            rootView.RequestLayout();
 
             TextViewUtils.SetMuseoSans500Typeface(btnGotIt);
 
@@ -91,17 +105,29 @@ namespace myTNB_Android.Src.WhatsNewDialog
             imgWhatsNew.Click += delegate
             {
                 OnDetailsClick(position);
-                this.whatsnew.RemoveAt(position);
-                this.NotifyDataSetChanged();
-                OnRefreshIndicator(position);
-                if (this.whatsnew.Count == 0)
-                {
-                    OnCloseClick(position);
-                }
+                OnCloseClick(position);
             };
 
             container.AddView(rootView);
             return rootView;
+        }
+
+        public int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        {
+            var deviceWidth = mContext.Resources.DisplayMetrics.WidthPixels;
+            return GetScaleInPixel(deviceWidth, percentageValue);
+        }
+
+        public int GetDeviceVerticalScaleInPixel(float percentageValue)
+        {
+            var deviceHeight = mContext.Resources.DisplayMetrics.HeightPixels;
+            return GetScaleInPixel(deviceHeight, percentageValue);
+        }
+
+        public int GetScaleInPixel(int basePixel, float percentageValue)
+        {
+            int scaledInPixel = (int)((float)basePixel * percentageValue);
+            return scaledInPixel;
         }
 
         private void SkipWhatsNew(int pos)
@@ -250,8 +276,14 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
         void OnCloseClick(int position)
         {
-            if (CloseClicked != null)
-                CloseClicked(this, position);
+            this.whatsnew.RemoveAt(position);
+            this.NotifyDataSetChanged();
+            OnRefreshIndicator(position);
+            if (this.whatsnew.Count == 0)
+            {
+                if (CloseClicked != null)
+                    CloseClicked(this, position);
+            }
         }
 
         void OnRefreshIndicator(int position)
