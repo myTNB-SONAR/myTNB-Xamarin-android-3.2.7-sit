@@ -30,6 +30,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView.ShowBillingPayment();
         }
 
+        public void OnSubmitNewEnquiry()
+        {
+            this.mView.ShowSubmitNewEnquiry();
+        }
+
         public void OnFaultyStreetLamps()
         {
             this.mView.ShowFaultyStreetLamps();
