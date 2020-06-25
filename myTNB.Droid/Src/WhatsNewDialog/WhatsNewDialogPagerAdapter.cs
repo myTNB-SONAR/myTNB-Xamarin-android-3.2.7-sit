@@ -42,7 +42,10 @@ namespace myTNB_Android.Src.WhatsNewDialog
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
             FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
             Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
+            RelativeLayout imageWhatsnewMain = (RelativeLayout)rootView.FindViewById(Resource.Id.imageWhatsnewMain);
             ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
+            CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
+            
             LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
             ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
 
@@ -58,7 +61,10 @@ namespace myTNB_Android.Src.WhatsNewDialog
             btnGotIt.RequestLayout();
             rootView.RequestLayout();
 
-            TextViewUtils.SetMuseoSans500Typeface(btnGotIt);
+            TextViewUtils.SetMuseoSans500Typeface(btnGotIt, chkDontShow);
+            // WhatsNew TODO: update chkDontShow to multilingual
+            // chkDontShow.Text = Utility.GetLocalizedCommonLabel("rememberEmail");
+
 
             WhatsNewModel model = whatsnew[position];
 
@@ -79,7 +85,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 if (localBitmap != null)
                 {
                     model.PortraitImage_PopUpBitmap = localBitmap;
-                    SetWhatsNewDialogImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                    SetWhatsNewDialogImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
                 }
                 else
                 {
@@ -88,7 +94,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
             }
             else if (!string.IsNullOrEmpty(model.PortraitImage_PopUp))
             {
-                _ = GetImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                _ = GetImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
             }
             else
             {
@@ -106,6 +112,13 @@ namespace myTNB_Android.Src.WhatsNewDialog
             {
                 OnDetailsClick(position);
                 OnCloseClick(position);
+            };
+
+            chkDontShow.Checked = model.SkipShowOnAppLaunch;
+
+            chkDontShow.Click += delegate
+            {
+                SkipWhatsNew(position, chkDontShow.Checked);
             };
 
             container.AddView(rootView);
@@ -130,22 +143,16 @@ namespace myTNB_Android.Src.WhatsNewDialog
             return scaledInPixel;
         }
 
-        private void SkipWhatsNew(int pos)
+        private void SkipWhatsNew(int pos, bool isCheck)
         {
             string id = this.whatsnew[pos].ID;
-            WhatsNewEntity wtManager = new WhatsNewEntity();
-            wtManager.UpdateDialogSkipItem(id, true);
-
-            this.whatsnew.RemoveAt(pos);
+            this.whatsnew[pos].SkipShowOnAppLaunch = isCheck;
             this.NotifyDataSetChanged();
-            OnRefreshIndicator(pos);
-            if (this.whatsnew.Count == 0)
-            {
-                OnCloseClick(pos);
-            }
+            WhatsNewEntity wtManager = new WhatsNewEntity();
+            wtManager.UpdateDialogSkipItem(id, isCheck);
         }
 
-        private async Task GetImageAsync(WhatsNewModel item, int position, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
+        private async Task GetImageAsync(WhatsNewModel item, int position, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew, RelativeLayout imageWhatsnewMain)
         {
             try
             {
@@ -164,7 +171,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     this.whatsnew[position].PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64;
                     WhatsNewEntity wtManager = new WhatsNewEntity();
                     wtManager.UpdateCachePopupImage(item.ID, item.PortraitImage_PopUpB64);
-                    SetWhatsNewDialogImage(imageBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                    SetWhatsNewDialogImage(imageBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
                 }
                 else
                 {
@@ -218,7 +225,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
             return image;
         }
 
-        private void SetWhatsNewDialogImage(Bitmap imgSrc, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
+        private void SetWhatsNewDialogImage(Bitmap imgSrc, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew, RelativeLayout imageWhatsnewMain)
         {
             try
             {
@@ -243,7 +250,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     shimmerWhatsNewImageLayout.StopShimmer();
                 }
 
-                imgWhatsNew.Visibility = ViewStates.Visible;
+                imageWhatsnewMain.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
             {
