@@ -225,10 +225,7 @@ namespace myTNB
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
             if (tutorialOverlayHasShown) {
-                if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && IsNeedHelpCallDone)
-                {
-                    ShowWhatsNewPopUp();
-                }
+                ShowWhatsNewPopUp();
                 return;
             }
 
@@ -258,7 +255,9 @@ namespace myTNB
 
         private void ShowWhatsNewPopUp()
         {
-            if (!DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad && DataManager.DataManager.SharedInstance.UserEntity != null)
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad
+                && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
+                && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
             {
                 InvokeInBackground(async () =>
                 {
@@ -267,13 +266,13 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
                         await SitecoreServices.Instance.LoadWhatsNew(true);
+                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
                         if (WhatsNewCache.WhatsNewIsAvailable)
                         {
                             InvokeOnMainThread(() =>
                             {
                                 WhatsNewEntity wsManager = new WhatsNewEntity();
                                 var items = wsManager.GetActivePopupItems();
-
                                 if (items != null && items.Count > 0)
                                 {
                                     for (int index = 0; index < items.Count; index++)
@@ -318,7 +317,6 @@ namespace myTNB
                             {
                                 WhatsNewEntity wsManager = new WhatsNewEntity();
                                 var items = wsManager.GetActivePopupItems();
-
                                 if (items != null && items.Count > 0)
                                 {
                                     for (int index = 0; index < items.Count; index++)

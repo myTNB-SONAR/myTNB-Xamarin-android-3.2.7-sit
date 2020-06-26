@@ -47,7 +47,7 @@ namespace myTNB
             }
             else
             {
-                carHeight = carHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+                carHeight = carHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.102F));
             }
             var locY = (View.Bounds.Height / 2) - (carHeight / 2);
             whatsNewCarousel = new iCarousel(new CGRect(0, locY, View.Bounds.Width, carHeight))

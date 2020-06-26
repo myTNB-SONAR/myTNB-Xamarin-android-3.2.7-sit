@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
@@ -181,13 +182,13 @@ namespace myTNB.SitecoreCMS.Service
 
                                 try
                                 {
-                                    var client = new HttpClient();
-                                    var data = await client.GetAsync(href);
-                                    if (data.IsSuccessStatusCode)
+                                    WebClient webClient = new WebClient();
+                                    var outByteArray = webClient.DownloadData(new Uri(href));
+                                    var contentType = webClient.ResponseHeaders["Content-Type"];
+                                    if (contentType != null &&
+                                        contentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        string mediaType = data.Content.Headers.ContentType.MediaType;
-                                        var byteArray = await data.Content.ReadAsByteArrayAsync();
-                                        listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, "data:" + mediaType + ";base64," + System.Convert.ToBase64String(byteArray));
+                                        listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, "data:" + contentType + ";base64," + System.Convert.ToBase64String(outByteArray));
                                     }
                                     else
                                     {

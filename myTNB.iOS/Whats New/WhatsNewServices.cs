@@ -140,7 +140,7 @@ namespace myTNB
             return isSkip;
         }
 
-        public static void SetIsSkipAppLaunch(string id)
+        public static void SetIsSkipAppLaunch(string id, bool flag)
         {
             if (id.IsValid())
             {
@@ -152,17 +152,19 @@ namespace myTNB
                     dict = JsonConvert.DeserializeObject<Dictionary<string, bool>>(cachedData);
                     if (dict != null)
                     {
-                        if (!dict.ContainsKey(id))
+                        if (dict.ContainsKey(id))
                         {
-                            dict.Add(id, true);
-                            var jsonStr = JsonConvert.SerializeObject(dict);
-                            sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
-                            sharedPreference.Synchronize();
+                            dict.Remove(id);
                         }
+
+                        dict.Add(id, flag);
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+                        sharedPreference.Synchronize();
                     }
                     else
                     {
-                        dict.Add(id, true);
+                        dict.Add(id, flag);
                         var jsonStr = JsonConvert.SerializeObject(dict);
                         sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
                         sharedPreference.Synchronize();
@@ -170,7 +172,7 @@ namespace myTNB
                 }
                 else
                 {
-                    dict.Add(id, true);
+                    dict.Add(id, flag);
                     var jsonStr = JsonConvert.SerializeObject(dict);
                     sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
                     sharedPreference.Synchronize();

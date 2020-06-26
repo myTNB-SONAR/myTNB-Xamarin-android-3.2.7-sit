@@ -257,7 +257,7 @@ namespace myTNB.DataManager
             WhatsNewCache.Clear();
             RewardsCache.Clear();
 
-            // IsWhatsNewFirstLoad = false;
+            IsWhatsNewFirstLoad = false;
             WhatsNewModalNavigationId = "";
     }
 

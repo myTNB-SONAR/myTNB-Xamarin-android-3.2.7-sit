@@ -33,6 +33,12 @@ namespace myTNB
             OnTapDetails?.Invoke();
         }
 
+        public nfloat GetXLocationFromFrame(CGRect frame, nfloat xValue)
+        {
+            ScaleUtility.GetXLocationFromFrame(frame, ref xValue);
+            return xValue;
+        }
+
         public override UIView GetViewForItem(iCarousel carousel, nint index, UIView view)
         {
             double buttonHeight = ScaleUtility.GetScaledHeight(52F);
@@ -43,7 +49,7 @@ namespace myTNB
             }
             else
             {
-                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.102F));
             }
             float marginPercentage = 0.056F;
             double margin = UIScreen.MainScreen.Bounds.Width * marginPercentage;
@@ -68,6 +74,51 @@ namespace myTNB
             };
 
             UIImageView imgView = new UIImageView(new CGRect(0, 0, carWidth, itemHeight));
+            UIView viewDoNotShowAgain = new UIView(new CGRect(ScaleUtility.GetScaledHeight(12F), imgView.Bounds.Height - ScaleUtility.GetScaledHeight(34F), imgView.Bounds.Width - ScaleUtility.GetScaledHeight(24F), ScaleUtility.GetScaledHeight(24F)))
+            {
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
+            };
+            viewDoNotShowAgain.Layer.CornerRadius = ScaleUtility.GetScaledHeight(4F);
+
+            UIView viewCheckBox = new UIView(new CGRect(ScaleUtility.GetScaledWidth(5F), ScaleUtility.GetScaledHeight(5F), ScaleUtility.GetScaledWidth(13F), ScaleUtility.GetScaledHeight(13F)))
+            {
+                BackgroundColor = MyTNBColor.WhiteTwo
+            };
+            viewCheckBox.Layer.CornerRadius = ScaleUtility.GetScaledWidth(3F);
+            viewCheckBox.Layer.BorderColor = UIColor.Clear.CGColor;
+            viewCheckBox.Layer.BorderWidth = ScaleUtility.GetScaledWidth(1F);
+            UIImageView imgViewCheckBox = new UIImageView(new CGRect(0, 0, ScaleUtility.GetScaledWidth(13F), ScaleUtility.GetScaledHeight(13F)))
+            {
+                Image = UIImage.FromBundle(LoginConstants.IMG_RememberIcon),
+                ContentMode = UIViewContentMode.ScaleAspectFill,
+                BackgroundColor = UIColor.Clear
+            };
+            viewCheckBox.AddSubview(imgViewCheckBox);
+
+            imgViewCheckBox.Hidden = !WhatsNewServices.GetIsSkipAppLaunch(whatsnew.ID);
+            viewCheckBox.Layer.BorderColor = WhatsNewServices.GetIsSkipAppLaunch(whatsnew.ID) ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
+
+            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                bool flag = WhatsNewServices.GetIsSkipAppLaunch(whatsnew.ID);
+                flag = !flag;
+                imgViewCheckBox.Hidden = !flag;
+                viewCheckBox.Layer.BorderColor = flag ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
+                WhatsNewServices.SetIsSkipAppLaunch(whatsnew.ID, flag);
+            }));
+
+            UILabel lblDontShowAgain = new UILabel(new CGRect(GetXLocationFromFrame(viewCheckBox.Frame, 8F), ScaleUtility.GetScaledHeight(4F), viewDoNotShowAgain.Frame.Width, ScaleUtility.GetScaledHeight(16F)))
+            {
+                Font = TNBFont.MuseoSans_11_500,
+                TextColor = MyTNBColor.CharcoalGrey,
+                // Text = GetI18NValue(LoginConstants.I18N_RememberEmail)
+                // WhatsNew TODO: Dont show this again multilingual
+                Text = "Don't show this again"
+            };
+
+            viewDoNotShowAgain.AddSubviews(new UIView[] { viewCheckBox, lblDontShowAgain });
+
 
             if (whatsnew.PortraitImage_PopUp.IsValid())
             {
@@ -141,6 +192,34 @@ namespace myTNB
                     }
                 }
             }
+            else
+            {
+                UIView imgLoadingView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                {
+                    BackgroundColor = UIColor.Clear
+                };
+
+                mainView.AddSubview(imgLoadingView);
+                mainView.AddSubview(imgView);
+
+                UIView viewImage = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                {
+                    BackgroundColor = MyTNBColor.PaleGreyThree
+                };
+
+                CustomShimmerView shimmeringView = new CustomShimmerView();
+                UIView viewShimmerParent = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                { BackgroundColor = UIColor.Clear };
+                UIView viewShimmerContent = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                { BackgroundColor = UIColor.Clear };
+                viewShimmerParent.AddSubview(shimmeringView);
+                shimmeringView.ContentView = viewShimmerContent;
+                shimmeringView.Shimmering = true;
+                shimmeringView.SetValues();
+
+                viewShimmerContent.AddSubview(viewImage);
+                imgLoadingView.AddSubview(viewShimmerParent);
+            }
 
             UITapGestureRecognizer tapDetail = new UITapGestureRecognizer(OnGetTapDetail)
             {
@@ -148,6 +227,7 @@ namespace myTNB
             };
             mainView.AddGestureRecognizer(tapDetail);
             view.AddSubview(mainView);
+            view.AddSubview(viewDoNotShowAgain);
 
             UIView doNotShowView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
             {

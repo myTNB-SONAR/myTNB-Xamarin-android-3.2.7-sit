@@ -100,6 +100,9 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
+                    item.ShowDateForDay = obj.ShowDateForDay;
+                    item.ShowCountForDay = obj.ShowCountForDay;
+                    item.SkipShowOnAppLaunch = obj.SkipShowOnAppLaunch;
                     InsertItem(item);
                 }
             }
@@ -132,6 +135,16 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<WhatsNewModel> itemList = new List<WhatsNewModel>();
             List<WhatsNewEntity> entityItems = GetAllEntityItems();
             WhatsNewModel rewardModel;
+            if (entityItems != null && entityItems.Count > 0)
+            {
+                for(int index = 0; index < entityItems.Count; index++)
+                {
+                    entityItems[index].ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(entityItems[index].ID);
+                    entityItems[index].ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(entityItems[index].ID);
+                    entityItems[index].SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(entityItems[index].ID);
+                }
+            }
+
             foreach (var item in entityItems)
             {
                 rewardModel = new WhatsNewModel
@@ -155,6 +168,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     ShowAtAppLaunchPopUp = item.ShowAtAppLaunchPopUp,
                     ShowDateForDay = item.ShowDateForDay,
                     ShowCountForDay = item.ShowCountForDay,
+                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
                 };
                 itemList.Add(rewardModel);
             }
@@ -357,6 +371,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     ShowAtAppLaunchPopUp = reward.ShowAtAppLaunchPopUp,
                     ShowDateForDay = reward.ShowDateForDay,
                     ShowCountForDay = reward.ShowCountForDay,
+                    SkipShowOnAppLaunch = reward.SkipShowOnAppLaunch
                 };
                 UpdateItem(item);
             }
