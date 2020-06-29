@@ -178,26 +178,6 @@ namespace myTNB.SitecoreCMS.Service
                                 if (!href.Contains("http"))
                                 {
                                     href = item.GetImageUrlFromExtractedUrl(m.Groups[1].Value, _websiteURL);
-                                }
-
-                                try
-                                {
-                                    WebClient webClient = new WebClient();
-                                    var outByteArray = webClient.DownloadData(new Uri(href));
-                                    var contentType = webClient.ResponseHeaders["Content-Type"];
-                                    if (contentType != null &&
-                                        contentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, "data:" + contentType + ";base64," + System.Convert.ToBase64String(outByteArray));
-                                    }
-                                    else
-                                    {
-                                        listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, href);
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    Debug.WriteLine("Exception in WhatsNewService/GenerateWhatsNewChildren: " + e.Message);
                                     listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, href);
                                 }
                             }

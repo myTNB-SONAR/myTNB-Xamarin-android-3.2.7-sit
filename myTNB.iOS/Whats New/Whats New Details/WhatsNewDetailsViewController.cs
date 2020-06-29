@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -12,6 +16,8 @@ namespace myTNB
         public WhatsNewModel WhatsNewModel;
         private UIBarButtonItem _btnShare;
         private UIScrollView _scrollView;
+        private UITextView _titleTextView;
+        private UITextView _descTextView;
 
         public override void ViewDidLoad()
         {
@@ -125,6 +131,9 @@ namespace myTNB
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
 
+            Dictionary<string, string> listDescription = WhatsNewDetailDescriptionCache.GetImages(WhatsNewModel.ID);
+            Dictionary<string, string> ImageDescriptionDictionary = new Dictionary<string, string>();
+            List<string> imageUrls = new List<string>();
 
             if (WhatsNewModel.Description.Contains("<img"))
             {
@@ -178,6 +187,38 @@ namespace myTNB
                             textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
                         }
                     }
+                }
+
+                string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+                System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                for(int count = 0; count < matchesImgSrc.Count; count++)
+                {
+                    System.Text.RegularExpressions.Match m = matchesImgSrc[count];
+
+                    string href = m.Groups[1].Value;
+                    if (href.Contains("http"))
+                    {
+                        ImageDescriptionDictionary.Add(WhatsNewModel.ID + "_" + count.ToString(), href);
+                        WhatsNewModel.Description = WhatsNewModel.Description.Replace(href, WhatsNewConstants.defaultDescriptionImage);
+                        imageUrls.Add(href);
+                    }
+                    else if (href.Contains(WhatsNewConstants.defaultDescriptionImage))
+                    {
+                        if (listDescription != null && listDescription.Count > 0)
+                        {
+                            imageUrls.Add(listDescription[WhatsNewModel.ID + "_" + count.ToString()]);
+                        }
+                    }
+                }
+
+                if (listDescription == null)
+                {
+                    WhatsNewDetailDescriptionCache.SaveImages(WhatsNewModel.ID, ImageDescriptionDictionary);
+                    listDescription = ImageDescriptionDictionary;
+                }
+                else
+                {
+                    ImageDescriptionDictionary = listDescription;
                 }
             }
 
@@ -273,34 +314,109 @@ namespace myTNB
 
             nfloat viewWidth = ViewWidth - (BaseMarginWidth16 * 2);
 
-            UITextView titleTextView = CreateHTMLContent(WhatsNewModel.Title, true);
-            CGSize titleTextViewSize = titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
-            ViewHelper.AdjustFrameSetHeight(titleTextView, titleTextViewSize.Height);
-            ViewHelper.AdjustFrameSetX(titleTextView, GetScaledWidth(16F));
+            _titleTextView = CreateHTMLContent(WhatsNewModel.Title, true);
+            CGSize titleTextViewSize = _titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+            ViewHelper.AdjustFrameSetHeight(_titleTextView, titleTextViewSize.Height);
+            ViewHelper.AdjustFrameSetX(_titleTextView, GetScaledWidth(16F));
             if (isImageDetailAvailable)
             {
-                ViewHelper.AdjustFrameSetY(titleTextView, GetYLocationFromFrame(imageView.Frame, 20F));
+                ViewHelper.AdjustFrameSetY(_titleTextView, GetYLocationFromFrame(imageView.Frame, 20F));
             }
             else
             {
-                ViewHelper.AdjustFrameSetY(titleTextView, GetScaledHeight(16F));
+                ViewHelper.AdjustFrameSetY(_titleTextView, GetScaledHeight(16F));
             }
-            ViewHelper.AdjustFrameSetWidth(titleTextView, viewWidth);
-            UITextView descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
-            CGSize descTextViewSize = descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
-            ViewHelper.AdjustFrameSetHeight(descTextView, descTextViewSize.Height);
-            ViewHelper.AdjustFrameSetX(descTextView, GetScaledWidth(16F));
-            ViewHelper.AdjustFrameSetY(descTextView, GetYLocationFromFrame(titleTextView.Frame, 20F));
-            ViewHelper.AdjustFrameSetWidth(descTextView, viewWidth);
+            ViewHelper.AdjustFrameSetWidth(_titleTextView, viewWidth);
+            _descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
+            CGSize descTextViewSize = _descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+            ViewHelper.AdjustFrameSetHeight(_descTextView, descTextViewSize.Height);
+            ViewHelper.AdjustFrameSetX(_descTextView, GetScaledWidth(16F));
+            ViewHelper.AdjustFrameSetY(_descTextView, GetYLocationFromFrame(_titleTextView.Frame, 20F));
+            ViewHelper.AdjustFrameSetWidth(_descTextView, viewWidth);
 
             if (isImageDetailAvailable)
             {
                 _scrollView.AddSubview(imageContainer);
                 _scrollView.AddSubview(imageView);
             }
-            _scrollView.AddSubview(titleTextView);
-            _scrollView.AddSubview(descTextView);
-            UpdateScrollViewContentSize(descTextView);
+            _scrollView.AddSubview(_titleTextView);
+            _scrollView.AddSubview(_descTextView);
+            UpdateScrollViewContentSize(_descTextView);
+
+            if (imageUrls != null && imageUrls.Count > 0)
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        bool downloadFailed = false;
+
+                        for (int imgCount = 0; imgCount < imageUrls.Count; imgCount++)
+                        {
+                            try
+                            {
+                                WebClient webClient = new WebClient();
+                                var outByteArray = webClient.DownloadData(new Uri(imageUrls[imgCount]));
+                                var contentType = webClient.ResponseHeaders["Content-Type"];
+                                if (contentType != null &&
+                                    contentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    imageUrls[imgCount] = "data:" + contentType + ";base64," + System.Convert.ToBase64String(outByteArray);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                downloadFailed = true;
+                                Debug.WriteLine("Exception in Image Download: " + e.Message);
+                            }
+                        }
+
+                        if (!downloadFailed)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                try
+                                {
+                                    for (int imgCount = 0; imgCount < imageUrls.Count; imgCount++)
+                                    {
+                                        string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+                                        System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                                        for (int count = 0; count < matchesImgSrc.Count; count++)
+                                        {
+                                            System.Text.RegularExpressions.Match m = matchesImgSrc[count];
+
+                                            string href = m.Groups[1].Value;
+                                            WhatsNewModel.Description = WhatsNewModel.Description.Replace(href, imageUrls[imgCount]);
+                                        }
+
+                                        _descTextView.RemoveFromSuperview();
+                                        _descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
+                                        CGSize _descTextViewSize = _descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+                                        ViewHelper.AdjustFrameSetHeight(_descTextView, _descTextViewSize.Height);
+                                        ViewHelper.AdjustFrameSetX(_descTextView, GetScaledWidth(16F));
+                                        ViewHelper.AdjustFrameSetY(_descTextView, GetYLocationFromFrame(_titleTextView.Frame, 20F));
+                                        ViewHelper.AdjustFrameSetWidth(_descTextView, viewWidth);
+
+                                        _scrollView.AddSubview(_descTextView);
+                                        UpdateScrollViewContentSize(_descTextView);
+                                    }
+
+                                    WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                                    whatsNewEntity.UpdateDescription(WhatsNewModel.ID, WhatsNewModel.Description);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine("Exception in Image Download: " + e.Message);
+                                }
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Exception in Image Download: " + e.Message);
+                    }
+                });
+            }
         }
 
         private void UpdateScrollViewContentSize(UIView lastView)

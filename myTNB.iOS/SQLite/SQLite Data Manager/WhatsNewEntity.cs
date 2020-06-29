@@ -343,6 +343,31 @@ namespace myTNB.SQLite.SQLiteDataManager
         }
 
         /// <summary>
+        /// Updates the description.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="description"></param>
+        public void UpdateDescription(string key, string description)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(description))
+                {
+                    var item = SQLiteHelper._db.Get<WhatsNewEntity>(key);
+                    if (item != null)
+                    {
+                        item.Description = description;
+                        UpdateItem(item);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in Reading from Table : {0}", e.Message);
+            }
+        }
+
+        /// <summary>
         /// Updates the entity item.
         /// </summary>
         /// <param name="reward"></param>

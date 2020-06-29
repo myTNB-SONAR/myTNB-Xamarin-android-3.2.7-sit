@@ -2785,6 +2785,7 @@
     <Compile Include="Whats New\WhatsNewModalViewController.designer.cs" />
     <Compile Include="Whats New\WhatsNewModalDataSource.cs" />
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
+    <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

@@ -40,6 +40,7 @@ namespace myTNB.SitecoreCMS
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
                 WhatsNewDetailCache.ClearImages();
+                WhatsNewDetailDescriptionCache.ClearImages();
                 WhatsNewPopupCache.ClearImages();
                 RewardsCache.ClearImages();
                 ClearTimeStamps();
