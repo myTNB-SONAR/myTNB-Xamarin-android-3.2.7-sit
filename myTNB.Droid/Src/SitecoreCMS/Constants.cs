@@ -223,11 +223,13 @@
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
+
 #if DEBUG || STUB || DEVELOP || SIT
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json SIT";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
 #else
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
 #endif
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
